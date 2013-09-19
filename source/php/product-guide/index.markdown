@@ -1595,7 +1595,7 @@ The password is changed as follows:
 
 ##<a id="Administration"></a>*Administering Stormpath*
 
-For more information about administering Stormpath using the Admin Console, please refer to the [Admin Console Product Guide|http://stormpath.com/docs/console/product-guide].
+For more information about administering Stormpath using the Admin Console, please refer to the [Admin Console Product Guide](http://stormpath.com/docs/console/product-guide).
 
 ***
 

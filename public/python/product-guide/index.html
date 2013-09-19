@@ -228,229 +228,6 @@
 
 <hr />
 
-<h2><a id="Administration"></a><em>Administering Stormpath</em></h2>
-
-<p>As an administrator in Stormpath, you have full access to the Stormpath Admin Console and the REST API, enabling you to perform a variety of tasks including:</p>
-
-<ul>
-<li><a href="#CreateAccounts">Adding new users</a>, including additional administrators</li>
-<li><a href="#DefaultResources">Managing the default application and directory</a></li>
-<li><a href="#AssignAPIkeys">Assigning new API keys</a></li>
-<li><a href="#RegisterApps">Registering applications</a></li>
-<li><a href="#CreateDir">Creating directories</a></li>
-<li><a href="#CreateGroups">Creating groups</a></li>
-<li><a href="#ManageLoginSources">Managing login sources</a></li>
-<li><a href="#ManageWorkflowAutomation">Configuring workload account automation</a></li>
-</ul>
-
-
-<h3><a id="Billing"></a>Billing and Subscription Level</h3>
-
-<p>When you initially sign up for Stormpath, your account is established with the default Developer subscription level. The Developer level is available for free.</p>
-
-<p>If you would like to view or take advantage of features provided by higher-level subscriptions, in the top corner of the Stormpath Admin Console, click Settings, Subscription. If you upgrade your subscription level, you will also have to provide billing information by clicking <strong>Settings</strong>, <strong>Billing</strong>.</p>
-
-<p>For additional information on the various service offerings and subscription levels, see the <a href="http://www.stormpath.com/monthly-pricing-plans">pricing page</a>.</p>
-
-<h3><a id="DefaultResources"></a>Default Owner, Application, and Directory</h3>
-
-<p>Stormpath is configured with various default settings, including a default owner, application, and directory.</p>
-
-<p>When you initially sign up for Stormpath, three resources are automatically established.</p>
-
-<ul>
-<li><p>A user account known as the <a href="#Tenant"><code>Tenant</code></a> owner, which:</p>
-
-<ul>
-<li>Represents the first person in the tenant that signed up for Stormpath.</li>
-<li>Cannot be disabled or deleted.</li>
-<li>Is always located in the Stormpath Administrators directory.</li>
-<li>Is initially responsible for inviting new administrators and managing the Stormpath tenant.</p></li>
-</ul>
-</li>
-<li><p>An application named <code>Stormpath</code>, which:</p>
-
-<ul>
-<li>Cannot be disabled or deleted.</li>
-<li>Controls access to the Stormpath Admin Console and API.</p></li>
-</ul>
-</li>
-<li><p>A directory named <code>Stormpath Administrators</code>, which:</p>
-
-<ul>
-<li>Cannot be disabled or deleted.</li>
-<li>Is automatically associated with the Stormpath application.</li>
-<li>Cannot be removed as a login source for the Stormpath application, but it can be moved in the login source priority order.</li>
-<li>Has various predetermined workflow automations that cannot be altered.</li>
-<li>Provides any user accounts within this directory log in access to the Stormpath Admin Console.</li>
-<li>Provides any user accounts within this directory with API keys direct API access.</li>
-<li>Automatically assigns the first user account created for the tenant to this directory.</li>
-<li>Provides user accounts contained within this directory the ability to add other user accounts to the directory using the Add Admin button located at the top of the Stormpath Admin Console.</li>
-</ul>
-</li>
-</ul>
-
-
-<h3><a id="InviteAdmins"></a>Invite Other Administrators</h3>
-
-<p>You can invite other administrator users to help you manage Stormpath applications, directories, and other aspects of your Stormpath tenant.</p>
-
-<p><img src="http://www.stormpath.com/sites/default/files/docs/InviteAdmin.png" alt="Invite Another Admin" title="Invite Another Admin" width="670"></p>
-
-<p>To invite an administrator, use the Add Admin feature. This feature sends an invitation for other administrators to collaborate with you in Stormpath.</p>
-
-<p>The invitees must complete their account information. When the information is submitted, the new administrator user account is added to the Stormpath Administrators directory and gains access to the applications, directories, and accounts you have created.</p>
-
-<h3><a id="ManageAPIkeys"></a>Manage API Keys</h3>
-
-<p>As an administrator for the tenant, you must manage the associated API keys.</p>
-
-<p>API keys give you access to manage your Stormpath account, you risk exposing confidential information if you fail to take proper care of you API keys.</p>
-
-<p>With API keys, you must never:</p>
-
-<ul>
-<li>Send API keys by email</li>
-<li>Share API keys with other people in your organization &ndash; for example saving the keys in public or cloud-based folders</li>
-<li>Transfer API keys unencrypted</li>
-<li>Commit API keys in source repositories, such as Github</li>
-<li>Save API keys in configuration files</li>
-</ul>
-
-
-<p>Best practices:</p>
-
-<ul>
-<li>Download your own API keys from Stormpath admin console, this will minimize the risk of compromising the keys by transferring them through an insecure channel.</li>
-<li>Set proper privileges on the API keys file (can be read only by the owner of the keys) in the OS.</li>
-<li>Rotate API keys on a regular basis.</li>
-<li>Minimize API key transfers.</li>
-<li>If API key transfer is mandatory, encrypt the key.</li>
-</ul>
-
-
-<div class='docs-tip'><p>You must update the applications using the API keys to use the new ones.</p>
-</div>
-
-
-<p>The following is a command line example of how to compress an apiKey file using tar and gzip and encrypt it using openssl:</p>
-
-<pre><code>$ tar cvzf - apiKey.properties | openssl des3 -salt -k "secure secretKey" -out apiKey.properties.enc
-</code></pre>
-
-<p>To extract and decrypt the API key, the recipient must do the following:</p>
-
-<pre><code>$ openssl des3 -d -k "secure secretKey" -in apiKey.properties.enc | tar xvzf -
-</code></pre>
-
-<p>Another way to accomplish the same thing (simpler one) is to zip and encrypt the apiKey.properties file:</p>
-
-<pre><code>$ zip -e apiKey.encrypted apiKey.properties
-$ Enter password:
-$ Verify password:
-</code></pre>
-
-<p>To extract and decrypt the API key, the recipient must do the following:</p>
-
-<pre><code>$ unzip apiKey.encrypted.zip
-$ Enter password:
-</code></pre>
-
-<p>For API keys, you can <a href="#AssignAPIkeys">assign or create new keys</a>, <a href="#ActivateAPIkeys">activate inactive keys</a>, <a href="#DeactivateAPIkeys">deactivate existing keys</a>, or <a href="#DeleteAPIkeys">delete existing keys</a> for users.</p>
-
-<p>Deactivating the API key prevents it from making API calls, while deleting the API key permanently removes it from Stormpath.</p>
-
-<p><img src="http://www.stormpath.com/sites/default/files/docs/APIKeys.png" alt="API Keys" title="API Keys" width="760"></p>
-
-<h4><a id="AssignAPIkeys"></a>Assign New API Keys</h4>
-
-<p>As an administrator, within the Stormpath Administrators directory you can create, or add more, <a href="#APIKey">API keys</a> to user accounts.</p>
-
-<p>To create a new API key for a user:</p>
-
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Accounts</strong> tab.</li>
-<li>Locate the account and click the account link or under Actions, click <strong>Edit</strong>.</li>
-<li>Under Security Credentials, click <strong>Create API Key</strong>.</li>
-<li>In the confirmation window, click <strong>Ok</strong>.</li>
-</ol>
-
-
-<h4><a id="ActivateAPIkeys"></a>Activate API Keys</h4>
-
-<p>To activate a previously deactivated API key for a user:</p>
-
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Accounts</strong> tab.</li>
-<li>Locate the account and click the account link or under Actions, click <strong>Edit</strong>.</li>
-<li>Under Security Credentials, in the Status column, click <strong>Activate</strong>.</li>
-</ol>
-
-
-<h4><a id="DeactivateAPIkeys"></a>Deactivate API Keys</h4>
-
-<p>To deactivate an API key for a user:</p>
-
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Accounts</strong> tab.</li>
-<li>Locate the account and click the account link or under Actions, click <strong>Edit</strong>.</li>
-<li>Under Security Credentials, in the Status column, click <strong>Deactivate</strong>.<br>
- <img src="http://www.stormpath.com/sites/default/files/docs/DeactivateAPIKey.png" alt="Deactivate API Key" title="Deactivate API Key" width="700"></li>
-<li>In the confirmation window, click <strong>Ok</strong>.</li>
-</ol>
-
-
-<div class='docs-note'><p>Any applications using this API key with no longer be able to communicate or authenticate with Stormpath. When it is re-activated, the applications will work again.</p>
-</div>
-
-
-<h4><a id="DeleteAPIkeys"></a>Delete API Keys</h4>
-
-<p>To delete an API key for a user:</p>
-
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Accounts</strong> tab.</li>
-<li>Locate the account and click the account link or under Actions, click <strong>Edit</strong>.</li>
-<li>Under Security Credentials, in the Status column, click <strong>Delete</strong>.<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/DeleteAPIKey.png" alt="Delete API Key" title="Delete API Key" width="700"></li>
-<li>In the confirmation window, click <strong>Ok</strong>.<br>The API key has been permanently deleted from Stormpath.</li>
-</ol>
-
-
-<div class='docs-note'><p>Deleting an API key permanently removes it from Stormpath, any applications using this API key with no longer be able to communicate or authenticate with Stormpath. To have the application communicate with Stormpath, you must change the API key to an active API key.</p>
-</div>
-
-
-<h3><a id="WorkflowAutomation"></a>Workflow Automations</h3>
-
-<p>Stormpath automates common security workflows that many applications require. These include,  <a href="#AccountRegistration">account registration and verification</a> and <a href="#PasswordReset">resetting passwords</a>. Configurations for workflow automations are applied at the directory level using the Stormpath Admin Console. You can only use this feature on Stormpath-managed (cloud) directories; workflow automations are not available for LDAP directories. Workflow automations also exist for the default Stormpath Administrator directory, but they cannot be modified.</p>
-
-<div class='docs-note'><p>The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.</p>
-</div>
-
-
-<p>The <strong>Account Registration and Verification</strong> workflow manages how accounts are created in your directory. It allows you to control the steps that happen when new users are added to a directory. These steps typically include a verification and welcome email.</p>
-
-<p>Within the account registration and verification workflow automation feature, you can select:</p>
-
-<ul>
-<li><strong>Enable Registration and Verification Workflow</strong></li>
-<li><strong>Require newly registered accounts to verify their email address</strong></li>
-</ul>
-
-
-<p>Account Registration and Verification is disabled by default on new directories.</p>
-
-<p>The <strong>Password Reset</strong> workflow configuration manages user password resets through emails and tokens. Password Reset is enabled by default on new directories.</p>
-
-<p>To learn more, see <a href="#ManageWorkflowAutomation">Manage Workflow Automation</a>.</p>
-
-<hr />
-
 <h2><a id="SDKConcepts"></a><em>SDK Concepts</em></h2>
 
 <p>Throughout this guide, code examples appear using the Stormpath Python SDK.</p>
@@ -2323,6 +2100,12 @@ account.save()
 
 <hr />
 
+<h2><a id="Administration"></a><em>Administering Stormpath</em></h2>
+
+<p>For more information about administering Stormpath using the Admin Console, please refer to the <a href="http://stormpath.com/docs/console/product-guide">Admin Console Product Guide</a>.</p>
+
+<hr />
+
 <p><a class="anchor" name="glossary"></a></p>
 
 <h2><a id="GlossaryofTerms"></a>Glossary of Terms</h2>
@@ -2622,7 +2405,7 @@ account.save()
 				<a href="/python/product-guide">Python Product Guide</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#Stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#ArchitecturalOverview" data-level="1" class="fragment">Architectural Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#AdminConsole" data-level="1" class="fragment">Stormpath Admin Console</a><ul class="menu"></ul></li><li class="leaf"><a href="#RestAPI" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#PythonSDK" data-level="1" class="fragment">Python SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Administration" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"><li class="leaf"><a href="#Billing" data-level="1" class="fragment">Billing and Subscription Level</a><ul class="menu"></ul></li><li class="leaf"><a href="#DefaultResources" data-level="1" class="fragment">Default Owner, Application, and Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#InviteAdmins" data-level="1" class="fragment">Invite Other Administrators</a><ul class="menu"></ul></li><li class="leaf"><a href="#ManageAPIkeys" data-level="1" class="fragment">Manage API Keys</a><ul class="menu"></ul></li><li class="leaf"><a href="#WorkflowAutomation" data-level="1" class="fragment">Workflow Automations</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#SDKConcepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#Client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#HighLevelOverview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#DetailedDesign" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#ResourcesAndProxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#ErrorHandling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#LocateAppURL" data-level="1" class="fragment">Locate the Application REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListApps" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveApps" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#RegisterApps" data-level="1" class="fragment">Register an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditApps" data-level="1" class="fragment">Edit an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#ManageLoginSources" data-level="1" class="fragment">Manage Application Login Sources</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableApps" data-level="1" class="fragment">Enable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableApps" data-level="1" class="fragment">Disable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteApps" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#LocateDirURL" data-level="1" class="fragment">Locate the Directory REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListDirectories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveDir" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateDir" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#AssocApplications" data-level="1" class="fragment">Map Directories to Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditDir" data-level="1" class="fragment">Edit Directory Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#UpdateAgent" data-level="1" class="fragment">Update Agent Configuration</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableDir" data-level="1" class="fragment">Enable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableDir" data-level="1" class="fragment">Disable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteDir" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#LocateAccURL" data-level="1" class="fragment">Locate the Account REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#AuthenticateAccounts" data-level="1" class="fragment">Authenticate Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListAccounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveAccounts" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateAccounts" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditAccounts" data-level="1" class="fragment">Edit Account Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#AssignAccountGroup" data-level="1" class="fragment">Assign Accounts to Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#RemoveAccountGroup" data-level="1" class="fragment">Remove Accounts from Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableAccounts" data-level="1" class="fragment">Enable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableAccounts" data-level="1" class="fragment">Disable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteAccounts" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#LocateGroupURL" data-level="1" class="fragment">Locate the Group REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListGroups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveGroups" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateGroups" data-level="1" class="fragment">Create Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditGroups" data-level="1" class="fragment">Edit Group Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableGroups" data-level="1" class="fragment">Enable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableGroups" data-level="1" class="fragment">Disable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteGroups" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#ManageWorkflowAutomation" data-level="0" class="fragment">Workflow Automations</a><ul class="menu"><li class="leaf"><a href="#AccountRegistration" data-level="1" class="fragment">Account Registration and Verification</a><ul class="menu"></ul></li><li class="leaf"><a href="#PasswordReset" data-level="1" class="fragment">Password Reset</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#GlossaryofTerms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#Stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#ArchitecturalOverview" data-level="1" class="fragment">Architectural Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#AdminConsole" data-level="1" class="fragment">Stormpath Admin Console</a><ul class="menu"></ul></li><li class="leaf"><a href="#RestAPI" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#PythonSDK" data-level="1" class="fragment">Python SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#SDKConcepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#Client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#HighLevelOverview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#DetailedDesign" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#ResourcesAndProxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#ErrorHandling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#LocateAppURL" data-level="1" class="fragment">Locate the Application REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListApps" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveApps" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#RegisterApps" data-level="1" class="fragment">Register an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditApps" data-level="1" class="fragment">Edit an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#ManageLoginSources" data-level="1" class="fragment">Manage Application Login Sources</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableApps" data-level="1" class="fragment">Enable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableApps" data-level="1" class="fragment">Disable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteApps" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#LocateDirURL" data-level="1" class="fragment">Locate the Directory REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListDirectories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveDir" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateDir" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#AssocApplications" data-level="1" class="fragment">Map Directories to Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditDir" data-level="1" class="fragment">Edit Directory Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#UpdateAgent" data-level="1" class="fragment">Update Agent Configuration</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableDir" data-level="1" class="fragment">Enable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableDir" data-level="1" class="fragment">Disable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteDir" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#LocateAccURL" data-level="1" class="fragment">Locate the Account REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#AuthenticateAccounts" data-level="1" class="fragment">Authenticate Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListAccounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveAccounts" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateAccounts" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditAccounts" data-level="1" class="fragment">Edit Account Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#AssignAccountGroup" data-level="1" class="fragment">Assign Accounts to Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#RemoveAccountGroup" data-level="1" class="fragment">Remove Accounts from Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableAccounts" data-level="1" class="fragment">Enable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableAccounts" data-level="1" class="fragment">Disable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteAccounts" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#LocateGroupURL" data-level="1" class="fragment">Locate the Group REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListGroups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveGroups" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateGroups" data-level="1" class="fragment">Create Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditGroups" data-level="1" class="fragment">Edit Group Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableGroups" data-level="1" class="fragment">Enable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableGroups" data-level="1" class="fragment">Disable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteGroups" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#ManageWorkflowAutomation" data-level="0" class="fragment">Workflow Automations</a><ul class="menu"><li class="leaf"><a href="#AccountRegistration" data-level="1" class="fragment">Account Registration and Verification</a><ul class="menu"></ul></li><li class="leaf"><a href="#PasswordReset" data-level="1" class="fragment">Password Reset</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Administration" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#GlossaryofTerms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
 			
 			</li>	
 		
