@@ -13,8 +13,10 @@
           else if (current_page !== undefined && languages[lang].indexOf('quickstart') >= 0) {
             window.location.pathname = lang +'/quickstart';
           }
-          else {
-            window.location.pathname = lang +'/'+ languages[lang][0]
+          else if (current_page !== undefined) {
+            window.location.pathname = lang +'/'+ languages[lang][0];
+          } else {
+            window.location.pathname = lang +'/quickstart';
           }
       }
       if ($form.length) {
