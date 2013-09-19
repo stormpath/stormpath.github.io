@@ -1,7 +1,7 @@
 ---
 layout: doc
-title: Stormpath Admin Quickstart Guide
 lang: console
+title: Stormpath Admin Quickstart Guide
 ---
 
 Welcome to Stormpath's Admin Console Quickstart!
@@ -55,7 +55,7 @@ To create an application, do the following:
         Attribute | Description
 :--- | :---
 Name | The name used to identify the application within Stormpath. This value must be unique.
-Description | A short description of the application.<br> <strong>Note:</strong> A URL for the application is often helpful.
+Description | A short description of the application.
 Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent accounts from logging in to the application.
 
     4. For the associated directory, you can:
@@ -65,6 +65,10 @@ Status | By default, this value is set to Enabled. Change the value to Disabled 
         * After specifying the directory parameters, you can specify the login priority order.
     
     5. When all information is complete, click <strong>Save</strong>.
+
+{% docs tip %}
+A URL for the application is often helpful.
+{% enddocs %}
 
 At this point, you'll see that your application was successfully created. You can also edit the application, or any of your applications, by clicking on its name in the list of applications.
 
@@ -104,11 +108,11 @@ A `account` represents an entity that can authenticate with your application. Th
 
     <img src="http://www.stormpath.com/sites/default/files/docs/CreateAccount.png" alt="Create Account" title="Create Account" width="640" height="380">
 
-3. Complete the fields as follows:
+3. Complete the fields as follows: <br>
 
-        Attribute | Description
+    Attribute | Description
 :--- | :---
-Directory | The directory to which the account will be added.<br><strong>Note:</strong> The account cannot be moved to a different directory after it has been created.
+Directory | The directory to which the account will be added.
 Username | The login name of the account for applications using username instead of email. The value must be unique within its parent directory.
 First Name | The account owner first name.
 Middle Name | The account owner middle name.
@@ -122,6 +126,10 @@ Confirm Password | Confirmation of the account credentials. This value must matc
 4. Click <strong>Create Account</strong>.
 
 At this point, you'll see that your account was successfully created. You can also edit the account, or any of your accounts, by clicking on its name in the list of accounts.
+
+{% docs note %}
+The account cannot be moved to a different directory after it has been created.
+{% enddocs %}
 
 ***
 

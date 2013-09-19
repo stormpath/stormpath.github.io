@@ -166,121 +166,6 @@
 
 <p>For help to quickly get started with Stormpath, refer to the <a href="http://www.stormpath.com/docs/java/quickstart">Java Quickstart Guide</a>.</p>
 
-<!--
-The following items are covered in this document:
-
-* [**What is Stormpath?**](#Stormpath)
-
-    * [Architectural Overview](#ArchitecturalOverview)
-    * [Stormpath Admin Console](#AdminConsole)
-    * [REST API](#RestAPI)
-    * [Java SDK](#JavaSDK)
-
-* [**Administering Stormpath**](#Administration)
-
-    * [Billing and Subscription Level](#Billing)
-    * [Default Resources](#DefaultResources)
-    * [Invite Other Administrators](#InviteAdmins) 
-    * [Manage API Keys](#ManageAPIkeys)
-        * [Assign New API Keys](#AssignAPIkeys)
-        * [Activate API Keys](#ActivateAPIkeys)
-        * [Deactivate API Keys](#DeactivateAPIkeys)
-        * [Delete API Keys](#DeleteAPIkeys)
-    * [Workflow Automations](#WorkflowAutomation)
-
-* [**SDK Concepts**](#SDKConcepts)
-
-    * [Client](#Client)
-        * [Preferred Configuration](#PreferredConfig)
-        * [Single URL Configuration](#SingleURLConfig)
-        * [API Key Configuration](#APIKeyConfig)
-    * [High-level Overview](#HighLevelOverview)
-    * [Detailed Design](#DetailedDesign)
-        * [Architectural Components](#ArchitecturalComponents)
-    * [Resources and Proxying](#ResourcesAndProxying)
-    * [Error Handling](#ErrorHandling)
-
-* [**Applications**](#Applications)
-
-    * [Locate the Application REST URL](#LocateAppURL)
-    * [List Applications](#ListApps)
-    * [Retrieve an Application](#RetrieveApps)
-    * [Register an Application](#RegisterApps)
-    * [Edit an Application](#EditApps)
-    * [Manage Application Login Sources](#ManageLoginSources)
-        * [Change Default Account and Group Locations](#ChangeDefaults)
-        * [Add Another (Directory) Login Source](#AddLoginSource)
-        * [Change the Login Source Priority Order](#ChangeLoginSourcePriority)
-        * [Remove Login Sources](#RemoveLoginSource)
-    * [Enable an Application](#EnableApps)
-    * [Disable an Application](#DisableApps)
-    * [Delete an Application](#DeleteApps)
-
-* [**Directories**](#Directories)
-
-    * [Locate the Directory REST URL](#LocateDirURL)
-    * [List Directories](#ListDirectories)
-    * [Retrieve a Directory](#RetrieveDir)
-    * [Create a Directory](#CreateDir)
-        * [Create a Cloud Directory](#CreateCloud)
-        * [Create a Mirrored (LDAP) Directory](#CreateMirror)
-    * [Map Directories to Applications](#AssocApplications)
-    * [Edit a Directory](#EditDir)
-    * [Update Agent Configuration](#UpdateAgent)
-    * [Enable a Directory](#EnableDir)
-    * [Disable a Directory](#DisableDir)
-    * [Delete a Directory](#DeleteDir)
-
-* [**Accounts**](#Accounts)
-    * [Locate the Account REST URL](#LocateAccURL)
-    * [Authenticate Accounts](#AuthenticateAccounts)
-    * [List Accounts](#ListAccounts)
-        * [List Accounts by Group](#ListGroupAccounts)
-        * [List Accounts by Directory](#ListDirectoryAccounts)
-        * [List Accounts by Application](#ViewAccountMap)
-    * [Retrieve an Account](#RetrieveAccounts)
-    * [Create an Account](#CreateAccounts)
-    * [Edit an Account](#EditAccounts)
-    * [Assign Accounts to Groups](#AssignAccountGroup)
-    * [Remove Accounts from Groups](#RemoveAccountGroup)
-    * [Enable an Account](#EnableAccounts)
-    * [Disable an Account](#DisableAccounts)
-    * [Delete an Account](#DeleteAccounts)
-
-* [**Groups**](#Groups)
-    * [Locate the Group REST URL](#LocateGroupURL)
-    * [List Groups](#ListGroups)
-        * [List Accounts in a Group](#ListAccountGroups)
-        * [List Groups in a Directory](#ListDirectoryGroups)
-    * [Retrieve a Group](#RetrieveGroups)
-    * [Create Groups](#CreateGroups)
-    * [Edit Group Details](#EditGroups)
-    * [Enable a Group](#EnableGroups)
-    * [Disable a Group](#DisableGroups)
-    * [Delete a Group](#DeleteGroups)
-
-* [**Workflow Automations**](#ManageWorkflowAutomation)
-    * [Account Registration and Verification](#AccountRegistration)
-        * [Configure Account Registration and Verification](#ConfigureAccountRegistration)
-        * [Initiate Account Registration and Verification](#InitiateAccountRegistration)
-        * [Verify the Account](#VerifyAccount)
-    * [Password Reset](#PasswordReset)
-        * [Configure Password Reset](#ConfigurePasswordReset)
-        * [Initiate Password Reset](#InitiatePasswordReset)
-        * [Complete Password Reset](#CompletePasswordReset)
-
-* [**Sample Code**](#SampleCode)
-    * [Spring MVC Sample App](#Spring)
-    * [Apache Shiro Sample Web App](#Apache)
-
-* [**Glossary**](#Glossary)
-
-
-* [**Appendix**](#Appendix)
-
--->
-
-
 <hr />
 
 <h2><a id="Stormpath"></a>What is Stormpath?</h2>
@@ -2614,91 +2499,7 @@ $ mvn install
 
 <h2><a id="Administration"></a><em>Administering Stormpath</em></h2>
 
-<p>For more information about administering Stormpath using the Admin Console, please refer to the [Admin Console Product Guide|<a href="http://stormpath.com/docs/console/product-guide">http://stormpath.com/docs/console/product-guide</a>].</p>
-
-<hr />
-
-<h2><a id="Glossary"></a>Glossary of Terms</h2>
-
-<table>
-<thead>
-<tr>
-<th align="left">Property </th>
-<th align="left"> Description </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left"><a id="Account"></a>Account </td>
-<td align="left"> An <strong>account</strong> is a unique identity within a directory. Stormpath does not use the term <em>user</em> because it implies a person, while accounts can represent a person, 3rd-party software, or non-human clients. Accounts can be used to log in to applications.</td>
-</tr>
-<tr>
-<td align="left"><a id="Agent"></a>Agent </td>
-<td align="left"> An <strong>agent</strong> populates LDAP directories. An agent status reflects communication/error state because the agent is communicating with Stormpath.</td>
-</tr>
-<tr>
-<td align="left"><a id="APIKey"></a>API Key </td>
-<td align="left"> An <strong>API key</strong> is a unique ID paired with a secret value. API keys are used by software applications to communicate with Stormpath through the Stormpath REST API.</td>
-</tr>
-<tr>
-<td align="left"><a id="Application"></a>Application </td>
-<td align="left"> An <strong>application</strong> is a software application that communicates with Stormpath. It is typically a real world application that you are building, such as a web application, but it can also be infrastructural software, such as a Unix or Web server.</td>
-</tr>
-<tr>
-<td align="left"><a id="Authentication"></a>Authentication </td>
-<td align="left"> <strong>Authentication</strong> is the act of proving someone (or something) is actually who they say they are. When an account is authenticated, there is a high degree of certainty that the account identity is legitimate.</td>
-</tr>
-<tr>
-<td align="left"><a id="Authorization"></a>Authorization </td>
-<td align="left"> <strong>Authorization</strong>, also known as Access Control, is the process of managing and enforcing access to protected resources, functionality, or behavior.</td>
-</tr>
-<tr>
-<td align="left"><a id="Directory"></a>Directory </td>
-<td align="left"> A <strong>directory</strong> is a collection of accounts and groups. Administrators can use different directories to create silos of accounts. For example, customers and employees can be stored in different directories.</td>
-</tr>
-<tr>
-<td align="left"><a id="DirectoryAgent"></a>Directory Agent </td>
-<td align="left"> A <strong>directory agent</strong> is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory.</td>
-</tr>
-<tr>
-<td align="left"><a id="DirectoryMirroring"></a>Directory Mirroring </td>
-<td align="left"> <strong>Directory mirroring</strong> securely replicates selected data from one (source) directory to another (target or mirrored) directory for authentication and access control. The source directory is the authoritative source for all data. Changes are propagated to the target/mirror directory for convenience and performance benefits.</td>
-</tr>
-<tr>
-<td align="left"><a id="Group"></a>Group </td>
-<td align="left"> A <strong>group</strong> is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role.</td>
-</tr>
-<tr>
-<td align="left"><a id="IdentityManagement"></a>Identity Management </td>
-<td align="left"> <strong>Identity management</strong> is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks.</td>
-</tr>
-<tr>
-<td align="left"><a id="LoginSource"></a>Login Source </td>
-<td align="left"> A <strong>login source</strong> is a directory or group associated with an application for account authentication. Accounts within login sources associated with an application can login to that application.</td>
-</tr>
-<tr>
-<td align="left"><a id="Role"></a>Role </td>
-<td align="left">A <strong>role</strong> is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups.</td>
-</tr>
-<tr>
-<td align="left"><a id="RBAC"></a>Role-Based Access Control </td>
-<td align="left"> <strong>Role-Based Access Control</strong> (RBAC) is the act of controlling access to protected resources or behavior based on the groups assigned to a particular account. RBAC is done using Stormpath groups.</td>
-</tr>
-<tr>
-<td align="left"><a id="RESTAPIdef"></a>REST API </td>
-<td align="left"> <strong>REST API</strong> is a software architectural style enabling data transfer and functionality using common web-based communication protocols. Stormpath provides a REST API for tenants so they can easily integrate Stormpath with their software applications.</td>
-</tr>
-<tr>
-<td align="left"><a id="Tenant"></a>Tenant </td>
-<td align="left"> A <strong>tenant</strong> is a private partition within Stormpath containing all data and settings—specifically your applications, directories, groups and accounts. When you sign up for Stormpath, a tenant is created for you. You can add other user accounts (for example, for your co-workers) to your tenant to help you manage your data. For convenience, many companies like to have one tenant where they can easily manage all application, directory, and account information across their organization. </td>
-</tr>
-</tbody>
-</table>
-
-
-<div class='docs-note'><p>You must know your tenant when logging in to the Admin Console website. There is a &#8220;Forgot Tenant&#8221; link on the login page if you do not know what your tenant is.</p>
-</div>
-
+<p>For more information about administering Stormpath using the Admin Console, please refer to the <a href="http://stormpath.com/docs/console/product-guide">Admin Console Product Guide</a>.</p>
 
 <hr />
 
@@ -2748,6 +2549,100 @@ $ mvn install
 <p>Here you will find a list of all the runtime dependencies necessary for the module.</p>
 
 <p>Note that Stormpath and Shiro use the SLF4J logging API instead of commons-logging. Commons-logging is however in the runtime dependency list because HTTPClient needs it. Because of this conflict, you will probably want to excludecommons-logging.jar and include jcl-over-slf4j.jar (downloaded from maven central) instead, which is compatible with SLF4J logging and satisfies the needs of HTTPClient.</p>
+
+<hr />
+
+<p><a class="anchor" name="glossary"></a></p>
+
+<h2><a id="GlossaryofTerms"></a>Glossary of Terms</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><a id="Account"></a>Account </td>
+<td align="left"> An <strong>account</strong> is a unique identity within a directory. Stormpath does not use the term <em>user</em> because it implies a person, while accounts can represent a person, 3rd-party software, or non-human clients. Accounts can be used to log in to applications.</td>
+</tr>
+<tr>
+<td align="left"><a id="Agent"></a>Agent </td>
+<td align="left"> An <strong>agent</strong> populates LDAP directories. An agent status reflects communication/error state because the agent is communicating with Stormpath.</td>
+</tr>
+<tr>
+<td align="left"><a id="APIKey"></a>API Key </td>
+<td align="left"> An <strong>API key</strong> is a unique ID paired with a secret value. API keys are used by software applications to communicate with Stormpath through the Stormpath REST API.</td>
+</tr>
+<tr>
+<td align="left"><a id="Application"></a>Application </td>
+<td align="left"> An <strong>application</strong> is a software application that communicates with Stormpath. It is typically a real world application that you are building, such as a web application, but it can also be infrastructural software, such as a Unix or Web server.</td>
+</tr>
+<tr>
+<td align="left"><a id="Authentication"></a>Authentication </td>
+<td align="left"> <strong>Authentication</strong> is the act of proving someone (or something) is actually who they say they are. When an account is authenticated, there is a high degree of certainty that the account identity is legitimate.</td>
+</tr>
+<tr>
+<td align="left"><a id="Authorization"></a>Authorization </td>
+<td align="left"> <strong>Authorization</strong>, also known as Access Control, is the process of managing and enforcing access to protected resources, functionality, or behavior.</td>
+</tr>
+<tr>
+<td align="left"><a id="Directory"></a>Directory </td>
+<td align="left"> A <strong>directory</strong> is a collection of accounts and groups. Administrators can use different directories to create silos of accounts. For example, customers and employees can be stored in different directories.</td>
+</tr>
+<tr>
+<td align="left"><a id="DirectoryAgent"></a>Directory Agent </td>
+<td align="left"> A <strong>directory agent</strong> is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory.</td>
+</tr>
+<tr>
+<td align="left"><a id="DirectoryMirroring"></a>Directory Mirroring </td>
+<td align="left"> <strong>Directory mirroring</strong> securely replicates selected data from one (source) directory to another (target or mirrored) directory for authentication and access control. The source directory is the authoritative source for all data. Changes are propagated to the target/mirror directory for convenience and performance benefits.</td>
+</tr>
+<tr>
+<td align="left"><a id="Group"></a>Group </td>
+<td align="left"> A <strong>group</strong> is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role.</td>
+</tr>
+<tr>
+<td align="left"><a id="GroupMembership"></a>Group Membership </td>
+<td align="left"> A <strong>group membership</strong> is a two-way mapping between an account and a group.</td>
+</tr>
+<tr>
+<td align="left"><a id="AccountStore"></a>Account Store </td>
+<td align="left"> A <strong>account store</strong> is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.</td>
+</tr>
+<tr>
+<td align="left"><a id="AccountStoreMapping"></a>Account Store Mapping </td>
+<td align="left"> An <strong>account store mapping</strong> is a mapping between a group or directory and an application.</td>
+</tr>
+<tr>
+<td align="left"><a id="IdentityManagement"></a>Identity Management </td>
+<td align="left"> <strong>Identity management</strong> is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks.</td>
+</tr>
+<tr>
+<td align="left"><a id="Role"></a>Role </td>
+<td align="left">A <strong>role</strong> is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups.</td>
+</tr>
+<tr>
+<td align="left"><a id="RBAC"></a>Role-Based Access Control </td>
+<td align="left"> <strong>Role-Based Access Control</strong> (RBAC) is the act of controlling access to protected resources or behavior based on the groups assigned to a particular account. RBAC is done using Stormpath groups.</td>
+</tr>
+<tr>
+<td align="left"><a id="RESTAPIdef"></a>REST API </td>
+<td align="left"> <strong>REST API</strong> is a software architectural style enabling data transfer and functionality using common web-based communication protocols. Stormpath provides a REST API for tenants so they can easily integrate Stormpath with their software applications.</td>
+</tr>
+<tr>
+<td align="left"><a id="Tenant"></a>Tenant </td>
+<td align="left"> A <strong>tenant</strong> is a private partition within Stormpath containing all data and settings—specifically your applications, directories, groups and accounts. When you sign up for Stormpath, a tenant is created for you. You can add other user accounts (for example, for your co-workers) to your tenant to help you manage your data. For convenience, many companies like to have one tenant where they can easily manage all application, directory, and account information across their organization.*</td>
+</tr>
+</tbody>
+</table>
+
+
+<div class='docs-note'><p>*You must know your tenant when logging in to the Admin Console website. There is a &#8220;Forgot Tenant&#8221; link on the login page if you do not know what your tenant is.</p>
+</div>
+
 
 
 <script src="/javascripts/stormpath_docs.js"></script>
@@ -2950,7 +2845,7 @@ $ mvn install
 				<a href="/java/product-guide">Java Product Guide</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#Stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#ArchitecturalOverview" data-level="1" class="fragment">Architectural Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#AdminConsole" data-level="1" class="fragment">Stormpath Admin Console</a><ul class="menu"></ul></li><li class="leaf"><a href="#RestAPI" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#JavaSDK" data-level="1" class="fragment">Java SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#SDKConcepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#Client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#HighLevelOverview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#DetailedDesign" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#ResourcesAndProxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#ErrorHandling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#LocateAppURL" data-level="1" class="fragment">Locate the Application REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListApps" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveApps" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#RegisterApps" data-level="1" class="fragment">Register an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditApps" data-level="1" class="fragment">Edit an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#ManageLoginSources" data-level="1" class="fragment">Manage Application Login Sources</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableApps" data-level="1" class="fragment">Enable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableApps" data-level="1" class="fragment">Disable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteApps" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#LocateDirURL" data-level="1" class="fragment">Locate the Directory REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListDirectories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveDir" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateDir" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#AssocApplications" data-level="1" class="fragment">Map Directories to Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditDir" data-level="1" class="fragment">Edit Directory Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#UpdateAgent" data-level="1" class="fragment">Update Agent Configuration</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableDir" data-level="1" class="fragment">Enable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableDir" data-level="1" class="fragment">Disable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteDir" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#LocateAccURL" data-level="1" class="fragment">Locate the Account REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#AuthenticateAccounts" data-level="1" class="fragment">Authenticate Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListAccounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveAccounts" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateAccounts" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditAccounts" data-level="1" class="fragment">Edit Account Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#AssignAccountGroup" data-level="1" class="fragment">Assign Accounts to Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#RemoveAccountGroup" data-level="1" class="fragment">Remove Accounts from Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableAccounts" data-level="1" class="fragment">Enable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableAccounts" data-level="1" class="fragment">Disable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteAccounts" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#LocateGroupURL" data-level="1" class="fragment">Locate the Group REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListGroups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveGroups" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateGroups" data-level="1" class="fragment">Create Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditGroups" data-level="1" class="fragment">Edit Group Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableGroups" data-level="1" class="fragment">Enable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableGroups" data-level="1" class="fragment">Disable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteGroups" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#ManageWorkflowAutomation" data-level="0" class="fragment">Workflow Automations</a><ul class="menu"><li class="leaf"><a href="#AccountRegistration" data-level="1" class="fragment">Account Registration and Verification</a><ul class="menu"></ul></li><li class="leaf"><a href="#PasswordReset" data-level="1" class="fragment">Password Reset</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#SampleCode" data-level="0" class="fragment">Java Sample Code</a><ul class="menu"><li class="leaf"><a href="#Spring" data-level="1" class="fragment">Spring MVC Sample App</a><ul class="menu"></ul></li><li class="leaf"><a href="#Apache" data-level="1" class="fragment">Apache Shiro Sample Web App</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Administration" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#Glossary" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li><li class="leaf"><a href="#Appendix" data-level="0" class="fragment">Appendix</a><ul class="menu"><li class="leaf"><a href="#HowtogettheJavaSDKjarfilesifyouarenotusingaMavencompatiblebuildtool" data-level="1" class="fragment">How to get the Java SDK jar files if you are not using a Maven-compatible build tool</a><ul class="menu"></ul></li></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#Stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#ArchitecturalOverview" data-level="1" class="fragment">Architectural Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#AdminConsole" data-level="1" class="fragment">Stormpath Admin Console</a><ul class="menu"></ul></li><li class="leaf"><a href="#RestAPI" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#JavaSDK" data-level="1" class="fragment">Java SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#SDKConcepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#Client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#HighLevelOverview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#DetailedDesign" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#ResourcesAndProxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#ErrorHandling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#LocateAppURL" data-level="1" class="fragment">Locate the Application REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListApps" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveApps" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#RegisterApps" data-level="1" class="fragment">Register an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditApps" data-level="1" class="fragment">Edit an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#ManageLoginSources" data-level="1" class="fragment">Manage Application Login Sources</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableApps" data-level="1" class="fragment">Enable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableApps" data-level="1" class="fragment">Disable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteApps" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#LocateDirURL" data-level="1" class="fragment">Locate the Directory REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListDirectories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveDir" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateDir" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#AssocApplications" data-level="1" class="fragment">Map Directories to Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditDir" data-level="1" class="fragment">Edit Directory Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#UpdateAgent" data-level="1" class="fragment">Update Agent Configuration</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableDir" data-level="1" class="fragment">Enable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableDir" data-level="1" class="fragment">Disable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteDir" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#LocateAccURL" data-level="1" class="fragment">Locate the Account REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#AuthenticateAccounts" data-level="1" class="fragment">Authenticate Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListAccounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveAccounts" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateAccounts" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditAccounts" data-level="1" class="fragment">Edit Account Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#AssignAccountGroup" data-level="1" class="fragment">Assign Accounts to Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#RemoveAccountGroup" data-level="1" class="fragment">Remove Accounts from Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableAccounts" data-level="1" class="fragment">Enable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableAccounts" data-level="1" class="fragment">Disable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteAccounts" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#LocateGroupURL" data-level="1" class="fragment">Locate the Group REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#ListGroups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#RetrieveGroups" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateGroups" data-level="1" class="fragment">Create Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#EditGroups" data-level="1" class="fragment">Edit Group Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#EnableGroups" data-level="1" class="fragment">Enable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#DisableGroups" data-level="1" class="fragment">Disable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#DeleteGroups" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#ManageWorkflowAutomation" data-level="0" class="fragment">Workflow Automations</a><ul class="menu"><li class="leaf"><a href="#AccountRegistration" data-level="1" class="fragment">Account Registration and Verification</a><ul class="menu"></ul></li><li class="leaf"><a href="#PasswordReset" data-level="1" class="fragment">Password Reset</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#SampleCode" data-level="0" class="fragment">Java Sample Code</a><ul class="menu"><li class="leaf"><a href="#Spring" data-level="1" class="fragment">Spring MVC Sample App</a><ul class="menu"></ul></li><li class="leaf"><a href="#Apache" data-level="1" class="fragment">Apache Shiro Sample Web App</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#Administration" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#Appendix" data-level="0" class="fragment">Appendix</a><ul class="menu"><li class="leaf"><a href="#HowtogettheJavaSDKjarfilesifyouarenotusingaMavencompatiblebuildtool" data-level="1" class="fragment">How to get the Java SDK jar files if you are not using a Maven-compatible build tool</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#GlossaryofTerms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
 			
 			</li>	
 		

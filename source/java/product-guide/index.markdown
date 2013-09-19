@@ -4,124 +4,9 @@ lang: java
 title: Stormpath Java Product Guide
 ---
 
-
 Stormpath provides developers with a simple yet powerful REST+JSON API that enables user management control for organizations and applications.
 
 For help to quickly get started with Stormpath, refer to the [Java Quickstart Guide](http://www.stormpath.com/docs/java/quickstart).
-
-<!--
-The following items are covered in this document:
-
-* [**What is Stormpath?**](#Stormpath)
-
-	* [Architectural Overview](#ArchitecturalOverview)
-	* [Stormpath Admin Console](#AdminConsole)
-	* [REST API](#RestAPI)
-	* [Java SDK](#JavaSDK)
-
-* [**Administering Stormpath**](#Administration)
-
-	* [Billing and Subscription Level](#Billing)
-	* [Default Resources](#DefaultResources)
-	* [Invite Other Administrators](#InviteAdmins) 
-	* [Manage API Keys](#ManageAPIkeys)
-		* [Assign New API Keys](#AssignAPIkeys)
-		* [Activate API Keys](#ActivateAPIkeys)
-		* [Deactivate API Keys](#DeactivateAPIkeys)
-		* [Delete API Keys](#DeleteAPIkeys)
-	* [Workflow Automations](#WorkflowAutomation)
-
-* [**SDK Concepts**](#SDKConcepts)
-
-	* [Client](#Client)
-		* [Preferred Configuration](#PreferredConfig)
-		* [Single URL Configuration](#SingleURLConfig)
-		* [API Key Configuration](#APIKeyConfig)
-	* [High-level Overview](#HighLevelOverview)
-	* [Detailed Design](#DetailedDesign)
-		* [Architectural Components](#ArchitecturalComponents)
-	* [Resources and Proxying](#ResourcesAndProxying)
-	* [Error Handling](#ErrorHandling)
-
-* [**Applications**](#Applications)
-
-	* [Locate the Application REST URL](#LocateAppURL)
-	* [List Applications](#ListApps)
-	* [Retrieve an Application](#RetrieveApps)
-	* [Register an Application](#RegisterApps)
-	* [Edit an Application](#EditApps)
-	* [Manage Application Login Sources](#ManageLoginSources)
-		* [Change Default Account and Group Locations](#ChangeDefaults)
-		* [Add Another (Directory) Login Source](#AddLoginSource)
-		* [Change the Login Source Priority Order](#ChangeLoginSourcePriority)
-		* [Remove Login Sources](#RemoveLoginSource)
-	* [Enable an Application](#EnableApps)
-	* [Disable an Application](#DisableApps)
-	* [Delete an Application](#DeleteApps)
-
-* [**Directories**](#Directories)
-
-	* [Locate the Directory REST URL](#LocateDirURL)
-	* [List Directories](#ListDirectories)
-	* [Retrieve a Directory](#RetrieveDir)
-	* [Create a Directory](#CreateDir)
-		* [Create a Cloud Directory](#CreateCloud)
-		* [Create a Mirrored (LDAP) Directory](#CreateMirror)
-	* [Map Directories to Applications](#AssocApplications)
-	* [Edit a Directory](#EditDir)
-	* [Update Agent Configuration](#UpdateAgent)
-	* [Enable a Directory](#EnableDir)
-	* [Disable a Directory](#DisableDir)
-	* [Delete a Directory](#DeleteDir)
-
-* [**Accounts**](#Accounts)
-	* [Locate the Account REST URL](#LocateAccURL)
-	* [Authenticate Accounts](#AuthenticateAccounts)
-	* [List Accounts](#ListAccounts)
-		* [List Accounts by Group](#ListGroupAccounts)
-		* [List Accounts by Directory](#ListDirectoryAccounts)
-		* [List Accounts by Application](#ViewAccountMap)
-	* [Retrieve an Account](#RetrieveAccounts)
-	* [Create an Account](#CreateAccounts)
-	* [Edit an Account](#EditAccounts)
-	* [Assign Accounts to Groups](#AssignAccountGroup)
-	* [Remove Accounts from Groups](#RemoveAccountGroup)
-	* [Enable an Account](#EnableAccounts)
-	* [Disable an Account](#DisableAccounts)
-	* [Delete an Account](#DeleteAccounts)
-
-* [**Groups**](#Groups)
-	* [Locate the Group REST URL](#LocateGroupURL)
-	* [List Groups](#ListGroups)
-		* [List Accounts in a Group](#ListAccountGroups)
-		* [List Groups in a Directory](#ListDirectoryGroups)
-	* [Retrieve a Group](#RetrieveGroups)
-	* [Create Groups](#CreateGroups)
-	* [Edit Group Details](#EditGroups)
-	* [Enable a Group](#EnableGroups)
-	* [Disable a Group](#DisableGroups)
-	* [Delete a Group](#DeleteGroups)
-
-* [**Workflow Automations**](#ManageWorkflowAutomation)
-	* [Account Registration and Verification](#AccountRegistration)
-		* [Configure Account Registration and Verification](#ConfigureAccountRegistration)
-		* [Initiate Account Registration and Verification](#InitiateAccountRegistration)
-		* [Verify the Account](#VerifyAccount)
-	* [Password Reset](#PasswordReset)
-		* [Configure Password Reset](#ConfigurePasswordReset)
-		* [Initiate Password Reset](#InitiatePasswordReset)
-		* [Complete Password Reset](#CompletePasswordReset)
-
-* [**Sample Code**](#SampleCode)
-	* [Spring MVC Sample App](#Spring)
-	* [Apache Shiro Sample Web App](#Apache)
-
-* [**Glossary**](#Glossary)
-
-
-* [**Appendix**](#Appendix)
-
--->
 
 ***
 
@@ -1847,34 +1732,7 @@ This is a <a href="https://github.com/stormpath/stormpath-shiro-web-sample" titl
 
 ##<a id="Administration"></a>*Administering Stormpath*
 
-For more information about administering Stormpath using the Admin Console, please refer to the [Admin Console Product Guide|http://stormpath.com/docs/console/product-guide].
-
-***
-
-##<a id="Glossary"></a>Glossary of Terms
-
-Property | Description 
-:----- | :----- |
-<a id="Account"></a>Account | An **account** is a unique identity within a directory. Stormpath does not use the term *user* because it implies a person, while accounts can represent a person, 3rd-party software, or non-human clients. Accounts can be used to log in to applications.
-<a id="Agent"></a>Agent | An **agent** populates LDAP directories. An agent status reflects communication/error state because the agent is communicating with Stormpath.
-<a id="APIKey"></a>API Key | An **API key** is a unique ID paired with a secret value. API keys are used by software applications to communicate with Stormpath through the Stormpath REST API.
-<a id="Application"></a>Application | An **application** is a software application that communicates with Stormpath. It is typically a real world application that you are building, such as a web application, but it can also be infrastructural software, such as a Unix or Web server.
-<a id="Authentication"></a>Authentication | **Authentication** is the act of proving someone (or something) is actually who they say they are. When an account is authenticated, there is a high degree of certainty that the account identity is legitimate.
-<a id="Authorization"></a>Authorization | **Authorization**, also known as Access Control, is the process of managing and enforcing access to protected resources, functionality, or behavior.
-<a id="Directory"></a>Directory | A **directory** is a collection of accounts and groups. Administrators can use different directories to create silos of accounts. For example, customers and employees can be stored in different directories.
-<a id="DirectoryAgent"></a>Directory Agent | A **directory agent** is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory.
-<a id="DirectoryMirroring"></a>Directory Mirroring | **Directory mirroring** securely replicates selected data from one (source) directory to another (target or mirrored) directory for authentication and access control. The source directory is the authoritative source for all data. Changes are propagated to the target/mirror directory for convenience and performance benefits.
-<a id="Group"></a>Group | A **group** is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role.
-<a id="IdentityManagement"></a>Identity Management | **Identity management** is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks.
-<a id="LoginSource"></a>Login Source | A **login source** is a directory or group associated with an application for account authentication. Accounts within login sources associated with an application can login to that application.
-<a id="Role"></a>Role |A **role** is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups.
-<a id="RBAC"></a>Role-Based Access Control | **Role-Based Access Control** (RBAC) is the act of controlling access to protected resources or behavior based on the groups assigned to a particular account. RBAC is done using Stormpath groups.
-<a id="RESTAPIdef"></a>REST API | **REST API** is a software architectural style enabling data transfer and functionality using common web-based communication protocols. Stormpath provides a REST API for tenants so they can easily integrate Stormpath with their software applications.
-<a id="Tenant"></a>Tenant | A **tenant** is a private partition within Stormpath containing all data and settings—specifically your applications, directories, groups and accounts. When you sign up for Stormpath, a tenant is created for you. You can add other user accounts (for example, for your co-workers) to your tenant to help you manage your data. For convenience, many companies like to have one tenant where they can easily manage all application, directory, and account information across their organization. 
-
-{% docs note %} 
-You must know your tenant when logging in to the Admin Console website. There is a "Forgot Tenant" link on the login page if you do not know what your tenant is. 
-{% enddocs %}
+For more information about administering Stormpath using the Admin Console, please refer to the [Admin Console Product Guide](http://stormpath.com/docs/console/product-guide).
 
 ***
 
@@ -1916,3 +1774,34 @@ However, for transitive dependencies that must be in the classpath at runtime, t
 Here you will find a list of all the runtime dependencies necessary for the module.
 
 Note that Stormpath and Shiro use the SLF4J logging API instead of commons-logging. Commons-logging is however in the runtime dependency list because HTTPClient needs it. Because of this conflict, you will probably want to excludecommons-logging.jar and include jcl-over-slf4j.jar (downloaded from maven central) instead, which is compatible with SLF4J logging and satisfies the needs of HTTPClient.
+
+***
+
+<a class="anchor" name="glossary"></a>
+## Glossary of Terms
+
+
+Attribute | Description
+:----- | :----- |
+<a id="Account"></a>Account | An **account** is a unique identity within a directory. Stormpath does not use the term *user* because it implies a person, while accounts can represent a person, 3rd-party software, or non-human clients. Accounts can be used to log in to applications.
+<a id="Agent"></a>Agent | An **agent** populates LDAP directories. An agent status reflects communication/error state because the agent is communicating with Stormpath.
+<a id="APIKey"></a>API Key | An **API key** is a unique ID paired with a secret value. API keys are used by software applications to communicate with Stormpath through the Stormpath REST API.
+<a id="Application"></a>Application | An **application** is a software application that communicates with Stormpath. It is typically a real world application that you are building, such as a web application, but it can also be infrastructural software, such as a Unix or Web server.
+<a id="Authentication"></a>Authentication | **Authentication** is the act of proving someone (or something) is actually who they say they are. When an account is authenticated, there is a high degree of certainty that the account identity is legitimate.
+<a id="Authorization"></a>Authorization | **Authorization**, also known as Access Control, is the process of managing and enforcing access to protected resources, functionality, or behavior.
+<a id="Directory"></a>Directory | A **directory** is a collection of accounts and groups. Administrators can use different directories to create silos of accounts. For example, customers and employees can be stored in different directories.
+<a id="DirectoryAgent"></a>Directory Agent | A **directory agent** is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory.
+<a id="DirectoryMirroring"></a>Directory Mirroring | **Directory mirroring** securely replicates selected data from one (source) directory to another (target or mirrored) directory for authentication and access control. The source directory is the authoritative source for all data. Changes are propagated to the target/mirror directory for convenience and performance benefits.
+<a id="Group"></a>Group | A **group** is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role.
+<a id="GroupMembership"></a>Group Membership | A **group membership** is a two-way mapping between an account and a group.
+<a id="AccountStore"></a>Account Store | A **account store** is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.
+<a id="AccountStoreMapping"></a>Account Store Mapping | An **account store mapping** is a mapping between a group or directory and an application.
+<a id="IdentityManagement"></a>Identity Management | **Identity management** is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks.
+<a id="Role"></a>Role |A **role** is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups.
+<a id="RBAC"></a>Role-Based Access Control | **Role-Based Access Control** (RBAC) is the act of controlling access to protected resources or behavior based on the groups assigned to a particular account. RBAC is done using Stormpath groups.
+<a id="RESTAPIdef"></a>REST API | **REST API** is a software architectural style enabling data transfer and functionality using common web-based communication protocols. Stormpath provides a REST API for tenants so they can easily integrate Stormpath with their software applications.
+<a id="Tenant"></a>Tenant | A **tenant** is a private partition within Stormpath containing all data and settings—specifically your applications, directories, groups and accounts. When you sign up for Stormpath, a tenant is created for you. You can add other user accounts (for example, for your co-workers) to your tenant to help you manage your data. For convenience, many companies like to have one tenant where they can easily manage all application, directory, and account information across their organization.*
+
+{% docs note %}
+*You must know your tenant when logging in to the Admin Console website. There is a "Forgot Tenant" link on the login page if you do not know what your tenant is.
+{% enddocs %}

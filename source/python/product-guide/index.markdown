@@ -4,111 +4,9 @@ lang: python
 title: Stormpath Python Product Guide
 ---
 
+Stormpath provides developers with a simple yet powerful REST+JSON API that enables user management control for organizations and applications.
+
 For help to quickly get started with Stormpath, refer to the [Python Quickstart Guide](http://www.stormpath.com/docs/python/quickstart).
-
-The following items are covered in this document:
-
-* [**What is Stormpath?**](#Stormpath)
-
-	* [Architectural Overview](#ArchitecturalOverview)
-	* [Stormpath Admin Console](#AdminConsole)
-	* [REST API](#RestAPI)
-	* [Python SDK](#PythonSDK)
-
-* [**Administering Stormpath**](#Administration)
-
-	* [Billing and Subscription Level](#Billing)
-	* [Default Resources](#DefaultResources)
-	* [Invite Other Administrators](#InviteAdmins)
-	* [Manage API Keys](#ManageAPIkeys)
-		* [Assign New API Keys](#AssignAPIkeys)
-		* [Activate API Keys](#ActivateAPIkeys)
-		* [Deactivate API Keys](#DeactivateAPIkeys)
-		* [Delete API Keys](#DeleteAPIkeys)
-	* [Workflow Automations](#WorkflowAutomation)
-
-* [**SDK Concepts**](#SDKConcepts)
-
-	* [Client](#Client)
-		* [Preferred Configuration](#PreferredConfig)
-		* [Single URL Configuration](#SingleURLConfig)
-		* [API Key Configuration](#APIKeyConfig)
-	* [High-level Overview](#HighLevelOverview)
-	* [Detailed Design](#DetailedDesign)
-		* [Architectural Components](#ArchitecturalComponents)
-	* [Resources and Proxying](#ResourcesAndProxying)
-	* [Error Handling](#ErrorHandling)
-
-* [**Applications**](#Applications)
-
-	* [Locate the Application REST URL](#LocateAppURL)
-	* [List Applications](#ListApps)
-	* [Retrieve an Application](#RetrieveApps)
-	* [Register an Application](#RegisterApps)
-	* [Edit an Application](#EditApps)
-	* [Manage Application Login Sources](#ManageLoginSources)
-		* [Change Default Account and Group Locations](#ChangeDefaults)
-		* [Add Another (Directory) Login Source](#AddLoginSource)
-		* [Change the Login Source Priority Order](#ChangeLoginSourcePriority)
-		* [Remove Login Sources](#RemoveLoginSource)
-	* [Enable an Application](#EnableApps)
-	* [Disable an Application](#DisableApps)
-	* [Delete an Application](#DeleteApps)
-
-* [**Directories**](#Directories)
-
-	* [Locate the Directory REST URL](#LocateDirURL)
-	* [List Directories](#ListDirectories)
-	* [Retrieve a Directory](#RetrieveDir)
-	* [Create a Directory](#CreateDir)
-		* [Create a Cloud Directory](#CreateCloud)
-		* [Create a Mirrored (LDAP) Directory](#CreateMirror)
-	* [Map Directories to Applications](#AssocApplications)
-	* [Edit a Directory](#EditDir)
-	* [Update Agent Configuration](#UpdateAgent)
-	* [Enable a Directory](#EnableDir)
-	* [Disable a Directory](#DisableDir)
-	* [Delete a Directory](#DeleteDir)
-
-* [**Accounts**](#Accounts)
-	* [Locate the Account REST URL](#LocateAccURL)
-	* [Authenticate Accounts](#AuthenticateAccounts)
-	* [List Accounts](#ListAccounts)
-		* [List Accounts by Group](#ListGroupAccounts)
-		* [List Accounts by Directory](#ListDirectoryAccounts)
-		* [List Accounts by Application](#ViewAccountMap)
-	* [Retrieve an Account](#RetrieveAccounts)
-	* [Create an Account](#CreateAccounts)
-	* [Edit an Account](#EditAccounts)
-	* [Assign Accounts to Groups](#AssignAccountGroup)
-	* [Remove Accounts from Groups](#RemoveAccountGroup)
-	* [Enable an Account](#EnableAccounts)
-	* [Disalbe an Account](#DisableAccounts)
-	* [Delete an Account](#DeleteAccounts)
-
-* [**Groups**](#Groups)
-	* [Locate the Group REST URL](#LocateGroupURL)
-	* [List Groups](#ListGroups)
-		* [List Accounts in a Group](#ListAccountGroups)
-		* [List Groups in a Directory](#ListDirectoryGroups)
-	* [Retrieve a Group](#RetrieveGroups)
-	* [Create Groups](#CreateGroups)
-	* [Edit Group Details](#EditGroups)
-	* [Enable a Group](#EnableGroups)
-	* [Disable a Group](#DisableGroups)
-	* [Delete a Group](#DeleteGroups)
-
-* [**Workflow Automations**](#ManageWorkflowAutomation)
-	* [Account Registration and Verification](#AccountRegistration)
-		* [Configure Account Registration and Verification](#ConfigureAccountRegistration)
-		* [Initiate Account Registration and Verification](#InitiateAccountRegistration)
-		* [Verify the Account](#VerifyAccount)
-	* [Password Reset](#PasswordReset)
-		* [Configure Password Reset](#ConfigurePasswordReset)
-		* [Initiate Password Reset](#InitiatePasswordReset)
-		* [Complete Password Reset](#CompletePasswordReset)
-
-* [**Glossary of Terms**](#Glossary)
 
 ***
 
@@ -244,9 +142,13 @@ Best practices:
 
 * Download your own API keys from Stormpath admin console, this will minimize the risk of compromising the keys by transferring them through an insecure channel.
 * Set proper privileges on the API keys file (can be read only by the owner of the keys) in the OS.
-* Rotate API keys on a regular basis. **Note:** You must update the applications using the API keys to use the new ones.
+* Rotate API keys on a regular basis. 
 * Minimize API key transfers.
 * If API key transfer is mandatory, encrypt the key.
+
+{% docs tip %}
+You must update the applications using the API keys to use the new ones.
+{% enddocs %}
 
 The following is a command line example of how to compress an apiKey file using tar and gzip and encrypt it using openssl:
 
@@ -306,7 +208,9 @@ To deactivate an API key for a user:
 	<img src="http://www.stormpath.com/sites/default/files/docs/DeactivateAPIKey.png" alt="Deactivate API Key" title="Deactivate API Key" width="700">
 5. In the confirmation window, click **Ok**.
 
-**Note:** Any applications using this API key with no longer be able to communicate or authenticate with Stormpath. When it is re-activated, the applications will work again.
+{% docs note %}
+Any applications using this API key with no longer be able to communicate or authenticate with Stormpath. When it is re-activated, the applications will work again.
+{% enddocs %}
 
 ####<a id="DeleteAPIkeys"></a>Delete API Keys
 
@@ -319,14 +223,18 @@ To delete an API key for a user:
 <img src="http://www.stormpath.com/sites/default/files/docs/DeleteAPIKey.png" alt="Delete API Key" title="Delete API Key" width="700">
 5. In the confirmation window, click **Ok**.<br>The API key has been permanently deleted from Stormpath.
 
-**Note:** Deleting an API key permanently removes it from Stormpath, any applications using this API key with no longer be able to communicate or authenticate with Stormpath. To have the application communicate with Stormpath, you must change the API key to an active API key.
+{% docs note %}
+Deleting an API key permanently removes it from Stormpath, any applications using this API key with no longer be able to communicate or authenticate with Stormpath. To have the application communicate with Stormpath, you must change the API key to an active API key.
+{% enddocs %}
 
 
 ###<a id="WorkflowAutomation"></a>Workflow Automations
 
 Stormpath automates common security workflows that many applications require. These include,  [account registration and verification](#AccountRegistration) and [resetting passwords](#PasswordReset). Configurations for workflow automations are applied at the directory level using the Stormpath Admin Console. You can only use this feature on Stormpath-managed (cloud) directories; workflow automations are not available for LDAP directories. Workflow automations also exist for the default Stormpath Administrator directory, but they cannot be modified.
 
-**Note:** The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.
+{% docs note %}
+The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.
+{% enddocs %}
 
 The **Account Registration and Verification** workflow manages how accounts are created in your directory. It allows you to control the steps that happen when new users are added to a directory. These steps typically include a verification and welcome email. 
 
@@ -368,13 +276,17 @@ This is heavily recommended if you have access to the file system.
 
 The [Python Quickstart Guide](http://www.stormpath.com/docs/python/quickstart) assumes you have easy access to an `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance by directly providing the API key and, where often they are available as environment variables, such as `$_ENV`.
 
-**WARNING:** Do not use this technique if you have access to a file system. Depending on the environment, environment variables are less secure than reading a permission-restricted file like `apiKey.properties`.
+{% docs warning %}
+Do not use this technique if you have access to a file system. Depending on the environment, environment variables are less secure than reading a permission-restricted file like `apiKey.properties`.
+{% enddocs %}
 
 For example:
 
 	client = Client(api_key={'id': 'apiKeyId', 'secret': 'apiKeySecret'})
 
-**WARNING:** DO NOT specify your actual `apiKey.id` and `apiKey.secret` values in source code! They are secure values associated with a specific person. You should never expose these values to other people, not even other co-workers.
+{% docs note %}
+DO NOT specify your actual `apiKey.id` and `apiKey.secret` values in source code! They are secure values associated with a specific person. You should never expose these values to other people, not even other co-workers.
+{% enddocs %}
 
 Only use this technique if the values are obtained at runtime using a configuration mechanism that is not hard-coded into source code or easily-visible configuration files.
 
@@ -487,9 +399,13 @@ For applications, the basic details include:
 
 Attribute | Description
 :----- | :-----
-Name | The name used to identify the application within Stormpath. This value must be unique. |
-Description | A short description of the application.<br>**Note:** A URL for the application is often helpful.|
-Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent accounts from logging in to the application. |
+Name | The name used to identify the application within Stormpath. This value must be unique.
+Description | A short description of the application.
+Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent accounts from logging in to the application.
+
+{% docs tip %}
+Using the URL for your application as the application description within Stormpath is often helpful.
+{% enddocs %}
 
 You can control access to your Stormpath Admin Console and API by managing the [login sources](#LoginSource) for the listed Stormpath application.
 
@@ -504,7 +420,6 @@ For applications, you can:
 * [Enable an application](#EnableApps).
 * [Disable an application](#DisableApps).
 * [Delete an application](#DeleteApps).
-
 
 ###<a id="LocateAppURL"></a>Locate the Application REST URL
 
@@ -619,7 +534,6 @@ On the Login Sources tab for applications, you can select the login sources (dir
 	b. To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select **New Group Location**.
 5. Click **Save**.
 
-
 ####<a id="AddLoginSource"></a>Add Another Login Source
 
 Adding a login source to an application provisions a directory or group to that application.  By doing so, all login source accounts can log into the application.
@@ -677,15 +591,15 @@ To enable an application, you must set the 'ENABLED' status to the application i
 **Code:**
 
 	application.status = "ENABLED"
-
 	application.save()
-
 
 ###<a id="DisableApps"></a>Disable an Application
 
 Disabling an application prevents the application from logging in any accounts in Stormpath, but retains all application configurations. If you must temporarily turn off logins, disable an application.
 
-**Note:** The Stormpath application cannot be disabled.
+{% docs note %}
+The Stormpath application cannot be disabled.
+{% enddocs %}
 
 To disable an application, you must set the 'DISABLED' status to the application instance and call the 'save' method on it:
 
@@ -699,10 +613,10 @@ To disable an application, you must set the 'DISABLED' status to the application
 
 Deleting an application completely erases the application and its configurations from Stormpath. We recommend that you disable an application rather than delete it, if you anticipate that you might use the application again.
 
-**Notes:**
-
+{% docs note %}
 * The Stormpath application cannot be deleted.
 * Deleted applications cannot be restored.
+{% enddocs %}
 
 To delete an application, you must call the 'delete' method on the application instance.
 
@@ -720,9 +634,9 @@ For directories, the basic details include:
 
 Attribute | Description
 :----- | :-----
-Name | The name used to identify the directory within Stormpath. This value must be unique. |
-Description | Details about this specific directory. |
-Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application. |
+Name | The name used to identify the directory within Stormpath. This value must be unique.
+Description | Details about this specific directory.
+Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
 
 Within Stormpath, there are two types of directories you can implement:
 
@@ -830,9 +744,9 @@ Mirrored directories, after initial configuration, are accessible through the Ag
 
 	Attribute | Description
 :----- | :-----
-Directory Name | A short name for this directory, unique from your other Stormpath directories. |
-Directory Description | An optional description explaining the purpose for the directory.|
-Directory Status | Whether or not the directory is to be used to authenticate accounts for any assigned applications. By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application. |
+Directory Name | A short name for this directory, unique from your other Stormpath directories.
+Directory Description | An optional description explaining the purpose for the directory.
+Directory Status | Whether or not the directory is to be used to authenticate accounts for any assigned applications. By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
 
 5. Click **Next**.
 
@@ -842,14 +756,14 @@ Directory Status | Whether or not the directory is to be used to authenticate ac
 
 	Attribute | Description
 	:----- | :-----
-Directory Service | The type of directory service to be mirrored. For example, LDAP. |
-Directory Host | The IP address or Host name of the directory server to connect to. This domain must be accessible to the agent, for example, behind any firewall that might exist. |
-Directory Port | The directory server port to connect to. Example: `10389` for LDAP, `10689` for LDAPS, however your directory server maybe configured differently.|
-Use SSL | Should the agent socket connection to the directory use Secure Sockets Layer (SSL) encryption? The Directory Port must accept SSL. |
-Agent User DN | The username used to connect to the directory. For example: `cn=admin,cn=users,dc=ad,dc=acmecorp,dc=com` |
-Agent Password | The agent user DN password. |
-Base DN | The base Distinguished Name (DN) to use when querying the directory. For example, `o=mycompany,c=com` |
-Directory Services Poll Interval | How often (in minutes) to poll the directory to detect directory object changes. |
+Directory Service | The type of directory service to be mirrored. For example, LDAP.
+Directory Host | The IP address or Host name of the directory server to connect to. This domain must be accessible to the agent, for example, behind any firewall that might exist.
+Directory Port | The directory server port to connect to. Example: `10389` for LDAP, `10689` for LDAPS, however your directory server maybe configured differently.
+Use SSL | Should the agent socket connection to the directory use Secure Sockets Layer (SSL) encryption? The Directory Port must accept SSL.
+Agent User DN | The username used to connect to the directory. For example: `cn=admin,cn=users,dc=ad,dc=acmecorp,dc=com`
+Agent Password | The agent user DN password.
+Base DN | The base Distinguished Name (DN) to use when querying the directory. For example, `o=mycompany,c=com`
+Directory Services Poll Interval | How often (in minutes) to poll the directory to detect directory object changes.
 
 7. Click **Next**.
 
@@ -860,15 +774,15 @@ Directory Services Poll Interval | How often (in minutes) to poll the directory 
 
 	Attribute | Description
 :----- | :-----
-Account DN Suffix | Optional value appended to the Base DN when accessing accounts. For example, `ou=Users`. If left unspecified, account searches will stem from the Base DN. |
-Account Object Class | The object class to use when loading accounts. For example, `user` |
-Account Object Filter | The filter to use when searching user objects. |
-Account Email Attribute | The attribute field to use when loading the user email address. Example: `email` |
-Account First Name Attribute | The attribute field to use when loading the account first name.  Example: `givenname` |
-Account Middle Name Attribute | The attribute field to use when loading the account middle name. Example: `middlename` |
-Account Last Name Attribute | The attribute field to use when loading the account last name. Example: `sn` |
-Account Login Name Attribute |  The attribute field to use when logging in the account. Example: `uid` |
-Account Password Attribute | The attribute field to use when loading the account password. Example: `password` |
+Account DN Suffix | Optional value appended to the Base DN when accessing accounts. For example, `ou=Users`. If left unspecified, account searches will stem from the Base DN.
+Account Object Class | The object class to use when loading accounts. For example, `user`
+Account Object Filter | The filter to use when searching user objects.
+Account Email Attribute | The attribute field to use when loading the user email address. Example: `email`
+Account First Name Attribute | The attribute field to use when loading the account first name.  Example: `givenname`
+Account Middle Name Attribute | The attribute field to use when loading the account middle name. Example: `middlename`
+Account Last Name Attribute | The attribute field to use when loading the account last name. Example: `sn`
+Account Login Name Attribute |  The attribute field to use when logging in the account. Example: `uid`
+Account Password Attribute | The attribute field to use when loading the account password. Example: `password`
 
 9. Click **Next**.
 
@@ -878,12 +792,12 @@ Account Password Attribute | The attribute field to use when loading the account
 
 	Attribute | Description
 :----- | :-----
-Group DN Suffix | This value is used in addition to the base DN when searching and loading roles. An example is `ou=Roles`. If no value is supplied, the subtree search will start from the base DN. |
-Group Object Class | This is the name of the class used for the LDAP group object. Example: `group` |
-Group Object Filter | The filter to use when searching for group objects. |
-Group Name Attribute | The attribute field to use when loading the group name. Example: `cn` |
-Group Description Attribute | The attribute field to use when loading the group description. Example: `desc` |
-Group Members Attribute | The attribute field to use when loading the group members. Example: `member` |
+Group DN Suffix | This value is used in addition to the base DN when searching and loading roles. An example is `ou=Roles`. If no value is supplied, the subtree search will start from the base DN.
+Group Object Class | This is the name of the class used for the LDAP group object. Example: `group`
+Group Object Filter | The filter to use when searching for group objects.
+Group Name Attribute | The attribute field to use when loading the group name. Example: `cn`
+Group Description Attribute | The attribute field to use when loading the group description. Example: `desc`
+Group Members Attribute | The attribute field to use when loading the group members. Example: `member`
 
 11. Click **Next**.
 12. On the 5. Confirm tab, review the information and click **Create Directory**.<br>The webpage refreshes with the populated directory information.
@@ -901,8 +815,9 @@ After the agent is configured, associated with the agent is a status. This statu
 * **Offline**: Stormpath detects that the agent is not communicating with it at all.
 * **Error**: The agent is online, but there is a problem with communicating nominally with Stormpath or LDAP.
 
-**Note:** After the directory has been created, although the Workflows tab appears, workflows cannot be configured for this type of directory.
-
+{% docs note %}
+After the directory has been created, although the Workflows tab appears, workflows cannot be configured for this type of directory.
+{% enddocs %}
 
 ###<a id="AssocApplications"></a>Map Directories to Applications
 
@@ -1521,11 +1436,11 @@ To configure account registration and verification:
 
 		Attribute | Description
 :----- | :-----
-Message Format | The message format for the body of the Account Registration Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level. |
-"From" Name | The value to display in the "From" field of the Account Registration Success message.|
-"From" Email Address | The email address from which the Account Registration Success message is sent. |
-Subject | The value for the subject field of the Account Registration Success message. |
-Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered. |
+Message Format | The message format for the body of the Account Registration Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
+"From" Name | The value to display in the "From" field of the Account Registration Success message.
+"From" Email Address | The email address from which the Account Registration Success message is sent.
+Subject | The value for the subject field of the Account Registration Success message.
+Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
 
 	* By also selecting **Require newly registered accounts to verify their email address**:
 		* Newly created accounts are given an *unverified* status and a verification email is sent to the user. The verification email contains a token unique to the user account. When the user clicks the link, they are sent to the verification base URL where the token is submitted to Stormpath for verification. If verified, the account status changes to enabled and a verification success email is sent to the user.
@@ -1537,12 +1452,12 @@ Body | The value for the body of the message. Variable substitution is supported
 
 			Attribute | Description
 :----- | :-----
-Account Base URL | Your application URL which receives the token and completes the workflow. Stormpath offers a default base URL to help during development. |
-Message Format | The message format for the body of the Account Verification email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level. |
-From" Name | The value to display in the "From" field of the Account Success message. |
-"From" Email Address | The email address from which the Account Verification message is sent. |
-Subject | The value for the subject field of the Account Verification message. |
-Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered and the url (containing the token) that the user must click. |
+Account Base URL | Your application URL which receives the token and completes the workflow. Stormpath offers a default base URL to help during development.
+Message Format | The message format for the body of the Account Verification email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
+From" Name | The value to display in the "From" field of the Account Success message.
+"From" Email Address | The email address from which the Account Verification message is sent.
+Subject | The value for the subject field of the Account Verification message.
+Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered and the url (containing the token) that the user must click.
 		* A Verification Success Message section appears.<br>
 
 			<img src="http://www.stormpath.com/sites/default/files/docs/VerificationEmailParams.png" alt="Email Verification" title="Email Verification" width="700" height="420">
@@ -1551,11 +1466,11 @@ Body | The value for the body of the message. Variable substitution is supported
 
 			Attribute | Description
 :----- | :-----
-Message Format | The message format for the body of the Account Verification Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level. |
-"From" Name | The value to display in the "From" field of the Account Verification Success message. |
-"From" Email Address | The email address from which the Account Verification Success message is sent. |
-Subject | The value for the subject field of the Account Verification Success message. |
-Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered. |
+Message Format | The message format for the body of the Account Verification Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
+"From" Name | The value to display in the "From" field of the Account Verification Success message.
+"From" Email Address | The email address from which the Account Verification Success message is sent.
+Subject | The value for the subject field of the Account Verification Success message.
+Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
 
 
 6. When all the fields are complete, click **Update**.
@@ -1608,28 +1523,28 @@ To configure the password reset workflow:
 
 	Attribute | Description
 :----- | :-----
-<a id ="BaseURL"></a>Base URL | Your application URL which receives the token and completes the workflow. Stormpath offers a default base URL to help during development. |
-Expiration Window | The number of hours that the password reset token remains valid from the time it is sent. |
+<a id ="BaseURL"></a>Base URL | Your application URL which receives the token and completes the workflow. Stormpath offers a default base URL to help during development.
+Expiration Window | The number of hours that the password reset token remains valid from the time it is sent.
 
 7. Under Password Reset Message, complete the values as follows:<br>
 
 	Attribute | Description
 :----- | :-----
-Message Format | The message format for the body of the Password Reset email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level. |
-"From" Name | The value to display in the "From" field of the Password Reset message. |
-"From" Email Address | The email address from which the Password Reset message is sent. |
-Subject | The value for the subject field of the Password Reset message. |
-Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered, the url the user must click to verify their account, and the number of hours for which the URL is valid. |
+Message Format | The message format for the body of the Password Reset email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
+"From" Name | The value to display in the "From" field of the Password Reset message.
+"From" Email Address | The email address from which the Password Reset message is sent.
+Subject | The value for the subject field of the Password Reset message.
+Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered, the url the user must click to verify their account, and the number of hours for which the URL is valid.
 
 8. Under Password Reset Success Message, complete the values as follows:<br>
 
 	Attribute | Description
 :----- | :-----
-Message Format | The message format for the body of the Password Reset Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level. |
-"From" Name | The value to display in the "From" field of the Password Reset Success message.|
-"From" Email Address | The email address from which the Password Reset Success message is sent. |
-Subject | The value for the subject field of the Password Reset Success message. |
-Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered. |
+Message Format | The message format for the body of the Password Reset Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
+"From" Name | The value to display in the "From" field of the Password Reset Success message.
+"From" Email Address | The email address from which the Password Reset Success message is sent. 
+Subject | The value for the subject field of the Password Reset Success message.
+Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
 
 	<img src="http://www.stormpath.com/sites/default/files/docs/ResetPW2.png" alt="Password Reset Message" title="Password Reset Message" width="640" height="418">
 
@@ -1675,23 +1590,31 @@ The password is changed as follows:
 
 ***
 
-##<a id="Glossary"></a>Glossary of Terms
+<a class="anchor" name="glossary"></a>
+## Glossary of Terms
 
-Property | Description
+
+Attribute | Description
 :----- | :----- |
-<a id="Account"></a>Account | An **account** is a unique identity within a directory. Stormpath does not use the term *user* because it implies a person, while accounts can represent a person, 3rd-party software, or non-human clients. Accounts can be used to log in to applications. |
-<a id="Agent"></a>Agent | An **agent** populates LDAP directories. An agent status reflects communication/error state because the agent is communicating with Stormpath. |
-<a id="APIKey"></a>API Key | An **API key** is a unique ID paired with a secret value. API keys are used by software applications to communicate with Stormpath through the Stormpath REST API. |
-<a id="Application"></a>Application | An **application** is a software application that communicates with Stormpath. It is typically a real world application that you are building, such as a web application, but it can also be infrastructural software, such as a Unix or Web server. |
-<a id="Authentication"></a>Authentication | **Authentication** is the act of proving someone (or something) is actually who they say they are. When an account is authenticated, there is a high degree of certainty that the account identity is legitimate. |
-<a id="Authorization"></a>Authorization | **Authorization**, also known as Access Control, is the process of managing and enforcing access to protected resources, functionality, or behavior. |
-<a id="Directory"></a>Directory | A **directory** is a collection of accounts and groups. Administrators can use different directories to create silos of accounts. For example, customers and employees can be stored in different directories. |
-<a id="DirectoryAgent"></a>Directory Agent | A **directory agent** is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory. |
-<a id="DirectoryMirroring"></a>Directory Mirroring | **Directory mirroring** securely replicates selected data from one (source) directory to another (target or mirrored) directory for authentication and access control. The source directory is the authoritative source for all data. Changes are propagated to the target/mirror directory for convenience and performance benefits. |
-<a id="Group"></a>Group | A **group** is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role. |
-<a id="IdentityManagement"></a>Identity Management | **Identity management** is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks. |
-<a id="LoginSource"></a>Login Source | A **login source** is a directory or group associated with an application for account authentication. Accounts within login sources associated with an application can login to that application. |
-<a id="Role"></a>Role |A **role** is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups. |
-<a id="RBAC"></a>Role-Based Access Control | **Role-Based Access Control** (RBAC) is the act of controlling access to protected resources or behavior based on the groups assigned to a particular account. RBAC is done using Stormpath groups. |
-<a id="RESTAPIdef"></a>REST API | **REST API** is a software architectural style enabling data transfer and functionality using common web-based communication protocols. Stormpath provides a REST API for tenants so they can easily integrate Stormpath with their software applications. |
-<a id="Tenant"></a>Tenant | A **tenant** is a private partition within Stormpath containing all data and settings—specifically your applications, directories, groups and accounts. When you sign up for Stormpath, a tenant is created for you. You can add other user accounts (for example, for your co-workers) to your tenant to help you manage your data. For convenience, many companies like to have one tenant where they can easily manage all application, directory, and account information across their organization. **Note:** You must know your tenant when logging in to the Admin Console website. There is a "Forgot Tenant" link on the login page if you do not know what your tenant is.  |
+<a id="Account"></a>Account | An **account** is a unique identity within a directory. Stormpath does not use the term *user* because it implies a person, while accounts can represent a person, 3rd-party software, or non-human clients. Accounts can be used to log in to applications.
+<a id="Agent"></a>Agent | An **agent** populates LDAP directories. An agent status reflects communication/error state because the agent is communicating with Stormpath.
+<a id="APIKey"></a>API Key | An **API key** is a unique ID paired with a secret value. API keys are used by software applications to communicate with Stormpath through the Stormpath REST API.
+<a id="Application"></a>Application | An **application** is a software application that communicates with Stormpath. It is typically a real world application that you are building, such as a web application, but it can also be infrastructural software, such as a Unix or Web server.
+<a id="Authentication"></a>Authentication | **Authentication** is the act of proving someone (or something) is actually who they say they are. When an account is authenticated, there is a high degree of certainty that the account identity is legitimate.
+<a id="Authorization"></a>Authorization | **Authorization**, also known as Access Control, is the process of managing and enforcing access to protected resources, functionality, or behavior.
+<a id="Directory"></a>Directory | A **directory** is a collection of accounts and groups. Administrators can use different directories to create silos of accounts. For example, customers and employees can be stored in different directories.
+<a id="DirectoryAgent"></a>Directory Agent | A **directory agent** is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory.
+<a id="DirectoryMirroring"></a>Directory Mirroring | **Directory mirroring** securely replicates selected data from one (source) directory to another (target or mirrored) directory for authentication and access control. The source directory is the authoritative source for all data. Changes are propagated to the target/mirror directory for convenience and performance benefits.
+<a id="Group"></a>Group | A **group** is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role.
+<a id="GroupMembership"></a>Group Membership | A **group membership** is a two-way mapping between an account and a group.
+<a id="AccountStore"></a>Account Store | A **account store** is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.
+<a id="AccountStoreMapping"></a>Account Store Mapping | An **account store mapping** is a mapping between a group or directory and an application.
+<a id="IdentityManagement"></a>Identity Management | **Identity management** is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks.
+<a id="Role"></a>Role |A **role** is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups.
+<a id="RBAC"></a>Role-Based Access Control | **Role-Based Access Control** (RBAC) is the act of controlling access to protected resources or behavior based on the groups assigned to a particular account. RBAC is done using Stormpath groups.
+<a id="RESTAPIdef"></a>REST API | **REST API** is a software architectural style enabling data transfer and functionality using common web-based communication protocols. Stormpath provides a REST API for tenants so they can easily integrate Stormpath with their software applications.
+<a id="Tenant"></a>Tenant | A **tenant** is a private partition within Stormpath containing all data and settings—specifically your applications, directories, groups and accounts. When you sign up for Stormpath, a tenant is created for you. You can add other user accounts (for example, for your co-workers) to your tenant to help you manage your data. For convenience, many companies like to have one tenant where they can easily manage all application, directory, and account information across their organization.*
+
+{% docs note %}
+*You must know your tenant when logging in to the Admin Console website. There is a "Forgot Tenant" link on the login page if you do not know what your tenant is.
+{% enddocs %}

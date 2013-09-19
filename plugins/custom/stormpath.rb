@@ -125,6 +125,7 @@ module Jekyll
       end
 
       def render(context)
+        require 'rdiscount'
           output = RDiscount.new( super ).to_html
           "<div class='docs-#{@class}'>#{output}</div>"
       end
