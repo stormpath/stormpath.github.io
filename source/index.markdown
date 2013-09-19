@@ -14,7 +14,7 @@ content_top: [docs_top.html]
     
   
   <div class="pane-content">
-     <p>Need more details? Check out in-depth documentation guides.</p>   </div>
+     <p>Need more detailed info? Check out in-depth documentation guides below.</p>   </div>
 
   
   </div>
