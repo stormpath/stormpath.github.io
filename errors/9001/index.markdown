@@ -1,0 +1,2 @@
+#Error: 9001
+##Stormpath, while acting as a gateway/proxy to your directory service, was not able to reach your Directory Server. Please ensure that the Stormpath Agent is configured correctly and successfully communicating with your Directory Server.
