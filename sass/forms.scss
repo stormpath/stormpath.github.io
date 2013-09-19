@@ -1,0 +1,247 @@
+/**
+ * @file
+ * Form Styling
+ */
+
+@import "base";
+@import "formalize";
+
+.form-item { /* Wrapper for a form element (or group of form elements) and its label */
+  margin: 1.5em 0;
+
+  input.error,
+  textarea.error,
+  select.error { /* Highlight the form elements that caused a form submission error */
+    border: 1px solid #c00;
+  }
+
+  label { /* The label for a form element */
+    display: block;
+    font-weight: bold;
+  }
+
+  label.option { /* The label for a radio button or checkbox */
+    display: inline;
+    font-weight: normal;
+  }
+
+  .form-required { /* The part of the label that indicates a required field */
+    color: #c00;
+  }
+
+  .description { /* The descriptive help text (separate from the label) */
+    font-size: 0.85em;
+  }
+
+  .form-checkboxes & ,
+  .form-radios & { /* Pack groups of checkboxes and radio buttons closer together */
+    margin: 0; /* Drupal core uses "0.4em 0" */
+  }
+}
+
+.form-submit { /* The submit button */
+}
+
+.container-inline {
+  div,
+  label { /* Inline labels and form divs */
+    display: inline;
+  }
+}
+
+.tips { /* Tips for Drupal's input formats */
+}
+
+button,
+.form-submit,
+input[type="reset"],
+input[type="submit"],
+input[type="button"],
+a.button,
+div.button { /* Buttons used by contrib modules like Media */
+  @include background(image-url('button-glass.png') no-repeat center -12px, $button_orange);
+  color: $white;
+  min-width: 120px;
+  max-width: 190px;
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  @include text-shadow($dark_grey 0 1px);
+  @include box-shadow($lightest_grey 0 2px 4px);
+  @include sp_font_sans_serif;
+  border: none;
+  cursor: pointer;
+  padding: .5em 1em;
+  font-size: 110%;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1;
+
+  &.big {
+    font-size: 260%;
+    padding: 8px 16px;
+    background-position: center top, left top;
+    &:hover, &:focus {
+      background-position: center top, left top;
+    }
+  }
+
+  &.blue {
+    @include background-image(image-url('button-glass.png'), $button_blue);
+    color: $white;
+  }
+
+  &:focus, &:hover {
+    @include background-image(image-url('button-glass.png'), $button_orange_hover);
+    color: $white;
+
+    &.blue {
+      @include background-image(image-url('button-glass.png'), $button_blue_hover);
+    }
+  }
+}
+
+textarea,
+.form-textarea-wrapper textarea,
+input[type="date"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="email"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input[type="week"],
+.form-text {
+  margin: 4px;
+  padding: 16px 8px;
+  font-size: 100%;
+  @include input-placeholder;
+  border: solid 1px $form_border;
+}
+
+select {
+  font-size: 100%;
+}
+
+.sidebar {
+  textarea,
+  input[type="date"],
+  input[type="datetime"],
+  input[type="datetime-local"],
+  input[type="email"],
+  input[type="month"],
+  input[type="number"],
+  input[type="password"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="text"],
+  input[type="time"],
+  input[type="url"],
+  input[type="week"],
+  .form-text {
+    margin: 1em 0;
+  }
+}
+
+/*
+ * Password confirmation
+ */
+
+.password-parent,
+.confirm-parent {
+  margin: 0;
+}
+
+/*
+ * Search (search-block-form.tpl.php)
+ */
+
+#block-search-form { /* Wrapper for the search form */
+}
+
+/*
+ * Drupal's default login form block
+ */
+
+#user-login-form {
+  text-align: left; /* LTR */
+
+  /*
+   * OpenID
+   *
+   * The default styling for the OpenID login link seems to assume Garland's
+   * styling of list items.
+   */
+
+  ul { /* OpenID creates a new ul above the login form's links. */
+    margin-bottom: 0; /* Position OpenID's ul next to the rest of the links. */
+  }
+
+  html.js & li.openid-link,
+  li.openid-link { /* The "Log in using OpenID" link. */
+    margin-top: 1.5em;
+    margin-left: -20px; /* LTR */ /* Un-do some of the padding on the ul list. */
+  }
+
+  li.user-link { /* The "Cancel OpenID login" link. */
+    margin-top: 1.5em;
+  }
+}
+
+#user-login ul {
+  margin: 1.5em 0;
+}
+
+/*
+ * Drupal admin tables
+ *
+ * We overrode these styles in normalize.css, but restore them for the admin
+ * section of the site.
+ */
+
+form {
+  th {
+    text-align: left; /* LTR */
+    padding-right: 1em; /* LTR */
+    border-bottom: 3px solid #ccc;
+  }
+
+  tbody {
+    border-top: 1px solid #ccc;
+  }
+
+  tr.even {
+    background-color: #fff;
+  }
+
+  table .item-list ul {
+    margin: 0;
+  }
+}
+
+@if $legacy-support-for-ie6 or $legacy-support-for-ie7 {
+  .lt-ie8 tr.even,
+  .lt-ie8 tr.odd {
+    th,
+    td {
+      border-bottom: 1px solid #ccc; /* IE doesn't display borders on table rows */
+    }
+  }
+}
+
+/*
+ * Drupal core wrongly puts this in system.menus.css. Since we override that, add it back.
+ */
+
+td.menu-disabled {
+  background: #ccc;
+}
+
+.vertical-tabs li {
+  list-style-image: none;
+}

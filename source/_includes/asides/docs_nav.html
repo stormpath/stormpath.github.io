@@ -1,0 +1,23 @@
+
+<div id="block-stormpath-docs-languages" class="block block-stormpath-docs first odd">
+ <form class="stormpath-docs-select-language" action="/docs/java/product-guide" method="post" id="stormpath-docs-language-form" accept-charset="UTF-8"><div><div class="form-item form-type-select form-item-language">
+  <label for="edit-language">Language: </label>
+ <select id="edit-language" name="language" class="form-select">
+ 	{% for lang in site.sp_docs_menu_langs %}
+ 		<option value="{{lang[0]}}"{% if lang[0] == page.lang %} selected{% endif %}>{{lang[1]}}</option>
+ 	{% endfor %}
+ </select>
+</div>
+<input type="hidden" name="form_id" value="stormpath_docs_language_form">
+</div></form>
+</div>
+
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	{% for lang in site.docs %}
+		sp_docs_menu['{{lang[0]}}'] = [];
+		{% for page in lang[1] %}
+			sp_docs_menu['{{lang[0]}}'].push('{{page}}');
+		{% endfor %}
+	{% endfor %}
+</script>

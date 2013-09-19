@@ -1,0 +1,22 @@
+<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
+
+  {% for lang in site.sp_docs_menu %}
+  	{% if page.lang == lang[0] %}
+		<ul class="menu">
+		{% for lang_page in lang[1] %}
+			<li class="leaf{% if page.url contains lang_page.url %} active-trail{% endif %}">
+			{% if lang_page.url contains 'http://' or lang_page.url contains 'https://' %}
+				<a href="{{ lang_page.url }}" target="_blank"><span>{{lang_page.title}}</span></a>
+			{% else %}
+				<a href="{{ lang_page.url }}">{{lang_page.title}}</a>
+			{% endif %}
+			{% if page.url contains lang_page.url %}
+				{{ content | split_docs_sections | render_docs_menu }}
+			{% endif %}
+			</li>	
+		{% endfor %}
+		</ul>
+  	{% endif %}
+  {% endfor %}
+ 
+</div>
