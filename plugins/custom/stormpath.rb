@@ -25,7 +25,7 @@ module Stormpath
       sections = Hash.new
       parent = nil
       input.scan PATTERN do |s|
-        id = $~[:id].nil? ? make_id($~[:title]) : Sanitize.clean($~[:id])
+        id = $~[:id].nil? ? make_id($~[:title]) : Sanitize.clean($~[:title])
         depth = $~[:depth].to_i - 1
         if (depth == 1)
           parent = id
@@ -61,7 +61,10 @@ module Stormpath
 
     def make_id(title)
       @@ids = []
-      id = Sanitize.clean(title).gsub(/[^A-Za-z0-9]/, '');
+      id = Sanitize.clean(title)
+      id = id.gsub(/ /, '-')
+      id = id.gsub(/[^A-Za-z0-9_-]/, '')
+      id = id.downcase
       while not @@ids.index(id).nil?
         id << '_'
       end
