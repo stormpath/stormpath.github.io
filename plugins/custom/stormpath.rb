@@ -25,7 +25,7 @@ module Stormpath
       sections = Hash.new
       parent = nil
       input.scan PATTERN do |s|
-        id = $~[:id].nil? ? make_id($~[:title]) : Sanitize.clean($~[:title])
+        id = $~[:id].nil? ? make_id($~[:title]) : make_id($~[:title])
         depth = $~[:depth].to_i - 1
         if (depth == 1)
           parent = id
