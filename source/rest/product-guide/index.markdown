@@ -2851,19 +2851,8 @@ Directory Collection Resource | Search Functionality
 :----- | :-----
 /v1/tenants/:tenantId/directories | A search across directories owned by the specified tenant. |
 
-<a class="anchor" name="working-with-directories"></a>
-### Working With Directories
-
-Directories are also involved in the following special workflows:
-
-* [Enforce Account Password Restrictions](#directories-password-restrictions)
-* [Register A New Account](#directories-reg)
-* [Verify An Account's Email Address](#directories-verify-email)
-* [Log In (Authenticate) an Account](#directories-account-authc)
-* [Reset An Account's Password](#directories-password-reset)
-
 <a class="anchor" name="directories-password-restrictions"></a>
-#### Enforce Account Password Restrictions
+### Enforce Account Password Restrictions
 
 Directories can be configured to enforce specific restrictions on passwords for accounts associated with, such as requiring at least one or more non-alphanumeric characters.
 
@@ -2887,7 +2876,7 @@ Workflows are only available on cloud directories and only configurable using th
 {% enddocs %}
 
 <a class="anchor" name="directories-reg"></a>
-#### Register A New Account
+### Register A New Account
 
 This workflow allows you to create an account at an application level rather than at a directory level. The application will populate the directory set as the default account store.
 
@@ -2899,7 +2888,7 @@ Workflows are only available on cloud directories and only configurable using th
 {% enddocs %}
 
 <a class="anchor" name="directories-verify-email"></a>
-#### Verify An Account's Email Address
+### Verify An Account's Email Address
 
 This workflow allows you to send a welcome email to a newly registered account and optionally verify that they own the email addressed used during registration.
 
@@ -2911,7 +2900,7 @@ Workflows are only available on cloud directories and only configurable using th
 {% enddocs %}
 
 <a class="anchor" name="directories-account-authc"></a>
-#### Log In (Authenticate) an Account
+### Log In (Authenticate) an Account
 
 This workflow allows you to authenticate an account given an input of a username or email and a password from an end-user, system, or application.
 
@@ -2922,7 +2911,7 @@ Workflows are only available on cloud directories and only configurable using th
 {% enddocs %}
 
 <a class="anchor" name="directories-password-reset"></a>
-#### Reset An Account's Password
+### Reset An Account's Password
 
 This is a self-service password reset workflow.  The account is sent an email with a secure link.  The person owning the account can click on the link and be shown a password reset form to reset their password.  This is strongly recommended to reduce support requests to your application team as well as to reduce your exposure to account passwords for added security.
 
@@ -4598,21 +4587,12 @@ Account Collection Resource | Search Functionality
 /v1/applications/:applicationId/accounts | A search across accounts that are users of the specified application.
 /v1/groups/:groupId/accounts | A search across accounts in the specified group.
 
-<a class="anchor" name="working-with-accounts"></a>
-### Working With Accounts
-
-Accounts are also involved in the following special workflows:
-
-* [Verify An Account's Email Address](#account-verify-email)
-* [Log In (Authenticate) an Account](#accounts-authenticate)
-* [Reset An Account's Password](#accounts-reset)
-
 <a class="anchor" name="account-verify-email"></a>
-#### Verify An Account's Email Address
+### Verify An Account's Email Address
 
 If you want to verify that an account's email address is valid that the account belongs to a real person, Stormpath can help automate this for you, too.
 
-##### Understanding The Email Verification Workflow
+#### Understanding The Email Verification Workflow
 
 This workflow requires 3 parties to be involved: your application end-user, your application, and the Stormpath API server.
 
@@ -4626,7 +4606,7 @@ As mentioned previously, when you create a new account, it is stored in a Direct
 Accounts created in a Directory that has the Verification workflow enabled will have an `UNVERIFIED` status by default. `UNVERIFIED` is the same as `DISABLED`, but additionally indicates why the account is disabled. When the email link is clicked, they will have an `ENABLED` status.
 {% enddocs %}
 
-###### The Account Verification Base URL
+##### The Account Verification Base URL
 
 It is also expected that the workflow's `Account Verification Base URL` has been set to a URL that will be processed by your own application web server. This URL should be free of any query parameters, as the Stormpath back-end will append on to the URL a parameter used to verify the email. If this URL is not set, a default Stormpath-branded page will appear which allows the user to complete the workflow.
 
@@ -4635,11 +4615,11 @@ The `Account Verification Base URL` defaults to a Stormpath API Sever URL which,
 {% enddocs %}
 
 <a class="anchor" name="verification-configuration"></a>
-##### Configure The Verification Workflow
+#### Configure The Verification Workflow
 
 This workflow is disabled by default on Directories, but you can enable it, and set up the account verification base URL, easily in the Stormpath Admin Console UI. Refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation) for complete instructions.
 
-##### Trigger The Verification Email (Create A Token)
+#### Trigger The Verification Email (Create A Token)
 
 In order to verify an account's email address, an `emailVerificationToken` must be created for that account. To create this token, you simply create an account in a directory, either programmatically or via a public account creation form of your own design, that has the account registration and verification workflow enabled.
 
@@ -4675,7 +4655,7 @@ For example, if you were to request the account object for a user who has not ye
 As an end-developer, all you need to do to create email verification tokens when a new account is created is to [configure the workflow](#verification-configuration) for the appropriate directory.
 {% enddocs %}
 
-##### Verifying The Account (Consume The Token)
+#### Verifying The Account (Consume The Token)
 
 When a new account is registered after configuration, either programmatically or through an account creation form in your application, an email verification token is created and Stormpath then automatically sends an email to the user. This email will include a link to the base URL you've [configured](#verification-configuration) with the following query string parameter:
 
@@ -4720,7 +4700,7 @@ If the verification token is not found, a `404 Not Found` is returned with an [e
     }
 
 <a class="anchor" name="accounts-authenticate"></a>
-#### Log In (Authenticate) An Account
+### Log In (Authenticate) An Account
 
 This workflow allows you to authenticate an account given an input of a username or email and a password from an end-user, system, or application.
 
@@ -4731,7 +4711,7 @@ Workflows are only available on cloud directories and only configurable using th
 {% enddocs %}
 
 <a class="anchor" name="accounts-reset"></a>
-#### Reset An Account's Password
+### Reset An Account's Password
 
 This is a self-service password reset workflow.  The account is sent an email with a secure link.  The person owning the account can click on the link and be shown a password reset form to reset their password.  This is strongly recommended to reduce support requests to your application team as well as to reduce your exposure to account passwords for added security.
 
