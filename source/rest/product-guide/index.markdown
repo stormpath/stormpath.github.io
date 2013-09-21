@@ -82,14 +82,14 @@ Stormpath is a [multi-tenant](http://en.wikipedia.org/wiki/Multitenancy) softwar
 
 ## REST API General Concepts
 
-<a class="anchor" name="baseUrl"></a>
+<a class="anchor" name="base-url"></a>
 ### Base URL
 
 All URLs referenced in the API documentation begin with the following base URL:
 
     https://api.stormpath.com/v1
 
-<a class="anchor" name="rest-authc"></a>
+<a class="anchor" name="authentication"></a>
 ### Authentication
 
 Every request to the Stormpath REST API must be authenticated with an API key over HTTPS (HTTP is not supported). If you want to make a REST request to Stormpath, we assume you have already:
@@ -99,20 +99,20 @@ Every request to the Stormpath REST API must be authenticated with an API key ov
 
 When you have an API key, you can choose one of two ways to authenticate with Stormpath:
 
-* [HTTP Basic Authentication](#rest-authc-basic)
-* [Digest Authentication](#rest-authc-digest)
+* [HTTP Basic Authentication](#authentication-basic)
+* [Digest Authentication](#authentication-digest)
 
 **Security Notice**
 
 Any account that can access the Stormpath application within the Stormpath Admin Console has full administrative access to your Stormpath data and settings, including access to the REST API if they have an API Key.
 
-Assign user accounts to Stormpath, through [account stores](#accountStoresMappings), wisely.
+Assign user accounts to Stormpath, through [account stores](#account-store-mappings), wisely.
 
 **HTTPS**
 
 To help ensure data security, only secure (HTTPS) communication is allowed when communicating with the Stormpath API servers. Standard HTTP is not supported.
 
-<a class="anchor" name="rest-authc-basic"></a>
+<a class="anchor" name="authentication-basic"></a>
 #### Basic Authentication over HTTPS
 
 Most clients (including web browsers) show a dialog or prompt for you to provide a username and password for HTTP Basic Authentication.
@@ -134,7 +134,7 @@ or perhaps [httpie](https://github.com/jkbr/httpie) (which assumes application/j
     http -a $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/tenants/current
 <!-- {: .bash} -->
 
-<a class="anchor" name="rest-authc-digest"></a>
+<a class="anchor" name="authentication-digest"></a>
 #### Digest Authentication Over HTTPS
 
 Stormpath also supports a more secure authentication scheme known as digest authentication. This approach computes a [cryptographic digest](http://en.wikipedia.org/wiki/Cryptographic_hash_function) of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated.
@@ -158,12 +158,12 @@ If you port the algorithm to other languages, please let us know. We are happy t
 The Stormpath `SAuthc1` digest algorithm is NOT the same as [RFC 2617](http://www.ietf.org/rfc/rfc2617.txt "RFC 2617") HTTP digest authentication. The Stormpath `SAuthc1` digest-based authentication scheme is more secure than standard HTTP digest authentication.
 {% enddocs %}
 
-<a class="anchor" name="rest-resource"></a>
+<a class="anchor" name="resource-format"></a>
 ### Resource Format
 
 The Stormpath REST API currently only supports JSON resource representations. If you would like other formats supported, please email us at <support@stormpath.com> to let us know!
 
-<a class="anchor" name="rest-resource-retrieve"></a>
+<a class="anchor" name="resource-retrieve"></a>
 ### Retrieving Resources with HTTP `GET`
 
 **Request**
@@ -185,7 +185,7 @@ Item | Description
 :---- | :----
 HTTP Status Code | The code indicates general success or failure of the request.
 HTTP Headers | Various response headers are set relevant to the particular request.
-Response Body | Successful requests contain the requested entity resource representation, while failed requests show an [error representation](#rest-errors).
+Response Body | Successful requests contain the requested entity resource representation, while failed requests show an [error representation](#errors).
 
 Possible **GET Response Status Codes** include:
 
@@ -212,7 +212,7 @@ An example **API GET Response**:
       "key": "myTenant"
     }
 
-<a class="anchor" name="rest-resource-create"></a>
+<a class="anchor" name="resource-create"></a>
 ### Creating Resources with HTTP `POST`
 
 You create a resource by submitting an HTTP `POST` to a resource URI. Any POST body must be represented as JSON.
@@ -243,7 +243,7 @@ Item | Description
 :---- | :----
 HTTP Status Code | The code indicates general success or failure of the request.
 HTTP Headers | Various response headers are set relevant to the particular request.
-Response Body | Successful requests contain the created entity resource representation, while failed requests show an [error representation](#rest-errors).
+Response Body | Successful requests contain the created entity resource representation, while failed requests show an [error representation](#errors).
 
 Possible **Create POST Response Status Codes** include:
 
@@ -299,7 +299,7 @@ Example **Create POST Response**:
     }
 <!-- {: .http} -->
 
-<a class="anchor" name="rest-resource-update"></a>
+<a class="anchor" name="resource-update"></a>
 ### Updating Resources with HTTP `POST`
 
 If you want to update a resource, submit an HTTP `POST` to a resource URI. Any `POST` body must be represented as JSON. You can submit one or more attributes of a resource, but at least one attribute must be specified.
@@ -332,7 +332,7 @@ Item | Description
 :---- | :----
 HTTP Status Code | The code indicates general success or failure of the request.
 HTTP Headers | Various response headers are set relevant to the particular request.
-Response Body | Successful requests contain the updated entity resource representation, while failed requests show an [error representation](#rest-errors).
+Response Body | Successful requests contain the updated entity resource representation, while failed requests show an [error representation](#errors).
 
 Possible **Update POST Response Status Codes** include:
 
@@ -387,7 +387,7 @@ Example **Update POST response**:
     }
 <!-- {: .http} -->
 
-<a class="anchor" name="rest-resource-delete"></a>
+<a class="anchor" name="resource-delete"></a>
 ### Deleting Resources with HTTP `DELETE`
 
 To delete a resource, make an HTTP `DELETE` request to the resource URL. Note that not all Stormpath REST API resources support delete.
@@ -419,6 +419,7 @@ Example **DELETE response**:
     HTTP/1.1 204 No Content
 <!-- {: .http} -->
 
+<a class="anchor" name="http-method-overloading"></a>
 ### HTTP Method Overloading
 
 The Stormpath REST API uses HTTP `GET`, `POST`, `PUT`, and `DELETE` methods. Because some HTTP clients do not support PUT and DELETE methods, you can simulate them by sending a POST request to a resource endpoint with a **`_method`** query string parameter. The parameter value can be DELETE (`_method=DELETE`) or PUT (`_method=PUT`).
@@ -433,7 +434,7 @@ But if your HTTP client only supports GET and POST, you can send a POST request 
     curl -X POST -u $API_KEY_ID:$API_KEY_SECRET "https://api.stormpath.com/v1/applications/$APPLICATION_ID?_method=DELETE"
 <!-- {: .bash} -->
 
-<a class="anchor" name="rest-errors"></a>
+<a class="anchor" name="errors"></a>
 ### Errors
 
 REST API responses indicating an error or warning are represented by a proper response HTTP status code (403, 404, etc). Additionally, a response body is provided containing the following information:
@@ -468,7 +469,7 @@ Example response:
     }
 <!-- {: .http} -->
 
-<a class="anchor" name="rest-collections"></a>
+<a class="anchor" name="collections"></a>
 ### Collection Resources
 
 A `Collection Resource` is a resource containing other resources. It is known as a Collection _Resource_ because it is itself a first class resource - it has its own attributes similar to any other resource in addition to the instances it contains.
@@ -579,7 +580,7 @@ Notice the `surname` order statement does not specify `asc` or `desc`, implying 
 
 You can search for specific resources within a Collection Resource by using certain query parameters to specify your search criteria.
 
-There are currently two different types of searches that might be performed: a generic [Filter](#search-filter)-based search and a more targeted [Attribute](#search-attribute)-based search. Both options support result [ordering](#sorting), [pagination](#pagination), and [link expansion](#rest-link-expansion).
+There are currently two different types of searches that might be performed: a generic [Filter](#search-filter)-based search and a more targeted [Attribute](#search-attribute)-based search. Both options support result [ordering](#sorting), [pagination](#pagination), and [link expansion](#links-expansion).
 
 {% docs note %}
 Currently, a REST search request must be targeted at resources of the same type. For example, a search can be performed across accounts or groups, but not both at the same time. Because the Stormpath REST API always represents one or more resources of the same type as a Collection Resource, a REST search is always sent to a Collection Resource endpoint.
@@ -649,7 +650,7 @@ For example, to search an application's accounts for an account with a `givenNam
 
 Attribute-based queries use standard URI query parameters and function as follows:
 
-- Each query parameter name is the same name of a searchable attribute on an instance in the [Collection Resource](#rest-collections).
+- Each query parameter name is the same name of a searchable attribute on an instance in the [Collection Resource](#collections).
 - A query parameter value triggers one of four types of matching criteria:
     - No asterisk at the beginning or end of the value indicates a direct case-insensitive match.
     - An asterisk only at the beginning of the value indicates that the case-insensitive value is at the end.
@@ -721,7 +722,7 @@ The following example `account` resource has four links - `groups`, `groupMember
 
 When encountering a link object, you can use the link `href` attribute to interact with that resource as necessary.
 
-<a class="anchor" name="rest-link-expansion"></a>
+<a class="anchor" name="links-expansion"></a>
 ### Link Expansion
 
 When requesting a resource you might want the Stormpath API server to return not only that resource, but also one or more of its linked resources. Link expansion allows you to retrieve related resources in a single request to the server instead of having to issue multiple separate requests.
@@ -1113,7 +1114,7 @@ Directory resources support the full suite of CRUD commands and other interactio
 
 An application in Stormpath represents any real world piece of software that communicates with Stormpath to offload its user management and authentication needs.  The application can be anything that can make a REST API call - a web application that you are writing, a web server like Apache or Nginx, a Linux operating system, etc - basically anything that a user can login to.  A [tenant](#tenants) administrator can register one or more applications with Stormpath.
 
-You control who may login to an application by assigning (or 'mapping') one or more directories or groups (generically called [account stores](#accountStoresMappings) to an application.  The accounts in these associated directories or groups (again, _account stores_) collectively form the application's user base. These accounts are considered the application's users and they can login to the application.  Therefore, you can control who may login to an application by managing which [account stores](#accountStoresMappings) are assigned to the application.
+You control who may login to an application by assigning (or 'mapping') one or more directories or groups (generically called [account stores](#account-store-mappings) to an application.  The accounts in these associated directories or groups (again, _account stores_) collectively form the application's user base. These accounts are considered the application's users and they can login to the application.  Therefore, you can control who may login to an application by managing which [account stores](#account-store-mappings) are assigned to the application.
 
 Even the Stormpath Admin Console and API is represented as an Application (named `Stormpath`), so you can control who has administrative access to your Stormpath [tenant](#tenants) by managing the `Stormpath` application's associated account stores.
 
@@ -1137,16 +1138,16 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="application-status"></a>`status` | `enabled` applications allow accounts to login. `disabled` applications prevent accounts from logging in.  Newly created applications are `enabled` by default. | enum | `enabled`, `disabled`
 <a class="anchor" name="application-tenant"></a>`tenant` | A link to the tenant that owns the application. | link | <span>--</span>
 <a class="anchor" name="application-passwordResetTokens"></a>`passwordResetTokens` | A link to the application's password reset tokens collection, used in [password reset workflows](#application-password-reset). | link | <span>--</span>
-<a class="anchor" name="application-loginAttempts"></a>`loginAttempts` | A link to to the application's login attempts collection.  When an account [attempts to login to an application](#loginAttemptFlow), the login attempt is submitted to this linked resource. | link | <span>--</span>
-<a class="anchor" name="application-accounts-collection"></a>`accounts` | A link to all accounts that may login to the application.  This is an aggregate view of all accounts in the application's [assigned account stores](#accountStoresMappings). | link | <span>--</span>
-<a class="anchor" name="application-groups-attrib"></a>`groups` | A link to all groups that are accessible to the application for authorization (access control) needs.  This is an aggregate view of all groups in the application's [assigned account stores](#accountStoresMappings). | link | <span>--</span>
-<a class="anchor" name="application-accountStoreMappings"></a>`accountStoreMappings` | A link to the collection of all [account store mappings](#accountStoresMappings) that represent the application.  The accounts and groups within the mapped account stores are obtainable by the `accounts` and `groups` links respectively. | link | <span>--</span>
-<a class="anchor" name="application-defaultAccountStoreMapping"></a>`defaultAccountStoreMapping` | A link to the account store mapping that reflects the [default account store](#accountStoreMapping-defaultAccountStore) where the application will store newly created accounts.  (A POST to `/v1/applications/:applicationId/accounts` will result in storing the new account in the default account store). A `null` value disables the application from directly creating new accounts. | link | `null` or link
-<a class="anchor" name="application-defaultGroupStoreMapping"></a>`defaultGroupStoreMapping` | A link to the account store mapping that reflects the [default group store](#accountStoreMapping-defaultGroupStore) where the application will store newly created groups.  (A POST to `/v1/applications/:applicationId/groups` will result in storing the new group in the default group store). A `null` value disables the application from directly creating new groups. | link | `null` or link
+<a class="anchor" name="application-loginAttempts"></a>`loginAttempts` | A link to to the application's login attempts collection.  When an account [attempts to login to an application](#workflow-login-attempt), the login attempt is submitted to this linked resource. | link | <span>--</span>
+<a class="anchor" name="application-accounts-collection"></a>`accounts` | A link to all accounts that may login to the application.  This is an aggregate view of all accounts in the application's [assigned account stores](#account-store-mappings). | link | <span>--</span>
+<a class="anchor" name="application-groups-attrib"></a>`groups` | A link to all groups that are accessible to the application for authorization (access control) needs.  This is an aggregate view of all groups in the application's [assigned account stores](#account-store-mappings). | link | <span>--</span>
+<a class="anchor" name="application-accountStoreMappings"></a>`accountStoreMappings` | A link to the collection of all [account store mappings](#account-store-mappings) that represent the application.  The accounts and groups within the mapped account stores are obtainable by the `accounts` and `groups` links respectively. | link | <span>--</span>
+<a class="anchor" name="application-defaultAccountStoreMapping"></a>`defaultAccountStoreMapping` | A link to the account store mapping that reflects the [default account store](#account-store-mapping-default-account-store) where the application will store newly created accounts.  (A POST to `/v1/applications/:applicationId/accounts` will result in storing the new account in the default account store). A `null` value disables the application from directly creating new accounts. | link | `null` or link
+<a class="anchor" name="application-defaultGroupStoreMapping"></a>`defaultGroupStoreMapping` | A link to the account store mapping that reflects the [default group store](#account-store-mapping-default-group-store) where the application will store newly created groups.  (A POST to `/v1/applications/:applicationId/groups` will result in storing the new group in the default group store). A `null` value disables the application from directly creating new groups. | link | `null` or link
 
 For Applications, you can:
 
-* [Locate an application's REST URL](#application-href)
+* [Locate an application's REST URL](#application-url)
 * [Create an application](#application-create) (aka Register an Application with Stormpath)
 * [Retrieve an application](#application-retrieve)
 * [Update an application](#application-update)
@@ -1159,7 +1160,7 @@ For Applications, you can:
 * [Work with application groups](#application-groups)
 * [Work with application account store mappings](#application-account-store-mappings)
 
-<a class="anchor" name="application-href"></a>
+<a class="anchor" name="application-url"></a>
 ### Locate an Application's REST URL
 
 When communicating with the Stormpath REST API, you might need to reference an application using its REST URL or `href`.
@@ -1251,7 +1252,7 @@ When you submit the `POST`, at least the `name` attribute must be specified, and
 You may use the response's `Location` header or the top-level `href` attribute to further interact with your new `application` resource.
 
 {% docs note %}
-By default, no accounts may login to a newly created application, and the new application cannot create accounts or groups immediately.  Applications must first be associated with one or more [account stores](#accountStoresMappings) to enable this behavior.
+By default, no accounts may login to a newly created application, and the new application cannot create accounts or groups immediately.  Applications must first be associated with one or more [account stores](#account-store-mappings) to enable this behavior.
 
 Account store association however is mostly used for more complex applications.  If you want to create an application quickly and enable this additional behavior immediately, use the `createDirectory` query parameter as discussed next.
 {% enddocs %}
@@ -1259,9 +1260,9 @@ Account store association however is mostly used for more complex applications. 
 <a class="anchor" name="application-create-with-directory"></a>
 #### Create an Application and Directory
 
-The above Create Application POST request assumes you will later assign [account stores](#accountStoresMappings) to the application so accounts may log in to the application.  This means that, by default, no one can login to a newly created application, nor can the application create new accounts or new groups directly.  For this additional functionality, one or more account stores must be associated with the application.
+The above Create Application POST request assumes you will later assign [account stores](#account-store-mappings) to the application so accounts may log in to the application.  This means that, by default, no one can login to a newly created application, nor can the application create new accounts or new groups directly.  For this additional functionality, one or more account stores must be associated with the application.
 
-For many use cases, that is unnecessary work.  If you want to associate the Application with a new Directory automatically so you can start creating accounts and groups for the application immediately (without having to map other [account stores](#accountStoresMappings), you can use the `createDirectory` query parameter.
+For many use cases, that is unnecessary work.  If you want to associate the Application with a new Directory automatically so you can start creating accounts and groups for the application immediately (without having to map other [account stores](#account-store-mappings), you can use the `createDirectory` query parameter.
 
 ##### createDirectory=true
 
@@ -1278,7 +1279,7 @@ This request will:
 
 1. Create the application.
 2. Create a brand new Directory and automatically name the directory based on the application.  The generated name will reflect the new application's name as best as is possible, guaranteeing that it is unique compared to any of your existing directories.
-3. Set the new Directory as the application's initial [account store](#accountStoresMappings).
+3. Set the new Directory as the application's initial [account store](#account-store-mappings).
 4. Enable the new Directory as the application's [default account store](#application-defaultAccountStoreMapping), ensuring any new accounts created directly by the application are stored in the new Directory.
 5. Enable the new Directory as the application's [default group store](#application-defaultGroupStoreMapping), ensuring any new groups created directly by the application are stored in the new Directory.
 
@@ -1299,7 +1300,7 @@ this request will:
 
 1. Create the application.
 2. Create a brand new Directory and automatically set the Directory's name to be your specified text value (e.g. 'My App Directory' in the example above). **HOWEVER**: If the directory name you choose is already in use by another of your existing directories, the request will fail.  You will either need to choose a different directory name or specify `true` and let Stormpath generate an unused unique name for you.
-3. Set the new Directory as the application's initial [account store](#accountStoresMappings).
+3. Set the new Directory as the application's initial [account store](#account-store-mappings).
 4. Enable the new Directory as the application's [default account store](#application-defaultAccountStoreMapping), ensuring any new accounts created directly by the application are stored in the new Directory.
 5. Enable the new Directory as the application's [default group store](#application-defaultGroupStoreMapping), ensuring any new groups created directly by the application are stored in the new Directory.
 
@@ -1347,7 +1348,7 @@ If you don't have the application's URL, you can find it by [looking it up in th
 <a class="anchor" name="application-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving an application, you can also retrieve one or more of its linked resources by [expanding them in-line](#rest-link-expansion) using the `expand` query parameter.
+When retrieving an application, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the `expand` query parameter.
 
 The following `Application` attributes are expandable:
 
@@ -1355,11 +1356,11 @@ The following `Application` attributes are expandable:
 * `accounts`
 * `groups`
 
-Also, because `accounts` and `groups` are [Collection Resources](#rest-collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
+Also, because `accounts` and `groups` are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
 
     GET https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA?expand=tenant,accounts(offset:0,limit:50)
 
-See the [Link Expansion](#rest-link-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
 
 <a class="anchor" name="application-update"></a>
 ### Update an Application
@@ -1698,7 +1699,7 @@ If the login attempt is successful, a `200 OK` response is returned with a [link
       }
     }
 
-If the login attempt fails, a `400 Bad Request` is returned with an [error payload](#rest-errors) explaining why the attempt failed:
+If the login attempt fails, a `400 Bad Request` is returned with an [error payload](#errors) explaining why the attempt failed:
 
 **Example Login Attempt Failure Response**
 
@@ -1740,9 +1741,9 @@ The `Account Verification Base URL` defaults to a Stormpath API Sever URL which,
 
 In order to reset an account's password, you'll need to create a `passwordResetToken`. In order to generate these tokens, you must retrieve an email address from the user and pass it along with the request.
 
-Generating a `passwordResetToken` will inform Stormpath that you wish to initiate a password reset for a particular account. In addition, creating a new password reset token will automatically send a password reset email to the provided email address if and only if that address corresponds with an account listed in the application's [account stores](#accountStoresMappings).
+Generating a `passwordResetToken` will inform Stormpath that you wish to initiate a password reset for a particular account. In addition, creating a new password reset token will automatically send a password reset email to the provided email address if and only if that address corresponds with an account listed in the application's [account stores](#account-store-mappings).
 
-The application password reset tokens endpoint supports the password reset workflow for an account in the application's assigned [account stores](#accountStoresMappings).
+The application password reset tokens endpoint supports the password reset workflow for an account in the application's assigned [account stores](#account-store-mappings).
 
 **Password Reset Tokens Collection Resource URI**
 
@@ -1752,13 +1753,13 @@ The application password reset tokens endpoint supports the password reset workf
 
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
-<a class="anchor" name="password-reset-href"></a>`href` | Fully qualified URL of the password reset token resource. | String | <span>--</span>
+<a class="anchor" name="password-reset-url"></a>`href` | Fully qualified URL of the password reset token resource. | String | <span>--</span>
 <a class="anchor" name="password-reset-email"></a>`email` | Email address of the account for which the password reset will occur. | String | Valid email address. Required.
 <a class="anchor" name="password-reset-acount"></a>`account` | A link to the account for which the password reset will occur. | Link | Cannot set in a request. Returned in a response only.
 
-The application password reset tokens endpoint supports the password reset workflow for an account in the application assigned [account stores](#accountStoresMappings).
+The application password reset tokens endpoint supports the password reset workflow for an account in the application assigned [account stores](#account-store-mappings).
 
-Creating a new password reset token automatically sends a password reset email to the destination email address if that address corresponds to an account listed in the application [account stores](#accountStoresMappings).
+Creating a new password reset token automatically sends a password reset email to the destination email address if that address corresponds to an account listed in the application [account stores](#account-store-mappings).
 
 A successful HTTP `POST` sends a password reset email to the first discovered account associated with the corresponding application. The email recipient can then click a password reset URL in the email to reset their password in a web form.
 
@@ -1788,7 +1789,7 @@ The `POST` body must be a JSON object with a single email attribute:
 
 A `200 OK` response indicates that a password reset email will be sent as soon as possible to the email specified.
 
-If the password reset token creation fails, a `400 Bad Request` is returned with an [error payload](#rest-errors) explaining why the attempt failed:
+If the password reset token creation fails, a `400 Bad Request` is returned with an [error payload](#errors) explaining why the attempt failed:
 
 **Example Password Reset Token Creation Failure Response**
 
@@ -1807,7 +1808,7 @@ At this point, an email will be built using the [password reset base URL](#passw
 
 In a real-world implementation, you must build an end-point in your application that is designed to accept a request with the query string parameter "sptoken", which is the token value generated for the user. This token is then used to verify the reset request before updating the account accordingly.
 
-<a class="anchor" name="RetrievePWResetToken"></a>
+<a class="anchor" name="password-reset-token-retrieve"></a>
 ##### Validate A Password Reset Request (Validate A Token)
 
 Once you've successfully generated a token for a password request, you'll need to consume it to allow the user to change his or her password. To do this, Stormpath sends an email (that you can customize) to the user with a link and a verification token in the format that follows:
@@ -2019,7 +2020,7 @@ You define an application's account store mappings by creating, modifying or del
 
     /v1/applications/:applicationId/accountStoreMappings
 
-<a class="anchor" name="application-accountStoreMappings-list"></a>
+<a class="anchor" name="application-account-store-mappings-list"></a>
 #### List Application Account Store Mappings
 
 You can list an application's assigned account stores by sending a `GET` request to the application's `accountStoreMappings` Collection Resource `href` URL.  The response is a [paginated](#pagination) list of application account store mappings.
@@ -2060,7 +2061,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
 
 ***
 
-<a class="anchor" name="accountStoresMappings"></a>
+<a class="anchor" name="account-store-mappings"></a>
 ## Account Store Mappings
 
 _Account Store_ is a generic term for either a [Directory](#directories) or a [Group](#groups).  Directories and Groups are both are considered "account stores" because they both contain, or 'store', Accounts. An _Account Store Mapping_, then, is a relationship between an Account Store and an Application.
@@ -2071,7 +2072,7 @@ effective _user base_; those accounts may login to the application.  If no accou
 
 You control which account stores are assigned (mapped) to an application, and the order in which they are consulted during a login attempt, by manipulating an application's `AccountStoreMapping` resources.
 
-<a class="anchor" name="loginAttemptFlow"></a> 
+<a class="anchor" name="workflow-login-attempt"></a> 
 **How Login Attempts Work**
 
 When an account tries to login to an application, the application's assigned account stores are consulted _in the order that they are assigned to the application_.  When a matching account is discovered in a mapped account store, it is used to verify the authentication attempt and all subsequent account stores are ignored.  In other words, accounts are matched for application login based on a 'first match wins' policy.
@@ -2090,41 +2091,41 @@ You can assign multiple account stores to an application, but only one is requir
 
 An individual `accountStoreMapping` resource may be accessed via its Resource URI:
 
-<a class="anchor" name="accountStoreMapping-resource-uri"></a>
+<a class="anchor" name="account-store-mapping-url"></a>
 **Resource URI**
 
     /v1/accountStoreMappings/:accountStoreMappingId
 
-<a class="anchor" name="accountStoreMapping-resource-attributes"></a>
+<a class="anchor" name="account-store-mapping-resource-attributes"></a>
 **Resource Attributes**
 
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `href` | The account store mapping resource's fully qualified location URI. | String | <span>--</span>
-<a id="accountstore-application"></a>`application` | A link to the mapping's Application. Required. | link | <span>--</span>
-<a id="accountstore-accountStore"></a>`accountStore` | A link to the mapping's account store (either a Group or Directory) containing accounts that may login to the `application`.  Required. | link | <span>--</span>
-<a id="listIndex"></a>`listIndex` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `listIndex` of `0` will be consulted first (has the highest priority), followed the account store at `listIndex` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `listIndex` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size
-<a id="isDefaultAccountStore"></a>`isDefaultAccountStore` | A `true` value indicates that new accounts [created by the application](#application-account-register) will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
-<a id="isDefaultGroupStore"></a>`isDefaultGroupStore` | A `true` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `true` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `true`,`false`
+<a id="account-store-application"></a>`application` | A link to the mapping's Application. Required. | link | <span>--</span>
+<a id="account-store-accountStore"></a>`accountStore` | A link to the mapping's account store (either a Group or Directory) containing accounts that may login to the `application`.  Required. | link | <span>--</span>
+<a id="resource-list-index"></a>`resource-list-index` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `resource-list-index` of `0` will be consulted first (has the highest priority), followed the account store at `resource-list-index` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `resource-list-index` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size
+<a id="account-store-mapping-resource-is-default-account-store"></a>`isDefaultAccountStore` | A `true` value indicates that new accounts [created by the application](#application-account-register) will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
+<a id="account-store-mapping-resource-is-default-group-store"></a>`isDefaultGroupStore` | A `true` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `true` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `true`,`false`
 
 For Account Store Mappings, you may:
 
-* [Locate an account store mapping's REST URL](#accountStoreMapping-href)
-* [Create an account store mapping](#accountStoreMapping-create)
-* [Retrieve an account store mapping](#accountStoreMapping-retrieve)
-* [Update an account store mapping](#accountStoreMapping-update)
-    * [Set the login priority](#accountStoreMapping-updatePriority) of an assigned account store
-    * [Set the default account store](#accountStoreMapping-defaultAccountStore) for new accounts created by an application
-    * [Set the default group store](#accountStoreMapping-defaultGroupStore) for new groups created by an application
-* [Delete an account store mapping](#accountStoreMapping-delete)
-* [List an application's assigned account stores](#accountStoreMapping-list)
+* [Locate an account store mapping's REST URL](#account-store-mapping-url)
+* [Create an account store mapping](#account-store-mapping-create)
+* [Retrieve an account store mapping](#account-store-mapping-retrieve)
+* [Update an account store mapping](#account-store-mapping-update)
+    * [Set the login priority](#account-store-mapping-update-priority) of an assigned account store
+    * [Set the default account store](#account-store-mapping-default-account-store) for new accounts created by an application
+    * [Set the default group store](#account-store-mapping-default-group-store) for new groups created by an application
+* [Delete an account store mapping](#account-store-mapping-delete)
+* [List an application's assigned account stores](#account-store-mapping-list)
 
-<a class="anchor" name="accountStoreMapping-href"></a>
+<a class="anchor" name="account-store-mapping-url"></a>
 ### Locate an Account Store Mapping's REST URL
 
-You locate an Account Store Mapping's `href` by [listing an Application's associated Account Store Mappings](#application-accountStoreMappings-list).  Within the list, find the `AccountStoreMapping` you need - it will have a unique `href` property.
+You locate an Account Store Mapping's `href` by [listing an Application's associated Account Store Mappings](#application-account-store-mappings-list).  Within the list, find the `AccountStoreMapping` you need - it will have a unique `href` property.
 
-<a class="anchor" name="accountStoreMapping-create"></a>
+<a class="anchor" name="account-store-mapping-create"></a>
 ### Create an Account Store Mapping
 
 In order for accounts in a Directory or Group to be able to login to an application, you must associate or 'map' the Directory or Group to the Application.  You do this by creating a new `AccountStoreMapping` resource that references both the account store and application.
@@ -2133,14 +2134,14 @@ You do this by `POST`ing a new `AccountStoreMapping` resource to the `/v1/accoun
 
 **Required Attributes**
 
-* [application](#accountstore-application) (a link)
-* [accountStore](#accountstore-accountStore) (a link)
+* [application](#account-store-application) (a link)
+* [accountStore](#account-store-accountStore) (a link)
 
 **Optional Attributes**
 
-* [listIndex](#listIndex)
-* [isDefaultAccountStore](#isDefaultAccountStore) - if unspecified, the default is `false`
-* [isDefaultGroupStore](#isDefaultGroupStore) - if unspecified, the default is `false`
+* [resource-list-index](#resource-list-index)
+* [isDefaultAccountStore](#account-store-mapping-resource-is-default-account-store) - if unspecified, the default is `false`
+* [isDefaultGroupStore](#account-store-mapping-resource-is-default-group-store) - if unspecified, the default is `false`
 
 **Example Request**
 
@@ -2168,19 +2169,19 @@ You do this by `POST`ing a new `AccountStoreMapping` resource to the `/v1/accoun
         "application": {
             "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
         },
-        "listIndex": 0,
+        "resource-list-index": 0,
         "isDefaultAccountStore": true,
         "isDefaultGroupStore": true
     }
 
 You may use the response's `Location` header or the top-level `href` attribute to further interact with your new `AccountStoreMapping` resource.
 
-<a class="anchor" name="accountStoreMapping-retrieve"></a>
+<a class="anchor" name="account-store-mapping-retrieve"></a>
 ### Retrieve An Account Store Mapping
 
 After you have created an account store mapping, you may retrieve its contents by sending a `GET` request to the account store mapping's URL returned in the `Location` header or `href` attribute.
 
-If you don't have the account store mapping's URL, you can find it in the [application's account store mappings list](#application-accountStoreMapping-list).
+If you don't have the account store mapping's URL, you can find it in the [application's account store mappings list](#application-account-store-mapping-list).
 
 **Example Request**
 
@@ -2199,31 +2200,31 @@ If you don't have the account store mapping's URL, you can find it in the [appli
         "application": {
             "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
         },
-        "listIndex": 0,
+        "resource-list-index": 0,
         "isDefaultAccountStore": true,
         "isDefaultGroupStore": true
     }
 
-<a class="anchor" name="accountStoreMapping-resources-expand"></a>
+<a class="anchor" name="account-store-mapping-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving an Account Store Mapping, you can also retrieve one or more of its linked resources by [expanding them in-line](#rest-link-expansion) using the `expand` query parameter.
+When retrieving an Account Store Mapping, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the `expand` query parameter.
 
 The following `AccountStoreMapping` attributes are expandable:
 
 * `accountStore`
 * `application`
 
-See the [Link Expansion](#rest-link-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
 
-<a class="anchor" name="accountStoreMapping-update"></a>
+<a class="anchor" name="account-store-mapping-update"></a>
 ### Update An Account Store Mapping
 
 Submit an HTTP `POST` to an accountStoreMapping's `href` when you want to change one or more specific application attributes. Unspecified attributes are not changed, but at least one attribute must be specified.
 
 **Updatable Application Attributes**
 
-* [listIndex](#listIndex)
+* [resource-list-index](#resource-list-index)
 * [isDefaultAccountStore](#isDefaultAccountStore)
 * [isDefaultGroupStore](#isDefaultGroupStore)
 
@@ -2249,20 +2250,20 @@ Submit an HTTP `POST` to an accountStoreMapping's `href` when you want to change
         "application": {
             "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
         },
-        "listIndex": 0,
+        "resource-list-index": 0,
         "isDefaultAccountStore": true,
         "isDefaultGroupStore": true
     }
 
-<a class="anchor" name="accountStoreMapping-updatePriority"></a>
+<a class="anchor" name="account-store-mapping-update-priority"></a>
 #### Set the Login Priority of an Assigned Account Store
 
-As we've [shown previously](#loginAttemptFlow), an account trying to login to an application will be matched to the application's account stores based on the list order they are assigned to the application.  The account store at list index 0 has the highest priority, the account store at list index 1 has the next highest priority, and so on.  When an account is discovered in an account store, the login attempt occurs and returns immediately.  All remaining account stores are not checked.
+As we've [shown previously](#workflow-login-attempt), an account trying to login to an application will be matched to the application's account stores based on the list order they are assigned to the application.  The account store at list index 0 has the highest priority, the account store at list index 1 has the next highest priority, and so on.  When an account is discovered in an account store, the login attempt occurs and returns immediately.  All remaining account stores are not checked.
 
 If you wish to change an account store's login priority for an application, you simply:
 
-1. Find the `accountStoreMapping` resource in the application's `accountStoreMappings` [collection](#rest-collections) that reflects the `accountStore` that you wish to re-prioritize.
-2. Issue a `POST` update request to that `AccountStoreMapping`'s `href` with a new `listIndex` value.
+1. Find the `accountStoreMapping` resource in the application's `accountStoreMappings` [collection](#collections) that reflects the `accountStore` that you wish to re-prioritize.
+2. Issue a `POST` update request to that `AccountStoreMapping`'s `href` with a new `resource-list-index` value.
 
 **Example Request**
 
@@ -2271,7 +2272,7 @@ For example, assume that the account store represented by mapping https://api.st
     curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
          -H "Content-Type: application/json;charset=UTF-8" \
          -d '{
-               "listIndex": 1
+               "resource-list-index": 1
              }' \
          'https://api.stormpath.com/v1/accountStoreMappings/dRvH4y0nT6uNl6gExAmPLe'
 
@@ -2285,19 +2286,19 @@ For example, assume that the account store represented by mapping https://api.st
         "application": {
             "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
         },
-        "listIndex": 1,
+        "resource-list-index": 1,
         "isDefaultAccountStore": true,
         "isDefaultGroupStore": true
     }
 
-<a class="anchor" name="accountStoreMapping-defaultAccountStore"></a>
+<a class="anchor" name="account-store-mapping-default-account-store"></a>
 #### Set The Default Account Store for new Application Accounts
 
 Applications cannot store Accounts directly - Accounts are always stored in a Directory or Group.  Therefore, if you would like an application to be able to create new accounts, you must specify which of the application's associated account stores should store the application's newly created accounts.  This designated account store is called the application's _default account store_.
 
 You specify an application's default account store by setting the AccountStoreMapping's `isDefaultAccountStore` attribute to equal `true`.  You can do this when you create the `accountStoreMapping` resource.  Or if the resource has already been created:
 
-1. Find the `accountStoreMapping` resource in the Application's `accountStoreMappings` [collection](#rest-collections) that reflects the `accountStore` you wish to be the application's default account store.
+1. Find the `accountStoreMapping` resource in the Application's `accountStoreMappings` [collection](#collections) that reflects the `accountStore` you wish to be the application's default account store.
 2. Issue a `POST` update request to that AccountStoreMapping's `href` with `isDefaultAccountStore` set to `true`.
 
 **Example Request**
@@ -2332,14 +2333,14 @@ If none of the application's AccountStoreMappings are designated as the default 
 Also note that Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application's default account store.  Attempting to set `isDefaultAccountStore` to `true` on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.
 {% enddocs %}
 
-<a class="anchor" name="accountStoreMapping-defaultGroupStore"></a>
+<a class="anchor" name="account-store-mapping-default-group-store"></a>
 #### Set The Default Group Store for new Application Groups
 
 Applications cannot store Groups directly - Groups are always stored in a Directory.  Therefore, if you would like an application to be able to create new groups, you must specify which of the application's associated account stores should store the application's newly created groups.  This designated store is called the application's _default group store_.
 
 You specify an application's default group store by setting the `AccountStoreMapping`'s `isDefaultGroupStore` attribute to equal `true`.  You can do this when you create the `accountStoreMapping` resource, or if the resource has already been created:
 
-1. Find the `accountStoreMapping` resource in the Application's `accountStoreMappings` [collection](#rest-collections) that reflects the `accountStore` you wish to be the application's default group store.
+1. Find the `accountStoreMapping` resource in the Application's `accountStoreMappings` [collection](#collections) that reflects the `accountStore` you wish to be the application's default group store.
 2. Issue a `POST` update request to that `AccountStoreMapping`'s `href` with `isDefaultGroupStore` set to `true`.
 
 **Example Request**
@@ -2370,7 +2371,7 @@ Also, note that Stormpath does not currently support storing groups within group
 Lastly, note that mirrored directories are read-only; they cannot be set as an application's default group store. Attempting to set `isDefaultGroupStore` to `true` on an AccountStoreMapping that reflects a mirrored directory will result in an error response.
 {% enddocs %}
 
-<a class="anchor" name="accountStoreMapping-delete"></a>
+<a class="anchor" name="account-store-mapping-delete"></a>
 ### Delete an Account Store Mapping
 
 You remove an assigned account store from an application by `DELETE`ing the `accountStoreMapping` resource that links the accountStore and the application together.  This removes the possibility of the accounts in the associated account store from being able to login to the application.
@@ -2396,7 +2397,7 @@ For example, to delete the application-accountStore association we created in th
 
     HTTP/1.1 204 No Content
 
-<a class="anchor" name="accountStoreMapping-list"></a>
+<a class="anchor" name="account-store-mapping-list"></a>
 ### List Account Store Mappings
 
 You can list an applications's mapped account stores by issuing a `GET` request to the application's `accountStoreMappings` `href` URI.
@@ -2418,7 +2419,7 @@ The response is a paginated list of `accountStoreMapping` resources.  You may us
        "items":[
           {
              "href":"https://api.stormpath.com/v1/accountStoreMappings/3hGLY9yHEqYraR0cXJUDPD",
-             "listIndex":0,
+             "resource-list-index":0,
              "isDefaultAccountStore":true,
              "isDefaultGroupStore":true,
              "application":{
@@ -2475,7 +2476,7 @@ Within Stormpath, there are two types of directories you can implement:
     * You can specify various LDAP/AD object and attribute settings of the specific LDAP/AD server for accounts and groups.
     * If the agent status is `Online`, but you are unable to see any data when browsing your LDAP/AD mapped directory, it is likely that your object and filters are configured incorrectly.
 
-You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as [account stores](#accountStoresMappings)</a>.
+You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as [account stores](#account-store-mappings)</a>.
 
 LDAP/AD accounts and groups are automatically deleted when:
 
@@ -2497,7 +2498,7 @@ For directories, you can:
 * [Delete a directory](#directory-delete)
 * [List directories](#directory-list)
 * [Search directories](#directory-search)
-* [Work with directories](#working-with-directories)
+* [Work with directories](#directory-workflows)
     * [Enforce Account Password Restrictions](#directories-password-restrictions)
     * [Register A New Account](#directories-reg)
     * [Verify An Account's Email Address](#directories-verify-email)
@@ -2617,7 +2618,7 @@ For more information on setting up a Mirrored Directory and using the Stormpath 
 <a class="anchor" name="associate-directories-with-applications"></a>
 #### Associate Directories with Applications
 
-In order to associate a directory with an application, you'll need to create an [Account Store Mapping](#accountStoresMappings). An account store mapping associates an account store (such as a directory or a group) with an application.
+In order to associate a directory with an application, you'll need to create an [Account Store Mapping](#account-store-mappings). An account store mapping associates an account store (such as a directory or a group) with an application.
 
 HTTP `POST` against the account store mapping end-point with the directory and application `href` in order to create an association.
 
@@ -2647,12 +2648,12 @@ HTTP `POST` against the account store mapping end-point with the directory and a
         "application": {
             "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
         },
-        "listIndex": 0,
+        "resource-list-index": 0,
         "isDefaultAccountStore": true,
         "isDefaultGroupStore": true
     }
 
-For more information on Account Store Mappings, refer to the [Account Store Mapping](#accountStoresMappings) section.
+For more information on Account Store Mappings, refer to the [Account Store Mapping](#account-store-mappings) section.
 
 <a class="anchor" name="directory-retrieve"></a>
 ### Retrieve a Directory
@@ -2687,7 +2688,7 @@ HTTP `GET` returns a representation of a `directory` resource that includes the 
 <a class="anchor" name="directory-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving a directory, you can also retrieve one or more of its linked resources by [expanding them in-line](#rest-link-expansion) using the `expand` query parameter.
+When retrieving a directory, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the `expand` query parameter.
 
 The following `Directory` attributes are expandable:
 
@@ -2695,11 +2696,11 @@ The following `Directory` attributes are expandable:
 * `groups`
 * `tenant`
 
-Also, because `accounts`, `groups`, and the `tenant` are [Collection Resources](#rest-collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection. For example:
+Also, because `accounts`, `groups`, and the `tenant` are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection. For example:
 
     GET https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q?expand=tenant,groups(offset:0,limit:50),accounts(offset:0,limit:50)
 
-See the [Link Expansion](#rest-link-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
 
 <a class="anchor" name="directory-update"></a>
 ### Update a Directory
@@ -2911,8 +2912,6 @@ Workflows are only available on cloud directories and only configurable using th
 {% enddocs %}
 
 <a class="anchor" name="directories-password-reset"></a>
-### Reset An Account's Password
-
 This is a self-service password reset workflow.  The account is sent an email with a secure link.  The person owning the account can click on the link and be shown a password reset form to reset their password.  This is strongly recommended to reduce support requests to your application team as well as to reduce your exposure to account passwords for added security.
 
 The password reset workflow involves changes to an account at an application level, and as such, this workflow relies on the `application` resource as a starting point. For more information on working with this workflow via REST after they have already been configured, refer to the [Working With Applications](#application-password-reset) section of this guide.
@@ -3098,19 +3097,19 @@ Attribute | Description | Type | Valid Value
 
 With groups, you can:
 
-* [Locate a group's REST URL](#locate-a-groups-rest-url)
-* [Create a group](#create-a-group)
-* [Retrieve a group](#retrieve-a-group)
-* [Update a group](#update-a-group)
-    * [Enable a group](#enable-a-group)
-    * [Disable a group](#disable-a-group)
-* [Delete a group](#delete-a-group)
-* [List groups](#list-groups)
-* [Search groups](#search-groups)
+* [Locate a group's REST URL](#group-url)
+* [Create a group](#group-create)
+* [Retrieve a group](#group-retrieve)
+* [Update a group](#group-update)
+    * [Enable a group](#group-enable)
+    * [Disable a group](#group-disable)
+* [Delete a group](#group-delete)
+* [List groups](#groups-list)
+* [Search groups](#groups-list)
 * [Work with group accounts](#group-accounts)
-* [Work with account memberships](#account-memberships)
+* [Work with account memberships](#group-account-memberships)
 
-<a class="anchor" name="locate-a-groups-rest-url"></a>
+<a class="anchor" name="group-url"></a>
 ### Locate a Group's REST URL
 
 When communicating with the Stormpath REST API, you might need to reference a group directly using its REST URL or `href`.
@@ -3151,7 +3150,7 @@ For example, if you want to find the `href` for a group with the name "My Group"
 
 If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., "name=") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "q=My") to narrow down the selection.
 
-<a class="anchor" name="create-a-group"></a>
+<a class="anchor" name="group-create"></a>
 ### Create a Group
 
 To create a new `group` resource instance in a specified directory which is accessible to the application:
@@ -3214,7 +3213,7 @@ If there is no acceptable designated directory account store, the REST API error
       "moreInfo": "http://www.stormpath.com/docs/errors/5102"
     }
 
-<a class="anchor" name="retrieve-a-group"></a>
+<a class="anchor" name="group-retrieve"></a>
 ### Retrieve a Group
 
 HTTP `GET` returns a representation of a `group` resource that includes the resource attributes.
@@ -3247,7 +3246,7 @@ HTTP `GET` returns a representation of a `group` resource that includes the reso
 <a class="anchor" name="group-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving an application, you can also retrieve one or more of its linked resources by [expanding them in-line](#rest-link-expansion) using the `expand` query parameter.
+When retrieving an application, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the `expand` query parameter.
 
 The following `Application` attributes are expandable:
 
@@ -3255,13 +3254,13 @@ The following `Application` attributes are expandable:
 * `directory`
 * `accounts`
 
-Also, because `accounts` is a [Collection Resources](#rest-collections) itself, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
+Also, because `accounts` is a [Collection Resources](#collections) itself, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
 
     GET https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA?expand=tenant,directory,accounts(offset:0,limit:50)
 
-See the [Link Expansion](#rest-link-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
 
-<a class="anchor" name="update-a-group"></a>
+<a class="anchor" name="group-update"></a>
 ### Update a Group
 
 Use HTTP `POST` when you want to change one or more specific attributes of a `group` resource. Unspecified attributes are not changed, but at least one attribute must be specified.
@@ -3302,7 +3301,7 @@ Use HTTP `POST` when you want to change one or more specific attributes of a `gr
       }
     }
 
-<a class="anchor" name="enable-a-group"></a>
+<a class="anchor" name="group-enable"></a>
 #### Enable a Group
 
 If the group is contained within an *enabled directory where the directory is defined as an account store*, then enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as an account store.
@@ -3343,7 +3342,7 @@ To enable a group:
        }
      }
 
-<a class="anchor" name="disable-a-group"></a>
+<a class="anchor" name="group-disable"></a>
 #### Disable a Group
 
 If a group is explicitly set as an application account store, then disabling that group prevents any of its user accounts from logging into that application but retains the group data and memberships. You would typically disable a group if you must shut off a group of user accounts quickly and easily.
@@ -3382,7 +3381,7 @@ To disable a group:
        }
      }
 
-<a class="anchor" name="delete-a-group"></a>
+<a class="anchor" name="group-delete"></a>
 ### Delete a Group
 
 Deleting a cloud directory group erases the group and all its membership relationships. User accounts that are members of the group will not be deleted.
@@ -3399,12 +3398,12 @@ To delete a cloud directory group:
 
     HTTP/1.1 204 No Content
 
-<a class="anchor" name="list-groups"></a>
+<a class="anchor" name="groups-list"></a>
 ### List Groups
 
 #### Application Groups
 
-The application groups endpoint is a [Collection Resource](#rest-collections) representing all application-accessible groups. A group is accessible to an application if it, or its directory, is assigned to the application as an account store.
+The application groups endpoint is a [Collection Resource](#collections) representing all application-accessible groups. A group is accessible to an application if it, or its directory, is assigned to the application as an account store.
 
     /v1/applications/:applicationUid/groups
 
@@ -3444,7 +3443,7 @@ HTTP GET returns a paginated list of links for groups accessible to an applicati
 
 ##### Account Groups
 
-The account `groups` resource is a [Collection Resource](#rest-collections) representing all account-associated groups. A group is associated with an account when an account has been assigned to that group as a member.
+The account `groups` resource is a [Collection Resource](#collections) representing all account-associated groups. A group is associated with an account when an account has been assigned to that group as a member.
 
     /v1/accounts/:accountUid/groups
 
@@ -3484,7 +3483,7 @@ HTTP GET returns a paginated list of links for groups for which an account is a 
 
 ##### Directory Groups
 
-The directory `groups` resource is a [Collection Resource](#rest-collections) representing all directory-associated groups. Groups are defined as a subset of members in a directory.
+The directory `groups` resource is a [Collection Resource](#collections) representing all directory-associated groups. Groups are defined as a subset of members in a directory.
 
     /v1/directories/:directoryUid/groups
 
@@ -3522,7 +3521,7 @@ HTTP GET returns a paginated list of links for groups for which an account is a 
       ]
     }
 
-<a class="anchor" name="search-groups"></a>
+<a class="anchor" name="groups-list"></a>
 ### Search Groups
 
 Group attributes supported for search:
@@ -3576,7 +3575,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
 
 Account resources support the full suite of CRUD commands and other interactions. Please see the [Accounts section](#accounts) for more information.
 
-<a class="anchor" name="account-memberships"></a>
+<a class="anchor" name="group-account-memberships"></a>
 ### Account Memberships
 
 The `accountMemberships` Collection for a `group` Resource represents all account memberships where a specific group is a member. In this case, Account Memberships are simply an alternative, context-specific name for [Group Memberships](#group-memberships).
@@ -3621,7 +3620,7 @@ The `accountMemberships` Collection for a `group` Resource represents all accoun
         } ]
     }
 
-<a class="anchor" name="working-with-account-memberships"></a>
+<a class="anchor" name="working-with-group-account-memberships"></a>
 #### Working With Account Memberships
 
 `Account Membership` is a context-specific alias for a `Group Membership`.  Group Membership resources support the full suite of CRUD commands and other interactions. Please see the [Group Memberships section](#group-memberships) for more information.
@@ -3631,7 +3630,7 @@ The `accountMemberships` Collection for a `group` Resource represents all accoun
 <a class="anchor" name="group-memberships"></a>
 ## Group Memberships
 
-Group Memberships are [collections](#rest-collections) representing the association between accounts and groups. When an account is associated with a group or a group is associated with an account, a group membership is created. A group membership is a named root-level container of the relationship between an [account](#accounts) and a [group](#groups) within a [tenant](#tenants).
+Group Memberships are [collections](#collections) representing the association between accounts and groups. When an account is associated with a group or a group is associated with an account, a group membership is created. A group membership is a named root-level container of the relationship between an [account](#accounts) and a [group](#groups) within a [tenant](#tenants).
 
 <a class="anchor" name="group-membership-resource"></a>
 ### Group Membership Resource
@@ -3651,13 +3650,13 @@ Attribute | Description | Type | Valid Value
 
 For group memberships, you can:
 
-* [Locate a group membership's REST URL](#locate-a-group-memberships-rest-url)
-* [Create a group membership](#create-a-group-membership)
-* [Retrieve a group membership](#retrieve-a-group-membership)
-* [Delete a group membership](#delete-a-group-membership)
-* [List group membership resources](#list-group-memberships)
+* [Locate a group membership's REST URL](#group-membership-url)
+* [Create a group membership](#group-membership-create)
+* [Retrieve a group membership](#group-membership-retrieve)
+* [Delete a group membership](#group-membership-delete)
+* [List group membership resources](#group-memberships-list)
 
-<a class="anchor" name="locate-a-group-memberships-rest-url"></a>
+<a class="anchor" name="group-membership-url"></a>
 ### Locate a Group Membership's REST URL
 
 When communicating with the Stormpath REST API, you might need to reference a group membership using the REST URL or `href`.
@@ -3698,7 +3697,7 @@ In all cases, the process is fundamentally the same. Consider the first case as 
 
 If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., "name=") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "q=My") to narrow down the selection.
 
-<a class="anchor" name="create-a-group-membership"></a>
+<a class="anchor" name="group-membership-create"></a>
 ### Create a Group Membership
 
 To create a group membership you need the account and the group href.
@@ -3733,7 +3732,7 @@ To create a group membership you need the account and the group href.
        }
     }
 
-<a class="anchor" name="retrieve-a-group-membership"></a>
+<a class="anchor" name="group-membership-retrieve"></a>
 ### Retrieve a Group Membership
 
 HTTP GET returns a representation of a `groupMembership` resource that includes the account and the group hrefs.
@@ -3760,16 +3759,16 @@ HTTP GET returns a representation of a `groupMembership` resource that includes 
 <a class="anchor" name="group-membership-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving an application, you can also retrieve one or more of its linked resources by [expanding them in-line](#rest-link-expansion) using the `expand` query parameter.
+When retrieving an application, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the `expand` query parameter.
 
 The following `Application` attributes are expandable:
 
 * `account`
 * `group`
 
-See the [Link Expansion](#rest-link-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
 
-<a class="anchor" name="delete-a-group-membership"></a>
+<a class="anchor" name="group-membership-delete"></a>
 ### Delete a Group Membership
 
 Deleting a group membership completely erases the `groupMembership` resource from Stormpath. This operation does not delete the group or the account involved in the group membership, only the association between them.
@@ -3782,14 +3781,14 @@ Deleting a group membership completely erases the `groupMembership` resource fro
 
     HTTP/1.1 204 No Content
 
-<a class="anchor" name="list-group-memberships"></a>
+<a class="anchor" name="group-memberships-list"></a>
 ### List Group Memberships
 
 You can list group memberships by [account](#group-membership-by-account) or [group](#account-membership-by-group).
 
 #### List Group Memberships For An Account {#group-membership-by-account}
 
-The account `groupMemberships` endpoint is a [Collection Resource](#rest-collections) representing all group memberships where the account is involved.
+The account `groupMemberships` endpoint is a [Collection Resource](#collections) representing all group memberships where the account is involved.
 
     /v1/accounts/:accountId/groupMemberships
 
@@ -3829,7 +3828,7 @@ The account `groupMemberships` endpoint is a [Collection Resource](#rest-collect
 
 #### List Account Memberships For A Group {#account-membership-by-group}
 
-The group `accountMemberships` endpoint is a [Collection Resource](#rest-collections representing all group memberships where the group is involved.
+The group `accountMemberships` endpoint is a [Collection Resource](#collections representing all group memberships where the group is involved.
 
     /v1/groups/:groupId/accountMemberships
 
@@ -3926,7 +3925,7 @@ Attribute | Description | Type | Valid Value
 
 For accounts, you can:
 
-* [Locate an account's REST URL](#locate-an-accounts-rest-url)
+* [Locate an account's REST URL](#accounts-url)
 * [Create an account](#account-create)
 * [Retrieve an account](#account-retrieve)
 * [Update an account](#account-update)
@@ -3934,19 +3933,19 @@ For accounts, you can:
     * [Remove accounts from groups](#account-remove-group)
     * [Enable or Disable an account](#account-enable)
 * [Delete an accounts](#account-delete)
-* [List accounts](#list-accounts)
-    * [List application accounts](#list-application-accounts)
-    * [List group members](#list-group-members)
-    * [List directory members](#list-directory-accounts)
+* [List accounts](#accounts-list)
+    * [List application accounts](#accounts-application-accounts-list)
+    * [List group members](#accounts-application-group-members)
+    * [List directory members](#accounts-application-directory-accounts)
 * [Search accounts](#search-accounts)
-* [Work with accounts](#working-with-accounts)
+* [Work with accounts](#accounts-workflow)
     * [Verify an account's email address](#account-verify-email)
     * [Log in (authenticate) an account](#accounts-authenticate)
     * [Reset an account password](#accounts-reset)
 * [Work with account groups](#account-groups)
 * [Work with account group memberships](#account-group-memberships)
 
-<a class="anchor" name="locate-an-accounts-rest-url"></a>
+<a class="anchor" name="accounts-url"></a>
 ### Locate an Account's REST URL
 
 In order to locate an account's REST URL, you'll need to first search for the account via either an [application](#application) or a [directory](#directory) resource using specific information you have available.
@@ -4172,7 +4171,7 @@ HTTP `GET` returns a representation of an `account` resource that includes the a
 <a class="anchor" name="account-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving an account, you can also retrieve one or more of its linked resources by [expanding them in-line](#rest-link-expansion) using the `expand` query parameter.
+When retrieving an account, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the `expand` query parameter.
 
 The following `Account` attributes are expandable:
 
@@ -4181,11 +4180,11 @@ The following `Account` attributes are expandable:
 * `groups`
 * `groupMemberships`
 
-Also, because these are [Collection Resources](#rest-collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
+Also, because these are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
 
     GET https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA?expand=tenant,directory,accounts(offset:0,limit:50),groups(offset:0,limit:50),groupMemberships(offset:0,limit:50)
 
-See the [Link Expansion](#rest-link-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
 
 <a class="anchor" name="account-update"></a>
 ### Update an Account
@@ -4193,7 +4192,7 @@ See the [Link Expansion](#rest-link-expansion) section for more information on e
 Use HTTP `POST` when you want to change one or more specific attributes of an `account` resource. Unspecified attributes will not be changed, but at least one attribute must be specified.
 
 {% docs warning %}
-Changes made to an account are immediately reflected in any application that has access to the account (based on applications' [account store mappings](#accountStoresMappings)). Be careful updating an account for a single application's needs - ensure that the changes are OK for any and all applications that may access the account.
+Changes made to an account are immediately reflected in any application that has access to the account (based on applications' [account store mappings](#account-store-mappings)). Be careful updating an account for a single application's needs - ensure that the changes are OK for any and all applications that may access the account.
 {% enddocs %}
 
 **Optional Attributes**
@@ -4405,7 +4404,7 @@ For example, to enable an account:
 Deleting an account completely erases the account from the directory and erases all account information from Stormpath.
 
 {% docs warning %}
-Deleting an account permanently removes the account from any application that has access to the account (based on applications' [account store mappings](#accountStoresMappings)). Additionally, be careful deleting an account for a single application's needs - ensure that the deletion is OK for any and all applications that may access the account.
+Deleting an account permanently removes the account from any application that has access to the account (based on applications' [account store mappings](#account-store-mappings)). Additionally, be careful deleting an account for a single application's needs - ensure that the deletion is OK for any and all applications that may access the account.
 {% enddocs %}
 
 To delete an account:
@@ -4418,16 +4417,16 @@ To delete an account:
 
     HTTP/1.1 204 No Content
 
-<a class="anchor" name="list-accounts"></a>
+<a class="anchor" name="accounts-list"></a>
 ### List Accounts
 
-Using the API, you can view [all accounts of an application](#list-application-accounts), [all members of a group](#list-group-members), or [all accounts/members of a directory](#list-directory-accounts-1).
+Using the API, you can view [all accounts of an application](#accounts-application-accounts-list), [all members of a group](#accounts-application-group-members), or [all accounts/members of a directory](#accounts-application-directory-accounts-1).
 
-An application's `accounts` is a [Collection Resource](#rest-collections) that represents all accounts that can log in to the application.
+An application's `accounts` is a [Collection Resource](#collections) that represents all accounts that can log in to the application.
 
     /v1/applications/:applicationUid/accounts
 
-<a class="anchor" name="list-application-accounts"></a>
+<a class="anchor" name="accounts-application-accounts-list"></a>
 #### List Application Accounts
 
 HTTP GET returns a paginated list of links for accounts within a specified application.
@@ -4478,7 +4477,7 @@ Example response:
       ]
     }
 
-<a class="anchor" name="list-group-members"></a>
+<a class="anchor" name="accounts-application-group-members"></a>
 #### List Group Members
 
 **Example Request**
@@ -4522,7 +4521,7 @@ Example response:
        ]
      }
 
-<a class="anchor" name="list-directory-accounts"></a>
+<a class="anchor" name="accounts-application-directory-accounts"></a>
 #### List Directory Accounts
 
 **Example Request From a Directory**
@@ -4684,7 +4683,7 @@ To verify the account, you use the token from the query string to form the above
 
 If the validation succeeds, you will receive back the `href` for the `account` resource which has now been verified. An email confirming the verification will be automatically sent to the account's email address by Stormpath afterwards, and the account will then be able to authenticate successfully.
 
-If the verification token is not found, a `404 Not Found` is returned with an [error payload](#rest-errors) explaining why the attempt failed:
+If the verification token is not found, a `404 Not Found` is returned with an [error payload](#errors) explaining why the attempt failed:
 
 **Example Email Verification Failure Response**
 
@@ -4726,7 +4725,7 @@ Workflows are only available on cloud directories and only configurable using th
 <a class="anchor" name="account-groups"></a>
 ### Account Groups
 
-The account's `groups` resource is a [Collection Resource](#rest-collections) which represents all groups where a specific account is a member.
+The account's `groups` resource is a [Collection Resource](#collections) which represents all groups where a specific account is a member.
 
 **Resource URI**
 
@@ -4801,7 +4800,7 @@ Group resources support the full suite of CRUD commands and other interactions. 
 <a class="anchor" name="account-group-memberships"></a>
 ### Account Group Memberships
 
-An account's `groupMemberships` resource is a [Collection Resource](#rest-collections) which represents all group memberships where a specific account is a member.
+An account's `groupMemberships` resource is a [Collection Resource](#collections) which represents all group memberships where a specific account is a member.
 
 **Account Group Membership Collection Resource URI**
 
@@ -4867,24 +4866,24 @@ For more information about administering Stormpath using the Admin Console, plea
 
 Attribute | Description
 :----- | :----- |
-<a id="Account"></a>Account | An **account** is a unique identity within a directory. Stormpath does not use the term *user* because it implies a person, while accounts can represent a person, 3rd-party software, or non-human clients. Accounts can be used to log in to applications.
-<a id="Agent"></a>Agent | An **agent** populates LDAP directories. An agent status reflects communication/error state because the agent is communicating with Stormpath.
-<a id="APIKey"></a>API Key | An **API key** is a unique ID paired with a secret value. API keys are used by software applications to communicate with Stormpath through the Stormpath REST API.
-<a id="Application"></a>Application | An **application** is a software application that communicates with Stormpath. It is typically a real world application that you are building, such as a web application, but it can also be infrastructural software, such as a Unix or Web server.
-<a id="Authentication"></a>Authentication | **Authentication** is the act of proving someone (or something) is actually who they say they are. When an account is authenticated, there is a high degree of certainty that the account identity is legitimate.
-<a id="Authorization"></a>Authorization | **Authorization**, also known as Access Control, is the process of managing and enforcing access to protected resources, functionality, or behavior.
-<a id="Directory"></a>Directory | A **directory** is a collection of accounts and groups. Administrators can use different directories to create silos of accounts. For example, customers and employees can be stored in different directories.
-<a id="DirectoryAgent"></a>Directory Agent | A **directory agent** is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory.
-<a id="DirectoryMirroring"></a>Directory Mirroring | **Directory mirroring** securely replicates selected data from one (source) directory to another (target or mirrored) directory for authentication and access control. The source directory is the authoritative source for all data. Changes are propagated to the target/mirror directory for convenience and performance benefits.
-<a id="Group"></a>Group | A **group** is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role.
-<a id="GroupMembership"></a>Group Membership | A **group membership** is a two-way mapping between an account and a group.
-<a id="AccountStore"></a>Account Store | A **account store** is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.
+<a id="account"></a>Account | An **account** is a unique identity within a directory. Stormpath does not use the term *user* because it implies a person, while accounts can represent a person, 3rd-party software, or non-human clients. Accounts can be used to log in to applications.
+<a id="agent"></a>Agent | An **agent** populates LDAP directories. An agent status reflects communication/error state because the agent is communicating with Stormpath.
+<a id="apikey"></a>API Key | An **API key** is a unique ID paired with a secret value. API keys are used by software applications to communicate with Stormpath through the Stormpath REST API.
+<a id="application"></a>Application | An **application** is a software application that communicates with Stormpath. It is typically a real world application that you are building, such as a web application, but it can also be infrastructural software, such as a Unix or Web server.
+<a id="authentication"></a>Authentication | **Authentication** is the act of proving someone (or something) is actually who they say they are. When an account is authenticated, there is a high degree of certainty that the account identity is legitimate.
+<a id="authorization"></a>Authorization | **Authorization**, also known as Access Control, is the process of managing and enforcing access to protected resources, functionality, or behavior.
+<a id="directory"></a>Directory | A **directory** is a collection of accounts and groups. Administrators can use different directories to create silos of accounts. For example, customers and employees can be stored in different directories.
+<a id="directory-agent"></a>Directory Agent | A **directory agent** is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory.
+<a id="directory-mirroring"></a>Directory Mirroring | **Directory mirroring** securely replicates selected data from one (source) directory to another (target or mirrored) directory for authentication and access control. The source directory is the authoritative source for all data. Changes are propagated to the target/mirror directory for convenience and performance benefits.
+<a id="group"></a>Group | A **group** is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role.
+<a id="group-membership"></a>Group Membership | A **group membership** is a two-way mapping between an account and a group.
+<a id="account-store"></a>Account Store | A **account store** is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.
 <a id="AccountStoreMapping"></a>Account Store Mapping | An **account store mapping** is a mapping between a group or directory and an application.
-<a id="IdentityManagement"></a>Identity Management | **Identity management** is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks.
-<a id="Role"></a>Role |A **role** is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups.
-<a id="RBAC"></a>Role-Based Access Control | **Role-Based Access Control** (RBAC) is the act of controlling access to protected resources or behavior based on the groups assigned to a particular account. RBAC is done using Stormpath groups.
-<a id="RESTAPIdef"></a>REST API | **REST API** is a software architectural style enabling data transfer and functionality using common web-based communication protocols. Stormpath provides a REST API for tenants so they can easily integrate Stormpath with their software applications.
-<a id="Tenant"></a>Tenant | A **tenant** is a private partition within Stormpath containing all data and settings—specifically your applications, directories, groups and accounts. When you sign up for Stormpath, a tenant is created for you. You can add other user accounts (for example, for your co-workers) to your tenant to help you manage your data. For convenience, many companies like to have one tenant where they can easily manage all application, directory, and account information across their organization.*
+<a id="identity-management"></a>Identity Management | **Identity management** is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks.
+<a id="role"></a>Role |A **role** is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups.
+<a id="rbac"></a>Role-Based Access Control | **Role-Based Access Control** (RBAC) is the act of controlling access to protected resources or behavior based on the groups assigned to a particular account. RBAC is done using Stormpath groups.
+<a id="rest-api-def"></a>REST API | **REST API** is a software architectural style enabling data transfer and functionality using common web-based communication protocols. Stormpath provides a REST API for tenants so they can easily integrate Stormpath with their software applications.
+<a id="tenant"></a>Tenant | A **tenant** is a private partition within Stormpath containing all data and settings—specifically your applications, directories, groups and accounts. When you sign up for Stormpath, a tenant is created for you. You can add other user accounts (for example, for your co-workers) to your tenant to help you manage your data. For convenience, many companies like to have one tenant where they can easily manage all application, directory, and account information across their organization.*
 
 {% docs note %}
 *You must know your tenant when logging in to the Admin Console website. There is a "Forgot Tenant" link on the login page if you do not know what your tenant is.
