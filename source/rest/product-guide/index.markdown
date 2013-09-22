@@ -163,57 +163,9 @@ The Stormpath `SAuthc1` digest algorithm is NOT the same as [RFC 2617](http://ww
 
 The Stormpath REST API currently only supports JSON resource representations. If you would like other formats supported, please email us at <support@stormpath.com> to let us know!
 
-<a class="anchor" name="resource-retrieve"></a>
-### Retrieving Resources with HTTP `GET`
-
-**Request**
-
-You can retrieve a resource representation by `GET`ting its url.
-
-An example API `GET`:
-
-    curl -u $API_KEY_ID:$API_KEY_SECRET \
-         -H "Accept: application/json" \
-         https://api.stormpath.com/v1/tenants/current
-<!-- {: .bash} -->
-
-**Response**
-
-`GET` responses contain:
-
-Item | Description
-:---- | :----
-HTTP Status Code | The code indicates general success or failure of the request.
-HTTP Headers | Various response headers are set relevant to the particular request.
-Response Body | Successful requests contain the requested entity resource representation, while failed requests show an [error representation](#errors).
-
-Possible **GET Response Status Codes** include:
-
-Response Code | Description
-:----------------------- | :----
-`200 OK` | The request was successful and the response body contains the representation requested.
-`302 FOUND` | A common redirect response; you can `GET` the representation at the URI in the `location` response header.
-`304 NOT MODIFIED` | Your client's cached version of the representation is still up to date.
-`401 UNAUTHORIZED` | Authentication credentials are required to access the resource. All requests must be authenticated.
-`403 FORBIDDEN` | The supplied authentication credentials are not sufficient to access the resource.
-`404 NOT FOUND` | We could not locate the resource based on the specified URI.
-`429 TOO MANY REQUESTS` | Your application is sending too many simultaneous requests.
-`500 SERVER ERROR` | We could not return the representation due to an internal server error.
-`503 SERVICE UNAVAILABLE` | We are temporarily unable to service the request. Please wait for a bit and try again.
-
-An example **API GET Response**:
-
-    HTTP/1.1 200 OK
-    Content-Type: application/json;charset=UTF-8;
-
-    {
-      "href": "https://api.stormpath.com/v1/tenants/cJoiwcorTTmkDDBsf02AbA",
-      "name": "My Tenant",
-      "key": "myTenant"
-    }
 
 <a class="anchor" name="resource-create"></a>
-### Creating Resources with HTTP `POST`
+### Creating Resources
 
 You create a resource by submitting an HTTP `POST` to a resource URI. Any POST body must be represented as JSON.
 
@@ -299,8 +251,58 @@ Example **Create POST Response**:
     }
 <!-- {: .http} -->
 
+<a class="anchor" name="resource-retrieve"></a>
+### Retrieving Resources
+
+**Request**
+
+You can retrieve a resource representation by `GET`ting its url.
+
+An example API `GET`:
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Accept: application/json" \
+         https://api.stormpath.com/v1/tenants/current
+<!-- {: .bash} -->
+
+**Response**
+
+`GET` responses contain:
+
+Item | Description
+:---- | :----
+HTTP Status Code | The code indicates general success or failure of the request.
+HTTP Headers | Various response headers are set relevant to the particular request.
+Response Body | Successful requests contain the requested entity resource representation, while failed requests show an [error representation](#errors).
+
+Possible **GET Response Status Codes** include:
+
+Response Code | Description
+:----------------------- | :----
+`200 OK` | The request was successful and the response body contains the representation requested.
+`302 FOUND` | A common redirect response; you can `GET` the representation at the URI in the `location` response header.
+`304 NOT MODIFIED` | Your client's cached version of the representation is still up to date.
+`401 UNAUTHORIZED` | Authentication credentials are required to access the resource. All requests must be authenticated.
+`403 FORBIDDEN` | The supplied authentication credentials are not sufficient to access the resource.
+`404 NOT FOUND` | We could not locate the resource based on the specified URI.
+`429 TOO MANY REQUESTS` | Your application is sending too many simultaneous requests.
+`500 SERVER ERROR` | We could not return the representation due to an internal server error.
+`503 SERVICE UNAVAILABLE` | We are temporarily unable to service the request. Please wait for a bit and try again.
+
+An example **API GET Response**:
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href": "https://api.stormpath.com/v1/tenants/cJoiwcorTTmkDDBsf02AbA",
+      "name": "My Tenant",
+      "key": "myTenant"
+    }
+
+
 <a class="anchor" name="resource-update"></a>
-### Updating Resources with HTTP `POST`
+### Updating Resources
 
 If you want to update a resource, submit an HTTP `POST` to a resource URI. Any `POST` body must be represented as JSON. You can submit one or more attributes of a resource, but at least one attribute must be specified.
 
@@ -388,7 +390,7 @@ Example **Update POST response**:
 <!-- {: .http} -->
 
 <a class="anchor" name="resource-delete"></a>
-### Deleting Resources with HTTP `DELETE`
+### Deleting Resources
 
 To delete a resource, make an HTTP `DELETE` request to the resource URL. Note that not all Stormpath REST API resources support delete.
 
