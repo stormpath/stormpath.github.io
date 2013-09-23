@@ -3632,7 +3632,7 @@ The `accountMemberships` Collection for a `group` Resource represents all accoun
 <a class="anchor" name="group-memberships"></a>
 ## Group Memberships
 
-Group Memberships are [collections](#collections) representing the association between accounts and groups. When an account is associated with a group or a group is associated with an account, a group membership is created. A group membership is a named root-level container of the relationship between an [account](#accounts) and a [group](#groups) within a [tenant](#tenants).
+A Group Membership resource represents the link between an [account](#accounts) and a [group](#groups). When an account is associated with a group or a group is associated with an account, a group membership is created. 
 
 <a class="anchor" name="group-membership-resource"></a>
 ### Group Membership Resource
