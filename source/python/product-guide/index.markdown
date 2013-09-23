@@ -10,7 +10,7 @@ For help to quickly get started with Stormpath, refer to the [Python Quickstart 
 
 ***
 
-##<a id="Stormpath"></a>What is Stormpath?
+## What is Stormpath?
 
 Stormpath is the first easy, secure user management and authentication service for developers.
 
@@ -20,11 +20,11 @@ Built for developers, it offers an easy API, open source SDKs, and an active com
 
 By offloading user management and authentication to Stormpath, developers can bring new applications to market faster, reduce development and operations costs, and protect their users with best-in-class security.
 
-###<a id="ArchitecturalOverview"></a>Architectural Overview
+### Architectural Overview
 
 <img src="http://www.stormpath.com/sites/default/files/docs/Architecture.png" alt="High-level Architecture" title="High-level Architecture" width="700" height="430">
 
-###<a id="AdminConsole"></a>Stormpath Admin Console
+### Stormpath Admin Console
 
 The Stormpath Admin Console allows authorized administrators to:
 
@@ -36,7 +36,7 @@ The Stormpath Admin Console allows authorized administrators to:
 
 To access the Stormpath Admin Console, visit [https://api.stormpath.com/login](https://api.stormpath.com/login)
 
-###<a id="RestAPI"></a>REST API
+### REST API
 
 The Stormpath API offers authorized developers and administrators programmatic access to:
 
@@ -49,7 +49,7 @@ The Stormpath API offers authorized developers and administrators programmatic a
 For more detailed documentation on the Stormpath API, visit the [API Reference Documentation](http://www.stormpath.com/docs/rest/api/).
 
 
-###<a id="PythonSDK"></a>Python SDK
+### Python SDK
 
 The Stormpath Python SDK allows any Python-based application to easily use the Stormpath user management service for all authentication and access control needs.
 
@@ -65,17 +65,17 @@ If you are using a language that does not yet have an SDK, you can use the REST 
 
 ***
 
-##<a id="SDKConcepts"></a>*SDK Concepts*
+## SDK Concepts
 
 Throughout this guide, code examples appear using the Stormpath Python SDK.
 
 Although knowing how the SDK is designed and how it works is not required to use it, knowing some of the design details will help you use it more efficiently and effectively.
 
-###<a id="Client"></a>Client
+### Client
 
 The root entry point for SDK functionality is the `Client` instance. Using the client instance, you can access all tenant data, such as applications, directories, groups, and accounts.
 
-####<a id="PreferredConfig"></a>Preferred Configuration
+#### Preferred Configuration
 
 There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure `apiKey.properties` file, where the Client implementation is being used:
 
@@ -86,7 +86,7 @@ There are different ways to create a client instance to interact with your resou
 
 This is heavily recommended if you have access to the file system.
 
-####<a id="APIKeyConfig"></a>API Key Configuration
+#### API Key Configuration
 
 The [Python Quickstart Guide](http://www.stormpath.com/docs/python/quickstart) assumes you have easy access to an `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance by directly providing the API key and, where often they are available as environment variables, such as `$_ENV`.
 
@@ -105,7 +105,7 @@ DO NOT specify your actual `apiKey.id` and `apiKey.secret` values in source code
 Only use this technique if the values are obtained at runtime using a configuration mechanism that is not hard-coded into source code or easily-visible configuration files.
 
 
-###<a id="HighLevelOverview"></a>High-level Overview
+### High-level Overview
 
 The Stormpath SDK and the associated components reside and execute within your application at runtime. When making method calls on the SDK objects - particularly objects that represent REST data resources such as applications and accounts - the method call automatically triggers an HTTPS request to the Stormpath API server if necessary.
 
@@ -126,7 +126,7 @@ The request is broken down as follows:
 6. The Stormpath SDK transforms the JSON response into a directory object instance.
 7. The directory instance is returned to the application.
 
-###<a id="DetailedDesign"></a>Detailed Design
+### Detailed Design
 
 The Stormpath SDK is designed with two primary design principles:
 
@@ -136,7 +136,7 @@ Although most SDK end users never need to customize the implementation behavior 
 * **Proxying**<br>
 Python instances representing REST resources use the [Proxy software design pattern](http://en.wikipedia.org/wiki/Proxy_pattern) to intercept property access allowing the SDK implementation to automatically load the resource data or other referenced resources if necessary.
 
-####<a id="ArchitecturalComponents"></a>Architectural Components
+#### Architectural Components
 
 The core component concepts of the SDK are as follows:<br>
 <img src="http://www.stormpath.com/sites/default/files/docs/ComponentArchitecture.png" alt="Stormpath SDK Component Architecture" title="Stormpath SDK Component Architecture" width="670">
@@ -146,7 +146,7 @@ The core component concepts of the SDK are as follows:<br>
 When the SDK needs to send a Python `Resource` instance state to or query the server for resources, it uses the <a href="https://pypi.python.org/pypi/requests" title="httpclient">Requests</a> library to execute the HTTP requests and read the responses.
 * **Resources** are standard Python objects that have a 1-to-1 correlation with REST data resources in the Stormpath API server such as applications and directories. Applications directly use these `resource` objects for security needs, such as authenticating user accounts, creating groups and accounts, finding application accounts, assigning accounts to groups, and resetting passwords.
 
-###<a id="ResourcesAndProxying"></a>Resources and Proxying
+### Resources and Proxying
 
 When applications interact with a Stormpath SDK `resource` instance, they are really interacting with an intelligent data-aware proxy, not a simple object with some properties. Specifically, the `resource` instance is a proxy to the SDK `Client` allowing resource instances to load data that might not yet be available.
 
@@ -182,7 +182,7 @@ The previous lookup becomes:
 
 If the directory already exists in memory because the SDK has previousy loaded it, the directory is immediately returned. However, if the directory is not present, the directory `href` is used to return the directory properties (the immediate data loaded) automatically for you. This technique is known as *lazy loading* which allows you to traverse entire object graphs automatically without requiring constant knowledge of `href` URLs.
 
-###<a id="ErrorHandling"></a>Error Handling
+### Error Handling
 
 Errors thrown from the server are translated to a [ResourceError](https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/error.py). This applies to all requests to the Stormpath API endpoints.
 
@@ -203,7 +203,7 @@ For example, when getting the current tenant from the client you can catch any e
 Note that in this case the custom error is produced because an account property is read but no accounts were returned (the second call), not because of the first call. A 'GET' request is sent when trying to access the account, not before. The 'get' method only generates the Tenant object and sets the 'url' property to be used in the next call so simply calling 'get' wouldn't generate an exception. Since the SDK uses Requests as the basis for REST API calls, it precedes the custom Stormpath error. So if the URL used is malformed Requests will raise one of its own exceptions. However, once the request is sent, if the URL is correct but the REST API returns a HTTP status signifying an error, the Stormpath Error is raised.
 ***
 
-##<a id="Applications"></a>*Applications*
+## Applications
 
 An [application](#Application) in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath.
 
@@ -235,7 +235,7 @@ For applications, you can:
 * [Disable an application](#DisableApps).
 * [Delete an application](#DeleteApps).
 
-###<a id="LocateAppURL"></a>Locate the Application REST URL
+### Locate the Application REST URL
 
 When communicating with the Stormpath REST API, you might need to reference an application using the REST URL or `href`. For example, you require the REST URL to delete applications or to obtain a listing of accounts mapped to an application.
 
@@ -247,7 +247,7 @@ To obtain an application REST URL:
 The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/AppResturl.png" alt="Application Resturl" title="Application Resturl">
 
 
-###<a id="ListApps"></a>List Applications
+### List Applications
 
 To retrieve a list of applications, you must do the following get the Tenant applications from the client.
 
@@ -260,7 +260,7 @@ To retrieve a list of applications, you must do the following get the Tenant app
 		print('Application Description ' + app.description)
 		print('Application Status ' + app.status)
 
-###<a id="RetrieveApps"></a>Retrieve an Application
+### Retrieve an Application
 
 You will typically retrieve an `Application` referenced from another resource, for example using the `Application Collection` property of the `Tenant` resource.
 
@@ -271,7 +271,7 @@ After you have the `href` it can be loaded directly as an object instance by ret
 	application_href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE'
 	application = client.applications.get(application_href)
 
-###<a id="RegisterApps"></a>Register an Application
+### Register an Application
 
 To authenticate a user account in your [application](#Application), you must first register the application with Stormpath.
 
@@ -293,7 +293,7 @@ If `True` is used instead of a string that represents the directory name, a gene
 This is useful if you don't want to be bothered with organizing your directories and prefer to start using the application functionality as soon as possible.
 
 
-###<a id="EditApps"></a>Edit an Application
+### Edit an Application
 
 To edit applications, use the attributes of an existing application instance to set the values and call the `save` method:
 
@@ -302,14 +302,13 @@ To edit applications, use the attributes of an existing application instance to 
 
 	application.save()
 
-###<a id="ManageLoginSources"></a>Manage Application Login Sources
+### Manage Application Login Sources
 
 [Login sources](#LoginSource) define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.
 
 In Stormpath, a directory or group can be a login source for an application. At least one login source must be associated with an application for accounts to log in to that application.
 
-####How Login Attempts Work
-
+#### How Login Attempts Work
 
 **Example:**
 Assume an application named Foo has been mapped to two login sources, the Customers and Employees directories, in that order.
@@ -336,7 +335,7 @@ To manage application login sources, you must log in to the Stormpath Admin Cons
 The login sources appear in order of priority.<br>
 	<img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
 
-####<a id="ChangeDefaults"></a>Change Default Account and Group Locations
+#### Change Default Account and Group Locations
 
 On the Login Sources tab for applications, you can select the login sources (directory or group) to use as the default locations when creating new accounts and groups.
 
@@ -348,7 +347,7 @@ On the Login Sources tab for applications, you can select the login sources (dir
 	b. To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select **New Group Location**.
 5. Click **Save**.
 
-####<a id="AddLoginSource"></a>Add Another Login Source
+#### Add Another Login Source
 
 Adding a login source to an application provisions a directory or group to that application.  By doing so, all login source accounts can log into the application.
 
@@ -364,7 +363,7 @@ Adding a login source to an application provisions a directory or group to that 
 8. Click **Add Login Source**.<br>
 The new login source is added to the bottom of the login sources list.
 
-####<a id="ChangeLoginSourcePriority"></a>Change Login Source Priority Order
+#### Change Login Source Priority Order
 
 When you map multiple login sources to an application, you must also define the login source order.
 
@@ -382,7 +381,7 @@ To specify the login source order:
 	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
 7. Click **Save Priorities**.
 
-####<a id="RemoveLoginSource"></a>Remove Login Sources
+#### Remove Login Sources
 
 Removing a login source from an application deprovisions that directory or group from the application. By doing so, all accounts from the login source are no longer able to log into the application.
 
@@ -396,7 +395,7 @@ To remove a login source from an application:
 6. Under the Actions column, click **Remove**.
 
 
-###<a id="EnableApps"></a>Enable an Application
+### Enable an Application
 
 Enabling a previously disabled application allows any enabled directories, groups, and accounts associated with the application login sources in Stormpath to log in.
 
@@ -407,7 +406,7 @@ To enable an application, you must set the 'ENABLED' status to the application i
 	application.status = "ENABLED"
 	application.save()
 
-###<a id="DisableApps"></a>Disable an Application
+### Disable an Application
 
 Disabling an application prevents the application from logging in any accounts in Stormpath, but retains all application configurations. If you must temporarily turn off logins, disable an application.
 
@@ -423,7 +422,7 @@ To disable an application, you must set the 'DISABLED' status to the application
 
 	application.save()
 
-###<a id="DeleteApps"></a>Delete an Application
+### Delete an Application
 
 Deleting an application completely erases the application and its configurations from Stormpath. We recommend that you disable an application rather than delete it, if you anticipate that you might use the application again.
 
@@ -440,7 +439,7 @@ To delete an application, you must call the 'delete' method on the application i
 
 ***
 
-##<a id="Directories"></a>*Directories*
+## Directories
 
 [Directories](#Directory) contain [authentication](#Authentication) and [authorization](#Authorization) information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.
 
@@ -483,8 +482,7 @@ For directories, you can:
 * [Disable a directory](#DisableDir).
 * [Delete a directory](#DeleteDir).
 
-
-###<a id="LocateDirURL"></a>Locate the Directory REST URL
+### Locate the Directory REST URL
 
 When communicating with the Stormpath REST API, you might need to reference a directory using the REST URL or `href`. For example, you require the REST URL to create accounts in the directory using an SDK.
 
@@ -495,8 +493,7 @@ To obtain a directory REST URL:
 3. In the Directories table, click the directory name.<br>
 The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/Resturl.png" alt="Application Resturl" title="Application Resturl">
 
-
-###<a id="ListDirectories"></a>List Directories
+### List Directories
 
 To retrieve directories, you must get the directories from the client instance.
 
@@ -509,7 +506,7 @@ To retrieve directories, you must get the directories from the client instance.
 	         print('Directory Description ' + dir.description)
 	         print('Directory Status ' + dir.status)
 
-###<a id="RetrieveDir"></a>Retrieve a Directory
+### Retrieve a Directory
 
 You will typically retrieve a `Directory` linked from another resource.
 
@@ -522,7 +519,7 @@ After you have the `href` it can be loaded directly as an object instance by ret
 	href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
 	directory = client.directories.get(href)
 
-###<a id="CreateDir"></a>Create a Directory
+### Create a Directory
 
 To create a directory for application authentication, you must know which type of directory service to use.
 
@@ -536,7 +533,7 @@ You can create a:
 
 **Note:** The ability to create a mirrored, or agent, directory is connected to your subscription. If the option is not available, click the question mark for more information.
 
-####<a id="CreateCloud"></a>Create a Cloud Directory
+#### Create a Cloud Directory
 
 	directory = client.directories.create({
 		name: "This is my test directory",
@@ -544,7 +541,7 @@ You can create a:
 	})
 
 
-####<a id="CreateMirror"></a>Create a Mirrored Directory
+#### Create a Mirrored Directory
 
 Mirrored directories, after initial configuration, are accessible through the Agents tab of the directory.
 
@@ -633,7 +630,7 @@ After the agent is configured, associated with the agent is a status. This statu
 After the directory has been created, although the Workflows tab appears, workflows cannot be configured for this type of directory.
 {% enddocs %}
 
-###<a id="AssocApplications"></a>Map Directories to Applications
+### Map Directories to Applications
 
 Currently, you can only associate directories with application in the Stormpath Admin Console.
 
@@ -644,8 +641,7 @@ Currently, you can only associate directories with application in the Stormpath 
 5. To change the login source, you must modify the application login source information.<br>If the directory is currently not specified as a login source for an application, the table contains the following message:<br>
 	*Currently, there are no applications associated with this directory. To create an association, click here, and select an application. From the login sources tab, you can create the association.*
 
-
-###<a id="EditDir"></a>Edit Directory Details
+### Edit Directory Details
 
 To edit directories, use the attributes of an existing directory instance to set the values and call the `save` method:
 
@@ -655,7 +651,7 @@ To edit directories, use the attributes of an existing directory instance to set
 
 	directory.save()
 
-###<a id="UpdateAgent"></a>Update Agent Configuration
+### Update Agent Configuration
 
 You can modify an agent configuration going through the [Directories](#UpdateAgentDir) or [Agent](#UpdateAgentAgents) tabs.
 
@@ -671,21 +667,21 @@ The Agents tab contains a table listing all known agents used by you. Each table
 
 Although the Workflows tab appears for a mirrored LDAP/AD directory, workflows cannot be configured for this type of directory.
 
-####<a id="UpdateAgentDir"></a>Directories Tab
+#### Directories Tab
 1. Log in to the Stormpath Admin Console.
 2. Click the **Directories** tab.
 3. Click the directory name.
 4. Click the **Agent Configuration** tab.<br> **Note:** If you do not see an Agent Configuration tab, you are looking at a Stormpath cloud directory.
 5. Make the necessary changes and click **Update**.
 
-####<a id="UpdateAgentAgent"></a>Agents Tab
+#### Agents Tab
 1. Log in to the Stormpath Admin Console.
 2. Click the **Agents** tab.
 3. Click the directory name.
 4. Make the necessary changes and click **Update**.
 
 
-###<a id="EnableDir"></a>Enable a Directory
+### Enable a Directory
 
 Enabling previously disabled directories allows the groups and accounts to log into any applications for which the directory is defined as a login source.
 
@@ -704,7 +700,7 @@ To enable a directory, you must:
 
 	 directory.save()
 
-###<a id="DisableDir"></a>Disable a Directory
+### Disable a Directory
 
 Disabling directories prevents the accounts from logging into any applications connected to Stormpath, but retains the directory data as well as all group and account data. If you must shut off several accounts quickly and easily, disable a directory.
 
@@ -725,7 +721,7 @@ To disable a directory, you must:
 
 	 directory.save()
 
-###<a id="DeleteDir"></a>Delete a Directory
+### Delete a Directory
 
 **Code:**
 
@@ -736,9 +732,7 @@ To disable a directory, you must:
 
 ***
 
-***
-
-##<a id="Accounts"></a>*Accounts*
+## *Accounts*
 
 In Stormpath, users are referred to as user account objects or [accounts](#Account). The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.
 
@@ -749,7 +743,6 @@ You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accoun
 * The LDAP/AD directory is deleted.
 
 An account is a unique identity within a directory. An account can exist in only a single directory but can be a part of multiple groups owned by that directory.
-
 
 For accounts, the the basic detail information includes:
 
@@ -782,7 +775,7 @@ For accounts, you can:
 * [Disable an account](#DisableAccounts).
 * [Delete an account](#DeleteAccounts).
 
-###<a id="LocateAccURL"></a>Locate the Account REST URL
+### Locate the Account REST URL
 When communicating with the Stormpath REST API, you might need to reference an account using the REST URL or `href`. For example, you require the REST URL to create accounts in the directory using an SDK.
 
 To obtain a directory REST URL:
@@ -792,7 +785,7 @@ To obtain a directory REST URL:
 3. In the Accounts table, click the account name.<br>
 The REST URL appears on the Details tab.
 
-###<a id="AuthenticateAccounts"></a>Authenticate Accounts
+### Authenticate Accounts
 
 To authenticate an account you must have the application the account authenticates against. With the application, the account is authenticated by providing the username and password as follows:
 
@@ -802,11 +795,11 @@ To authenticate an account you must have the application the account authenticat
 	# The result is an authenticated Account
 	account = application.authenticate_account("USERNAME", "PASSWORD")
 
-###<a id="ListAccounts"></a>List Accounts
+### List Accounts
 
 For accounts, you can view, or list them according to their <a href="#ListGroupAccounts" title="group membership">group membership</a>, <a href="#ListDirectoryAccounts" title="directory accounts">the directories to which they belong</a>, or the <a href="#ViewAccountMap" title="View Account Map">applications to which they are associated</a>.
 
-####<a id="ListGroupAccounts"></a>List Accounts by Group
+#### List Accounts by Group
 
 To list all groups associated with an account:
 
@@ -825,7 +818,7 @@ To list all groups associated with an account:
 	    print('Given Name ' + acc.givenName)
 
 
-####<a id="ListDirectoryAccounts"></a>List Accounts by Directory
+#### List Accounts by Directory
 
 To list user accounts contained in a directory, you must:
 
@@ -843,7 +836,7 @@ To list user accounts contained in a directory, you must:
 	for acc in accounts:
 	    print('Given Name ' + acc.givenName)
 
-####<a id="ViewAccountMap"></a>List Accounts by Application
+#### List Accounts by Application
 
 To list user accounts mapped to an application, you must:
 
@@ -860,14 +853,14 @@ To list user accounts mapped to an application, you must:
 	for acc in accounts:
 	    print('Given Name ' + acc.givenName)
 
-###<a id="RetrieveAccounts"></a>Retrieve an Account
+### Retrieve an Account
 
 To retrieve a specific account you need the `href` which can be loaded as an object instance by retrieving it from the server, using the client:
 
 	href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
 	account = client.accounts.get(href)
 
-###<a id="CreateAccounts"></a>Create an Account
+### Create an Account
 
 To create a user accounts, you must:
 
@@ -900,7 +893,7 @@ If you want to associate the account to a group, add the following:
 
 	account.add_group(group)
 
-###<a id="EditAccounts"></a>Edit Account Details
+### Edit Account Details
 
 To edit accounts, use the attributes of an existing account instance to set the values and call the `save()` method:
 
@@ -918,7 +911,7 @@ If you want to add a group to an account, do the following:
 	account.add_group(group)
 
 
-###<a id="AssignAccountGroup"></a>Assign Accounts to Groups
+### Assign Accounts to Groups
 
 The association between a group and an account can be done from an account or group instance. If the account is part of a directory containing groups, you can associate the account with a group. To add an account to a group, you must:
 
@@ -936,7 +929,7 @@ The association between a group and an account can be done from an account or gr
 
 	# account.add_group(group) OR group.add_account(account)
 
-###<a id="RemoveAccountGroup"></a>Remove Accounts from Groups
+### Remove Accounts from Groups
 
 The remove an account from, or delete the account as a member of, a group you must:
 
@@ -977,8 +970,7 @@ The remove an account from, or delete the account as a member of, a group you mu
 	if group_linked:
 		group_membership.delete()
 
-
-###<a id="EnableAccounts"></a>Enable Accounts
+### Enable Accounts
 
 Enabling a previously disabled account allows the account to log in to any applications where the directory or group is defined as an application login source.
 
@@ -999,7 +991,7 @@ To enable an account, you must:
 
 	account.save()
 
-###<a id="DisableAccounts"></a>Disable Accounts
+### Disable Accounts
 
 Disabling an account prevents the account from logging into any applications in Stormpath, but retains all account information. You typically disable an account if you must temporarily remove access privileges.
 
@@ -1022,7 +1014,7 @@ To disable an account, you must:
 
 	account.save()
 
-###<a id="DeleteAccounts"></a>Delete an Account
+### Delete an Account
 
 Deleting an account completely erases the account from the directory and erases all account information from Stormpath.
 
@@ -1033,10 +1025,9 @@ To delete an account, you must use the Stormpath Admin Console.
 3. Under the Actions column for the account, click **Delete**.
 4. In the prompt that appears, to confirm deleting the account, click **Ok**.
 
-
 ***
 
-##<a id="Groups"></a>*Groups*
+## Groups
 
 [Groups](#Group) are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with [role](#Role).
 
@@ -1066,7 +1057,7 @@ With groups, you can:
 * [Disable a group](#DisableGroups).
 * [Delete a group](#DeleteGroups).</p>
 
-###<a id="LocateGroupURL"></a>Locate the Group REST URL
+### Locate the Group REST URL
 
 When communicating with the Stormpath REST API, you might need to reference a group using the REST URL or `href`. For example, you require the REST URL to create accounts to associate with the group in the directory using an SDK.
 
@@ -1079,11 +1070,11 @@ To obtain a group REST URL:
 5. Click the group name.<br>
 The REST URL appears on the Details tab.
 
-###<a id="ListGroups"></a>List Groups
+### List Groups
 
 For groups, you can view, or list them by [account membership](#ListAccountGroups) or [the directory](#ListDirectoryGroups).
 
-####<a id="ListAccountGroups"></a>List Accounts in a Group
+#### List Accounts in a Group
 
 To list all accounts associated with, or members of, a group, you must:
 
@@ -1101,7 +1092,7 @@ To list all groups on a directory or an account, loop the groups aggregate from 
 	for group in groups:
 		print("Group " + grp.name)
 
-####<a id="ListDirectoryGroups"></a>List Groups in a Directory
+#### List Groups in a Directory
 
 To list all groups contained within a directory, you must:
 
@@ -1117,15 +1108,14 @@ To list all groups on a directory or an account, loop the groups aggregate from 
 	for group in groups:
 		print("Group " + grp.name)
 
-###<a id="RetrieveGroups"></a>Retrieve a Group
+### Retrieve a Group
 
 To retrieve a specific group you need the `href` which can be loaded as an object instance by retrieving it from the server:
 
 	href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
 	group = client.groups.get(href)
 
-
-###<a id="CreateGroups"></a>Create Groups
+### Create Groups
 
 You can create a group from the Python SDK. You can do it getting a reference to a directory and creating the group out of it:
 
@@ -1138,8 +1128,7 @@ You can create a group from the Python SDK. You can do it getting a reference to
       description: 'The description of the new group'
     })
 
-
-###<a id="EditGroups"></a>Edit Group Details
+### Edit Group Details
 
 To edit groups, use the attributes of an existing group instance to set the values and call the save method:
 
@@ -1149,8 +1138,7 @@ To edit groups, use the attributes of an existing group instance to set the valu
 
 	group.save()
 
-
-###<a id="EnableGroups"></a>Enable a Group
+### Enable a Group
 
 If the group is contained within an <em>enabled directory where the directory is defined as a login source</em>, then enabling or re-enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as a login source.
 
@@ -1175,7 +1163,7 @@ To enable a group, you must:
 	group.save()
 
 
-###<a id="DisableGroups"></a>Disable a Group
+### Disable a Group
 
 If a group is explicitly set as an application login source, then disabling that group prevents any of its user accounts from logging into that application but retains the group data and memberships. You would typically disable a group if you must shut off a group of user accounts quickly and easily.
 
@@ -1195,8 +1183,7 @@ To disable a group, you must:
 
 	group.save()
 
-
-###<a id="DeleteGroups"></a>Delete a Group
+### Delete a Group
 
 A group can be deleted from the Python SDK invoking `group.delete()`:
 
@@ -1205,10 +1192,9 @@ A group can be deleted from the Python SDK invoking `group.delete()`:
 
 	group.delete()
 
-
 ***
 
-##<a id="ManageWorkflowAutomation"></a>*Workflow Automations*
+## Workflow Automations
 
 Workflows are common user management operations that are automated for you by Stormpath. Account Registration and Verification workflow configurations manage how accounts are created in your directory. The Password Reset workflow enables you to configure how password reset works and the context of messages. For both workflows, messages can be formatted in plain text or HTML.
 
@@ -1218,9 +1204,7 @@ On the Workflows tab, you can automate <a href="#AccountRegistration" title="acc
 
 <img src="http://www.stormpath.com/sites/default/files/docs/ManageWorkflows.png" alt="Workflow Automation" title="Workflow Automation" width="670" height="250">
 
-
-
-###<a id="AccountRegistration"></a>Account Registration and Verification
+### Account Registration and Verification
 
 For the Account Registration and Verification workflow, you must perform the following actions:
 
@@ -1231,7 +1215,7 @@ For the Account Registration and Verification workflow, you must perform the fol
 
 **Note:** The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.
 
-####<a id="ConfigureAccountRegistration"></a>Configure Account Registration and Verification
+#### Configure Account Registration and Verification
 
 To configure account registration and verification:
 
@@ -1290,17 +1274,17 @@ Body | The value for the body of the message. Variable substitution is supported
 6. When all the fields are complete, click **Update**.
 
 
-####<a id="InitiateAccountRegistration"></a>Initiate Account Registration and Verification
+#### Initiate Account Registration and Verification
 
 If the workflow is enabled, an account registration is automatically initiated during an account creation.
 
 
-####<a id="InitiateAccountRegistration"></a>Initiate Account Registration and Verification
+#### Initiate Account Registration and Verification
 
 If the workflow is enabled, an account registration is automatically initiated during an account creation.
 
 
-####<a id="VerifyAccount"></a>Verify Account
+#### Verify Account
 
 If a directory has the the account verification workflow enabled:
 
@@ -1316,13 +1300,13 @@ If a directory has the the account verification workflow enabled:
 			account = client.accounts.verify_email_token(verification_token)
 
 
-###<a id="PasswordReset"></a>Password Reset
+### Password Reset
 
 When you reset an account password using Stormpath, the user receives an email with a link and a secure reset token. The link sends the user to a password reset page where they submit a new password to Stormpath. When the password is successfully reset, the user receives a success email. You can configure, at the directory level, how password reset works, the URL of the reset page, and the content of the email messages.
 
 Messages can be formatted in plain text or HTML.
 
-####<a id="ConfigurePasswordReset"></a>Configure Password Reset
+#### Configure Password Reset
 
 To configure the password reset workflow:
 
@@ -1364,7 +1348,7 @@ Body | The value for the body of the message. Variable substitution is supported
 
 9. When all the fields are complete, click **Update**.
 
-####<a id="InitiatePasswordReset"></a>Initiate Password Reset
+#### Initiate Password Reset
 
 To initiate the password reset workflow in your application, you must create a password reset token, which is sent from Stormpath in an email to the user.
 
@@ -1377,7 +1361,7 @@ This is done from the application as follows:
 	application.send_password_reset_email('email')
 
 
-####<a id="CompletePasswordReset"></a>Complete Password Reset
+#### Complete Password Reset
 
 After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the [base URL](#BaseURL) and the reset token.
 
@@ -1403,36 +1387,35 @@ The password is changed as follows:
 
 ***
 
-##<a id="Administration"></a>*Administering Stormpath*
+## Administering Stormpath
 
 For more information about administering Stormpath using the Admin Console, please refer to the [Admin Console Product Guide](http://stormpath.com/docs/console/product-guide).
 
 ***
 
-<a class="anchor" name="glossary"></a>
 ## Glossary of Terms
 
 
 Attribute | Description
 :----- | :----- |
-<a id="Account"></a>Account | An **account** is a unique identity within a directory. Stormpath does not use the term *user* because it implies a person, while accounts can represent a person, 3rd-party software, or non-human clients. Accounts can be used to log in to applications.
-<a id="Agent"></a>Agent | An **agent** populates LDAP directories. An agent status reflects communication/error state because the agent is communicating with Stormpath.
-<a id="APIKey"></a>API Key | An **API key** is a unique ID paired with a secret value. API keys are used by software applications to communicate with Stormpath through the Stormpath REST API.
-<a id="Application"></a>Application | An **application** is a software application that communicates with Stormpath. It is typically a real world application that you are building, such as a web application, but it can also be infrastructural software, such as a Unix or Web server.
-<a id="Authentication"></a>Authentication | **Authentication** is the act of proving someone (or something) is actually who they say they are. When an account is authenticated, there is a high degree of certainty that the account identity is legitimate.
-<a id="Authorization"></a>Authorization | **Authorization**, also known as Access Control, is the process of managing and enforcing access to protected resources, functionality, or behavior.
-<a id="Directory"></a>Directory | A **directory** is a collection of accounts and groups. Administrators can use different directories to create silos of accounts. For example, customers and employees can be stored in different directories.
-<a id="DirectoryAgent"></a>Directory Agent | A **directory agent** is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory.
-<a id="DirectoryMirroring"></a>Directory Mirroring | **Directory mirroring** securely replicates selected data from one (source) directory to another (target or mirrored) directory for authentication and access control. The source directory is the authoritative source for all data. Changes are propagated to the target/mirror directory for convenience and performance benefits.
-<a id="Group"></a>Group | A **group** is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role.
-<a id="GroupMembership"></a>Group Membership | A **group membership** is a two-way mapping between an account and a group.
-<a id="AccountStore"></a>Account Store | A **account store** is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.
+<a id="account"></a>Account | An **account** is a unique identity within a directory. Stormpath does not use the term *user* because it implies a person, while accounts can represent a person, 3rd-party software, or non-human clients. Accounts can be used to log in to applications.
+<a id="agent"></a>Agent | An **agent** populates LDAP directories. An agent status reflects communication/error state because the agent is communicating with Stormpath.
+<a id="apikey"></a>API Key | An **API key** is a unique ID paired with a secret value. API keys are used by software applications to communicate with Stormpath through the Stormpath REST API.
+<a id="application"></a>Application | An **application** is a software application that communicates with Stormpath. It is typically a real world application that you are building, such as a web application, but it can also be infrastructural software, such as a Unix or Web server.
+<a id="authentication"></a>Authentication | **Authentication** is the act of proving someone (or something) is actually who they say they are. When an account is authenticated, there is a high degree of certainty that the account identity is legitimate.
+<a id="authorization"></a>Authorization | **Authorization**, also known as Access Control, is the process of managing and enforcing access to protected resources, functionality, or behavior.
+<a id="directory"></a>Directory | A **directory** is a collection of accounts and groups. Administrators can use different directories to create silos of accounts. For example, customers and employees can be stored in different directories.
+<a id="directory-agent"></a>Directory Agent | A **directory agent** is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory.
+<a id="directory-mirroring"></a>Directory Mirroring | **Directory mirroring** securely replicates selected data from one (source) directory to another (target or mirrored) directory for authentication and access control. The source directory is the authoritative source for all data. Changes are propagated to the target/mirror directory for convenience and performance benefits.
+<a id="group"></a>Group | A **group** is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role.
+<a id="group-membership"></a>Group Membership | A **group membership** is a two-way mapping between an account and a group.
+<a id="account-store"></a>Account Store | A **account store** is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.
 <a id="AccountStoreMapping"></a>Account Store Mapping | An **account store mapping** is a mapping between a group or directory and an application.
-<a id="IdentityManagement"></a>Identity Management | **Identity management** is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks.
-<a id="Role"></a>Role |A **role** is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups.
-<a id="RBAC"></a>Role-Based Access Control | **Role-Based Access Control** (RBAC) is the act of controlling access to protected resources or behavior based on the groups assigned to a particular account. RBAC is done using Stormpath groups.
-<a id="RESTAPIdef"></a>REST API | **REST API** is a software architectural style enabling data transfer and functionality using common web-based communication protocols. Stormpath provides a REST API for tenants so they can easily integrate Stormpath with their software applications.
-<a id="Tenant"></a>Tenant | A **tenant** is a private partition within Stormpath containing all data and settings—specifically your applications, directories, groups and accounts. When you sign up for Stormpath, a tenant is created for you. You can add other user accounts (for example, for your co-workers) to your tenant to help you manage your data. For convenience, many companies like to have one tenant where they can easily manage all application, directory, and account information across their organization.*
+<a id="identity-management"></a>Identity Management | **Identity management** is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks.
+<a id="role"></a>Role |A **role** is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups.
+<a id="rbac"></a>Role-Based Access Control | **Role-Based Access Control** (RBAC) is the act of controlling access to protected resources or behavior based on the groups assigned to a particular account. RBAC is done using Stormpath groups.
+<a id="rest-api-def"></a>REST API | **REST API** is a software architectural style enabling data transfer and functionality using common web-based communication protocols. Stormpath provides a REST API for tenants so they can easily integrate Stormpath with their software applications.
+<a id="tenant"></a>Tenant | A **tenant** is a private partition within Stormpath containing all data and settings—specifically your applications, directories, groups and accounts. When you sign up for Stormpath, a tenant is created for you. You can add other user accounts (for example, for your co-workers) to your tenant to help you manage your data. For convenience, many companies like to have one tenant where they can easily manage all application, directory, and account information across their organization.*
 
 {% docs note %}
 *You must know your tenant when logging in to the Admin Console website. There is a "Forgot Tenant" link on the login page if you do not know what your tenant is.
