@@ -1724,7 +1724,6 @@ This is a <a href="https://github.com/stormpath/stormpath-shiro-web-sample" titl
 
 ***
 
-
 ## Administering Stormpath
 
 For more information about administering Stormpath using the Admin Console, please refer to the [Admin Console Product Guide](http://stormpath.com/docs/console/product-guide).
