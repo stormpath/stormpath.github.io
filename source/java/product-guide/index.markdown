@@ -1233,7 +1233,7 @@ To disable an account, you must:
 
 **Code:**
 
-	import com.stormpath.sdk.ds.*;
+	 import com.stormpath.sdk.ds.*;
 	 import com.stormpath.sdk.account.*;
 	 import com.stormpath.sdk.resource.Status;
 	 ...
@@ -1251,12 +1251,25 @@ To disable an account, you must:
 
 Deleting an account completely erases the account from the directory and erases all account information from Stormpath.
 
-To delete an account, you must use the Stormpath Admin Console.
+To delete an account, use the account object's `delete` function to delete the object:
 
-1. Log in to the Stormpath Admin Console.
-2. Click the **Accounts** tab.
-3. Under the Actions column for the account, click **Delete**.
-4. In the prompt that appears, to confirm deleting the account, click **Ok**.
+**Code:**
+
+	 import com.stormpath.sdk.ds.*;
+	 import com.stormpath.sdk.account.*;
+	 import com.stormpath.sdk.resource.Status;
+	 ...
+	 ...
+	 DataStore dataStore = client.getDataStore(); 
+
+	 String href = "https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE";
+	 Account account = client.getDataStore().getResource(href, Account.class); 
+
+	 account.delete();
+
+{% docs warning %}
+Once an account has been deleted, it cannot be recovered. All information associated with the account resource (e.g., username, email, encrypted password, and so on) is permanently deleted. 
+{% enddocs %}
 
 ## Groups
 

@@ -1791,7 +1791,7 @@ account.save();
 
 <p><strong>Code:</strong></p>
 
-<pre><code>import com.stormpath.sdk.ds.*;
+<pre><code> import com.stormpath.sdk.ds.*;
  import com.stormpath.sdk.account.*;
  import com.stormpath.sdk.resource.Status;
  ...
@@ -1810,14 +1810,25 @@ account.save();
 
 <p>Deleting an account completely erases the account from the directory and erases all account information from Stormpath.</p>
 
-<p>To delete an account, you must use the Stormpath Admin Console.</p>
+<p>To delete an account, use the account object&rsquo;s <code>delete</code> function to delete the object:</p>
 
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Accounts</strong> tab.</li>
-<li>Under the Actions column for the account, click <strong>Delete</strong>.</li>
-<li>In the prompt that appears, to confirm deleting the account, click <strong>Ok</strong>.</li>
-</ol>
+<p><strong>Code:</strong></p>
+
+<pre><code> import com.stormpath.sdk.ds.*;
+ import com.stormpath.sdk.account.*;
+ import com.stormpath.sdk.resource.Status;
+ ...
+ ...
+ DataStore dataStore = client.getDataStore(); 
+
+ String href = "https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE";
+ Account account = client.getDataStore().getResource(href, Account.class); 
+
+ account.delete();
+</code></pre>
+
+<div class='docs-warning'><p>Once an account has been deleted, it cannot be recovered. All information associated with the account resource (e.g., username, email, encrypted password, and so on) is permanently deleted.</p>
+</div>
 
 
 <h2><a id="groups"></a>Groups</h2>
