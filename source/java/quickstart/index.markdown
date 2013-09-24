@@ -116,7 +116,11 @@ Now that we've created an `Application`, let's create an `Account` so someone ca
 
     import com.stormpath.sdk.account.*;
     import com.stormpath.sdk.application.*;
+    import com.stormpath.sdk.directory.*;
     ...
+
+    //Retrieve directory
+    Directory directory = client.getDataStore().getResource($YOUR_DIRECTORY_URL, Directory.class);
 
     //Create the account object
     Account account = client.instantiate(Account.class);
@@ -129,8 +133,13 @@ Now that we've created an `Application`, let's create an `Account` so someone ca
     account.setMiddleName("Middle Name");
     account.setPassword("Password123");
 
+    //Add account to directory
+    directory.createAccount(account);
+
+<!-- 
     //Create the account using the existing Application object
     application.createAccount(account);
+-->
 
 ### Authenticate an Account
 

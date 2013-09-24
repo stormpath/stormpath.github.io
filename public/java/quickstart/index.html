@@ -286,7 +286,11 @@ tenant.createApplication(newAppRequest);
 
 <pre><code>import com.stormpath.sdk.account.*;
 import com.stormpath.sdk.application.*;
+import com.stormpath.sdk.directory.*;
 ...
+
+//Retrieve directory
+Directory directory = client.getDataStore().getResource($YOUR_DIRECTORY_URL, Directory.class);
 
 //Create the account object
 Account account = client.instantiate(Account.class);
@@ -299,9 +303,15 @@ account.setEmail("my@emaill.com");
 account.setMiddleName("Middle Name");
 account.setPassword("Password123");
 
-//Create the account using the existing Application object
-application.createAccount(account);
+//Add account to directory
+directory.createAccount(account);
 </code></pre>
+
+<!-- 
+    //Create the account using the existing Application object
+    application.createAccount(account);
+-->
+
 
 <h3><a id="authenticate-an-account"></a>Authenticate an Account</h3>
 
