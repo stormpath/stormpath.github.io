@@ -1656,7 +1656,7 @@ You may authenticate an account by `POST`ing a `loginAttempt` resource to the ap
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 <a class="anchor" name="login-attempt-type"></a>`type` | The type of the login attempt. The only currently supported type is `basic`. Additional types will likely be supported in the future. | Enum | basic
-<a class="anchor" name="login-attempt-value"></a>`value` | The Base64 encoded username:plaintextPassword pair. For example, for username `jsmith` and plaintext password `mySecretPassword` this `value` attribute would be set to the following computed result: `base64_encode("jsmith:mySecretPassword");` </p> The `base64_encode` method call is only an example. You will need to use the Base64 encoding method is available to you in your chosen programming language and/or software frameworks. | String | Base64 encoded String
+<a class="anchor" name="login-attempt-value"></a>`value` | The Base64 encoded username:plaintextPassword pair. For example, for username `jsmith` or email `jsmith@email.com` and plaintext password `mySecretPassword` this `value` attribute would be set to the following computed result: `base64_encode("jsmith:mySecretPassword");` </p> The `base64_encode` method call is only an example. You will need to use the Base64 encoding method is available to you in your chosen programming language and/or software frameworks. | String | Base64 encoded String
 
 **Execute Account Login Attempt (HTTP POST)**
 
@@ -1666,7 +1666,7 @@ The `POST` body must be a JSON object with the Login Attempt Resource Attributes
 
 The `type` attribute must equal `basic`.  You compute the `value` using the following (pseudo code) logic:
 
-    String concatenated = username + ':' + plain_text_password
+    String concatenated = username_or_email + ':' + plain_text_password
     byte[] bytes = concatenated.to_byte_array()
     String value = base64_encode( bytes )
 
