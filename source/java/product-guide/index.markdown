@@ -52,7 +52,7 @@ For more detailed documentation on the Stormpath API, visit the [API Reference D
 
 The Stormpath Java SDK allows any JVM-based application to easily use the Stormpath Identity and Access Management service for all authentication and access control needs. The Stormpath Java SDK allows any JVM-based application to easily use Stormpath for all user management and authentication needs. The Java SDK can be found on [**Github**](https://github.com/stormpath/stormpath-sdk-java).
 
-When making SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Java SDK therefore provides a clean object-oriented paradigm natural to JVM developers and alleviates the need to know how to make REST+JSON requests. Any JVM-based programming language can use the Stormpath Java SDK.  JVM languages include Java, Groovy, Scala, Clojure, Kotlin, Jython, and JRuby.
+When making SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Java SDK therefore provides a clean object-oriented paradigm natural to JVM developers and alleviates the need to know how to make REST+JSON requests. Any JVM-based programming language can use the Stormpath Java SDK. JVM languages include Java, Groovy, Scala, Clojure, Kotlin, Jython, and JRuby.
 
 Stormpath also offers guides and SDKs for [Ruby](https://www.stormpath.com/docs/ruby/product-guide), [PHP](https://www.stormpath.com/docs/php/product-guide), and [Python](https://www.stormpath.com/docs/python/product-guide).
 
@@ -176,7 +176,7 @@ The core component concepts of the SDK are as follows:
 
 When applications interact with a Stormpath SDK `resource` instance, they are really interacting with an intelligent data-aware proxy, not a simple object with some properties. Specifically, the `resource` instance is a proxy to the SDK client `DataStore` allowing resource instances to load data that might not yet be available.
 
-For example, using the SDK Communication Flow diagram in the <a href="#HighLevelOverview" title="high-level overview">high-level overview</a> section, assuming you have a reference to an `account` object - perhaps you have queried for it or you already have the account `href` and you want to load the `account` resource from the server:
+For example, using the SDK Communication Flow diagram in the [high-level overview](#high-level-overview) section, assuming you have a reference to an `account` object - perhaps you have queried for it or you already have the account `href` and you want to load the `account` resource from the server:
 
 	String href = "https://api.stormpath.com/v1/accounts/someAccountUidHere";
 	Account account = dataStore.getResource(href, Account.class);
@@ -211,7 +211,7 @@ If the directory already exists in memory because the `DataStore` has previousy 
 
 ### Error Handling 
 
-Errors thrown from the server are translated to runtime <a href="https://github.com/stormpath/stormpath-sdk-java/blob/master/api/src/main/java/com/stormpath/sdk/resource/ResourceException.java" title="ResourceException">ResourceException</a> errors. This applies to all requests to the Stormpath API endpoints.
+Errors thrown from the server are translated to runtime [ResourceException](https://github.com/stormpath/stormpath-sdk-java/blob/master/api/src/main/java/com/stormpath/sdk/resource/ResourceException.java" title="ResourceException) errors. This applies to all requests to the Stormpath API endpoints.
 
 For example, when getting the current tenant from the client you can catch any error that the request might produce as follows:
 
@@ -234,7 +234,7 @@ For example, when getting the current tenant from the client you can catch any e
 
 ## Applications
 
-An <a href="#Application" title="Application">application</a> in Stormpath represents a real world software application that communicates with Stormpath for its user management and authentication needs.
+An [application](#applications) in Stormpath represents a real world software application that communicates with Stormpath for its user management and authentication needs.
 
 When defining an application in Stormpath, it is typically associated with one or more directories or groups. The associated directories and groups form the application *user base*. The accounts within the associated directories and groups are considered the application users and can login to the application.
 
@@ -250,19 +250,21 @@ Status | By default, this value is set to `enabled`. Change the value to `disabl
 A URL for the application is often helpful. 
 {% enddocs %}
 
-
 For applications, you can:
 
-* [Locate the application REST URL](#LocateAppURL)Locate Application URL"> within the Stormpath Admin Console.
-* [List applications](#ListApps)
-* [Retrieve an application](#RetrieveApps).
-* [Register an application](#RegisterApps).
-* [Edit the details of an application](#EditApps).
-* [Manage application login sources](#ManageLoginSources), including [changing default account and group locations](#ChangeDefaults), [adding another login source](#AddLoginSource), [changing the login source priority order](#ChangeLoginSourcePriority), and [removing login sources](#RemoveLoginSource).
-* [Enable an application](#EnableApps).
-* [Disable an application](#DisableApps).
-* [Delete an application](#DeleteApps).
-
+* [Locate the application REST URL](#locate-the-application-rest-url)
+* [List applications](#list-applications)
+* [Retrieve an application](#retrieve-an-application)
+* [Register an application](#register-an-application)
+* [Edit the details of an application](#edit-an-application)
+* [Manage application login sources](#manage-application-login-sources)
+	* [Change default account and group locations](#change-default-account-and-group-locations)
+	* [Add another login source](#add-another-login-source)
+	* [Change the login source priority order](#change-login-source-priority-order).
+	* [Remove login sources](#remove-login-sources)
+* [Enable an application](#enable-an-application)
+* [Disable an application](#disable-an-application)
+* [Delete an application](#delete-an-application)
 
 ### Locate the Application REST URL
 
@@ -305,7 +307,7 @@ To retrieve a list of applications, you must do the following:
 
 You will typically retrieve an `Application` referenced from another resource, for example using the `ApplicationList` parameter.
 
-You can also directly retrieve a specific application using the `href` (REST URL) value. For any application, you can <a href="#LocAppURL" title="application href">find the application href</a> in the Stormpath console. This can be particularly useful when you need an application href for the `ClientApplicationBuilder`.
+You can also directly retrieve a specific application using the `href` (REST URL) value. For any application, you can [find the application href](#locate-the-application-rest-url) in the Stormpath console. This can be particularly useful when you need an application href for the `ClientApplicationBuilder`.
 
 After you have the `href` it can be loaded directly as an object instance by retrieving it from the server, using the datastore:
 
@@ -319,7 +321,7 @@ After you have the `href` it can be loaded directly as an object instance by ret
 
 ### Register an Application 
 
-To authenticate a user account in your <a href="#Application" title="Application">application</a>, you must first register the application with Stormpath.
+To authenticate a user account in your [application](#applications), you must first register the application with Stormpath.
 
 To register an application, you must:
 
@@ -358,7 +360,7 @@ To edit applications, use the `_setters_` of an existing application instance to
 
 ### Manage Application Login Sources
 
-[Login sources](#LoginSource) define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.
+[Login sources](#login-sources) define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.
 
 In Stormpath, a directory or group can be a login source for an application. At least one login source must be associated with an application for accounts to log in to that application.
 
@@ -375,8 +377,8 @@ You can configure multiple login sources, but only one is required for logging i
 
 After an application has been registered, or created, within Stormpath, you can:
 
-* [Change default account and group locations](#ChangeDefaults)
-* [Add another login source](#AddLoginSource) (directories)
+* [Change default account and group locations](#change-default-account-and-group-locations)
+* [Add another login source](#add-another-login-source) (directories)
 * [Change the login source priority order](#ChangeLoginSourcePriority)
 * [Remove login sources](#RemoveLoginSource)
 
@@ -389,6 +391,7 @@ To manage application login sources, you must log in to the Stormpath Admin Cons
 The login sources appear in order of priority.<br> 
 	<img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
 
+<a name="change-default-account-and-group-locations"></a>
 #### Change Default Account and Group Locations
 
 On the Login Sources tab for applications, you can select the login sources (directory or group) to use as the default locations when creating new accounts and groups.
@@ -401,7 +404,7 @@ On the Login Sources tab for applications, you can select the login sources (dir
 	b. To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select **New Group Location**.
 5. Click **Save**.
 
-
+<a name="add-another-login-source"></a>
 #### Add Another Login Source
 
 Adding a login source to an application provisions a directory or group to that application.  By doing so, all login source accounts can log into the application.
@@ -418,6 +421,7 @@ Adding a login source to an application provisions a directory or group to that 
 8. Click **Add Login Source**.<br>
 The new login source is added to the bottom of the login sources list.    
 
+<a name="change-login-source-priority-order"></a>
 #### Change Login Source Priority Order
 
 When you map multiple login sources to an application, you must also define the login source order.
@@ -436,6 +440,7 @@ To specify the login source order:
 	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
 7. Click **Save Priorities**.
 
+<a name="remove-login-sources"></a>
 #### Remove Login Sources
 
 Removing a login source from an application deprovisions that directory or group from the application. By doing so, all accounts from the login source are no longer able to log into the application.
@@ -521,7 +526,7 @@ To delete an application, you must use the Stormpath Admin Console.
 
 ## Directories
 
-[Directories](#Directory) contain [authentication](#Authentication) and [authorization](#Authorization) information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.
+[Directories](#directories) contain [authentication](#authenticate-accounts) and [authorization](#list-groups) information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.
 
 For directories, the basic details include:</p>
 
@@ -540,7 +545,7 @@ Within Stormpath, there are two types of directories you can implement:
 	* You can specify various LDAP/AD object and attribute settings of the specific LDAP/AD server for users and groups.
 	* If the agent status is Online, but you are unable to see any data when browsing your LDAP/AD mapped directory, it is likely that your object and filters are configured incorrectly.
 
-You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#LoginSource" title="login source">login sources</a>.
+You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as [login sources](#manage-application-login-sources).
 
 LDAP/AD accounts and groups are automatically deleted when:
 
@@ -550,17 +555,17 @@ LDAP/AD accounts and groups are automatically deleted when:
 
 For directories, you can:
 
-* [Locate the directory REST URL](#LocateDirURL).
-* [List directories](#ListDirectories).
-* [Create a directory](#CreateDir).
-	* [Create a cloud directory](#CreateCloud). 
-	* [Create a mirrored (LDAP) directory](#CreateMirror).
-* [Map directories to applications](#AssocApplications).
-* [Edit directory details](#EditDir). 
-* [Update agent configuration](#UpdateAgent).
-* [Enable a directory](#EnableDir).
-* [Disable a directory](#DisableDir).
-* [Delete a directory](#DeleteDir).
+* [Locate the directory REST URL](#locate-the-directory-rest-url)
+* [List directories](#list-directories)
+* [Create a directory](#create-a-directory)
+	* [Create a cloud directory](#create-a-cloud-directory)
+	* [Create a mirrored (LDAP) directory](#create-a-mirrored-directory)
+* [Map directories to applications](#map-directories-to-applications)
+* [Edit directory details](#edit-directory-details)
+* [Update agent configuration](#update-agent-configuration)
+* [Enable a directory](#enable-a-directory)
+* [Disable a directory](#disable-a-directory)
+* [Delete a directory](#delete-a-directory)
 
 ### Locate the Directory REST URL 
 
@@ -603,7 +608,7 @@ You will typically retrieve a `Directory` linked from another resource.
 
 You can also retrieve it or as a direct reference, such as `account.getDirectory();`.
 
-Finally, you can also directly retrieve a specific directory using the `href` (REST URL) value. For any directory, you can <a href="#LocateDirURL" title="directory href">find the directory href</a> in the Stormpath console.
+Finally, you can also directly retrieve a specific directory using the `href` (REST URL) value. For any directory, you can find [the directory href](#locate-the-directory-rest-url) in the Stormpath console.
 
 After you have the `href` it can be loaded directly as an object instance by retrieving it from the server, using the datastore:
 
@@ -622,16 +627,18 @@ To create a directory for application authentication, you must know which type o
 
 You can create a:
 
-* [Cloud Directory](#CreateCloud), which is hosted by Stormpath and uses the Stormpath data model to store user and group information. This is the most common type of directory in Stormpath.
+* [Cloud Directory](#create-a-cloud-directory), which is hosted by Stormpath and uses the Stormpath data model to store user and group information. This is the most common type of directory in Stormpath.
 
 **OR**
 
-* [Mirrored (LDAP) agent directory](#CreateMirror), which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.
+* [Mirrored (LDAP) agent directory](#create-a-mirrored-directory), which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.
 
 {% docs note %}
 The ability to create a mirrored, or agent, directory is connected to your subscription. If the option is not available, click the question mark for more information.
 {% enddocs %}
 
+
+<a name="create-a-cloud-directory"></a>
 #### Create a Cloud Directory 
 
 1. Click the **Directories** tab.
@@ -651,6 +658,7 @@ Min characters | The minimum number of acceptable characters for the account pas
 Max characters | The maximum number of acceptable characters for the account password.
 Mandatory characters | The required character patterns which new passwords will be validated against. For example, for an alphanumeric password of at least 8 characters with at least one lowercase and one uppercase character, select the abc, ABC, and 012 options. The more patterns selected, the more secure the passwords but the more complicated for a user.
 
+<a name="create-a-mirrored-directory"></a>
 #### Create a Mirrored Directory
 
 Mirrored directories, after initial configuration, are accessible through the Agents tab of the directory. 
@@ -748,7 +756,11 @@ Currently, you can only associate directories with application in the Stormpath 
 2. Click the **Directories** tab.
 3. Click the directory name.
 4. Click the **Applications** tab.<br> The applications table shows the application for which the directory is providing account authentication, or log in, credentials.
-5. To change the login source, you must modify the application login source information.<br> If the directory is currently not specified as a login source for an application, the table contains the following message:<br> *Currently, there are no applications associated with this directory. To create an association, click here, and select an application. From the login sources tab, you can create the association.*
+5. To change the login source, you must modify the application login source information.<br> If the directory is currently not specified as a login source for an application, the table contains the following message:<br> 
+
+{% docs note %}
+Currently, there are no applications associated with this directory. To create an association, click here, and select an application. From the login sources tab, you can create the association.
+{% enddocs %}
 
 ### Edit Directory Details 
 
@@ -766,7 +778,7 @@ To edit directories, use the `_setters_` of an existing directory instance to se
 
 ### Update Agent Configuration
 
-You can modify an agent configuration going through the [Directories](#UpdateAgentDir) or [Agent](#UpdateAgentAgents) tabs.
+You can modify an agent configuration going through the "Directories" or "Agent" tabs.
 
 The Agents tab contains a table listing all known agents used by you. Each table entry shows the following:
 
@@ -838,7 +850,7 @@ To disable a directory, you must:
 
 **Code:**
 
-	import com.stormpath.sdk.client.*;
+	 import com.stormpath.sdk.client.*;
 	 import com.stormpath.sdk.directory.*;
 	 import com.stormpath.sdk.ds.*;
 	 import com.stormpath.sdk.resource.Status;
@@ -871,7 +883,7 @@ To delete a directory, you must use the Stormpath Admin Console.
 
 ## Accounts 
 
-In Stormpath, users are referred to as user account objects or [accounts](#Account). The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported. 
+In Stormpath, users are referred to as user account objects or [accounts](#accounts). The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported. 
 
 You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:
 
@@ -901,20 +913,20 @@ The account cannot be moved to a different directory after it has been created.
 
 For accounts, you can: 
 
-* [Locate the account REST URL](#LocateAccURL).
-* [Authenticate accounts](#AuthenticateAccounts).
-* [List accounts](#ListAccounts).
-	* [List accounts by group](#ListGroupAccounts).
-	* [List accounts by directory](#ListDirectoryAccounts).
-	* [List accounts by application](#ViewAccountMap).
-* [Create an account](#CreateAccounts).
-* [Edit account details](#EditAccounts).
-* [Change an account password](#ChangeAccountPasswords).
-* [Assign accounts to groups](#AssignAccountGroup).
-* [Remove accounts from groups](#RemoveAccountGroup).
-* [Enable an account](#EnableAccounts).
-* [Disable an account](#DisableAccounts).
-* [Delete an account](#DeleteAccounts).
+* [Locate the account REST URL](#locate-the-account-rest-url)
+* [Authenticate accounts](#authenticate-accounts)
+* [List accounts](#list-accounts)
+	* [List accounts by group](#list-accounts-by-group)
+	* [List accounts by directory](#list-accounts-by-directory)
+	* [List accounts by application](#list-accounts-by-application)
+* [Create an account](#create-an-account)
+* [Edit account details](#edit-account-details)
+* [Change an account password](#change-an-account-password)
+* [Assign accounts to groups](#assign-accounts-to-groups)
+* [Remove accounts from groups](#remove-accounts-from-groups)
+* [Enable an account](#enable-accounts)
+* [Disable an account](#disable-accounts)
+* [Delete an account](#delete-an-account)
 
 ### Locate the Account REST URL 
 
@@ -957,8 +969,9 @@ To authenticate an account you must have the application the account authenticat
 
 ### List Accounts 
 
-For accounts, you can view, or list them according to their <a href="#ListGroupAccounts" title="group membership">group membership</a>, <a href="#ListDirectoryAccounts" title="directory accounts">the directories to which they belong</a>, or the <a href="#ViewAccountMap" title="View Account Map">applications to which they are associated</a>.
+For accounts, you can view, or list them according to their [group membership](#list-group-accounts), [the directories to which they belong](#list-directory-groups), or [the applications to which they are associated](#map-directories-to-applications).
 
+<a name="list-accounts-by-group"></a>
 #### List Accounts in a Group 
 
 To list user accounts that are members of a certain group, you must:
@@ -983,6 +996,7 @@ To list user accounts that are members of a certain group, you must:
 	     System.out.println("Given Name " + acc.getGivenName());
 	 }
 
+<a name="list-accounts-by-directory"></a>
 #### List Accounts in a Directory 
 
 To list user accounts contained in a directory, you must:
@@ -993,7 +1007,7 @@ To list user accounts contained in a directory, you must:
 
 **Code:**
 
-	import com.stormpath.sdk.directory.*;
+	 import com.stormpath.sdk.directory.*;
 	 import com.stormpath.sdk.client.*;
 	 import com.stormpath.sdk.ds.*;
 	 ...
@@ -1007,6 +1021,7 @@ To list user accounts contained in a directory, you must:
 	     System.out.println("Given Name " + acc.getGivenName());
 	 }
 
+<a name="list-accounts-by-application"></a>
 #### List Accounts by Application 
 
 To list user accounts mapped to an application, you must:
@@ -1017,7 +1032,7 @@ To list user accounts mapped to an application, you must:
 
 **Code:**
 
-	import com.stormpath.sdk.application.*;
+	 import com.stormpath.sdk.application.*;
 	 import com.stormpath.sdk.client.*;
 	 import com.stormpath.sdk.ds.*;
 	 ...
@@ -1056,7 +1071,7 @@ To create accounts, use the `_setters_` of a new account instance to set the val
 
 **Code:**
 
-	import com.stormpath.sdk.account.*;
+	 import com.stormpath.sdk.account.*;
 	 import com.stormpath.sdk.directory.*;
 	 ...
 	 ...
@@ -1112,7 +1127,7 @@ The association between a group and an account can be done from an account or gr
 
 **Code:**
 
-	import com.stormpath.sdk.account.*;
+	 import com.stormpath.sdk.account.*;
 	 import com.stormpath.sdk.ds.*;
 	 import com.stormpath.sdk.group.*;
 	 ...
@@ -1139,7 +1154,7 @@ The remove an account from, or delete the account as a member of, a group you mu
 
 **Code:**
 
-	import com.stormpath.sdk.account.*;
+	 import com.stormpath.sdk.account.*;
 	 import com.stormpath.sdk.ds.*;
 	 import com.stormpath.sdk.group.*;
 	 ...
@@ -1153,7 +1168,7 @@ The remove an account from, or delete the account as a member of, a group you mu
 
 **OR**
 
-	import com.stormpath.sdk.account.*;
+	 import com.stormpath.sdk.account.*;
 	 import com.stormpath.sdk.group.*;
 	 ...
 	 ...
@@ -1200,7 +1215,7 @@ To enable an account, you must:
 
 **Code:**
 
-	import com.stormpath.sdk.ds.*;
+	 import com.stormpath.sdk.ds.*;
 	 import com.stormpath.sdk.account.*;
 	 import com.stormpath.sdk.resource.Status;
 	 ...
@@ -1295,15 +1310,15 @@ If an account is also a member to another group that does have access to an appl
 
 With groups, you can:
 
-* [Locate the group REST URL](#LocateGroupURL).
-* [List groups](#ListGroups) including:
-	* [List group accounts](#ListAccountGroups).
-	* [List directory groups](#ListDirectoryGroups).
-* [Create groups](#CreateGroups).
-* [Edit group details](#EditGroups).
-* [Enable a group](#EnableGroups).
-* [Disable a group](#DisableGroups).
-* [Delete a group](#DeleteGroups).</p>
+* [Locate the group REST URL](#locate-the-group-rest-url)
+* [List groups](#list-groups)
+	* [List group accounts](#list-group-accounts)
+	* [List directory groups](#list-directory-groups)
+* [Create groups](#create-groups)
+* [Edit group details](#edit-group-details)
+* [Enable a group](#enable-a-group)
+* [Disable a group](#disable-a-group)
+* [Delete a group](#delete-a-group)
 
 ### Locate the Group REST URL
 
@@ -1320,7 +1335,9 @@ The REST URL appears on the Details tab.
 
 ### List Groups 
 
-For groups, you can view, or list them by <a href="#ListAccountGroups" title="account membership">account membership</a> or <a href="#ListDirectoryGroups" title="Directory Groups">the directory</a>.
+For groups, you can view, or list them by [account membership](#list-account-groups) or [the directory](#list-directory-groups).
+
+<a name="list-group-accounts"></a>
 
 #### List Accounts in a Group 
 
@@ -1349,6 +1366,7 @@ To list all groups on a directory or an account, loop the groups aggregate from 
 	 System.out.println("Group " + grp.getName());
 	 }
 
+<a name="list-directory-groups"></a>
 #### List Groups in a Directory 
 
 To list all groups contained within a directory, you must:
@@ -1444,7 +1462,7 @@ To enable a group, you must:
 
 **Code:**
 
-	import com.stormpath.sdk.ds.*;
+	 import com.stormpath.sdk.ds.*;
 	 import com.stormpath.sdk.group.*;
 	 import com.stormpath.sdk.resource.Status;
 	 ...
@@ -1471,7 +1489,7 @@ To disable a group, you must:
 
 **Code:**
 
-	import com.stormpath.sdk.ds.*;
+	 import com.stormpath.sdk.ds.*;
 	 import com.stormpath.sdk.group.*;
 	 import com.stormpath.sdk.resource.Status;
 	 ...
@@ -1507,7 +1525,7 @@ Workflows are common user management operations that are automated for you by St
 
 Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.The Stormpath Administrator directory has default workflow automations which cannot be altered.<br>
 
-On the Workflows tab, you can automate <a href="#AccountRegistration" title="account registration and verification">account registration and verification</a> and <a href="#PasswordReset" title="password reset">password resets</a>.
+On the Workflows tab, you can automate [account registration and verification](#account-registration-and-verification) and [password resets]().
 
 <img src="http://www.stormpath.com/sites/default/files/docs/ManageWorkflows.png" alt="Workflow Automation" title="Workflow Automation" width="670" height="250">
 
@@ -1516,15 +1534,14 @@ On the Workflows tab, you can automate <a href="#AccountRegistration" title="acc
 
 For the Account Registration and Verification workflow, you must perform the following actions:
 
-* <a href="#ConfigureAccountRegistration" title="Configure Account Registration and Verification">Configure account registration and verification</a>
-* <a href="#InitiateAccountRegistration" title="Initiate Account Registration and Verification">Initiate account registration and verification</a>
-* <a href="#VerifyAccount" title="Verify the Account">Verify the account</a>
-<br>
-
+* [Configure account registration and verification](#configure-account-reg)
+* [Initiate account registration and verification](#initiate-account-reg)
+* [Verify the account](#verify-the-account)
 {% docs note %}
-The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.
+The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the ? for more information.
 {% enddocs %}
 
+<a name="configure-account-reg"></a>
 #### Configure Account Registration and Verification
 
 To configure account registration and verification:
@@ -1583,12 +1600,12 @@ Body | The value for the body of the message. Variable substitution is supported
 		
 6. When all the fields are complete, click **Update**.
 
-
+<a name="initiate-account-reg"></a>
 #### Initiate Account Registration and Verification
 
 If the workflow is enabled, an account registration is automatically initiated during an account creation. 
 
-
+<a name="verify-the-account"></a>
 #### Verify the Account
 
 If a directory has the the account verification workflow enabled:
@@ -1609,7 +1626,6 @@ If a directory has the the account verification workflow enabled:
 
 			// when the account is correctly verified it gets activated and that account is returned in this verification
 			Account account = tenant.verifyAccountEmail(verificationToken);
-
 
 ### Password Reset
 
@@ -1750,13 +1766,13 @@ If you are not using a Maven-compatible build tool (such as Maven, Ant+Ivy, Grad
 
 All Stormpath open source SDKs and other Java packages, such as the Shiro Stormpath plugin, are available in Maven central:
 
-<a href="http://search.maven.org/#search%7Cga%7C1%7Ccom.stormpath" title="Maven central">http://search.maven.org/#search%7Cga%7C1%7Ccom.stormpath</a>
+[http://search.maven.org/#search%7Cga%7C1%7Ccom.stormpath](http://search.maven.org/#search%7Cga%7C1%7Ccom.stormpath)
 
 You can download any of our jars directly from there.
 
 The problem with a direct download is that you do not automatically get any transitive dependencies required to use the jar. This list can sometimes be long, and it might change enough from release to release such that Stormpath does not manually maintain a list of them separate from our build configuration.
 
-As such, if you are unable to use a Maven-compatible build tool, such as Ant+Ivy, Gradle, or SBT, in your project, you must download the Stormpath jars you require from Maven Central using the <a href="http://search.maven.org/#search%7Cga%7C1%7Ccom.stormpath" title="Maven central">link</a>.
+As such, if you are unable to use a Maven-compatible build tool, such as Ant+Ivy, Gradle, or SBT, in your project, you must download the Stormpath jars you require from Maven Central using the [link](http://search.maven.org/#search%7Cga%7C1%7Ccom.stormpath).
 
 * This will get you the jar files you need to compile your project.
 
@@ -1801,7 +1817,7 @@ Attribute | Description
 <a id="group"></a>Group | A **group** is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role.
 <a id="group-membership"></a>Group Membership | A **group membership** is a two-way mapping between an account and a group.
 <a id="account-store"></a>Account Store | A **account store** is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.
-<a id="AccountStoreMapping"></a>Account Store Mapping | An **account store mapping** is a mapping between a group or directory and an application.
+<a id="account-store-mapping"></a>Account Store Mapping | An **account store mapping** is a mapping between a group or directory and an application.
 <a id="identity-management"></a>Identity Management | **Identity management** is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks.
 <a id="role"></a>Role |A **role** is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups.
 <a id="rbac"></a>Role-Based Access Control | **Role-Based Access Control** (RBAC) is the act of controlling access to protected resources or behavior based on the groups assigned to a particular account. RBAC is done using Stormpath groups.
