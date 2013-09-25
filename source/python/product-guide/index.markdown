@@ -205,7 +205,7 @@ Note that in this case the custom error is produced because an account property 
 
 ## Applications
 
-An [application](#Application) in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath.
+An [application](#applications) in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath.
 
 When defining an application in Stormpath, it is typically associated with one or more directories or groups. The associated directories and groups form the application *user base*. The accounts within the associated directories and groups are considered the application users and can login to the application.
 
@@ -225,15 +225,19 @@ You can control access to your Stormpath Admin Console and API by managing the [
 
 For applications, you can:
 
-* [Locate the application REST URL](#LocateAppURL)Locate Application URL"> within the Stormpath Admin Console.
-* [List applications](#ListApps)
-* [Retrieve an application](#RetrieveApps).
-* [Register an application](#RegisterApps).
-* [Edit the details of an application](#EditApps).
-* [Manage application login sources](#ManageLoginSources), including [changing default account and group locations](#ChangeDefaults), [adding another login source](#AddLoginSource), [changing the login source priority order](#ChangeLoginSourcePriority), and [removing login sources](#RemoveLoginSource).
-* [Enable an application](#EnableApps).
-* [Disable an application](#DisableApps).
-* [Delete an application](#DeleteApps).
+* [Locate the application REST URL](#locate-the-application-rest-url)
+* [List applications](#list-applications)
+* [Retrieve an application](#retrieve-an-application)
+* [Register an application](#register-an-application)
+* [Edit the details of an application](#edit-an-application)
+* [Manage application login sources](#manage-application-login-sources)
+	* [Change default account and group locations](#change-default-account-and-group-locations)
+	* [Add another login source](#add-another-login-source)
+	* [Change login source priority order](#change-login-source-priority-order)
+	* [Remove login sources](#remove-login-sources)
+* [Enable an application](#enable-an-application)
+* [Disable an application](#disable-an-application)
+* [Delete an application](#delete-an-application)
 
 ### Locate the Application REST URL
 
@@ -321,10 +325,10 @@ You can configure multiple login sources, but only one is required for logging i
 
 After an application has been registered, or created, within Stormpath, you can:
 
-* [Change default account and group locations](#ChangeDefaults)
-* [Add another login source](#AddLoginSource) (directories)
-* [Change the login source priority order](#ChangeLoginSourcePriority)
-* [Remove login sources](#RemoveLoginSource)
+* [Change default account and group locations](#change-default-account-and-group-locations)
+* [Add another login source](#add-another-login-source)
+* [Change login source priority order](#change-login-source-priority-order)
+* [Remove login sources](#remove-login-sources)
 
 To manage application login sources, you must log in to the Stormpath Admin Console:
 
@@ -335,6 +339,7 @@ To manage application login sources, you must log in to the Stormpath Admin Cons
 The login sources appear in order of priority.<br>
 	<img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
 
+<a name="change-default-account-and-group-locations"></a>
 #### Change Default Account and Group Locations
 
 On the Login Sources tab for applications, you can select the login sources (directory or group) to use as the default locations when creating new accounts and groups.
@@ -347,6 +352,7 @@ On the Login Sources tab for applications, you can select the login sources (dir
 	b. To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select **New Group Location**.
 5. Click **Save**.
 
+<a name="add-another-login-source"></a>
 #### Add Another Login Source
 
 Adding a login source to an application provisions a directory or group to that application.  By doing so, all login source accounts can log into the application.
@@ -363,6 +369,7 @@ Adding a login source to an application provisions a directory or group to that 
 8. Click **Add Login Source**.<br>
 The new login source is added to the bottom of the login sources list.
 
+<a name="change-login-source-priority-order"></a>
 #### Change Login Source Priority Order
 
 When you map multiple login sources to an application, you must also define the login source order.
@@ -381,6 +388,7 @@ To specify the login source order:
 	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
 7. Click **Save Priorities**.
 
+<a name="remove-login-sources"></a>
 #### Remove Login Sources
 
 Removing a login source from an application deprovisions that directory or group from the application. By doing so, all accounts from the login source are no longer able to log into the application.
@@ -393,7 +401,6 @@ To remove a login source from an application:
 4. Click the **Login Sources** tab.
 5. On the Login Sources tab, locate the directory or group.
 6. Under the Actions column, click **Remove**.
-
 
 ### Enable an Application
 
@@ -469,18 +476,18 @@ LDAP/AD accounts and groups are automatically deleted when:
 
 For directories, you can:
 
-* [Locate the directory REST URL](#LocateDirURL).
-* [List directories](#ListDirectories).
-* [Retrieve directories](#RetrieveDir).
-* [Create a directory](#CreateDir).
-	* [Create a cloud directory](#CreateCloud).
-	* [Create a mirrored (LDAP) directory](#CreateMirror).
-* [Map directories to applications](#AssocApplications).
-* [Edit directory details](#EditDir).
-* [Update agent configuration](#UpdateAgent).
-* [Enable a directory](#EnableDir).
-* [Disable a directory](#DisableDir).
-* [Delete a directory](#DeleteDir).
+* [Locate the directory REST URL](#locate-the-directory-rest-url)
+* [List directories](#list-directories)
+* [Retrieve directories](#retrieve-directories)
+* [Create a directory](#create-a-directory)
+	* [Create a cloud directory](#create-a-cloud-directory)
+	* [Create a mirrored (LDAP) directory](#create-a-mirrored-directory)
+* [Map directories to applications](#map-directories-to-applications)
+* [Edit directory details](#edit-directory-details)
+* [Update agent configuration](#update-agent-configuration)
+* [Enable a directory](#enable-a-directory)
+* [Disable a directory](#disable-a-directory)
+* [Delete a directory](#delete-a-directory)
 
 ### Locate the Directory REST URL
 
@@ -525,14 +532,15 @@ To create a directory for application authentication, you must know which type o
 
 You can create a:
 
-* [Cloud directory](#CreateCloud), which is hosted by Stormpath and uses the Stormpath data model to store user and group information. This is the most common type of directory in Stormpath.
+* [Cloud directory](#create-a-cloud-directory), which is hosted by Stormpath and uses the Stormpath data model to store user and group information. This is the most common type of directory in Stormpath.
 
 **OR**
 
-* [Mirrored (LDAP) directory](#CreateMirror), which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.
+* [Mirrored (LDAP) directory](#create-a-mirrored-directory), which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.
 
 **Note:** The ability to create a mirrored, or agent, directory is connected to your subscription. If the option is not available, click the question mark for more information.
 
+<a name="create-a-cloud-directory"></a>
 #### Create a Cloud Directory
 
 	directory = client.directories.create({
@@ -540,7 +548,7 @@ You can create a:
 		description: "This is the description of my test directory"
 	})
 
-
+<a name="create-a-mirrored-directory"></a>
 #### Create a Mirrored Directory
 
 Mirrored directories, after initial configuration, are accessible through the Agents tab of the directory.
@@ -653,7 +661,7 @@ To edit directories, use the attributes of an existing directory instance to set
 
 ### Update Agent Configuration
 
-You can modify an agent configuration going through the [Directories](#UpdateAgentDir) or [Agent](#UpdateAgentAgents) tabs.
+You can modify an agent configuration going through the [Directories](#directory) or [Agent](#directory-agent) tabs.
 
 The Agents tab contains a table listing all known agents used by you. Each table entry shows the following:
 
@@ -734,7 +742,7 @@ To disable a directory, you must:
 
 ## *Accounts*
 
-In Stormpath, users are referred to as user account objects or [accounts](#Account). The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.
+In Stormpath, users are referred to as user account objects or [accounts](#account). The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.
 
 You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:
 

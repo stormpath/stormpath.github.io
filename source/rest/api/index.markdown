@@ -5,182 +5,18 @@ lang: rest
 ---
 
 <p>Stormpath provides developers a simple, yet powerful REST+JSON API enabling user management control for organizations and applications.</p>
-<p>The following items are covered in this document:</p>
-<ul>
-<li>
-<p><a href="#GeneralConcepts" title="General API concepts"><strong>General Concepts</strong></a></p>
-<p></p>
-<ul>
-<li><a href="#Base" title="Base URL">Base URL</a></li>
-<li><a href="#Authentication" title="Authentication">Authentication</a>
-<ul>
-<li><a href="#BaseAuthenticationHTTPS" title="Basic Authentication Over HTTPS">Basic Authentication Over HTTPS</a></li>
-<li><a href="#DigestAuthenticationHTTPS" title="Digest Authentication Over HTTPS">Digest Authentication Over HTTPS</a></li>
-</ul>
-</li>
-<li><a href="#ResourceFormat" title="Resource Format">Resource Format</a></li>
-<li>Resource Interaction, including:
-<ul>
-<li><a href="#RetrievingResources" title="Retrieving Resources with HTTP GET">Retrieving Resources with HTTP GET</a></li>
-<li><a href="#CreatingResources" title="Creating Resources with HTTP POST">Creating Resources with HTTP POST</a></li>
-<li><a href="#UpdatingResources" title="Updating Resources with HTTP POST">Updating Resources with HTTP POST</a></li>
-<li><a href="#DeletingResources" title="Deleting Resources with HTTP DELETE">Deleting Resources with HTTP DELETE</a></li>
-</ul>
-</li>
-<li><a href="#CollectionResources">Collection Resources</a>
-<ul>
-<li><a href="#Pagination">Pagination</a></li>
-<li><a href="#Sort">Sort Order</a></li>
-<li><a href="#Search">Search</a>
-<ul>
-<li><a href="#filtersearch">Filter Search</a></li>
-<li><a href="#attributesearch">Attribute Search</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#ReferenceLinks">Resource References (Links)</a>
-<ul>
-<li><a href="#ReferenceExpansion">Reference Expansion</a></li>
-</ul>
-</li>
-<li><a href="#Errors" title="Errors">Errors</a></li>
-<li><a href="#HTTPMethodOverloading" title="HTTP Method Overloading">HTTP Method Overloading</a>
-<p></p>
-</li>
-</ul>
-</li>
-<li>
-<p><a href="#Resources" title="Resources"><strong>Resources</strong></a></p>
-<p></p>
-<ul>
-<li>
-<p><a href="#Applications" title="Applications">Applications</a></p>
-<p></p>
-<ul>
-<li><a href="#ApplicationInstanceResource" title="Application Instance Resource">Application Instance Resource</a></li>
-<li><a href="#ApplicationResourceProperties" title="Resource Properties">Resource Properties</a></li>
-<li><a href="#ReadApplicationResource" title="Read an Application Resource">Read an Application Resource</a></li>
-<li><a href="#UpdateApplicationResource" title="Update an Application Resource">Update an Application Resource</a></li>
-<li><a href="#DeleteApplicationResource" title="Delete an Application Resource">Delete an Application Resource (Unregister an Application with Stormpath)</a></li>
-<li><a href="#CreateApplicationResource" title="Create an Application Resource">Create an Application Resource (Register an Application with Stormpath)</a></li>
-<li><a href="#ApplicationChildCollectionResource" title="Child Collection Resources">Child Collection Resources</a>
-<ul>
-<li><a href="#ApplicationAccountCollections" title="Account Collections for an Application Resource">Account Collections for an Application Resource</a></li>
-<li><a href="#ApplicationLoginAttempts" title="Login Attempts for Authenticating an Application Account">Login Attempts for Authenticating an Application Account</a></li>
-<li><a href="#ApplicationPasswordResetTokens" title="Password Reset Tokens for Reseting an Application Account Password">Password Reset Tokens for Reseting an Application Account Password</a>
-<p></p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><a href="#Directories" title="Directories">Directories</a></p>
-<p></p>
-<ul>
-<li><a href="#DirectoryInstanceResource" title="Directory Instance Resource">Directory Instance Resource</a></li>
-<li><a href="#DirectoryResourceProperties" title="Resource Properties">Resource Properties</a></li>
-<li><a href="#ReadDirectoryResource" title="Read a Directory Resource">Read a Directory Resource</a></li>
-<li><a href="#UpdateDirectoryResource" title="Update a Directory Resource">Update a Directory Resource</a></li>
-<li><a href="#DeleteDirectoryResource" title="Delete a Directory Resource">Delete a Directory Resource</a></li>
-<li><a href="#CreateDirectoryResource" title="Create a Directory Resource">Create a Directory Resource</a></li>
-<li><a href="#DirectoryChildCollectionResource" title="Child Collection Resources">Child Collection Resources</a>
-<ul>
-<li><a href="#DirectoryGroupCollections" title="Groups Collections for a Directory Resource">Groups Collections for a Directory Resource</a></li>
-<li><a href="#DirectoryAccountsCollection" title="Accounts Collection for a Directory Resource">Accounts Collection for a Directory Resource</a>
-<p></p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><a href="#Accounts">Accounts</a></p>
-<p></p>
-<ul>
-<li><a href="#AccountInstanceResource">Account Instance Resource</a></li>
-<li><a href="#AccountResourceProperties">Resource Properties</a></li>
-<li><a href="#ReadAccountResource">Read an Account Resource</a></li>
-<li><a href="#UpdateAccountResource">Update an Account Resource</a>
-<ul>
-<li><a href="#UpdateAccountName">Update the Name</a></li>
-<li><a href="#AddAccountGroup">Add an Account to a Group</a></li>
-<li><a href="#ChangeAccountPassword">Change an Account Password</a></li>
-</ul>
-</li>
-<li><a href="#DeleteAccountResource">Delete an Account Resource</a></li>
-<li><a href="#CreateAccountResource">Create an Account Resource</a></li>
-<li><a href="#AccountChildCollectionResource">Child Collection Resources</a>
-<ul>
-<li><a href="#AccountGroupCollection">Groups Collection for an Account Resource</a></li>
-<li><a href="#AccountGroupMembershipCollection">Group Memberships Collection for an Account Resource</a>
-<p></p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><a href="#Groups">Groups</a></p>
-<p></p>
-<ul>
-<li><a href="#GroupInstanceResource">Group Instance Resource</a></li>
-<li><a href="#GroupResourceProperties">Resource Properties</a></li>
-<li><a href="#ReadGroupResource">Read a Group Resource</a></li>
-<li><a href="#UpdateGroupResource">Update a Group Resource</a></li>
-<li><a href="#DeleteGroupResource">Delete a Group Resource</a></li>
-<li><a href="#CreateGroupResource">Create a Group Resource</a></li>
-<li><a href="#GroupChildCollectionResource">Child Collection Resources</a>
-<ul>
-<li><a href="#GroupAccountCollection">Group Account Collection for a Group Resource</a></li>
-<li><a href="#GroupMembershipAccountCollection">Group Memberships Collection for a Group Resource</a>
-<p></p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p><a href="#GroupMemberships">Group Memberships</a></p>
-<p></p>
-<ul>
-<li><a href="#GroupMembershipInstanceResource">Group Membership Instance Resource</a></li>
-<li><a href="#GroupMembershipResourceProperties">Resource Properties</a></li>
-<li><a href="#ReadGroupMembershipResource">Read a Group Membership Resource</a></li>
-<li><a href="#DeleteGroupMembershipResource">Delete a Group Membership Resource</a></li>
-<li><a href="#CreateGroupMembershipResource">Create a Group Membership Resource</a>
-<p></p>
-</li>
-</ul>
-</li>
-<li>
-<p><a href="#Tenants" title="Tenants">Tenants</a></p>
-<p></p>
-<ul>
-<li><a href="#TenantInstanceResource" title="Tenant Instance Resource">Tenant Instance Resource</a></li>
-<li><a href="#TenantResourceProperties" title="Resource Properties">Resource Properties</a></li>
-<li><a href="#ReadTenantResource" title="Read a Tenant Resource">Read a Tenant Resource</a></li>
-<li><a href="#ReadCurrentTenantResource" title="Read the Current Tenant Resource">Read the Current Tenant Resource</a></li>
-<li><a href="#UpdateTenantResource" title="Update a Tenant Resource">Update a Tenant Resource</a></li>
-<li><a href="#TenantChildCollectionResource" title="Child Collection Resources">Child Collection Resources</a>
-<ul>
-<li><a href="#TenantDirectoriesCollection" title="Directories Collection for a Tenant Resource">Directories Collection for a Tenant Resource</a></li>
-<li><a href="#TenantApplicationsCollection" title="Applications Collection for a Tenant Resource">Applications Collection for a Tenant Resource</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2><a id="GeneralConcepts"></a><em>General Concepts</em></h2>
-<h3><a id="Base"></a>Base URL</h3>
+
+***
+
+## General Concepts
+### Base URL
+
 <p>All URLs referenced in the API documentation begin with the following base URL:</p>
 <pre><code>https://api.stormpath.com/v1
 </code></pre>
-<h3><a id="Authentication"></a>Authentication</h3>
+
+### Authentication
+
 <p>Every request to the Stormpath REST API must be authenticated with an API key over HTTPS (HTTP is not supported). If you want to make a REST request to Stormpath, we assume you have already:</p>
 <ol>
 <li><a href="http://www.stormpath.com/" title="Sign up">Signed up for Stormpath</a>.</li>
@@ -196,7 +32,10 @@ lang: rest
 <p>Assign user accounts to Stormpath, through <a href="http://www.stormpath.com/docs/console/product-guide#ManageLoginSources" title="login sources">login sources</a>, wisely.</p>
 <p><strong>HTTPS</strong></p>
 <p>To help ensure data security, only secure (HTTPS) communication is allowed when communicating with the Stormpath API servers. Standard HTTP is not supported.</p>
-<h4><a id="BaseAuthenticationHTTPS"></a>Basic Authentication over HTTPS</h4>
+
+<a id="BaseAuthenticationHTTPS"></a>
+#### Basic Authentication over HTTPS
+
 <p>Most clients (including web browsers) show a dialog or prompt for you to provide a username and password for HTTP Basic Authentication.</p>
 <p>When using an API key with basic authentication, the <code>API key id</code> is the username and the <code>API key secret</code> is the password:</p>
 <pre><code>HTTP basic username: apiKey.id value
@@ -208,7 +47,10 @@ HTTP basic password: apiKey.secret value
 <p>or perhaps <a href="https://github.com/jkbr/httpie" title="httpie">httpie</a> (which assumes application/json by default):</p>
 <pre><code>http -a YOUR_API_KEY_ID:YOUR_API_KEY_SECRET https://api.stormpath.com/v1/tenants/current 
 </code></pre>
-<h4><a id="DigestAuthenticationHTTPS"></a>Digest Authentication Over HTTPS</h4>
+
+<a id="DigestAuthenticationHTTPS"></a>
+#### Digest Authentication Over HTTPS
+
 <p>Stormpath also supports a more secure authentication scheme known as digest authentication. This approach computes a <a href="http://en.wikipedia.org/wiki/Cryptographic_hash_function" title="cryptographic digest">cryptographic digest</a> of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated.</p>
 <p>This technique is especially secure because the API key secret is <em>never transmitted outside of the application</em>, making it extremely difficult for anything (or anyone) outside of the application to interfere with a request or see the secret.</p>
 <p>We recommend using digest authentication whenever possible because it is inherently more secure. However, due to its complexity, it might not be feasible for some projects.</p>
@@ -222,9 +64,13 @@ HTTP basic password: apiKey.secret value
 </ul>
 <p>If you port the algorithm to other languages, please let us know. We are happy to help. Email us at <a href="mailto:support@stormpath.com" title="Stormpath Support">support@stormpath.com</a> and we will help as best as we can.</p>
 <p><strong>Note:</strong> The Stormpath <code>SAuthc1</code> digest algorithm is NOT the same as HTTP digest authentication. The Stormpath <code>SAuthc1</code> digest-based authentication scheme is much more secure than standard HTTP digest authentication.</p>
-<h3><a id="ResourceFormat"></a>Resource Format</h3>
+
+### Resource Format
+
 <p>The Stormpath REST API currently only supports JSON resource representations. If you would like other formats supported, please email us at <a href="mailto:support@stormpath.com" title="Stormpath Support">support@stormpath.com</a> to let us know!</p>
-<h3><a id="RetrievingResources"></a>Retrieving Resources with HTTP GET</h3>
+
+### Retrieving Resources
+
 <p><strong>Request</strong></p>
 <p>You can retrieve a resource representation by <em>GET</em>ting its url. The easiest way to do this is to copy and paste a URL into your web browser address bar.</p>
 <p>An example API <code>GET</code>:</p>
@@ -309,7 +155,9 @@ Content-Type: application/json;charset=UTF-8
   "key": "myTenant"
 }
 </code></pre>
-<h3><a id="CreatingResources"></a>Creating Resources with HTTP POST</h3>
+
+### Creating Resources
+
 <p>You create a resource by submitting an HTTP <code>POST</code> to a resource URI. Any POST body must be represented as JSON.</p>
 <p><strong>Request</strong></p>
 <p>Requests that contain body content must specify the HTTP Content-Type header with a value of application/json.</p>
@@ -417,11 +265,13 @@ Content-Type: application/json;charset=UTF-8
   }
 }
 </code></pre>
-<h3><a id="UpdatingResources"></a>Updating Resources with HTTP POST</h3>
+
+### Updating Resources
+
 <p>If you want to update a resource, submit an HTTP <code>POST</code> to a resource URI. Any <code>POST</code> body must be represented as JSON. You can submit one or more properties of a resource, but at least one property must be specified.</p>
 <p><strong>Request</strong></p>
 <p>Requests that contain body content must specify the HTTP Content-Type header with a value of application/json.</p>
-<p>An example <strong>Update (HTTP POST) request</strong>, updating a single property:</p>
+<p>An example <strong>Update  request</strong>, updating a single property:</p>
 <pre><code>POST /v1/applications/WpM9nyZ2TbaEzfbRvLk9KA HTTP/1.1
 Content-Type: application/json
 
@@ -524,7 +374,9 @@ Content-Type: application/json;charset=UTF-8
   }
 }
 </code></pre>
-<h3><a id="DeletingResources"></a>Deleting Resources with HTTP DELETE</h3>
+
+### Deleting Resources
+
 <p>To delete a resource, make an HTTP <code>DELETE</code> request to the resource URL. Not all Stormpath REST API resources support delete.</p>
 <p><strong>Request</strong></p>
 <p>An example <strong>DELETE request</strong>:</p>
@@ -574,7 +426,9 @@ Content-Type: application/json;charset=UTF-8
 <p>Example <strong>DELETE response</strong>:</p>
 <pre><code>HTTP/1.1 204 No Content
 </code></pre>
-<h3><a id="CollectionResources"></a>Collection Resources</h3>
+
+### Collection Resources
+
 <p>A <code>Collection Resource</code> is a <code>resource</code> containing other resources. It is known as a Collection Resource because it is a first class resource - it has its own attributes similar to any other resource in addition to the instances it contains.</p>
 <p>If you want to interact with multiple instance resources, you must interact with a Collection Resource. Collection Resources also support additional behavior specific to collections, such as <a href="#Pagination">pagination</a>, <a href="#Sort">sort ordering</a>, and <a href="#Search">searching</a>.</p>
 <p><strong>Collection Resource Attributes</strong></p>
@@ -607,9 +461,14 @@ Content-Type: application/json;charset=UTF-8
 </table>
 <p><strong>Request</strong></p>
 <p>To acquire a Collection Resource, submit an HTTP <code>GET</code> to the Collection Resource URI.</p>
-<h4><a id="Pagination"></a>Pagination</h4>
+
+<a id="Pagination"></a>
+#### Pagination
+
 <p>If a Collection Resource represents a large enough number of resource instances, it will not include them all in a single response. Instead a technique known as <em>pagination</em> is used to break up the results into one or more pages of data. You can request additional pages as separate requests.</p>
-<h5>Query Parameters</h5>
+
+##### Query Parameters
+
 <p>There are two optional query parameters that may be specified to control pagination:</p>
 <ul>
 <li><a href="#offset">offset</a>: The zero-based starting index in the entire collection of the first item to return. Default is <code>0</code>.</li>
@@ -638,7 +497,10 @@ Content-Type: application/json;charset=UTF-8
   ]
 }
 </code></pre>
-<h4><a id="Sort"></a>Sort Order</h4>
+
+<a id="Sort"></a>
+#### Sort Order
+
 <p>A request for a Collection Resource can contain an optional <code>orderBy</code> query parameter. The query parameter value is a <a href="http://en.wikipedia.org/wiki/Percent-encoding" title="HTML URL Encoding">URL-encoded</a> comma-delimited list of ordering statements.<br>For example, a sorted request (where <code>%2C</code> is the URL encoding for the comma character) might look as follows:</p>
 <pre><code>/v1/accounts?orderBy=orderStatement1%2CorderStatement2%2C...%2CorderStatementN
 </code></pre>
@@ -664,11 +526,17 @@ Content-Type: application/json;charset=UTF-8
 <pre><code>/v1/applications/someRandomId/accounts?orderBy=surname,givenName desc
 </code></pre>
 <p>Notice the <code>surname</code> order statement does not specify <code>asc</code> or <code>desc</code>, implying <code>asc</code> by default.</p>
-<h4><a id="Search"></a>Search</h4>
+
+<a id="Search"></a>
+#### Search
+
 <p>You can search for resources by interacting with a Collection Resource. You can search for specific items in the collection using query parameters to specify your search criteria.</p>
 <p>There are currently two different types of searches that might be performed: a generic <a href="#filtersearch">Filter</a>-based search and a more targeted <a href="#attributesearch">Attribute</a>-based search. Both options support result ordering, <a href="#Pagination">pagination</a>, and <a href="#ReferenceExpansion">reference (link) expansion</a>.</p>
 <p><strong>Note:</strong> Currently, a REST search request must be targeted at resources of the same type. For example, a search can be performed across accounts or groups, but not both at the same time. Because the Stormpath REST API always represents one or more resources of the same type as a Collection Resource, a REST search is always sent to a Collection Resource endpoint.</p>
-<h5><a id="filtersearch"></a>Filter Search</h5>
+
+<a id="filtersearch"></a>
+##### Filter Search
+
 <p>A filter search consists of specifying a <code>q</code> query parameter and a corresponding search value on a Collection Resource URL, as follows:</p>
 <pre><code>/v1/someCollection?q=some+criteria
 </code></pre>
@@ -694,7 +562,10 @@ Content-Type: application/json;charset=UTF-8
      lower(surname) like '%joe%' OR
      lower(email) like '%joe%' OR ... );
 </code></pre>
-<h5><a id="attributesearch"></a>Attribute Search</h5>
+
+<a id="attributesearch"></a>
+##### Attribute Search
+
 <p>Attribute-based search is the ability to find resources based on full and partial matching of specific individual resource attributes, as follows:</p>
 <pre><code>/v1/someCollection?anAttribute=someValue&amp;anotherAttribute=anotherValue
 </code></pre>
@@ -727,7 +598,9 @@ Content-Type: application/json;charset=UTF-8
 <li>The account <code>status</code> equals 'disabled' (case insensitive).</li>
 </ul>
 <p><strong>Note:</strong> For resources with a <code>status</code> attribute, status query values <strong>must be the exact value</strong>. For example,<code>enabled</code> or <code>disabled</code> must be passed and fragments such as <code>ena</code>, <code>dis</code>, <code>bled</code> are not acceptable.</p>
-<h3><a id="ReferenceLinks"></a>Resource References or Links</h3>
+
+### Resource References or Links
+
 <p>REST resources that reference other resources, such as an account referencing the parent directory, represent the references as a resource reference object.</p>
 <p>A <code>Resource Reference</code> is an object nested within an existing resource representation that has, at a minimum, an <code>href</code> attribute.</p>
 <p>The <code>href</code> attribute is the fully qualified location URI of the referenced resource.</p>
@@ -762,9 +635,14 @@ Content-Type: application/json;charset=UTF-8
 }
 </code></pre>
 <p>When encountering a resource reference object, you can use the reference <code>href</code> attribute to interact with that resource as necessary.</p>
-<h4><a id="ReferenceExpansion"></a>Reference (Link) Expansion</h4>
+
+<a id="ReferenceExpansion"></a>
+#### Reference (Link) Expansion
+
 <p>When requesting a resource you might want the Stormpath API server to return not only that resource, but also one or more of the referenced resources. Reference expansion allows you to retrieve related information in a single request to the server instead of having to issue multiple separate requests.</p>
-<h5><code>expand</code> Query Parameter</h5>
+
+##### `expand` Query Parameter
+
 <p>Using the previous example <code>account</code> resource, to retrieve the account including the parent directory information, instead of issuing two requests (one for the account and another for the directory) add an <code>expand</code> query parameter to the resource URI when requesting the account with a value of <code>directory</code>.</p>
 <p>For example:</p>
 <pre><code>GET /v1/accounts/ZugcG3JHQFOTKGEXAMPLE?expand=directory
@@ -807,16 +685,24 @@ Content-Type: application/json;charset=UTF-8
 }
 </code></pre>
 <p>The account <code>directory</code> attribute is no longer a reference and has been <em>expanded</em> in-line and included in the response body. You can use this technique effectively when customizing user interfaces or reducing the number of round-trip communication requests to Stormpath API server, enhancing the performance of your application.</p>
-<h5>Expandable Attributes</h5>
+
+##### Expandable Attributes
+
 <p>Most reference attributes are expandable. Check the specific documentation for the resource to see which reference attributes are expandable.</p>
-<h5>Expansion Depth Limit</h5>
+
+##### Expansion Depth Limit
+
 <p>It is currently only possible to expand the immediate references of a resource. It is not currently possible to expand references of references.<br>For example, in the same example <code>account</code> it would not be possible to return the account with the directory and directory groups expanded. Expansion is currently only possible down one level.</p>
 <p>If you have a critical need of multi-depth expansion, please contact us at [support@stormpath.com] and submit a feature request.</p>
-<h5>Expanding Multiple References</h5>
+
+##### Expanding Multiple References
+
 <p>You can specify more than reference attribute by specifying a comma-delimited list of attribute names to expand.<br>For example, to expand the example account <code>directory</code> and <code>tenant</code> references, pass the following <code>GET</code> request:</p>
 <pre><code>GET /v1/accounts/ZugcG3JHQFOTKGEXAMPLE?expand=directory,tenant
 </code></pre>
-<h5>Expanding Collection References</h5>
+
+##### Expanding Collection References
+
 <p>If the reference you want to expand is a Collection Resource, you can expand it. You can also provide pagination parameters to control the paged output of the expanded collection.<br>For example, to expand the example account groups (starting at the first group - index 0) and limiting to 10 results total, you can specify the <code>groups</code> attribute name followed <code>offset</code> and/or <code>limit</code> parameters enclosed in parenthesis. For example:</p>
 <pre><code>GET /v1/accounts/ZugcG3JHQFOTKGEXAMPLE?expand=groups(offset:0,limit:10)
 </code></pre>
@@ -824,12 +710,16 @@ Content-Type: application/json;charset=UTF-8
 <p><strong>Note:</strong> If you specify parenthesis for a collection expansion, you <strong>must</strong> specify an <code>offset</code> value or a <code>limit</code> value or both. Parenthesis without an <code>offset</code> or <code>limit</code> is a query syntax error and should be fixed. For example, <code>?expand=groups()</code> is invalid and should be changed to only <code>?expand=groups</code>.</p>
 <p>If you expand a Collection Resource and you do not specify parenthesis with an offset or limit (for example <code>?expand=groups</code>), the default pagination values are used automatically.</p>
 <p>For more information on pagination, please see <a href="#Pagination">Collection Resource Pagination</a></p>
-<h5>Expansion Combinations</h5>
+
+##### Expansion Combinations
+
 <p>Finally, it should be noted that you can expand standard (non-collection) resource references and collection references in the same <code>expand</code> directive. For example:</p>
 <pre><code>GET /v1/accounts/ZugcG3JHQFOTKGEXAMPLE?expand=directory,groups(offset:0,limit:10)
 </code></pre>
 <p>You can combine the two techniques to more precisely customize your required output.</p>
-<h3><a id="Errors"></a>Errors</h3>
+
+### Errors
+
 <p>REST API responses indicating an error or warning are represented by a proper response HTTP status code (404, 403, and so on). Additionally, a response body is provided containing the following information:</p>
 <table>
 <thead>
@@ -878,7 +768,9 @@ Content-Type: application/json;charset=UTF-8
   "moreInfo": "http://www.stormpath.com/docs/errors/404"
 }
 </code></pre>
-<h3><a id="HTTPMethodOverloading"></a>HTTP Method Overloading</h3>
+
+### HTTP Method Overloading
+
 <p>The Stormpath REST API uses HTTP <code>GET</code>, <code>POST</code>, <code>PUT</code>, and <code>DELETE</code> methods. Because some HTTP clients do not support PUT and DELETE methods, you can simulate them by sending a POST request to a resource endpoint with a <strong><code>_method</code></strong> query string parameter; method is prefixed with the underscore character. The parameter value can be DELETE (<code>_method=DELETE</code>) or PUT (<code>_method=PUT</code>).</p>
 <p>For example, if you want to delete a particular application resource, you would ordinarily execute an HTTP <code>DELETE</code> request:</p>
 <pre><code>DELETE /v1/applications/WpM9nyZ2TbaEzfbRvLk9KA
@@ -887,16 +779,25 @@ Content-Type: application/json;charset=UTF-8
 <pre><code>POST /v1/applications/WpM9nyZ2TbaEzfbRvLk9KA?_method=DELETE
 </code></pre>
 <hr>
-<h2><a id="Resources"></a><em>Resources</em></h2>
-<h3><a id="Applications"></a>Applications</h3>
+
+## Resources
+
+### Applications
+
 <p>An <a href="#Application" title="applications">application</a> in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath. After it is defined, an application is mapped to one or more directories or groups, whose users are then granted access to the application.</p>
 <p>You can control access to your Stormpath Admin Console and API by managing the <a href="http://www.stormpath.com/docs/console/product-guide#ManageLoginSources" title="login sources">login sources</a> for the listed Stormpath application.</p>
-<h4><a id="ApplicationInstanceResource"></a>Application Instance Resource</h4>
+
+<a id="ApplicationInstanceResource"></a>
+#### Application Instance Resource
+
 <p>An application instance resource represents a software application that is registered to and communicates with Stormpath for application-specific user management needs. A <a href="#Tenants" title="tenant">tenant</a> can register one or more applications with Stormpath.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/applications/:applicationId
 </code></pre>
-<h4><a id="ApplicationResourceProperties"></a>Resource Properties</h4>
+
+<a id="ApplicationResourceProperties"></a>
+#### Resource Properties
+
 <table>
 <thead>
 <tr><th align="left">Property</th><th align="left">Description</th><th align="left">Type</th><th align="left">Valid Value</th></tr>
@@ -946,17 +847,22 @@ Content-Type: application/json;charset=UTF-8
 </tr>
 </tbody>
 </table>
-<h5>Supported Operations</h5>
+
+##### Supported Operations
+
 <p>The following operations are supported on an existing individual application instance resource:</p>
 <ul>
-<li><a href="#ReadApplicationResource" title="Read Application Resource">Read (HTTP <code>GET</code>)</a></li>
-<li><a href="#UpdateApplicationResource" title="Update Application Resource">Update (HTTP <code>POST</code>)</a></li>
-<li><a href="#DeleteApplicationResource" title="Delete Application Resource">Delete (HTTP <code>DELETE</code>)</a></li>
-<li><a href="#CreateApplicationResource" title="Create Application Resource">Create (HTTP <code>POST</code>)</a></li>
-<li><a href="#ApplicationChildCollectionResource" title="List accounts">List Accounts (HTTP <code>GET</code>)</a></li>
+<li><a href="#ReadApplicationResource" title="Read Application Resource">Read</a></li>
+<li><a href="#UpdateApplicationResource" title="Update Application Resource">Update</a></li>
+<li><a href="#DeleteApplicationResource" title="Delete Application Resource">Delete</a></li>
+<li><a href="#CreateApplicationResource" title="Create Application Resource">Create</a></li>
+<li><a href="#ApplicationChildCollectionResource" title="List accounts">List Accounts</a></li>
 </ul>
 <p>New applications can be registered with Stormpath by creating an application instance resource using the application Collection Resource URI.</p>
-<h4><a id="ReadApplicationResource"></a>Read an Application Resource (HTTP GET)</h4>
+
+<a id="ReadApplicationResource"></a>
+#### Read an Application Resource
+
 <p>Returns a representation of an application resource that includes the resource properties.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/applications/WpM9nyZ2TbaEzfbRvLk9KA
@@ -981,7 +887,10 @@ Content-Type: application/json;charset=UTF-8
     },
 }
 </code></pre>
-<h4><a id="UpdateApplicationResource"></a>Update an Application Resource (HTTP POST)</h4>
+
+<a id="UpdateApplicationResource"></a>
+#### Update an Application Resource
+
 <p>Use HTTP <code>POST</code> when you want to change one or more specific properties of an application resource. Unspecified properties are not changed, but at least one property must be specified.</p>
 <p><strong>Optional Properties</strong></p>
 <ul>
@@ -1017,7 +926,10 @@ Content-Type: application/json;charset=UTF-8
     },
 }
 </code></pre>
-<h4><a id="DeleteApplicationResource"></a>Delete or Unregister an Application Resource (HTTP DELETE)</h4>
+
+<a id="DeleteApplicationResource"></a>
+#### Delete or Unregister an Application Resource
+
 <p>Permanently deletes a specific application resource.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>DELETE /v1/applications/WpM9nyZ2TbaEzfbRvLk9KA
@@ -1025,7 +937,10 @@ Content-Type: application/json;charset=UTF-8
 <p><strong>Example Response</strong></p>
 <pre><code>HTTP/1.1 204 No Content
 </code></pre>
-<h4><a id="CreateApplicationResource"></a>Create or Register an Application Resource (HTTP POST)</h4>
+
+<a id="CreateApplicationResource"></a>
+#### Create or Register an Application Resource
+
 <p>Creates a new application instance within the caller tenant.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/applications
@@ -1070,7 +985,10 @@ Content-Type: application/json;charset=UTF-8
     },
 }
 </code></pre>
-<h4><a id="ApplicationChildCollectionResource"></a>Child Collection Resources</h4>
+
+<a id="ApplicationChildCollectionResource"></a>
+#### Child Collection Resources
+
 <p>The following collections are supported on an existing individual application instance resource:</p>
 <ul>
 <li><a href="#ApplicationAccountCollections" title="Accounts Collection">Accounts Collection</a></li>
@@ -1078,12 +996,15 @@ Content-Type: application/json;charset=UTF-8
 <li><a href="#ApplicationPasswordResetTokens" title="Password Reset Tokens">Password Reset Tokens</a></li>
 </ul>
 <p>For more information about working with collections, click <a href="#CollectionResourcesPagination" title="Collection Resources Pagination">here</a>.</p>
-<h5><a id="ApplicationAccountCollections"></a>Account Collections for an Application Resource</h5>
+
+<a id="ApplicationAccountCollections"></a>
+##### Account Collections for an Application Resource
+
 <p>The Application Accounts Collection Resource represents all accounts that can log in to the application.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/applications/:applicationId/accounts
 </code></pre>
-<p><strong>List Application Accounts (HTTP GET)</strong></p>
+<p><strong>List Application Accounts</strong></p>
 <p>HTTP <code>GET</code> returns a paginated list of links for accounts within a specified application.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/applications/WpM9nyZ2TbaEzfbRvLk9KA/accounts
@@ -1109,7 +1030,10 @@ Content-Type: application/json;charset=UTF-8
   ]
 }
 </code></pre>
-<h5><a id="ApplicationLoginAttempts"></a>Login Attempts for Authenticating an Application Account</h5>
+
+<a id="ApplicationLoginAttempts"></a>
+##### Login Attempts for Authenticating an Application Account
+
 <p>The Application Login Attempts endpoint allows an application to authenticate its associated accounts.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/applications/:applicationId/loginAttempts
@@ -1136,7 +1060,7 @@ The <code>base64_encode</code> method call is only an example. You will need to 
 </tr>
 </tbody>
 </table>
-<p><strong>Execute Account Login Attempt (HTTP POST)</strong></p>
+<p><strong>Execute Account Login Attempt</strong></p>
 <p>An HTTP <code>POST</code> authenticates an associated application account. Only HTTP <code>POST</code> is supported.</p>
 <p>The <code>POST</code> body must be a JSON object with the Login Attempt Resource Properties.</p>
 <p><strong>Example Request</strong></p>
@@ -1172,14 +1096,17 @@ Content-Type: application/json;charset=UTF-8
   "moreInfo": "mailto:support@stormpath.com"
 }
 </code></pre>
-<h5><a id="ApplicationPasswordResetTokens"></a>Password Reset Tokens for Reseting an Application Account Password</h5>
+
+<a id="ApplicationPasswordResetTokens"></a>
+##### Password Reset Tokens for Reseting an Application Account Password
+
 <p>The application password reset tokens endpoint supports the password reset workflow for an account in the application assigned login sources.</p>
 <p>Creating a new password reset token automatically sends a password reset email to the destination email address if that address corresponds to an account listed in the application login sources.</p>
 <p>With the application password reset tokens, you can:</p>
 <ul>
 <li><a href="#SetApplicationPWResetTokenProperties" title="Set Application Password Reset Token Resource Properties">Set Application Password Reset Token Resource Properties</a></li>
-<li><a href="#CreateAccountPWResetToken" title="Create Account Password Reset Token">Create Account Password Reset Token (Initiate password reset workflow) (HTTP POST)</a></li>
-<li><a href="#ReadPWResetToken" title="Read a Password Reset Token">Read a Password Reset Token (Validate password reset token) (HTTP GET)</a></li>
+<li><a href="#CreateAccountPWResetToken" title="Create Account Password Reset Token">Create Account Password Reset Token (Initiate password reset workflow) </a></li>
+<li><a href="#ReadPWResetToken" title="Read a Password Reset Token">Read a Password Reset Token (Validate password reset token) </a></li>
 </ul>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/applications/:applicationId/passwordResetTokens
@@ -1210,7 +1137,7 @@ Content-Type: application/json;charset=UTF-8
 </tr>
 </tbody>
 </table>
-<p><strong><a id="CreateAccountPWResetToken"></a>Create Account Password Reset Token (Initiate password reset workflow) (HTTP POST)</strong></p>
+<p><strong><a id="CreateAccountPWResetToken"></a>Create Account Password Reset Token (Initiate password reset workflow) </strong></p>
 <p>A successful HTTP <code>POST</code> sends a password reset email to the first discovered account associated with the corresponding application. The email recipient can then click a password reset URL in the email to reset their password in a web form.</p>
 <p>The <code>POST</code> body must be a JSON object with a single email property:</p>
 <p><strong>Example Request</strong></p>
@@ -1247,7 +1174,7 @@ Content-Type: application/json;charset=UTF-8
   "moreInfo": "mailto:support@stormpath.com"
 }
 </code></pre>
-<p><strong><a id="ReadPWResetToken"></a>Read a Password Reset Token (Validate password reset token) (HTTP GET)</strong></p>
+<p><strong><a id="ReadPWResetToken"></a>Read a Password Reset Token (Validate password reset token) </strong></p>
 <p>Reading a token resource successfully indicates the token is valid. If you obtain the token because the email recipient clicks a link to your application and it verifies successfully, you can assume the token is valid.</p>
 <p>After verifying that the token is valid, you can then collect the new account password, using a web form over HTTPS, and submit the new password as <a href="#UpdateAccountResource" title="update account">an account update</a>.</p>
 <p><strong>Example GET Request</strong></p>
@@ -1280,7 +1207,9 @@ Content-Type: application/json;charset=UTF-8
 </code></pre>
 <p>Receving a <code>404 Not Found</code> response from a password reset token resource indicates the token is invalid and the end-user should not be asked to present a new password. A new password reset token should be constructed to initiate the password reset workflow.</p>
 <hr>
-<h3><a id="Directories"></a>Directories</h3>
+
+### Directories
+
 <p>A directory is a named root-level container of <a href="#Groups" title="groups">groups</a> and <a href="#Accounts" title="accounts">accounts</a> within a <a href="#Tenants" title="tenants">tenant</a>.</p>
 <p>Directories contain authentication and authorization information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.</p>
 <p>Within Stormpath, there are two types of directories you can implement:</p>
@@ -1295,11 +1224,17 @@ Content-Type: application/json;charset=UTF-8
 </li>
 </ul>
 <p>For more information about directories, see the <a href="www.stormpath.com/docs/console/product-guide#directories" title="Stormpath Admin Console">Stormpath Admin Console Product Guide</a>.</p>
-<h4><a id="DirectoryInstanceResource"></a>Directory Instance Resource</h4>
+
+<a id="DirectoryInstanceResource"></a>
+#### Directory Instance Resource
+
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/directories/:directoryId
 </code></pre>
-<h4><a id="DirectoryResourceProperties"></a>Resource Properties</h4>
+
+<a id="DirectoryResourceProperties"></a>
+#### Resource Properties
+
 <table>
 <thead>
 <tr><th align="left">Property</th><th align="left">Description</th><th align="left">Type</th><th align="left">Valid Value</th></tr>
@@ -1349,7 +1284,9 @@ Content-Type: application/json;charset=UTF-8
 </tr>
 </tbody>
 </table>
-<h5>Supported Operations</h5>
+
+##### Supported Operations
+
 <p>The following operations are supported on an existing individual directory instance resource:</p>
 <ul>
 <li><a href="#ReadDirectoryResource" title="Read Directory Resource">Read (HTTP <code>GET</code>)</a></li>
@@ -1359,7 +1296,10 @@ Content-Type: application/json;charset=UTF-8
 <li><a href="#DirectoryGroupCollections" title="List groups">List Groups (HTTP <code>GET</code>)</a></li>
 <li><a href="#DirectoryAccountsCollection" title="List accounts">List Accounts (HTTP <code>GET</code>)</a></li>
 </ul>
-<h4><a id="ReadDirectoryResource"></a>Read a Directory Resource (HTTP GET)</h4>
+
+<a id="ReadDirectoryResource"></a>
+#### Read a Directory Resource 
+
 <p>HTTP <code>GET</code> returns a representation of a directory resource that includes the resource properties.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/directories/bckhcGMXQDujIXpbCDRb2Q
@@ -1384,7 +1324,10 @@ Content-Type: application/json;charset=UTF-8
   },
 }
 </code></pre>
-<h4><a id="UpdateDirectoryResource"></a>Update a Directory Resource (HTTP POST)</h4>
+
+<a id="UpdateDirectoryResource"></a>
+#### Update a Directory Resource 
+
 <p>Use HTTP <code>POST</code> when you want to change one or more specific properties of a directory resource. Unspecified properties will not be changed, but at least one property must be specified.</p>
 <p><strong>Optional Properties</strong></p>
 <ul>
@@ -1420,7 +1363,10 @@ Content-Type: application/json;charset=UTF-8
   }
 }
 </code></pre>
-<h4><a id="DeleteDirectoryResource"></a>Delete a Directory Resource (HTTP DELETE)</h4>
+
+<a id="DeleteDirectoryResource"></a>
+#### Delete a Directory Resource
+
 <p>Permanently deletes a specific a directory resource.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>DELETE /v1/directories/bckhcGMXQDujIXpbCDRb2Q
@@ -1428,7 +1374,10 @@ Content-Type: application/json;charset=UTF-8
 <p><strong>Example Response</strong></p>
 <pre><code>HTTP/1.1 204 No Content
 </code></pre>
-<h4><a id="CreateDirectoryResource"></a>Create a Directory Resource (HTTP POST)</h4>
+
+<a id="CreateDirectoryResource"></a>
+#### Create a Directory Resource 
+
 <p>Creates a new directory resource within the caller tenant.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/directories
@@ -1472,19 +1421,25 @@ Content-Type: application/json;charset=UTF-8
   },
 }
 </code></pre>
-<h4><a id="DirectoryChildCollectionResource"></a>Child Collection Resources</h4>
+
+<a id="DirectoryChildCollectionResource"></a>
+#### Child Collection Resources
+
 <p>The following collections are supported on an existing individual directory instance resource:</p>
 <ul>
 <li><a href="#DirectoryGroupCollections" title="Groups Collections for a Directory Resource">Groups Collections for a Directory Resource</a></li>
 <li><a href="#DirectoryAccountsCollection" title="Accounts Collection for a Directory Resource">Accounts Collection for a Directory Resource</a></li>
 </ul>
 <p>For more information about working with collections, click <a href="#CollectionResourcesPagination" title="Collection Resources Pagination">here</a>.</p>
-<h5><a id="DirectoryGroupCollections"></a>Directory Groups Collection</h5>
+
+<a id="DirectoryGroupCollections"></a>
+##### Directory Groups Collection
+
 <p>The Groups Collections for a Directory Resource Collection Resource represents all groups owned by a specific directory.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/directories/:directoryId/groups
 </code></pre>
-<p><strong>List Directory Groups (HTTP GET)</strong></p>
+<p><strong>List Directory Groups </strong></p>
 <p>HTTP <code>GET</code> returns a Collection Resource containing links for all groups owned by a specific directory.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/directories/bckhcGMXQDujIXpbCDRb2Q/groups
@@ -1510,12 +1465,15 @@ Content-Type: application/json;charset=UTF-8
   ]
 }
 </code></pre>
-<h5><a id="DirectoryAccountsCollection"></a>Directory Accounts Collection</h5>
+
+<a id="DirectoryAccountsCollection"></a>
+##### Directory Accounts Collection
+
 <p>The Accounts Collection for a Directory Resource Collection Resource represents all accounts owned by a specific directory.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/directories/:directoryId/accounts
 </code></pre>
-<p><strong>List Directory Accounts Applications (HTTP GET)</strong></p>
+<p><strong>List Directory Accounts Applications </strong></p>
 <p>HTTP <code>GET</code> returns a paginated list of links for accounts within a specified directory.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/directories/bckhcGMXQDujIXpbCDRb2Q/accounts
@@ -1542,14 +1500,22 @@ Content-Type: application/json;charset=UTF-8
 }
 </code></pre>
 <hr>
-<h3><a id="Accounts"></a>Accounts</h3>
+
+### Accounts
+
 <p>In Stormpath, users are referred to as user account objects or <a href="#Account" title="accounts">accounts</a>. The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.</p>
 <p>An account is a unique identity within a <a href="#Directories" title="directories">directory</a>. An account can exist in only a single directory but can be a part of multiple <a href="#Groups" title="groups">groups</a> owned by that directory.</p>
-<h4><a id="AccountInstanceResource"></a>Account Instance Resource</h4>
+
+<a id="AccountInstanceResource"></a>
+####Account Instance Resource
+
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/accounts/:accountId
 </code></pre>
-<h4><a id="AccountResourceProperties"></a>Resource Properties</h4>
+
+<a id="AccountResourceProperties"></a>
+#### Resource Properties
+
 <table>
 <thead>
 <tr><th align="left">Property</th><th align="left">Description</th><th align="left">Type</th><th align="left">Valid Value</th></tr>
@@ -1623,7 +1589,9 @@ Content-Type: application/json;charset=UTF-8
 </tr>
 </tbody>
 </table>
-<h5>Supported Operations</h5>
+
+##### Supported Operations
+
 <p>The following operations are supported on an existing individual account instance resource:</p>
 <ul>
 <li><a href="#ReadAccountResource" title="Read Account Resource">Read (HTTP <code>GET</code>)</a></li>
@@ -1632,7 +1600,10 @@ Content-Type: application/json;charset=UTF-8
 <li><a href="#CreateAccountResource" title="Create Account Resource">Create (HTTP <code>POST</code>)</a></li>
 <li><a href="#AccountChildCollectionResource" title="List groups">List Groups (HTTP <code>GET</code>)</a></li>
 </ul>
-<h4><a id="ReadAccountResource"></a>Read an Account Resource (HTTP GET)</h4>
+
+<a id="ReadAccountResource"></a>
+#### Read an Account Resource 
+
 <p>HTTP <code>GET</code> returns a representation of an account resources that includes the properties.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/accounts/cJoiwcorTTmkDDBsf02AbA
@@ -1663,7 +1634,10 @@ Content-Type: application/json;charset=UTF-8
 },
 }
 </code></pre>
-<h4><a id="UpdateAccountResource"></a>Update an Account Resource (HTTP POST)</h4>
+
+<a id="UpdateAccountResource"></a>
+#### Update an Account Resource 
+
 <p>Use HTTP <code>POST</code> when you want to change one or more specific properties of an account resource. Unspecified properties will not be changed, but at least one property must be specified.</p>
 <p><strong>Optional Properties</strong></p>
 <ul>
@@ -1762,7 +1736,10 @@ Content-Type: application/json;charset=UTF-8
   }
 }
 </code></pre>
-<h4><a id="DeleteAccountResource"></a>Delete an Account Resource (HTTP DELETE)</h4>
+
+<a id="DeleteAccountResource"></a>
+#### Delete an Account Resource (HTTP DELETE)
+
 <p>Permanently deletes an account resource.</p>
 <p><strong>Example Request to Delete an Account</strong></p>
 <pre><code>DELETE /v1/accounts/cJoiwcorTTmkDDBsf02bAb
@@ -1776,7 +1753,10 @@ Content-Type: application/json;charset=UTF-8
 <p><strong>Example Response</strong></p>
 <pre><code>HTTP/1.1 204 No Content
 </code></pre>
-<h4><a id="CreateAccountResource"></a>Create an Account (HTTP POST)</h4>
+
+<a id="CreateAccountResource"></a>
+#### Create an Account 
+
 <p>Creates a new account resource instance within a specified directory.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/directories/:directoryId/accounts
@@ -1827,15 +1807,22 @@ Content-Type: application/json;charset=UTF-8
   }
 }
 </code></pre>
-<h4><a id="AccountChildCollectionResource"></a>Child Collection Resources</h4>
+
+<a id="AccountChildCollectionResource"></a>
+#### Child Collection Resources
+
+
 <p><a href="#AccountGroupCollection">Groups Collection for an Account Resource</a> and <a href="#AccountGroupMembershipCollection">Group Memberships Collection for an Account Resource</a> are supported on an existing individual account instance resource.</p>
 <p>For more information about working with collections, click <a href="#CollectionResourcesPagination">here</a>.</p>
-<h5><a id="AccountGroupCollection"></a>Groups Collection for an Account Resource</h5>
+
+<a id="AccountGroupCollection"></a>
+##### Groups Collection for an Account Resource
+
 <p>The Groups Collection for an Account Resource Collection Resource represents all groups where a specific account is a member.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/accounts/:accountId/groups
 </code></pre>
-<p><strong>List Account Groups (HTTP GET)</strong></p>
+<p><strong>List Account Groups </strong></p>
 <p>HTTP <code>GET</code> returns a Collection Resource containing links for all <a href="#Groups">groups</a> where a specific account is a member.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups
@@ -1861,12 +1848,15 @@ Content-Type: application/json;charset=UTF-8
   ]
 }
 </code></pre>
-<h5><a id="AccountGroupMembershipCollection"></a>Group Memberships Collection for an Account Resource</h5>
+
+<a id="AccountGroupMembershipCollection"></a>
+##### Group Memberships Collection for an Account Resource
+
 <p>The Group Memberships Collection for an Account Resource represents all group memberships where a specific account is a member.</p>
 <p>Resource URI</p>
 <pre><code>/v1/accounts/:accountId/groupMemberships
 </code></pre>
-<p>List Account Group Memberships (HTTP GET)</p>
+<p>List Account Group Memberships </p>
 <p><code>HTTP GET</code> returns a Collection Resource containing the group memberships to which a specific account is a member.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET https://api.stormpath.com/v1/accounts/MvdTIJakRO2Ry8c5z5itWw/groupMemberships
@@ -1899,13 +1889,21 @@ Content-Type: application/json;charset=UTF-8
 }
 </code></pre>
 <hr>
-<h3><a id="Groups"></a>Groups</h3>
+
+### Groups
+
 <p>A group is a named collection of <a href="#Accounts" title="accounts">accounts</a> within a <a href="#Directories" title="Directories">directory</a>. Groups can be used as login sources within <a href="#Applications" title="Applications">applications</a> to control who can login to an application.</p>
-<h4><a id="GroupInstanceResource"></a>Group Instance Resource</h4>
+
+<a id="GroupInstanceResource"></a>
+#### Group Instance Resource
+
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/groups/:groupId
 </code></pre>
-<h4><a id="GroupResourceProperties"></a>Resource Properties</h4>
+
+<a id="GroupResourceProperties"></a>
+#### Resource Properties
+
 <table>
 <thead>
 <tr><th align="left">Property</th><th align="left">Description</th><th align="left">Type</th><th align="left">Valid Value</th></tr>
@@ -1955,7 +1953,9 @@ Content-Type: application/json;charset=UTF-8
 </tr>
 </tbody>
 </table>
-<h5>Supported Operations</h5>
+
+##### Supported Operations
+
 <p>The following operations are supported on an existing individual group instance resource:</p>
 <ul>
 <li><a href="#ReadGroupResource" title="Read Group Resource">Read (HTTP <code>GET</code>)</a></li>
@@ -1964,7 +1964,10 @@ Content-Type: application/json;charset=UTF-8
 <li><a href="#CreateGroupResource" title="Create Group Resource">Create (HTTP <code>POST</code>)</a></li>
 <li><a href="#GroupChildCollectionResource" title="list acccounts">List Accounts (HTTP <code>GET</code>)</a></li>
 </ul>
-<h4><a id="ReadGroupResource"></a>Read a Group Resource (HTTP GET)</h4>
+
+<a id="ReadGroupResource"></a>
+#### Read a Group Resource 
+
 <p>HTTP <code>GET</code> returns a representation of a group resource that includes the resource properties.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ
@@ -1989,7 +1992,10 @@ Content-Type: application/json;charset=UTF-8
   }
 }
 </code></pre>
-<h4><a id="UpdateGroupResource"></a>Update a Group Resource (HTTP POST)</h4>
+
+<a id="UpdateGroupResource"></a>
+#### Update a Group Resource 
+
 <p>Use HTTP <code>POST</code> when you want to change one or more specific properties of a group resource. Unspecified properties are not changed, but at least one property must be specified.</p>
 <p><strong>Optional Properties</strong></p>
 <ul>
@@ -2025,7 +2031,10 @@ Content-Type: application/json;charset=UTF-8
   }
 }
 </code></pre>
-<h4><a id="DeleteGroupResource"></a>Delete a Group Resource (HTTP DELETE)</h4>
+
+<a id="DeleteGroupResource"></a>
+#### Delete a Group Resource (HTTP DELETE)
+
 <p>Permanently deletes a specific a group resource.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>DELETE /v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ
@@ -2033,7 +2042,10 @@ Content-Type: application/json;charset=UTF-8
 <p><strong>Example Response</strong></p>
 <pre><code>HTTP/1.1 204 No Content
 </code></pre>
-<h4><a id="CreateGroupResource"></a>Create a Group Resource (HTTP POST)</h4>
+
+<a id="CreateGroupResource"></a>
+#### Create a Group Resource 
+
 <p>Creates a new group resource instance in a specified directory.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/directories/:directoryId/groups
@@ -2078,15 +2090,22 @@ Content-Type: application/json;charset=UTF-8
   }
 }
 </code></pre>
-<h4><a id="GroupChildCollectionResource"></a>Child Collection Resources</h4>
+
+<a id="GroupChildCollectionResource"></a>
+#### Child Collection Resources
+
+
 <p><a href="#GroupAccountCollection">Group Account Collection for a Group Resource</a> and <a href="#GroupMembershipAccountCollection">Group Memberships Collection for a Group Resource</a> are supported on an existing individual group instance resource.</p>
 <p>For more information about working with collections, click <a href="#CollectionResourcesPagination">here</a>.</p>
-<h5><a id="GroupAccountCollection"></a>Group Accounts Collection</h5>
+
+<a id="GroupAccountCollection"></a>
+##### Group Accounts Collection
+
 <p>The Group Account Collection for a Group Resource Collection Resource represents all accounts that are members of a specific group.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/groups/:groupId/accounts
 </code></pre>
-<p><strong>List Group Accounts (HTTP GET)</strong></p>
+<p><strong>List Group Accounts </strong></p>
 <p>HTTP <code>GET</code> returns a paginated list of links for accounts within a specified group.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ/accounts
@@ -2112,12 +2131,15 @@ Content-Type: application/json;charset=UTF-8
   ]
 }
 </code></pre>
-<h5><a id="GroupMembershipAccountCollection"></a>Group Memberships Collection for a Group Resource</h5>
+
+<a id="GroupMembershipAccountCollection"></a>
+##### Group Memberships Collection for a Group Resource
+
 <p>The Group Memberships Collection for a Group Resource represents all group memberships where a specific group is a member.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/groups/:groupId/accountMemberships
 </code></pre>
-<p><strong>List Groups Group Memberships (HTTP GET)</strong></p>
+<p><strong>List Groups Group Memberships </strong></p>
 <p><code>HTTP GET</code> returns a Collection Resource containing the group memberships to which a specific group is a member.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET https://api.stormpath.com/v1/groups/smJGMBMpQ_-FKvMgCRTdVA/accountMemberships
@@ -2150,13 +2172,21 @@ Content-Type: application/json;charset=UTF-8
 }
 </code></pre>
 <hr>
-<h3><a id="GroupMemberships"></a>Group Memberships</h3>
+
+### Group Memberships
+
 <p>A group membership is a named root-level container of the relationship between an <a href="#Account">account</a> and a <a href="#Group">group</a> within a <a href="#Tenant">tenant</a>.</p>
-<h4><a id="GroupMembershipInstanceResource"></a>Group Membership Instance Resource</h4>
+
+<a id="GroupMembershipInstanceResource"></a>
+#### Group Membership Instance Resource
+
 <p><strong>Resource URI</strong></p>
 <pre><code>v1/groupMemberships/:groupMembershipId
 </code></pre>
-<h4><a id="GroupMembershipResourceProperties"></a>Resource Properties</h4>
+
+<a id="GroupMembershipResourceProperties"></a>
+#### Resource Properties
+
 <table>
 <thead>
 <tr><th align="left">Property</th><th align="left">Description</th><th align="left">Type</th></tr>
@@ -2179,14 +2209,19 @@ Content-Type: application/json;charset=UTF-8
 </tr>
 </tbody>
 </table>
-<h5>Supported Operations</h5>
+
+##### Supported Operations
+
 <p>The following operations are supported on an existing individual group instance resource:</p>
 <ul>
 <li><a href="#ReadGroupMembershipResource">Read (HTTP <code>GET</code>)</a></li>
 <li><a href="#DeleteGroupMembershipResource">Delete (HTTP <code>DELETE</code>)</a></li>
 <li><a href="#CreateGroupMembershipResource">Create (HTTP <code>POST</code>)</a></li>
 </ul>
-<h4><a id="ReadGroupMembershipResource"></a>Read a Group Membership Resource</h4>
+
+<a id="ReadGroupMembershipResource"></a>
+#### Read a Group Membership Resource
+
 <p>HTTP GET returns a representation of a group membership resource that includes the account and the group hrefs.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET https://api.stormpath.com/v1/groupMemberships/249Up9ojT6NUNEYocdG4Dj
@@ -2205,7 +2240,10 @@ Content-Type: application/json;charset=UTF-8
    }
 }
 </code></pre>
-<h4><a id="DeleteGroupMembershipResource"></a>Delete a Group Membership Resource</h4>
+
+<a id="DeleteGroupMembershipResource"></a>
+#### Delete a Group Membership Resource
+
 <p>Permanently deletes a specific group membership resource.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>DELETE https://api.stormpath.com/v1/groupMemberships/57YZCqrNgrzcIGYs1PfP4F
@@ -2213,7 +2251,10 @@ Content-Type: application/json;charset=UTF-8
 <p><strong>Example Response</strong></p>
 <pre><code>HTTP/1.1 204 No Content
 </code></pre>
-<h4><a id="CreateGroupMembershipResource"></a>Create a Group Membership Resource</h4>
+
+<a id="CreateGroupMembershipResource"></a>
+#### Create a Group Membership Resource
+
 <p>Creates a new group membership instance within a tenant.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>v1/groupMemberships
@@ -2247,13 +2288,21 @@ Content-Type: application/json;charset=UTF-8
 }
 </code></pre>
 <hr>
-<h3><a id="Tenants"></a>Tenants</h3>
+
+### Tenants
+
 <p>Stormpath is a multitenant software service. When you sign up for the Stormpath service, a tenant instance is created for you. As a Stormpath customer, you own your tenant instance and everything you create in it - applications, directories, accounts, groups, and so on. You can access and update your tenant information using the Tenant REST API.</p>
-<h4><a id="TenantInstanceResource"></a>Tenant Instance Resource</h4>
+
+<a id="TenantInstanceResource"></a>
+#### Tenant Instance Resource
+
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/tenants/:tenantId
 </code></pre>
-<h4><a id="TenantResourceProperties"></a>Resource Properties</h4>
+
+<a id="TenantResourceProperties"></a>
+#### Resource Properties
+
 <table>
 <thead>
 <tr><th align="left">Property</th><th align="left">Description</th><th align="left">Type</th><th align="left">Valid Value</th></tr>
@@ -2291,7 +2340,9 @@ Content-Type: application/json;charset=UTF-8
 </tr>
 </tbody>
 </table>
-<h5>Supported Operations</h5>
+
+##### Supported Operations
+
 <p>The following operations are supported on an existing individual group instance resource:</p>
 <ul>
 <li><a href="#ReadTenantResource" title="Read Tenant Resource">Read (HTTP <code>GET</code>)</a></li>
@@ -2301,7 +2352,10 @@ Content-Type: application/json;charset=UTF-8
 <li><a href="#TenantApplicationsCollection" title="List applications">List Applications (HTTP <code>GET</code>)</a></li>
 </ul>
 <p>Create and delete are currently not supported.</p>
-<h4><a id="ReadTenantResource"></a>Read a Tenant Resource (HTTP GET)</h4>
+
+<a id="ReadTenantResource"></a>
+#### Read a Tenant Resource 
+
 <p>Returns a representation of a tenant resource that includes the resource properties.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/tenants/cJoiwcorTTmkDDBsf02AbA
@@ -2322,7 +2376,10 @@ Content-Type: application/json;charset=UTF-8
   }
 }
 </code></pre>
-<h4><a id="ReadCurrentTenantResource"></a>Read the Current Tenant Resource (HTTP GET)</h4>
+
+<a id="ReadCurrentTenantResource"></a>
+#### Read the Current Tenant Resource 
+
 <p>Returns a <code>302 Found</code> redirect to the tenant instance resource corresponding to the currently executing API caller. In other words, this endpoint redirects the API caller to the REST resource URI for the tenant.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/tenants/current
@@ -2334,7 +2391,10 @@ Expires: 0
 Cache-Control: no-cache, no-store, must-revalidate, max-age=0, proxy-revalidate, no-transform
 Pragma: no-cache
 </code></pre>
-<h4><a id="UpdateTenantResource"></a>Update a Tenant Resource (HTTP POST)</h4>
+
+<a id="UpdateTenantResource"></a>
+#### Update a Tenant Resource 
+
 <p>Use HTTP <code>POST</code> when you want to change one or more specific properties of a tenant resource. Unspecified properties are not changed. At least one property must be specified.</p>
 <p><strong>Optional Properties</strong></p>
 <ul>
@@ -2362,19 +2422,25 @@ Content-Type: application/json
   }
 }
 </code></pre>
-<h4><a id="TenantChildCollectionResource"></a>Child Collection Resources</h4>
+
+<a id="TenantChildCollectionResource"></a>
+#### Child Collection Resources
+
 <p>The following collections are supported on an existing individual tenant instance resource:</p>
 <ul>
 <li><a href="#TenantDirectoriesCollection" title="Directories Collection for a Tenant Resource">Directories Collection for a Tenant Resource</a></li>
 <li><a href="#TenantApplicationsCollection" title="Applications Collection for a Tenant Resource">Applications Collection for a Tenant Resource</a></li>
 </ul>
 <p>For more information about working with collections, click <a href="#CollectionResourcesPagination" title="Collection Resources Pagination">here</a>.</p>
-<h5><a id="TenantDirectoriesCollection"></a>Directories Collection for a Tenant Resource</h5>
+
+<a id="TenantDirectoriesCollection"></a>
+##### Directories Collection for a Tenant Resource
+
 <p>The Directories Collection for a Tenant Resource Collection Resource represents all directories owned by a specific Tenant.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/tenants/:tenantId/directories
 </code></pre>
-<p><strong>List Tenant Directories (HTTP GET)</strong></p>
+<p><strong>List Tenant Directories </strong></p>
 <p>HTTP <code>GET</code> returns a Collection Resource containing links for all directories owned by a specific tenant.</p>
 <p><strong>Example request</strong></p>
 <pre><code>GET /v1/tenants/Gh9238fksJlsieJkPkQuW/directories
@@ -2400,12 +2466,15 @@ Content-Type: application/json;charset=UTF-8
   ]
 }
 </code></pre>
-<h5><a id="TenantApplicationsCollection"></a>Applications Collection for a Tenant Resource</h5>
+
+<a id="TenantApplicationsCollection"></a>
+##### Applications Collection for a Tenant Resource
+
 <p>The Applications Collection for a Tenant Resource Collection Resource represents all applications owned by a specific tenant.</p>
 <p><strong>Resource URI</strong></p>
 <pre><code>/v1/tenants/:tenantId/applications
 </code></pre>
-<p><strong>List Tenant Applications (HTTP GET)</strong></p>
+<p><strong>List Tenant Applications </strong></p>
 <p>HTTP <code>GET</code> returns a Collection Resource containing links for all applications owned by a specific tenant.</p>
 <p><strong>Example Request</strong></p>
 <pre><code>GET /v1/tenants/cJoiwcorTTmkDDBsf02AbA/applications
