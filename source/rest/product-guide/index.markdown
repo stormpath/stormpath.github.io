@@ -4567,7 +4567,6 @@ Example response:
        ]
      }
 
-<a class="anchor" name="search-accounts"></a>
 ### Search Accounts
 
 Account attributes supported for search:
@@ -4589,7 +4588,7 @@ Account Collection Resource | Search Functionality
 /v1/groups/:groupId/accounts | A search across accounts in the specified group.
 
 <a class="anchor" name="account-verify-email"></a>
-### Verify An Account's Email Address
+### Verify An Email Address
 
 If you want to verify that an account's email address is valid that the account belongs to a real person, Stormpath can help automate this for you, too.
 
@@ -4615,7 +4614,7 @@ It is also expected that the workflow's `Account Verification Base URL` has been
 The `Account Verification Base URL` defaults to a Stormpath API Sever URL which, while it is functional, is a Stormpath API server web page.  Because it will likely confuse your application end-users if they see a Stormpath web page, we strongly recommended that you specify a URL that points to your web application. Moreover, when specifying the Base URL, ensure it is a Base URL without query parameters
 {% enddocs %}
 
-<a class="anchor" name="verification-configuration"></a>
+<a class="anchor" name="accounts-verification-configuration"></a>
 #### Configure The Verification Workflow
 
 This workflow is disabled by default on Directories, but you can enable it, and set up the account verification base URL, easily in the Stormpath Admin Console UI. Refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation) for complete instructions.
@@ -4701,7 +4700,7 @@ If the verification token is not found, a `404 Not Found` is returned with an [e
     }
 
 <a class="anchor" name="accounts-authenticate"></a>
-### Log In (Authenticate) An Account
+### Authenticate An Account
 
 This workflow allows you to authenticate an account given an input of a username or email and a password from an end-user, system, or application.
 
