@@ -94,25 +94,15 @@ Registering an application with Stormpath allows that application to use Stormpa
     application = client.applications.create({
           name: 'This Is My Ruby App',
           description: 'This is my ruby app description'
-        })
+        }, {createDirectory: true})
 
 Once the application is created, it will automatically create a `Directory` resource based on the name of application and set it as the default account store. New accounts will be created in the default account store.
 
 ### Create an account
 
-Now that we've created an `Application`, let's create an `Account` so someone can log in to (i.e. authenticate with) the application. To do so, create the necessary `Directory` to store the new account from the client instance:
+Now that we've created an `Application`, let's create an `Account` so someone can log in to (i.e. authenticate with) the application. To do so,
 
-    require "stormpath-sdk"
-    ...
-    ...
-    directory = client.directories.create({
-      name: "New Directory",
-      description: "New Directory Description"
-    })
-        
-We can then create an account in our newly-minted directory using the `directory` "accounts.create" of your existing directory instance to set the values and create the account as follows:
-
-    account = directory.accounts.create({ 
+    account = application.accounts.create({ 
       given_name: 'John',
       surname: 'Smith',
       email: 'john.smith@example.com',
