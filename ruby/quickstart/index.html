@@ -263,27 +263,16 @@ client = Stormpath::Client.new api_key_file_location: File.join(ENV['HOME'], '.s
 <pre><code>application = client.applications.create({
       name: 'This Is My Ruby App',
       description: 'This is my ruby app description'
-    })
+    }, {createDirectory: true})
 </code></pre>
 
 <p>Once the application is created, it will automatically create a <code>Directory</code> resource based on the name of application and set it as the default account store. New accounts will be created in the default account store.</p>
 
 <h3><a id="create-an-account"></a>Create an account</h3>
 
-<p>Now that we&rsquo;ve created an <code>Application</code>, let&rsquo;s create an <code>Account</code> so someone can log in to (i.e. authenticate with) the application. To do so, create the necessary <code>Directory</code> to store the new account from the client instance:</p>
+<p>Now that we&rsquo;ve created an <code>Application</code>, let&rsquo;s create an <code>Account</code> so someone can log in to (i.e. authenticate with) the application. To do so,</p>
 
-<pre><code>require "stormpath-sdk"
-...
-...
-directory = client.directories.create({
-  name: "New Directory",
-  description: "New Directory Description"
-})
-</code></pre>
-
-<p>We can then create an account in our newly-minted directory using the <code>directory</code> &ldquo;accounts.create&rdquo; of your existing directory instance to set the values and create the account as follows:</p>
-
-<pre><code>account = directory.accounts.create({ 
+<pre><code>account = application.accounts.create({ 
   given_name: 'John',
   surname: 'Smith',
   email: 'john.smith@example.com',
