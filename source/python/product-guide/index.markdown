@@ -1229,13 +1229,13 @@ To list all accounts associated with, or members of, a group, you must:
 
 To list all groups on a an account, loop the groups aggregate from a directory or an account:
 
-  href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
-  account = client.accounts.get(href)
+    href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
+    account = client.accounts.get(href)
 
-  groups = account.groups
+    groups = account.groups
 
-  for grp in groups:
-    print("Group " + grp.name)
+    for grp in groups:
+      print("Group " + grp.name)
 
 <a name="list-directory-groups"></a>
 #### List Groups in a Directory
@@ -1248,21 +1248,21 @@ To list all groups contained within a directory, you must:
 
 To list all groups on a directory, loop the groups aggregate from a directory or an account:
 
-  href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
-  directory = client.directories.get(href)
+    href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
+    directory = client.directories.get(href)
 
-  groups = directory.groups
+    groups = directory.groups
 
-  for grp in groups:
-    print("Group " + grp.name)
+    for grp in groups:
+      print("Group " + grp.name)
 
 <a name="#retrieve-groups"></a>
 ### Retrieve a Group
 
 To retrieve a specific group you need the `href` which can be loaded as an object instance by retrieving it from the server:
 
-  href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
-  group = client.groups.get(href)
+    href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
+    group = client.groups.get(href)
 
 
 <a name="create-groups"></a>
@@ -1270,7 +1270,7 @@ To retrieve a specific group you need the `href` which can be loaded as an objec
 
 You can create a group from the Python SDK. You can do it getting a reference to a directory and creating the group out of it:
 
-  directory_url = "https://api.stormpath.com/v1/directories/YOUR_DIRECTORY_ID_HERE"
+    directory_url = "https://api.stormpath.com/v1/directories/YOUR_DIRECTORY_ID_HERE"
 
     directory = client.directories.get(directory_url)
 
@@ -1282,13 +1282,13 @@ You can create a group from the Python SDK. You can do it getting a reference to
 <a name="edit-groups"></a>
 ### Edit Group Details
 
-To edit groups, use the attributes of an existing group instance to set the values and call the save method:
+To edit groups, use the attributes of an existing group instance to set the values and call the `save` method:
 
-  group.status = "DISABLED"
-  group.name = 'New Group Name'
-  group.description = 'New Group Description'
+    group.status = "DISABLED"
+    group.name = 'New Group Name'
+    group.description = 'New Group Description'
 
-  group.save()
+    group.save()
 
 
 <a name="enable-groups"></a>
@@ -1303,17 +1303,17 @@ If the group is defined as a login source, then enabling or re-enabling the grou
 To enable a group, you must:
 
 1. Get the group instance from the client instance using the group `href`.
-2. Set the group instance status to enabled.
+2. Set the group instance status to `enabled`.
 3. Call the `save` method on the `group` instance.
 
 **Code:**
 
-  href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
-  group = client.groups.get(href)
+    href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
+    group = client.groups.get(href)
 
-  group.status = "ENABLED"
+    group.status = "ENABLED"
 
-  group.save()
+    group.save()
 
 
 <a name="disable-groups"></a>
@@ -1324,17 +1324,17 @@ If a group is explicitly set as an application login source, then disabling that
 To disable a group, you must:
 
 1. Get the group instance from the client instance using the group href.
-2. Set the group instance status to disabled.
-3. Call the save method on the group instance.
+2. Set the group instance status to `disabled`.
+3. Call the `save` method on the `group` instance.
 
 **Code:**
 
-  href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
-  group = client.groups.get(href)
+    href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
+    group = client.groups.get(href)
 
-  group.status = "DISABLED"
+    group.status = "DISABLED"
 
-  group.save()
+    group.save()
 
 
 <a name="delete-groups"></a>
@@ -1342,10 +1342,10 @@ To disable a group, you must:
 
 A group can be deleted from the Python SDK invoking `group.delete()`:
 
-  href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
-  group = client.groups.get(href)
+    href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
+    group = client.groups.get(href)
 
-  group.delete()
+    group.delete()
 
 
 ***
