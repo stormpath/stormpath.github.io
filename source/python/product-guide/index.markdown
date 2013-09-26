@@ -203,13 +203,13 @@ For example, when getting the current tenant from the client you can catch any e
 
 ### Caching
 
-The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we accessed the resource again and the data inside the cache hasn't yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath. Be aware, however, that when using a persistent cache store like Redis, if the data changes quickly on Stormpath and the TTL and TTI are set to a large value, you may get resources with attributes that don't reflect the real state. If this edge case won't affect your data consistency, you can use the caching mechanism by providing an additional parameter when creating the Client instance parameter:
+The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we accessed the resource again and the data inside the cache hasn't yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath. Be aware, however, that when using a persistent cache store like `Redis`, if the data changes quickly on Stormpath and the TTL and TTI are set to a large value, you may get resources with attributes that don't reflect the real state. If this edge case won't affect your data consistency, you can use the caching mechanism by providing an additional parameter when creating the Client instance parameter:
 
     from stormpath.cache.redis_store import RedisStore
     from stormpath.cache.memory_store import MemoryStore
 
     cache_opts = {'store': MemoryStore,
-                '   regions': {
+                    'regions': {
                     'applications': {
                         'store': RedisStore,
                         'ttl': 300,
