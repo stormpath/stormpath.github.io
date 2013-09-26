@@ -179,7 +179,7 @@ The previous lookup becomes:
 
 	directory = account.directory
 
-If the directory already exists in memory because the SDK has previousy loaded it, the directory is immediately returned. However, if the directory is not present, the directory `href` is used to return the directory properties (the immediate data loaded) automatically for you. Thus, the `href` property is always available without querying the service. This technique is known as *lazy loading* which allows you to traverse entire object graphs automatically without requiring constant knowledge of `href` URLs.
+If the directory already exists in cache because the SDK has previousy loaded it, the directory is immediately returned. However, if the directory is not present, the directory `href` is used to return the directory properties (the immediate data loaded) automatically for you. Thus, the `href` property is always available without querying the service. This technique is known as *lazy loading* which allows you to traverse entire object graphs automatically without requiring constant knowledge of `href` URLs.
 
 ### Error Handling
 
@@ -193,7 +193,7 @@ For example, when getting the current tenant from the client you can catch any e
         account = client.accounts.get(NONEXISTENT_STORMPATH_ACCOUNT)
         account.username
 	except Error as re:
-	    print('Message: ' + str(re.message))
+	    print('Message: ' + re.message)
 	    print('HTTP Status: ' + str(re.status))
 	    print('Developer Message: ' + re.developer_message)
 	    print('More Information: ' + re.more_info)
@@ -203,12 +203,12 @@ For example, when getting the current tenant from the client you can catch any e
 
 ### Caching
 
-The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we accessed the resource again and the data inside the cache hasn't yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath. Be aware, however, that when using a persistent cache store like Redis, if the data changes quickly on Stormpath and the TTL and TTI are set to a large value, you may get resources with attributes that don't reflect the real state. If this edge case wouldn't affect your data consistency, you can use the caching mechanism by providing an additional parameter when creating the Client instance parameter:
+The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we accessed the resource again and the data inside the cache hasn't yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath. Be aware, however, that when using a persistent cache store like Redis, if the data changes quickly on Stormpath and the TTL and TTI are set to a large value, you may get resources with attributes that don't reflect the real state. If this edge case won't affect your data consistency, you can use the caching mechanism by providing an additional parameter when creating the Client instance parameter:
 
-  from stormpath.cache.redis_store import RedisStore
-  from stormpath.cache.memory_store import MemoryStore
+    from stormpath.cache.redis_store import RedisStore
+    from stormpath.cache.memory_store import MemoryStore
 
-  cache_opts = {'store': MemoryStore,
+    cache_opts = {'store': MemoryStore,
                 'regions': {
                     'applications': {
                         'store': RedisStore,
@@ -222,7 +222,7 @@ The caching mechanism enables us to store the state of an already accessed resou
                         'ttl': 60}}
                   }
 
-  client = Client(api_key={'id': 'apiKeyId', 'secret': 'apiKeySecret'},
+    client = Client(api_key={'id': 'apiKeyId', 'secret': 'apiKeySecret'},
         cache_options=cache_opts)
 
 
