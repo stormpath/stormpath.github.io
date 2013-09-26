@@ -57,11 +57,11 @@ The Python SDK can be found on [Github](https://github.com/stormpath/stormpath-s
 
 When you make SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Python SDK therefore provides a clean object-oriented paradigm natural to Python developers and alleviates the need to know how to make REST+JSON requests.
 
-This SDK is compatible with the 2.7 and 3.2 and later versions of Python.
+This SDK is compatible with the 2.7 or 3.2 and later versions of Python.
 
 Stormpath also offers guides and SDKs for [Ruby](www.stormpath.com/docs/ruby/product-guide),  [Java](www.stormpath.com/docs/java/product-guide), and [PHP](www.stormpath.com/docs/php/product-guide).
 
-If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](www.stormpath.com/docs/rest/product-guide).
+If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](http://www.stormpath.com/docs/rest/product-guide).
 
 ***
 
@@ -73,11 +73,11 @@ Although knowing how the SDK is designed and how it works is not required to use
 
 ### Client
 
-The root entry point for SDK functionality is the `Client` instance. Using the client instance, you can access all tenant data, such as applications, directories, groups, and accounts.
+The root entry point for SDK functionality is the `Client` instance. Using the client instance, you can access all [Tenant](#tenant) data, such as applications, directories, groups, and accounts.
 
 #### Preferred Configuration
 
-There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure `apiKey.properties` file, where the Client implementation is being used:
+There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure `apiKey.properties` file, where the `Client` implementation is being used:
 
 	from stormpath.client import Client
 
@@ -104,7 +104,7 @@ DO NOT specify your actual `apiKey.id` and `apiKey.secret` values in source code
 
 Only use this technique if the values are obtained at runtime using a configuration mechanism that is not hard-coded into source code or easily-visible configuration files.
 
-
+<a name="high-level-overview"></a>
 ### High-level Overview
 
 The Stormpath SDK and the associated components reside and execute within your application at runtime. When making method calls on the SDK objects - particularly objects that represent REST data resources such as applications and accounts - the method call automatically triggers an HTTPS request to the Stormpath API server if necessary.
@@ -114,7 +114,7 @@ The HTTPS request allows you to program your application code to use regular Pyt
 Here is how the communication works:<br>
 <img src="http://www.stormpath.com/sites/default/files/docs/SDKCommunicationFlow.png" alt="SDK Communication Flow" title="SDK Communication Flow" width="700">
 
-In this example scenario, we have an existing SDK `account` resource instance, and we want its `directory`.
+In this example scenario, we have an existing SDK [Account](#account) resource instance, and we want its [Directory](#directory).
 
 The request is broken down as follows:
 
@@ -141,7 +141,7 @@ Python instances representing REST resources use the [Proxy software design patt
 The core component concepts of the SDK are as follows:<br>
 <img src="http://www.stormpath.com/sites/default/files/docs/ComponentArchitecture.png" alt="Stormpath SDK Component Architecture" title="Stormpath SDK Component Architecture" width="670">
 
-* **Client** is the root entry point for SDK functionality and accessing other SDK components, such as the `ResourceList`. A client is constructed with a Stormpath API key which is required to communicate with the Stormpath API server.
+* **Client** is the root entry point for SDK functionality and accessing other SDK components, such as the `CollectionResource`. A client is constructed with a Stormpath API key which is required to communicate with the Stormpath API server.
   * **DataStore** is central to the Stormpath SDK. It is responsible for managing all Python `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on Ruby resource objects into REST requests to the Stormpath API server as necessary and managing chaching mechanisms. It works between your application and the Stormpath API server.
     * **RequestExecutor** is an internal infrastructure component used by the `DataStore` to execute HTTP requests (`GET`, `PUT`, `POST`, `DELETE`) as necessary. When the DataStore needs to send a Python `Resource` instance state to or query the server for resources, it delegates to the RequestExecutor to perform the actual HTTP requests. The Stormpath SDK default `RequestExecutor` implementation is `HttpExecutor` which uses the [Requests](http://docs.python-requests.org/) library to execute the raw requests and read the raw responses.
 
@@ -149,7 +149,7 @@ The core component concepts of the SDK are as follows:<br>
 
 When applications interact with a Stormpath SDK `resource` instance, they are really interacting with an intelligent data-aware proxy, not a simple object with some properties. Specifically, the `resource` instance is a proxy to the SDK `Client` allowing resource instances to load data that might not yet be available.
 
-For example, using the SDK Communication Flow diagram in the [high-level overview](#HighLevelOverview) section, assuming you have a reference to an `account` object - perhaps you have queried for it or you already have the account `href` and you want to load the `account` resource from the server:
+For example, using the SDK Communication Flow diagram in the [high-level overview](#high-level-overview) section, assuming you have a reference to an `account` object - perhaps you have queried for it or you already have the account `href` and you want to load the `account` resource from the server:
 
 	account_href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
 	account = client.accounts.get(account_href)
