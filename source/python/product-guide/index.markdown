@@ -57,7 +57,7 @@ The Python SDK can be found on [Github](https://github.com/stormpath/stormpath-s
 
 When you make SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Python SDK therefore provides a clean object-oriented paradigm natural to Python developers and alleviates the need to know how to make REST+JSON requests.
 
-This SDK is compatible with the 2.7 and later versions of Python.
+This SDK is compatible with the 2.7 and 3.2 and later versions of Python.
 
 Stormpath also offers guides and SDKs for [Ruby](www.stormpath.com/docs/ruby/product-guide),  [Java](www.stormpath.com/docs/java/product-guide), and [PHP](www.stormpath.com/docs/php/product-guide).
 
@@ -119,7 +119,7 @@ In this example scenario, we have an existing SDK `account` resource instance, a
 The request is broken down as follows:
 
 1. The application attempts to acquire the account directory instance.
-2. If the directory resource is not already in memory, the SDK creates a request to send to the Stormpath API server.
+2. If the directory resource is not already cached, the SDK creates a request to send to the Stormpath API server.
 3. An HTTPS GET request is executed.
 4. The Stormpath API server authenticates the request caller and looks up the directory resource.
 5. The Stormpath API server responds with the JSON representation of the directory resource.
@@ -142,9 +142,8 @@ The core component concepts of the SDK are as follows:<br>
 <img src="http://www.stormpath.com/sites/default/files/docs/ComponentArchitecture.png" alt="Stormpath SDK Component Architecture" title="Stormpath SDK Component Architecture" width="670">
 
 * **Client** is the root entry point for SDK functionality and accessing other SDK components, such as the `ResourceList`. A client is constructed with a Stormpath API key which is required to communicate with the Stormpath API server.
-* **ResourceList** is central to the Stormpath SDK. It is responsible for managing all Python `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. It is responsible for translating calls made on Python `resource` objects into REST requests to the Stormpath API server as necessary. Fetching a `resource` doesn't actually generate a HTTP request until one of its properties is read. It works between your application and the Stormpath API server.
-When the SDK needs to send a Python `Resource` instance state to or query the server for resources, it uses the <a href="https://pypi.python.org/pypi/requests" title="httpclient">Requests</a> library to execute the HTTP requests and read the responses.
-* **Resources** are standard Python objects that have a 1-to-1 correlation with REST data resources in the Stormpath API server such as applications and directories. Applications directly use these `resource` objects for security needs, such as authenticating user accounts, creating groups and accounts, finding application accounts, assigning accounts to groups, and resetting passwords.
+  * **DataStore** is central to the Stormpath SDK. It is responsible for managing all Python `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on Ruby resource objects into REST requests to the Stormpath API server as necessary and managing chaching mechanisms. It works between your application and the Stormpath API server.
+    * **RequestExecutor** is an internal infrastructure component used by the `DataStore` to execute HTTP requests (`GET`, `PUT`, `POST`, `DELETE`) as necessary. When the DataStore needs to send a Python `Resource` instance state to or query the server for resources, it delegates to the RequestExecutor to perform the actual HTTP requests. The Stormpath SDK default `RequestExecutor` implementation is `HttpExecutor` which uses the [Requests](http://docs.python-requests.org/) library to execute the raw requests and read the raw responses.
 
 ### Resources and Proxying
 
@@ -169,38 +168,75 @@ If you also want information about the `directory` owning that account, every ac
 	  ...
 	}
 
-Notice the JSON `directory` property is only a link (pointer) to the directory; it does not contain any of the directory properties. The JSON shows we should be able to reference the `directory` property, and then reference the `href` property, and do another lookup (pseudo code):
+An impractical way to retrieve a directory of the account is to somehow get the `href` of the directory and then manually send a request to Stormpath:
 
-	directory_href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
-	directory = client.directories.get(directory_href)
+  directory_href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
+  directory = client.directories.get(directory_href)
 
-This technique is cumbersome, verbose, and requires a lot of boilerplate code in your project. As such, SDK resources **automatically** execute the lookups for unloaded references for you using simple property navigation!
+This technique is cumbersome, verbose, and requires a lot of boilerplate code in your project. As such, SDK resources **automatically** execute the lookups for unloaded references for you using simple property navigation! Notice the JSON `directory` property is only a link (pointer) to the directory; it does not contain any of the directory properties. The JSON shows we should be able to reference the `directory` property through the `account`:
 
 The previous lookup becomes:
 
 	directory = account.directory
 
-If the directory already exists in memory because the SDK has previousy loaded it, the directory is immediately returned. However, if the directory is not present, the directory `href` is used to return the directory properties (the immediate data loaded) automatically for you. This technique is known as *lazy loading* which allows you to traverse entire object graphs automatically without requiring constant knowledge of `href` URLs.
+If the directory already exists in memory because the SDK has previousy loaded it, the directory is immediately returned. However, if the directory is not present, the directory `href` is used to return the directory properties (the immediate data loaded) automatically for you. Thus, the `href` property is always available without querying the service. This technique is known as *lazy loading* which allows you to traverse entire object graphs automatically without requiring constant knowledge of `href` URLs.
 
 ### Error Handling
 
-Errors thrown from the server are translated to a [ResourceError](https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/error.py). This applies to all requests to the Stormpath API endpoints.
+Errors thrown from the server are translated to an [Error](https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/error.py). This applies to all requests to the Stormpath API endpoints.
 
 For example, when getting the current tenant from the client you can catch any error that the request might produce as following:
 
-	from stormpath.resource import Error as StormpathError
+	from stormpath.resource import Error
 
 	try:
         account = client.accounts.get(NONEXISTENT_STORMPATH_ACCOUNT)
         account.username
 	except Error as re:
-	    print('Message: ' + re.message)
-	    print('HTTP Status: ' + re.status)
+	    print('Message: ' + str(re.message))
+	    print('HTTP Status: ' + str(re.status))
 	    print('Developer Message: ' + re.developer_message)
 	    print('More Information: ' + re.more_info)
-	    print('Error Code: ' + re.code)
+	    print('Error Code: ' + str(re.code))
 
-Note that in this case the custom error is produced because an account property is read but no accounts were returned (the second call), not because of the first call. A 'GET' request is sent when trying to access the account, not before. The 'get' method only generates the Tenant object and sets the 'url' property to be used in the next call so simply calling 'get' wouldn't generate an exception. Since the SDK uses Requests as the basis for REST API calls, it precedes the custom Stormpath error. So if the URL used is malformed Requests will raise one of its own exceptions. However, once the request is sent, if the URL is correct but the REST API returns a HTTP status signifying an error, the Stormpath Error is raised.
+***
+
+### Caching
+
+The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we accessed the resource again and the data inside the cache hasn't yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath. Be aware, however, that when using a persistent cache store like Redis, if the data changes quickly on Stormpath and the TTL and TTI are set to a large value, you may get resources with attributes that don't reflect the real state. If this edge case wouldn't affect your data consistency, you can use the caching mechanism by providing an additional parameter when creating the Client instance parameter:
+
+  from stormpath.cache.redis_store import RedisStore
+  from stormpath.cache.memory_store import MemoryStore
+
+  cache_opts = {'store': MemoryStore,
+                'regions': {
+                    'applications': {
+                        'store': RedisStore,
+                        'ttl': 300,
+                        'tti': 300,
+                        'store_opts': {
+                            'host': 'localhost',
+                            'port': 6739}}
+                    'directories': {
+                        'store': MemoryStore,
+                        'ttl': 60}}
+                  }
+
+  client = Client(api_key={'id': 'apiKeyId', 'secret': 'apiKeySecret'},
+        cache_options=cache_opts)
+
+
+The cache options dictionary can have a complex structure if we want to fine-tune the cache by using all the available options:
+
+1. The `store` option - The class that functions as the data cache. By default, if no cache options are set, the MemoryStore is used, which means we don't actually use a real cache, just the local object attributes. E.g. if an attribute of a resource is accessed the first time, the attribute value is fetched from Stormpath and saved as the object attribute. If we read the attribute again, Stormpath wouldn't be queried. However, RedisStore is a full-fledged cache. We can write additional cache implementations by providing the caching interface methods to get, put, delete, clear the cache and query about cache size without changing the whole SDK. Please check the existing cache implementations for info on how to do that.
+
+2. The `regions` option - each resource 'region' can have a separate cache implementation. E.g. `Application` resources are stored in Redis but `Directory` resources use MemoryStore. These kind of resource groups are called `regions`, each with its own options:
+
+  1. `store` - The cache store, if none is set for this region, the global stores set at the root of the cache options is used.
+  2. `ttl` - Time To Live. The amount of time (in seconds) after which the stored resource data will be considered expired.
+  3. `tti` - Time To Interact. If this amount of time has passed after the resource was last accessed, it will be considered expired.
+  4. `store_opts` - The store-specific options, if any. E.g. RedisStore requires a host and a port to be set because we need that information when accessing Redis, while MemoryStore requires no further options.
+
 ***
 
 ## Applications
@@ -221,7 +257,7 @@ Status | By default, this value is set to Enabled. Change the value to Disabled 
 Using the URL for your application as the application description within Stormpath is often helpful.
 {% enddocs %}
 
-You can control access to your Stormpath Admin Console and API by managing the [login sources](#LoginSource) for the listed Stormpath application.
+You can control access to your Stormpath Admin Console and API by managing the [account stores](#AccountStore) for the listed Stormpath application.
 
 For applications, you can:
 
@@ -230,11 +266,11 @@ For applications, you can:
 * [Retrieve an application](#retrieve-an-application)
 * [Register an application](#register-an-application)
 * [Edit the details of an application](#edit-an-application)
-* [Manage application login sources](#manage-application-login-sources)
+* [Manage application account stores](#manage-application-account-stores)
 	* [Change default account and group locations](#change-default-account-and-group-locations)
-	* [Add another login source](#add-another-login-source)
-	* [Change login source priority order](#change-login-source-priority-order)
-	* [Remove login sources](#remove-login-sources)
+	* [Add another account store](#add-another-account-store)
+	* [Change account store priority order](#change-account-store-priority-order)
+	* [Remove account store](#remove-account-store)
 * [Enable an application](#enable-an-application)
 * [Disable an application](#disable-an-application)
 * [Delete an application](#delete-an-application)
@@ -266,7 +302,7 @@ To retrieve a list of applications, you must do the following get the Tenant app
 
 ### Retrieve an Application
 
-You will typically retrieve an `Application` referenced from another resource, for example using the `Application Collection` property of the `Tenant` resource.
+You will typically retrieve an `Application` referenced from another resource, for example using the `application` property of the `Account` resource.
 
 You can also directly retrieve a specific application using the `href` (REST URL) value. For any application, you can [find the application href](#LocateAppURL) in the Stormpath console.
 
@@ -306,77 +342,181 @@ To edit applications, use the attributes of an existing application instance to 
 
 	application.save()
 
-### Manage Application Login Sources
+### Enable an Application
 
-[Login sources](#LoginSource) define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.
+Enabling a previously disabled application allows any enabled directories, groups, and accounts associated with the application account stores in Stormpath to log in.
 
-In Stormpath, a directory or group can be a login source for an application. At least one login source must be associated with an application for accounts to log in to that application.
+To enable an application, you must set the 'ENABLED' status to the application instance and call the 'save' method on it:
+
+**Code:**
+
+  application.status = "ENABLED"
+
+  application.save()
+
+### Disable an Application
+
+Disabling an application prevents the application from logging in any accounts in Stormpath, but retains all application configurations. If you must temporarily turn off logins, disable an application.
+
+**Note:** The Stormpath application cannot be disabled.
+
+To disable an application, you must set the 'DISABLED' status to the application instance and call the 'save' method on it:
+
+**Code:**
+
+  application.status = "DISABLED"
+
+  application.save()
+
+### Delete an Application
+
+Deleting an application completely erases the application and its configurations from Stormpath. We recommend that you disable an application rather than delete it, if you anticipate that you might use the application again.
+
+**Notes:**
+
+* The Stormpath application cannot be deleted.
+* Deleted applications cannot be restored.
+
+To delete an application, you must call the 'delete' method on the application instance.
+
+**Code:**
+
+  application.delete()
+
+### Manage Application Account Stores
+
+_Account Store_ is a generic term for either a Directory or a Group. Directories and Groups both contain, or 'store' accounts, so they are both considered account stores.
+
+In Stormpath, you control who may login to an application by associating (or 'mapping') one or more account stores to an application. All of the accounts in the application's assigned account stores form the application's effective user base; those accounts may login to the application. If no account stores are assigned to an application, no accounts will be able to login to the application.
 
 #### How Login Attempts Work
 
-**Example:**
-Assume an application named Foo has been mapped to two login sources, the Customers and Employees directories, in that order.
+When an account tries to login to an application, the application's assigned account stores are consulted _in the order that they are assigned to the application.  When a matching account is discovered in a mapped account store, it is used to verify the authentication attempt and all subsequent account stores are ignored.  In other words, accounts are matched for application login based on a 'first match wins' policy.
 
-Here is what happens when a user attempts to log in to an application named Foo:
+Let's look at an example to illustrate this behavior.  Assume an application named Foo has been assigned (mapped) to two account stores, a 'Customers' directory and an 'Employees' directory, in that order.
 
-<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Login Sources Diagram" width="650" height="500">
+<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Account Stores Diagram" width="650" height="500">
 
-You can configure multiple login sources, but only one is required for logging in. Multiple login sources allows each application to view multiple directories as a single repository during a login attempt.
+As you can see, Stormpath tries to find the account in the 'Customers' directory first because it has a higher _priority_ than the 'Employees' directory.  If not found, the 'Employees' directory is tried next as it has a lower priority.
 
-After an application has been registered, or created, within Stormpath, you can:
+You can assign multiple account stores to an application, but only one is required to enable login for an application.  Assigning multiple account stores (directories or groups) to an application, as well as configuring their priority, allows you precise control over the account populations that may login to your various applications.
 
-* [Change default account and group locations](#change-default-account-and-group-locations)
-* [Add another login source](#add-another-login-source)
-* [Change login source priority order](#change-login-source-priority-order)
-* [Remove login sources](#remove-login-sources)
+**Resource Attributes**
 
-To manage application login sources, you must log in to the Stormpath Admin Console:
+| Attribute | Description | Type | Valid Value |
+| :----- | :----- | :---- | :---- |
+| `href` | The account store mapping resource's fully qualified location URI. | String | <span>--</span> |
+| `application` | A reference to the mapping's Application. Required. | object | <span>--</span> |
+| `account_store` | A reference to the mapping's account store (either a Group or Directory) containing accounts that may login to the `application`.  Required. | object | <span>--</span> |
+| `list_index` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `list_index` of `0` will be consulted first (has the highest priority), followed the account store at `list_index` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `list_index` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size |
+| `is_default_account_store` | A `True` value indicates that new accounts created by the `application` will be automatically saved to the mapping's `accountStore`. A `False` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `True`,`False` |
+| `is_default_group_store` | A `True` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `False` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `True` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `True`,`False` |
+
+For account store mappings, you may:
+
+* [Assign an account store](#add-another-account-store) to an application
+* [Set the default account store](#change-default-account-store) for new accounts created by an application
+* [Set the default group store](#change-default-account-and-group-locations) for new groups created by an application
+* [Change the account store priority](#change-account-store-priority-order) of an assigned account store
+* [List an application's assigned account stores](#list-account-stores)
+* [Remove an assigned account store](#remove-account-store) from an application
+
+To manage application account stores, you must log in to the Stormpath Admin Console:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. Click the application name.
 4. Click the **Login Sources** tab.<br>
-The login sources appear in order of priority.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
 
-<a name="change-default-account-and-group-locations"></a>
-#### Change Default Account and Group Locations
+The account stores appear in order of priority.<br>
+  <img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
 
-On the Login Sources tab for applications, you can select the login sources (directory or group) to use as the default locations when creating new accounts and groups.
+**Code:**
 
-1. Log in to the Stormpath Admin Console.
-2. Click the **Applications** tab.
-3. Click the application name.
-4. Click the **Login Sources** tab.
-	a. To specify the default creation location(directory) for new accounts created in the application, in the appropriate row, select **New Account Location**.
-	b. To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select **New Group Location**.
-5. Click **Save**.
+  mapping_href = 'https://api.stormpath.com/v1/accountStoreMappings/MAPPING_UID_HERE'
+  account_store_mapping = client.account_store_mappings.get(mapping_href)
 
-<a name="add-another-login-source"></a>
-#### Add Another Login Source
+<a name="add-another-account-store"></a>
+#### Add Another Account Store
 
-Adding a login source to an application provisions a directory or group to that application.  By doing so, all login source accounts can log into the application.
+Adding an account store to an application provisions a directory or group to that application.  By doing so, all account store accounts can log into the application.
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. Click the application name.
 4. Click the **Login Sources** tab.
 5. Click **Add Login Source**.
-6. In the *login source* list, select the appropriate directory.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown1.png" alt="Login Sources" title="Login Sources"><br>
+6. In the *login source* list, select the appropriate directory or group.<br>
+  <img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown1.png" alt="Login Sources" title="Login Sources"><br>
 7.  If the directory contains groups, you can select all users or specific group for access.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown2.png" alt="Login Sources" title="Login Sources"><br>
+  <img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown2.png" alt="Login Sources" title="Login Sources"><br>
 8. Click **Add Login Source**.<br>
-The new login source is added to the bottom of the login sources list.
+The new account store is added to the bottom of the account store list.
 
-<a name="change-login-source-priority-order"></a>
-#### Change Login Source Priority Order
+**Code:**
 
-When you map multiple login sources to an application, you must also define the login source order.
+  application_href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE'
+  application = client.applications.get(application_href)
 
-The login source order is important during the login attempt for a user account because of cases where the same user account exists in multiple directories. When a user account attempts to log in to an application, Stormpath searches the listed login sources in the order specified, and uses the credentials (password) of the first occurrence of the user account to validate the login attempt.
+  directory_href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
+  directory = client.applications.get(directory_href)
 
-To specify the login source order:
+  account_store_mapping = application.account_store_mappings.create({
+      'application': application,
+      'account_store': directory,
+    'list_index': 0,
+    'is_default_account_store': False,
+    'is_default_group_store': True
+  })
+
+**Warning**
+
+* If none of the application's AccountStoreMappings are designated as the default account store, the application _WILL NOT_ be able to create new accounts.
+Also, if none of the application's AccountStoreMappings are designated as the default group store, the application _WILL NOT_ be able to create new group.
+* Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application's default account store. Attempting to set `isDefaultAccountStore` to `true` on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.
+
+<a name="change-default-account-and-group-locations"></a>
+#### Change the default account store
+
+Applications cannot store Accounts directly - Accounts are always stored in a Directory or Group.  Therefore, if you would like an application to be able to create new accounts/groups, you must specify which of the application's associated account stores should store the application's newly created accounts.  This designated account store is called the application's _default account store_ or _default group store_.
+
+On the Login Sources tab for applications, you can select the account store (directory or group) to use as the default locations when creating new accounts and groups.
+
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Click the application name.
+4. Click the **Login Sources** tab.
+  a. To specify the default creation location(directory) for new accounts created in the application, in the appropriate row, select **New Account Location**.
+  b. To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select **New Group Location**.
+5. Click **Save**.
+
+**Code:**
+
+  account_store_mapping.is_default_account_store = True
+  account_store_mapping.is_default_group_store = False
+
+  account_store_mapping.save()
+
+**Note**
+
+* Only one of an application's mapped account stores may be the default group/account store.
+* Setting an AccountStoreMapping's `isDefaultGroupStore` value to `true` will automatically set the application's other AccountStoreMappings' `isDefaultGroupStore` values to `false`. HOWEVER:
+* Setting an AccountStoreMapping's `isDefaultGroupStore` value to `false` **WILL NOT** automatically set another AccountStoreMapping's `isDefaultGroupStore` to `true`.  You are responsible for explicitly setting `isDefaultGroupStore` to `true` if you want the application to be able to create new groups.
+
+**Warning**
+
+* If no AccountStoreMapping is designated as the default group/account store, the application _WILL NOT_ be able to create new groups/accounts.
+* Stormpath does not currently support storing groups within groups.  Therefore `isDefaultGroupStore` can only be set to `true` when the AccountStoreMapping's `accountStore` is a Directory.  Attempting to set `isDefaultGroupStore` to `true` on an AccountStoreMapping that reflects a group will result in an error response.
+* Mirrored directories are read-only; they cannot be set as an application's default group store.  Attempting to set `isDefaultGroupStore` to `true` on an AccountStoreMapping that reflects a mirrored directory will result in an error response.
+
+<a name="change-account-store-priority-order"></a>
+#### Change Account Store Priority Order
+
+When you map multiple account stores to an application, you must also define the account store order.
+
+The account store order is important during the login attempt for a user account because of cases where the same user account exists in multiple account stores. When a user account attempts to log in to an application, Stormpath searches the listed account stores in the order specified, and uses the credentials (password) of the first occurrence of the user account to validate the login attempt.
+
+To specify the account store order:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
@@ -384,16 +524,35 @@ To specify the login source order:
 4. Click the **Login Sources** tab.
 5. Click the row of the directory to move.
 6. Drag the row to the appropriate order.<br>
-	For example, if you want to move the first login source to the second login source, click anywhere in the first row of the login source table and drop the row on the second row.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
+  For example, if you want to move the first account store to the second account store, click anywhere in the first row of the account store table and drop the row on the second row.<br>
+  <img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
 7. Click **Save Priorities**.
 
-<a name="remove-login-sources"></a>
-#### Remove Login Sources
+**Code:**
 
-Removing a login source from an application deprovisions that directory or group from the application. By doing so, all accounts from the login source are no longer able to log into the application.
+  account_store_mapping.list_index = 2
 
-To remove a login source from an application:
+  account_store_mapping.save()
+
+<a name="list-account-stores">
+#### List Account Stores
+
+You can list an applications's mapped account stores by iterating through the application's `account_store_mappings`.
+
+**Code:**
+
+  for account_store_mapping in application.account_store_mappings:
+    print("Account Store: ", account_store_mapping.account_store.name)
+    print("Account Store Mapping Index: ", account_store_mapping.list_index)
+    print("Account Store Mapping default account store? ", account_store_mapping.is_default_account_store)
+    print("Account Store Mapping default group store? ", account_store_mapping.is_default_group_store)
+
+<a name="remove-account-store"></a>
+#### Remove Account Store
+
+Removing an account store from an application deprovisions that directory or group from the application. By doing so, all accounts from the account store are no longer able to log into the application.
+
+To remove an account store from an application:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
@@ -402,47 +561,18 @@ To remove a login source from an application:
 5. On the Login Sources tab, locate the directory or group.
 6. Under the Actions column, click **Remove**.
 
-### Enable an Application
+**Code:**
 
-Enabling a previously disabled application allows any enabled directories, groups, and accounts associated with the application login sources in Stormpath to log in.
+  account_store_mapping.delete()
 
-To enable an application, you must set the 'ENABLED' status to the application instance and call the 'save' method on it:
+<a name="retrieve-account-store-resource"></a>
+#### Retrieve Account Store Resource
+
+To retrieve the directory or group representing the account store, we can use the following code:
 
 **Code:**
 
-	application.status = "ENABLED"
-	application.save()
-
-### Disable an Application
-
-Disabling an application prevents the application from logging in any accounts in Stormpath, but retains all application configurations. If you must temporarily turn off logins, disable an application.
-
-{% docs note %}
-The Stormpath application cannot be disabled.
-{% enddocs %}
-
-To disable an application, you must set the 'DISABLED' status to the application instance and call the 'save' method on it:
-
-**Code:**
-
-	application.status = "DISABLED"
-
-	application.save()
-
-### Delete an Application
-
-Deleting an application completely erases the application and its configurations from Stormpath. We recommend that you disable an application rather than delete it, if you anticipate that you might use the application again.
-
-{% docs note %}
-* The Stormpath application cannot be deleted.
-* Deleted applications cannot be restored.
-{% enddocs %}
-
-To delete an application, you must call the 'delete' method on the application instance.
-
-**Code:**
-
-	application.delete()
+  app_or_dir = account_store_mapping.account_store
 
 ***
 
@@ -489,6 +619,7 @@ For directories, you can:
 * [Disable a directory](#disable-a-directory)
 * [Delete a directory](#delete-a-directory)
 
+<a name="locate-the-directory-rest-url"></a>
 ### Locate the Directory REST URL
 
 When communicating with the Stormpath REST API, you might need to reference a directory using the REST URL or `href`. For example, you require the REST URL to create accounts in the directory using an SDK.
@@ -498,11 +629,12 @@ To obtain a directory REST URL:
 1. Log in to the Stormpath Admin Console.
 2. Click the **Directories** tab.
 3. In the Directories table, click the directory name.<br>
-The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/Resturl.png" alt="Application Resturl" title="Application Resturl">
+The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/Resturl.png" alt="Application Resturl" title="Application REST url">
 
+<a name="list-directories"></a>
 ### List Directories
 
-To retrieve directories, you must get the directories from the client instance.
+To list directories, you must get the directories from the client instance.
 
 **Code:**
 
@@ -513,19 +645,21 @@ To retrieve directories, you must get the directories from the client instance.
 	         print('Directory Description ' + dir.description)
 	         print('Directory Status ' + dir.status)
 
+<a name="retrieve-directories"></a>
 ### Retrieve a Directory
 
 You will typically retrieve a `Directory` linked from another resource.
 
 You can also retrieve it or as a direct reference, such as `account.directory`.
 
-Finally, you can also directly retrieve a specific directory using the `href` (REST URL) value. For any directory, you can [find the directory href](#LocateDirURL) in the Stormpath console.
+Finally, you can also directly retrieve a specific directory using the `href` (REST URL) value. For any directory, you can [find the directory href](#locate-the-directory-rest-url) in the Stormpath console.
 
 After you have the `href` it can be loaded directly as an object instance by retrieving it from the server:
 
 	href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
 	directory = client.directories.get(href)
 
+<a name="create-a-directory"></a>
 ### Create a Directory
 
 To create a directory for application authentication, you must know which type of directory service to use.
@@ -1348,7 +1482,7 @@ Body | The value for the body of the message. Variable substitution is supported
 :----- | :-----
 Message Format | The message format for the body of the Password Reset Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
 "From" Name | The value to display in the "From" field of the Password Reset Success message.
-"From" Email Address | The email address from which the Password Reset Success message is sent. 
+"From" Email Address | The email address from which the Password Reset Success message is sent.
 Subject | The value for the subject field of the Password Reset Success message.
 Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
 
