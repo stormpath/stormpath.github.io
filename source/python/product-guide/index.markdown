@@ -34,17 +34,17 @@ The Stormpath Admin Console allows authorized administrators to:
 * Map directories and groups to allow accounts to log in to integrated applications
 * Configure workflow or account administration automation
 
-To access the Stormpath Admin Console, visit [https://api.stormpath.com/login](https://api.stormpath.com/login)
+To access the Stormpath Admin Console, visit [https://api.stormpath.com/login](https://api.stormpath.com/login).
 
 ### REST API
 
 The Stormpath API offers authorized developers and administrators programmatic access to:
 
-* Securely authenticate accounts.
-* Create and manage accounts and adjust group membership.
-* Manage directories.
-* Manage groups.
-* Initiate and process account automations.
+* Securely authenticate accounts
+* Create and manage accounts and adjust group membership
+* Manage directories
+* Manage groups
+* Initiate and process account automations
 
 For more detailed documentation on the Stormpath API, visit the [API Reference Documentation](http://www.stormpath.com/docs/rest/api/).
 
@@ -169,6 +169,8 @@ If you also want information about the `directory` owning that account, every ac
 	}
 
 An impractical way to retrieve a directory of the account is to somehow get the `href` of the directory and then manually send a request to Stormpath:
+
+**Code:**
 
   directory_href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
   directory = client.directories.get(directory_href)
