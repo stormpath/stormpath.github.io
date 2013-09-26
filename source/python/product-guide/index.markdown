@@ -380,13 +380,13 @@ To delete an application, you must call the 'delete' method on the application i
 
 ### Manage Application Account Stores
 
-_Account Store_ is a generic term for either a Directory or a Group. Directories and Groups both contain, or 'store' accounts, so they are both considered account stores.
+[Account Store](#account-store) is a generic term for either a Directory or a Group. Directories and Groups both contain, or 'store' accounts, so they are both considered account stores.
 
-In Stormpath, you control who may login to an application by associating (or 'mapping') one or more account stores to an application. All of the accounts in the application's assigned account stores form the application's effective user base; those accounts may login to the application. If no account stores are assigned to an application, no accounts will be able to login to the application.
+In Stormpath, you control who may login to an application by associating (or 'mapping') one or more account stores to an application. All of the accounts in the application's assigned account stores form the application's effective user base; those accounts may login to the application. If no account stores are assigned to an application, no accounts will be able to log in the application.
 
 #### How Login Attempts Work
 
-When an account tries to login to an application, the application's assigned account stores are consulted _in the order that they are assigned to the application.  When a matching account is discovered in a mapped account store, it is used to verify the authentication attempt and all subsequent account stores are ignored.  In other words, accounts are matched for application login based on a 'first match wins' policy.
+When an account tries to login to an application, the application's assigned account stores are consulted in the order they're assigned to the application.  When a matching account is discovered in a mapped account store, it is used to verify the authentication attempt and all subsequent account stores are ignored.  In other words, accounts are matched for application login based on a 'first match wins' policy.
 
 Let's look at an example to illustrate this behavior.  Assume an application named Foo has been assigned (mapped) to two account stores, a 'Customers' directory and an 'Employees' directory, in that order.
 
@@ -411,7 +411,6 @@ For account store mappings, you may:
 
 * [Assign an account store](#add-another-account-store) to an application
 * [Set the default account store](#change-default-account-store) for new accounts created by an application
-* [Set the default group store](#change-default-account-and-group-locations) for new groups created by an application
 * [Change the account store priority](#change-account-store-priority-order) of an assigned account store
 * [List an application's assigned account stores](#list-account-stores)
 * [Remove an assigned account store](#remove-account-store) from an application
@@ -426,10 +425,8 @@ To manage application account stores, you must log in to the Stormpath Admin Con
 The account stores appear in order of priority.<br>
   <img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
 
-**Code:**
-
-  mapping_href = 'https://api.stormpath.com/v1/accountStoreMappings/MAPPING_UID_HERE'
-  account_store_mapping = client.account_store_mappings.get(mapping_href)
+    mapping_href = 'https://api.stormpath.com/v1/accountStoreMappings/MAPPING_UID_HERE'
+    account_store_mapping = client.account_store_mappings.get(mapping_href)
 
 <a name="add-another-account-store"></a>
 #### Add Another Account Store
@@ -450,18 +447,18 @@ The new account store is added to the bottom of the account store list.
 
 **Code:**
 
-  application_href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE'
-  application = client.applications.get(application_href)
+    application_href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE'
+    application = client.applications.get(application_href)
 
-  directory_href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
-  directory = client.applications.get(directory_href)
+    directory_href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
+    directory = client.applications.get(directory_href)
 
-  account_store_mapping = application.account_store_mappings.create({
-      'application': application,
-      'account_store': directory,
-    'list_index': 0,
-    'is_default_account_store': False,
-    'is_default_group_store': True
+    account_store_mapping = application.account_store_mappings.create({
+        'application': application,
+        'account_store': directory,
+        'list_index': 0,
+        'is_default_account_store': False,
+        'is_default_group_store': True
   })
 
 **Warning**
@@ -470,7 +467,7 @@ The new account store is added to the bottom of the account store list.
 Also, if none of the application's AccountStoreMappings are designated as the default group store, the application _WILL NOT_ be able to create new group.
 * Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application's default account store. Attempting to set `isDefaultAccountStore` to `true` on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.
 
-<a name="change-default-account-and-group-locations"></a>
+<a name="change-default-account-store"></a>
 #### Change the default account store
 
 Applications cannot store Accounts directly - Accounts are always stored in a Directory or Group.  Therefore, if you would like an application to be able to create new accounts/groups, you must specify which of the application's associated account stores should store the application's newly created accounts.  This designated account store is called the application's _default account store_ or _default group store_.
@@ -1546,7 +1543,7 @@ Attribute | Description
 <a id="directory-mirroring"></a>Directory Mirroring | **Directory mirroring** securely replicates selected data from one (source) directory to another (target or mirrored) directory for authentication and access control. The source directory is the authoritative source for all data. Changes are propagated to the target/mirror directory for convenience and performance benefits.
 <a id="group"></a>Group | A **group** is a collection of accounts within a directory. In Stormpath, for anyone familiar with Role-Based Access Control, the term group is used instead of role.
 <a id="group-membership"></a>Group Membership | A **group membership** is a two-way mapping between an account and a group.
-<a id="account-store"></a>Account Store | A **account store** is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.
+<a id="account-store"></a>Account Store | An **account store** is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.
 <a id="AccountStoreMapping"></a>Account Store Mapping | An **account store mapping** is a mapping between a group or directory and an application.
 <a id="identity-management"></a>Identity Management | **Identity management** is the management, authentication, authorization, and permissions of identities to increase security and productivity, while decreasing cost, downtime, and repetitive tasks.
 <a id="role"></a>Role |A **role** is a classification of accounts, such as administrators or employees. In Stormpath, roles are represented as groups.
