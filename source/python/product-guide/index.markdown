@@ -1371,6 +1371,7 @@ For the Account Registration and Verification workflow, you must perform the fol
 
 **Note:** The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.
 
+<a name="AccountRegistration"></a>
 #### Configure Account Registration and Verification
 
 To configure account registration and verification:
@@ -1388,7 +1389,7 @@ To configure account registration and verification:
 
 	* You configure the Registration Success Message with the following attributes:
 
-		Attribute | Description
+Attribute | Description
 :----- | :-----
 Message Format | The message format for the body of the Account Registration Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
 "From" Name | The value to display in the "From" field of the Account Registration Success message.
@@ -1404,7 +1405,7 @@ Body | The value for the body of the message. Variable substitution is supported
 
 		* You configure the Account Verification Message with the following attributes: <br>
 
-			Attribute | Description
+Attribute | Description
 :----- | :-----
 Account Base URL | Your application URL which receives the token and completes the workflow. Stormpath offers a default base URL to help during development.
 Message Format | The message format for the body of the Account Verification email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
@@ -1418,7 +1419,7 @@ Body | The value for the body of the message. Variable substitution is supported
 
 		* You configure the Verification Success Message with the following attributes: <br>
 
-			Attribute | Description
+Attribute | Description
 :----- | :-----
 Message Format | The message format for the body of the Account Verification Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
 "From" Name | The value to display in the "From" field of the Account Verification Success message.
@@ -1456,6 +1457,7 @@ If a directory has the the account verification workflow enabled:
 			account = client.accounts.verify_email_token(verification_token)
 
 
+<a name="PasswordReset"></a>
 ### Password Reset
 
 When you reset an account password using Stormpath, the user receives an email with a link and a secure reset token. The link sends the user to a password reset page where they submit a new password to Stormpath. When the password is successfully reset, the user receives a success email. You can configure, at the directory level, how password reset works, the URL of the reset page, and the content of the email messages.
