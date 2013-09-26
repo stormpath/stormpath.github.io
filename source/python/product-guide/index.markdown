@@ -459,18 +459,18 @@ The new account store is added to the bottom of the account store list.
         'list_index': 0,
         'is_default_account_store': False,
         'is_default_group_store': True
-  })
+    })
 
 **Warning**
 
-* If none of the application's AccountStoreMappings are designated as the default account store, the application _WILL NOT_ be able to create new accounts.
-Also, if none of the application's AccountStoreMappings are designated as the default group store, the application _WILL NOT_ be able to create new group.
-* Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application's default account store. Attempting to set `isDefaultAccountStore` to `true` on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.
+* If none of the application's account stores are designated as the default account store, the application _WILL NOT_ be able to create new accounts.
+Also, if none of the application's account stores are designated as the default group store, the application _WILL NOT_ be able to create new group.
+* Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application's default account store. Attempting to set `is_default_account_store` to `True` on an `AccountStoreMapping` that reflects a mirrored directory or group will result in an error response.
 
 <a name="change-default-account-store"></a>
 #### Change the default account store
 
-Applications cannot store Accounts directly - Accounts are always stored in a Directory or Group.  Therefore, if you would like an application to be able to create new accounts/groups, you must specify which of the application's associated account stores should store the application's newly created accounts.  This designated account store is called the application's _default account store_ or _default group store_.
+Applications cannot store Accounts directly - `Accounts` are always stored in a `Directory` or `Group`.  Therefore, if you would like an application to be able to create new accounts/groups, you must specify which of the application's associated account stores should store the application's newly created accounts.  This designated account store is called the application's _default account store_ or _default group store_.
 
 On the Login Sources tab for applications, you can select the account store (directory or group) to use as the default locations when creating new accounts and groups.
 
@@ -484,16 +484,16 @@ On the Login Sources tab for applications, you can select the account store (dir
 
 **Code:**
 
-  account_store_mapping.is_default_account_store = True
-  account_store_mapping.is_default_group_store = False
+    account_store_mapping.is_default_account_store = True
+    account_store_mapping.is_default_group_store = False
 
-  account_store_mapping.save()
+    account_store_mapping.save()
 
 **Note**
 
 * Only one of an application's mapped account stores may be the default group/account store.
-* Setting an AccountStoreMapping's `isDefaultGroupStore` value to `true` will automatically set the application's other AccountStoreMappings' `isDefaultGroupStore` values to `false`. HOWEVER:
-* Setting an AccountStoreMapping's `isDefaultGroupStore` value to `false` **WILL NOT** automatically set another AccountStoreMapping's `isDefaultGroupStore` to `true`.  You are responsible for explicitly setting `isDefaultGroupStore` to `true` if you want the application to be able to create new groups.
+* Setting an `AccountStoreMapping`'s `is_default_group_store` value to `True` will automatically set the application's other `AccountStoreMappings`' `is_default_group_store` values to `False`. HOWEVER:
+* Setting an `AccountStoreMapping`'s `is_default_group_store` value to `False` **WILL NOT** automatically set another `AccountStoreMapping`'s `is_default_group_store` to `True`.  You are responsible for explicitly setting `is_default_group_store` to `True` if you want the application to be able to create new groups.
 
 **Warning**
 
@@ -522,9 +522,9 @@ To specify the account store order:
 
 **Code:**
 
-  account_store_mapping.list_index = 2
+    account_store_mapping.list_index = 2
 
-  account_store_mapping.save()
+    account_store_mapping.save()
 
 <a name="list-account-stores">
 #### List Account Stores
@@ -533,11 +533,11 @@ You can list an applications's mapped account stores by iterating through the ap
 
 **Code:**
 
-  for account_store_mapping in application.account_store_mappings:
-    print("Account Store: ", account_store_mapping.account_store.name)
-    print("Account Store Mapping Index: ", account_store_mapping.list_index)
-    print("Account Store Mapping default account store? ", account_store_mapping.is_default_account_store)
-    print("Account Store Mapping default group store? ", account_store_mapping.is_default_group_store)
+    for account_store_mapping in application.account_store_mappings:
+      print("Account Store: ", account_store_mapping.account_store.name)
+      print("Account Store Mapping Index: ", account_store_mapping.list_index)
+      print("Account Store Mapping default account store? ", account_store_mapping.is_default_account_store)
+      print("Account Store Mapping default group store? ", account_store_mapping.is_default_group_store)
 
 <a name="remove-account-store"></a>
 #### Remove Account Store
@@ -555,7 +555,7 @@ To remove an account store from an application:
 
 **Code:**
 
-  account_store_mapping.delete()
+    account_store_mapping.delete()
 
 <a name="retrieve-account-store-resource"></a>
 #### Retrieve Account Store Resource
