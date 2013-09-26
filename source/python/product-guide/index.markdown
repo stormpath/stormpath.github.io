@@ -209,7 +209,7 @@ The caching mechanism enables us to store the state of an already accessed resou
     from stormpath.cache.memory_store import MemoryStore
 
     cache_opts = {'store': MemoryStore,
-                'regions': {
+                '   regions': {
                     'applications': {
                         'store': RedisStore,
                         'ttl': 300,
@@ -228,14 +228,14 @@ The caching mechanism enables us to store the state of an already accessed resou
 
 The cache options dictionary can have a complex structure if we want to fine-tune the cache by using all the available options:
 
-1. The `store` option - The class that functions as the data cache. By default, if no cache options are set, the MemoryStore is used, which means we don't actually use a real cache, just the local object attributes. E.g. if an attribute of a resource is accessed the first time, the attribute value is fetched from Stormpath and saved as the object attribute. If we read the attribute again, Stormpath wouldn't be queried. However, RedisStore is a full-fledged cache. We can write additional cache implementations by providing the caching interface methods to get, put, delete, clear the cache and query about cache size without changing the whole SDK. Please check the existing cache implementations for info on how to do that.
+1. The `store` option - The class that functions as the data cache. By default, if no cache options are set, the `MemoryStore` is used, which means we don't actually use a real cache, just the local object attributes. E.g. if an attribute of a resource is accessed the first time, the attribute value is fetched from Stormpath and saved as the object attribute. If we read the attribute again, Stormpath wouldn't be queried. Note that `MemoryStore` is overly complex to explicitly demonstrate the caching architecture. However, `RedisStore` is a full-fledged cache. We can write additional cache implementations by providing the caching interface methods to get, put, delete, clear the cache and query about cache size without changing the whole SDK. Please check the existing cache implementations for info on how to do that.
 
-2. The `regions` option - each resource 'region' can have a separate cache implementation. E.g. `Application` resources are stored in Redis but `Directory` resources use MemoryStore. These kind of resource groups are called `regions`, each with its own options:
+2. The `regions` option - each resource 'region' can have a separate cache implementation. E.g. `Application` resources are stored in Redis but `Directory` resources use `MemoryStore`. These kind of resource groups are called `regions`, each with its own options:
 
   1. `store` - The cache store, if none is set for this region, the global stores set at the root of the cache options is used.
   2. `ttl` - Time To Live. The amount of time (in seconds) after which the stored resource data will be considered expired.
   3. `tti` - Time To Interact. If this amount of time has passed after the resource was last accessed, it will be considered expired.
-  4. `store_opts` - The store-specific options, if any. E.g. RedisStore requires a host and a port to be set because we need that information when accessing Redis, while MemoryStore requires no further options.
+  4. `store_opts` - The store-specific options, if any. E.g. `RedisStore` requires a host and a port to be set because we need that information when accessing Redis, while `MemoryStore` requires no further options.
 
 ***
 
@@ -251,13 +251,13 @@ Attribute | Description
 :----- | :-----
 Name | The name used to identify the application within Stormpath. This value must be unique.
 Description | A short description of the application.
-Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent accounts from logging in to the application.
+Status | By default, this value is set to `Enabled`. Change the value to `Disabled` if you want to prevent accounts from logging in to the application.
 
 {% docs tip %}
 Using the URL for your application as the application description within Stormpath is often helpful.
 {% enddocs %}
 
-You can control access to your Stormpath Admin Console and API by managing the [account stores](#AccountStore) for the listed Stormpath application.
+You can control access to your Stormpath Admin Console and API by managing the [account stores](#manage-application-account-stores) for the listed Stormpath application.
 
 For applications, you can:
 
@@ -266,14 +266,15 @@ For applications, you can:
 * [Retrieve an application](#retrieve-an-application)
 * [Register an application](#register-an-application)
 * [Edit the details of an application](#edit-an-application)
+* [Enable an application](#enable-an-application)
+* [Disable an application](#disable-an-application)
+* [Delete an application](#delete-an-application)
 * [Manage application account stores](#manage-application-account-stores)
 	* [Change default account and group locations](#change-default-account-and-group-locations)
 	* [Add another account store](#add-another-account-store)
 	* [Change account store priority order](#change-account-store-priority-order)
+  * [List account stores](#list-account-stores)
 	* [Remove account store](#remove-account-store)
-* [Enable an application](#enable-an-application)
-* [Disable an application](#disable-an-application)
-* [Delete an application](#delete-an-application)
 
 ### Locate the Application REST URL
 
@@ -304,16 +305,16 @@ To retrieve a list of applications, you must do the following get the Tenant app
 
 You will typically retrieve an `Application` referenced from another resource, for example using the `application` property of the `Account` resource.
 
-You can also directly retrieve a specific application using the `href` (REST URL) value. For any application, you can [find the application href](#LocateAppURL) in the Stormpath console.
+You can also directly retrieve a specific application using the `href` (REST URL) value. For any application, you can [find the application href](#locate-the-application-rest-url) in the Stormpath console.
 
-After you have the `href` it can be loaded directly as an object instance by retrieving it from the server, using the client:
+After you have the `href` it can be loaded directly as an object instance by retrieving it from the server, using the `client`:
 
 	application_href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE'
 	application = client.applications.get(application_href)
 
 ### Register an Application
 
-To authenticate a user account in your [application](#Application), you must first register the application with Stormpath.
+To authenticate a user account in your [application](#applications), you must first register the application with Stormpath.
 
 To register an application you must create it from the client instance:
 
@@ -348,11 +349,9 @@ Enabling a previously disabled application allows any enabled directories, group
 
 To enable an application, you must set the 'ENABLED' status to the application instance and call the 'save' method on it:
 
-**Code:**
+    application.status = "ENABLED"
 
-  application.status = "ENABLED"
-
-  application.save()
+    application.save()
 
 ### Disable an Application
 
@@ -362,11 +361,9 @@ Disabling an application prevents the application from logging in any accounts i
 
 To disable an application, you must set the 'DISABLED' status to the application instance and call the 'save' method on it:
 
-**Code:**
+    application.status = "DISABLED"
 
-  application.status = "DISABLED"
-
-  application.save()
+    application.save()
 
 ### Delete an Application
 
@@ -379,9 +376,7 @@ Deleting an application completely erases the application and its configurations
 
 To delete an application, you must call the 'delete' method on the application instance.
 
-**Code:**
-
-  application.delete()
+    application.delete()
 
 ### Manage Application Account Stores
 
