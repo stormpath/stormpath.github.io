@@ -564,13 +564,13 @@ To retrieve the directory or group representing the account store, we can use th
 
 **Code:**
 
-  app_or_dir = account_store_mapping.account_store
+    app_or_dir = account_store_mapping.account_store
 
 ***
 
 ## Directories
 
-[Directories](#Directory) contain [authentication](#Authentication) and [authorization](#Authorization) information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.
+[Directories](#directory) contain [authentication](#authentication) and [authorization](#authorization) information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.
 
 For directories, the basic details include:
 
@@ -588,7 +588,7 @@ Within Stormpath, there are two types of directories you can implement:
 	* You can specify various LDAP/AD object and attribute settings of the specific LDAP/AD server for users and groups.
 	* If the agent status is Online, but you are unable to see any data when browsing your LDAP/AD mapped directory, it is likely that your object and filters are configured incorrectly.
 
-You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#LoginSource" title="login source">login sources</a>.
+You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#account-store" title="account store">account stores</a>.
 
 LDAP/AD accounts and groups are automatically deleted when:
 
@@ -641,8 +641,7 @@ To list directories, you must get the directories from the client instance.
 ### Retrieve a Directory
 
 You will typically retrieve a `Directory` linked from another resource.
-
-You can also retrieve it or as a direct reference, such as `account.directory`.
+E.g. You can retrieve it as a direct reference, such as `account.directory`.
 
 Finally, you can also directly retrieve a specific directory using the `href` (REST URL) value. For any directory, you can [find the directory href](#locate-the-directory-rest-url) in the Stormpath console.
 
