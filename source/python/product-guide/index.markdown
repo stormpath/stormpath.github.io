@@ -691,7 +691,7 @@ Mirrored directories, after initial configuration, are accessible through the Ag
 :----- | :-----
 Directory Name | A short name for this directory, unique from your other Stormpath directories.
 Directory Description | An optional description explaining the purpose for the directory.
-Directory Status | Whether or not the directory is to be used to authenticate accounts for any assigned applications. By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
+Directory Status | Whether or not the directory is to be used to authenticate accounts for any assigned applications. By default, this value is set to `Enabled`. Change the value to `Disabled` if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
 
 5. Click **Next**.
 
@@ -779,7 +779,7 @@ Currently, you can only associate directories with application in the Stormpath 
 
 To edit directories, use the attributes of an existing directory instance to set the values and call the `save` method:
 
-	directory.status = "DISABLED"
+	directory.status = 'Disabled'
  	directory.name = 'New Directory Name'
 	directory.description = 'New Directory Description'
 
@@ -817,7 +817,7 @@ Although the Workflows tab appears for a mirrored LDAP/AD directory, workflows c
 
 ### Enable a Directory
 
-Enabling previously disabled directories allows the groups and accounts to log into any applications for which the directory is defined as a login source.
+Enabling previously disabled directories allows the groups and accounts to log into any applications for which the directory is defined as an account store.
 
 To enable a directory, you must:
 
@@ -844,14 +844,14 @@ To disable a directory, you must:
 
 1. Get the directory instance from the client with the href of the directory.
 2. Set the directory instance to disabled.
-3. Call the save method on the directory instance.
+3. Call the `save` method on the directory instance.
 
 **Code:**
 
 	 href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
 	 directory = client.directories.get(href)
 
-	 directory.status = "DISABLED"
+	 directory.status = 'Disabled'
 
 	 directory.save()
 
