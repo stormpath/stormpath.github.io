@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://stormpath.github.io/python/product-guide">
+  <link rel="canonical" href="http://stormpath.github.io/python/product-guide/v0.4">
   <link href="/favicon.ico" rel="icon">
 
 
@@ -195,18 +195,18 @@
 </ul>
 
 
-<p>To access the Stormpath Admin Console, visit <a href="https://api.stormpath.com/login">https://api.stormpath.com/login</a>.</p>
+<p>To access the Stormpath Admin Console, visit <a href="https://api.stormpath.com/login">https://api.stormpath.com/login</a></p>
 
 <h3><a id="rest-api"></a>REST API</h3>
 
 <p>The Stormpath API offers authorized developers and administrators programmatic access to:</p>
 
 <ul>
-<li>Securely authenticate accounts</li>
-<li>Create and manage accounts and adjust group membership</li>
-<li>Manage directories</li>
-<li>Manage groups</li>
-<li>Initiate and process account automations</li>
+<li>Securely authenticate accounts.</li>
+<li>Create and manage accounts and adjust group membership.</li>
+<li>Manage directories.</li>
+<li>Manage groups.</li>
+<li>Initiate and process account automations.</li>
 </ul>
 
 
@@ -220,11 +220,11 @@
 
 <p>When you make SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Python SDK therefore provides a clean object-oriented paradigm natural to Python developers and alleviates the need to know how to make REST+JSON requests.</p>
 
-<p>This SDK is compatible with the 2.7 or 3.2 and later versions of Python.</p>
+<p>This SDK is compatible with the 2.7 and later versions of Python.</p>
 
 <p>Stormpath also offers guides and SDKs for <a href="www.stormpath.com/docs/ruby/product-guide">Ruby</a>,  <a href="www.stormpath.com/docs/java/product-guide">Java</a>, and <a href="www.stormpath.com/docs/php/product-guide">PHP</a>.</p>
 
-<p>If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the <a href="http://www.stormpath.com/docs/rest/product-guide">REST API Product Guide</a>.</p>
+<p>If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the <a href="www.stormpath.com/docs/rest/product-guide">REST API Product Guide</a>.</p>
 
 <hr />
 
@@ -236,11 +236,11 @@
 
 <h3><a id="client"></a>Client</h3>
 
-<p>The root entry point for SDK functionality is the <code>Client</code> instance. Using the client instance, you can access all <a href="#tenant">Tenant</a> data, such as applications, directories, groups, and accounts.</p>
+<p>The root entry point for SDK functionality is the <code>Client</code> instance. Using the client instance, you can access all tenant data, such as applications, directories, groups, and accounts.</p>
 
 <h4>Preferred Configuration</h4>
 
-<p>There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure <code>apiKey.properties</code> file, where the <code>Client</code> implementation is being used:</p>
+<p>There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure <code>apiKey.properties</code> file, where the Client implementation is being used:</p>
 
 <pre><code>from stormpath.client import Client
 
@@ -269,8 +269,6 @@ client = Client(api_key_file_location=api_key_file)
 
 <p>Only use this technique if the values are obtained at runtime using a configuration mechanism that is not hard-coded into source code or easily-visible configuration files.</p>
 
-<p><a name="high-level-overview"></a></p>
-
 <h3><a id="high-level-overview"></a>High-level Overview</h3>
 
 <p>The Stormpath SDK and the associated components reside and execute within your application at runtime. When making method calls on the SDK objects &ndash; particularly objects that represent REST data resources such as applications and accounts &ndash; the method call automatically triggers an HTTPS request to the Stormpath API server if necessary.</p>
@@ -278,15 +276,15 @@ client = Client(api_key_file_location=api_key_file)
 <p>The HTTPS request allows you to program your application code to use regular Python objects and alleviates you from worrying about the lower-level HTTP REST+JSON details and individual REST resource HTTP endpoints.</p>
 
 <p>Here is how the communication works:<br>
-<img src="/python/product-guide/images/SDKCommunicationFlow_Python.png" alt="SDK Communication Flow" title="SDK Communication Flow" width="700"></p>
+<img src="http://www.stormpath.com/sites/default/files/docs/SDKCommunicationFlow.png" alt="SDK Communication Flow" title="SDK Communication Flow" width="700"></p>
 
-<p>Consider an example scenario where we have an existing SDK <a href="#account">Account</a> resource instance and we want its <a href="#directory">Directory</a>.</p>
+<p>In this example scenario, we have an existing SDK <code>account</code> resource instance, and we want its <code>directory</code>.</p>
 
 <p>The request is broken down as follows:</p>
 
 <ol>
 <li>The application attempts to acquire the account directory instance.</li>
-<li>If the directory resource is not already cached, the SDK creates a request to send to the Stormpath API server.</li>
+<li>If the directory resource is not already in memory, the SDK creates a request to send to the Stormpath API server.</li>
 <li>An HTTPS GET request is executed.</li>
 <li>The Stormpath API server authenticates the request caller and looks up the directory resource.</li>
 <li>The Stormpath API server responds with the JSON representation of the directory resource.</li>
@@ -310,20 +308,13 @@ Python instances representing REST resources use the <a href="http://en.wikipedi
 <h4>Architectural Components</h4>
 
 <p>The core component concepts of the SDK are as follows:<br>
-<img src="/python/product-guide/images/ComponentArchitecture_Python.png" alt="Stormpath SDK Component Architecture" title="Stormpath SDK Component Architecture" width="670"></p>
+<img src="http://www.stormpath.com/sites/default/files/docs/ComponentArchitecture.png" alt="Stormpath SDK Component Architecture" title="Stormpath SDK Component Architecture" width="670"></p>
 
 <ul>
-<li><strong>Client</strong> is the root entry point for SDK functionality and accessing other SDK components, such as the <code>CollectionResource</code>. A client is constructed with a Stormpath API key which is required to communicate with the Stormpath API server.
-
-<ul>
-<li><strong>DataStore</strong> is central to the Stormpath SDK. It is responsible for managing all Python <code>resource</code> objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on Ruby resource objects into REST requests to the Stormpath API server as necessary and managing chaching mechanisms. It works between your application and the Stormpath API server.
-
-<ul>
-<li><strong>RequestExecutor</strong> is an internal infrastructure component used by the <code>DataStore</code> to execute HTTP requests (<code>GET</code>, <code>PUT</code>, <code>POST</code>, <code>DELETE</code>) as necessary. When the DataStore needs to send a Python <code>Resource</code> instance state to or query the server for resources, it delegates to the RequestExecutor to perform the actual HTTP requests. The Stormpath SDK default <code>RequestExecutor</code> implementation is <code>HttpExecutor</code> which uses the <a href="http://docs.python-requests.org/">Requests</a> library to execute the raw requests and read the raw responses.</li>
-</ul>
-</li>
-</ul>
-</li>
+<li><strong>Client</strong> is the root entry point for SDK functionality and accessing other SDK components, such as the <code>ResourceList</code>. A client is constructed with a Stormpath API key which is required to communicate with the Stormpath API server.</li>
+<li><strong>ResourceList</strong> is central to the Stormpath SDK. It is responsible for managing all Python <code>resource</code> objects that represent Stormpath REST data resources such as applications, directories, and accounts. It is responsible for translating calls made on Python <code>resource</code> objects into REST requests to the Stormpath API server as necessary. Fetching a <code>resource</code> doesn&rsquo;t actually generate a HTTP request until one of its properties is read. It works between your application and the Stormpath API server.
+When the SDK needs to send a Python <code>Resource</code> instance state to or query the server for resources, it uses the <a href="https://pypi.python.org/pypi/requests" title="httpclient">Requests</a> library to execute the HTTP requests and read the responses.</li>
+<li><strong>Resources</strong> are standard Python objects that have a 1-to-1 correlation with REST data resources in the Stormpath API server such as applications and directories. Applications directly use these <code>resource</code> objects for security needs, such as authenticating user accounts, creating groups and accounts, finding application accounts, assigning accounts to groups, and resetting passwords.</li>
 </ul>
 
 
@@ -331,7 +322,7 @@ Python instances representing REST resources use the <a href="http://en.wikipedi
 
 <p>When applications interact with a Stormpath SDK <code>resource</code> instance, they are really interacting with an intelligent data-aware proxy, not a simple object with some properties. Specifically, the <code>resource</code> instance is a proxy to the SDK <code>Client</code> allowing resource instances to load data that might not yet be available.</p>
 
-<p>For example, using the SDK Communication Flow diagram in the <a href="#high-level-overview">high-level overview</a> section, assuming you have a reference to an <code>account</code> object &ndash; perhaps you have queried for it or you already have the account <code>href</code> and you want to load the <code>account</code> resource from the server:</p>
+<p>For example, using the SDK Communication Flow diagram in the <a href="#HighLevelOverview">high-level overview</a> section, assuming you have a reference to an <code>account</code> object &ndash; perhaps you have queried for it or you already have the account <code>href</code> and you want to load the <code>account</code> resource from the server:</p>
 
 <pre><code>account_href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
 account = client.accounts.get(account_href)
@@ -352,84 +343,47 @@ account = client.accounts.get(account_href)
 }
 </code></pre>
 
-<p>An impractical way to retrieve a directory of the account is to somehow get the <code>href</code> of the directory and then manually send a request to Stormpath:</p>
+<p>Notice the JSON <code>directory</code> property is only a link (pointer) to the directory; it does not contain any of the directory properties. The JSON shows we should be able to reference the <code>directory</code> property, and then reference the <code>href</code> property, and do another lookup (pseudo code):</p>
 
 <pre><code>directory_href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
 directory = client.directories.get(directory_href)
 </code></pre>
 
-<p>This technique is cumbersome, verbose, and requires a lot of boilerplate code in your project. As such, SDK resources <strong>automatically</strong> execute the lookups for unloaded references for you using simple property navigation! Notice the JSON <code>directory</code> property is only a link (pointer) to the directory; it does not contain any of the directory properties. The JSON shows we should be able to reference the <code>directory</code> property through the <code>account</code>:</p>
+<p>This technique is cumbersome, verbose, and requires a lot of boilerplate code in your project. As such, SDK resources <strong>automatically</strong> execute the lookups for unloaded references for you using simple property navigation!</p>
 
 <p>The previous lookup becomes:</p>
 
 <pre><code>directory = account.directory
 </code></pre>
 
-<p>If the directory already exists in cache because the SDK has previousy loaded it, the directory is immediately returned. However, if the directory is not present, the directory <code>href</code> is used to return the directory properties (the immediate data loaded) automatically for you. Thus, the <code>href</code> property is always available without querying the service. This technique is known as <em>lazy loading</em> which allows you to traverse entire object graphs automatically without requiring constant knowledge of <code>href</code> URLs.</p>
+<p>If the directory already exists in memory because the SDK has previousy loaded it, the directory is immediately returned. However, if the directory is not present, the directory <code>href</code> is used to return the directory properties (the immediate data loaded) automatically for you. This technique is known as <em>lazy loading</em> which allows you to traverse entire object graphs automatically without requiring constant knowledge of <code>href</code> URLs.</p>
 
 <h3><a id="error-handling"></a>Error Handling</h3>
 
-<p>Errors thrown from the server are translated to an <a href="https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/error.py">Error</a>. This applies to all requests to the Stormpath API endpoints.</p>
+<p>Errors thrown from the server are translated to a <a href="https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/error.py">ResourceError</a>. This applies to all requests to the Stormpath API endpoints.</p>
 
 <p>For example, when getting the current tenant from the client you can catch any error that the request might produce as following:</p>
 
-<pre><code>from stormpath.resource import Error
+<pre><code>from stormpath.resource import Error as StormpathError
 
 try:
     account = client.accounts.get(NONEXISTENT_STORMPATH_ACCOUNT)
     account.username
 except Error as re:
     print('Message: ' + re.message)
-    print('HTTP Status: ' + str(re.status))
+    print('HTTP Status: ' + re.status)
     print('Developer Message: ' + re.developer_message)
     print('More Information: ' + re.more_info)
-    print('Error Code: ' + str(re.code))
+    print('Error Code: ' + re.code)
 </code></pre>
 
-<hr />
-
-<h3><a id="caching"></a>Caching</h3>
-
-<p>The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we accessed the resource again and the data inside the cache hasn&rsquo;t yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath. Be aware, however, that when using a persistent cache store like <code>Redis</code>, if the data changes quickly on Stormpath and the TTL and TTI are set to a large value, you may get resources with attributes that don&rsquo;t reflect the real state. If this edge case won&rsquo;t affect your data consistency, you can use the caching mechanism by providing an additional parameter when creating the Client instance parameter:</p>
-
-<pre><code>from stormpath.cache.redis_store import RedisStore
-from stormpath.cache.memory_store import MemoryStore
-
-cache_opts = {'store': MemoryStore,
-                'regions': {
-                'applications': {
-                    'store': RedisStore,
-                    'ttl': 300,
-                    'tti': 300,
-                    'store_opts': {
-                        'host': 'localhost',
-                        'port': 6739}}
-                'directories': {
-                    'store': MemoryStore,
-                    'ttl': 60}}
-              }
-
-client = Client(api_key={'id': 'apiKeyId', 'secret': 'apiKeySecret'},
-    cache_options=cache_opts)
-</code></pre>
-
-<p>The cache options dictionary can have a complex structure if we want to fine-tune the cache by using all the available options:</p>
-
-<ol>
-<li><p>The <code>store</code> option &ndash; The class that functions as the data cache. By default, if no cache options are set, the <code>MemoryStore</code> is used, which means we don&rsquo;t actually use a real cache, just the local object attributes. E.g. if an attribute of a resource is accessed the first time, the attribute value is fetched from Stormpath and saved as the object attribute. If we read the attribute again, Stormpath wouldn&rsquo;t be queried. Note that <code>MemoryStore</code> is overly complex to explicitly demonstrate the caching architecture. However, <code>RedisStore</code> is a full-fledged cache. We can write additional cache implementations by providing the caching interface methods to get, put, delete, clear the cache and query about cache size without changing the whole SDK. Please check the existing cache implementations for info on how to do that.</p></li>
-<li><p>The <code>regions</code> option &ndash; each resource &lsquo;region&rsquo; can have a separate cache implementation. E.g. <code>Application</code> resources are stored in Redis but <code>Directory</code> resources use <code>MemoryStore</code>. These kind of resource groups are called <code>regions</code>, each with its own options:</p></li>
-<li><p> <code>store</code> &ndash; The cache store, if none is set for this region, the global stores set at the root of the cache options is used.</p></li>
-<li> <code>ttl</code> &ndash; Time To Live. The amount of time (in seconds) after which the stored resource data will be considered expired.</li>
-<li> <code>tti</code> &ndash; Time To Interact. If this amount of time has passed after the resource was last accessed, it will be considered expired.</li>
-<li> <code>store_opts</code> &ndash; The store-specific options, if any. E.g. <code>RedisStore</code> requires a host and a port to be set because we need that information when accessing Redis, while <code>MemoryStore</code> requires no further options.</li>
-</ol>
-
+<p>Note that in this case the custom error is produced because an account property is read but no accounts were returned (the second call), not because of the first call. A &lsquo;GET&rsquo; request is sent when trying to access the account, not before. The &lsquo;get&rsquo; method only generates the Tenant object and sets the &lsquo;url&rsquo; property to be used in the next call so simply calling &lsquo;get&rsquo; wouldn&rsquo;t generate an exception. Since the SDK uses Requests as the basis for REST API calls, it precedes the custom Stormpath error. So if the URL used is malformed Requests will raise one of its own exceptions. However, once the request is sent, if the URL is correct but the REST API returns a HTTP status signifying an error, the Stormpath Error is raised.</p>
 
 <hr />
 
 <h2><a id="applications"></a>Applications</h2>
 
-<p>An <a href="#application">application</a> in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath.</p>
+<p>An <a href="#applications">application</a> in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath.</p>
 
 <p>When defining an application in Stormpath, it is typically associated with one or more directories or groups. The associated directories and groups form the application <em>user base</em>. The accounts within the associated directories and groups are considered the application users and can login to the application.</p>
 
@@ -453,7 +407,7 @@ client = Client(api_key={'id': 'apiKeyId', 'secret': 'apiKeySecret'},
 </tr>
 <tr>
 <td align="left">Status </td>
-<td align="left"> By default, this value is set to <code>Enabled</code>. Change the value to <code>Disabled</code> if you want to prevent accounts from logging in to the application.</td>
+<td align="left"> By default, this value is set to Enabled. Change the value to Disabled if you want to prevent accounts from logging in to the application.</td>
 </tr>
 </tbody>
 </table>
@@ -463,7 +417,7 @@ client = Client(api_key={'id': 'apiKeyId', 'secret': 'apiKeySecret'},
 </div>
 
 
-<p>You can control access to your Stormpath Admin Console and API by managing the <a href="#account-store">account stores</a> for the listed Stormpath application.</p>
+<p>You can control access to your Stormpath Admin Console and API by managing the <a href="#LoginSource">login sources</a> for the listed Stormpath application.</p>
 
 <p>For applications, you can:</p>
 
@@ -473,27 +427,18 @@ client = Client(api_key={'id': 'apiKeyId', 'secret': 'apiKeySecret'},
 <li><a href="#retrieve-an-application">Retrieve an application</a></li>
 <li><a href="#register-an-application">Register an application</a></li>
 <li><a href="#edit-an-application">Edit the details of an application</a></li>
+<li><a href="#manage-application-login-sources">Manage application login sources</a>
+
+<ul>
+<li><a href="#change-default-account-and-group-locations">Change default account and group locations</a></li>
+<li><a href="#add-another-login-source">Add another login source</a></li>
+<li><a href="#change-login-source-priority-order">Change login source priority order</a></li>
+<li><a href="#remove-login-sources">Remove login sources</a></li>
+</ul>
+</li>
 <li><a href="#enable-an-application">Enable an application</a></li>
 <li><a href="#disable-an-application">Disable an application</a></li>
 <li><a href="#delete-an-application">Delete an application</a></li>
-<li><a href="#manage-application-account-stores">Manage application account stores</a>
-
-<ul>
-<li><a href="#add-another-account-store">Add another account store</a></li>
-<li><a href="#change-default-account-store">Change default account and group locations</a>
-
-<ul>
-<li><a href="#change-account-store-priority-order">Change account store priority order</a></li>
-</ul>
-</li>
-<li><a href="#list-account-stores">List account stores</a>
-
-<ul>
-<li><a href="#remove-account-store">Remove account store</a></li>
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 
 
@@ -527,11 +472,11 @@ for app in applications:
 
 <h3><a id="retrieve-an-application"></a>Retrieve an Application</h3>
 
-<p>You will typically retrieve an <code>Application</code> referenced from another resource, for example using the <code>application</code> property of the <code>Account</code> resource.</p>
+<p>You will typically retrieve an <code>Application</code> referenced from another resource, for example using the <code>Application Collection</code> property of the <code>Tenant</code> resource.</p>
 
-<p>You can also directly retrieve a specific application using the <code>href</code> (REST URL) value. For any application, you can <a href="#locate-the-application-rest-url">find the application href</a> in the Stormpath console.</p>
+<p>You can also directly retrieve a specific application using the <code>href</code> (REST URL) value. For any application, you can <a href="#LocateAppURL">find the application href</a> in the Stormpath console.</p>
 
-<p>After you have the <code>href</code> it can be loaded directly as an object instance by retrieving it from the server, using the <code>client</code>:</p>
+<p>After you have the <code>href</code> it can be loaded directly as an object instance by retrieving it from the server, using the client:</p>
 
 <pre><code>application_href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE'
 application = client.applications.get(application_href)
@@ -539,7 +484,7 @@ application = client.applications.get(application_href)
 
 <h3><a id="register-an-application"></a>Register an Application</h3>
 
-<p>To authenticate a user account in your application, you must first register the application with Stormpath.</p>
+<p>To authenticate a user account in your <a href="#Application">application</a>, you must first register the application with Stormpath.</p>
 
 <p>To register an application you must create it from the client instance:</p>
 
@@ -564,164 +509,77 @@ This is useful if you don&rsquo;t want to be bothered with organizing your direc
 
 <p>To edit applications, use the attributes of an existing application instance to set the values and call the <code>save</code> method:</p>
 
-<pre><code>application.description = 'New Application Description'
+<pre><code>application.status = "DISABLED"
+application.description = 'New Application Description'
 
 application.save()
 </code></pre>
 
-<h3><a id="enable-an-application"></a>Enable an Application</h3>
+<h3><a id="manage-application-login-sources"></a>Manage Application Login Sources</h3>
 
-<p>Enabling a previously disabled application allows any enabled directories, groups, and accounts associated with the application account stores in Stormpath to log in.</p>
+<p><a href="#LoginSource">Login sources</a> define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.</p>
 
-<p>To enable an application, you must set the &lsquo;Enabled&rsquo; status to the application instance and call the <code>save</code> method on it:</p>
-
-<pre><code>application.status = "Enabled"
-
-application.save()
-</code></pre>
-
-<h3><a id="disable-an-application"></a>Disable an Application</h3>
-
-<p>Disabling an application prevents the application from logging in any accounts in Stormpath, but retains all application configurations. If you must temporarily turn off logins, disable an application.</p>
-
-<p><strong>Note:</strong> The Stormpath application cannot be disabled.</p>
-
-<p>To disable an application, you must set the &lsquo;Disabled&rsquo; status to the application instance and call the <code>save</code> method on it:</p>
-
-<pre><code>application.status = "Disabled"
-
-application.save()
-</code></pre>
-
-<h3><a id="delete-an-application"></a>Delete an Application</h3>
-
-<p>Deleting an application completely erases the application and its configurations from Stormpath. We recommend that you disable an application rather than delete it, if you anticipate that you might use the application again.</p>
-
-<p><strong>Notes:</strong></p>
-
-<ul>
-<li>The Stormpath application cannot be deleted.</li>
-<li>Deleted applications cannot be restored.</li>
-</ul>
-
-
-<p>To delete an application, you must call the <code>delete</code> method on the application instance.</p>
-
-<pre><code>application.delete()
-</code></pre>
-
-<h3><a id="manage-application-account-stores"></a>Manage Application Account Stores</h3>
-
-<p><a href="#account-store">Account Store</a> is a generic term for either a Directory or a <a href="#group">Group</a>. Directories and Groups both contain, or <em>store</em> accounts, so they are both considered account stores.</p>
-
-<p>In Stormpath, you control who may login to an application by associating (or <em>mapping</em>) one or more account stores to an application. All of the accounts in the application&rsquo;s assigned account stores form the application&rsquo;s effective user base; those accounts may log in the application. If no account stores are assigned to an application, no accounts will be able to log in the application.</p>
+<p>In Stormpath, a directory or group can be a login source for an application. At least one login source must be associated with an application for accounts to log in to that application.</p>
 
 <h4>How Login Attempts Work</h4>
 
-<p>When an account tries to login to an application, the application&rsquo;s assigned account stores are consulted in the order they&rsquo;re assigned to the application.  When a matching account is discovered in a mapped account store, it is used to verify the authentication attempt and all subsequent account stores are ignored.  In other words, accounts are matched for application login based on a &lsquo;first match wins&rsquo; policy.</p>
+<p><strong>Example:</strong>
+Assume an application named Foo has been mapped to two login sources, the Customers and Employees directories, in that order.</p>
 
-<p>Let&rsquo;s look at an example to illustrate this behavior.  Assume an application named <em>Foo</em> has been assigned (mapped) to two account stores, a <em>Customers</em> directory and an <em>Employees</em> directory, in that order.</p>
+<p>Here is what happens when a user attempts to log in to an application named Foo:</p>
 
-<p><img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Account Stores Diagram" width="650" height="500"></p>
+<p><img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Login Sources Diagram" width="650" height="500"></p>
 
-<p>As you can see, Stormpath tries to find the account in the <em>Customers</em> directory first because it has a higher <em>priority</em> than the <em>Employees</em> directory.  If not found, the <em>Employees</em> directory is tried next as it has the next highest priority.</p>
+<p>You can configure multiple login sources, but only one is required for logging in. Multiple login sources allows each application to view multiple directories as a single repository during a login attempt.</p>
 
-<p>You can assign multiple account stores to an application, but only one is required to enable login for an application. Assigning multiple account stores (directories or groups) to an application, as well as configuring their priority, allows you precise control over the account populations that may login to your various applications.</p>
-
-<p><strong>Resource Attributes</strong></p>
-
-<table>
-<thead>
-<tr>
-<th></th>
-<th align="left"> Attribute </th>
-<th align="left"> Description </th>
-<th align="left"> Type </th>
-<th align="left"> Valid Value </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td align="left"> <code>href</code> </td>
-<td align="left"> The account store mapping resource&rsquo;s fully qualified location URI. </td>
-<td align="left"> String </td>
-<td align="left"> <span>&mdash;</span> |</td>
-</tr>
-<tr>
-<td></td>
-<td align="left"> <code>application</code> </td>
-<td align="left"> A reference to the mapping&rsquo;s <code>Application</code>. Required. </td>
-<td align="left"> object </td>
-<td align="left"> <span>&mdash;</span> |</td>
-</tr>
-<tr>
-<td></td>
-<td align="left"> <code>account_store</code> </td>
-<td align="left"> A reference to the mapping&rsquo;s <code>account store</code> (either a <code>Group</code> or <code>Directory</code>) containing accounts that may login to the <code>application</code>.  Required. </td>
-<td align="left"> object </td>
-<td align="left"> <span>&mdash;</span> |</td>
-</tr>
-<tr>
-<td></td>
-<td align="left"> <code>list_index</code> </td>
-<td align="left"> The order (priority) when the associated <code>account store</code> will be consulted by the <code>application</code> during an authentication attempt.  This is a zero-based index; an account store at <code>list_index</code> of <code>0</code> will be consulted first (has the highest priority), followed the account store at <code>list_index</code> <code>1</code> (next highest priority), etc.  Setting a negative value will default the value to <code>0</code>, placing it first in the list.  A <code>list_index</code> of larger than the current list size will place the mapping at the end of the list and then default the value to <code>(list size - 1)</code>. </td>
-<td align="left"> Integer </td>
-<td align="left"> 0 &lt;= N &lt; list size |</td>
-</tr>
-<tr>
-<td></td>
-<td align="left"> <code>is_default_account_store</code> </td>
-<td align="left"> A <code>True</code> value indicates that new accounts created by the <code>application</code> will be automatically saved to the mapping&rsquo;s <code>account store</code>. A <code>False</code> value indicates that new accounts created by the application will not be saved to the <code>account store</code>. </td>
-<td align="left"> boolean </td>
-<td align="left"> <code>True</code>,<code>False</code> |</td>
-</tr>
-<tr>
-<td></td>
-<td align="left"> <code>is_default_group_store</code> </td>
-<td align="left"> A <code>True</code> value indicates that new groups created by the <code>application</code> will be automatically saved to the mapping&rsquo;s <code>account store</code>. A <code>False</code> value indicates that new groups created by the application will not be saved to the <code>account store</code>. <strong>This may only be set to <code>True</code> if the <code>account store</code> is a Directory.  Stormpath does not currently support <code>Groups</code> storing other <code>Groups</code>.</strong> </td>
-<td align="left"> boolean </td>
-<td align="left"> <code>True</code>,<code>False</code> |</td>
-</tr>
-</tbody>
-</table>
-
-
-<p>For account store mappings, you may:</p>
+<p>After an application has been registered, or created, within Stormpath, you can:</p>
 
 <ul>
-<li><a href="#add-another-account-store">Assign an account store</a> to an application</li>
-<li><a href="#change-default-account-store">Set the default account store</a> for new accounts created by an application</li>
-<li><a href="#change-account-store-priority-order">Change the account store priority</a> of an assigned account store</li>
-<li><a href="#list-account-stores">List an application&rsquo;s assigned account stores</a></li>
-<li><a href="#remove-account-store">Remove an assigned account store</a> from an application</li>
+<li><a href="#change-default-account-and-group-locations">Change default account and group locations</a></li>
+<li><a href="#add-another-login-source">Add another login source</a></li>
+<li><a href="#change-login-source-priority-order">Change login source priority order</a></li>
+<li><a href="#remove-login-sources">Remove login sources</a></li>
 </ul>
 
 
-<p>To manage application account stores, you must log in to the Stormpath Admin Console:</p>
+<p>To manage application login sources, you must log in to the Stormpath Admin Console:</p>
 
 <ol>
 <li>Log in to the Stormpath Admin Console.</li>
 <li>Click the <strong>Applications</strong> tab.</li>
 <li>Click the application name.</li>
-<li>Click the <strong>Login Sources</strong> tab.<br></li>
+<li>Click the <strong>Login Sources</strong> tab.<br>
+The login sources appear in order of priority.<br>
+ <img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170"></li>
 </ol>
 
 
-<p>The account stores appear in order of priority.<br>
-  <img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170"></p>
+<p><a name="change-default-account-and-group-locations"></a></p>
 
-<p><strong>Code:</strong></p>
+<h4>Change Default Account and Group Locations</h4>
 
-<pre><code>mapping_href = 'https://api.stormpath.com/v1/accountStoreMappings/MAPPING_UID_HERE'
-account_store_mapping = client.account_store_mappings.get(mapping_href)
-</code></pre>
+<p>On the Login Sources tab for applications, you can select the login sources (directory or group) to use as the default locations when creating new accounts and groups.</p>
 
-<p><a name="add-another-account-store"></a></p>
+<ol>
+<li>Log in to the Stormpath Admin Console.</li>
+<li>Click the <strong>Applications</strong> tab.</li>
+<li>Click the application name.</li>
+<li>Click the <strong>Login Sources</strong> tab.
 
-<h4>Add Another Account Store</h4>
+<ol type="a">
+<li>To specify the default creation location(directory) for new accounts created in the application, in the appropriate row, select <strong>New Account Location</strong>.</li>
+<li>To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select <strong>New Group Location</strong>.</li>
+</ol>
+</li>
+<li>Click <strong>Save</strong>.</li>
+</ol>
 
-<p>Adding an account store to an application provisions a directory or group to that application.  By doing so, all account store accounts can log into the application.</p>
+
+<p><a name="add-another-login-source"></a></p>
+
+<h4>Add Another Login Source</h4>
+
+<p>Adding a login source to an application provisions a directory or group to that application.  By doing so, all login source accounts can log into the application.</p>
 
 <ol>
 <li>Log in to the Stormpath Admin Console.</li>
@@ -729,95 +587,24 @@ account_store_mapping = client.account_store_mappings.get(mapping_href)
 <li>Click the application name.</li>
 <li>Click the <strong>Login Sources</strong> tab.</li>
 <li>Click <strong>Add Login Source</strong>.</li>
-<li>In the <em>login source</em> list, select the appropriate directory or group.<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown1.png" alt="Login Sources" title="Login Sources"><br></li>
+<li>In the <em>login source</em> list, select the appropriate directory.<br>
+ <img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown1.png" alt="Login Sources" title="Login Sources"><br></li>
 <li>If the directory contains groups, you can select all users or specific group for access.<br>
 <img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown2.png" alt="Login Sources" title="Login Sources"><br></li>
 <li>Click <strong>Add Login Source</strong>.<br>
-The new account store is added to the bottom of the account store list.</li>
+The new login source is added to the bottom of the login sources list.</li>
 </ol>
 
 
-<p><strong>Code:</strong></p>
+<p><a name="change-login-source-priority-order"></a></p>
 
-<pre><code>application_href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE'
-application = client.applications.get(application_href)
+<h4>Change Login Source Priority Order</h4>
 
-directory_href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
-directory = client.applications.get(directory_href)
+<p>When you map multiple login sources to an application, you must also define the login source order.</p>
 
-account_store_mapping = application.account_store_mappings.create({
-    'application': application,
-    'account_store': directory,
-    'list_index': 0,
-    'is_default_account_store': False,
-    'is_default_group_store': True
-})
-</code></pre>
+<p>The login source order is important during the login attempt for a user account because of cases where the same user account exists in multiple directories. When a user account attempts to log in to an application, Stormpath searches the listed login sources in the order specified, and uses the credentials (password) of the first occurrence of the user account to validate the login attempt.</p>
 
-<p><strong>Warning</strong></p>
-
-<ul>
-<li>If none of the application&rsquo;s account stores are designated as the default account store, the application <em>WILL NOT</em> be able to create new accounts.
-Also, if none of the application&rsquo;s account stores are designated as the default group store, the application <em>WILL NOT</em> be able to create new groups.</li>
-<li>Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application&rsquo;s default account store. Attempting to set <code>is_default_account_store</code> to <code>True</code> on an <a href="#AccountStoreMapping">AccountStoreMapping</a> that reflects a mirrored directory or group will result in an error response.</li>
-</ul>
-
-
-<p><a name="change-default-account-store"></a></p>
-
-<h4>Change the default account store</h4>
-
-<p>Applications cannot store Accounts directly &ndash; <code>Accounts</code> are always stored in a <code>Directory</code> or <code>Group</code>.  Therefore, if you would like an application to be able to create new accounts/groups, you must specify which of the application&rsquo;s associated account stores should store the application&rsquo;s newly created accounts.  This designated account store is called the application&rsquo;s <em>default account store</em> or <em>default group store</em>.</p>
-
-<p>On the Login Sources tab for applications, you can select the account store (directory or group) to use as the default locations when creating new accounts and groups.</p>
-
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Applications</strong> tab.</li>
-<li>Click the application name.</li>
-<li>Click the <strong>Login Sources</strong> tab.</li>
-<li> To specify the default creation location(directory) for new accounts created in the application, in the appropriate row, select <strong>New Account Location</strong>.</li>
-<li> To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select <strong>New Group Location</strong>.</li>
-<li>Click <strong>Save</strong>.</li>
-</ol>
-
-
-<p><strong>Code:</strong></p>
-
-<pre><code>account_store_mapping.is_default_account_store = True
-account_store_mapping.is_default_group_store = False
-
-account_store_mapping.save()
-</code></pre>
-
-<p><strong>Note</strong></p>
-
-<ul>
-<li>Only one of an application&rsquo;s mapped account stores may be the default group/account store.</li>
-<li>Setting an <code>AccountStoreMapping</code>&rsquo;s <code>is_default_group_store</code> value to <code>True</code> will automatically set the application&rsquo;s other <code>AccountStoreMappings</code>&lsquo; <code>is_default_group_store</code> values to <code>False</code>. HOWEVER:</li>
-<li>Setting an <code>AccountStoreMapping</code>&rsquo;s <code>is_default_group_store</code> value to <code>False</code> <strong>WILL NOT</strong> automatically set another <code>AccountStoreMapping</code>&rsquo;s <code>is_default_group_store</code> to <code>True</code>.  You are responsible for explicitly setting <code>is_default_group_store</code> to <code>True</code> if you want the application to be able to create new groups.</li>
-</ul>
-
-
-<p><strong>Warning</strong></p>
-
-<ul>
-<li>If no <code>AccountStoreMapping</code> is designated as the default group/account store, the application <em>WILL NOT</em> be able to create new groups/accounts.</li>
-<li>Stormpath does not currently support storing groups within groups. Therefore <code>is_default_group_store</code> can only be set to <code>True</code> when the <code>AccountStoreMapping</code>&rsquo;s <code>account store</code> is a <code>Directory</code>.  Attempting to set <code>is_default_group_store</code> to <code>True</code> on an <code>AccountStoreMapping</code> that reflects a group will result in an <code>Error</code> response.</li>
-<li>Mirrored directories are read-only; they cannot be set as an application&rsquo;s default group store.  Attempting to set <code>is_default_group_store</code> to <code>True</code> on an <code>AccountStoreMapping</code> that reflects a mirrored directory will result in an <code>Error</code> response.</li>
-</ul>
-
-
-<p><a name="change-account-store-priority-order"></a></p>
-
-<h4>Change Account Store Priority Order</h4>
-
-<p>When you map multiple account stores to an application, you must also define the account store order.</p>
-
-<p>The account store order is important during the login attempt for a user account because of cases where the same user account exists in multiple account stores. When a user account attempts to log in to an application, Stormpath searches the listed account stores in the order specified, and uses the credentials (password) of the first occurrence of the user account to validate the login attempt.</p>
-
-<p>To specify the account store order:</p>
+<p>To specify the login source order:</p>
 
 <ol>
 <li>Log in to the Stormpath Admin Console.</li>
@@ -826,41 +613,19 @@ account_store_mapping.save()
 <li>Click the <strong>Login Sources</strong> tab.</li>
 <li>Click the row of the directory to move.</li>
 <li>Drag the row to the appropriate order.<br>
-For example, if you want to move the first account store to the second account store, click anywhere in the first row of the account store table and drop the row on the second row.<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650"></li>
+ For example, if you want to move the first login source to the second login source, click anywhere in the first row of the login source table and drop the row on the second row.<br>
+ <img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650"></li>
 <li>Click <strong>Save Priorities</strong>.</li>
 </ol>
 
 
-<p><strong>Code:</strong></p>
+<p><a name="remove-login-sources"></a></p>
 
-<pre><code>account_store_mapping.list_index = 2
+<h4>Remove Login Sources</h4>
 
-account_store_mapping.save()
-</code></pre>
+<p>Removing a login source from an application deprovisions that directory or group from the application. By doing so, all accounts from the login source are no longer able to log into the application.</p>
 
-<p><a name="list-account-stores"></p>
-
-<h4>List Account Stores</h4>
-
-<p>You can list an applications&rsquo;s mapped account stores by iterating through the application&rsquo;s <code>account_store_mappings</code>.</p>
-
-<p><strong>Code:</strong></p>
-
-<pre><code>for account_store_mapping in application.account_store_mappings:
-  print("Account Store: ", account_store_mapping.account_store.name)
-  print("Account Store Mapping Index: ", account_store_mapping.list_index)
-  print("Account Store Mapping default account store? ", account_store_mapping.is_default_account_store)
-  print("Account Store Mapping default group store? ", account_store_mapping.is_default_group_store)
-</code></pre>
-
-<p><a name="remove-account-store"></a></p>
-
-<h4>Remove Account Store</h4>
-
-<p>Removing an account store from an application deprovisions that directory or group from the application. By doing so, all accounts from the account store are no longer able to log into the application.</p>
-
-<p>To remove an account store from an application:</p>
+<p>To remove a login source from an application:</p>
 
 <ol>
 <li>Log in to the Stormpath Admin Console.</li>
@@ -872,27 +637,59 @@ account_store_mapping.save()
 </ol>
 
 
+<h3><a id="enable-an-application"></a>Enable an Application</h3>
+
+<p>Enabling a previously disabled application allows any enabled directories, groups, and accounts associated with the application login sources in Stormpath to log in.</p>
+
+<p>To enable an application, you must set the &lsquo;ENABLED&rsquo; status to the application instance and call the &lsquo;save&rsquo; method on it:</p>
+
 <p><strong>Code:</strong></p>
 
-<pre><code>account_store_mapping.delete()
+<pre><code>application.status = "ENABLED"
+application.save()
 </code></pre>
 
-<p><a name="retrieve-account-store-resource"></a></p>
+<h3><a id="disable-an-application"></a>Disable an Application</h3>
 
-<h4>Retrieve Account Store Resource</h4>
+<p>Disabling an application prevents the application from logging in any accounts in Stormpath, but retains all application configurations. If you must temporarily turn off logins, disable an application.</p>
 
-<p>To retrieve the directory or group representing the account store, we can use the following code:</p>
+<div class='docs-note'><p>The Stormpath application cannot be disabled.</p>
+</div>
+
+
+<p>To disable an application, you must set the &lsquo;DISABLED&rsquo; status to the application instance and call the &lsquo;save&rsquo; method on it:</p>
 
 <p><strong>Code:</strong></p>
 
-<pre><code>app_or_dir = account_store_mapping.account_store
+<pre><code>application.status = "DISABLED"
+
+application.save()
+</code></pre>
+
+<h3><a id="delete-an-application"></a>Delete an Application</h3>
+
+<p>Deleting an application completely erases the application and its configurations from Stormpath. We recommend that you disable an application rather than delete it, if you anticipate that you might use the application again.</p>
+
+<div class='docs-note'><ul>
+<li>The Stormpath application cannot be deleted.</li>
+<li>Deleted applications cannot be restored.</li>
+</ul>
+
+</div>
+
+
+<p>To delete an application, you must call the &lsquo;delete&rsquo; method on the application instance.</p>
+
+<p><strong>Code:</strong></p>
+
+<pre><code>application.delete()
 </code></pre>
 
 <hr />
 
 <h2><a id="directories"></a>Directories</h2>
 
-<p><a href="#directory">Directories</a> contain <a href="#authentication">authentication</a> and <a href="#authorization">authorization</a> information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.</p>
+<p><a href="#Directory">Directories</a> contain <a href="#Authentication">authentication</a> and <a href="#Authorization">authorization</a> information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.</p>
 
 <p>For directories, the basic details include:</p>
 
@@ -935,7 +732,7 @@ account_store_mapping.save()
 </ul>
 
 
-<p>You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#account-store" title="account store">account stores</a>.</p>
+<p>You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#LoginSource" title="login source">login sources</a>.</p>
 
 <p>LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -968,8 +765,6 @@ account_store_mapping.save()
 </ul>
 
 
-<p><a name="locate-the-directory-rest-url"></a></p>
-
 <h3><a id="locate-the-directory-rest-url"></a>Locate the Directory REST URL</h3>
 
 <p>When communicating with the Stormpath REST API, you might need to reference a directory using the REST URL or <code>href</code>. For example, you require the REST URL to create accounts in the directory using an SDK.</p>
@@ -980,15 +775,13 @@ account_store_mapping.save()
 <li>Log in to the Stormpath Admin Console.</li>
 <li>Click the <strong>Directories</strong> tab.</li>
 <li>In the Directories table, click the directory name.<br>
-The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/Resturl.png" alt="Application Resturl" title="Application REST url"></li>
+The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/Resturl.png" alt="Application Resturl" title="Application Resturl"></li>
 </ol>
 
 
-<p><a name="list-directories"></a></p>
-
 <h3><a id="list-directories"></a>List Directories</h3>
 
-<p>To list directories, you must get the directories from the client instance.</p>
+<p>To retrieve directories, you must get the directories from the client instance.</p>
 
 <p><strong>Code:</strong></p>
 
@@ -1000,22 +793,19 @@ for dir in directories:
          print('Directory Status ' + dir.status)
 </code></pre>
 
-<p><a name="retrieve-directories"></a></p>
-
 <h3><a id="retrieve-a-directory"></a>Retrieve a Directory</h3>
 
-<p>You will typically retrieve a <code>Directory</code> linked from another resource.
-E.g. You can retrieve it as a direct reference, such as <code>account.directory</code>.</p>
+<p>You will typically retrieve a <code>Directory</code> linked from another resource.</p>
 
-<p>Finally, you can also directly retrieve a specific directory using the <code>href</code> (REST URL) value. For any directory, you can <a href="#locate-the-directory-rest-url">find the directory href</a> in the Stormpath console.</p>
+<p>You can also retrieve it or as a direct reference, such as <code>account.directory</code>.</p>
+
+<p>Finally, you can also directly retrieve a specific directory using the <code>href</code> (REST URL) value. For any directory, you can <a href="#LocateDirURL">find the directory href</a> in the Stormpath console.</p>
 
 <p>After you have the <code>href</code> it can be loaded directly as an object instance by retrieving it from the server:</p>
 
 <pre><code>href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
 directory = client.directories.get(href)
 </code></pre>
-
-<p><a name="create-a-directory"></a></p>
 
 <h3><a id="create-a-directory"></a>Create a Directory</h3>
 
@@ -1079,7 +869,7 @@ directory = client.directories.get(href)
 </tr>
 <tr>
 <td align="left">Directory Status </td>
-<td align="left"> Whether or not the directory is to be used to authenticate accounts for any assigned applications. By default, this value is set to <code>Enabled</code>. Change the value to <code>Disabled</code> if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.</td>
+<td align="left"> Whether or not the directory is to be used to authenticate accounts for any assigned applications. By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.</td>
 </tr>
 </tbody>
 </table>
@@ -1267,7 +1057,7 @@ directory = client.directories.get(href)
 
 <p>To edit directories, use the attributes of an existing directory instance to set the values and call the <code>save</code> method:</p>
 
-<pre><code>directory.status = 'Disabled'
+<pre><code>directory.status = "DISABLED"
 directory.name = 'New Directory Name'
 directory.description = 'New Directory Description'
 
@@ -1319,13 +1109,13 @@ directory.save()
 
 <h3><a id="enable-a-directory"></a>Enable a Directory</h3>
 
-<p>Enabling previously disabled directories allows the groups and accounts to log into any applications for which the directory is defined as an account store.</p>
+<p>Enabling previously disabled directories allows the groups and accounts to log into any applications for which the directory is defined as a login source.</p>
 
 <p>To enable a directory, you must:</p>
 
 <ol>
 <li>Get the directory instance from the client instance with the href of the directory.</li>
-<li>Set the directory instance to <code>Enabled</code>.</li>
+<li>Set the directory instance to enabled.</li>
 <li>Call the save method on the directory instance.</li>
 </ol>
 
@@ -1335,7 +1125,7 @@ directory.save()
 <pre><code> href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
  directory = client.directories.get(href)
 
- directory.status = 'Enabled'
+ directory.status = "ENABLED"
 
  directory.save()
 </code></pre>
@@ -1350,8 +1140,8 @@ directory.save()
 
 <ol>
 <li>Get the directory instance from the client with the href of the directory.</li>
-<li>Set the directory instance to <code>Disabled</code>.</li>
-<li>Call the <code>save</code> method on the directory instance.</li>
+<li>Set the directory instance to disabled.</li>
+<li>Call the save method on the directory instance.</li>
 </ol>
 
 
@@ -1360,7 +1150,7 @@ directory.save()
 <pre><code> href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
  directory = client.directories.get(href)
 
- directory.status = 'Disabled'
+ directory.status = "DISABLED"
 
  directory.save()
 </code></pre>
@@ -1377,7 +1167,7 @@ directory.save()
 
 <hr />
 
-<h2><a id="accounts"></a>Accounts</h2>
+<h2><a id="accounts"></a><em>Accounts</em></h2>
 
 <p>In Stormpath, users are referred to as user account objects or <a href="#account">accounts</a>. The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.</p>
 
@@ -1403,32 +1193,36 @@ directory.save()
 </thead>
 <tbody>
 <tr>
-<td align="left">directory </td>
+<td align="left">Directory </td>
 <td align="left"> The directory to which the account will be added.<br><strong>Note:</strong> The account cannot be moved to a different directory after it has been created. |</td>
 </tr>
 <tr>
-<td align="left">username </td>
+<td align="left">Username </td>
 <td align="left"> The login name of the account for applications using username instead of email. The value must be unique within its parent directory.|</td>
 </tr>
 <tr>
-<td align="left">given_name </td>
+<td align="left">First Name </td>
 <td align="left"> The account owner first name. |</td>
 </tr>
 <tr>
-<td align="left">middle_name </td>
+<td align="left">Middle Name </td>
 <td align="left"> The account owner middle name. |</td>
 </tr>
 <tr>
-<td align="left">surname </td>
+<td align="left">Last Name </td>
 <td align="left"> The account owner last name. |</td>
 </tr>
 <tr>
-<td align="left">email </td>
+<td align="left">First Name </td>
+<td align="left"> The account owner first name. |</td>
+</tr>
+<tr>
+<td align="left">Email </td>
 <td align="left"> The account owner email address. This is can be used by applications, such as the Stormpath Admin Console, that use an email address for logging in. The value must be unique within its parent directory. |</td>
 </tr>
 <tr>
-<td align="left">status </td>
-<td align="left"> The status is set to <code>Enabled</code> by default. It is only set to <code>Disabled</code> if you want to deny access to the account to Stormpath-connected applications. |</td>
+<td align="left">Status </td>
+<td align="left"> The status is set to Enabled by default. It is only set to Disabled if you want to deny access to the account to Stormpath-connected applications. |</td>
 </tr>
 <tr>
 <td align="left">Password </td>
@@ -1441,28 +1235,26 @@ directory.save()
 <p>For accounts, you can:</p>
 
 <ul>
-<li><a href="#locate-the-account-rest-url">Locate the account REST URL</a></li>
-<li><a href="#authenticate-account">Authenticate accounts</a></li>
-<li><a href="#list-accounts">List accounts</a>
+<li><a href="#LocateAccURL">Locate the account REST URL</a>.</li>
+<li><a href="#AuthenticateAccounts">Authenticate accounts</a>.</li>
+<li><a href="#ListAccounts">List accounts</a>.
 
 <ul>
-<li><a href="#list-group-accounts">List accounts by group</a></li>
-<li><a href="#list-directory-accounts">List accounts by directory</a></li>
-<li><a href="#list-application-accounts">List accounts by application</a></li>
+<li><a href="#ListGroupAccounts">List accounts by group</a>.</li>
+<li><a href="#ListDirectoryAccounts">List accounts by directory</a>.</li>
+<li><a href="#ViewAccountMap">List accounts by application</a>.</li>
 </ul>
 </li>
-<li><a href="#retrieve-accounts">Retrieve an account</a></li>
-<li><a href="#create-accounts">Create an account</a></li>
-<li><a href="#edit-accounts">Edit account details</a></li>
-<li><a href="#assign-account-group">Assign accounts to groups</a></li>
-<li><a href="#remove-account-group">Remove accounts from groups</a></li>
-<li><a href="#enable-account">Enable an account</a></li>
-<li><a href="#disable-account">Disable an account</a></li>
-<li><a href="#delete-account">Delete an account</a></li>
+<li><a href="#CreateAccounts">Create an account</a>.</li>
+<li><a href="#EditAccounts">Edit account details</a>.</li>
+<li><a href="#ChangeAccountPasswords">Change an account password</a>.</li>
+<li><a href="#AssignAccountGroup">Assign accounts to groups</a>.</li>
+<li><a href="#RemoveAccountGroup">Remove accounts from groups</a>.</li>
+<li><a href="#EnableAccounts">Enable an account</a>.</li>
+<li><a href="#DisableAccounts">Disable an account</a>.</li>
+<li><a href="#DeleteAccounts">Delete an account</a>.</li>
 </ul>
 
-
-<p><a name="locate-the-directory-rest-url"></a></p>
 
 <h3><a id="locate-the-account-rest-url"></a>Locate the Account REST URL</h3>
 
@@ -1478,8 +1270,6 @@ The REST URL appears on the Details tab.</li>
 </ol>
 
 
-<p><a name="authenticate-account"></a></p>
-
 <h3><a id="authenticate-accounts"></a>Authenticate Accounts</h3>
 
 <p>To authenticate an account you must have the application the account authenticates against. With the application, the account is authenticated by providing the username and password as follows:</p>
@@ -1491,20 +1281,16 @@ application = client.applications.get(href)
 account = application.authenticate_account("USERNAME", "PASSWORD")
 </code></pre>
 
-<p><a name="list-accounts"></a></p>
-
 <h3><a id="list-accounts"></a>List Accounts</h3>
 
-<p>For accounts, you can view, or list them according to their <a href="#list-group-accounts" title="group membership">group membership</a>, <a href="#list-directory-accounts" title="directory accounts">the directories to which they belong</a>, or the <a href="#list-application-accounts" title="View Account Map">applications to which they are associated</a>.</p>
-
-<p><a name="list-group-accounts"></a></p>
+<p>For accounts, you can view, or list them according to their <a href="#ListGroupAccounts" title="group membership">group membership</a>, <a href="#ListDirectoryAccounts" title="directory accounts">the directories to which they belong</a>, or the <a href="#ViewAccountMap" title="View Account Map">applications to which they are associated</a>.</p>
 
 <h4>List Accounts by Group</h4>
 
 <p>To list all groups associated with an account:</p>
 
 <ol>
-<li>Get the client.</li>
+<li>Get the client</li>
 <li>Get the group from the client with the group <code>href</code>.</li>
 <li>Get the group accounts.</li>
 </ol>
@@ -1518,10 +1304,8 @@ group = client.groups.get(href)
 accounts = group.accounts
 
 for acc in accounts:
-    print('Given Name ' + acc.given_name)
+    print('Given Name ' + acc.givenName)
 </code></pre>
-
-<p><a name="list-directory-accounts"></a></p>
 
 <h4>List Accounts by Directory</h4>
 
@@ -1542,17 +1326,14 @@ directory = client.directories.get(href)
 accounts = directory.accounts
 
 for acc in accounts:
-    print('Given Name ' + acc.given_name)
+    print('Given Name ' + acc.givenName)
 </code></pre>
-
-<p><a name="list-application-accounts"></a></p>
 
 <h4>List Accounts by Application</h4>
 
 <p>To list user accounts mapped to an application, you must:</p>
 
 <ol>
-<li>Get the client.</li>
 <li>Get the application from the client with the application <code>href</code>.</li>
 <li>Get the application accounts.</li>
 </ol>
@@ -1569,8 +1350,6 @@ for acc in accounts:
     print('Given Name ' + acc.givenName)
 </code></pre>
 
-<p><a name="retrieve-accounts"></a></p>
-
 <h3><a id="retrieve-an-account"></a>Retrieve an Account</h3>
 
 <p>To retrieve a specific account you need the <code>href</code> which can be loaded as an object instance by retrieving it from the server, using the client:</p>
@@ -1578,8 +1357,6 @@ for acc in accounts:
 <pre><code>href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
 account = client.accounts.get(href)
 </code></pre>
-
-<p><a name="create-accounts"></a></p>
 
 <h3><a id="create-an-account"></a>Create an Account</h3>
 
@@ -1602,17 +1379,17 @@ directory = client.directories.get(href)
 account_dict = {
     "username": 'Username'
     "email": 'Email',
-    "given_name": 'Given Name',
+    "givenName": 'Given Name',
     "surname": 'Surname',
     "password": 'Password'
 }
 
-account = directory.accounts.create(account_dict)
+account = directory.create_account(account_dict)
 </code></pre>
 
-<p>If you want to override the registration workflow and have the account created with <code>Enabled</code> status right away, pass <code>False</code> as the value to the <code>registration_workflow_enabled</code> parameter, for example:</p>
+<p>If you want to override the registration workflow and have the account created with ENABLED status right away, pass <code>False</code> as second argument, for example:</p>
 
-<pre><code>account = directory.accounts.create(account_dict, registration_workflow_enabled=False)
+<pre><code>account = directory.create_account(account_dict, False)
 </code></pre>
 
 <p>If you want to associate the account to a group, add the following:</p>
@@ -1620,18 +1397,16 @@ account = directory.accounts.create(account_dict)
 <pre><code>account.add_group(group)
 </code></pre>
 
-<p><a name="edit-accounts"></a></p>
-
 <h3><a id="edit-account-details"></a>Edit Account Details</h3>
 
-<p>To edit accounts, use the attributes of an existing account instance to set the values and call the <code>save</code> method:</p>
+<p>To edit accounts, use the attributes of an existing account instance to set the values and call the <code>save()</code> method:</p>
 
 <pre><code>account.status = "DISABLED"
 account.given_name = 'New Given Name'
 account.surname = 'New Surname'
 account.username = 'New Username'
 account.email = 'New Email'
-account.middle_name = 'New Middle Name'
+account.middleName = 'New Middle Name'
 
 account.save()
 </code></pre>
@@ -1641,14 +1416,12 @@ account.save()
 <pre><code>account.add_group(group)
 </code></pre>
 
-<p><a name="assign-account-group"></a></p>
-
 <h3><a id="assign-accounts-to-groups"></a>Assign Accounts to Groups</h3>
 
 <p>The association between a group and an account can be done from an account or group instance. If the account is part of a directory containing groups, you can associate the account with a group. To add an account to a group, you must:</p>
 
 <ol>
-<li>Get the client instance.</li>
+<li>Get the client instance</li>
 <li>Get the group and account instance from the client with the corresponding hrefs.</li>
 <li>Add the group to the account instance OR add the account to the group instance.</li>
 </ol>
@@ -1665,18 +1438,16 @@ group = client.groups.get(href)
 # account.add_group(group) OR group.add_account(account)
 </code></pre>
 
-<p><a name="remove-account-group"></a></p>
-
 <h3><a id="remove-accounts-from-groups"></a>Remove Accounts from Groups</h3>
 
 <p>The remove an account from, or delete the account as a member of, a group you must:</p>
 
 <ol>
-<li>Get the <a href="#group-membership">group membership</a> instance.
+<li>Get the group membership instance.
 
 <ul>
 <li>The group membership can be retrieved directly from the client, if the <code>href</code> is known to the user.</li>
-<li>Another way of retrieving the <code>group membership</code> is by searching for the group membership that represents the relationship between the group and the account that you want to delete.</li>
+<li>Another way of retrieving the group membership is by searching for the group membership that represents the relationship between the group and the account that you want to delete.</li>
 </ul>
 </li>
 <li>Delete the group membership by calling the <code>delete</code> method.</li>
@@ -1717,8 +1488,6 @@ if group_linked:
     group_membership.delete()
 </code></pre>
 
-<p><a name="enable-account"></a></p>
-
 <h3><a id="enable-accounts"></a>Enable Accounts</h3>
 
 <p>Enabling a previously disabled account allows the account to log in to any applications where the directory or group is defined as an application login source.</p>
@@ -1729,8 +1498,8 @@ if group_linked:
 
 <ol>
 <li>Get the account instance from the client with the account href.</li>
-<li>Set the account instance status to <code>enabled</code>.</li>
-<li>Call the <code>save</code> method on the account instance.</li>
+<li>Set the account instance status to &ldquo;enabled&rdquo;.</li>
+<li>Call the save method on the account instance.</li>
 </ol>
 
 
@@ -1739,12 +1508,10 @@ if group_linked:
 <pre><code>href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
 account = client.accounts.get(href)
 
-account.status = 'ENABLED'
+account.status = "ENABLED"
 
 account.save()
 </code></pre>
-
-<p><a name="disable-account"></a></p>
 
 <h3><a id="disable-accounts"></a>Disable Accounts</h3>
 
@@ -1758,8 +1525,8 @@ account.save()
 
 <ol>
 <li>Get the account instance from the client with the account href.</li>
-<li>Set the account instance status to <code>disabled</code>.</li>
-<li>Call the <code>save</code> method on the account instance.</li>
+<li>Set the account instance status to disabled.</li>
+<li>Call the save method on the account instance.</li>
 </ol>
 
 
@@ -1773,20 +1540,25 @@ account.status = "DISABLED"
 account.save()
 </code></pre>
 
-<p><a name="delete-account"></a></p>
-
 <h3><a id="delete-an-account"></a>Delete an Account</h3>
 
 <p>Deleting an account completely erases the account from the directory and erases all account information from Stormpath.</p>
 
-<p>To delete an account, you must call the <code>delete</code> method on the application instance.</p>
+<p>To delete an account, you must use the Stormpath Admin Console.</p>
 
-<p><strong>Code:</strong></p>
+<ol>
+<li>Log in to the Stormpath Admin Console.</li>
+<li>Click the <strong>Accounts</strong> tab.</li>
+<li>Under the Actions column for the account, click <strong>Delete</strong>.</li>
+<li>In the prompt that appears, to confirm deleting the account, click <strong>Ok</strong>.</li>
+</ol>
 
-<pre><code>application.delete()
-</code></pre>
 
 <hr />
+
+<h2><a id="groups"></a>Groups</h2>
+
+<p><a href="#Group">Groups</a> are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with <a href="#Role">role</a>.</p>
 
 <p>You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -1817,7 +1589,7 @@ account.save()
 </tr>
 <tr>
 <td align="left">Status </td>
-<td align="left"> This is set to Enabled by default. This is only set to Disabled to prevent all group accounts from logging into any application even when the group is set as an account store to an application.<br><strong>Note:</strong> If an account is also a member to another group that does have access to an application, then the account can login. |</td>
+<td align="left"> This is set to Enabled by default. This is only set to Disabled to prevent all group accounts from logging into any application even when the group is set as a login source to an application.<br><strong>Note:</strong> If an account is also a member to another group that does have access to an application, then the account can login. |</td>
 </tr>
 </tbody>
 </table>
@@ -1826,24 +1598,21 @@ account.save()
 <p>With groups, you can:</p>
 
 <ul>
-<li><a href="#locate-the-account-rest-url">Locate the group REST URL</a>.</li>
-<li><a href="#list-groups">List groups</a> including:
+<li><a href="#LocateGroupURL">Locate the group REST URL</a>.</li>
+<li><a href="#ListGroups">List groups</a> including:
 
 <ul>
-<li><a href="#list-account-groups">List group accounts</a>.</li>
-<li><a href="#list-directory-groups">List directory groups</a>.</li>
+<li><a href="#ListAccountGroups">List group accounts</a>.</li>
+<li><a href="#ListDirectoryGroups">List directory groups</a>.</li>
 </ul>
 </li>
-<li><a href="#retrieve-groups">Retrieve groups</a>.</li>
-<li><a href="#create-groups">Create groups</a>.</li>
-<li><a href="#edit-groups">Edit group details</a>.</li>
-<li><a href="#enable-groups">Enable a group</a>.</li>
-<li><a href="#disable-groups">Disable a group</a>.</li>
-<li><a href="#delete-groups">Delete a group</a>.</p></li>
+<li><a href="#CreateGroups">Create groups</a>.</li>
+<li><a href="#EditGroups">Edit group details</a>.</li>
+<li><a href="#EnableGroups">Enable a group</a>.</li>
+<li><a href="#DisableGroups">Disable a group</a>.</li>
+<li><a href="#DeleteGroups">Delete a group</a>.</p></li>
 </ul>
 
-
-<p><a name="#locate-the-account-rest-url"></a></p>
 
 <h3><a id="locate-the-group-rest-url"></a>Locate the Group REST URL</h3>
 
@@ -1861,13 +1630,9 @@ The REST URL appears on the Details tab.</li>
 </ol>
 
 
-<p><a name="list-groups"></a></p>
-
 <h3><a id="list-groups"></a>List Groups</h3>
 
-<p>For groups, you can view, or list them by <a href="#list-account-groups">account membership</a> or <a href="#list-directory-groups">the directory</a>.</p>
-
-<p><a name="list-account-groups"></a></p>
+<p>For groups, you can view, or list them by <a href="#ListAccountGroups">account membership</a> or <a href="#ListDirectoryGroups">the directory</a>.</p>
 
 <h4>List Accounts in a Group</h4>
 
@@ -1880,18 +1645,16 @@ The REST URL appears on the Details tab.</li>
 </ol>
 
 
-<p>To list all groups on a an account, loop the groups aggregate from a directory or an account:</p>
+<p>To list all groups on a directory or an account, loop the groups aggregate from a directory or an account:</p>
 
 <pre><code>href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
 account = client.accounts.get(href)
 
 groups = account.groups
 
-for grp in groups:
-  print("Group " + grp.name)
+for group in groups:
+    print("Group " + grp.name)
 </code></pre>
-
-<p><a name="list-directory-groups"></a></p>
 
 <h4>List Groups in a Directory</h4>
 
@@ -1904,18 +1667,14 @@ for grp in groups:
 </ol>
 
 
-<p>To list all groups on a directory, loop the groups aggregate from a directory or an account:</p>
+<p>To list all groups on a directory or an account, loop the groups aggregate from a directory or an account:</p>
 
 <pre><code>href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
 directory = client.directories.get(href)
 
-groups = directory.groups
-
-for grp in groups:
-  print("Group " + grp.name)
+for group in groups:
+    print("Group " + grp.name)
 </code></pre>
-
-<p><a name="#retrieve-groups"></a></p>
 
 <h3><a id="retrieve-a-group"></a>Retrieve a Group</h3>
 
@@ -1924,8 +1683,6 @@ for grp in groups:
 <pre><code>href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
 group = client.groups.get(href)
 </code></pre>
-
-<p><a name="create-groups"></a></p>
 
 <h3><a id="create-groups"></a>Create Groups</h3>
 
@@ -1941,11 +1698,9 @@ group = directory.groups.create({
 })
 </code></pre>
 
-<p><a name="edit-groups"></a></p>
-
 <h3><a id="edit-group-details"></a>Edit Group Details</h3>
 
-<p>To edit groups, use the attributes of an existing group instance to set the values and call the <code>save</code> method:</p>
+<p>To edit groups, use the attributes of an existing group instance to set the values and call the save method:</p>
 
 <pre><code>group.status = "DISABLED"
 group.name = 'New Group Name'
@@ -1954,22 +1709,21 @@ group.description = 'New Group Description'
 group.save()
 </code></pre>
 
-<p><a name="enable-groups"></a></p>
-
 <h3><a id="enable-a-group"></a>Enable a Group</h3>
 
-<p>If the group is contained within an <em>enabled directory where the directory is defined as an account store</em>, then enabling or re-enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as an account store.</p>
+<p>If the group is contained within an <em>enabled directory where the directory is defined as a login source</em>, then enabling or re-enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as a login source.</p>
 
-<p>If the group is contained within a <em>disabled directory where the directory is defined as an account store</em>, the group status is irrelevant and the group members are not be able to log in to any applications for which the directory is defined as an account store.</p>
+<p>If the group is contained within a <em>disabled directory where the directory is defined as a login source</em>, the group status is irrelevant and the group members are not be able to log in to any applications for which the directory is defined as a login source.</p>
 
 <p>If the group is defined as a login source, then enabling or re-enabling the group allows accounts contained within the group (membership list) to log in to any applications for which the group is defined as a login source.</p>
 
 <p>To enable a group, you must:</p>
 
 <ol>
-<li>Get the group instance from the client instance using the group <code>href</code>.</li>
-<li>Set the group instance status to <code>enabled</code>.</li>
-<li>Call the <code>save</code> method on the <code>group</code> instance.</li>
+<li>Create a client instance.</li>
+<li>Get the group instance from the client instance using the group href.</li>
+<li>Set the group instance status to enabled.</li>
+<li>Call the save method on the group instance.</li>
 </ol>
 
 
@@ -1983,8 +1737,6 @@ group.status = "ENABLED"
 group.save()
 </code></pre>
 
-<p><a name="disable-groups"></a></p>
-
 <h3><a id="disable-a-group"></a>Disable a Group</h3>
 
 <p>If a group is explicitly set as an application login source, then disabling that group prevents any of its user accounts from logging into that application but retains the group data and memberships. You would typically disable a group if you must shut off a group of user accounts quickly and easily.</p>
@@ -1992,9 +1744,10 @@ group.save()
 <p>To disable a group, you must:</p>
 
 <ol>
+<li>Get a client instance.</li>
 <li>Get the group instance from the client instance using the group href.</li>
-<li>Set the group instance status to <code>disabled</code>.</li>
-<li>Call the <code>save</code> method on the <code>group</code> instance.</li>
+<li>Set the group instance status to disabled.</li>
+<li>Call the save method on the group instance.</li>
 </ol>
 
 
@@ -2007,8 +1760,6 @@ group.status = "DISABLED"
 
 group.save()
 </code></pre>
-
-<p><a name="delete-groups"></a></p>
 
 <h3><a id="delete-a-group"></a>Delete a Group</h3>
 
@@ -2048,8 +1799,6 @@ group.delete()
 
 <p><strong>Note:</strong> The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.</p>
 
-<p><a name="AccountRegistration"></a></p>
-
 <h4>Configure Account Registration and Verification</h4>
 
 <p>To configure account registration and verification:</p>
@@ -2059,23 +1808,19 @@ group.delete()
 <li>Click the <strong>Directories</strong> tab.</li>
 <li>Click the directory name.</li>
 <li>Click <strong>Workflows</strong> tab.</li>
-<li>On the Workflows tab, next to Registration and Verification, click <strong>show</strong>.
+<li><p>On the Workflows tab, next to Registration and Verification, click <strong>show</strong>.</p>
 
 <ul>
 <li>By default, the Account Registration and Verification workflow automation is disabled. By leaving this workflow off, all accounts created in the directory are enabled, unless otherwise specified, and the user does not receive any registration or verification emails from Stormpath.</li>
 <li><p>By only enabling <strong>Enable Registration and Verification Workflow</strong> and not also enabling <strong>Require newly registered accounts to verify their email address</strong>, new accounts are marked as enabled and the users receive a registration success email. <br></p>
 
 <p>  <img src="http://www.stormpath.com/sites/default/files/docs/RegistrationVerification.png" alt="Account Registration and Verification" title="Account Registration and Verification" width="650" height="430"></p></li>
-<li><p>You configure the Registration Success Message with the following attributes:</p></li>
-</ul>
-</li>
-</ol>
-
+<li><p>You configure the Registration Success Message with the following attributes:</p>
 
 <table>
 <thead>
 <tr>
-<th align="left">Attribute </th>
+<th align="left">  Attribute </th>
 <th align="left"> Description</th>
 </tr>
 </thead>
@@ -2102,21 +1847,20 @@ group.delete()
 </tr>
 </tbody>
 </table>
+</li>
+<li><p>By also selecting <strong>Require newly registered accounts to verify their email address</strong>:</p>
 
+<ul>
+<li>Newly created accounts are given an <em>unverified</em> status and a verification email is sent to the user. The verification email contains a token unique to the user account. When the user clicks the link, they are sent to the verification base URL where the token is submitted to Stormpath for verification. If verified, the account status changes to enabled and a verification success email is sent to the user.</li>
+<li><p>An Account Verification Message section appears.<br></p>
 
-<pre><code>* By also selecting **Require newly registered accounts to verify their email address**:
-    * Newly created accounts are given an *unverified* status and a verification email is sent to the user. The verification email contains a token unique to the user account. When the user clicks the link, they are sent to the verification base URL where the token is submitted to Stormpath for verification. If verified, the account status changes to enabled and a verification success email is sent to the user.
-    * An Account Verification Message section appears.&lt;br&gt;
-
-        &lt;img src="http://www.stormpath.com/sites/default/files/docs/AccountVerificationMessage.png" alt="Account Verification" title="Account Verification" width="700" height="420"&gt;
-
-    * You configure the Account Verification Message with the following attributes: &lt;br&gt;
-</code></pre>
+<p>  <img src="http://www.stormpath.com/sites/default/files/docs/AccountVerificationMessage.png" alt="Account Verification" title="Account Verification" width="700" height="420"></p></li>
+<li><p>You configure the Account Verification Message with the following attributes: <br></p>
 
 <table>
 <thead>
 <tr>
-<th align="left">Attribute </th>
+<th align="left">  Attribute </th>
 <th align="left"> Description</th>
 </tr>
 </thead>
@@ -2147,19 +1891,16 @@ group.delete()
 </tr>
 </tbody>
 </table>
+</li>
+<li><p>A Verification Success Message section appears.<br></p>
 
-
-<pre><code>    * A Verification Success Message section appears.&lt;br&gt;
-
-        &lt;img src="http://www.stormpath.com/sites/default/files/docs/VerificationEmailParams.png" alt="Email Verification" title="Email Verification" width="700" height="420"&gt;
-
-    * You configure the Verification Success Message with the following attributes: &lt;br&gt;
-</code></pre>
+<p>  <img src="http://www.stormpath.com/sites/default/files/docs/VerificationEmailParams.png" alt="Email Verification" title="Email Verification" width="700" height="420"></p></li>
+<li><p>You configure the Verification Success Message with the following attributes: <br></p>
 
 <table>
 <thead>
 <tr>
-<th align="left">Attribute </th>
+<th align="left">  Attribute </th>
 <th align="left"> Description</th>
 </tr>
 </thead>
@@ -2186,10 +1927,12 @@ group.delete()
 </tr>
 </tbody>
 </table>
-
-
-<ol>
-<li>When all the fields are complete, click <strong>Update</strong>.</li>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>When all the fields are complete, click <strong>Update</strong>.</p></li>
 </ol>
 
 
@@ -2223,8 +1966,6 @@ group.delete()
 </li>
 </ol>
 
-
-<p><a name="PasswordReset"></a></p>
 
 <h3><a id="password-reset"></a>Password Reset</h3>
 
@@ -2318,7 +2059,7 @@ group.delete()
 </tr>
 <tr>
 <td align="left">&ldquo;From&rdquo; Email Address </td>
-<td align="left"> The email address from which the Password Reset Success message is sent.</td>
+<td align="left"> The email address from which the Password Reset Success message is sent. </td>
 </tr>
 <tr>
 <td align="left">Subject </td>
@@ -2439,7 +2180,7 @@ account.save()
 </tr>
 <tr>
 <td align="left"><a id="account-store"></a>Account Store </td>
-<td align="left"> An <strong>account store</strong> is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.</td>
+<td align="left"> A <strong>account store</strong> is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.</td>
 </tr>
 <tr>
 <td align="left"><a id="AccountStoreMapping"></a>Account Store Mapping </td>
@@ -2684,7 +2425,7 @@ account.save()
 				<a href="/python/product-guide">Python Product Guide</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#architectural-overview" data-level="1" class="fragment">Architectural Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#stormpath-admin-console" data-level="1" class="fragment">Stormpath Admin Console</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#python-sdk" data-level="1" class="fragment">Python SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#error-handling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li><li class="leaf"><a href="#caching" data-level="1" class="fragment">Caching</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#locate-the-application-rest-url" data-level="1" class="fragment">Locate the Application REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-an-application" data-level="1" class="fragment">Register an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-an-application" data-level="1" class="fragment">Edit an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-an-application" data-level="1" class="fragment">Enable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-an-application" data-level="1" class="fragment">Disable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#manage-application-account-stores" data-level="1" class="fragment">Manage Application Account Stores</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#locate-the-directory-rest-url" data-level="1" class="fragment">Locate the Directory REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#map-directories-to-applications" data-level="1" class="fragment">Map Directories to Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-directory-details" data-level="1" class="fragment">Edit Directory Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-agent-configuration" data-level="1" class="fragment">Update Agent Configuration</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-a-directory" data-level="1" class="fragment">Enable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-a-directory" data-level="1" class="fragment">Disable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#locate-the-account-rest-url" data-level="1" class="fragment">Locate the Account REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-accounts" data-level="1" class="fragment">Authenticate Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-account-details" data-level="1" class="fragment">Edit Account Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#assign-accounts-to-groups" data-level="1" class="fragment">Assign Accounts to Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#remove-accounts-from-groups" data-level="1" class="fragment">Remove Accounts from Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-accounts" data-level="1" class="fragment">Enable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-accounts" data-level="1" class="fragment">Disable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-the-group-rest-url" data-level="1" class="fragment">Locate the Group REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-groups" data-level="1" class="fragment">Create Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-group-details" data-level="1" class="fragment">Edit Group Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-a-group" data-level="1" class="fragment">Enable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-a-group" data-level="1" class="fragment">Disable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#workflow-automations" data-level="0" class="fragment">Workflow Automations</a><ul class="menu"><li class="leaf"><a href="#account-registration-and-verification" data-level="1" class="fragment">Account Registration and Verification</a><ul class="menu"></ul></li><li class="leaf"><a href="#password-reset" data-level="1" class="fragment">Password Reset</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#architectural-overview" data-level="1" class="fragment">Architectural Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#stormpath-admin-console" data-level="1" class="fragment">Stormpath Admin Console</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#python-sdk" data-level="1" class="fragment">Python SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#error-handling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#locate-the-application-rest-url" data-level="1" class="fragment">Locate the Application REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-an-application" data-level="1" class="fragment">Register an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-an-application" data-level="1" class="fragment">Edit an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#manage-application-login-sources" data-level="1" class="fragment">Manage Application Login Sources</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-an-application" data-level="1" class="fragment">Enable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-an-application" data-level="1" class="fragment">Disable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#locate-the-directory-rest-url" data-level="1" class="fragment">Locate the Directory REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#map-directories-to-applications" data-level="1" class="fragment">Map Directories to Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-directory-details" data-level="1" class="fragment">Edit Directory Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-agent-configuration" data-level="1" class="fragment">Update Agent Configuration</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-a-directory" data-level="1" class="fragment">Enable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-a-directory" data-level="1" class="fragment">Disable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#locate-the-account-rest-url" data-level="1" class="fragment">Locate the Account REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-accounts" data-level="1" class="fragment">Authenticate Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-account-details" data-level="1" class="fragment">Edit Account Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#assign-accounts-to-groups" data-level="1" class="fragment">Assign Accounts to Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#remove-accounts-from-groups" data-level="1" class="fragment">Remove Accounts from Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-accounts" data-level="1" class="fragment">Enable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-accounts" data-level="1" class="fragment">Disable Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#locate-the-group-rest-url" data-level="1" class="fragment">Locate the Group REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-groups" data-level="1" class="fragment">Create Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-group-details" data-level="1" class="fragment">Edit Group Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-a-group" data-level="1" class="fragment">Enable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-a-group" data-level="1" class="fragment">Disable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#workflow-automations" data-level="0" class="fragment">Workflow Automations</a><ul class="menu"><li class="leaf"><a href="#account-registration-and-verification" data-level="1" class="fragment">Account Registration and Verification</a><ul class="menu"></ul></li><li class="leaf"><a href="#password-reset" data-level="1" class="fragment">Password Reset</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
 			
 			</li>	
 		
