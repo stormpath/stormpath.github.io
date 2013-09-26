@@ -241,7 +241,7 @@ The cache options dictionary can have a complex structure if we want to fine-tun
 
 ## Applications
 
-An [application](#applications) in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath.
+An [application](#application) in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath.
 
 When defining an application in Stormpath, it is typically associated with one or more directories or groups. The associated directories and groups form the application *user base*. The accounts within the associated directories and groups are considered the application users and can login to the application.
 
@@ -257,7 +257,7 @@ Status | By default, this value is set to `Enabled`. Change the value to `Disabl
 Using the URL for your application as the application description within Stormpath is often helpful.
 {% enddocs %}
 
-You can control access to your Stormpath Admin Console and API by managing the [account stores](#manage-application-account-stores) for the listed Stormpath application.
+You can control access to your Stormpath Admin Console and API by managing the [account stores](#account-store) for the listed Stormpath application.
 
 For applications, you can:
 
@@ -270,8 +270,8 @@ For applications, you can:
 * [Disable an application](#disable-an-application)
 * [Delete an application](#delete-an-application)
 * [Manage application account stores](#manage-application-account-stores)
-	* [Change default account and group locations](#change-default-account-and-group-locations)
 	* [Add another account store](#add-another-account-store)
+  * [Change default account and group locations](#change-default-account-store)
 	* [Change account store priority order](#change-account-store-priority-order)
   * [List account stores](#list-account-stores)
 	* [Remove account store](#remove-account-store)
@@ -314,7 +314,7 @@ After you have the `href` it can be loaded directly as an object instance by ret
 
 ### Register an Application
 
-To authenticate a user account in your [application](#applications), you must first register the application with Stormpath.
+To authenticate a user account in your application, you must first register the application with Stormpath.
 
 To register an application you must create it from the client instance:
 
@@ -338,7 +338,6 @@ This is useful if you don't want to be bothered with organizing your directories
 
 To edit applications, use the attributes of an existing application instance to set the values and call the `save` method:
 
-	application.status = "DISABLED"
 	application.description = 'New Application Description'
 
 	application.save()
@@ -347,9 +346,9 @@ To edit applications, use the attributes of an existing application instance to 
 
 Enabling a previously disabled application allows any enabled directories, groups, and accounts associated with the application account stores in Stormpath to log in.
 
-To enable an application, you must set the 'ENABLED' status to the application instance and call the 'save' method on it:
+To enable an application, you must set the 'Enabled' status to the application instance and call the `save` method on it:
 
-    application.status = "ENABLED"
+    application.status = "Enabled"
 
     application.save()
 
@@ -359,9 +358,9 @@ Disabling an application prevents the application from logging in any accounts i
 
 **Note:** The Stormpath application cannot be disabled.
 
-To disable an application, you must set the 'DISABLED' status to the application instance and call the 'save' method on it:
+To disable an application, you must set the 'Disabled' status to the application instance and call the `save` method on it:
 
-    application.status = "DISABLED"
+    application.status = "Disabled"
 
     application.save()
 
@@ -374,38 +373,38 @@ Deleting an application completely erases the application and its configurations
 * The Stormpath application cannot be deleted.
 * Deleted applications cannot be restored.
 
-To delete an application, you must call the 'delete' method on the application instance.
+To delete an application, you must call the `delete` method on the application instance.
 
     application.delete()
 
 ### Manage Application Account Stores
 
-[Account Store](#account-store) is a generic term for either a Directory or a Group. Directories and Groups both contain, or 'store' accounts, so they are both considered account stores.
+[Account Store](#account-store) is a generic term for either a Directory or a [Group](#group). Directories and Groups both contain, or _store_ accounts, so they are both considered account stores.
 
-In Stormpath, you control who may login to an application by associating (or 'mapping') one or more account stores to an application. All of the accounts in the application's assigned account stores form the application's effective user base; those accounts may login to the application. If no account stores are assigned to an application, no accounts will be able to log in the application.
+In Stormpath, you control who may login to an application by associating (or _mapping_) one or more account stores to an application. All of the accounts in the application's assigned account stores form the application's effective user base; those accounts may log in the application. If no account stores are assigned to an application, no accounts will be able to log in the application.
 
 #### How Login Attempts Work
 
 When an account tries to login to an application, the application's assigned account stores are consulted in the order they're assigned to the application.  When a matching account is discovered in a mapped account store, it is used to verify the authentication attempt and all subsequent account stores are ignored.  In other words, accounts are matched for application login based on a 'first match wins' policy.
 
-Let's look at an example to illustrate this behavior.  Assume an application named Foo has been assigned (mapped) to two account stores, a 'Customers' directory and an 'Employees' directory, in that order.
+Let's look at an example to illustrate this behavior.  Assume an application named _Foo_ has been assigned (mapped) to two account stores, a _Customers_ directory and an _Employees_ directory, in that order.
 
 <img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Account Stores Diagram" width="650" height="500">
 
-As you can see, Stormpath tries to find the account in the 'Customers' directory first because it has a higher _priority_ than the 'Employees' directory.  If not found, the 'Employees' directory is tried next as it has a lower priority.
+As you can see, Stormpath tries to find the account in the _Customers_ directory first because it has a higher _priority_ than the _Employees_ directory.  If not found, the _Employees_ directory is tried next as it has the next highest priority.
 
-You can assign multiple account stores to an application, but only one is required to enable login for an application.  Assigning multiple account stores (directories or groups) to an application, as well as configuring their priority, allows you precise control over the account populations that may login to your various applications.
+You can assign multiple account stores to an application, but only one is required to enable login for an application. Assigning multiple account stores (directories or groups) to an application, as well as configuring their priority, allows you precise control over the account populations that may login to your various applications.
 
 **Resource Attributes**
 
 | Attribute | Description | Type | Valid Value |
 | :----- | :----- | :---- | :---- |
 | `href` | The account store mapping resource's fully qualified location URI. | String | <span>--</span> |
-| `application` | A reference to the mapping's Application. Required. | object | <span>--</span> |
-| `account_store` | A reference to the mapping's account store (either a Group or Directory) containing accounts that may login to the `application`.  Required. | object | <span>--</span> |
-| `list_index` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `list_index` of `0` will be consulted first (has the highest priority), followed the account store at `list_index` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `list_index` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size |
-| `is_default_account_store` | A `True` value indicates that new accounts created by the `application` will be automatically saved to the mapping's `accountStore`. A `False` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `True`,`False` |
-| `is_default_group_store` | A `True` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `False` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `True` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `True`,`False` |
+| `application` | A reference to the mapping's `Application`. Required. | object | <span>--</span> |
+| `account_store` | A reference to the mapping's `account store` (either a `Group` or `Directory`) containing accounts that may login to the `application`.  Required. | object | <span>--</span> |
+| `list_index` | The order (priority) when the associated `account store` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `list_index` of `0` will be consulted first (has the highest priority), followed the account store at `list_index` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `list_index` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size |
+| `is_default_account_store` | A `True` value indicates that new accounts created by the `application` will be automatically saved to the mapping's `account store`. A `False` value indicates that new accounts created by the application will not be saved to the `account store`. | boolean | `True`,`False` |
+| `is_default_group_store` | A `True` value indicates that new groups created by the `application` will be automatically saved to the mapping's `account store`. A `False` value indicates that new groups created by the application will not be saved to the `account store`. **This may only be set to `True` if the `account store` is a Directory.  Stormpath does not currently support `Groups` storing other `Groups`.** | boolean | `True`,`False` |
 
 For account store mappings, you may:
 
@@ -424,6 +423,8 @@ To manage application account stores, you must log in to the Stormpath Admin Con
 
 The account stores appear in order of priority.<br>
   <img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
+
+**Code:**
 
     mapping_href = 'https://api.stormpath.com/v1/accountStoreMappings/MAPPING_UID_HERE'
     account_store_mapping = client.account_store_mappings.get(mapping_href)
@@ -464,8 +465,8 @@ The new account store is added to the bottom of the account store list.
 **Warning**
 
 * If none of the application's account stores are designated as the default account store, the application _WILL NOT_ be able to create new accounts.
-Also, if none of the application's account stores are designated as the default group store, the application _WILL NOT_ be able to create new group.
-* Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application's default account store. Attempting to set `is_default_account_store` to `True` on an `AccountStoreMapping` that reflects a mirrored directory or group will result in an error response.
+Also, if none of the application's account stores are designated as the default group store, the application _WILL NOT_ be able to create new groups.
+* Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application's default account store. Attempting to set `is_default_account_store` to `True` on an [AccountStoreMapping](#AccountStoreMapping) that reflects a mirrored directory or group will result in an error response.
 
 <a name="change-default-account-store"></a>
 #### Change the default account store
@@ -497,9 +498,9 @@ On the Login Sources tab for applications, you can select the account store (dir
 
 **Warning**
 
-* If no AccountStoreMapping is designated as the default group/account store, the application _WILL NOT_ be able to create new groups/accounts.
-* Stormpath does not currently support storing groups within groups.  Therefore `isDefaultGroupStore` can only be set to `true` when the AccountStoreMapping's `accountStore` is a Directory.  Attempting to set `isDefaultGroupStore` to `true` on an AccountStoreMapping that reflects a group will result in an error response.
-* Mirrored directories are read-only; they cannot be set as an application's default group store.  Attempting to set `isDefaultGroupStore` to `true` on an AccountStoreMapping that reflects a mirrored directory will result in an error response.
+* If no `AccountStoreMapping` is designated as the default group/account store, the application _WILL NOT_ be able to create new groups/accounts.
+* Stormpath does not currently support storing groups within groups. Therefore `is_default_group_store` can only be set to `True` when the `AccountStoreMapping`'s `account store` is a `Directory`.  Attempting to set `is_default_group_store` to `True` on an `AccountStoreMapping` that reflects a group will result in an `Error` response.
+* Mirrored directories are read-only; they cannot be set as an application's default group store.  Attempting to set `is_default_group_store` to `True` on an `AccountStoreMapping` that reflects a mirrored directory will result in an `Error` response.
 
 <a name="change-account-store-priority-order"></a>
 #### Change Account Store Priority Order
