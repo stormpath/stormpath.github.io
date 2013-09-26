@@ -822,7 +822,7 @@ Enabling previously disabled directories allows the groups and accounts to log i
 To enable a directory, you must:
 
 1. Get the directory instance from the client instance with the href of the directory.
-2. Set the directory instance to enabled.
+2. Set the directory instance to `Enabled`.
 3. Call the save method on the directory instance.
 
 **Code:**
@@ -830,7 +830,7 @@ To enable a directory, you must:
 	 href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
 	 directory = client.directories.get(href)
 
-	 directory.status = "ENABLED"
+	 directory.status = 'Enabled'
 
 	 directory.save()
 
@@ -843,7 +843,7 @@ The Stormpath Administrators directory cannot be disabled.
 To disable a directory, you must:
 
 1. Get the directory instance from the client with the href of the directory.
-2. Set the directory instance to disabled.
+2. Set the directory instance to `Disabled`.
 3. Call the `save` method on the directory instance.
 
 **Code:**
@@ -882,33 +882,33 @@ For accounts, the the basic detail information includes:
 
 Attribute | Description
 :----- | :-----
-Directory | The directory to which the account will be added.<br>**Note:** The account cannot be moved to a different directory after it has been created. |
-Username | The login name of the account for applications using username instead of email. The value must be unique within its parent directory.|
-First Name | The account owner first name. |
-Middle Name | The account owner middle name. |
-Last Name | The account owner last name. |
-First Name | The account owner first name. |
-Email | The account owner email address. This is can be used by applications, such as the Stormpath Admin Console, that use an email address for logging in. The value must be unique within its parent directory. |
-Status | The status is set to Enabled by default. It is only set to Disabled if you want to deny access to the account to Stormpath-connected applications. |
+directory | The directory to which the account will be added.<br>**Note:** The account cannot be moved to a different directory after it has been created. |
+username | The login name of the account for applications using username instead of email. The value must be unique within its parent directory.|
+given_name | The account owner first name. |
+middle_name | The account owner middle name. |
+surname | The account owner last name. |
+email | The account owner email address. This is can be used by applications, such as the Stormpath Admin Console, that use an email address for logging in. The value must be unique within its parent directory. |
+status | The status is set to `Enabled` by default. It is only set to `Disabled` if you want to deny access to the account to Stormpath-connected applications. |
 Password | The credentials used by an account during a login attempt. The specified value must adhere to the password policies set for the parent directory.|
 
 For accounts, you can:
 
-* [Locate the account REST URL](#LocateAccURL).
-* [Authenticate accounts](#AuthenticateAccounts).
-* [List accounts](#ListAccounts).
-	* [List accounts by group](#ListGroupAccounts).
-	* [List accounts by directory](#ListDirectoryAccounts).
-	* [List accounts by application](#ViewAccountMap).
-* [Create an account](#CreateAccounts).
-* [Edit account details](#EditAccounts).
-* [Change an account password](#ChangeAccountPasswords).
-* [Assign accounts to groups](#AssignAccountGroup).
-* [Remove accounts from groups](#RemoveAccountGroup).
-* [Enable an account](#EnableAccounts).
-* [Disable an account](#DisableAccounts).
-* [Delete an account](#DeleteAccounts).
+* [Locate the account REST URL](#locate-the-account-rest-url)
+* [Authenticate accounts](#authenticate-account)
+* [List accounts](#list-accounts).
+	* [List accounts by group](#list-group-accounts)
+	* [List accounts by directory](#list-directory-accounts).
+	* [List accounts by application](#list-application-accounts)
+* [Retrieve an account](#retrieve-accounts)
+* [Create an account](#create-accounts)
+* [Edit account details](#edit-accounts)
+* [Assign accounts to groups](#assign-account-group)
+* [Remove accounts from groups](#remove-account-group)
+* [Enable an account](#enable-account)
+* [Disable an account](#disable-account)
+* [Delete an account](#delete-account)
 
+<a name="locate-the-directory-rest-url"></a>
 ### Locate the Account REST URL
 When communicating with the Stormpath REST API, you might need to reference an account using the REST URL or `href`. For example, you require the REST URL to create accounts in the directory using an SDK.
 
@@ -919,6 +919,7 @@ To obtain a directory REST URL:
 3. In the Accounts table, click the account name.<br>
 The REST URL appears on the Details tab.
 
+<a name="authenticate-account"></a>
 ### Authenticate Accounts
 
 To authenticate an account you must have the application the account authenticates against. With the application, the account is authenticated by providing the username and password as follows:
@@ -929,10 +930,12 @@ To authenticate an account you must have the application the account authenticat
 	# The result is an authenticated Account
 	account = application.authenticate_account("USERNAME", "PASSWORD")
 
+<a name="list-accounts"></a>
 ### List Accounts
 
-For accounts, you can view, or list them according to their <a href="#ListGroupAccounts" title="group membership">group membership</a>, <a href="#ListDirectoryAccounts" title="directory accounts">the directories to which they belong</a>, or the <a href="#ViewAccountMap" title="View Account Map">applications to which they are associated</a>.
+For accounts, you can view, or list them according to their <a href="#list-group-accounts" title="group membership">group membership</a>, <a href="#list-directory-accounts" title="directory accounts">the directories to which they belong</a>, or the <a href="#list-application-accounts" title="View Account Map">applications to which they are associated</a>.
 
+<a name="list-group-accounts"></a>
 #### List Accounts by Group
 
 To list all groups associated with an account:
@@ -949,9 +952,9 @@ To list all groups associated with an account:
 	accounts = group.accounts
 
 	for acc in accounts:
-	    print('Given Name ' + acc.givenName)
+	    print('Given Name ' + acc.given_name)
 
-
+<a name="list-directory-accounts"></a>
 #### List Accounts by Directory
 
 To list user accounts contained in a directory, you must:
@@ -968,13 +971,15 @@ To list user accounts contained in a directory, you must:
 	accounts = directory.accounts
 
 	for acc in accounts:
-	    print('Given Name ' + acc.givenName)
+	    print('Given Name ' + acc.given_name)
 
+<a name="list-application-accounts"></a>
 #### List Accounts by Application
 
 To list user accounts mapped to an application, you must:
 
-1. Get the application from the client with the application `href`.
+1. Get the client.
+2. Get the application from the client with the application `href`.
 2. Get the application accounts.
 
 **Code:**
@@ -987,6 +992,7 @@ To list user accounts mapped to an application, you must:
 	for acc in accounts:
 	    print('Given Name ' + acc.givenName)
 
+<a name="retrieve-accounts"></a>
 ### Retrieve an Account
 
 To retrieve a specific account you need the `href` which can be loaded as an object instance by retrieving it from the server, using the client:
@@ -994,6 +1000,7 @@ To retrieve a specific account you need the `href` which can be loaded as an obj
 	href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
 	account = client.accounts.get(href)
 
+<a name="create-accounts"></a>
 ### Create an Account
 
 To create a user accounts, you must:
@@ -1012,31 +1019,32 @@ To create accounts, create a dictionary object with account attributes and then 
     account_dict = {
         "username": 'Username'
         "email": 'Email',
-        "givenName": 'Given Name',
+        "given_name": 'Given Name',
         "surname": 'Surname',
         "password": 'Password'
     }
 
-    account = directory.create_account(account_dict)
+    account = directory.accounts.create(account_dict)
 
-If you want to override the registration workflow and have the account created with ENABLED status right away, pass `False` as second argument, for example:
+If you want to override the registration workflow and have the account created with `Enabled` status right away, pass `False` as the value to the `registration_workflow_enabled` parameter, for example:
 
-	account = directory.create_account(account_dict, False)
+	account = directory.accounts.create(account_dict, registration_workflow_enabled=False)
 
 If you want to associate the account to a group, add the following:
 
 	account.add_group(group)
 
+<a name="edit-accounts"></a>
 ### Edit Account Details
 
-To edit accounts, use the attributes of an existing account instance to set the values and call the `save()` method:
+To edit accounts, use the attributes of an existing account instance to set the values and call the `save` method:
 
 	account.status = "DISABLED"
 	account.given_name = 'New Given Name'
 	account.surname = 'New Surname'
 	account.username = 'New Username'
 	account.email = 'New Email'
-	account.middleName = 'New Middle Name'
+	account.middle_name = 'New Middle Name'
 
 	account.save()
 
@@ -1044,7 +1052,7 @@ If you want to add a group to an account, do the following:
 
 	account.add_group(group)
 
-
+<a name="assign-account-group"></a>
 ### Assign Accounts to Groups
 
 The association between a group and an account can be done from an account or group instance. If the account is part of a directory containing groups, you can associate the account with a group. To add an account to a group, you must:
@@ -1063,13 +1071,14 @@ The association between a group and an account can be done from an account or gr
 
 	# account.add_group(group) OR group.add_account(account)
 
+<a name="remove-account-group"></a>
 ### Remove Accounts from Groups
 
 The remove an account from, or delete the account as a member of, a group you must:
 
-1. Get the group membership instance.
+1. Get the [group membership](#group-membership) instance.
 	* The group membership can be retrieved directly from the client, if the `href` is known to the user.
-	* Another way of retrieving the group membership is by searching for the group membership that represents the relationship between the group and the account that you want to delete.
+	* Another way of retrieving the `group membership` is by searching for the group membership that represents the relationship between the group and the account that you want to delete.
 2. Delete the group membership by calling the `delete` method.
 
 **Code:**
@@ -1104,6 +1113,7 @@ The remove an account from, or delete the account as a member of, a group you mu
 	if group_linked:
 		group_membership.delete()
 
+<a name="enable-account"></a>
 ### Enable Accounts
 
 Enabling a previously disabled account allows the account to log in to any applications where the directory or group is defined as an application login source.
@@ -1113,18 +1123,19 @@ Enabling a previously disabled account allows the account to log in to any appli
 To enable an account, you must:
 
 1. Get the account instance from the client with the account href.
-2. Set the account instance status to "enabled".
-3. Call the save method on the account instance.
+2. Set the account instance status to `enabled`.
+3. Call the `save` method on the account instance.
 
 **Code:**
 
 	href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
 	account = client.accounts.get(href)
 
-	account.status = "ENABLED"
+	account.status = 'ENABLED'
 
 	account.save()
 
+<a name="disable-account"></a>
 ### Disable Accounts
 
 Disabling an account prevents the account from logging into any applications in Stormpath, but retains all account information. You typically disable an account if you must temporarily remove access privileges.
@@ -1136,8 +1147,8 @@ If you disable an account within a directory or group, you are completely disabl
 To disable an account, you must:
 
 1. Get the account instance from the client with the account href.
-2. Set the account instance status to disabled.
-3. Call the save method on the account instance.
+2. Set the account instance status to `disabled`.
+3. Call the `save` method on the account instance.
 
 **Code:**
 
@@ -1148,16 +1159,16 @@ To disable an account, you must:
 
 	account.save()
 
+<a name="delete-account"></a>
 ### Delete an Account
 
 Deleting an account completely erases the account from the directory and erases all account information from Stormpath.
 
-To delete an account, you must use the Stormpath Admin Console.
+To delete an account, you must call the `delete` method on the application instance.
 
-1. Log in to the Stormpath Admin Console.
-2. Click the **Accounts** tab.
-3. Under the Actions column for the account, click **Delete**.
-4. In the prompt that appears, to confirm deleting the account, click **Ok**.
+**Code:**
+
+  application.delete()
 
 ***
 
