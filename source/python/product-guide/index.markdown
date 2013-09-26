@@ -866,7 +866,7 @@ To disable a directory, you must:
 
 ***
 
-## *Accounts*
+## Accounts
 
 In Stormpath, users are referred to as user account objects or [accounts](#account). The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.
 
@@ -895,9 +895,9 @@ For accounts, you can:
 
 * [Locate the account REST URL](#locate-the-account-rest-url)
 * [Authenticate accounts](#authenticate-account)
-* [List accounts](#list-accounts).
+* [List accounts](#list-accounts)
 	* [List accounts by group](#list-group-accounts)
-	* [List accounts by directory](#list-directory-accounts).
+	* [List accounts by directory](#list-directory-accounts)
 	* [List accounts by application](#list-application-accounts)
 * [Retrieve an account](#retrieve-accounts)
 * [Create an account](#create-accounts)
@@ -940,7 +940,7 @@ For accounts, you can view, or list them according to their <a href="#list-group
 
 To list all groups associated with an account:
 
-1. Get the client
+1. Get the client.
 2. Get the group from the client with the group `href`.
 3. Get the group accounts.
 
@@ -1057,7 +1057,7 @@ If you want to add a group to an account, do the following:
 
 The association between a group and an account can be done from an account or group instance. If the account is part of a directory containing groups, you can associate the account with a group. To add an account to a group, you must:
 
-1. Get the client instance
+1. Get the client instance.
 2. Get the group and account instance from the client with the corresponding hrefs.
 3. Add the group to the account instance OR add the account to the group instance.
 
@@ -1168,13 +1168,9 @@ To delete an account, you must call the `delete` method on the application insta
 
 **Code:**
 
-  application.delete()
+    application.delete()
 
 ***
-
-## Groups
-
-[Groups](#Group) are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with [role](#Role).
 
 You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:
 
@@ -1188,20 +1184,22 @@ Attribute | Description
 :--- | :---
 Name | The name of the group. Within a given directory, this value must be unique. |
 Description | A short description of the group. |
-Status | This is set to Enabled by default. This is only set to Disabled to prevent all group accounts from logging into any application even when the group is set as a login source to an application.<br>**Note:** If an account is also a member to another group that does have access to an application, then the account can login. |
+Status | This is set to Enabled by default. This is only set to Disabled to prevent all group accounts from logging into any application even when the group is set as an account store to an application.<br>**Note:** If an account is also a member to another group that does have access to an application, then the account can login. |
 
 With groups, you can:
 
-* [Locate the group REST URL](#LocateGroupURL).
-* [List groups](#ListGroups) including:
-	* [List group accounts](#ListAccountGroups).
-	* [List directory groups](#ListDirectoryGroups).
-* [Create groups](#CreateGroups).
-* [Edit group details](#EditGroups).
-* [Enable a group](#EnableGroups).
-* [Disable a group](#DisableGroups).
-* [Delete a group](#DeleteGroups).</p>
+* [Locate the group REST URL](#locate-the-account-rest-url).
+* [List groups](#list-groups) including:
+  * [List group accounts](#list-account-groups).
+  * [List directory groups](#list-directory-groups).
+* [Retrieve groups](#retrieve-groups).
+* [Create groups](#create-groups).
+* [Edit group details](#edit-groups).
+* [Enable a group](#enable-groups).
+* [Disable a group](#disable-groups).
+* [Delete a group](#delete-groups).</p>
 
+<a name="#locate-the-account-rest-url"></a>
 ### Locate the Group REST URL
 
 When communicating with the Stormpath REST API, you might need to reference a group using the REST URL or `href`. For example, you require the REST URL to create accounts to associate with the group in the directory using an SDK.
@@ -1215,10 +1213,12 @@ To obtain a group REST URL:
 5. Click the group name.<br>
 The REST URL appears on the Details tab.
 
+<a name="list-groups"></a>
 ### List Groups
 
-For groups, you can view, or list them by [account membership](#ListAccountGroups) or [the directory](#ListDirectoryGroups).
+For groups, you can view, or list them by [account membership](#list-account-groups) or [the directory](#list-directory-groups).
 
+<a name="list-account-groups"></a>
 #### List Accounts in a Group
 
 To list all accounts associated with, or members of, a group, you must:
@@ -1227,16 +1227,17 @@ To list all accounts associated with, or members of, a group, you must:
 2. Get the account instance from the client instance using the account href.
 3. Get the groups from the account.
 
-To list all groups on a directory or an account, loop the groups aggregate from a directory or an account:
+To list all groups on a an account, loop the groups aggregate from a directory or an account:
 
-	href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
-	account = client.accounts.get(href)
+  href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
+  account = client.accounts.get(href)
 
-	groups = account.groups
+  groups = account.groups
 
-	for group in groups:
-		print("Group " + grp.name)
+  for grp in groups:
+    print("Group " + grp.name)
 
+<a name="list-directory-groups"></a>
 #### List Groups in a Directory
 
 To list all groups contained within a directory, you must:
@@ -1245,26 +1246,31 @@ To list all groups contained within a directory, you must:
 2. Get the directory instance from the client instance using the directory href.
 3. Get the groups from the directory.
 
-To list all groups on a directory or an account, loop the groups aggregate from a directory or an account:
+To list all groups on a directory, loop the groups aggregate from a directory or an account:
 
-	href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
-	directory = client.directories.get(href)
+  href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
+  directory = client.directories.get(href)
 
-	for group in groups:
-		print("Group " + grp.name)
+  groups = directory.groups
 
+  for grp in groups:
+    print("Group " + grp.name)
+
+<a name="#retrieve-groups"></a>
 ### Retrieve a Group
 
 To retrieve a specific group you need the `href` which can be loaded as an object instance by retrieving it from the server:
 
-	href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
-	group = client.groups.get(href)
+  href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
+  group = client.groups.get(href)
 
+
+<a name="create-groups"></a>
 ### Create Groups
 
 You can create a group from the Python SDK. You can do it getting a reference to a directory and creating the group out of it:
 
-	directory_url = "https://api.stormpath.com/v1/directories/YOUR_DIRECTORY_ID_HERE"
+  directory_url = "https://api.stormpath.com/v1/directories/YOUR_DIRECTORY_ID_HERE"
 
     directory = client.directories.get(directory_url)
 
@@ -1273,69 +1279,74 @@ You can create a group from the Python SDK. You can do it getting a reference to
       description: 'The description of the new group'
     })
 
+<a name="edit-groups"></a>
 ### Edit Group Details
 
 To edit groups, use the attributes of an existing group instance to set the values and call the save method:
 
-	group.status = "DISABLED"
-	group.name = 'New Group Name'
-	group.description = 'New Group Description'
+  group.status = "DISABLED"
+  group.name = 'New Group Name'
+  group.description = 'New Group Description'
 
-	group.save()
+  group.save()
 
+
+<a name="enable-groups"></a>
 ### Enable a Group
 
-If the group is contained within an <em>enabled directory where the directory is defined as a login source</em>, then enabling or re-enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as a login source.
+If the group is contained within an <em>enabled directory where the directory is defined as an account store</em>, then enabling or re-enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as an account store.
 
-If the group is contained within a <em>disabled directory where the directory is defined as a login source</em>, the group status is irrelevant and the group members are not be able to log in to any applications for which the directory is defined as a login source.
+If the group is contained within a <em>disabled directory where the directory is defined as an account store</em>, the group status is irrelevant and the group members are not be able to log in to any applications for which the directory is defined as an account store.
 
 If the group is defined as a login source, then enabling or re-enabling the group allows accounts contained within the group (membership list) to log in to any applications for which the group is defined as a login source.
 
 To enable a group, you must:
 
-1. Create a client instance.
-2. Get the group instance from the client instance using the group href.
-3. Set the group instance status to enabled.
-4. Call the save method on the group instance.
+1. Get the group instance from the client instance using the group `href`.
+2. Set the group instance status to enabled.
+3. Call the `save` method on the `group` instance.
 
 **Code:**
 
-	href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
-	group = client.groups.get(href)
+  href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
+  group = client.groups.get(href)
 
-	group.status = "ENABLED"
+  group.status = "ENABLED"
 
-	group.save()
+  group.save()
 
 
+<a name="disable-groups"></a>
 ### Disable a Group
 
 If a group is explicitly set as an application login source, then disabling that group prevents any of its user accounts from logging into that application but retains the group data and memberships. You would typically disable a group if you must shut off a group of user accounts quickly and easily.
 
 To disable a group, you must:
 
-1. Get a client instance.
-2. Get the group instance from the client instance using the group href.
-3. Set the group instance status to disabled.
-4. Call the save method on the group instance.
+1. Get the group instance from the client instance using the group href.
+2. Set the group instance status to disabled.
+3. Call the save method on the group instance.
 
 **Code:**
 
-	href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
-	group = client.groups.get(href)
+  href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
+  group = client.groups.get(href)
 
-	group.status = "DISABLED"
+  group.status = "DISABLED"
 
-	group.save()
+  group.save()
 
+
+<a name="delete-groups"></a>
 ### Delete a Group
 
 A group can be deleted from the Python SDK invoking `group.delete()`:
 
-	href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
-	group = client.groups.get(href)
+  href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE'
+  group = client.groups.get(href)
 
-	group.delete()
+  group.delete()
+
 
 ***
 
