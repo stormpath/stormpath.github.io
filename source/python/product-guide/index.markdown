@@ -170,10 +170,8 @@ If you also want information about the `directory` owning that account, every ac
 
 An impractical way to retrieve a directory of the account is to somehow get the `href` of the directory and then manually send a request to Stormpath:
 
-**Code:**
-
-  directory_href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
-  directory = client.directories.get(directory_href)
+    directory_href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
+    directory = client.directories.get(directory_href)
 
 This technique is cumbersome, verbose, and requires a lot of boilerplate code in your project. As such, SDK resources **automatically** execute the lookups for unloaded references for you using simple property navigation! Notice the JSON `directory` property is only a link (pointer) to the directory; it does not contain any of the directory properties. The JSON shows we should be able to reference the `directory` property through the `account`:
 
