@@ -219,14 +219,14 @@
 <p>As an administrator in Stormpath, you have full access to the Stormpath Admin Console and the REST API, enabling you to perform a variety of tasks including:</p>
 
 <ul>
-<li><a href="#CreateAccounts">Adding new users</a>, including additional administrators</li>
-<li><a href="#DefaultResources">Managing the default application and directory</a></li>
-<li><a href="#AssignAPIkeys">Assigning new API keys</a></li>
-<li><a href="#RegisterApps">Registering applications</a></li>
-<li><a href="#CreateDir">Creating directories</a></li>
-<li><a href="#CreateGroups">Creating groups</a></li>
-<li><a href="#ManageLoginSources">Managing login sources</a></li>
-<li><a href="#ManageWorkflowAutomation">Configuring workload account automation</a></li>
+<li><a href="#invite-other-administrators">Adding new users</a>, including additional administrators</li>
+<li><a href="#default-owner-application-and-directory">Managing the default application and directory</a></li>
+<li><a href="#manage-api-keys">Assigning new API keys</a></li>
+<li><a href="#register-an-application">Registering applications</a></li>
+<li><a href="#create-a-directory">Creating directories</a></li>
+<li><a href="#create-a-group">Creating groups</a></li>
+<li><a href="#manage-application-login-sources">Managing login sources</a></li>
+<li><a href="#workflow-automations">Configuring workload account automation</a></li>
 </ul>
 
 
@@ -245,7 +245,7 @@
 <p>When you initially sign up for Stormpath, three resources are automatically established.</p>
 
 <ul>
-<li><p>A user account known as the <a href="#Tenant"><code>Tenant</code></a> owner, which:</p>
+<li><p>A user account known as the <a href="#tenant"><code>Tenant</code></a> owner, which:</p>
 
 <ul>
 <li>Represents the first person in the tenant that signed up for Stormpath.</li>
@@ -342,11 +342,13 @@ $ Verify password:
 $ Enter password:
 </code></pre>
 
-<p>For API keys, you can <a href="#AssignAPIkeys">assign or create new keys</a>, <a href="#ActivateAPIkeys">activate inactive keys</a>, <a href="#DeactivateAPIkeys">deactivate existing keys</a>, or <a href="#DeleteAPIkeys">delete existing keys</a> for users.</p>
+<p>For API keys, you can <a href="#assign-new-api-keys">assign or create new keys</a>, <a href="#activate-inactive-keys">activate inactive keys</a>, <a href="#deactivate-existing-api-keys">deactivate existing keys</a>, or <a href="#delete-existing-api-keys">delete existing keys</a> for users.</p>
 
 <p>Deactivating the API key prevents it from making API calls, while deleting the API key permanently removes it from Stormpath.</p>
 
 <p><img src="http://www.stormpath.com/sites/default/files/docs/APIKeys.png" alt="API Keys" title="API Keys" width="760"></p>
+
+<p><a name="assign-new-api-keys"></a></p>
 
 <h4>Assign New API Keys</h4>
 
@@ -363,6 +365,8 @@ $ Enter password:
 </ol>
 
 
+<p><a name="activate-inactive-keys"></a></p>
+
 <h4>Activate API Keys</h4>
 
 <p>To activate a previously deactivated API key for a user:</p>
@@ -374,6 +378,8 @@ $ Enter password:
 <li>Under Security Credentials, in the Status column, click <strong>Activate</strong>.</li>
 </ol>
 
+
+<p><a name="deactivate-existing-api-keys"></a></p>
 
 <h4>Deactivate API Keys</h4>
 
@@ -392,6 +398,8 @@ $ Enter password:
 <div class='docs-note'><p>Any applications using this API key with no longer be able to communicate or authenticate with Stormpath. When it is re-activated, the applications will work again.</p>
 </div>
 
+
+<p><a name="delete-existing-api-keys"></a></p>
 
 <h4>Delete API Keys</h4>
 
@@ -413,7 +421,7 @@ $ Enter password:
 
 <h3><a id="workflow-automations"></a>Workflow Automations</h3>
 
-<p>Stormpath automates common security workflows that many applications require. These include,  <a href="#AccountRegistration">account registration and verification</a> and <a href="#PasswordReset">resetting passwords</a>. Configurations for workflow automations are applied at the directory level using the Stormpath Admin Console. You can only use this feature on Stormpath-managed (cloud) directories; workflow automations are not available for LDAP directories. Workflow automations also exist for the default Stormpath Administrator directory, but they cannot be modified.</p>
+<p>Stormpath automates common security workflows that many applications require. These include,  <a href="#account-registration-and-verification">account registration and verification</a> and <a href="#password-reset">resetting passwords</a>. Configurations for workflow automations are applied at the directory level using the Stormpath Admin Console. You can only use this feature on Stormpath-managed (cloud) directories; workflow automations are not available for LDAP directories. Workflow automations also exist for the default Stormpath Administrator directory, but they cannot be modified.</p>
 
 <div class='docs-note'><p>The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.</p>
 </div>
@@ -433,28 +441,36 @@ $ Enter password:
 
 <p>The <strong>Password Reset</strong> workflow configuration manages user password resets through emails and tokens. Password Reset is enabled by default on new directories.</p>
 
-<p>To learn more, see <a href="#ManageWorkflowAutomation">Manage Workflow Automation</a>.</p>
+<p>To learn more, see <a href="#cloud-directory-workflow-automations">Manage Workflow Automation</a>.</p>
 
 <hr />
 
 <h2><a id="applications"></a>Applications</h2>
 
-<p>An <a href="#Application">application</a> in Stormpath represents a real world software application that communicates with Stormpath for its user management and authentication needs.</p>
+<p>An <a href="#application">application</a> in Stormpath represents a real world software application that communicates with Stormpath for its user management and authentication needs.</p>
 
 <p>When defining an application in Stormpath, it is typically associated with one or more directories or groups. The associated directories and groups form the application user base. The accounts within the associated directories and groups are considered the application users and can login to the application.</p>
 
 <p>For applications, you can:</p>
 
 <ul>
-<li><a href="#LocateAppURL">Locate the application REST URL</a>.</li>
-<li><a href="#NavigateApps">Navigate the application browser</a>.</li>
-<li><a href="#RegisterApps">Register an application</a>.</li>
-<li><a href="#EditApps">Edit an application</a>.</li>
-<li><a href="#ManageLoginSources">Manage application login sources</a>, including <a href="#ChangeDefaults">changing default account and group locations</a>, <a href="#AddLoginSource">adding another login source</a>, <a href="#ChangeLoginSourcePriority">changing the login source priority order</a>, and <a href="#RemoveLoginSource">removing login sources</a>.</li>
-<li><a href="#EnableApps">Enable an application</a>.</li>
-<li><a href="#DisableApps">Disable an application</a>.</li>
-<li><a href="#DeleteApps">Delete an application</a>.</li>
-<li><a href="#AppAccounts">View Accounts Mapped to an Application</a>.</li>
+<li><a href="#locate-the-application-rest-url">Locate the application REST URL</a></li>
+<li><a href="#navigate-the-application-browser">Navigate the application browser</a></li>
+<li><a href="#register-an-application">Register an application</a></li>
+<li><a href="#edit-an-application">Edit an application</a></li>
+<li><a href="#manage-application-login-sources">Manage application login sources</a>
+
+<ul>
+<li><a href="#change-default-account-and-group-locations">Change default account and group locations</a></li>
+<li><a href="#add-another-login-source">Add another login source</a></li>
+<li><a href="#change-login-source-priority-order">Change the login source priority order</a></li>
+<li><a href="#remove-login-sources">Remove login sources</a></li>
+</ul>
+</li>
+<li><a href="#enable-an-application">Enable an application</a></li>
+<li><a href="#disable-an-application">Disable an application</a></li>
+<li><a href="#delete-an-application">Delete an application</a></li>
+<li><a href="#view-accounts-mapped-to-an-application">View accounts mapped to an application</a></li>
 </ul>
 
 
@@ -493,7 +509,7 @@ The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/s
 
 <h3><a id="register-an-application"></a>Register an Application</h3>
 
-<p>To associate an <a href="#Application">application</a> with Stormpath for <a href="#Authentication">authentication</a>, you must register the application within Stormpath.</p>
+<p>To associate an <a href="#authenticate-accounts">application</a> with Stormpath for <a href="#groups">authentication</a>, you must register the application within Stormpath.</p>
 
 <p>To register an application:</p>
 
@@ -543,7 +559,7 @@ The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/s
 </div>
 
 
-<h2><a id="edit-an-application"></a>Edit an Application</h2>
+<h3><a id="edit-an-application"></a>Edit an Application</h3>
 
 <p>You can update an application:</p>
 
@@ -557,7 +573,7 @@ The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/s
 
 <h3><a id="manage-application-login-sources"></a>Manage Application Login Sources</h3>
 
-<p><a href="#LoginSource">Login sources</a> define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.</p>
+<p>Login sources, otherwise called <a href="#account_store_mapping">Account Store Mappings</a>, define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.</p>
 
 <p>In Stormpath, a directory or group can be a login source for an application. At least one login source must be associated with an application for accounts to log in to that application.</p>
 
@@ -574,10 +590,10 @@ The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/s
 <p>After an application has been registered in Stormpath, you can:</p>
 
 <ul>
-<li><a href="#ChangeDefaults">Change default account and group locations</a></li>
-<li><a href="#AddLoginSource">Add another login source</a> (directories)</li>
-<li><a href="#ChangeLoginSourcePriority">Change the login source priority order</a></li>
-<li><a href="#RemoveLoginSource">Remove login sources</a></li>
+<li><a href="#change-default-account-and-group-locations">Change default account and group locations</a></li>
+<li><a href="#add-another-login-source">Add another login source</a></li>
+<li><a href="#change-login-source-priority-order">Change the login source priority order</a></li>
+<li><a href="#remove-login-sources">Remove login sources</a></li>
 </ul>
 
 
@@ -592,6 +608,8 @@ The login sources appear in order of priority.<br>
  <img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170"></li>
 </ol>
 
+
+<p><a name="change-default-account-and-group-locations"></a></p>
 
 <h4>Change Default Account and Group Locations</h4>
 
@@ -612,6 +630,8 @@ The login sources appear in order of priority.<br>
 </ol>
 
 
+<p><a name="add-another-login-source"></a></p>
+
 <h4>Add Another Login Source</h4>
 
 <p>Adding a login source to an application provisions a directory or group to that application. By doing so, all login source accounts can log into the application.</p>
@@ -630,6 +650,8 @@ The login sources appear in order of priority.<br>
 The new login source is added to the bottom of the login sources list.</li>
 </ol>
 
+
+<p><a name="change-login-source-priority-order"></a></p>
 
 <h4>Change Login Source Priority Order</h4>
 
@@ -650,6 +672,8 @@ The new login source is added to the bottom of the login sources list.</li>
 <li>Click <strong>Save Priorities</strong>.</li>
 </ol>
 
+
+<p><a name="remove-login-sources"></a></p>
 
 <h4>Remove Login Sources</h4>
 
@@ -738,13 +762,13 @@ The application can no longer be logged into by accounts.</li>
 </ul>
 
 
-<p>To <a href="#EditAccounts">edit an account</a>, under the Actions column of the account row, click <strong>Edit</strong>. You are redirected to the Account Details tab.</p>
+<p>To <a href="#edit-an-account">edit an account</a>, under the Actions column of the account row, click <strong>Edit</strong>. You are redirected to the Account Details tab.</p>
 
 <hr />
 
 <h2><a id="directories"></a><em>Directories</em></h2>
 
-<p><a href="#Directory">Directories</a> contain <a href="#Authentication">authentication</a> and <a href="#Authorization">authorization</a> information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.</p>
+<p><a href="#directories">Directories</a> contain <a href="#authenticate-accounts">authentication</a> and <a href="#groups">authorization</a> information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.</p>
 
 <p>Within Stormpath, there are two types of directories you can implement:</p>
 
@@ -775,16 +799,16 @@ The application can no longer be logged into by accounts.</li>
 <p>For directories, you can:</p>
 
 <ul>
-<li><a href="#LocateDirURL">Locate the directory REST URL</a>.</li>
-<li><a href="#ListDir">Navigate the directory browser</a>.</li>
-<li><a href="#CreateDir">Create directories</a>.
+<li><a href="#locate-the-directory-rest-url">Locate the directory REST URL</a>.</li>
+<li><a href="#navigate-the-directory-browser">Navigate the directory browser</a>.</li>
+<li><a href="#create-a-directory">Create directories</a>.
 
 <ul>
-<li><a href="#CreateCloud">Create a cloud directory</a>.</li>
-<li><a href="#CreateMirror">Create a mirrored directory</a>.</li>
+<li><a href="#create-a-cloud-directory">Create a cloud directory</a>.</li>
+<li><a href="#create-a-mirrored-directory">Create a mirrored directory</a>.</li>
 </ul>
 </li>
-<li><a href="#EditDir">Edit cloud directory details</a>.</li>
+<li><a href="#edit-a-directory">Edit cloud directory details</a>.</li>
 <li><a href="#UpdateAgent">Update mirrored agent configuration</a>.</li>
 <li><a href="#CMAccounts">Create and manage cloud directory accounts</a>.</li>
 <li><a href="#AssocApplications">Associate directories with applications</a>.</li>
@@ -826,7 +850,7 @@ The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/s
 
 <ul>
 <li>The Stormpath Administrators directory is set up by default when you first signed up for Stormpath.</li>
-<li>To add more directories, see <a href="#CreateDir">Create a Directory</a>.</li>
+<li>To add more directories, see <a href="#create-a-directory">Create a Directory</a>.</li>
 </ul>
 </li>
 </ol>
@@ -839,14 +863,14 @@ The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/s
 <p>You can create a:</p>
 
 <ul>
-<li><a href="#CreateCloud">Cloud Directory</a>, which is hosted by Stormpath and uses the Stormpath data model to store user and group information. This is the most common type of directory in Stormpath.</li>
+<li><a href="#create-a-cloud-directory">Cloud Directory</a>, which is hosted by Stormpath and uses the Stormpath data model to store user and group information. This is the most common type of directory in Stormpath.</li>
 </ul>
 
 
 <p><strong>OR</strong></p>
 
 <ul>
-<li><a href="#CreateMirror">Mirrored (LDAP) agent directory</a>, which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.</li>
+<li><a href="#create-a-mirrored-directory">Mirrored (LDAP) agent directory</a>, which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.</li>
 </ul>
 
 
@@ -854,30 +878,58 @@ The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/s
 </div>
 
 
+<p><a name="create-a-cloud-directory"></a></p>
+
 <h4>Create a Cloud Directory</h4>
 
 <ol>
 <li>Click the <strong>Directories</strong> tab.</li>
 <li>Click <strong>Create Directory</strong>.</li>
 <li>Click <strong>Cloud</strong>.</li>
-<li>Complete the field values as follows:</li>
+<li>Complete the field values noted in the table that follows.</li>
+<li>Click <strong>Create</strong>.</li>
 </ol>
 
 
-<br> <img src="http://www.stormpath.com/sites/default/files/docs/CreateCloudDirectory.png" alt="Create Cloud Directory" title="Create Cloud Directory" width="650" height="460">
+<p><img src="http://www.stormpath.com/sites/default/files/docs/CreateCloudDirectory.png" alt="Create Cloud Directory" title="Create Cloud Directory" width="650" height="460"></p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Name </td>
+<td align="left"> The name used to identify the directory within Stormpath. This value must be unique.</td>
+</tr>
+<tr>
+<td align="left">Description </td>
+<td align="left"> Details about this specific directory.</td>
+</tr>
+<tr>
+<td align="left">Status </td>
+<td align="left"> By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.</td>
+</tr>
+<tr>
+<td align="left">Min characters </td>
+<td align="left"> The minimum number of acceptable characters for the account password.</td>
+</tr>
+<tr>
+<td align="left">Max characters </td>
+<td align="left"> The maximum number of acceptable characters for the account password.</td>
+</tr>
+<tr>
+<td align="left">Mandatory characters </td>
+<td align="left"> The required character patterns which new passwords will be validated against. For example, for an alphanumeric password of at least 8 characters with at least one lowercase and one uppercase character, select the abc, ABC, and 012 options. The more patterns selected, the more secure the passwords but the more complicated for a user.</td>
+</tr>
+</tbody>
+</table>
 
 
-<pre><code>Attribute | Description
-</code></pre>
-
-<p>:&mdash;&mdash;&ndash; | :&mdash;&mdash;&ndash;
-Name | The name used to identify the directory within Stormpath. This value must be unique.
-Description | Details about this specific directory.
-Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
-Min characters | The minimum number of acceptable characters for the account password.
-Max characters | The maximum number of acceptable characters for the account password.
-Mandatory characters | The required character patterns which new passwords will be validated against. For example, for an alphanumeric password of at least 8 characters with at least one lowercase and one uppercase character, select the abc, ABC, and 012 options. The more patterns selected, the more secure the passwords but the more complicated for a user.
-5. Click <strong>Create</strong>.</p>
+<p><a name="create-a-mirrored-directory"></a></p>
 
 <h4>Create a Mirrored Directory</h4>
 
@@ -1092,7 +1144,7 @@ Mandatory characters | The required character patterns which new passwords will 
 
 <h3><a id="update-agent-configuration"></a>Update Agent Configuration</h3>
 
-<p>You can modify an agent configuration going through the <a href="#UpdateAgentDir">Directories</a> or <a href="#UpdateAgentAgents">Agent</a> tabs.</p>
+<p>You can modify an agent configuration going through the <a href="#directory">Directories</a> or <a href="#directory-agent">Agent</a> tabs.</p>
 
 <p>The Agents tab contains a table listing all known agents used by you. Each table entry shows the following:</p>
 
@@ -1139,9 +1191,11 @@ Mandatory characters | The required character patterns which new passwords will 
 
 <h3><a id="create-and-manage-cloud-directory-accounts"></a>Create and Manage Cloud Directory Accounts</h3>
 
-<p>For accounts within cloud directories, you can <a href="#CreateDirAccounts">create</a>, <a href="#EditDirAccounts">edit</a>, <a href="#DisDirAccounts">disable</a>, or <a href="#DelDirAccounts">delete</a> accounts.</p>
+<p>For accounts within cloud directories, you can <a href="#create-cloud-directory-accounts">create</a>, <a href="#edit-cloud-directory-accounts">edit</a>, <a href="#disable-cloud-directory-accounts">disable</a>, or <a href="#delete-cloud-directory-accounts">delete</a> accounts.</p>
 
 <p>Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped login sources.</p>
+
+<p><a name="create-cloud-directory-accounts"></a></p>
 
 <h4>Create Cloud Directory Accounts</h4>
 
@@ -1155,13 +1209,15 @@ Mandatory characters | The required character patterns which new passwords will 
 <li>Click the directory name.</li>
 <li>Click the <strong>Accounts</strong> tab.</li>
 <li>Click <strong>Create Account</strong>.</li>
-<li>For more information about creating an account, click <a href="#CreateAccounts">here</a></li>
+<li>For more information about creating an account, click <a href="#create-an-account">here</a></li>
 </ol>
 
 
 <div class='docs-tip'><p>If you do not see the Create Account button, you are looking at a mirrored directory.</p>
 </div>
 
+
+<p><a name="edit-cloud-directory-accounts"></a></p>
 
 <h4>Edit an Existing Cloud Directory Account</h4>
 
@@ -1170,9 +1226,11 @@ Mandatory characters | The required character patterns which new passwords will 
 <li>Click the <strong>Directories</strong> tab.</li>
 <li>Click the directory name or under the Actions column, click <strong>Edit</strong>.</li>
 <li>Click the <strong>Accounts</strong> tab.</li>
-<li>For more information about editing an account, click <a href="#EditAccounts">here</a></li>
+<li>For more information about editing an account, click <a href="#edit-an-account">here</a></li>
 </ol>
 
+
+<p><a name="disable-cloud-directory-accounts"></a></p>
 
 <h4>Disable an Existing Cloud Directory Account</h4>
 
@@ -1189,6 +1247,8 @@ Mandatory characters | The required character patterns which new passwords will 
 <li>In the prompt that appears, to confirm disabling the account, click <strong>Ok</strong>.</li>
 </ol>
 
+
+<p><a name="delete-cloud-directory-accounts"></a></p>
 
 <h4>Delete an Existing Cloud Directory Account</h4>
 
@@ -1225,9 +1285,11 @@ Mandatory characters | The required character patterns which new passwords will 
 
 <p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.The Stormpath Administrator directory has default workflow automations which cannot be altered.</p>
 
-<p>On the Workflows tab, you can automate <a href="#AccountRegistration" title="account registration and verification">account registration and verification</a> and <a href="#PasswordReset" title="password reset">password resets</a>.</p>
+<p>On the Workflows tab, you can automate <a href="#account-registration-and-verification" title="account registration and verification">account registration and verification</a> and <a href="#password-reset" title="password reset">password resets</a>.</p>
 
 <p><img src="http://www.stormpath.com/sites/default/files/docs/ManageWorkflows.png" alt="Workflow Automation" title="Workflow Automation" width="670" height="250"></p>
+
+<p><a name="account-registration-and-verification"></a></p>
 
 <h4>Account Registration and Verification</h4>
 
@@ -1417,6 +1479,8 @@ Mandatory characters | The required character patterns which new passwords will 
 </ol>
 
 
+<p><a name="password-reset"></a></p>
+
 <h4>Password Reset</h4>
 
 <p>When you reset an account password using Stormpath, the user receives an email with a link and a secure reset token. The link sends the user to a password reset page where they submit a new password to Stormpath. When the password is successfully reset, the user receives a success email. You can configure, at the directory level, how password reset works, the URL of the reset page, and the content of the email messages.</p>
@@ -1446,7 +1510,7 @@ Mandatory characters | The required character patterns which new passwords will 
 </thead>
 <tbody>
 <tr>
-<td align="left"><a id ="BaseURL"></a>Base URL </td>
+<td align="left"><a name="base-url"></a> Base URL </td>
 <td align="left"> Your application URL which receives the token and completes the workflow. Stormpath offers a default base URL to help during development.</td>
 </tr>
 <tr>
@@ -1547,7 +1611,7 @@ application.send_password_reset_email 'username or email'
 
 <h5>Complete Password Reset</h5>
 
-<p>After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the <a href="#BaseURL">base URL</a> and the reset token.</p>
+<p>After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the <a href="#base-url">base URL</a> and the reset token.</p>
 
 <p><code>https://myAwesomeapp.com/passwordReset?sptoken=TOKEN</code></p>
 
@@ -1627,7 +1691,7 @@ account.save
 
 <h2><a id="accounts"></a><em>Accounts</em></h2>
 
-<p>In Stormpath, users are referred to as user account objects or <a href="#Account">accounts</a>. The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.</p>
+<p>In Stormpath, users are referred to as user account objects or <a href="#account">accounts</a>. The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.</p>
 
 <p>You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -1638,22 +1702,22 @@ account.save
 </ul>
 
 
-<p>An account is a unique identity within a directory. An account can exist in only a single directory but can be a part of multiple <a href="#Groups">groups</a> owned by that directory.</p>
+<p>An account is a unique identity within a directory. An account can exist in only a single directory but can be a part of multiple <a href="#group">groups</a> owned by that directory.</p>
 
 <p>For accounts, you can:</p>
 
 <ul>
-<li><a href="#LocateAccURL">Locate the account REST URL</a>.</li>
-<li><a href="#AuthenticateAccounts">Authenticate accounts</a>.</li>
-<li><a href="#NavigateAccounts">Navigate the account browser</a>.</li>
-<li><a href="#CreateAccounts">Create an account</a>.</li>
-<li><a href="#EditAccounts">Edit account details</a>.</li>
-<li><a href="#ChangeAccountPasswords">Change an account password</a>.</li>
-<li><a href="#AssignAccountGroups">Assign an account to group</a>.</li>
-<li><a href="#RemoveAccountGroups">Remove an account from a group</a>.</li>
-<li><a href="#EnableAccounts">Enable an account</a>.</li>
-<li><a href="#DisableAccounts">Disable an account</a>.</li>
-<li><a href="#DeleteAccounts">Delete an account</a>.</li>
+<li><a href="#locate-the-account-rest-url">Locate the account REST URL</a></li>
+<li><a href="#authenticate-accounts">Authenticate accounts</a></li>
+<li><a href="#navigate-the-account-browser">Navigate the account browser</a></li>
+<li><a href="#create-an-account">Create an account</a></li>
+<li><a href="#edit-an-account">Edit account details</a></li>
+<li><a href="#change-an-account-password">Change an account password</a></li>
+<li><a href="#assign-an-account-to-a-group">Assign an account to group</a></li>
+<li><a href="#remove-an-account-from-groups">Remove an account from a group</a></li>
+<li><a href="#enable-an-account">Enable an account</a></li>
+<li><a href="#disable-an-account">Disable an account</a></li>
+<li><a href="#delete-an-account">Delete an account</a></li>
 </ul>
 
 
@@ -1975,7 +2039,7 @@ account.save
 
 <h2><a id="groups"></a><em>Groups</em></h2>
 
-<p><a href="#Group">Groups</a> are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with role.</p>
+<p><a href="#group">Groups</a> are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with role.</p>
 
 <p>You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -1989,23 +2053,23 @@ account.save
 <p>For groups, you can:</p>
 
 <ul>
-<li><a href="#LocateGroupURL">Locate the group REST URL</a>.</li>
-<li><a href="#ListGroups">View directory groups</a>.</li>
-<li><a href="#CreateGroups">Create groups</a>.</li>
-<li><a href="#EditGroups">Edit a group</a>.</li>
-<li><a href="#EnableGroups">Enable a group</a>.</li>
-<li><a href="#DisableGroups">Disable a group</a>.</li>
-<li><a href="#DeleteGroups">Delete a group</a>.</li>
-<li><a href="#ManageGroupAccounts">Manage group accounts</a>.
+<li><a href="#locate-the-group-rest-url">Locate the group REST URL</a></li>
+<li><a href="#view-directory-groups">View directory groups</a></li>
+<li><a href="#create-a-group">Create groups</a></li>
+<li><a href="#edit-group-details">Edit a group</a></li>
+<li><a href="#enable-a-group">Enable a group</a></li>
+<li><a href="#disable-a-group">Disable a group</a></li>
+<li><a href="#delete-a-group">Delete a group</a></li>
+<li><a href="#manage-group-accounts">Manage group accounts</a>
 
 <ul>
-<li><a href="#ListGroupAccounts">View accounts associated with a group</a>.</li>
-<li><a href="#AddGroupAccounts">Add accounts to a group</a>.</li>
-<li><a href="#AssignGroupAccounts">Assign accounts to a group</a>.</li>
-<li><a href="#EditGroupAccounts">Edit group account details</a>.</li>
-<li><a href="#EnableGroupAccounts">Enable a group account</a>.</li>
-<li><a href="#DisableGroupAccounts">Disable a group account</a>.</li>
-<li><a href="#RemoveGroupAccounts">Remove a group account</a>.</li>
+<li><a href="#list-group-accounts">View accounts associated with a group</a></li>
+<li><a href="#add-group-accounts">Add accounts to a group</a></li>
+<li><a href="#assign-group-accounts">Assign accounts to a group</a></li>
+<li><a href="#edit-group-accounts">Edit group account details</a></li>
+<li><a href="#enable-group-accounts">Enable a group account</a></li>
+<li><a href="#disable-group-accounts">Disable a group account</a></li>
+<li><a href="#remove-group-accounts">Remove a group account</a></li>
 </ul>
 </li>
 </ul>
@@ -2158,19 +2222,21 @@ account.save
 <p>For cloud directory group accounts, you can:</p>
 
 <ul>
-<li><a href="#ListGroupAccounts">View accounts associated with a group</a></li>
-<li><a href="#AddGroupAccounts">Add accounts to a group</a></li>
-<li><a href="#AssignGroupAccounts">Assign accounts to a group</a></li>
-<li><a href="#EditGroupAccounts">Edit group account details</a></li>
-<li><a href="#EnableGroupAccounts">Enable a group account</a></li>
-<li><a href="#DisableGroupAccounts">Disable a group account</a></li>
-<li><a href="#RemoveGroupAccounts">Remove a group account</a></li>
+<li><a href="#list-group-accounts">View accounts associated with a group</a></li>
+<li><a href="#add-group-accounts">Add accounts to a group</a></li>
+<li><a href="#assign-group-accounts">Assign accounts to a group</a></li>
+<li><a href="#edit-group-accounts">Edit group account details</a></li>
+<li><a href="#enable-group-accounts">Enable a group account</a></li>
+<li><a href="#disable-group-accounts">Disable a group account</a></li>
+<li><a href="#remove-group-accounts">Remove a group account</a></li>
 </ul>
 
 
 <div class='docs-note'><p>Removing an account from a group, does not delete the account from the directory.</p>
 </div>
 
+
+<p><a name="list-group-accounts"></a></p>
 
 <h4>List Group Accounts</h4>
 
@@ -2183,6 +2249,8 @@ account.save
 </ol>
 
 
+<p><a name="add-group-accounts"></a></p>
+
 <h4>Add Group Accounts</h4>
 
 <ol>
@@ -2193,9 +2261,11 @@ account.save
 <li>Click the group name.</li>
 <li>Click the <strong>Accounts</strong> tab.</li>
 <li>Click <strong>Create Account</strong>.</li>
-<li>Consult <a href="#CreateAccounts">Create an Account</a> for more information.</li>
+<li>Consult <a href="#create-an-account">Create an Account</a> for more information.</li>
 </ol>
 
+
+<p><a name="assign-group-accounts"></a></p>
 
 <h4>Assign Group Accounts</h4>
 
@@ -2212,6 +2282,8 @@ account.save
 </ol>
 
 
+<p><a name="edit-group-accounts"></a></p>
+
 <h4>Edit Group Accounts</h4>
 
 <p>Although accessible through the Accounts tab of a group, accounts are edited at the account level. If using the Stormpath Admin Console, you edit accounts on the Accounts tab.</p>
@@ -2226,9 +2298,11 @@ account.save
 <li>Click the group name.</li>
 <li>Click the <strong>Accounts</strong> tab.</li>
 <li>Click the account name or under the Actions column, click <strong>Edit</strong>.</li>
-<li>For more information about editing accounts in the Stormpath Admin Console, consult <a href="#EditAccounts">Edit an Account</a>.</li>
+<li>For more information about editing accounts in the Stormpath Admin Console, consult <a href="#edit-an-account">Edit an Account</a>.</li>
 </ol>
 
+
+<p><a name="enable-group-accounts"></a></p>
 
 <h4>Enable Group Accounts</h4>
 
@@ -2247,6 +2321,8 @@ account.save
 </ol>
 
 
+<p><a name="disable-group-accounts"></a></p>
+
 <h4>Disable Group Accounts</h4>
 
 <p>Although the Stormpath Admin Console provides an option to disable an account within a group, the disable command is actually performed against the account. If you disable an account within a directory or group, you are completely disabling the account from logging in to any applications with which it is associated.</p>
@@ -2264,6 +2340,8 @@ account.save
 <li>In the prompt that appears, to confirm disabling the account, click <strong>Ok</strong>.</li>
 </ol>
 
+
+<p><a name="remove-group-accounts"></a></p>
 
 <h4>Remove Group Accounts</h4>
 
@@ -2341,7 +2419,7 @@ account.save
 <td align="left"> A <strong>account store</strong> is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.</td>
 </tr>
 <tr>
-<td align="left"><a id="AccountStoreMapping"></a>Account Store Mapping </td>
+<td align="left"><a id="account-store-mapping"></a>Account Store Mapping </td>
 <td align="left"> An <strong>account store mapping</strong> is a mapping between a group or directory and an application.</td>
 </tr>
 <tr>
@@ -2585,7 +2663,7 @@ account.save
 				<a href="/console/product-guide">Stormpath Admin Console Guide</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#architectural-overview" data-level="1" class="fragment">Architectural Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#stormpath-admin-console" data-level="1" class="fragment">Stormpath Admin Console</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"><li class="leaf"><a href="#billing-and-subscription-level" data-level="1" class="fragment">Billing and Subscription Level</a><ul class="menu"></ul></li><li class="leaf"><a href="#default-owner-application-and-directory" data-level="1" class="fragment">Default Owner, Application, and Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#invite-other-administrators" data-level="1" class="fragment">Invite Other Administrators</a><ul class="menu"></ul></li><li class="leaf"><a href="#manage-api-keys" data-level="1" class="fragment">Manage API Keys</a><ul class="menu"></ul></li><li class="leaf"><a href="#workflow-automations" data-level="1" class="fragment">Workflow Automations</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#locate-the-application-rest-url" data-level="1" class="fragment">Locate the Application REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#navigate-the-application-browser" data-level="1" class="fragment">Navigate the Application Browser</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-an-application" data-level="1" class="fragment">Register an Application</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#edit-an-application" data-level="0" class="fragment">Edit an Application</a><ul class="menu"><li class="leaf"><a href="#manage-application-login-sources" data-level="1" class="fragment">Manage Application Login Sources</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-an-application" data-level="1" class="fragment">Enable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-an-application" data-level="1" class="fragment">Disable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#view-accounts-mapped-to-an-application" data-level="1" class="fragment">View Accounts Mapped to an Application</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#locate-the-directory-rest-url" data-level="1" class="fragment">Locate the Directory REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#navigate-the-directory-browser" data-level="1" class="fragment">Navigate the Directory Browser</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-a-cloud-directory" data-level="1" class="fragment">Edit a Cloud Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-agent-configuration" data-level="1" class="fragment">Update Agent Configuration</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-and-manage-cloud-directory-accounts" data-level="1" class="fragment">Create and Manage Cloud Directory Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#associate-directories-with-applications" data-level="1" class="fragment">Associate Directories with Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#cloud-directory-workflow-automations" data-level="1" class="fragment">Cloud Directory Workflow Automations</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-a-directory" data-level="1" class="fragment">Enable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-a-directory" data-level="1" class="fragment">Disable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#locate-the-account-rest-url" data-level="1" class="fragment">Locate the Account REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-accounts" data-level="1" class="fragment">Authenticate Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#navigate-the-account-browser" data-level="1" class="fragment">Navigate the Account Browser</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-an-account" data-level="1" class="fragment">Edit an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#change-an-account-password" data-level="1" class="fragment">Change an Account Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#assign-an-account-to-a-group" data-level="1" class="fragment">Assign an Account to a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#remove-an-account-from-groups" data-level="1" class="fragment">Remove an Account from Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-an-account" data-level="1" class="fragment">Enable an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-an-account" data-level="1" class="fragment">Disable an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#locate-the-group-rest-url" data-level="1" class="fragment">Locate the Group REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#view-directory-groups" data-level="1" class="fragment">View Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-group-details" data-level="1" class="fragment">Edit Group Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-a-group" data-level="1" class="fragment">Enable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-a-group" data-level="1" class="fragment">Disable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#manage-group-accounts" data-level="1" class="fragment">Manage Group Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#architectural-overview" data-level="1" class="fragment">Architectural Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#stormpath-admin-console" data-level="1" class="fragment">Stormpath Admin Console</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"><li class="leaf"><a href="#billing-and-subscription-level" data-level="1" class="fragment">Billing and Subscription Level</a><ul class="menu"></ul></li><li class="leaf"><a href="#default-owner-application-and-directory" data-level="1" class="fragment">Default Owner, Application, and Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#invite-other-administrators" data-level="1" class="fragment">Invite Other Administrators</a><ul class="menu"></ul></li><li class="leaf"><a href="#manage-api-keys" data-level="1" class="fragment">Manage API Keys</a><ul class="menu"></ul></li><li class="leaf"><a href="#workflow-automations" data-level="1" class="fragment">Workflow Automations</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#locate-the-application-rest-url" data-level="1" class="fragment">Locate the Application REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#navigate-the-application-browser" data-level="1" class="fragment">Navigate the Application Browser</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-an-application" data-level="1" class="fragment">Register an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-an-application" data-level="1" class="fragment">Edit an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#manage-application-login-sources" data-level="1" class="fragment">Manage Application Login Sources</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-an-application" data-level="1" class="fragment">Enable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-an-application" data-level="1" class="fragment">Disable an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#view-accounts-mapped-to-an-application" data-level="1" class="fragment">View Accounts Mapped to an Application</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#locate-the-directory-rest-url" data-level="1" class="fragment">Locate the Directory REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#navigate-the-directory-browser" data-level="1" class="fragment">Navigate the Directory Browser</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-a-cloud-directory" data-level="1" class="fragment">Edit a Cloud Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-agent-configuration" data-level="1" class="fragment">Update Agent Configuration</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-and-manage-cloud-directory-accounts" data-level="1" class="fragment">Create and Manage Cloud Directory Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#associate-directories-with-applications" data-level="1" class="fragment">Associate Directories with Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#cloud-directory-workflow-automations" data-level="1" class="fragment">Cloud Directory Workflow Automations</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-a-directory" data-level="1" class="fragment">Enable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-a-directory" data-level="1" class="fragment">Disable a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#locate-the-account-rest-url" data-level="1" class="fragment">Locate the Account REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-accounts" data-level="1" class="fragment">Authenticate Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#navigate-the-account-browser" data-level="1" class="fragment">Navigate the Account Browser</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-an-account" data-level="1" class="fragment">Edit an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#change-an-account-password" data-level="1" class="fragment">Change an Account Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#assign-an-account-to-a-group" data-level="1" class="fragment">Assign an Account to a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#remove-an-account-from-groups" data-level="1" class="fragment">Remove an Account from Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-an-account" data-level="1" class="fragment">Enable an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-an-account" data-level="1" class="fragment">Disable an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#locate-the-group-rest-url" data-level="1" class="fragment">Locate the Group REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#view-directory-groups" data-level="1" class="fragment">View Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#edit-group-details" data-level="1" class="fragment">Edit Group Details</a><ul class="menu"></ul></li><li class="leaf"><a href="#enable-a-group" data-level="1" class="fragment">Enable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#disable-a-group" data-level="1" class="fragment">Disable a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#manage-group-accounts" data-level="1" class="fragment">Manage Group Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
 			
 			</li>	
 		
