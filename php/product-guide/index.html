@@ -353,7 +353,7 @@ PHP instances representing REST resources use the <a href="http://en.wikipedia.o
 
 <p>When applications interact with a Stormpath SDK <code>resource</code> instance, they are really interacting with an intelligent data-aware proxy, not a simple object with some properties. Specifically, the <code>resource</code> instance is a proxy to the SDK client <code>DataStore</code> allowing resource instances to load data that might not yet be available.</p>
 
-<p>For example, using the SDK Communication Flow diagram in the <a href="#HighLevelOverview">high-level overview</a> section, assuming you have a reference to an <code>account</code> object &ndash; perhaps you have queried for it or you already have the account <code>href</code> and you want to load the <code>account</code> resource from the server:</p>
+<p>For example, using the SDK Communication Flow diagram in the <a href="#high-level-overview">high-level overview</a> section, assuming you have a reference to an <code>account</code> object &ndash; perhaps you have queried for it or you already have the account <code>href</code> and you want to load the <code>account</code> resource from the server:</p>
 
 <pre><code>$dataStore = $client-&gt;getDataStore();
 $href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE';
@@ -416,7 +416,7 @@ $directory = $dataStore-&gt;getResource($href, Services_Stormpath::DIRECTORY); /
 
 <h2><a id="applications"></a>Applications</h2>
 
-<p>An <a href="#Application">application</a> in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath.</p>
+<p>An <a href="#application">application</a> in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath.</p>
 
 <p>When defining an application in Stormpath, it is typically associated with one or more directories or groups. The associated directories and groups form the application <em>user base</em>. The accounts within the associated directories and groups are considered the application users and can login to the application.</p>
 
@@ -450,20 +450,28 @@ $directory = $dataStore-&gt;getResource($href, Services_Stormpath::DIRECTORY); /
 </div>
 
 
-<p>You can control access to your Stormpath Admin Console and API by managing the <a href="#LoginSource">login sources</a> for the listed Stormpath application.</p>
+<p>You can control access to your Stormpath Admin Console and API by managing the <a href="#manage-application-login-sources">login sources</a> for the listed Stormpath application.</p>
 
 <p>For applications, you can:</p>
 
 <ul>
-<li><a href="#LocateAppURL">Locate the application REST URL</a>Locate Application URL&#8221;> within the Stormpath Admin Console.</li>
-<li><a href="#ListApps">List applications</a></li>
-<li><a href="#RetrieveApps">Retrieve an application</a>.</li>
-<li><a href="#RegisterApps">Register an application</a>.</li>
-<li><a href="#EditApps">Edit the details of an application</a>.</li>
-<li><a href="#ManageLoginSources">Manage application login sources</a>, including <a href="#ChangeDefaults">changing default account and group locations</a>, <a href="#AddLoginSource">adding another login source</a>, <a href="#ChangeLoginSourcePriority">changing the login source priority order</a>, and <a href="#RemoveLoginSource">removing login sources</a>.</li>
-<li><a href="#EnableApps">Enable an application</a>.</li>
-<li><a href="#DisableApps">Disable an application</a>.</li>
-<li><a href="#DeleteApps">Delete an application</a>.</li>
+<li><a href="#locate-the-application-rest-url">Locate the application REST URL</a></li>
+<li><a href="#list-applications">List applications</a></li>
+<li><a href="#retrieve-an-application">Retrieve an application</a></li>
+<li><a href="#register-an-application">Register an application</a></li>
+<li><a href="#edit-an-application">Edit the details of an application</a></li>
+<li><a href="#manage-login-sources">Manage login sources</a>
+
+<ul>
+<li><a href="#change-default-account-and-group-locations">Change default account and group locations</a></li>
+<li><a href="#add-another-login-source">Add another login source</a> (directories)</li>
+<li><a href="#change-login-source-priority-order">Change the login source priority order</a></li>
+<li><a href="#remove-login-sources">Remove login sources</a></li>
+</ul>
+</li>
+<li><a href="#enable-an-application">Enable an application</a></li>
+<li><a href="#disable-an-application">Disable an application</a></li>
+<li><a href="#delete-an-application">Delete an application</a></li>
 </ul>
 
 
@@ -509,7 +517,7 @@ foreach($applications as $app)
 
 <p>You will typically retrieve an <code>Application</code> referenced from another resource, for example using the <code>ApplicationList</code> parameter.</p>
 
-<p>You can also directly retrieve a specific application using the <code>href</code> (REST URL) value. For any application, you can <a href="#LocateAppURL">find the application href</a> in the Stormpath console. This can be particularly useful when you need an application href for the <code>ClientApplicationBuilder</code>.</p>
+<p>You can also directly retrieve a specific application using the <code>href</code> (REST URL) value. For any application, you can <a href="#locate-the-application-rest-url">find the application href</a> in the Stormpath console. This can be particularly useful when you need an application href for the <code>ClientApplicationBuilder</code>.</p>
 
 <p>After you have the <code>href</code> it can be loaded directly as an object instance by retrieving it from the server, using the data store:</p>
 
@@ -520,7 +528,7 @@ $application = $dataStore-&gt;getResource($href, Services_Stormpath::APPLICATION
 
 <h3><a id="register-an-application"></a>Register an Application</h3>
 
-<p>To authenticate a user account in your <a href="#Application">application</a>, you must first register the application with Stormpath.</p>
+<p>To authenticate a user account in your <a href="#application">application</a>, you must first register the application with Stormpath.</p>
 
 <p>To register an application, you must:</p>
 
@@ -554,9 +562,11 @@ $application-&gt;setDescription('New Application Description');
 $application-&gt;save();
 </code></pre>
 
+<p><a name="manage-application-login-sources"></a></p>
+
 <h3><a id="manage-application-login-sources"></a>Manage Application Login Sources</h3>
 
-<p><a href="#LoginSource">Login sources</a> define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.</p>
+<p>Login sources, otherwise known as <a href="#account-store-mappings">Account Stores</a>, define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.</p>
 
 <p>In Stormpath, a directory or group can be a login source for an application. At least one login source must be associated with an application for accounts to log in to that application.</p>
 
@@ -574,10 +584,10 @@ Assume an application named Foo has been mapped to two login sources, the Custom
 <p>After an application has been registered, or created, within Stormpath, you can:</p>
 
 <ul>
-<li><a href="#ChangeDefaults">Change default account and group locations</a></li>
-<li><a href="#AddLoginSource">Add another login source</a> (directories)</li>
-<li><a href="#ChangeLoginSourcePriority">Change the login source priority order</a></li>
-<li><a href="#RemoveLoginSource">Remove login sources</a></li>
+<li><a href="#change-default-account-and-group-locations">Change default account and group locations</a></li>
+<li><a href="#add-another-login-source">Add another login source</a> (directories)</li>
+<li><a href="#change-login-source-priority-order">Change the login source priority order</a></li>
+<li><a href="#remove-login-sources">Remove login sources</a></li>
 </ul>
 
 
@@ -592,6 +602,8 @@ The login sources appear in order of priority.<br>
  <img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170"></li>
 </ol>
 
+
+<p><a name="change-default-account-and-group-locations"></a></p>
 
 <h4>Change Default Account and Group Locations</h4>
 
@@ -612,6 +624,8 @@ The login sources appear in order of priority.<br>
 </ol>
 
 
+<p><a name="add-another-login-source"></a></p>
+
 <h4>Add Another Login Source</h4>
 
 <p>Adding a login source to an application provisions a directory or group to that application.  By doing so, all login source accounts can log into the application.</p>
@@ -630,6 +644,8 @@ The login sources appear in order of priority.<br>
 The new login source is added to the bottom of the login sources list.</li>
 </ol>
 
+
+<p><a name="change-login-source-priority-order"></a></p>
 
 <h4>Change Login Source Priority Order</h4>
 
@@ -651,6 +667,8 @@ The new login source is added to the bottom of the login sources list.</li>
 <li>Click <strong>Save Priorities</strong>.</li>
 </ol>
 
+
+<p><a name="remove-login-sources"></a></p>
 
 <h4>Remove Login Sources</h4>
 
@@ -750,7 +768,7 @@ The application is erased from Stormpath and no longer appears in the applicatio
 
 <h2><a id="directories"></a>Directories</h2>
 
-<p><a href="#Directory">Directories</a> contain <a href="#Authentication">authentication</a> and <a href="#Authorization">authorization</a> information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.</p>
+<p><a href="#directory">Directories</a> contain <a href="#authenticate-accounts">authentication</a> and <a href="#list-groups">authorization</a> information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.</p>
 
 <p>For directories, the basic details include:</p>
 
@@ -793,7 +811,7 @@ The application is erased from Stormpath and no longer appears in the applicatio
 </ul>
 
 
-<p>You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#LoginSource" title="login source">login sources</a>.</p>
+<p>You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#manage-application-login-sources">login sources</a>.</p>
 
 <p>LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -807,22 +825,22 @@ The application is erased from Stormpath and no longer appears in the applicatio
 <p>For directories, you can:</p>
 
 <ul>
-<li><a href="#LocateDirURL">Locate the directory REST URL</a>.</li>
-<li><a href="#ListDirectories">List directories</a>.</li>
-<li><a href="#RetrieveDir">Retrieve directories</a>.</li>
-<li><a href="#CreateDir">Create a directory</a>.
+<li><a href="#locate-the-directory-rest-url">Locate the directory REST URL</a></li>
+<li><a href="#list-directories">List directories</a></li>
+<li><a href="#retrieve-directories">Retrieve directories</a></li>
+<li><a href="#create-a-directory">Create a directory</a>
 
 <ul>
-<li><a href="#CreateCloud">Create a cloud directory</a>.</li>
-<li><a href="#CreateMirror">Create a mirrored (LDAP) directory</a>.</li>
+<li><a href="#create-a-cloud-directory">Create a cloud directory</a></li>
+<li><a href="#create-a-mirrored-directory">Create a mirrored (LDAP) directory</a></li>
 </ul>
 </li>
-<li><a href="#AssocApplications">Map directories to applications</a>.</li>
-<li><a href="#EditDir">Edit directory details</a>.</li>
-<li><a href="#UpdateAgent">Update agent configuration</a>.</li>
-<li><a href="#EnableDir">Enable a directory</a>.</li>
-<li><a href="#DisableDir">Disable a directory</a>.</li>
-<li><a href="#DeleteDir">Delete a directory</a>.</li>
+<li><a href="#map-directories-to-applications">Map directories to applications</a></li>
+<li><a href="#edit-directory-details">Edit directory details</a></li>
+<li><a href="#update-agent-configuration">Update agent configuration</a></li>
+<li><a href="#enable-a-directory">Enable a directory</a></li>
+<li><a href="#disable-a-directory">Disable a directory</a></li>
+<li><a href="#delete-a-directory">Delete a directory</a></li>
 </ul>
 
 
@@ -870,7 +888,7 @@ foreach($directories as $dir)
 
 <p>You can also retrieve it or as a direct reference, such as <code>$account-&gt;getDirectory();</code>.</p>
 
-<p>Finally, you can also directly retrieve a specific directory using the <code>href</code> (REST URL) value. For any directory, you can <a href="#LocateDirURL">find the directory href</a> in the Stormpath console.</p>
+<p>Finally, you can also directly retrieve a specific directory using the <code>href</code> (REST URL) value. For any directory, you can <a href="#locate-the-directory-rest-url">find the directory href</a> in the Stormpath console.</p>
 
 <p>After you have the <code>href</code> it can be loaded directly as an object instance by retrieving it from the server, using the data store:</p>
 
@@ -886,20 +904,22 @@ $directory = $dataStore-&gt;getResource($href, Services_Stormpath::DIRECTORY); /
 <p>You can create a:</p>
 
 <ul>
-<li><a href="#CreateCloud">Cloud directory</a>, which is hosted by Stormpath and uses the Stormpath data model to store user and group information. This is the most common type of directory in Stormpath.</li>
+<li><a href="#create-a-cloud-directory">Cloud directory</a>, which is hosted by Stormpath and uses the Stormpath data model to store user and group information. This is the most common type of directory in Stormpath.</li>
 </ul>
 
 
 <p><strong>OR</strong></p>
 
 <ul>
-<li><a href="#CreateMirror">Mirrored (LDAP) directory</a>, which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.</li>
+<li><a href="#create-a-mirrored-directory">Mirrored (LDAP) directory</a>, which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.</li>
 </ul>
 
 
 <div class='docs-note'><p>The ability to create a mirrored, or agent, directory is connected to your subscription. If the option is not available, click the question mark for more information.</p>
 </div>
 
+
+<p><a name="create-a-cloud-directory"></a></p>
 
 <h4>Create a Cloud Directory</h4>
 
@@ -951,6 +971,8 @@ $directory = $dataStore-&gt;getResource($href, Services_Stormpath::DIRECTORY); /
 </tbody>
 </table>
 
+
+<p><a name="create-a-mirrored-directory"></a></p>
 
 <h4>Create a Mirrored Directory</h4>
 
@@ -1179,7 +1201,7 @@ $directory-&gt;save();
 
 <h3><a id="update-agent-configuration"></a>Update Agent Configuration</h3>
 
-<p>You can modify an agent configuration going through the <a href="#UpdateAgentDir">Directories</a> or <a href="#UpdateAgentAgents">Agent</a> tabs.</p>
+<p>You can modify an agent configuration going through the <a href="#directory">Directories</a> or <a href="#directory-agent">Agent</a> tabs of the Admin console&rsquo;s &ldquo;Directory&rdquo; screen.</p>
 
 <p>The Agents tab contains a table listing all known agents used by you. Each table entry shows the following:</p>
 
@@ -1299,7 +1321,7 @@ $directory-&gt;save();
 
 <h2><a id="accounts"></a>Accounts</h2>
 
-<p>In Stormpath, users are referred to as user account objects or <a href="#Account">accounts</a>. The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.</p>
+<p>In Stormpath, users are referred to as user account objects or <a href="#account">accounts</a>. The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.</p>
 
 <p>You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -1369,24 +1391,24 @@ $directory-&gt;save();
 <p>For accounts, you can:</p>
 
 <ul>
-<li><a href="#LocateAccURL">Locate the account REST URL</a>.</li>
-<li><a href="#AuthenticateAccounts">Authenticate accounts</a>.</li>
-<li><a href="#ListAccounts">List accounts</a>.
+<li><a href="#locate-the-account-rest-url">Locate the account REST URL</a></li>
+<li><a href="#authenticate-accounts">Authenticate accounts</a></li>
+<li><a href="#list-accounts">List accounts</a>
 
 <ul>
-<li><a href="#ListGroupAccounts">List accounts by group</a>.</li>
-<li><a href="#ListDirectoryAccounts">List accounts by directory</a>.</li>
-<li><a href="#ViewAccountMap">List accounts by application</a>.</li>
+<li><a href="#list-accounts-by-group">List accounts by group</a></li>
+<li><a href="#list-accounts-by-directory">List accounts by directory</a></li>
+<li><a href="#list-accounts-by-application">List accounts by application</a></li>
 </ul>
 </li>
-<li><a href="#CreateAccounts">Create an account</a>.</li>
-<li><a href="#EditAccounts">Edit account details</a>.</li>
-<li><a href="#ChangeAccountPasswords">Change an account password</a>.</li>
-<li><a href="#AssignAccountGroup">Assign accounts to groups</a>.</li>
-<li><a href="#RemoveAccountGroup">Remove accounts from groups</a>.</li>
-<li><a href="#EnableAccounts">Enable an account</a>.</li>
-<li><a href="#DisableAccounts">Disable an account</a>.</li>
-<li><a href="#DeleteAccounts">Delete an account</a>.</li>
+<li><a href="#create-an-account">Create an account</a></li>
+<li><a href="#edit-account-details">Edit account details</a></li>
+<li><a href="#change-an-account-password">Change an account password</a></li>
+<li><a href="#assign-accounts-to-groups">Assign accounts to groups</a></li>
+<li><a href="#remove-accounts-from-groups">Remove accounts from groups</a></li>
+<li><a href="#enable-accounts">Enable an account</a></li>
+<li><a href="#disable-accounts">Disable an account</a></li>
+<li><a href="#delete-an-account">Delete an account</a></li>
 </ul>
 
 
@@ -1428,7 +1450,9 @@ $account = $authResult-&gt;getAccount();
 
 <h3><a id="list-accounts"></a>List Accounts</h3>
 
-<p>For accounts, you can view, or list them according to their <a href="#ListGroupAccounts" title="group membership">group membership</a>, <a href="#ListDirectoryAccounts" title="directory accounts">the directories to which they belong</a>, or the <a href="#ViewAccountMap" title="View Account Map">applications to which they are associated</a>.</p>
+<p>For accounts, you can view, or list them according to their <a href="#list-group-accounts">group membership</a>, <a href="#list-directory-groups">the directories to which they belong</a>, or <a href="#map-directories-to-applications">the applications to which they are associated</a>.</p>
+
+<p><a name="list-accounts-by-group"></a></p>
 
 <h4>List Accounts by Group</h4>
 
@@ -1456,6 +1480,8 @@ $account = $authResult-&gt;getAccount();
  }
 </code></pre>
 
+<p><a name="list-accounts-by-directory"></a></p>
+
 <h4>List Accounts by Directory</h4>
 
 <p>To list user accounts contained in a directory, you must:</p>
@@ -1481,6 +1507,8 @@ $account = $authResult-&gt;getAccount();
     echo 'Given Name ' . $acc-&gt;getGivenName();
  }
 </code></pre>
+
+<p><a name="list-accounts-by-application"></a></p>
 
 <h4>List Accounts by Application</h4>
 
@@ -1733,7 +1761,7 @@ $account-&gt;save();
 
 <h2><a id="groups"></a>Groups</h2>
 
-<p><a href="#Group">Groups</a> are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with <a href="#Role">role</a>.</p>
+<p><a href="#Group">Groups</a> are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with <a href="#role">role</a>.</p>
 
 <p>You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -1777,19 +1805,19 @@ $account-&gt;save();
 <p>With groups, you can:</p>
 
 <ul>
-<li><a href="#LocateGroupURL">Locate the group REST URL</a>.</li>
-<li><a href="#ListGroups">List groups</a> including:
+<li><a href="#locate-the-group-rest-url">Locate the group REST URL</a></li>
+<li><a href="#list-groups">List groups</a>
 
 <ul>
-<li><a href="#ListAccountGroups">List group accounts</a>.</li>
-<li><a href="#ListDirectoryGroups">List directory groups</a>.</li>
+<li><a href="#list-group-accounts">List group accounts</a></li>
+<li><a href="#list-directory-groups">List directory groups</a></li>
 </ul>
 </li>
-<li><a href="#CreateGroups">Create groups</a>.</li>
-<li><a href="#EditGroups">Edit group details</a>.</li>
-<li><a href="#EnableGroups">Enable a group</a>.</li>
-<li><a href="#DisableGroups">Disable a group</a>.</li>
-<li><a href="#DeleteGroups">Delete a group</a>.</p></li>
+<li><a href="#create-groups">Create groups</a></li>
+<li><a href="#edit-group-details">Edit group details</a></li>
+<li><a href="#enable-a-group">Enable a group</a></li>
+<li><a href="#disable-a-group">Disable a group</a></li>
+<li><a href="#delete-a-group">Delete a group</a></li>
 </ul>
 
 
@@ -1811,7 +1839,9 @@ The REST URL appears on the Details tab.</li>
 
 <h3><a id="list-groups"></a>List Groups</h3>
 
-<p>For groups, you can view, or list them by <a href="#ListAccountGroups">account membership</a> or <a href="#ListDirectoryGroups">the directory</a>.</p>
+<p>For groups, you can view, or list them by <a href="#list-group-accounts">account membership</a> or <a href="#list-directory-groups">the directory</a>.</p>
+
+<p><a name="list-group-accounts"></a></p>
 
 <h4>List Accounts in a Group</h4>
 
@@ -1838,6 +1868,8 @@ The REST URL appears on the Details tab.</li>
 echo 'Group ' . $group-&gt;getName();
  }
 </code></pre>
+
+<p><a name="list-directory-groups"></a></p>
 
 <h4>List Groups in a Directory</h4>
 
@@ -2016,7 +2048,7 @@ $group-&gt;save();
 
 <p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.The Stormpath Administrator directory has default workflow automations which cannot be altered.<br></p>
 
-<p>On the Workflows tab, you can automate <a href="#AccountRegistration" title="account registration and verification">account registration and verification</a> and <a href="#PasswordReset" title="password reset">password resets</a>.</p>
+<p>On the Workflows tab, you can automate <a href="#account-registration-and-verification">account registration and verification</a> and <a href="#password-reset">password resets</a>.</p>
 
 <p><img src="http://www.stormpath.com/sites/default/files/docs/ManageWorkflows.png" alt="Workflow Automation" title="Workflow Automation" width="670" height="250"></p>
 
@@ -2025,20 +2057,17 @@ $group-&gt;save();
 <p>For the Account Registration and Verification workflow, you must perform the following actions:</p>
 
 <ul>
-<li><a href="#ConfigureAccountRegistration" title="Configure Account Registration and Verification">Configure account registration and verification</a></li>
-<li><a href="#InitiateAccountRegistration" title="Initiate Account Registration and Verification">Initiate account registration and verification</a></li>
-<li><a href="#VerifyAccount" title="Verify the Account">Verify the account</a></li>
+<li><a href="#configure-account-registration-and-verification">Configure account registration and verification</a></li>
+<li><a href="#initiate-account-registration-and-verification">Initiate account registration and verification</a></li>
+<li><a href="#verify-the-account">Verify the account</a></li>
 </ul>
-
-
-<br>
-
-
 
 
 <div class='docs-note'><p>The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.</p>
 </div>
 
+
+<p><a name="configure-account-registration-and-verification"></a></p>
 
 <h4>Configure Account Registration and Verification</h4>
 
@@ -2177,9 +2206,13 @@ $group-&gt;save();
 </ol>
 
 
+<p><a name="initiate-account-registration-and-verification"></a></p>
+
 <h4>Initiate Account Registration and Verification</h4>
 
 <p>If the workflow is enabled, an account registration is automatically initiated during an account creation.</p>
+
+<p><a name="verify-the-account"></a></p>
 
 <h4>Verify the Account</h4>
 
@@ -2205,6 +2238,8 @@ $group-&gt;save();
 </li>
 </ol>
 
+
+<p><a name="password-reset"></a></p>
 
 <h3><a id="password-reset"></a>Password Reset</h3>
 
@@ -2332,7 +2367,7 @@ $application-&gt;sendPasswordResetEmail('username or email');
 
 <h4>Complete Password Reset</h4>
 
-<p>After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the <a href="#BaseURL">base URL</a> and the reset token.</p>
+<p>After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the <a href="#base-url">base URL</a> and the reset token.</p>
 
 <p><code>https://myAwesomeapp.com/passwordReset?sptoken=TOKEN</code></p>
 
@@ -2424,7 +2459,7 @@ $account-&gt;save();
 <td align="left"> A <strong>account store</strong> is a directory or group associated with an application for account authentication. Accounts within account stores associated with an application can login to that application.</td>
 </tr>
 <tr>
-<td align="left"><a id="AccountStoreMapping"></a>Account Store Mapping </td>
+<td align="left"><a id="account-store-mappings"></a>Account Store Mapping </td>
 <td align="left"> An <strong>account store mapping</strong> is a mapping between a group or directory and an application.</td>
 </tr>
 <tr>

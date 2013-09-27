@@ -459,12 +459,12 @@ client.getCurrentTenant();
 <li><a href="#retrieve-an-application">Retrieve an application</a></li>
 <li><a href="#register-an-application">Register an application</a></li>
 <li><a href="#edit-an-application">Edit the details of an application</a></li>
-<li><a href="#manage-application-login-sources">Manage application login sources</a>
+<li><a href="#manage-login-sources">Manage login sources</a>
 
 <ul>
 <li><a href="#change-default-account-and-group-locations">Change default account and group locations</a></li>
-<li><a href="#add-another-login-source">Add another login source</a></li>
-<li><a href="#change-login-source-priority-order">Change the login source priority order</a>.</li>
+<li><a href="#add-another-login-source">Add another login source</a> (directories)</li>
+<li><a href="#change-login-source-priority-order">Change the login source priority order</a></li>
 <li><a href="#remove-login-sources">Remove login sources</a></li>
 </ul>
 </li>
@@ -537,7 +537,7 @@ Application application = dataStore.getResource(href, Application.class);
 
 <h3><a id="register-an-application"></a>Register an Application</h3>
 
-<p>To authenticate a user account in your <a href="#applications">application</a>, you must first register the application with Stormpath.</p>
+<p>To authenticate a user account in your <a href="#application">application</a>, you must first register the application with Stormpath.</p>
 
 <p>To register an application, you must:</p>
 
@@ -581,7 +581,7 @@ application.save();
 
 <h3><a id="manage-application-login-sources"></a>Manage Application Login Sources</h3>
 
-<p><a href="#login-sources">Login sources</a> define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.</p>
+<p>[Login sources, otherwise known as <a href="#account-store-mappings">Account Stores</a>, define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.</p>
 
 <p>In Stormpath, a directory or group can be a login source for an application. At least one login source must be associated with an application for accounts to log in to that application.</p>
 
@@ -601,8 +601,8 @@ Assume an application named Foo has been mapped to two login sources, the Custom
 <ul>
 <li><a href="#change-default-account-and-group-locations">Change default account and group locations</a></li>
 <li><a href="#add-another-login-source">Add another login source</a> (directories)</li>
-<li><a href="#ChangeLoginSourcePriority">Change the login source priority order</a></li>
-<li><a href="#RemoveLoginSource">Remove login sources</a></li>
+<li><a href="#change-the-login-source-priority-order">Change the login source priority order</a></li>
+<li><a href="#remove-the-login-source">Remove login sources</a></li>
 </ul>
 
 
@@ -784,9 +784,9 @@ The new login source is added to the bottom of the login sources list.</li>
 
 <h2><a id="directories"></a>Directories</h2>
 
-<p><a href="#directories">Directories</a> contain <a href="#authenticate-accounts">authentication</a> and <a href="#list-groups">authorization</a> information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.</p>
+<p><a href="#directory">Directories</a> contain <a href="#authenticate-accounts">authentication</a> and <a href="#list-groups">authorization</a> information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.</p>
 
-<p>For directories, the basic details include:</p></p>
+<p>For directories, the basic details include:</p>
 
 <table>
 <thead>
@@ -843,6 +843,7 @@ The new login source is added to the bottom of the login sources list.</li>
 <ul>
 <li><a href="#locate-the-directory-rest-url">Locate the directory REST URL</a></li>
 <li><a href="#list-directories">List directories</a></li>
+<li><a href="#retrieve-directories">Retrieve directories</a></li>
 <li><a href="#create-a-directory">Create a directory</a>
 
 <ul>
@@ -1231,7 +1232,7 @@ directory.save();
 
 <h3><a id="update-agent-configuration"></a>Update Agent Configuration</h3>
 
-<p>You can modify an agent configuration going through the &ldquo;Directories&rdquo; or &ldquo;Agent&rdquo; tabs.</p>
+<p>You can modify an agent configuration going through the <a href="#directory">Directories</a> or <a href="#directory-agent">Agent</a> tabs of the Admin console&rsquo;s &ldquo;Directory&rdquo; screen.</p>
 
 <p>The Agents tab contains a table listing all known agents used by you. Each table entry shows the following:</p>
 
@@ -1361,7 +1362,7 @@ directory.save();
 
 <h2><a id="accounts"></a>Accounts</h2>
 
-<p>In Stormpath, users are referred to as user account objects or <a href="#accounts">accounts</a>. The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.</p>
+<p>In Stormpath, users are referred to as user account objects or <a href="#account">accounts</a>. The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.</p>
 
 <p>You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -2157,7 +2158,7 @@ group.save();
 
 <p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.The Stormpath Administrator directory has default workflow automations which cannot be altered.<br></p>
 
-<p>On the Workflows tab, you can automate <a href="#account-registration-and-verification">account registration and verification</a> and <a href="">password resets</a>.</p>
+<p>On the Workflows tab, you can automate <a href="#account-registration-and-verification">account registration and verification</a> and <a href="#password-reset">password resets</a>.</p>
 
 <p><img src="http://www.stormpath.com/sites/default/files/docs/ManageWorkflows.png" alt="Workflow Automation" title="Workflow Automation" width="670" height="250"></p>
 
@@ -2166,8 +2167,8 @@ group.save();
 <p>For the Account Registration and Verification workflow, you must perform the following actions:</p>
 
 <ul>
-<li><a href="#configure-account-reg">Configure account registration and verification</a></li>
-<li><a href="#initiate-account-reg">Initiate account registration and verification</a></li>
+<li><a href="#configure-account-registration-and-verification">Configure account registration and verification</a></li>
+<li><a href="#initiate-account-registration-and-verification">Initiate account registration and verification</a></li>
 <li><a href="#verify-the-account">Verify the account</a></li>
 </ul>
 
@@ -2176,7 +2177,7 @@ group.save();
 </div>
 
 
-<p><a name="configure-account-reg"></a></p>
+<p><a name="configure-account-registration-and-verification"></a></p>
 
 <h4>Configure Account Registration and Verification</h4>
 
@@ -2315,7 +2316,7 @@ group.save();
 </ol>
 
 
-<p><a name="initiate-account-reg"></a></p>
+<p><a name="initiate-account-registration-and-verification"></a></p>
 
 <h4>Initiate Account Registration and Verification</h4>
 
@@ -2351,6 +2352,8 @@ group.save();
 </li>
 </ol>
 
+
+<p><a name="password-reset"></a></p>
 
 <h3><a id="password-reset"></a>Password Reset</h3>
 
@@ -2481,7 +2484,7 @@ application.sendPasswordResetEmail('username or email');
 
 <h4>Complete Password Reset</h4>
 
-<p>After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the <a href="#BaseURL">base URL</a> and the reset token.</p>
+<p>After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the <a href="#base-url">base URL</a> and the reset token.</p>
 
 <p><code>https://myAwesomeapp.com/passwordReset?sptoken=TOKEN</code></p>
 
@@ -2516,13 +2519,13 @@ account.save();
 
 <h3><a id="spring-mvc-sample-app"></a>Spring MVC Sample App</h3>
 
-<p>This <a href="https://github.com/stormpath/stormpath-spring-samples" title="pring MVC Sample">application</a> is a Spring MVC-based Twitter clone that helps demonstrate the core functionality of Stormpath. The sample application shows Stormpath-based login, user registration, email verification, password reset, group assignments, <a href="#RBAC" title="RBAC">RBAC</a> checks, and user profile updates.</p>
+<p>This <a href="https://github.com/stormpath/stormpath-spring-samples">application</a> is a Spring MVC-based Twitter clone that helps demonstrate the core functionality of Stormpath. The sample application shows Stormpath-based login, user registration, email verification, password reset, group assignments, <a href="#rbac">RBAC</a> checks, and user profile updates.</p>
 
 <h4>Readme:</h4>
 
 <p><strong>stormpath-spring-samples</strong>: Stormpath example applications based on the Spring Framework.</p>
 
-<p><strong>tooter</strong> is a sample application that emulates some of the features of <a href="http://twitter.com" title="Twitter">Twitter</a> with the purpose of showing developers how to use the Stormpath Java SDK.</p>
+<p><strong>tooter</strong> is a sample application that emulates some of the features of <a href="http://www.twitter.com">Twitter</a> with the purpose of showing developers how to use the Stormpath Java SDK.</p>
 
 <p>This project requires Maven and access to the Maven Central repository.</p>
 
@@ -2535,11 +2538,11 @@ $ mvn install
 
 <p>Deploy the .war file to your web container/application server and launch/access it according to the container configuration.</p>
 
-<p>A detailed documentation on tooter and how to integrate with the Stormpath Java SDK can be found on the wiki <a href="https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter" title="tooter"><a href="https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter">https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter</a></a>.</p>
+<p>A detailed documentation on tooter and how to integrate with the Stormpath Java SDK can be found on the wiki <a href="https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter">https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter</a>.</p>
 
 <h3><a id="apache-shiro-sample-web-app"></a>Apache Shiro Sample Web App</h3>
 
-<p>This is a <a href="https://github.com/stormpath/stormpath-shiro-web-sample" title="shiro web sample">simple web application</a> secured by the Apache Shiro security framework and Stormpath. The example is based of the standard Apache Shiro web sample application and it shows login and <a href="#RBAC" title="RBAC">RBAC</a> using an authorization cache.</p>
+<p>This is a <a href="https://github.com/stormpath/stormpath-shiro-web-sample">simple web application</a> secured by the Apache Shiro security framework and Stormpath. The example is based of the standard Apache Shiro web sample application and it shows login and <a href="#rbac">RBAC</a> using an authorization cache.</p>
 
 <hr />
 

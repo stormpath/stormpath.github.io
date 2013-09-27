@@ -473,27 +473,18 @@ client = Client(api_key={'id': 'apiKeyId', 'secret': 'apiKeySecret'},
 <li><a href="#retrieve-an-application">Retrieve an application</a></li>
 <li><a href="#register-an-application">Register an application</a></li>
 <li><a href="#edit-an-application">Edit the details of an application</a></li>
-<li><a href="#enable-an-application">Enable an application</a></li>
-<li><a href="#disable-an-application">Disable an application</a></li>
-<li><a href="#delete-an-application">Delete an application</a></li>
 <li><a href="#manage-application-account-stores">Manage application account stores</a>
 
 <ul>
-<li><a href="#add-another-account-store">Add another account store</a></li>
-<li><a href="#change-default-account-store">Change default account and group locations</a>
-
-<ul>
+<li><a href="#change-default-account-store">Change default account and group locations</a></li>
 <li><a href="#change-account-store-priority-order">Change account store priority order</a></li>
-</ul>
-</li>
-<li><a href="#list-account-stores">List account stores</a>
-
-<ul>
+<li><a href="#list-account-stores">List account stores</a></li>
 <li><a href="#remove-account-store">Remove account store</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li><a href="#enable-an-application">Enable an application</a></li>
+<li><a href="#disable-an-application">Disable an application</a></li>
+<li><a href="#delete-an-application">Delete an application</a></li>
 </ul>
 
 
@@ -892,7 +883,7 @@ account_store_mapping.save()
 
 <h2><a id="directories"></a>Directories</h2>
 
-<p><a href="#directory">Directories</a> contain <a href="#authentication">authentication</a> and <a href="#authorization">authorization</a> information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.</p>
+<p><a href="#directory">Directories</a> contain <a href="#authenticate-accounts">authentication</a> and <a href="#list-groups">authorization</a> information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.</p>
 
 <p>For directories, the basic details include:</p>
 
@@ -935,7 +926,7 @@ account_store_mapping.save()
 </ul>
 
 
-<p>You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#account-store" title="account store">account stores</a>.</p>
+<p>You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#account-stores">account stores</a>.</p>
 
 <p>LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -1276,7 +1267,7 @@ directory.save()
 
 <h3><a id="update-agent-configuration"></a>Update Agent Configuration</h3>
 
-<p>You can modify an agent configuration going through the <a href="#directory">Directories</a> or <a href="#directory-agent">Agent</a> tabs.</p>
+<p>You can modify an agent configuration going through the <a href="#directory">Directories</a> or <a href="#directory-agent">Agent</a> tabs of the Admin console&rsquo;s &ldquo;Directory&rdquo; screen.</p>
 
 <p>The Agents tab contains a table listing all known agents used by you. Each table entry shows the following:</p>
 
@@ -1495,7 +1486,7 @@ account = application.authenticate_account("USERNAME", "PASSWORD")
 
 <h3><a id="list-accounts"></a>List Accounts</h3>
 
-<p>For accounts, you can view, or list them according to their <a href="#list-group-accounts" title="group membership">group membership</a>, <a href="#list-directory-accounts" title="directory accounts">the directories to which they belong</a>, or the <a href="#list-application-accounts" title="View Account Map">applications to which they are associated</a>.</p>
+<p>For accounts, you can view, or list them according to their <a href="#list-group-accounts">group membership</a>, the <a href="#list-directory-accounts">directories</a> to which they belong</a>, or the <a href="#list-application-accounts">applications</a> to which they are associated</a>.</p>
 
 <p><a name="list-group-accounts"></a></p>
 
@@ -2028,7 +2019,7 @@ group.delete()
 
 <p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. The Stormpath Administrator directory has default workflow automations which cannot be altered.<br></p>
 
-<p>On the Workflows tab, you can automate <a href="#AccountRegistration" title="account registration and verification">account registration and verification</a> and <a href="#PasswordReset" title="password reset">password resets</a>.</p>
+<p>On the Workflows tab, you can automate <a href="#account-registration-and-verification">account registration and verification</a> and <a href="#password-reset">password resets</a>.</p>
 
 <p><img src="http://www.stormpath.com/sites/default/files/docs/ManageWorkflows.png" alt="Workflow Automation" title="Workflow Automation" width="670" height="250"></p>
 
@@ -2037,18 +2028,13 @@ group.delete()
 <p>For the Account Registration and Verification workflow, you must perform the following actions:</p>
 
 <ul>
-<li><a href="#ConfigureAccountRegistration" title="Configure Account Registration and Verification">Configure account registration and verification</a></li>
-<li><a href="#InitiateAccountRegistration" title="Initiate Account Registration and Verification">Initiate account registration and verification</a></li>
-<li><a href="#VerifyAccount" title="Verify the Account">Verify the account</a></li>
+<li><a href="#configure-account-reg">Configure account registration and verification</a></li>
+<li><a href="#initiate-account-reg">Initiate account registration and verification</a></li>
+<li><a href="#verify-the-account">Verify the account</a></li>
 </ul>
 
 
-<br>
-
-
 <p><strong>Note:</strong> The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.</p>
-
-<p><a name="AccountRegistration"></a></p>
 
 <h4>Configure Account Registration and Verification</h4>
 
@@ -2224,7 +2210,7 @@ group.delete()
 </ol>
 
 
-<p><a name="PasswordReset"></a></p>
+<p><a name="password-reset"></a></p>
 
 <h3><a id="password-reset"></a>Password Reset</h3>
 
@@ -2352,7 +2338,7 @@ application.send_password_reset_email('email')
 
 <h4>Complete Password Reset</h4>
 
-<p>After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the <a href="#BaseURL">base URL</a> and the reset token.</p>
+<p>After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the <a href="#base-url">base URL</a> and the reset token.</p>
 
 <p><code>https://myAwesomeapp.com/passwordReset?sptoken=TOKEN</code></p>
 
