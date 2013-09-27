@@ -19,7 +19,7 @@ With Stormpath, you can offload repetitive security-sensitive logic to Stormpath
 The Python SDK can be found on [Github](https://github.com/stormpath/stormpath-sdk-python).
 
 {% docs note %}
-The Python SDK is compatible with Python version *2.7* and *3.0* or higher.
+This SDK is compatible with the 2.7 or 3.2 and later versions of Python.
 {% enddocs %}
 
 ***
