@@ -2106,7 +2106,7 @@ Attribute | Description | Type | Valid Value
 `href` | The account store mapping resource's fully qualified location URI. | String | <span>--</span>
 <a id="account-store-application"></a>`application` | A link to the mapping's Application. Required. | link | <span>--</span>
 <a id="account-store-accountStore"></a>`accountStore` | A link to the mapping's account store (either a Group or Directory) containing accounts that may login to the `application`.  Required. | link | <span>--</span>
-<a id="resource-list-index"></a>`resource-list-index` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `resource-list-index` of `0` will be consulted first (has the highest priority), followed the account store at `resource-list-index` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `resource-list-index` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size
+<a id="list-index"></a>`listIndex` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `listIndex` of `0` will be consulted first (has the highest priority), followed the account store at `listIndex` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `listIndex` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size
 <a id="account-store-mapping-resource-is-default-account-store"></a>`isDefaultAccountStore` | A `true` value indicates that new accounts [created by the application](#application-account-register) will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
 <a id="account-store-mapping-resource-is-default-group-store"></a>`isDefaultGroupStore` | A `true` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `true` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `true`,`false`
 
@@ -2141,7 +2141,7 @@ You do this by `POST`ing a new `AccountStoreMapping` resource to the `/v1/accoun
 
 **Optional Attributes**
 
-* [resource-list-index](#resource-list-index)
+* [listIndex](#list-index)
 * [isDefaultAccountStore](#account-store-mapping-resource-is-default-account-store) - if unspecified, the default is `false`
 * [isDefaultGroupStore](#account-store-mapping-resource-is-default-group-store) - if unspecified, the default is `false`
 
@@ -2171,7 +2171,7 @@ You do this by `POST`ing a new `AccountStoreMapping` resource to the `/v1/accoun
         "application": {
             "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
         },
-        "resource-list-index": 0,
+        "listIndex": 0,
         "isDefaultAccountStore": true,
         "isDefaultGroupStore": true
     }
@@ -2202,7 +2202,7 @@ If you don't have the account store mapping's URL, you can find it in the [appli
         "application": {
             "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
         },
-        "resource-list-index": 0,
+        "listIndex": 0,
         "isDefaultAccountStore": true,
         "isDefaultGroupStore": true
     }
@@ -2226,7 +2226,7 @@ Submit an HTTP `POST` to an accountStoreMapping's `href` when you want to change
 
 **Updatable Application Attributes**
 
-* [resource-list-index](#resource-list-index)
+* [listIndex](#list-index)
 * [isDefaultAccountStore](#isDefaultAccountStore)
 * [isDefaultGroupStore](#isDefaultGroupStore)
 
@@ -2252,7 +2252,7 @@ Submit an HTTP `POST` to an accountStoreMapping's `href` when you want to change
         "application": {
             "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
         },
-        "resource-list-index": 0,
+        "listIndex": 0,
         "isDefaultAccountStore": true,
         "isDefaultGroupStore": true
     }
@@ -2265,7 +2265,7 @@ As we've [shown previously](#workflow-login-attempt), an account trying to login
 If you wish to change an account store's login priority for an application, you simply:
 
 1. Find the `accountStoreMapping` resource in the application's `accountStoreMappings` [collection](#collections) that reflects the `accountStore` that you wish to re-prioritize.
-2. Issue a `POST` update request to that `AccountStoreMapping`'s `href` with a new `resource-list-index` value.
+2. Issue a `POST` update request to that `AccountStoreMapping`'s `href` with a new `listIndex` value.
 
 **Example Request**
 
@@ -2274,7 +2274,7 @@ For example, assume that the account store represented by mapping https://api.st
     curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
          -H "Content-Type: application/json;charset=UTF-8" \
          -d '{
-               "resource-list-index": 1
+               "listIndex": 1
              }' \
          'https://api.stormpath.com/v1/accountStoreMappings/dRvH4y0nT6uNl6gExAmPLe'
 
@@ -2288,7 +2288,7 @@ For example, assume that the account store represented by mapping https://api.st
         "application": {
             "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
         },
-        "resource-list-index": 1,
+        "listIndex": 1,
         "isDefaultAccountStore": true,
         "isDefaultGroupStore": true
     }
@@ -2421,7 +2421,7 @@ The response is a paginated list of `accountStoreMapping` resources.  You may us
        "items":[
           {
              "href":"https://api.stormpath.com/v1/accountStoreMappings/3hGLY9yHEqYraR0cXJUDPD",
-             "resource-list-index":0,
+             "listIndex":0,
              "isDefaultAccountStore":true,
              "isDefaultGroupStore":true,
              "application":{
@@ -2650,7 +2650,7 @@ HTTP `POST` against the account store mapping end-point with the directory and a
         "application": {
             "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
         },
-        "resource-list-index": 0,
+        "listIndex": 0,
         "isDefaultAccountStore": true,
         "isDefaultGroupStore": true
     }
