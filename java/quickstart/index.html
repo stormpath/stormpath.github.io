@@ -286,7 +286,11 @@ tenant.createApplication(newAppRequest);
 
 <pre><code>import com.stormpath.sdk.account.*;
 import com.stormpath.sdk.application.*;
+import com.stormpath.sdk.directory.*;
 ...
+
+//Retrieve directory
+Directory directory = client.getDataStore().getResource($YOUR_DIRECTORY_URL, Directory.class);
 
 //Create the account object
 Account account = client.instantiate(Account.class);
@@ -299,9 +303,15 @@ account.setEmail("my@emaill.com");
 account.setMiddleName("Middle Name");
 account.setPassword("Password123");
 
-//Create the account using the existing Application object
-application.createAccount(account);
+//Add account to directory
+directory.createAccount(account);
 </code></pre>
+
+<!-- 
+    //Create the account using the existing Application object
+    application.createAccount(account);
+-->
+
 
 <h3><a id="authenticate-an-account"></a>Authenticate an Account</h3>
 
@@ -372,6 +382,7 @@ for (Directory directory : directories) {
 
 <script src="/javascripts/stormpath_docs.js"></script>
 
+<div style="margin: 40px;">&nbsp;</div>
     	  </div>
 
 
@@ -495,6 +506,9 @@ for (Directory directory : directories) {
 			sp_docs_menu['errors'].push('9005');
 		
 			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['home'] = [];
 		
 	
 		sp_docs_menu['how-do-i'] = [];
