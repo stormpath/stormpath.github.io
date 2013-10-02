@@ -97,11 +97,7 @@ This will create your application.  Here's an example response:
 
 Make note of the `accounts` and `loginAttempts` `href` URLs in the above response.  We're going to use those URLs next to create a new account and then authenticate it.
 
-***
-
-## Working with the Stormpath REST API
-
-### Create an Account
+## Create an Account
 
 Now that we've created an `Application`, let's create an `Account` so someone can log in to (i.e. authenticate with) the Application.  `POST` a new `Account` resource to the `accounts` `href` value returned in the JSON response that you received when you created your `Application`:
 
@@ -147,7 +143,7 @@ This will create the account. Example response:
       "emailVerificationToken": null
     }
 
-### Authenticate an Account
+## Authenticate an Account
 
 Now we have an account that can use your application.  But how do you authenticate an account logging in to the application? You `POST` a `Login Attempt` to your application's `loginAttempts` `href`.
 
