@@ -99,7 +99,7 @@ Make note of the `accounts` and `loginAttempts` `href` URLs in the above respons
 
 ***
 
-## Working with the Stormpath PHP SDK
+## Working with the Stormpath REST API
 
 ### Create an Account
 
@@ -146,8 +146,6 @@ This will create the account. Example response:
       },
       "emailVerificationToken": null
     }
-
-***
 
 ### Authenticate an Account
 
