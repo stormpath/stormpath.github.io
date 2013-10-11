@@ -3093,6 +3093,7 @@ Attribute | Description | Type | Valid Value
 <a id="group-resource-name"></a>`name` | The name of the group. Must be unique within a directory. | String | 1 < N <= 255 characters
 <a id="group-resource-description"></a>`description` | The description of the group. | String | 1 < N <= 1000 characters
 <a id="group-resource-status"></a>`status` | Enabled groups are able to authenticate against an application. Disabled groups cannot authenticate against an application. | Enum  |`enabled`,`disabled`
+<a id="group-resource-custom-data"></a>`customData` | A link to the group's [customData](#group-custom-data) resource that you can use to store your own group-specific custom fields. | Link | <span>--</span>
 <a class="anchor" name="group-resource-tenant"></a>`tenant` | The tenant that owns the directory containing this group. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-directory"></a>`directory` | A link to the directory resource that the group belongs to. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-accounts"></a>`accounts` | A link to the accounts that are contained within this group. | Link | <span>--</span>
@@ -3107,9 +3108,10 @@ With groups, you can:
     * [Disable a group](#group-disable)
 * [Delete a group](#group-delete)
 * [List groups](#groups-list)
-* [Search groups](#groups-list)
-* [Work with group accounts](#group-accounts)
-* [Work with account memberships](#group-account-memberships)
+* [Search groups](#groups-search)
+* [Manage your own custom group data](#group-custom-data)
+* [Access a group's accounts](#group-accounts)
+* [Manage a group's account memberships](#group-account-memberships)
 
 <a class="anchor" name="group-url"></a>
 ### Locate a Group's REST URL
@@ -3523,7 +3525,7 @@ HTTP GET returns a paginated list of links for groups for which an account is a 
       ]
     }
 
-<a class="anchor" name="groups-list"></a>
+<a class="anchor" name="groups-search"></a>
 ### Search Groups
 
 Group attributes supported for search:
@@ -3536,10 +3538,175 @@ Group attributes supported for search:
 
 Group Collection Resource | Search Functionality
 :----- | :-----
-/v1/tenants/:tenantId/groups | A search across all groups in all directories owned by the specified tenant.
 /v1/directories/:directoryId/groups | A search across groups in the specified directory.
 /v1/applications/:applicationId/groups | A search across groups accessible to the specified application.
 /v1/accounts/:accountId/groups    | A search across groups assigned to the specified account.
+
+<a class="anchor" name="group-custom-data"></a>
+### Group Custom Data
+
+While the Group resource has pre-defined fields useful to many applications, it can be very convenient to add or modify custom data for your own needs.  You can do this by interacting with a Group's `customData` resource.
+
+The `customData` resource is a schema-less JSON-compatible object (aka 'map', 'associative array', or 'dictionary') that allows you to specify whatever name/value pairs you wish.
+
+<a class="anchor" name="group-custom-data-resource-uri"></a>
+**Resource URI**
+
+    /v1/groups/:groupId/customData
+
+In addition to your custom name/value pairs, a customData resource will always contain 3 reserved read-only fields:
+
+- `href`: The fully qualified location of the custom data resource
+- `createdAt`: the UTC timestamp with millisecond precision of when the object was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string, for example `2017-04-01T14:35:16.235Z`
+- `modifiedAt`: the UTC timestamp with millisecond precision of when the object was last updated in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string.
+
+You can store an unlimited number of additional name/value pairs in the customData resource, with the following restrictions:
+
+* The total storage size of a single customData resource cannot exceed 10 MB (megabytes).  The `href`, `createdAt` and `modifiedAt` field names and values do not count against your resource size quota.
+* Field names must:
+    * be 1 or more characters long, but less than or equal to 255 characters long (1 <= N <= 255).
+    * contain only alphanumeric characters '0-9A-Za-z', underscores '_' or dashes '-' but cannot start with a dash '-'.
+    * may not equal any of the following reserved names: `href`, `createdAt`, `modifiedAt`, `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta`.
+
+{% docs note %}
+While the `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta` fields are not returned in the response today, they might be used in the future.  As is the case with all JSON use cases, ensure your REST client will not break if it encounters one of these at some time in the future.
+{% enddocs %}
+
+For Group Custom Data, you can:
+
+* [Create Group Custom Data](#create-group-custom-data)
+* [Retrieve Group Custom Data](#retrieve-group-custom-data)
+* [Update Group Custom Data](#update-group-custom-data)
+* [Delete All Group Custom Data](#update-group-custom-data)
+* [Delete a single Group Custom Data Field](#delete-group-custom-data-field)
+
+<a class="anchor" name="create-group-custom-data"></a>
+#### Create Group Custom Data
+
+Whenever you create a group, an empty `customData` resource is created automatically - you do not need to create it yourself.  To populate custom data, you simply specify whatever name/value pairs you wish in a `POST` request.  For example:
+
+    POST https://api.stormpath.com/v1/groups/p2r9hGPCoulmcTJa2GCQH/customData
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "manager": "Sally Smith",
+      "state": "Georgia",
+    }
+
+The response will contain the full custom data resource, including the `href`, `createdAt` and `modifiedAt` reserved fields:
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href": "https://api.stormpath.com/v1/groups/cJoiwcorTTmkDDBsf02AbA/customData",
+      "createdAt": "2014-07-16T13:48:22.378Z",
+      "modifiedAt": "2014-07-16T13:48:22.378Z",
+      "manager": "Sally Smith",
+      "state": "Georgia",
+    }
+
+<a class="anchor" name="retrieve-group-custom-data"></a>
+#### Retrieve Group Custom Data
+
+You can return a group's entire custom data resource by executing a `GET` request to the Group Custom Data Resource URI.
+
+**Example Request**
+
+    GET https://api.stormpath.com/v1/groups/cJoiwcorTTmkDDBsf02AbA/customData
+
+**Example  Response**
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href": "https://api.stormpath.com/v1/groups/cJoiwcorTTmkDDBsf02AbA/customData",
+      "createdAt": "2014-07-16T13:48:22.378Z",
+      "modifiedAt": "2014-07-16T13:48:22.378Z",
+      "manager": "Sally Smith",
+      "state": "Georgia",
+    }
+
+<a class="anchor" name="update-group-custom-data"></a>
+#### Update Group Custom Data
+
+You may add new custom data fields or overwrite existing custom data fields by specifying them in a `POST` request.  In the following example request, we're changing an existing field named `owner` and we're adding a brand new field named `region`:
+
+**Example Group Custom Data Update**
+
+    POST https://api.stormpath.com/v1/groups/p2r9hGPCoulmcTJa2GCQH/customData
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "manager": "George P. Burdell",
+      "region": "Southeast",
+    }
+
+The response will contain the resource with the latest values:
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href": "https://api.stormpath.com/v1/groups/cJoiwcorTTmkDDBsf02AbA/customData",
+      "createdAt": "2014-07-16T13:48:22.378Z",
+      "modifiedAt": "2014-07-16T13:48:22.378Z",
+      "owner": "George P. Burdell",
+      "region": "Southeast",
+      "state": "Georgia"
+    }
+
+As you can see, the response contains the 'merged' representation of what was already on the server plus what was sent in the response.
+
+<a class="anchor" name="delete-group-custom-data"></a>
+#### Delete Group Custom Data
+
+You may delete all of a group's custom data by sending a `DELETE` request to the Group Custom Data Resource URI.
+
+**Example Request**
+
+    DELETE https://api.stormpath.com/v1/groups/p2r9hGPCoulmcTJa2GCQH/customData
+
+**Example Response**
+
+    HTTP/1.1 204 No Content
+
+This will delete all of your custom data fields, but it leaves the `customData` placeholder.  You cannot delete the customData resource entirely - it will be automatically permanently deleted when the Group is deleted.
+
+<a class="anchor" name="delete-group-custom-data-field"></a>
+#### Delete Group Custom Data Field
+
+To understand field deletion, we should have a quick reminder about JSON `null` values.  `null` is a valid value for JSON fields and may be specified.  For example:
+
+    POST https://api.stormpath.com/v1/groups/p2r9hGPCoulmcTJa2GCQH/customData
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "region": null
+    }
+
+This request is valid and indicates that the `region` field still exists on the customData resource, and it is a meaningful field, it just does not currently have a value (maybe it will be populated later).
+
+Because `null` is an important and often useful value for JSON data, then, we can't delete a field (remove it entirely from the customData resource) by simply setting it to `null`.
+
+Therefore, to delete a customData field, we must send an explicit `DELETE` request to an href representing the exact field to delete, using the following resource URI:
+
+**Group Custom Data Field Resource URI**
+
+    https://api.stormpath.com/v1/groups/{groupId}/customData/{fieldName}
+
+This URI only supports `DELETE` requests.
+
+**Example Request**
+
+    DELETE https://api.stormpath.com/v1/groups/p2r9hGPCoulmcTJa2GCQH/customData/region
+
+**Example Response**
+
+    HTTP/1.1 204 No Content
+
+This request would remove the `region` field entirely from the customData resource.  The next time the resource is [retrieved](#retrieve-group-custom-data), the field will be missing entirely.
 
 <a class="anchor" name="group-accounts"></a>
 ### Group Accounts
@@ -3883,7 +4050,7 @@ An Account is a unique identity within a Directory, with a unique username and/o
 It should be noted that the words 'User' and 'Account' usually mean the same thing, but there is a subtle difference that can be important at times:
 
 - An Account is a unique identity within a Directory.
-- When an account is granted access to an application (by [mapping a Directory or Group](#accountStoreMappings) that contains the account to the application), it becomes a 'User' of that application.
+- When an account is granted access to an application (by [mapping a Directory or Group](#account-store-mappings) that contains the account to the application), it becomes a 'User' of that application.
 
 Therefore an Account can be called a 'User' of an application if/when it can login to the application.
 
@@ -3919,6 +4086,7 @@ Attribute | Description | Type | Valid Value
 <a id="middleName"></a>`middleName` | The middle (second) name for the account holder. | String | 1 < N <= 255 characters
 <a id="surname"></a>`surname` | The surname (last name) for the account holder. | String | 1 < N <= 255 characters
 <a id="status"></a>`status` | `enabled` accounts are able to login to their assigned [applications](#Applications), `disabled` accounts may not login to applications, `unverified` accounts are disabled and have not verified their email address. | Enum | `enabled`,`disabled`,`unverified`
+<a id="account-custom-data"></a>`customData` | A link to the account's [customData](#account-custom-data) resource that you can use to store your own account-specific custom fields. | Link | <span>--</span>
 <a id="account-resource-groups"></a>`groups` | A link to the [groups](#Groups) that the account belongs to. | Link | <span>--</span>
 <a id="account-resource-group-memberships"></a>`groupMemberships` | A link to the group memberships that the account belongs to. | Link | <span>--</span>
 <a id="account-resource-directory"></a>`directory` | A link to the account's directory. | Link | <span>--</span>
@@ -3944,8 +4112,9 @@ For accounts, you can:
     * [Verify an account's email address](#account-verify-email)
     * [Log in (authenticate) an account](#accounts-authenticate)
     * [Reset an account password](#accounts-reset)
-* [Work with account groups](#account-groups)
-* [Work with account group memberships](#account-group-memberships)
+* [Manage your own custom data](#account-custom-data)
+* [Access an account's groups](#account-groups)
+* [Manage an account's group memberships](#account-group-memberships)
 
 <a class="anchor" name="accounts-url"></a>
 ### Locate an Account's REST URL
@@ -4422,7 +4591,7 @@ To delete an account:
 <a class="anchor" name="accounts-list"></a>
 ### List Accounts
 
-Using the API, you can view [all accounts of an application](#accounts-application-accounts-list), [all members of a group](#accounts-application-group-members), or [all accounts/members of a directory](#accounts-application-directory-accounts-1).
+Using the API, you can view [all accounts of an application](#accounts-application-accounts-list), [all members of a group](#accounts-application-group-members), or [all accounts/members of a directory](#accounts-application-directory-accounts).
 
 An application's `accounts` is a [Collection Resource](#collections) that represents all accounts that can log in to the application.
 
@@ -4582,7 +4751,6 @@ Account attributes supported for search:
 
 Account Collection Resource | Search Functionality
 :----- | :-----
-/v1/tenants/:tenantId/accounts | A search across all accounts in all directories owned by the specified tenant.
 /v1/directories/:directoryId/accounts | A search across accounts in the specified directory.
 /v1/applications/:applicationId/accounts | A search across accounts that are users of the specified application.
 /v1/groups/:groupId/accounts | A search across accounts in the specified group.
@@ -4722,6 +4890,172 @@ This workflow is disabled by default for accounts, but you can enable it easily 
 {% docs note %}
 Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
 {% enddocs %}
+
+<a class="anchor" name="account-custom-data"></a>
+### Account Custom Data
+
+While the Account resource has pre-defined fields useful to many applications, it can be very convenient to add or modify custom data for your own needs.  You can do this by interacting with an Account's `customData` resource.
+
+The `customData` resource is a schema-less JSON-compatible object (aka 'map', 'associative array', or 'dictionary') that allows you to specify whatever name/value pairs you wish.
+
+<a class="anchor" name="account-custom-data-resource-uri"></a>
+**Resource URI**
+
+    /v1/accounts/:accountId/customData
+
+In addition to your custom name/value pairs, a customData resource will always contain 3 reserved read-only fields:
+
+- `href`: The fully qualified location of the custom data resource
+- `createdAt`: the UTC timestamp with millisecond precision of when the object was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string, for example `2017-04-01T14:35:16.235Z`
+- `modifiedAt`: the UTC timestamp with millisecond precision of when the object was last updated in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string.
+
+You can store an unlimited number of additional name/value pairs in the customData resource, with the following restrictions:
+
+* The total storage size of a single customData resource cannot exceed 10 MB (megabytes).  The `href`, `createdAt` and `modifiedAt` field names and values do not count against your resource size quota.
+* Field names must:
+    * be 1 or more characters long, but less than or equal to 255 characters long (1 <= N <= 255).
+    * contain only alphanumeric characters '0-9A-Za-z', underscores '_' or dashes '-' but cannot start with a dash '-'.
+    * may not equal any of the following reserved names: `href`, `createdAt`, `modifiedAt`, `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta`.
+
+{% docs note %}
+While the `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta` fields are not returned in the response today, they might be used in the future.  As is the case with all JSON use cases, ensure your REST client will not break if it encounters one of these at some time in the future.
+{% enddocs %}
+
+For Account Custom Data, you can:
+
+* [Create Account Custom Data](#create-account-custom-data)
+* [Retrieve Account Custom Data](#retrieve-account-custom-data)
+* [Update Account Custom Data](#update-account-custom-data)
+* [Delete All Account Custom Data](#update-account-custom-data)
+* [Delete a single Account Custom Data Field](#delete-account-custom-data-field)
+
+<a class="anchor" name="create-account-custom-data"></a>
+#### Create Account Custom Data
+
+Whenever you create an Account, an empty `customData` resource is created automatically - you do not need to create it yourself.  To populate custom data, you simply specify whatever name/value pairs you wish in a `POST` request.  For example:
+
+    POST https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb/customData
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "birthDate": "1985-07-15",
+      "favoriteColor": "blue",
+    }
+
+The response will contain the full custom data resource, including the `href`, `createdAt` and `modifiedAt` reserved fields:
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData",
+      "createdAt": "2014-07-16T13:48:22.378Z",
+      "modifiedAt": "2014-07-16T13:48:22.378Z",
+      "birthDate": "1985-07-15",
+      "favoriteColor": "blue",
+    }
+
+<a class="anchor" name="retrieve-account-custom-data"></a>
+#### Retrieve Account Custom Data
+
+You can return an Account's entire custom data resource by executing a `GET` request to the Account Custom Data Resource URI.
+
+**Example Request**
+
+    GET https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData
+
+**Example  Response**
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData",
+      "createdAt": "2014-07-16T13:48:22.378Z",
+      "modifiedAt": "2014-07-16T13:48:22.378Z",
+      "birthDate": "1985-07-15",
+      "favoriteColor": "blue",
+    }
+
+<a class="anchor" name="update-account-custom-data"></a>
+#### Update Account Custom Data
+
+You may add new custom data fields or overwrite existing custom data fields by specifying them in a `POST` request.  In the following example request, we're changing an existing field named `favoriteColor` and we're adding a brand new field named `hobby`:
+
+**Example Account Custom Data Update**
+
+    POST https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb/customData
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "favoriteColor": "red",
+      "hobby": "Kendo",
+    }
+
+The response will contain the resource with the latest values:
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData",
+      "createdAt": "2014-07-16T13:48:22.378Z",
+      "modifiedAt": "2014-07-16T13:48:22.378Z",
+      "birthDate": "1985-07-15",
+      "favoriteColor": "red",
+      "hobby": "Kendo"
+    }
+
+As you can see, the response contains the 'merged' representation of what was already on the server plus what was sent in the response.
+
+<a class="anchor" name="delete-account-custom-data"></a>
+#### Delete Account Custom Data
+
+You may delete all of an Account's custom data by sending a `DELETE` request to the Account Custom Data Resource URI.
+
+**Example Request**
+
+    DELETE https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb/customData
+
+**Example Response**
+
+    HTTP/1.1 204 No Content
+
+This will delete all of your custom data fields, but it leaves the `customData` placeholder.  You cannot delete the customData resource entirely - it will be automatically permanently deleted when the Account is deleted.
+
+<a class="anchor" name="delete-account-custom-data-field"></a>
+#### Delete Account Custom Data Field
+
+To understand field deletion, we should have a quick reminder about JSON `null` values.  `null` is a valid value for JSON fields and may be specified.  For example:
+
+    POST https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb/customData
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "favoriteColor": null
+    }
+
+This request is valid and indicates that the `favoriteColor` field still exists on the customData resource, and it is a meaningful field, it just does not currently have a value (maybe it will be populated later).
+
+Because `null` is an important and often useful value for JSON data, then, we can't delete a field (remove it entirely from the customData resource) by simply setting it to `null`.
+
+Therefore, to delete a customData field, we must send an explicit `DELETE` request to an href representing the exact field to delete, using the following resource URI:
+
+**Account Custom Data Field Resource URI**
+
+    https://api.stormpath.com/v1/accounts/{accountId}/customData/{fieldName}
+
+This URI only supports `DELETE` requests.
+
+**Example Request**
+
+    DELETE https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb/customData/favoriteColor
+
+**Example Response**
+
+    HTTP/1.1 204 No Content
+
+This request would remove the `favoriteColor` field entirely from the customData resource.  The next time the resource is [retrieved](#retrieve-account-custom-data), the field will be missing entirely.
 
 <a class="anchor" name="account-groups"></a>
 ### Account Groups
