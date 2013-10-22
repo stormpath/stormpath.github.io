@@ -64,7 +64,7 @@ All requests back to Stormpath using the Stormpath SDK must be authenticated wit
 
 Add the [Stormpath Python SDK](https://github.com/stormpath/stormpath-sdk-python) using pip:
 
-    $ pip install stormpath-sdk
+    $ pip install stormpath-sdk --pre
 
 Don't have pip installed? Try installing it, by running this from the command line:
 
