@@ -4,7 +4,7 @@ lang: rest
 title: Stormpath REST API Product Guide
 ---
 
-Stormpath provides developers with a simple yet powerful REST+JSON API that enables user management control for organizations and applications.  
+Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
 
 To get started with the basics of Stormpath quickly, check out the [REST API Quickstart Guide](http://www.stormpath.com/docs/rest/quickstart). For a more complete understanding and reference of the full Stormpath service, read on.
 
@@ -125,8 +125,8 @@ When using an API key with basic authentication, the `API key id` is the usernam
 For example, if using curl:
 
     curl -u $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
-         -X "Accept: application/json" \
-         https://api.stormpath.com/v1/tenants/current
+         -H "Accept: application/json" \
+         -L https://api.stormpath.com/v1/tenants/current
 <!-- {: .bash} -->
 
 or perhaps [httpie](https://github.com/jkbr/httpie) (which assumes application/json by default):
@@ -262,7 +262,7 @@ An example API `GET`:
 
     curl -u $API_KEY_ID:$API_KEY_SECRET \
          -H "Accept: application/json" \
-         https://api.stormpath.com/v1/tenants/current
+         -L https://api.stormpath.com/v1/tenants/current
 <!-- {: .bash} -->
 
 **Response**
@@ -915,7 +915,7 @@ You can request the `current` Tenant resource, and the API server will automatic
 
 **Example Request**
 
-    curl -u $API_KEY_ID:$API_KEY_SECRET -H "Accept: application/json" https://api.stormpath.com/v1/tenants/current
+    curl -u $API_KEY_ID:$API_KEY_SECRET -H "Accept: application/json" -L https://api.stormpath.com/v1/tenants/current
 <!-- {: .bash} -->
 
 **Example Response**

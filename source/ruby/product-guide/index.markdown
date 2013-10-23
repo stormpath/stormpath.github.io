@@ -4,7 +4,7 @@ lang: ruby
 title: Stormpath Ruby Product Guide
 ---
 
-Stormpath provides developers with a simple yet powerful REST+JSON API that enables user management control for organizations and applications.
+Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
 
 For help to quickly get started with Stormpath, refer to the [Ruby Quickstart Guide](http://www.stormpath.com/docs/ruby/quickstart).
 
