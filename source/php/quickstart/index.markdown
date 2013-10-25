@@ -62,15 +62,15 @@ All requests back to Stormpath using the Stormpath SDK must be authenticated wit
 
 ## Add the Stormpath PHP SDK to your Project
 
-The [Stormpath PHP SDK](https://github.com/stormpath/stormpath-sdk-php) is built upon the Zend Framework. In order to add it to your application, you'll need to use Composer:
+In order to add the [Stormpath PHP SDK](https://github.com/stormpath/stormpath-sdk-php) to your application, you'll need to use Composer:
 
-1. Navigate to your project folder. If you're new to Zend, consider cloning the [Zend skeleton application](https://github.com/zendframework/ZendSkeletonApplication) and using that as your first project.
+1. Modify your project's "composer.json" to add in the following dependencies:
 
-2. Copy the "test" and "src" folders provided in the SDK into the "module/Application" folder of your project. Likewise, copy the "vendor" folder to your project root. 
+		"require": {
+            "stormpath/sdk": "1.0.*@beta"
+        }
 
-3. Modify your project's "composer.json" to add in the dependencies found in the SDK's "composer.json".
-
-4. Install dependencies via Composer 
+2. On your project root, install the SDK with the its dependencies:
     
         $ php composer.phar install
 
@@ -82,144 +82,111 @@ Your project should now be set up to use the Stormpath PHP SDK. For additional d
 
 ### Configure your PHP application
 
-To get started, you'll need to configure your application to include the SDK. Given your ApiKey, configure the service as follows:
+1. **Require the Stormpath PHP SDK** via the composer auto loader
 
-    //Include Stormpath SDK
-    use Stormpath\Service\StormpathService;
-
-    //Read API key file
-    try {
-        $reader = new Zend\Config\Reader\Ini();
-        $config = $reader->fromFile('/Users/frankcaron/.stormpath/apiKey.properties');    
-    } catch (Exception $e) {
-        throw new Exception("Dayum", 0, $e);
-    }
-
-    //Get values from file
-    $key = $config['apiKey']['id'];
-    $secret = $config['apiKey']['secret'];
-
-    //Configure the service to connect given the API key file values
-    StormpathService::configure($key, $secret);
+    	require 'vendor/autoload.php';
 <!-- {.php} -->
 
-Once the application is configured with your key, create a Stormpath SDK [`ResourceManager`](http://www.stormpath.com/docs/PHP/product-guide#Client) instance. The ResourceManager instance is your starting point for all operations with the Stormpath service:
+2. **Configure the client** using the API key properties file
 
-    $resourceManager = StormpathService::getResourceManager();
+		\Stormpath\Client::$apiKeyFileLocation = $_SERVER['HOME'] . '/.stormpath/apiKey.properties';
 <!-- {.php} -->
 
-The `ResourceManager` instance is intended to be an application singleton. You should reuse this instance throughout your application code. You *should not* create multiple ResourceManager instances as it could negatively affect caching.
+3. **List all your applications and directories**
 
-### Register your application with Stormpath
+		$tenant = \Stormpath\Resource\Tenant::get();
+		foreach($tenant->applications as $app)
+		{
+		    print $app->name;
+		}
 
-Registering an application with Stormpath allows that application to use Stormpath for its user management and authentication needs. Use the `ResourceManager` you instantiated and a new `Application` resource to do so as follows:
-
-    use Stormpath\Resource\Application;
-
-    //Create an Application resource
-    $app = new Application;
-    $app->setName('My Test PHP App');
-    $app->setDescription('Test App created via PHP application');
-    $app->setStatus('ENABLED');
-    $app->setAutoCreateDirectory(true); //Automatically create a directory
-
-    //Add the application to the ResourceManager
-    $resourceManager->persist($app);
-    
-    try {
-        //Create the application
-        $resourceManager->flush();
-    } catch (Exception $e) {
-        throw new Exception("Error creating application: ", 0, $e);
-    }
+		foreach($tenant->directories as $dir)
+		{
+		    print $dir->name;
+		}
 <!-- {.php} -->
 
-Once the application is created, it will automatically create a `Directory` resource based on the name of application and set it as the default account store. New accounts will be created in the default account store.
+4. **Get access to the specific application and directory** using a specific href.
 
-### Create an account 
+		$application = \Stormpath\Resource\Application::get($applicationHref);
 
-Now that we've created an `Application`, let's create an `Account` so someone can log in to (i.e. authenticate with) the application. To do so, use the `_setters_` of a new account instance to set the values and create the account in a directory as follows:
-
-    //Use the applicationId to target your application (not the full href)
-    $applicationId = $YOUR_APP_ID; //retrieve from $app.getHref() or Admin console
-    $application = $resourceManager->find('Stormpath\Resource\Application', $applicationId);
-
-    //Create the account resource
-    $account = new Account;
-    $account->setUsername("username");
-    $account->setEmail("email");
-    $account->setPassword("password");
-    $account->setGivenName('First Name');
-    $account->setMiddleName('Middle Name');
-    $account->setSurname('Last Name');
-    $account->setStatus('Enabled');
-
-    //Assign the account to the application instantiated previously
-    $account->setApplication($application);
-
-    //Add the application to the ResourceManager
-    $resourceManager->persist($account);
-
-    //Create the application
-    $resourceManager->flush();
+		$directory = \Stormpath\Resource\Directory::get($directoryHref);
 <!-- {.php} -->
 
-### Authenticate an Account
+5. **Create an application** and auto create a directory as the account store.
 
-Now we have an account that can use your application.  But how do you authenticate an account logging in to the application? You use the application instance and a `LoginAttempt` resource as follows:
-
-    use Stormpath\Exception\ApiException;
-    use Stormpath\Resource\LoginAttempt;
-
-    //Capture the username and password from the form
-    $usernameOrEmail = "usernameOrEmail";
-    $rawPassword = "password";
-
-    //Create a new LoginAttempt
-    $loginAttempt = new LoginAttempt;
-    $loginAttempt->setUsername($usernameOrEmail); //get from form
-    $loginAttempt->setPassword($rawPassword); //get from form
-    $loginAttempt->setApplication($application);
-
-    //Add the loginAttempt to the resourceManager
-    $resourceManager->persist($loginAttempt);
-  
-    try {
-        //Process the log in attempt
-        $resourceManager->flush();
-        //Get the authorized account back
-        $authorizedAccount = $loginAttempt->getAccount();
-    } catch (ApiException $e) {
-        if ($e->getCode() == 400) {
-            $userMessage = $e->getMessage();  # will = There is no account with that email address.
-        }
-    }
+		$application = \Stormpath\Resource\Application::create(
+	  		array('name' => 'May Application',
+        		'description' => 'My Application Description'),
+  			array('createDirectory' => true)
+   		);
 <!-- {.php} -->
 
-If the authentication attempt fails, you will receive a `ApiException` which contains details of the error.
+6. **Create an account for a user** on the directory.
 
-### Experiment! 
+		$account = \Stormpath\Resource\Account::instantiate(
+		  array('givenName' => 'John',
+		        'surname' => 'Smith',
+        		'username' => 'johnsmith',
+        		'email' => 'john.smith@example.com',
+        		'password' => '4P@$$w0rd!'));
 
-Use the ResourceManager instance to interact with your tenant data, such as applications, directories, and accounts:
-
-    use Stormpath\Resource\Tenant;
-
-    $currentTenant = $resourceManager->find('Stormpath\Resource\Tenant', 'current');
-
-    //Print application name
-    $applications = $currentTenant->getApplications();
-    foreach ($applications as $application) {
-        echo "Application Name: " . $application->getName() . "<br />";
-    }
-
-    //Print directory names
-    $directories = $currentTenant->getDirectories();
-    foreach ($directories as $directory) {
-        echo "Application Name: " . $directory->getName() . "<br />";
-    }
+		$application->createAccount($account);
 <!-- {.php} -->
 
-***
+7. **Update an account**
+
+		$account->givenName = 'Johnathan';
+		$account->middleName = 'A.';
+		$account->save();
+<!-- {.php} -->
+
+8. **Authenticate the Account** for use with an application:
+
+		try {
+
+    		$application->authenticate('johnsmith', '4P@$$w0rd!');
+
+		} catch (\Stormpath\Resource\ResourceError $re)
+		{
+		    print $re->getStatus();
+		    print $re->getErrorCode();
+		    print $re->getMessage();
+		    print $re->getDeveloperMessage();
+		    print $re->getMoreInfo();
+		}
+<!-- {.php} -->
+
+9. **Send password reset request**
+
+		$application->sendPasswordResetEmail('john.smith@example.com');
+<!-- {.php} -->
+
+10. **Create a group** in a directory
+
+		$group = \Stormpath\Resource\Group::instantiate(array('name' => 'Admins'));
+
+		$directory->createGroup($group);
+<!-- {.php} -->
+
+11. **Add the account to the group**
+
+		$group->addAccount($account);		
+<!-- {.php} -->
+
+12. **Check for account inclusion in group**
+
+		$isAdmin = false;
+		$search = array('name' => 'Admins');
+
+		foreach($account->groups->setSearch($search) as $group)
+		{
+		    // if one group was returned, the account is in
+		    // the group based on the search criteria
+		    $isAdmin = true;
+		}
+<!-- {.php} -->
+
 
 ## Next Steps
 
