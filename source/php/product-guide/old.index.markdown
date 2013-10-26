@@ -12,9 +12,9 @@ For help to quickly get started with Stormpath, refer to the [PHP Quickstart Gui
 
 ## What is Stormpath?
 
-Stormpath is the first easy, secure user management and authentication service for developers.
+Stormpath is the first easy, secure user management and authentication service for developers. 
 
-Fast and intuitive to use, Stormpath enables plug-and-play security and accelerates application development on any platform.
+Fast and intuitive to use, Stormpath enables plug-and-play security and accelerates application development on any platform. 
 
 Built for developers, it offers an easy API, open source SDKs, and an active community. The flexible cloud service can manage millions of users with a scalable pricing model that is ideal for projects of any size.
 
@@ -32,7 +32,7 @@ The Stormpath Admin Console allows authorized administrators to:
 * Create and manage accounts and adjust group membership
 * Create and manage directories and the associated groups
 * Map directories and groups to allow accounts to log in to integrated applications
-* Configure workflow or account administration automation
+* Configure workflow or account administration automation 
 
 To access the Stormpath Admin Console, visit [https://api.stormpath.com/login](https://api.stormpath.com/login)
 
@@ -74,62 +74,53 @@ Although knowing how the SDK is designed and how it works is not required to use
 
 The root entry point for SDK functionality is the `Client` instance. Using the client instance, you can access all tenant data, such as applications, directories, groups, and accounts.
 
-The client can also have static properties configured if the user prefers to use the convenient static calls instead of instance calls.
-
 #### Preferred Configuration
 
-There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure `apiKey.properties` file, where it is statically configured:
+There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure `apiKey.yml` file, where the ClientBuilder implementation is being used:
 
-    $apiKeyFile = '/home/myhomedir/.stormpath/apiKey.properties';
-    \Stormpath\Client::$apiKeyFileLocation = $apiKeyFile;
-
-Or by creating a client instance using the ClientBuilder implementation:
-
-	$builder = new \Stormpath\ClientBuilder();
+	$apiKeyFile = '/home/myhomedir/.stormpath/apiKey.yml';
+	$builder = new Services_Stormpath_Client_ClientBuilder;
 	$client = $builder->setApiKeyFileLocation($apiKeyFile)->build();
-
+	
 This is heavily recommended if you have access to the file system.
 
-### Custom Api Key Id and Secret names
+#### Single URL Configuration
 
-You can even identify the names of the properties to use as the API key id and secret. For example, suppose your properties were:
+The [PHP Quickstart Guide](http://www.stormpath.com/docs/php/quickstart) assumes you have easy access to an `apiKey.yml` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance using a single URL, where often the URL is available as an environment variable, such as `$_ENV`.
 
-    $foo = 'APIKEYID';
-    $bar = 'APIKEYSECRET';
+This technique requires embedding the API key ID and secret as components in a URL; allowing you to have a single URL that contains all necessary information required to construct a `Client`.
 
-You could configure the Client with the following parameters:
+{% docs warning %}
+Do not use this technique if you have access to a file system. Depending on the environment, environment variables are less secure than reading a permission-restricted file like `apiKey.yml`.
+{% enddocs %}
 
-    \Stormpath\Client::$apiKeyIdPropertyName = $foo;
-    \Stormpath\Client::$apiKeySecretPropertyName = $bar;
+If you do not have access to the file system to read an `apiKey.yml` file, you can use the `Services_Stormpath_Client_ClientApplicationBuilder` instead of the `Services_Stormpath_Client_ClientBuilder`. The `Services_Stormpath_Client_ClientApplicationBuilder` accepts a single URL of the application Stormpath HREF with the API key information embedded in the URL. For example:
 
-    //Or
+	$appHref = "https://apiKeyId:apiKeySecret@api.stormpath.com/v1/applications/YOUR_APP_UID_HERE"
 
-    $builder = new \Stormpath\ClientBuilder();
-    $client = $builder->setApiKeyFileLocation($apiKeyFileLocation)->
-                        setApiKeyIdPropertyName($foo)->
-                        setApiKeySecretPropertyName($bar)->
-                        build();
+Make sure the `apiKeyId` and `apiKeySecret` components are URL-encoded.
 
-#### API Key Properties String
+Then you can acquire the [Services_Stormpath_Client_ClientApplication](https://github.com/stormpath/stormpath-sdk-php/blob/master/Services/Stormpath/Client/ClientApplication.php) using the `ClientApplicationBuilder` to obtain a `Services_Stormpath_Client_Client` and a `Services_Stormpath_Resource_Application`:
 
-The client can be configured by using the static `apiKeyProperties` property of the `\Stormpath\Client` class, which requires a valid PHP ini formatted string:
+	$builder = new Services_Stormpath_Client_ClientApplicationBuilder;
+	$clientApplication = $builder->setApplicationHref($appHre)->build();
 
-	$apiKeyProperties = "apiKey.id=APIKEYID\napiKey.secret=APIKEYSECRET";
-    \Stormpath\Client::$apiKeyProperties = $apiKeyProperties;
+	$client = $clientApplication->getClient();
+	$application = $clientApplication->getApplication();
+	
+The ClientApplicationBuilder is a powerful utility that can be used in different ways, including all of the [ClientBuilder](https://github.com/stormpath/stormpath-sdk-php/blob/master/Services/Stormpath/Client/ClientBuilder.php) functionalities. To learn more about its usage you can read the [ClientApplicationBuilder](https://github.com/stormpath/stormpath-sdk-php/blob/master/Services/Stormpath/Client/ClientApplicationBuilder.php) API documentation.
 
-Or by creating the client from the ClientBuilder:
-
-    $builder = new \Stormpath\ClientBuilder();
-    $client = $builder->setApiKeyProperties($apiKeyProperties)->build();
-
-Working with different properties names (explained in the previous config instructions) also work with this scenario.
 
 #### API Key Configuration
 
 Another way to create a client is by creating an ApiKey instance with the API credentials and passing this instance to create the client instance:
 
-	$apiKey = new \Stormpath\ApiKey('apiKeyId', 'apiKeySecret');
-	$client = new \Stormpath\Client($apiKey);
+	$apiKey = new Services_Stormpath_Client_ApiKey('apiKeyId', 'apiKeySecret');
+	$client = new Services_Stormpath_Client_Client($apiKey);
+
+Or by using the static `createClient` function of the `Services_Stormpath` class:
+
+	$client = Services_Stormpath::createClient('apiKeyId', 'apiKeyId');
 
 {% docs warning %}
 DO NOT specify your actual `apiKey.id` and `apiKey.secret` values in source code! They are secure values associated with a specific person. You should never expose these values to other people, not even other co-workers.
@@ -175,10 +166,10 @@ The core component concepts of the SDK are as follows:<br>
 <img src="http://www.stormpath.com/sites/default/files/docs/ComponentArchitecture.png" alt="Stormpath SDK Component Architecture" title="Stormpath SDK Component Architecture" width="670">
 
 * **Client** is the root entry point for SDK functionality and accessing other SDK components, such as the `DataStore`. A client is constructed with a Stormpath API key which is required to communicate with the Stormpath API server. After it is constructed, the client delegates to an internal DataStore to do most of its work.
-* **DataStore** is central to the Stormpath SDK. It is responsible for managing all PHP `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on PHP `resource` objects into REST requests to the Stormpath API server as necessary. It works between your application and the Stormpath API server.
-	* **RequestExecutor** is an internal infrastructure component used by the `DataStore` to execute HTTP requests (`GET`, `PUT`, `POST`, `DELETE`) as necessary. When the DataStore needs to send a PHP `Resource` instance state to or query the server for resources, it delegates to the RequestExecutor to perform the actual HTTP requests. The Stormpath SDK default `RequestExecutor` implementation is `HttpClientRequestExecutor` which uses the [Guzzle Http library](http://guzzlephp.org/) to execute the raw requests and read the raw responses.
-	* **MapMarshaller** is an internal infrastructure component used by the `DataStore` to convert JSON strings into PHP `Object` instances or the reverse. The map instances are used by the `ResourceFactory` to construct standard PHP objects representing REST resources. The Stormpath SDK default `MapMarshaller` uses the [JSON decode](http://php.net/manual/en/function.json-decode.php).
-	* **ResourceFactory** is an internal infrastructure component used by the `DataStore` to convert REST resource map data into standard PHP `resource` objects. The ResourceFactory uses Objects from `MapMarshaller` to construct the PHP resource instances.
+* **DataStore** is central to the Stormpath SDK. It is responsible for managing all PHP `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on PHP `resource` objects into REST requests to the Stormpath API server as necessary. It works between your application and the Stormpath API server
+	* **RequestExecutor** is an internal infrastructure component used by the `DataStore` to execute HTTP requests (`GET`, `PUT`, `POST`, `DELETE`) as necessary. When the DataStore needs to send a PHP `Resource` instance state to or query the server for resources, it delegates to the RequestExecutor to perform the actual HTTP requests. The Stormpath SDK default `RequestExecutor` implementation is `HttpClientRequestExecutor` which uses the [Http_Request2](http://pear.php.net/package/HTTP_Request2/) to execute the raw requests and read the raw responses.
+	* **MapMarshaller** is an internal infrastructure component used by the `DataStore` to convert JSON strings into PHP `Map` instances or the reverse. The map instances are used by the `ResourceFactory` to construct standard PHP objects representing REST resources. The Stormpath SDK default `MapMarshaller` uses the [JSON decode](http://php.net/manual/en/function.json-decode.php).
+	* **ResourceFactory** is an internal infrastructure component used by the `DataStore` to convert REST resource map data into standard PHP `resource` objects. The ResourceFactory uses Maps from `MapMarshaller` to construct the PHP resource instances.
 	* **Resources** are standard PHP objects that have a 1-to-1 correlation with REST data resources in the Stormpath API server such as applications and directories. Applications directly use these `resource` objects for security needs, such as authenticating user accounts, creating groups and accounts, finding application accounts, assigning accounts to groups, and resetting passwords.
 
 ### Resources and Proxying
@@ -187,12 +178,9 @@ When applications interact with a Stormpath SDK `resource` instance, they are re
 
 For example, using the SDK Communication Flow diagram in the [high-level overview](#HighLevelOverview) section, assuming you have a reference to an `account` object - perhaps you have queried for it or you already have the account `href` and you want to load the `account` resource from the server:
 
-    // Using the static configuration
-    $href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE';
-    $account = \Stormpath\Resource\Account::get($href);
-
-    // Using the client instance
-	$account = $client->dataStore->getResource($href, \Stormpath\Stormpath::ACCOUNT); //the \Stormpath\Stormpath class provides the resources' classes' names
+	$dataStore = $client->getDataStore();
+	$href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE';
+	$account = $dataStore->getResource($href, Services_Stormpath::ACCOUNT); //the Services_Stormpath class provides the resources' classes' names 
 
 This retrieves the account at the specified `href` location using an HTTP `GET` request.
 
@@ -203,42 +191,40 @@ If you also want information about the `directory` owning that account, every ac
 	  "surname": "Smith",
 	  ...
 	  "directory": {
-	      "href": "https://api.stormpath.com/v1/directories/DIR_UID_HERE"
+	      "href": "https://api.stormpath.com/v1/directories/someDirectoryIdHere"
 	  }
 	  ...
 	}
 
 Notice the JSON `directory` property is only a link (pointer) to the directory; it does not contain any of the directory properties. The JSON shows we should be able to reference the `directory` property, and then reference the `href` property, and do another lookup (pseudo code):
 
-	// Using the static configuration
-    $href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE';
-    $directory = \Stormpath\Resource\Directory::get($href);
-
-    // Using the client instance
-    $directory = $client->dataStore->getResource($href, \Stormpath\Stormpath::DIRECTORY); //the \Stormpath\Stormpath class provides the resources' classes' names
+	//this code will not work, for demonstration purposes only:
+	$dataStore = $client->getDataStore();
+	$href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE';
+	$directory = $dataStore->getResource($href, Services_Stormpath::DIRECTORY); //the Services_Stormpath class provides the resources' classes' names
 
 This technique is cumbersome, verbose, and requires a lot of boilerplate code in your project. As such, SDK resources **automatically** execute the lookups for unloaded references for you using simple property navigation!
 
 The previous lookup becomes:
 
-	$directory = $account->directory;
+	$directory = $account->getDirectory();
 
-If the directory already exists in memory because the `DataStore` has previously loaded it, the directory is immediately returned. However, if the directory is not present, the directory `href` is used to return the directory properties (the immediate data loaded) automatically for you. This technique is known as *lazy loading* which allows you to traverse entire object graphs automatically without requiring constant knowledge of `href` URLs.
+If the directory already exists in memory because the `DataStore` has previousy loaded it, the directory is immediately returned. However, if the directory is not present, the directory `href` is used to return the directory properties (the immediate data loaded) automatically for you. This technique is known as *lazy loading* which allows you to traverse entire object graphs automatically without requiring constant knowledge of `href` URLs.
 
 ### Error Handling
 
-Errors thrown from the server are translated to a [\Stormpath\Resource\ResourceError](https://github.com/stormpath/stormpath-sdk-php/blob/master/src/Stormpath/Resource/ResourceError.php). This applies to all requests to the Stormpath API endpoints.
+Errors thrown from the server are translated to a [Services_Stormpath_Resource_ResourceError](https://github.com/stormpath/stormpath-sdk-php/blob/master/Services/Stormpath/Resource/ResourceError.php). This applies to all requests to the Stormpath API endpoints.
 
 For example, when getting the current tenant from the client you can catch any error that the request might produce as following:
 
 	try {
 
-	    $client->tenant;
+	    $client->getCurrentTenant();
 
-	} catch (\Stormpath\Resource\ResourceError $re)
+	} catch (Services_Stormpath_Resource_ResourceError $re)
 	{
 	    echo 'Message: ' . $re->getMessage();
-	    echo 'HTTP Status: ' . strval($re->getStatus());
+	    echo 'HTTP Status: ' . strval($re->getStatus()); 
 	    echo 'Developer Message: ' . $re->getDeveloperMessage();
 	    echo 'More Information: ' . $re->getMoreInfo();
 	    echo 'Error Code: ' . strval($re->getErrorCode());
@@ -247,7 +233,7 @@ For example, when getting the current tenant from the client you can catch any e
 ***
 
 ## Applications
-An [application](#Application) in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath.
+An [application](#Application) in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath. 
 
 When defining an application in Stormpath, it is typically associated with one or more directories or groups. The associated directories and groups form the application *user base*. The accounts within the associated directories and groups are considered the application users and can login to the application.
 
@@ -258,27 +244,21 @@ Attribute | Description
 Name | The name used to identify the application within Stormpath. This value must be unique.
 Description | A short description of the application.
 Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent accounts from logging in to the application.
-Accounts | A link to all accounts that may login to the application.
-Groups | A link to all groups that are accessible to the application for authorization (access control) needs.
-AccountStoreMappings | A link to the collection of all account store mappings that represent the application.
-DefaultAccountStoreMapping | A link to the account store mapping that reflects the default account store where the application will store newly created accounts.
-DefaultGroupStoreMapping | A link to the account store mapping that reflects the default group store where the application will store newly created groups.
 
 {% docs note %}
 A URL for the application is often helpful.
 {% enddocs %}
 
-You can control access to your Stormpath Admin Console and API by managing the [account stores](#LoginSource) for the listed Stormpath application.
+You can control access to your Stormpath Admin Console and API by managing the [login sources](#LoginSource) for the listed Stormpath application. 
 
-For applications, you can:
+For applications, you can: 
 
 * [Locate the application REST URL](#LocateAppURL)Locate Application URL"> within the Stormpath Admin Console.
 * [List applications](#ListApps)
 * [Retrieve an application](#RetrieveApps).
 * [Register an application](#RegisterApps).
-* [Register an application with a directory](#RegisterAppsWithDir).
 * [Edit the details of an application](#EditApps).
-* [Manage application account stores](#ManageLoginSources), including [changing default account and group locations](#ChangeDefaults), [adding another account store](#AddLoginSource), [changing the account store priority order](#ChangeLoginSourcePriority), and [removing account stores](#RemoveLoginSource).
+* [Manage application login sources](#ManageLoginSources), including [changing default account and group locations](#ChangeDefaults), [adding another login source](#AddLoginSource), [changing the login source priority order](#ChangeLoginSourcePriority), and [removing login sources](#RemoveLoginSource).
 * [Enable an application](#EnableApps).
 * [Disable an application](#DisableApps).
 * [Delete an application](#DeleteApps).
@@ -286,7 +266,7 @@ For applications, you can:
 
 ### Locate the Application REST URL
 
-When communicating with the Stormpath REST API, you might need to reference an application using the REST URL or `href`. For example, you require the REST URL to delete applications or to obtain a listing of accounts mapped to an application.
+When communicating with the Stormpath REST API, you might need to reference an application using the REST URL or `href`. For example, you require the REST URL to delete applications or to obtain a listing of accounts mapped to an application. 
 
 To obtain an application REST URL:
 
@@ -300,200 +280,185 @@ The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/s
 
 To retrieve a list of applications, you must do the following:
 
-1. Get the current tenant from the Tenant class or from the client instance.
+1. Get the current tenant from a client instance.
 2. Get the applications from the current tenant.
 
 
 **Code:**
 
-    $tenant = \Stormpath\Resource\Tenant::get();
+	$tenant = $client->getCurrentTenant();
 
-    // Or
-
-	$tenant = $client->tenant;
-
-	$applications = $tenant->applications;
+	$applications = $tenant->getApplications();
 
 	foreach($applications as $app)
 	{
-	   echo 'Application ' . $app->name;
-	   echo 'Application Description ' . $app->description;
-	   echo 'Application Status ' . $app->status;
+	   echo 'Application ' . $app->getName();
+	   echo 'Application Description ' . $app->getDescription();
+	   echo 'Application Status ' . $app->getStatus();
 	}
 
 ### Retrieve an Application
 
-You will typically retrieve an `Application` referenced from another resource, for example using the `ApplicationList` parameter.
+You will typically retrieve an `Application` referenced from another resource, for example using the `ApplicationList` parameter. 
 
-You can also directly retrieve a specific application using the `href` (REST URL) value. For any application, you can [find the application href](#LocateAppURL) in the Stormpath console.
+You can also directly retrieve a specific application using the `href` (REST URL) value. For any application, you can [find the application href](#LocateAppURL) in the Stormpath console. This can be particularly useful when you need an application href for the `ClientApplicationBuilder`.
 
-After you have the `href` it can be loaded directly as an object instance by retrieving it from the server, using the static getter of the Application class or the Client's data store:
+After you have the `href` it can be loaded directly as an object instance by retrieving it from the server, using the data store:
 
+	$dataStore = $client->getDataStore();
 	$href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE';
-	$application = \Stormpath\Resource\Application::get($href);
-
-    // Or
-
-	$application = $client->dataStore->getResource($href, \Stormpath\Stormpath::APPLICATION); //the \Stormpath\Stormpath class provides the resources' classes' names
+	$application = $dataStore->getResource($href, Services_Stormpath::APPLICATION); //the Services_Stormpath class provides the resources' classes' names
 
 
 ### Register an Application
 
 To authenticate a user account in your [application](#Application), you must first register the application with Stormpath.
 
-To register an application, you can do it in two ways:
+To register an application, you must:
 
-1. Create it from the static `create` method of the `Application` class.
-
-    $application = \Stormpath\Resource\Application::create(array('name' => 'My Application', 'description' => 'My Application Description'));
-
-    // Or, using an application instance
-
-    $application = \Stormpath\Resource\Application::instantiate();
-    $application->name = 'My Application';
-    $application->description = 'My Application Description';
-    \Stormpath\Resource\Application::create($application);
-
-2. Create it from the tenant instance.
+1. Retrieve your current tenant from the client instance.
+2. Instantiate an application object.
+3. Set the application properties.
+4. Create the application from your current tenant.
 
 To create applications, use the `_setters_` of a new application instance to set the values and then create the application from the tenant, as follows:
 
-	$application = $client->dataStore->instantiate(\Stormpath\Stormpath::APPLICATION); //the \Stormpath\Stormpath class provides the resources' classes' names
-	$application->name = 'Application Name';
-	$application->description = 'Application Description';
+	$tenant = $client->getCurrentTenant();
+ 
+	 $application = $client->getDataStore()->instantiate(Services_Stormpath::APPLICATION); //the Services_Stormpath class provides the resources' classes' names
+	 $application->setName('Application Name');
+	 $application->setDescription('Application Description');
+ 
+	 $application = $tenant->createApplication($application);
 
-	$client->tenant->createApplication($application);
-
-### Register an Application with a Directory
-
-An application can be created with a directory that is associated as the default account and group store. This can be done in two ways:
-
-1. Creating the application with a directory with a default name:
-
-    \Stormpath\Resource\Application::create($application, array('createDirectory' => true));
-
-    //Or, from the tenant
-
-    $client->tenant->createApplication($application, array('createDirectory' => true));
-
-2. Creating the application with a directory with a custom name:
-
-    \Stormpath\Resource\Application::create($application, array('createDirectory' => 'My directory name'));
-
-    //Or, from the tenant
-
-    $client->tenant->createApplication($application, array('createDirectory' => 'My directory name'));
-
-See the [Register an Application](#RegisterApps) section if in doubt of how to create the application instance.
 
 ### Edit an Application
 
 To edit applications, use the `_setters_` of an existing application instance to set the values and call the `save();` method:
 
-	$application->status = \Stormpath\Stormpath::DISABLED; //the \Stormpath\Stormpath class provides the valid status' constants
-	$application->name = 'New Application Name';
-	$application->description = 'New Application Description';
+	$application->setStatus(Services_Stormpath::DISABLED); //the Services_Stormpath class provides the valid status' constants
+	$application->setName('New Application Name');
+	$application->setDescription('New Application Description');
 
 	$application->save();
 
-### Manage Application Account Stores Mappings
+### Manage Application Login Sources
 
-[Account stores](#LoginSource) define the user base for a given application. Account store mappings determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.
+[Login sources](#LoginSource) define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.
 
-In Stormpath, a directory or group can be an account store for an application. At least one account store must be associated with an application for accounts to log in to that application.
-
-For account store mappings, the basic details include:
-
-Attribute | Description
-:----- | :-----
-Application | A link to the mapping’s Application. Required.
-AccountStore | A link to the mapping’s account store (either a Group or Directory) containing accounts that may login to the application. Required.
-ListIndex | The order (priority) when the associated accountStore will be consulted by the application during an authentication attempt. This is a zero-based index; an account store at listIndex of 0 will be consulted first (has the highest priority), followed the account store at listIndex 1 (next highest priority), etc. Setting a negative value will default the value to 0, placing it first in the list. A listIndex of larger than the current list size will place the mapping at the end of the list and then default the value to (list size - 1).
-IsDefaultAccountStore | A true value indicates that new accounts created by the application will be automatically saved to the mapping’s accountStore. A false value indicates that new accounts created by the application will not be saved to the accountStore.
-IsDefaultGroupStore | A true value indicates that new groups created by the application will be automatically saved to the mapping’s accountStore. A false value indicates that new groups created by the application will not be saved to the accountStore. This may only be set to true if the accountStore is a Directory. Stormpath does not currently support Groups storing other Groups.
+In Stormpath, a directory or group can be a login source for an application. At least one login source must be associated with an application for accounts to log in to that application.
 
 #### How Login Attempts Work
 
 **Example:**
-Assume an application named Foo has been mapped to two account stores, the Customers and Employees directories, in that order.
+Assume an application named Foo has been mapped to two login sources, the Customers and Employees directories, in that order.
 
-Here is what happens when a user attempts to log in to an application named Foo:
+Here is what happens when a user attempts to log in to an application named Foo:  
 
-<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Account Store Mappings Diagram" title="Account Store Mappings Diagram" width="650" height="500">
+<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Login Sources Diagram" width="650" height="500">
 
-You can configure multiple account stores, but only one is required for logging in. Multiple account stores allows each application to view multiple directories as a single repository during a login attempt.
+You can configure multiple login sources, but only one is required for logging in. Multiple login sources allows each application to view multiple directories as a single repository during a login attempt.
 
 After an application has been registered, or created, within Stormpath, you can:
 
-* [Create account store mappings](#CreateAccountStoreMappings)
 * [Change default account and group locations](#ChangeDefaults)
-* [Change the account store priority order](#ChangeLoginSourcePriority)
-* [Remove account store mappings](#RemoveLoginSource)
+* [Add another login source](#AddLoginSource) (directories)
+* [Change the login source priority order](#ChangeLoginSourcePriority)
+* [Remove login sources](#RemoveLoginSource)
 
-#### Create Account Store Mappings
+To manage application login sources, you must log in to the Stormpath Admin Console:
 
-To create an account store mapping, you need (at least) an application and an account store instances. Then, you can create the account store mapping from the static `create` method of the `AccountStoreMapping` class, or from the application instance.
-
-    $accountStoreMapping = \Stormpath\Resource\AccountStoreMapping::create(
-        array('accountStore' => $directory, // this could also be a group
-              'application' => $application)
-        );
-
-      //Or
-
-    $accountStoreMapping = $client->dataStore->instantiate(\Stormpath\Stormpath::ACCOUNT_STORE_MAPPING);
-    $accountStoreMapping->accountStore = $directory; // this could also be a group
-    $application->createAccountStoreMapping($accountStoreMapping);
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Click the application name.
+4. Click the **Login Sources** tab.<br>
+The login sources appear in order of priority.<br> 
+	<img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
 
 #### Change Default Account and Group Locations
 
-On the account store mapping instance, you can specify if the account store (directory or group) is to be used as the default locations when creating new accounts and groups from an application.
+On the Login Sources tab for applications, you can select the login sources (directory or group) to use as the default locations when creating new accounts and groups.
 
-    $accountStoreMapping->defaultAccountStore = true;
-    $accountStoreMapping->defaultGroupStore = true; // this option will only work if the account store is a directory
-    $accountStoreMapping->save();
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Click the application name.
+4. Click the **Login Sources** tab.
+	a. To specify the default creation location(directory) for new accounts created in the application, in the appropriate row, select **New Account Location**.
+	b. To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select **New Group Location**.
+5. Click **Save**.
 
-From the application, you can get the account store mappings that are used as default account store and default group store:
+#### Add Another Login Source
 
-    $defaultAccountStoreMapping = $application->defaultAccountStoreMapping;
-    $defaultGroupStoreMapping = $application->defaultGroupStoreMapping;
+Adding a login source to an application provisions a directory or group to that application.  By doing so, all login source accounts can log into the application.
 
-#### Change Account Store Priority Order
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Click the application name.
+4. Click the **Login Sources** tab.
+5. Click **Add Login Source**.
+6. In the *login source* list, select the appropriate directory.<br>
+	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown1.png" alt="Login Sources" title="Login Sources"><br>
+7.  If the directory contains groups, you can select all users or specific group for access.<br> 
+	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown2.png" alt="Login Sources" title="Login Sources"><br>
+8. Click **Add Login Source**.<br>
+The new login source is added to the bottom of the login sources list.    
 
-When you map multiple account stores to an application, you can also define the account store order.
+#### Change Login Source Priority Order
 
-The account store order is important during the login attempt for a user account because of cases where the same user account exists in multiple directories. When a user account attempts to log in to an application, Stormpath searches the listed account stores in the order specified, and uses the credentials (password) of the first occurrence of the user account to validate the login attempt.
+When you map multiple login sources to an application, you must also define the login source order.
+
+The login source order is important during the login attempt for a user account because of cases where the same user account exists in multiple directories. When a user account attempts to log in to an application, Stormpath searches the listed login sources in the order specified, and uses the credentials (password) of the first occurrence of the user account to validate the login attempt.
 
 To specify the login source order:
 
-    $accountStoreMapping->listIndex = 0;
-    $accountStoreMapping->save();
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Click the application name.
+4. Click the **Login Sources** tab.
+5. Click the row of the directory to move.
+6. Drag the row to the appropriate order.<br>
+	For example, if you want to move the first login source to the second login source, click anywhere in the first row of the login source table and drop the row on the second row.<br>
+	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
+7. Click **Save Priorities**.
 
-#### Remove Account Store Mappings
+#### Remove Login Sources
 
-Removing an account store mapping deprovisions that directory or group from the application. By doing so, all accounts from the account store are no longer able to log into the application.
+Removing a login source from an application deprovisions that directory or group from the application. By doing so, all accounts from the login source are no longer able to log into the application.
 
-To remove an account store mapping:
+To remove a login source from an application:
 
-    $accountStoreMapping->delete();
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Click the application name.
+4. Click the **Login Sources** tab.
+5. On the Login Sources tab, locate the directory or group.
+6. Under the Actions column, click **Remove**.
 
 ### Enable an Application
 
 Enabling a previously disabled application allows any enabled directories, groups, and accounts associated with the application login sources in Stormpath to log in.
 
-To enable an application:
+To enable an application, you must:
 
-1. Set the `ENABLED` status to the application instance.
-2. Call the `save` method on the application instance.
+1. Get the datastore instance from a client instance.
+2. Get the application instance from the datastore with the application `href`.
+3. Set the `ENABLED` status to the application instance.
+4. Call the `save` method on the application instance.
 
 **Code:**
 
-	$application->status = \Stormpath\Stormpath::ENABLED); //the \Stormpath\Stormpath class provides the valid status' constants
-    $application->save();
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/applications/APPLICATION_UID_HERE';
+	 $application = $dataStore->getResource($href, Services_Stormpath::APPLICATION); //the Services_Stormpath class provides the resources' classes' names
+  
+	 $application->setStatus(Services_Stormpath::ENABLED); //the Services_Stormpath class provides the valid status' constants
+ 
+	 $application->save();
 
 ### Disable an Application
 
-Disabling an application prevents the application from logging in any accounts in Stormpath, but retains all application configurations. If you must temporarily turn off logins, disable an application.
+Disabling an application prevents the application from logging in any accounts in Stormpath, but retains all application configurations. If you must temporarily turn off logins, disable an application. 
 
 {% docs note %}
 The Stormpath application cannot be disabled.
@@ -501,13 +466,21 @@ The Stormpath application cannot be disabled.
 
 To disable an application, you must:
 
-1. Set the `DISABLED` status to the application instance.
-2. Call the `save` method on the application instance.
+1. Get the datastore instance from a client instance.
+2. Get the application instance from the datastore with the application `href`.
+3. Set the `DISABLED` status to the application instance.
+4. Call the `save` method on the application instance.
 
 **Code:**
 
-	$application->status = \Stormpath\Stormpath::DISABLED); //the \Stormpath\Stormpath class provides the valid status' constants
-    $application->save();
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/applications/APPLICATION_UID_HERE';
+	 $application = $dataStore->getResource($href, Services_Stormpath::APPLICATION); //the Services_Stormpath class provides the resources' classes' names
+  
+	 $application->setStatus(Services_Stormpath::DISABLED); //the Services_Stormpath class provides the valid status' constants
+ 
+	 $application->save();
 
 ### Delete an Application
 
@@ -518,11 +491,14 @@ Deleting an application completely erases the application and its configurations
 * Deleted applications cannot be restored.
 {% enddocs %}
 
-To delete an application, call the `delete` method on the application instance.
+To delete an application, you must use the Stormpath Admin Console.
 
-    $application->delete();
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Under the Actions column, click **Delete**.<br>
+The application is erased from Stormpath and no longer appears in the application browser. 
 
-***
+***	
 
 ## Directories
 
@@ -534,10 +510,7 @@ Attribute | Description
 :----- | :-----
 Name | The name used to identify the directory within Stormpath. This value must be unique.
 Description | Details about this specific directory.
-Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as an account store to an application.
-Accounts | A link to the accounts owned by the directory.
-Groups | A link to the groups owned by the directory.
-Tenant | A link to the owning tenant.
+Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
 
 Within Stormpath, there are two types of directories you can implement:
 
@@ -547,7 +520,7 @@ Within Stormpath, there are two types of directories you can implement:
 	* You can specify various LDAP/AD object and attribute settings of the specific LDAP/AD server for users and groups.
 	* If the agent status is Online, but you are unable to see any data when browsing your LDAP/AD mapped directory, it is likely that your object and filters are configured incorrectly.
 
-You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#LoginSource" title="account store">account stores</a>.
+You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#LoginSource" title="login source">login sources</a>.
 
 LDAP/AD accounts and groups are automatically deleted when:
 
@@ -561,10 +534,10 @@ For directories, you can:
 * [List directories](#ListDirectories).
 * [Retrieve directories](#RetrieveDir).
 * [Create a directory](#CreateDir).
-	* [Create a cloud directory](#CreateCloud).
+	* [Create a cloud directory](#CreateCloud). 
 	* [Create a mirrored (LDAP) directory](#CreateMirror).
 * [Map directories to applications](#AssocApplications).
-* [Edit directory details](#EditDir).
+* [Edit directory details](#EditDir). 
 * [Update agent configuration](#UpdateAgent).
 * [Enable a directory](#EnableDir).
 * [Disable a directory](#DisableDir).
@@ -573,58 +546,53 @@ For directories, you can:
 
 ### Locate the Directory REST URL
 
-When communicating with the Stormpath REST API, you might need to reference a directory using the REST URL or `href`. For example, you require the REST URL to create accounts in the directory using an SDK.
+When communicating with the Stormpath REST API, you might need to reference a directory using the REST URL or `href`. For example, you require the REST URL to create accounts in the directory using an SDK. 
 
 To obtain a directory REST URL:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Directories** tab.
 3. In the Directories table, click the directory name.<br>
-The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/Resturl.png" alt="Directory Resturl" title="Directory Resturl">
+The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/Resturl.png" alt="Application Resturl" title="Application Resturl">
 
 
 ### List Directories
 
 To retrieve directories, you must:
 
-1. Get the current tenant from the static getter, or from a client instance.
+1. Get the current tenant from a client instance.
 2. Get the directories from the current tenant.
 
 **Code:**
 
-    $tenant = \Stormpath\Resource\Tenant::get();
+	$tenant = $client->getCurrentTenant();
 
-    // Or
-
-	$tenant = $client->tenant;
-
-	$directories = $tenant->directories;
+	$directories = $tenant->getDirectories();
 
 	foreach($directories as $dir)
 	{
-	   echo 'Directory ' . $dir->name;
-	   echo 'Directory Description ' . $dir->description;
-	   echo 'Directory Status ' . $dir->status;
+	   echo 'Directory ' . $dir->getName();
+	   echo 'Directory Description ' . $dir->getDescription();
+	   echo 'Directory Status ' . $dir->getStatus();
 	}
 
 ### Retrieve a Directory
 
-You will typically retrieve a `Directory` linked from another resource.
+You will typically retrieve a `Directory` linked from another resource. 
 
-You can also retrieve it or as a direct reference, such as `$account->directory;`.
+You can also retrieve it or as a direct reference, such as `$account->getDirectory();`.
 
 Finally, you can also directly retrieve a specific directory using the `href` (REST URL) value. For any directory, you can [find the directory href](#LocateDirURL) in the Stormpath console.
 
-After you have the `href` it can be loaded directly as an object instance by retrieving it from the server, using the static getter or the Client data store:
+After you have the `href` it can be loaded directly as an object instance by retrieving it from the server, using the data store:
 
+	$dataStore = $client->getDataStore();
 	$href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE';
-	$directory = \Stormpath\Resource\Directory::get($href);
-
-	$directory = $client->$dataStore->getResource($href, \Stormpath\Stormpath::DIRECTORY); //the \Stormpath\Stormpath class provides the resources' classes' names
+	$directory = $dataStore->getResource($href, Services_Stormpath::DIRECTORY); //the Services_Stormpath class provides the resources' classes' names
 
 ### Create a Directory
 
-To create a directory for application authentication, you must know which type of directory service to use.
+To create a directory for application authentication, you must know which type of directory service to use. 
 
 You can create a:
 
@@ -634,41 +602,35 @@ You can create a:
 
 * [Mirrored (LDAP) directory](#CreateMirror), which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.
 
-{% docs note %}
+{% docs note %} 
 The ability to create a mirrored, or agent, directory is connected to your subscription. If the option is not available, click the question mark for more information.
 {% enddocs %}
 
 #### Create a Cloud Directory
 
-To create a cloud directory, you can create it from the static `create` method of the `Directory` class or from the tenant instance.
+To create a cloud directory, you must log in to the Stormpath Admin Console.
 
-From the static `create` method of the `Directory` class:
+1. Click the **Directories** tab.
+2. Click **Create Directory**.
+3. Click **Cloud**.
+4. Complete the field values as noted in the table that follows.
+5. Click **Create**. 
 
-     $directory = \Stormpath\Resource\Directory::create(
-        array('name' => 'My directory',
-              'description' => 'My directory description')
-        );
+<img src="http://www.stormpath.com/sites/default/files/docs/CreateCloudDirectory.png" alt="Create Cloud Directory" title="Create Cloud Directory" width="650" height="480"><br />
 
-      // Or
-
-      $directory = \Stormpath\Resource\Directory::instantiate();
-      $directory->name = 'My directory';
-      $directory->description = 'Directory Description';
-      \Stormpath\Resource\Directory::create($directory);
-
-From the tenant instance:
-
-      $directory = $client->dataStore->instantiate(\Stormpath\Stormpath::DIRECTORY);
-      $directory->name = 'My directory';
-      $directory->description = 'Directory Description';
-      $tenant->createDirectory($directory);
+Attribute | Description
+:----- | :-----
+Name | The name used to identify the directory within Stormpath. This value must be unique.
+Description | Details about this specific directory.
+Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
+Min characters | The minimum number of acceptable characters for the account password.
+Max characters | The maximum number of acceptable characters for the account password.
+Mandatory characters | The required character patterns which new passwords will be validated against. For example, for an alphanumeric password of at least 8 characters with at least one lowercase and one uppercase character, select the abc, ABC, and 012 options. The more patterns selected, the more secure the passwords but the more complicated for a user.
 
 
 #### Create a Mirrored Directory
 
-To create a mirrored directory, you must log in to the Stormpath Admin Console.
-
-Mirrored directories, after initial configuration, are accessible through the Agents tab of the directory.
+Mirrored directories, after initial configuration, are accessible through the Agents tab of the directory. 
 
 1. Click the **Directories** tab.
 2. Click **Create Directory**.
@@ -677,7 +639,7 @@ Mirrored directories, after initial configuration, are accessible through the Ag
 	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAPDirectory.png" alt="Create LDAP Directory" title="Create Mirrored Directory" width="650">
 
 4. On the 1. Directory Basics tab, complete the field values as follows:
-
+	
 	Attribute | Description
 :----- | :-----
 Directory Name | A short name for this directory, unique from your other Stormpath directories.
@@ -687,9 +649,9 @@ Directory Status | Whether or not the directory is to be used to authenticate ac
 5. Click **Next**.
 
 	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP2.png" alt="Agent Configuration" title="Agent Configuration" width="640">
-
+	
 6. On the 2. Agent Configuration tab, complete the field values as follows::
-
+	
 	Attribute | Description
 	:----- | :-----
 Directory Service | The type of directory service to be mirrored. For example, LDAP.
@@ -705,10 +667,10 @@ Directory Services Poll Interval | How often (in minutes) to poll the directory 
 
 	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP3.png" alt="Account Configuration" title="Account Configuration" width="640">
 
-
+		
 8. On the 3. Account Configuration tab, complete the field values as follows:
-
-	Attribute | Description
+		
+	Attribute | Description 
 :----- | :-----
 Account DN Suffix | Optional value appended to the Base DN when accessing accounts. For example, `ou=Users`. If left unspecified, account searches will stem from the Base DN.
 Account Object Class | The object class to use when loading accounts. For example, `user`
@@ -725,8 +687,8 @@ Account Password Attribute | The attribute field to use when loading the account
 	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP4.png" alt="Group Configuration" title="Group Configuration" width="640">
 
 10. On the 4. Group Configuration tab, complete the field values as follows:
-
-	Attribute | Description
+	
+	Attribute | Description 
 :----- | :-----
 Group DN Suffix | This value is used in addition to the base DN when searching and loading roles. An example is `ou=Roles`. If no value is supplied, the subtree search will start from the base DN.
 Group Object Class | This is the name of the class used for the LDAP group object. Example: `group`
@@ -736,9 +698,9 @@ Group Description Attribute | The attribute field to use when loading the group 
 Group Members Attribute | The attribute field to use when loading the group members. Example: `member`
 
 11. Click **Next**.
-12. On the 5. Confirm tab, review the information and click **Create Directory**.<br>The webpage refreshes with the populated directory information.
+12. On the 5. Confirm tab, review the information and click **Create Directory**.<br>The webpage refreshes with the populated directory information. 
 13. Review the Download Agent tab and perform the steps as directed.
-
+	
 	<img src="http://www.stormpath.com/sites/default/files/docs/LastLDAPCreate.png" alt="Download Agent" title="Download Agent">
 
 The `agent.id` and `agent.key` values will be specific to the agent of this directory.
@@ -751,34 +713,30 @@ After the agent is configured, associated with the agent is a status. This statu
 * **Offline**: Stormpath detects that the agent is not communicating with it at all.
 * **Error**: The agent is online, but there is a problem with communicating nominally with Stormpath or LDAP.
 
-{% docs note %}
+{% docs note %} 
 After the directory has been created, although the Workflows tab appears, workflows cannot be configured for this type of directory.
 {% enddocs %}
 
 
 ### Map Directories to Applications
 
-You can associate directories with application by creating an account store mapping, having a directory and an application instances.
+Currently, you can only associate directories with application in the Stormpath Admin Console.
 
-    $accountStoreMapping = \Stormpath\Resource\AccountStoreMapping::create(
-        array('accountStore' => $directory,
-              'application' => $application)
-        );
-
-     //Or
-
-    $accountStoreMapping = $client->dataStore->instantiate(\Stormpath\Stormpath::ACCOUNT_STORE_MAPPING);
-    $accountStoreMapping->accountStore = $directory;
-    $application->createAccountStoreMapping($accountStoreMapping);
+1. Log in to the Stormpath Admin Console.
+2. Click the **Directories** tab.
+3. Click the directory name.
+4. Click the **Applications** tab.<br>The applications table shows the application for which the directory is providing account authentication, or log in, credentials.
+5. To change the login source, you must modify the application login source information.<br>If the directory is currently not specified as a login source for an application, the table contains the following message:<br>	
+	*Currently, there are no applications associated with this directory. To create an association, click here, and select an application. From the login sources tab, you can create the association.*
 
 
 ### Edit Directory Details
 
-To edit directories, use the `_setters_` of an existing directory instance to set the values and call the `save` method:
+To edit directories, use the `_setters_` of an existing directory instance to set the values and call the `save();` method:
 
-	$directory->status = \Stormpath\Stormpath::DISABLED; //the \Stormpath\Stormpath class provides the valid status' constants
-	$directory->name = 'New Directory Name';
-	$directory->description = 'New Directory Description';
+	$directory->setStatus(Services_Stormpath::DISABLED); //the Services_Stormpath class provides the valid status' constants
+	$directory->setName('New Directory Name');
+	$directory->setDescription('New Directory Description');
 
 	$directory->save();
 
@@ -805,7 +763,7 @@ Although the Workflows tab appears for a mirrored LDAP/AD directory, workflows c
 4. Click the **Agent Configuration** tab.
 5. Make the necessary changes and click **Update**.
 
-{% docs note %}
+{% docs note %} 
 If you do not see an Agent Configuration tab, you are looking at a Stormpath cloud directory.
 {% enddocs %}
 
@@ -817,45 +775,69 @@ If you do not see an Agent Configuration tab, you are looking at a Stormpath clo
 
 ### Enable a Directory
 
-Enabling previously disabled directories allows the groups and accounts to log into any applications for which the directory is defined as an account store.
+Enabling previously disabled directories allows the groups and accounts to log into any applications for which the directory is defined as a login source.
 
-To enable a directory, you set the `ENABLED` status to a directory instance and call its `save` method:
+To enable a directory, you must:
+
+1. Get the datastore instance from a client instance.
+2. Get the directory instance from the datastore with the href of the directory.
+3. Set the directory instance to enabled.
+4. Call the save method on the directory instance.
 
 **Code:**
 
-	$directory->status = \Stormpath\Stormpath::ENABLED; //the \Stormpath\Stormpath class provides the valid status' constants
-    $directory->save();
+	$dataStore = $client->getDataStore();
+
+	 $href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE';
+	 $directory = $dataStore->getResource($href, Services_Stormpath::DIRECTORY); //the Services_Stormpath class provides the resources' classes' names
+
+	 $directory->setStatus(Services_Stormpath::ENABLED); //the Services_Stormpath class provides the valid status' constants
+
+	 $directory->save();
 
 ### Disable a Directory
 
-Disabling directories prevents the groups and accounts from logging into any applications connected to Stormpath, but retains the directory, group, and account data. If you must shut off several accounts quickly and easily, disable a directory.
+Disabling directories prevents the groups and accounts from logging into any applications connected to Stormpath, but retains the directory, group, and account data. If you must shut off several accounts quickly and easily, disable a directory. 
 
 The Stormpath Administrators directory cannot be disabled.
 
-To disable a directory, you set the `DISABLED` status to a directory instance and call its `save` method:
+To disable a directory, you must:
+
+1. Get the datastore instance from a client instance.
+2. Get the directory instance from the datastore with the href of the directory.
+3. Set the directory instance to disabled.
+4. Call the save method on the directory instance.
 
 **Code:**
 
-	$directory->status = \Stormpath\Stormpath::DISABLED; //the \Stormpath\Stormpath class provides the valid status' constants
-    $directory->save();
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE';
+	 $directory = $dataStore->getResource($href, Services_Stormpath::DIRECTORY); //the Services_Stormpath class provides the resources' classes' names
+  
+	 $directory->setStatus(Services_Stormpath::DISABLED); //the Services_Stormpath class provides the valid status' constants
+ 
+	 $directory->save();
 
 ### Delete a Directory
 
-Deleting a directory completely erases the directory and all group and account data from Stormpath.
+Deleting a directory completely erases the directory and all group and account data from Stormpath. 
 
 We recommend that you disable a directory rather than delete it, in case an associated application contains historical data associated with accounts in the directory.
 
 The Stormpath Administrators directory cannot be deleted.
 
-To delete a directory, you must call the `delete` method on the directory instance:
+To delete a directory, you must use the Stormpath Admin Console.
 
-    $directory->delete();
+1. Log in to the Stormpath Admin Console.
+2. Click the **Directories** tab.
+3. Locate the directory and, in the Actions column, click **Delete**.
 
 ***
 
 ## Accounts
 
-In Stormpath, users are referred to as user account objects or [accounts](#Account). The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported.
+In Stormpath, users are referred to as user account objects or [accounts](#Account). The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported. 
 
 You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:
 
@@ -872,22 +854,19 @@ Attribute | Description
 :----- | :-----
 Directory | The directory to which the account will be added.
 Username | The login name of the account for applications using username instead of email. The value must be unique within its parent directory.
-Given Name | The account owner first name.
+First Name | The account owner first name.
 Middle Name | The account owner middle name.
-Surname | The account owner last name.
-Full Name | The full name for the account holder. This is a computed attribute based on the givenName, middleName and surname attributes. It cannot be modified.
+Last Name | The account owner last name.
+First Name | The account owner first name.
 Email | The account owner email address. This is can be used by applications, such as the Stormpath Admin Console, that use an email address for logging in. The value must be unique within its parent directory.
 Status | The status is set to Enabled by default. It is only set to Disabled if you want to deny access to the account to Stormpath-connected applications.
 Password | The credentials used by an account during a login attempt. The specified value must adhere to the password policies set for the parent directory.
-Groups | A link to the groups that the account belongs to.
-GroupMemberships | A link to the group memberships that the account belongs to.
-Tenant | A link to the tenant that owns the account’s directory.
 
-{% docs note %}
+{% docs note %} 
 The account cannot be moved to a different directory after it has been created.
 {% enddocs %}
 
-For accounts, you can:
+For accounts, you can: 
 
 * [Locate the account REST URL](#LocateAccURL).
 * [Authenticate accounts](#AuthenticateAccounts).
@@ -905,7 +884,7 @@ For accounts, you can:
 * [Delete an account](#DeleteAccounts).
 
 ### Locate the Account REST URL
-When communicating with the Stormpath REST API, you might need to reference an account using the REST URL or `href`. For example, you require the REST URL to create accounts in the directory using an SDK.
+When communicating with the Stormpath REST API, you might need to reference an account using the REST URL or `href`. For example, you require the REST URL to create accounts in the directory using an SDK. 
 
 To obtain a directory REST URL:
 
@@ -918,179 +897,224 @@ The REST URL appears on the Details tab.
 
 To authenticate an account you must have the application the account authenticates against. With the application, the account is authenticated by providing the username and password as follows:
 
+	$path = '/home/myhomedir/.stormpath/apiKey.yml';
+	$builder = new Services_Stormpath_Client_ClientBuilder;
+	$client = $builder->setApiKeyFileLocation($path)->build();
+	 
+	$href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE';
+	$ds = $client->getDataStore();
+	$application = $ds->getResource($href, Services_Stormpath::APPLICATION);
+	 
 	// when the account is authenticated, it produces an AuthenticationResult
-	$authResult = $application->authenticate('usernameOrEmail', 'password');
-
+	$un = 'usernameOrEmail';
+	$pw = 'rawPassword';
+	$req = new Services_Stormpath_Authc_UsernamePasswordRequest($un,$pw);
+	$authResult = $application->authenticateAccount($req);
+		 
 	// from the result, we obtain the authenticated Account
-	$account = $authResult->account;
+	$account = $authResult->getAccount();
 
 ### List Accounts
 
 For accounts, you can view, or list them according to their <a href="#ListGroupAccounts" title="group membership">group membership</a>, <a href="#ListDirectoryAccounts" title="directory accounts">the directories to which they belong</a>, or the <a href="#ViewAccountMap" title="View Account Map">applications to which they are associated</a>.
 
-#### List Accounts by Group
+#### List Accounts by Group 
 
 To list all groups associated with an account:
 
-**Code:**
-
-	$accounts = $group->accounts;
-
-	foreach($accounts as $acc)
-	{
-	   echo 'Given Name ' . $acc->givenName;
-	}
-
-
-#### List Accounts by Directory
-
-To list user accounts contained in a directory:
+1. Get the datastore instance from the client.
+2. Get the group from the datastore with the group `href`.
+3. Get the group accounts.
 
 **Code:**
 
-	$accounts = $directory->accounts;
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE';
+	 $group = $dataStore->getResource($href, Services_Stormpath::GROUP); //the Services_Stormpath class provides the resources' classes' names
+  
+	 $accounts = $group->getAccounts();
+  
+	 foreach($accounts as $acc)
+	 {
+	    echo 'Given Name ' . $acc->getGivenName();
+	 }
 
-	foreach($accounts as $acc)
-	{
-	   echo 'Given Name ' . $acc->givenName;
-	}
 
-#### List Accounts by Application
+#### List Accounts by Directory 
 
-To list user accounts mapped to an application:
+To list user accounts contained in a directory, you must:
+
+1. Get the datastore instance from the client.
+2. Get the directory from the datastore with the directory `href`.
+3. Get the directory accounts from the directory instance.
 
 **Code:**
 
-	$accounts = $application->accounts;
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE';
+	 $directory = $dataStore->getResource($href, Services_Stormpath::DIRECTORY); //the Services_Stormpath class provides the resources' classes' names
+  
+	 $accounts = $directory->getAccounts();
+  
+	 foreach($accounts as $acc)
+	 {
+	    echo 'Given Name ' . $acc->getGivenName();
+	 }
 
-	foreach($accounts as $acc)
-	{
-	   echo 'Given Name ' . $acc->givenName;
-	}
+#### List Accounts by Application 
 
-### Retrieve an Account
+To list user accounts mapped to an application, you must:
 
-To retrieve a specific account you need the <code>href</code> which can be loaded as an object instance by retrieving it from the server, using the static getter of the Account class or the Client data store:
+1. Get the datastore instance from the client.
+2. Get the application from the datastore with the application `href`.
+3. Get the application accounts.
 
-    $href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE';
-    $account = \Stormpath\Resource\Account::get();
+**Code:**
 
-	$account = $client->dataStore->getResource($href, \Stormpath\Stormpath::ACCOUNT); //the \Stormpath\Stormpath class provides the resources' classes' names
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/applications/APPLICATION_UID_HERE';
+	 $application = $dataStore->getResource($href, Services_Stormpath::APPLICATION); //the Services_Stormpath class provides the resources' classes' names
+  
+	 $accounts = $application->getAccounts();
+  
+	 foreach($accounts as $acc)
+	 {
+    echo 'Given Name ' . $acc->getGivenName();
+	 }
+
+### Retrieve an Account 
+
+To retrieve a specific account you need the <code>href</code> which can be loaded as an object instance by retrieving it from the server, using the datastore:
+
+	$dataStore = $client->getDataStore();
+	$href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE';
+	$account = $dataStore->getResource($href, Services_Stormpath::ACCOUNT); //the Services_Stormpath class provides the resources' classes' names 
+
 
 ### Create an Account
 
 To create a user accounts, you must:
 
-1. Get an account instance.
-2. Set the account properties.
-3. Create the account from a directory or from an application.
+1. Get the datastore instance from the client.
+2. Get the directory where you want to create the account from the datastore with the directory href.
+3. Set the account properties.
+4. Create the account from the directory.
 
-To create accounts, use the `_setters_` of a new account instance to set the values and then create the account from a directory or application as follows:
+To create accounts, use the `_setters_` of a new account instance to set the values and then create the account from a directory as follows:
 
 **Code:**
 
-    // Instantiating the account from the static instantiate method of the Account class
-    $account = \Stormpath\Resource\Account::instantiate(
-      array('givenName' => 'John',
-            'surname' => 'Smith',
-            'username' => 'johnsmith',
-            'email' => 'john.smith@example.com',
-            'password' => '4P@$$w0rd!'));
+	$href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE';
+	 $directory = $client->getDataStore()->getResource($href, Services_Stormpath::DIRECTORY);
+ 
+	 $account = $client->getDataStore()->instantiate(Services_Stormpath::ACCOUNT);
+	 $account->setEmail('Email');
+	 $account->setGivenName('Given Name');
+	 $account->setPassword('Password');
+	 $account->setSurname('Surname');
+	 $account->setUsername('Username');
+ 
+	 $account = $directory->createAccount($account);
 
-    // Instantiating the account from the Client data store
-	$account = $client->dataStore->instantiate(\Stormpath\Stormpath::ACCOUNT);
-	$account->email = 'john.smith@example.com';
-	$account->givenName = 'John';
-	$account->password ='4P@$$w0rd!';
-	$account->surname = 'Smith';
-	$account->username = 'johnsmith';
+If you want to override the registration workflow and have the account created with ENABLED status right away, pass false as second argument, for example:
 
-	$directory->createAccount($account);
+	 $account = $directory->createAccount($account, false);
 
-	//Or
+If you want to associate the account to a group, add the following:
 
-	// this application must have a directory as the default account store associated with it
-	$application->createAccount($account);
-
-If you want to override the registration workflow and have the account created with ENABLED status right away, pass `false` to the `registrationWorkflowEnabled` option of the `options` array, for example:
-
-	 $directory->createAccount($account, array('registrationWorkflowEnabled' => false));
-
-     //Or
-
-     $application->createAccount($account, array('registrationWorkflowEnabled' => false));
+	$account->addGroup($group);
 
 ### Edit Account Details
 
-To edit accounts, use the `_setters_` of an existing account instance to set the values and call the `save` method:
+To edit accounts, use the `_setters_` of an existing account instance to set the values and call the `save()` method:
 
-	$account->status = \Stormpath\Stormpath::DISABLED; //the \Stormpath\Stormpath class provides the valid status' constants
-	$account->email = 'john.smith.updated@example.com';
-	$account->givenName = 'Johnny';
-	$account->password ='4P@$$w0rd!New';
-	$account->surname = 'Smitherson';
-	$account->username = 'johnnysmitherson';
+	$account->setStatus(Services_Stormpath::DISABLED); //the Services_Stormpath class provides the valid status' constants
+	$account->setEmail('New Email');
+	$account->setGivenName('New Given Name');
+	$account->setPassword('New Password');
+	$account->setSurname('New Surname');
+	$account->setUsername('New Username');
 
 	$account->save();
 
+If you want to add a group to an account, do the following:
+
+	$account->addGroup($group);
+
+	
 ### Assign Accounts to Groups
 
-The association between a group and an account can be done from an account or group instance. If the account is part of a directory containing groups, you can associate the account with a group.
+The association between a group and an account can be done from an account or group instance. If the account is part of a directory containing groups, you can associate the account with a group. To add an account to a group, you must:
 
-To add an account to a group:
+1. Get the datastore instance from a client instance.
+2. Get the group and account instance from the datastore with the corresponding hrefs.
+3. Add the group to the account instance OR add the account to the group instance.
 
 **Code:**
 
-	$account->addGroup($group)
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE';
+	 $account = $dataStore->getResource($href, Services_Stormpath::ACCOUNT); //the Services_Stormpath class provides the resources' classes' names 
+  
+	 $href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE';
+	 $group = $dataStore->getResource($href, Services_Stormpath::GROUP); //the Services_Stormpath class provides the resources' classes' names
+  
+	 // $account->addGroup($group) OR $group->addAccount($account)
 
-	//Or
-
-	$group->addAccount($account)
 
 ### Remove Accounts from Groups
 
 The remove an account from, or delete the account as a member of, a group you must:
 
-1. Get the group membership instance.
-	* The group membership can be retrieved directly, if the `href` is known to the user.
+1. Get the datastore instance from a client instance.
+2. Get the group membership instance.
+	* The group membership can be retrieved directly from the datastore, if the `href` is known to the user.
 	* Another way of retrieving the group membership is by searching for the group membership that represents the relationship between the group and the account that you want to delete.
-2. Delete the group membership by calling the `delete` method.
+3. Delete the group membership by calling the `delete` method.
 
 **Code:**
 
-	$href = 'https://api.stormpath.com/v1/groupMemberships/GROUP_MEMBERSHIP_UID_HERE';
-
-	$groupMembership = \Stormpath\Resource\GroupMembership::get($href);
-
-	//Or
-
-	$groupMembership = $client->dataStore->getResource($href, \Stormpath\Stormpath::GROUP_MEMBERSHIP); //the \Stormpath\Stormpath class provides the resources' classes' names
-
-	$groupMembership->delete();
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/groupMemberships/GROUP_MEMBERSHIP_UID_HERE';
+	 $groupMembership = $dataStore->getResource($href, Services_Stormpath::GROUP_MEMBERSHIP); //the Services_Stormpath class provides the resources' classes' names
+  
+	 $groupMembership->delete();
 
 **OR**
 
-    $groupName = 'Admins';
-	$groupMembership = false;
+	$groupHref = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE';
+	 $group = $this->client->getDataStore()->getResource($groupHref, Services_Stormpath::GROUP);
+ 
+	 $accountHref = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE';
+	 $account = $this->client->getDataStore()->getResource($accountHref, Services_Stormpath::ACCOUNT);
+ 
+	 $groupMembership = false;
+	 // looping the group membership aggregate of the account
+	 foreach($account->getGroupMemberShips() as $tmpGroupMembership)
+	 {
+     $tmpGroup = $tmpGroupMembership->getGroup();
+ 
+     if ($tmpGroup and strrpos($tmpGroup->getHref(), $groupHref))
+     {
+         $groupMembership = $tmpGroupMembership;
+        break;
+      }
+	 }
 
-	foreach($account->groupMemberships as $gms)
-	{
-	    if ($gms->group->name == $groupName)
-	    {
-	        $groupMembership = $gms;
-	        break;
-	    }
-	}
-
-    if ($groupMembership)
-	{
-        $groupMembership->delete();
-	}
+	 if ($groupMembership)
+	 {
+     $groupMembership->delete();
+	 }
 
 
 ### Enable Accounts
 
-Enabling a previously disabled account allows the account to log in to any applications where the directory or group is defined as an application account store.
+Enabling a previously disabled account allows the account to log in to any applications where the directory or group is defined as an application login source.
 
 {% docs note %}
 Enabling and disabling accounts for mirrored (LDAP) directories is not available in Stormpath. You manage mirrored (LDAP) accounts on the primary server installation.
@@ -1098,13 +1122,21 @@ Enabling and disabling accounts for mirrored (LDAP) directories is not available
 
 To enable an account, you must:
 
-1. Set the account instance status to `ENABLED`.
-2. Call the `save` method on the account instance.
+1. Get the datastore instance from a client instance.
+2. Get the account instance from the datastore with the account href.
+3. Set the account instance status to enabled.
+4. Call the save method on the account instance.
 
 **Code:**
 
-	$account->status = \Stormpath\Stormpath::ENABLED; //the \Stormpath\Stormpath class provides the valid status' constants
-    $account->save();
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE';
+	 $account = $dataStore->getResource($href, Services_Stormpath::ACCOUNT); //the Services_Stormpath class provides the resources' classes' names 
+  
+	 $account->setStatus(Services_Stormpath::ENABLED); //the Services_Stormpath class provides the valid status' constants
+ 
+	 $account->save();
 
 ### Disable Accounts
 
@@ -1118,21 +1150,33 @@ Enabling and disabling accounts for mirrored (LDAP) directories is not available
 
 To disable an account, you must:
 
-1. Set the account instance status to `DISABLED`.
-2. Call the `save` method on the account instance.
+1. Get the datastore instance from a client instance.
+2. Get the account instance from the datastore with the account href.
+3. Set the account instance status to disabled.
+4. Call the save method on the account instance.
 
 **Code:**
 
-	$account->status = \Stormpath\Stormpath::DISABLED; //the \Stormpath\Stormpath class provides the valid status' constants
-    $account->save();
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE';
+	 $account = $dataStore->getResource($href, Services_Stormpath::ACCOUNT); //the Services_Stormpath class provides the resources' classes' names 
+  
+	 $account->setStatus(Services_Stormpath::DISABLED); //the Services_Stormpath class provides the valid status' constants
+ 
+	 $account->save();
 
 ### Delete an Account
 
 Deleting an account completely erases the account from the directory and erases all account information from Stormpath.
 
-To delete an account, call the `delete` method on the account instance.
+To delete an account, you must use the Stormpath Admin Console.
 
-    $account->delete();
+1. Log in to the Stormpath Admin Console.
+2. Click the **Accounts** tab.
+3. Under the Actions column for the account, click **Delete**.
+4. In the prompt that appears, to confirm deleting the account, click **Ok**.
+	
 
 ***
 
@@ -1153,21 +1197,17 @@ Attribute | Description
 Name | The name of the group. Within a given directory, this value must be unique.
 Description | A short description of the group.
 Status | This is set to Enabled by default. This is only set to Disabled to prevent all group accounts from logging into any application even when the group is set as a login source to an application.
-Directory | A link to the directory resource that the group belongs to.
-Accounts | A link to the accounts that are contained within this group.
-Tenant | The tenant that owns the directory containing this group.
 
-{% docs note %}
-If an account is also a member to another group that does have access to an application, then the account can login.
+{% docs note %} 
+If an account is also a member to another group that does have access to an application, then the account can login. 
 {% enddocs %}
 
 With groups, you can:
 
 * [Locate the group REST URL](#LocateGroupURL).
 * [List groups](#ListGroups) including:
-	* [List groups in an account](#ListAccountGroups).
+	* [List group accounts](#ListAccountGroups).
 	* [List directory groups](#ListDirectoryGroups).
-	* [List application groups](#ListApplicationGroups).
 * [Create groups](#CreateGroups).
 * [Edit group details](#EditGroups).
 * [Enable a group](#EnableGroups).
@@ -1176,7 +1216,7 @@ With groups, you can:
 
 ### Locate the Group REST URL
 
-When communicating with the Stormpath REST API, you might need to reference a group using the REST URL or `href`. For example, you require the REST URL to create accounts to associate with the group in the directory using an SDK.
+When communicating with the Stormpath REST API, you might need to reference a group using the REST URL or `href`. For example, you require the REST URL to create accounts to associate with the group in the directory using an SDK. 
 
 To obtain a group REST URL:
 
@@ -1191,131 +1231,163 @@ The REST URL appears on the Details tab.
 
 For groups, you can view, or list them by [account membership](#ListAccountGroups) or [the directory](#ListDirectoryGroups).
 
-#### List Groups in an Account
+#### List Accounts in a Group
 
-To list all groups associated with an account, you must:
+To list all accounts associated with, or members of, a group, you must:
 
-1. Get the account groups
-2. Loop the groups aggregate
+1. Get the datastore instance from a client instance.
+2. Get the account instance from the datastore with the account href.
+3. Get the groups from the account.
 
-    $groups = $account->groups;
+To list all groups on a directory or an account, loop the groups aggregate from a directory or an account:
 
-	foreach($groups as $group)
-	{
-        echo 'Group ' . $group->name;
-	}
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE';
+	 $account = $dataStore->getResource($href, Services_Stormpath::ACCOUNT); //the Services_Stormpath class provides the resources' classes' names 
+  
+	 $groups = $account->getGroups();
+ 
+	 foreach($groups as $group)
+	 {
+    echo 'Group ' . $group->getName();
+	 }
 
 
 #### List Groups in a Directory
 
 To list all groups contained within a directory, you must:
 
-1. Get the directory groups
-2. Loop the groups aggregate
+1. Get the datastore instance from a client instance.
+2. Get the directory instance from the datastore with the directory href.
+3. Get the groups from the directory.
 
-    $groups = $directory->groups;
+To list all groups on a directory or an account, loop the groups aggregate from a directory or from an account:
 
-	foreach($groups as $group)
-	{
-        echo 'Group ' . $group->name;
-	}
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE';
+	 $directory = $dataStore->getResource($href, Services_Stormpath::DIRECTORY); //the Services_Stormpath class provides the resources' classes' names 
+  
+	 $groups = $directory->getGroups();
+ 
+	 foreach($groups as $group)
+	 {
+    echo 'Group ' . $group->getName();
 
-#### List Groups in an Application
-
-To list all groups associated with an application, you must:
-
-1. Get the application groups
-2. Loop the groups aggregate
-
-    $groups = $application->groups;
-
-	foreach($groups as $group)
-	{
-        echo 'Group ' . $group->name;
-	}
 
 ### Retrieve a Group
 
-To retrieve a specific group you need the `href` which can be loaded as an object instance by retrieving it from the server, using the static getter of the Group class of the Client data store:
+To retrieve a specific group you need the `href` which can be loaded as an object instance by retrieving it from the server, using the data store:
 
+	$dataStore = $client->getDataStore();
 	$href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE';
-	$group = \Stormpath\Resource\Group::get($href);
+	$group = $dataStore->getResource($href, Services_Stormpath::GROUP); //the Services_Stormpath class provides the resources' classes' names
 
-	$group = $client->dataStore->getResource($href, \Stormpath\Stormpath::GROUP); //the \Stormpath\Stormpath class provides the resources' classes' names
 
 ### Create Groups
 
-You can only create groups for cloud directories. Groups can be created from a directory and from an application with a default group store mapping associated with it.
+You can only create groups for cloud directories. Currently, group creation is not possible with PHP.
 
-The group can be instantiated from the static `instantiate` method of the `Group` class, or from the Client data store:
+To create a group, you must log in to the Stormpath Admin Console.
 
-    $group = \Stormpath\Resource\Group::instantiate(array('name' => 'Admins', 'description' => 'Group description'));
+1. Log in to the Stormpath Admin Console.
+2. Click the **Directories** tab.
+3. Click the directory name.
+4. Click the **Groups** tab.
+5. Click **Create Group**.
 
-    //Or
-    $group = $client->dataStore->instantiate(\Stormpath\Stormpath::GROUP); //the \Stormpath\Stormpath class provides the resources' classes' names
-    $group->name = 'Admins';
-    $group->description = 'Group description';
+	<img src="http://www.stormpath.com/sites/default/files/docs/CreateGroup.png" alt="Create Groups" title="Create Groups" width="640" height="418">
 
-Once we have the group instance ready, we create the group:
+6. Complete the fields as follows:
+	
+	Attribute | Description
+	:----- | :-----
+Name | The name of the group. Within a given directory, this value must be unique.
+Description | A short description of the group.
+Status| This is set to Enabled by default. This is only set to Disabled to prevent all group accounts from logging into any application even when the group is set as a login source to an application.
 
-    //From a directory
-    $directory->createGroup($group);
+{% docs note %}
+If an account is also a member to another group that does have access to an application, then the account can login.
+{% enddocs %}
 
-    //Or, from an application
-    $application->createGroup($group);
+7. When the fields are complete, click **Create**.
 
 ### Edit Group Details
 
-To edit groups, use the `_setters_` of an existing group instance to set the values and call the `save` method:
+To edit groups, use the `_setters_` of an existing group instance to set the values and call the save method:
 
-	$group->status = \Stormpath\Stormpath::DISABLED; //the \Stormpath\Stormpath class provides the valid status' constants
-	$group->name = 'New Group Name';
-	$group->description = 'New Group Description';
+	$group->setStatus(Services_Stormpath::DISABLED); //the Services_Stormpath class provides 	the valid status' constants
+	$group->setName('New Group Name');
+	$group->setDescription('New Group Description');
 
 	$group->save();
 
 
 ### Enable a Group
 
-If the group is contained within an *enabled directory where the directory is defined as an account store*, then enabling or re-enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as an account store.
+If the group is contained within an *enabled directory where the directory is defined as a login source*, then enabling or re-enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as a login source.
 
-If the group is contained within a *disabled directory where the directory is defined as an account store*, the group status is irrelevant and the group members are not be able to log in to any applications for which the directory is defined as an account store.
+If the group is contained within a *disabled directory where the directory is defined as a login source*, the group status is irrelevant and the group members are not be able to log in to any applications for which the directory is defined as a login source.
 
-If the group is defined as an account store, then enabling or re-enabling the group allows accounts contained within the group (membership list) to log in to any applications for which the group is defined as an account store.
+If the group is defined as a login source, then enabling or re-enabling the group allows accounts contained within the group (membership list) to log in to any applications for which the group is defined as a login source.
 
 To enable a group, you must:
 
-1. Set the group instance status to `ENABLED`.
-2. Call the `save` method on the group instance.
+1. Get the datastore instance from a client instance.
+2. Get the group instance from the datastore with the group href.
+3. Set the group instance status to enabled.
+4. Call the save method on the group instance.
 
 **Code:**
 
-	$group->status = \Stormpath\Stormpath::ENABLED; //the \Stormpath\Stormpath class provides the valid status' constants
-    $group->save();
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE';
+	 $group = $dataStore->getResource($href, Services_Stormpath::GROUP); //the Services_Stormpath class provides the resources' classes' names
+  
+	 $group->setStatus(Services_Stormpath::ENABLED); //the Services_Stormpath class provides the valid status' constants
+ 
+	 $group->save();
+
 
 ### Disable a Group
 
-If a group is explicitly set as an application account store, then disabling that group prevents any of its user accounts from logging into that application but retains the group data and memberships. You would typically disable a group if you must shut off a group of user accounts quickly and easily.
+If a group is explicitly set as an application login source, then disabling that group prevents any of its user accounts from logging into that application but retains the group data and memberships. You would typically disable a group if you must shut off a group of user accounts quickly and easily.
 
 To disable a group, you must:
 
-1. Set the group instance status to `DISABLED`.
-2. Call the `save` method on the group instance.
+1. Get the datastore instance from a client instance.
+2. Get the group instance from the datastore with the group href.
+3. Set the group instance status to disabled.
+4. Call the save method on the group instance.
 
 **Code:**
 
-	$group->status = \Stormpath\Stormpath::DISABLED; //the \Stormpath\Stormpath class provides the valid status' constants
-    $group->save();
+	$dataStore = $client->getDataStore();
+ 
+	 $href = 'https://api.stormpath.com/v1/groups/GROUP_UID_HERE';
+	 $group = $dataStore->getResource($href, Services_Stormpath::GROUP); //the Services_Stormpath class provides the resources' classes' names
+  
+	 $group->setStatus(Services_Stormpath::DISABLED); //the Services_Stormpath class provides the valid status' constants
+ 
+	 $group->save();
 
+	 
 ### Delete a Group
 
 Deleting a cloud directory group erases the group and all its membership relationships. User accounts that are members of the group will not be deleted.
 
 We recommend that you disable an group rather than delete it, if you believe you might need to retain the user data or application connection.
 
-To delete a cloud directory group, call the `delete` method on the group instance.
+To delete a cloud directory group, you must use the Stormpath Admin Console.
 
-    $group->delete();
+1. Log in to the Stormpath Admin Console.
+2. Click the **Directories** tab.
+3. Click the directory name.
+4. Click the **Groups** tab.
+5. Under the Actions column, click **Delete**.
+
 
 ***
 
@@ -1359,7 +1431,7 @@ To configure account registration and verification:
 
 
 	* You configure the Registration Success Message with the following attributes:
-
+	
 		Attribute | Description
 :----- | :-----
 Message Format | The message format for the body of the Account Registration Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
@@ -1371,7 +1443,7 @@ Body | The value for the body of the message. Variable substitution is supported
 	* By also selecting **Require newly registered accounts to verify their email address**:
 		* Newly created accounts are given an *unverified* status and a verification email is sent to the user. The verification email contains a token unique to the user account. When the user clicks the link, they are sent to the verification base URL where the token is submitted to Stormpath for verification. If verified, the account status changes to enabled and a verification success email is sent to the user.
 		* An Account Verification Message section appears.<br>
-
+		
 			<img src="http://www.stormpath.com/sites/default/files/docs/AccountVerificationMessage.png" alt="Account Verification" title="Account Verification" width="700" height="420">
 
 		* You configure the Account Verification Message with the following attributes: <br>
@@ -1398,13 +1470,13 @@ Message Format | The message format for the body of the Account Verification Suc
 Subject | The value for the subject field of the Account Verification Success message.
 Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
 
-
+		
 6. When all the fields are complete, click **Update**.
 
 
 #### Initiate Account Registration and Verification
 
-If the workflow is enabled, an account registration is automatically initiated during an account creation.
+If the workflow is enabled, an account registration is automatically initiated during an account creation. 
 
 
 #### Verify the Account
@@ -1413,17 +1485,16 @@ If a directory has the the account verification workflow enabled:
 
 1. A newly created account in the directory has an `UNVERIFIED` status until the email address has been verified.
 2. When a new user is registered for the first time, Stormpath sends an email to the user with a secure verification link, which includes a secure verification token.
-3. When the user clicks the link in the email, they are sent to the verification URL set up in the verification workflow.
-	* To verify the account email address (which sets the account status to `ENABLED`), the verification token in the account verification email must be obtained from the link account holders receive in the email.
+3. When the user clicks the link in the email, they are sent to the verification URL set up in the verification workflow. 
+	* To verify the account email address (which sets the account status to `ENABLED`), the verification token in the account verification email must be obtained from the link account holders receive in the email. 
 	* This is achieved by implementing the following logic:
 
 			$verificationToken = // obtain it from query parameter, according to the workflow configuration of the link
 
-            // when the account is correctly verified it gets activated and that account is returned in this verification
-            $account = \Stormpath\Client::verifyEmailToken($verificationToken);
+			$tenant = $client->getCurrentTenant();
 
-            //Or, from the Client tenant
-			$account = $client->tenant->verifyAccountEmail($verificationToken);
+			// when the account is correctly verified it gets activated and that account is returned in this verification
+			$account = $tenant->verifyAccountEmail($verificationToken);
 
 
 ### Password Reset
@@ -1444,7 +1515,7 @@ To configure the password reset workflow:
 
 	<img src="http://www.stormpath.com/sites/default/files/docs/ResetPW1.png" alt="Password Reset" title="Password Reset" width="640" height="430">
 6. Complete the values as follows:<br>
-
+		
 	Attribute | Description
 :----- | :-----
 <a id ="BaseURL"></a>Base URL | Your application URL which receives the token and completes the workflow. Stormpath offers a default base URL to help during development.
@@ -1476,16 +1547,19 @@ Body | The value for the body of the message. Variable substitution is supported
 
 #### Initiate Password Reset
 
-To initiate the password reset workflow in your application, you must create a password reset token, which is sent from Stormpath in an email to the user.
-
+To initiate the password reset workflow in your application, you must create a password reset token, which is sent from Stormpath in an email to the user. 
+	
 This is done from the application as follows:
 
+	$href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE';
+	$application = $client->getDataStore()->getResource($href, Services_Stormpath::APPLICATION);
+
 	// creating the password reset token and sending the email
-	$application->sendPasswordResetEmail('john.smith@example.com');
+	$application->sendPasswordResetEmail('username or email');
 
 #### Complete Password Reset
 
-After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the [base URL](#BaseURL) and the reset token.
+After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the [base URL](#BaseURL) and the reset token. 
 
 `https://myAwesomeapp.com/passwordReset?sptoken=TOKEN`
 
@@ -1501,9 +1575,12 @@ To complete the password reset, you do not need any identifying information from
 
 The password is changed as follows:
 
+	$href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE';
+	$application = $client->getDataStore()->getResource($href, Services_Stormpath::APPLICATION);
+
 	// getting the Account from the token and changing the password
 	$account = $application->verifyPasswordResetToken('PASS_RESET_TOKEN');
-	$account->password = 'New Password';
+	$account->setPassword('New Password');
 	$account->save();
 
 ***

@@ -149,8 +149,8 @@ Finally, if you would like to use Stormpath digest authentication in a programmi
 
 * Java: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-java/blob/master/impl/src/main/java/com/stormpath/sdk/impl/http/authc/Sauthc1Signer.java) (the **sign** method)
 * Ruby: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-ruby/blob/master/lib/stormpath-sdk/http/authc/sauthc1_signer.rb) (the **sign_request** method)
-* PHP: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-php/blob/master/Services/Stormpath/Http/Authc/Sauthc1Signer.php) (the **signRequest** method)
-* Python: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/http/authc.py) (the **sign_request** method)
+* PHP: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-php/blob/master/src/Stormpath/Http/Authc/Sauthc1Signer.php) (the **signRequest** method)
+* Python: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/auth.py) (the **__call__** method)
 
 If you port the algorithm to other languages, please let us know. We are happy to help. Email us at <support@stormpath.com> and we will help as best as we can.
 
