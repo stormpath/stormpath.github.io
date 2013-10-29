@@ -41,7 +41,7 @@ The Stormpath API offers authorized developers and administrators programmatic a
 * Manage groups.
 * Initiate and process account automations.
 
-For more detailed documentation on the Stormpath API, visit the [API Reference Documentation](http://www.stormpath.com/docs/rest/api/).
+For more detailed documentation on the Stormpath API, visit the [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide).
 
 ###<a id="JavaSDK"></a>Java SDK
 

@@ -467,7 +467,7 @@ Example response:
       "code": 404,
       "message": "Oops! The application you specified cannot be found.",
       "developerMessage": "The specified Application cannot be found. If you accessed this url via a stale href reference, it might be helpful to acquire the tenant's Application Collection Resource to obtain the current list of applications.",
-      "moreInfo": "http://www.stormpath.com/docs/errors/404"
+      "moreInfo": "http://docs.stormpath.com/errors/404"
     }
 <!-- {: .http} -->
 
@@ -3212,7 +3212,7 @@ If there is no acceptable designated directory account store, the REST API error
       "code": 5102,
       "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
       "developerMessage": "No account store assigned to this application has been configured as the default storage location for newly created groups.  To fix this problem: in the application's 'account stores' configuration, specify the account store that will be used to store newly created groups."
-      "moreInfo": "http://www.stormpath.com/docs/errors/5102"
+      "moreInfo": "http://docs.stormpath.com/errors/5102"
     }
 
 <a class="anchor" name="group-retrieve"></a>
@@ -4065,7 +4065,7 @@ If there is no acceptable account creation designated account store, the REST AP
       "code": 5100,
       "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
       "developerMessage": "No account store assigned to this application has been configured as the default storage location for newly created accounts.  To fix this problem: in the application's 'account stores' configuration, specify the account store that will be used to store newly created accounts."
-      "moreInfo": "http://www.stormpath.com/docs/errors/5100"
+      "moreInfo": "http://docs.stormpath.com/errors/5100"
     }
 
 If the designated account creation account store is a directory, then the account is created in the directory. If the designated account creation account store is a group:

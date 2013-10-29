@@ -1,9 +1,8 @@
 ---
 layout: doc
 title: Stormpath Error Codes
+alias: [/stormpath-error-codes]
 ---
-
-#Stormpath Error Codes
 
 * [**General Validation**](#GeneralValidation)
 	* [2000](#2000)	
@@ -177,7 +176,7 @@ Only use this code if a more accurate status code is not available. For example,
 	  "code": 5100,
 	  "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
 	  "developerMessage": "No login source assigned to this application has been configured as the default storage location for newly created accounts.  To fix this problem: in the application's 'login sources' configuration, specify the login source that will be used to store newly created accounts."
-	  "moreInfo": "http://www.stormpath.com/docs/errors/5100"
+	  "moreInfo": "http://docs.stormpath.com/errors/5100"
 	}
 
 <a id="5101Ex"></a>**5101**: The account storage location is disabled.
@@ -187,7 +186,7 @@ Only use this code if a more accurate status code is not available. For example,
 	  "code": 5101,
 	  "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
 	  "developerMessage": "This application's default storage location for new accounts is disabled.  New accounts cannot be added to disabled groups or directories. The login source assigned to this application has been configured as the default storage location for newly created accounts.  To fix this problem: in the application's 'login sources' configuration, change the status of the login source used for storing new accounts to ENABLED."
-	  "moreInfo": "http://www.stormpath.com/docs/errors/5101"
+	  "moreInfo": "http://docs.stormpath.com/errors/5101"
 	}
 
 <a id="5102Ex"></a>**5102**: The group storage location is unspecified.
@@ -197,7 +196,7 @@ Only use this code if a more accurate status code is not available. For example,
 	  "code": 5102,
 	  "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
 	  "developerMessage": "No login source assigned to this application has been configured as the default storage location for newly created groups.  To fix this problem: in the application's 'login sources' configuration, specify the login source that will be used to store newly created groups."
-	  "moreInfo": "http://www.stormpath.com/docs/errors/5102"
+	  "moreInfo": "http://docs.stormpath.com/errors/5102"
 	}
 
 <a id="5103Ex"></a>**5103**: The group storage location is disabled.
@@ -207,7 +206,7 @@ Only use this code if a more accurate status code is not available. For example,
 	  "code": 5103,
 	  "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
 	  "developerMessage": "This application's default storage location for new groups is disabled.  New groups cannot be added to disabled directories. The login source assigned to this application has been configured as the default storage location for newly created groups.  To fix this problem: in the application's 'login sources' configuration, change the status of the login source used for storing new groups to ENABLED."
-	  "moreInfo": "http://www.stormpath.com/docs/errors/5103"
+	  "moreInfo": "http://docs.stormpath.com/errors/5103"
 	}
 
 </p>

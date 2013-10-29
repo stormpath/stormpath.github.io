@@ -3,6 +3,9 @@ layout: doc
 title: REST API Reference
 lang: rest
 ---
+{% docs warning %}
+This document has been deprecated.  Please refer to the [REST Product Guide](product-guide/) for the most up to date REST documentation.
+{% enddocs %}
 
 <p>Stormpath provides developers a simple, yet powerful REST+JSON API enabling user management control for organizations and applications.</p>
 
@@ -765,7 +768,7 @@ Content-Type: application/json;charset=UTF-8
   "code": 404,
   "message": "Oops! The application you specified cannot be found.",
   "developerMessage": "The specified Application cannot be found. If you accessed this url via a stale href reference, it might be helpful to acquire the tenant's Application Collection Resource to obtain the current list of applications.",
-  "moreInfo": "http://www.stormpath.com/docs/errors/404"
+  "moreInfo": "http://docs.stormpath.com/errors/404"
 }
 </code></pre>
 

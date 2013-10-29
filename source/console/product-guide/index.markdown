@@ -6,7 +6,7 @@ title: Stormpath Admin Console Guide
 
 Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
 
-For help to quickly get started with Stormpath, refer to the [Stormpath Admin Quickstart Guide](http://www.stormpath.com/docs/console/quickstart).
+For help to quickly get started with Stormpath, refer to the [Stormpath Admin Quickstart Guide](/console/quickstart).
 
 ***
 
@@ -46,7 +46,8 @@ The Stormpath API offers authorized developers and administrators programmatic a
 * Manage groups.
 * Initiate and process account automations.
 
-For more detailed documentation on the Stormpath API, visit the [API Reference Documentation](http://www.stormpath.com/docs/rest/api).
+For more detailed documentation on the Stormpath API, visit the [REST Product Guide](/rest/product-guide).
+
 
 ***
 

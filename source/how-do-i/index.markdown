@@ -3,8 +3,6 @@ layout: default
 title: How Do I...?
 ---
 
-#How Do I...
-
 * [Create an account.](#CreateAccount)
 * [Assign a role to a user](#AssignAcGps)
 * [Create a new directory.](#CreateDirectory)
@@ -29,12 +27,12 @@ title: How Do I...?
 
 For information about creating an account, refer to the appropriate product guide:
 
-* [Console Product Guide](http://www.stormpath.com/docs/console/product-guide#CreateAccounts)
-* [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide#CreateAccounts)
-* [Java Product Guide](http://www.stormpath.com/docs/java/product-guide#CreateAccounts)
-* [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide#CreateAccounts)
-* [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide#CreateAccounts)
-* [Python Product Guide](http://www.stormpath.com/docs/python/product-guide#CreateAccounts)
+* [Console Product Guide](/console/product-guide#CreateAccounts)
+* [REST Product Guide](/rest/product-guide#CreateAccounts)
+* [Java Product Guide](/java/product-guide#CreateAccounts)
+* [PHP Product Guide](/php/product-guide#CreateAccounts)
+* [Ruby Product Guide](/ruby/product-guide#CreateAccounts)
+* [Python Product Guide](/python/product-guide#CreateAccounts)
 
 ##<a id="AssignAcGps"></a>Assign Accounts to Groups
 
@@ -49,12 +47,12 @@ The Account Groups tab refreshes to include the new group.
 
 For information about assigning an account to a group, refer to the appropriate product guide:
 
-* [Console Product Guide](http://www.stormpath.com/docs/console/product-guide#AssignAccountGroups)
-* [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide#AssignAccountGroup)
-* [Java Product Guide](http://www.stormpath.com/docs/java/product-guide#AssignAccountGroup)
-* [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide#AssignAccountGroup)
-* [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide#AssignAccountGroup)
-* [Python Product Guide](http://www.stormpath.com/docs/python/product-guide#AssignAccountGroup)
+* [Console Product Guide](/console/product-guide#AssignAccountGroups)
+* [REST Product Guide](/rest/product-guide#AssignAccountGroup)
+* [Java Product Guide](/java/product-guide#AssignAccountGroup)
+* [PHP Product Guide](/php/product-guide#AssignAccountGroup)
+* [Ruby Product Guide](/ruby/product-guide#AssignAccountGroup)
+* [Python Product Guide](/python/product-guide#AssignAccountGroup)
 
 ##<a id="CreateDirectory"></a>Create a New Directory
 
@@ -64,13 +62,13 @@ For information about assigning an account to a group, refer to the appropriate 
 
 For information about creating directories, refer to the appropriate product guide:
 
-* [Create a Stormpath Cloud Directory: Console Product Guide](http://www.stormpath.com/docs/console/product-guide#CreateCloud)
-* [Create an LDAP Directory: Console Product Guide](http://www.stormpath.com/docs/console/product-guide#CreateDir)
-* [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide#CreateDir)
-* [Java Product Guide](http://www.stormpath.com/docs/java/product-guide#CreateDir)
-* [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide#CreateDir)
-* [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide#CreateDir)
-* [Python Product Guide](http://www.stormpath.com/docs/python/product-guide#CreateDir)
+* [Create a Stormpath Cloud Directory: Console Product Guide](/console/product-guide#CreateCloud)
+* [Create an LDAP Directory: Console Product Guide](/console/product-guide#CreateDir)
+* [REST Product Guide](/rest/product-guide#CreateDir)
+* [Java Product Guide](/java/product-guide#CreateDir)
+* [PHP Product Guide](/php/product-guide#CreateDir)
+* [Ruby Product Guide](/ruby/product-guide#CreateDir)
+* [Python Product Guide](/python/product-guide#CreateDir)
 
 
 
@@ -83,13 +81,13 @@ For information about creating directories, refer to the appropriate product gui
 
 For information about updating a cloud directory or agent configuration, refer to the appropriate product guide:
 
-* [Edit a Cloud Directory: Console Product Guide](http://www.stormpath.com/docs/console/product-guide#EditDir)
-* [Update LDAP Agent Configuration: Console Product Guide](http://www.stormpath.com/docs/console/product-guide#UpdateAgent)
-* [Edit a Cloud Directory: REST Product Guide](http://www.stormpath.com/docs/rest/product-guide#EditDir)
-* [Edit a Cloud Directory: Java Product Guide](http://www.stormpath.com/docs/java/product-guide#EditDir)
-* [Edit a Cloud Directory: PHP Product Guide](http://www.stormpath.com/docs/php/product-guide#EditDir)
-* [Edit a Cloud Directory: Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide#EditDir)
-* [Edit a Cloud Directory: Python Product Guide](http://www.stormpath.com/docs/python/product-guide#EditDir)
+* [Edit a Cloud Directory: Console Product Guide](/console/product-guide#EditDir)
+* [Update LDAP Agent Configuration: Console Product Guide](/console/product-guide#UpdateAgent)
+* [Edit a Cloud Directory: REST Product Guide](/rest/product-guide#EditDir)
+* [Edit a Cloud Directory: Java Product Guide](/java/product-guide#EditDir)
+* [Edit a Cloud Directory: PHP Product Guide](/php/product-guide#EditDir)
+* [Edit a Cloud Directory: Ruby Product Guide](/ruby/product-guide#EditDir)
+* [Edit a Cloud Directory: Python Product Guide](/python/product-guide#EditDir)
 
 
 ##<a id="AddLS"></a>Add Another Login Source
@@ -104,12 +102,12 @@ Adding a login source to an application provisions a directory or group to that 
 	
 For information about adding login sources, refer to the appropriate product guide:
 
-* [Console Product Guide](http://www.stormpath.com/docs/console/product-guide#AddLoginSource)
-* [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide#AddLoginSource)
-* [Java Product Guide](http://www.stormpath.com/docs/java/product-guide#AddLoginSource)
-* [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide#AddLoginSource)
-* [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide#AddLoginSource)
-* [Python Product Guide](http://www.stormpath.com/docs/python/product-guide#AddLoginSource)
+* [Console Product Guide](/console/product-guide#AddLoginSource)
+* [REST Product Guide](/rest/product-guide#AddLoginSource)
+* [Java Product Guide](/java/product-guide#AddLoginSource)
+* [PHP Product Guide](/php/product-guide#AddLoginSource)
+* [Ruby Product Guide](/ruby/product-guide#AddLoginSource)
+* [Python Product Guide](/python/product-guide#AddLoginSource)
 
 
 ##<a id="AssociateDir"></a>Associate a Directory with an Application
@@ -125,12 +123,12 @@ For information about adding login sources, refer to the appropriate product gui
 
 For information about associating directories and applications, refer to the appropriate product guide:
 
-* [Console Product Guide](http://www.stormpath.com/docs/console/product-guide#AssocApplications)
-* [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide#AssocApplications)
-* [Java Product Guide](http://www.stormpath.com/docs/java/product-guide#AssocApplications)
-* [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide#AssocApplications)
-* [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide#AssocApplications)
-* [Python Product Guide](http://www.stormpath.com/docs/python/product-guide#AssocApplications)
+* [Console Product Guide](/console/product-guide#AssocApplications)
+* [REST Product Guide](/rest/product-guide#AssocApplications)
+* [Java Product Guide](/java/product-guide#AssocApplications)
+* [PHP Product Guide](/php/product-guide#AssocApplications)
+* [Ruby Product Guide](/ruby/product-guide#AssocApplications)
+* [Python Product Guide](/python/product-guide#AssocApplications)
 
 
 
@@ -142,24 +140,24 @@ For information about associating directories and applications, refer to the app
 
 For information about authenticating users, refer to the appropriate product guide:
 
-* [Console Product Guide](http://www.stormpath.com/docs/console/product-guide#AuthenticateAccounts)
-* [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide#AuthenticateAccounts)
-* [Java Product Guide](http://www.stormpath.com/docs/java/product-guide#AuthenticateAccounts)
-* [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide#AuthenticateAccounts)
-* [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide#AuthenticateAccounts)
-* [Python Product Guide](http://www.stormpath.com/docs/python/product-guide#AuthenticateAccounts)
+* [Console Product Guide](/console/product-guide#AuthenticateAccounts)
+* [REST Product Guide](/rest/product-guide#AuthenticateAccounts)
+* [Java Product Guide](/java/product-guide#AuthenticateAccounts)
+* [PHP Product Guide](/php/product-guide#AuthenticateAccounts)
+* [Ruby Product Guide](/ruby/product-guide#AuthenticateAccounts)
+* [Python Product Guide](/python/product-guide#AuthenticateAccounts)
 
 
 ##<a id="UseLDAP"></a>Use an LDAP directory
 
 For information about using an LDAP directory, refer to the appropriate product guide:
 
-* [Console Product Guide](http://www.stormpath.com/docs/console/product-guide#CreateDir)
-* [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide#CreateDir)
-* [Java Product Guide](http://www.stormpath.com/docs/java/product-guide#CreateDir)
-* [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide#CreateDir)
-* [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide#CreateDir)
-* [Python Product Guide](http://www.stormpath.com/docs/python/product-guide#CreateDir)
+* [Console Product Guide](/console/product-guide#CreateDir)
+* [REST Product Guide](/rest/product-guide#CreateDir)
+* [Java Product Guide](/java/product-guide#CreateDir)
+* [PHP Product Guide](/php/product-guide#CreateDir)
+* [Ruby Product Guide](/ruby/product-guide#CreateDir)
+* [Python Product Guide](/python/product-guide#CreateDir)
 
 
 ##<a id="CreateDirGroups"></a>Create Roles Within Directories
@@ -175,12 +173,12 @@ Groups are collections of accounts within a directory that are often used for au
 
 For information about creating groups, refer to the appropriate product guide:
 
-* [Console Product Guide](http://www.stormpath.com/docs/console/product-guide#CreateGroups)
-* [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide#CreateGroups)
-* [Java Product Guide](http://www.stormpath.com/docs/java/product-guide#CreateGroups)
-* [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide#CreateGroups)
-* [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide#CreateGroups)
-* [Python Product Guide](http://www.stormpath.com/docs/python/product-guide#CreateGroups)
+* [Console Product Guide](/console/product-guide#CreateGroups)
+* [REST Product Guide](/rest/product-guide#CreateGroups)
+* [Java Product Guide](/java/product-guide#CreateGroups)
+* [PHP Product Guide](/php/product-guide#CreateGroups)
+* [Ruby Product Guide](/ruby/product-guide#CreateGroups)
+* [Python Product Guide](/python/product-guide#CreateGroups)
 
 ##<a id="EstConnectionAppSP"></a>Add an Application to Stormpath
 
@@ -193,12 +191,12 @@ To associate an application with Stormpath for authentication and authorization,
 
 For information about connecting applications with Stormpath, refer to the appropriate product guide:
 
-* [Console Product Guide](http://www.stormpath.com/docs/console/product-guide#RegisterApps)
-* [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide#RegisterApps)
-* [Java Product Guide](http://www.stormpath.com/docs/java/product-guide#RegisterApps)
-* [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide#RegisterApps)
-* [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide#RegisterApps)
-* [Python Product Guide](http://www.stormpath.com/docs/python/product-guide#RegisterApps)
+* [Console Product Guide](/console/product-guide#RegisterApps)
+* [REST Product Guide](/rest/product-guide#RegisterApps)
+* [Java Product Guide](/java/product-guide#RegisterApps)
+* [PHP Product Guide](/php/product-guide#RegisterApps)
+* [Ruby Product Guide](/ruby/product-guide#RegisterApps)
+* [Python Product Guide](/python/product-guide#RegisterApps)
 
 
 ##<a id="ManageWA"></a>Manage Workflow Automations
@@ -212,12 +210,12 @@ Workflows are common user management operations that are automated for you by St
 
 For information about managing workflow automations, refer to the appropriate product guide:
 
-* [Console Product Guide](http://www.stormpath.com/docs/console/product-guide#ManageWorkflowAutomation)
-* [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide#ManageWorkflowAutomation)
-* [Java Product Guide](http://www.stormpath.com/docs/java/product-guide#ManageWorkflowAutomation)
-* [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide#ManageWorkflowAutomation)
-* [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide#ManageWorkflowAutomation)
-* [Python Product Guide](http://www.stormpath.com/docs/python/product-guide#ManageWorkflowAutomation)
+* [Console Product Guide](/console/product-guide#ManageWorkflowAutomation)
+* [REST Product Guide](/rest/product-guide#ManageWorkflowAutomation)
+* [Java Product Guide](/java/product-guide#ManageWorkflowAutomation)
+* [PHP Product Guide](/php/product-guide#ManageWorkflowAutomation)
+* [Ruby Product Guide](/ruby/product-guide#ManageWorkflowAutomation)
+* [Python Product Guide](/python/product-guide#ManageWorkflowAutomation)
 
 
 <!--
