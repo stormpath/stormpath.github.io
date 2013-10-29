@@ -17,7 +17,7 @@ lang: console
 </ol></li>
 <li>
 <p>Create your API key.</p>
-<p>All requests to the Stormpath <a href="http://www.stormpath.com/docs/rest/product-guide#RESTAPIdef">REST API</a> must be authenticated with an <a href="http://www.stormpath.com/docs/rest/product-guide#APIKey">API key</a>. To get an API key:</p>
+<p>All requests to the Stormpath <a href="/rest/product-guide#RESTAPIdef">REST API</a> must be authenticated with an <a href="/rest/product-guide#APIKey">API key</a>. To get an API key:</p>
 <ol type="a">
 <li>Log in to the Stormpath Admin Console using the email address and password provided during sign-up.</li>
 <li>After logging in, navigate to your account page by clicking <strong>Settings</strong>, <strong>My Account</strong> in the top-right corner of the screen.</li>
@@ -48,7 +48,7 @@ lang: console
 <p>If you see a successful JSON response for your Tenant data, you have successfully made an API request! You are now ready to make REST requests to access all of your data using our <a href="/docs/rest/product-guide" title="Stormpath REST API">full REST API</a>.</p>
 </li>
 <li>
-<p>Configure your REST client with HTTP basic <a href="https://www.stormpath.com/docs/rest/api#Authentication" title="REST API Authentication">authentication</a> and to accept JSON content.</p>
+<p>Configure your REST client with HTTP basic <a href="/rest/api#Authentication" title="REST API Authentication">authentication</a> and to accept JSON content.</p>
 <ul>
 <li>
 <p>Depending on your REST library or client, you typically accept JSON by setting the <code>Accept</code> header with a value of <code>application/json</code>:</p>
@@ -130,7 +130,7 @@ lang: console
 </ol></li>
 <li>
 <p>Register applications.</p>
-<p>To authenticate a user account in your <a href="http://www.stormpath.com/docs/rest/product-guide#Application">application</a>, you must first register the application with Stormpath.<br>To register an application:</p>
+<p>To authenticate a user account in your <a href="/rest/product-guide#Application">application</a>, you must first register the application with Stormpath.<br>To register an application:</p>
 <ol type="a">
 <li>Click the <strong>Applications</strong> tab.</li>
 <li>Click <strong>Register Application</strong>.
@@ -275,4 +275,4 @@ lang: console
 </li>
 </ol></li>
 </ol>
-<p>For information about performing other functions such as password reset, creating groups, and disabling accounts, see the <a href="http://www.stormpath.com/docs/console/product-guide">product guide</a>.</p>
+<p>For information about performing other functions such as password reset, creating groups, and disabling accounts, see the <a href="/console/product-guide">product guide</a>.</p>

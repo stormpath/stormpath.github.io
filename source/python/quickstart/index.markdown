@@ -83,7 +83,7 @@ You may need to run the above commands with `sudo`.
 
 ### Configure your Python application
 
-Create a Stormpath SDK [`Client`](http://www.stormpath.com/docs/python/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
+Create a Stormpath SDK [`Client`](/python/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
 
     from stormpath.client import Client
     ...
@@ -144,4 +144,4 @@ Use the client instance to interact with your tenant data, such as applications,
 
 We hope you have found this Quickstart helpful!
 
-For full coverage of Stormpath's Python SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [Python Product Guide](http://www.stormpath.com/docs/python/product-guide).
+For full coverage of Stormpath's Python SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [Python Product Guide](/python/product-guide).

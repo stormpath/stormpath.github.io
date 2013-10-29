@@ -22,7 +22,7 @@ To quickly get started using Stormpath to secure your online applications, pleas
 
 4. Create your API key.
 	
-	All requests to the Stormpath [REST API](http://www.stormpath.com/docs/php/product-guide#RESTAPIdef) must be authenticated with an [API key](http://www.stormpath.com/docs/php/product-guide#APIKey). To get an API key:
+	All requests to the Stormpath [REST API](/php/product-guide#RESTAPIdef) must be authenticated with an [API key](/php/product-guide#APIKey). To get an API key:
 	
 	1. Log in to the Stormpath Admin Console using the email address and password provided during sign-up.
 	2. After logging in, navigate to your account page by clicking **Settings**, **My Account** in the top-right corner of the screen.
@@ -60,7 +60,7 @@ To quickly get started using Stormpath to secure your online applications, pleas
 
 	   More information on different ways to configure and retrieve information from this file can be found in the [Client Builder](https://github.com/stormpath/stormpath-sdk-php/blob/master/Services/Stormpath/Client/ClientBuilder.php) API documentation.
 
-5. Configure your application to create a Stormpath SDK [client](http://www.stormpath.com/docs/php/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
+5. Configure your application to create a Stormpath SDK [client](/php/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
 
 
 		$path = '/home/myhomedir/.stormpath/apiKey.yml';
@@ -115,7 +115,7 @@ Mandatory characters | The required character patterns which new passwords will 
 
 8. Register applications.
 
-	To authenticate a user account in your [application](http://www.stormpath.com/docs/php/product-guide#Application), you must first register the application with Stormpath.
+	To authenticate a user account in your [application](/php/product-guide#Application), you must first register the application with Stormpath.
 
 	To register an application, you must:
 	  1. Retrieve your current tenant from the client instance.
@@ -191,4 +191,4 @@ Mandatory characters | The required character patterns which new passwords will 
 
 We hope you have found this Quickstart helpful!
 
-For full coverage of Stormpath's PHP SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide)
+For full coverage of Stormpath's PHP SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [PHP Product Guide](/php/product-guide)

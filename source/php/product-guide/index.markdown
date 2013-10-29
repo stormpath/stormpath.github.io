@@ -6,7 +6,7 @@ title: Stormpath PHP Product Guide
 
 Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
 
-For help to quickly get started with Stormpath, refer to the [PHP Quickstart Guide](http://www.stormpath.com/docs/php/quickstart).
+For help to quickly get started with Stormpath, refer to the [PHP Quickstart Guide](/php/quickstart).
 
 ***
 
@@ -46,7 +46,7 @@ The Stormpath API offers authorized developers and administrators programmatic a
 * Manage groups.
 * Initiate and process account automations.
 
-For more detailed documentation on the Stormpath API, visit the [API Reference Documentation](http://www.stormpath.com/docs/rest/api/).
+For more detailed documentation on the Stormpath API, visit the [REST Product Guide](/rest/product-guide).
 
 
 ### PHP SDK
@@ -58,9 +58,9 @@ When you make SDK method calls, the calls are translated into HTTPS requests to 
 This SDK was implemented based on the 5.3.10 version of PHP.
 
 
-Stormpath also offers guides and SDKs for [Ruby](www.stormpath.com/docs/ruby/product-guide),  [Java](www.stormpath.com/docs/java/product-guide), and [Python](www.stormpath.com/docs/python/product-guide).
+Stormpath also offers guides and SDKs for [Ruby](/ruby/product-guide),  [Java](/java/product-guide), and [Python](/python/product-guide).
 
-If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](www.stormpath.com/docs/rest/product-guide).
+If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](/rest/product-guide).
 
 ***
 
@@ -86,7 +86,7 @@ This is heavily recommended if you have access to the file system.
 
 #### Single URL Configuration
 
-The [PHP Quickstart Guide](http://www.stormpath.com/docs/php/quickstart) assumes you have easy access to an `apiKey.yml` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance using a single URL, where often the URL is available as an environment variable, such as `$_ENV`.
+The [PHP Quickstart Guide](/php/quickstart) assumes you have easy access to an `apiKey.yml` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance using a single URL, where often the URL is available as an environment variable, such as `$_ENV`.
 
 This technique requires embedding the API key ID and secret as components in a URL; allowing you to have a single URL that contains all necessary information required to construct a `Client`.
 

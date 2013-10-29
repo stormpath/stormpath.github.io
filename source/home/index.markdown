@@ -31,8 +31,7 @@ alias: [index.html]
   
   <div class="pane-content">
     <ul class="menu"><li class="first leaf"><a href="/rest/quickstart" title="">REST API Quickstart Guide</a></li>
-<li class="leaf"><a href="/rest/product-guide" title="">REST API Product Guide</a></li>
-<li class="last leaf"><a href="/rest/api" title="">REST API Reference</a></li>
+<li class="last leaf"><a href="/rest/product-guide" title="">REST API Product Guide</a></li>
 </ul>  </div>
 
   
@@ -84,7 +83,7 @@ alias: [index.html]
     <ul class="menu"><li class="first leaf"><a href="/python/quickstart" title="">Python Quickstart Guide</a></li>
 <li class="leaf"><a href="/python/product-guide" title="">Python Product Guide</a></li>
 <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-python" title="">Python SDK on GitHub</a></li>
-<li class="last leaf"><a href="https://pypi.python.org/pypi/stormpath-sdk/0.2.0" title="">Python SDK on PyPi</a></li>
+<li class="last leaf"><a href="https://pypi.python.org/pypi/stormpath-sdk/1.0.0.beta" title="">Python SDK on PyPi</a></li>
 <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-python/archive/master.zip">Download SDK</a></li>
 </ul>  </div>
 

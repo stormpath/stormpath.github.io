@@ -28,11 +28,11 @@ To quickly get started using Stormpath to secure your online applications, pleas
 		    <scope>runtime</scope>
 		</dependency>
 
-	If you are not using a Maven Repository-compatable tool, follow these [instructions](http://www.stormpath.com/docs/java/product-guide#Appendix).
+	If you are not using a Maven Repository-compatable tool, follow these [instructions](/java/product-guide#Appendix).
 
 3. Create your API key.
 	
-	All requests to the Stormpath [REST API](http://www.stormpath.com/docs/java/product-guide#RESTAPIdef) must be authenticated with an [API key](http://www.stormpath.com/docs/java/product-guide#APIKey). To get an API key:
+	All requests to the Stormpath [REST API](/java/product-guide#RESTAPIdef) must be authenticated with an [API key](/java/product-guide#APIKey). To get an API key:
 	
 	1. Log in to the Stormpath Admin Console using the email address and password provided during sign-up.
 	2. After logging in, navigate to your account page by clicking **Settings**, **My Account** in the top-right corner of the screen.
@@ -62,7 +62,7 @@ To quickly get started using Stormpath to secure your online applications, pleas
 
 		More information on different ways to configure and retrieve information from this file can be found in the [Client Builder](https://github.com/stormpath/stormpath-sdk-java/blob/master/api/src/main/java/com/stormpath/sdk/client/ClientBuilder.java) API documentation.
 
-4. Configure your application to create a Stormpath SDK [client](http://www.stormpath.com/docs/java/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
+4. Configure your application to create a Stormpath SDK [client](/java/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
 
 		import com.stormpath.sdk.client.*;
 		...
@@ -179,7 +179,7 @@ Mandatory characters | The required character patterns which new passwords will 
 
 	By default, the **Account Registration and Verification** workflow automation is disabled. By leaving this workflow off, all accounts created in the directory are enabled, unless otherwise specified, and the user does not receive any registration or verification emails from Stormpath.
 	By only enabling <strong>Enable Registration and Verification Workflow</strong> and not also enabling <strong>Require newly registered accounts to verify their email address</strong>, new accounts are marked as enabled and the users receive a registration success email.
-	You configure Account Registration and Verification in the [Stormpath Admin Console](http://www.stormpath.com/docs/java/product-guide#ConfigureAccountRegistration).
+	You configure Account Registration and Verification in the [Stormpath Admin Console](/java/product-guide#ConfigureAccountRegistration).
 	
 	If the **Account Registration and Verification** workflow is enabled, an account registration is automatically initiated during an account creation. 
 
@@ -235,4 +235,4 @@ Mandatory characters | The required character patterns which new passwords will 
 
 We hope you have found this Quickstart helpful!
 
-For full coverage of Stormpath's Java SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, reset passwords via password reset emails, and more, please see our [Java Product Guide](http://www.stormpath.com/docs/java/product-guide)
+For full coverage of Stormpath's Java SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, reset passwords via password reset emails, and more, please see our [Java Product Guide](/java/product-guide)

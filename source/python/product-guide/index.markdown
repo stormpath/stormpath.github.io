@@ -6,7 +6,7 @@ title: Stormpath Python Product Guide
 
 Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
 
-For help to quickly get started with Stormpath, refer to the [Python Quickstart Guide](http://www.stormpath.com/docs/python/quickstart).
+For help to quickly get started with Stormpath, refer to the [Python Quickstart Guide](/python/quickstart).
 
 ***
 
@@ -46,7 +46,7 @@ The Stormpath API offers authorized developers and administrators programmatic a
 * Manage groups
 * Initiate and process account automations
 
-For more detailed documentation on the Stormpath API, visit the [API Reference Documentation](http://www.stormpath.com/docs/rest/api/).
+For more detailed documentation on the Stormpath API, visit the [REST Product Guide](/rest/product-guide).
 
 
 ### Python SDK
@@ -59,9 +59,9 @@ When you make SDK method calls, the calls are translated into HTTPS requests to 
 
 This SDK is compatible with the 2.7 or 3.2 and later versions of Python.
 
-Stormpath also offers guides and SDKs for [Ruby](www.stormpath.com/docs/ruby/product-guide),  [Java](www.stormpath.com/docs/java/product-guide), and [PHP](www.stormpath.com/docs/php/product-guide).
+Stormpath also offers guides and SDKs for [Ruby](/ruby/product-guide),  [Java](/java/product-guide), and [PHP](/php/product-guide).
 
-If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](http://www.stormpath.com/docs/rest/product-guide).
+If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](/rest/product-guide).
 
 ***
 
@@ -88,7 +88,7 @@ This is heavily recommended if you have access to the file system.
 
 #### API Key Configuration
 
-The [Python Quickstart Guide](http://www.stormpath.com/docs/python/quickstart) assumes you have easy access to an `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance by directly providing the API key and, where often they are available as environment variables, such as `$_ENV`.
+The [Python Quickstart Guide](/python/quickstart) assumes you have easy access to an `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance by directly providing the API key and, where often they are available as environment variables, such as `$_ENV`.
 
 {% docs warning %}
 Do not use this technique if you have access to a file system. Depending on the environment, environment variables are less secure than reading a permission-restricted file like `apiKey.properties`.

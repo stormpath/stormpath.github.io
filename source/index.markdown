@@ -30,8 +30,7 @@ content_top: [docs_top.html]
   
   <div class="pane-content">
     <ul class="menu"><li class="first leaf"><a href="/rest/quickstart" title="">REST API Quickstart Guide</a></li>
-<li class="leaf"><a href="/rest/product-guide" title="">REST API Product Guide</a></li>
-<li class="last leaf"><a href="/rest/api" title="">REST API Reference</a></li>
+<li class="last leaf"><a href="/rest/product-guide" title="">REST API Product Guide</a></li>
 </ul>  </div>
 
   

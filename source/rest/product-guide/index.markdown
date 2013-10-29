@@ -6,7 +6,7 @@ title: Stormpath REST API Product Guide
 
 Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
 
-To get started with the basics of Stormpath quickly, check out the [REST API Quickstart Guide](http://www.stormpath.com/docs/rest/quickstart). For a more complete understanding and reference of the full Stormpath service, read on.
+To get started with the basics of Stormpath quickly, check out the [REST API Quickstart Guide](/rest/quickstart). For a more complete understanding and reference of the full Stormpath service, read on.
 
 ***
 
@@ -95,7 +95,7 @@ All URLs referenced in the API documentation begin with the following base URL:
 Every request to the Stormpath REST API must be authenticated with an API key over HTTPS (HTTP is not supported). If you want to make a REST request to Stormpath, we assume you have already:
 
 1. [Signed up for Stormpath](https://api.stormpath.com/register).
-2. [Obtained your API key](http://www.stormpath.com/docs/console/product-guide#!ManageAPIkeys).
+2. [Obtained your API key](/console/product-guide#!ManageAPIkeys).
 
 When you have an API key, you can choose one of two ways to authenticate with Stormpath:
 
@@ -143,7 +143,7 @@ This technique is especially secure because the API key secret is *never transmi
 
 We recommend using digest authentication whenever possible because it is inherently more secure. However, due to its complexity, it might not be feasible for some projects.
 
-All Stormpath SDKs (currently [Java](http://www.stormpath.com/docs/java/product_guide), [Ruby](http://www.stormpath.com/docs/ruby/product_guide), [PHP](http://www.stormpath.com/docs/php/product_guide), and [Python](http://www.stormpath.com/docs/python/product_guide)) use this more secure digest authentication so we recommend that you use the SDKs whenever possible. However, if we do not yet have an SDK for your programming language, you should use basic authentication over HTTPS.
+All Stormpath SDKs (currently [Java](/java/product_guide), [Ruby](/ruby/product_guide), [PHP](/php/product_guide), and [Python](/python/product_guide)) use this more secure digest authentication so we recommend that you use the SDKs whenever possible. However, if we do not yet have an SDK for your programming language, you should use basic authentication over HTTPS.
 
 Finally, if you would like to use Stormpath digest authentication in a programming language that Stormpath does not yet support, you can attempt to port the algorithm to that language. You can try to replicate the algorithm and use Stormpath existing code as examples to help:
 
@@ -467,7 +467,7 @@ Example response:
       "code": 404,
       "message": "Oops! The application you specified cannot be found.",
       "developerMessage": "The specified Application cannot be found. If you accessed this url via a stale href reference, it might be helpful to acquire the tenant's Application Collection Resource to obtain the current list of applications.",
-      "moreInfo": "http://www.stormpath.com/docs/errors/404"
+      "moreInfo": "http://docs.stormpath.com/errors/404"
     }
 <!-- {: .http} -->
 
@@ -1317,7 +1317,7 @@ If you delete an application, you must manually delete any auto-created director
 
 After you have created an application, you may retrieve its contents by sending a `GET` request to the application's URL returned in the `Location` header or `href` attribute.
 
-If you don't have the application's URL, you can find it by [looking it up in the Stormpath Admin Console](http://www.stormpath.com/docs/console/product-guide#!LocateAppURL) or by [searching your tenant's applications](#tenant-applications-search) for the application and then using its `href`.
+If you don't have the application's URL, you can find it by [looking it up in the Stormpath Admin Console](/console/product-guide#!LocateAppURL) or by [searching your tenant's applications](#tenant-applications-search) for the application and then using its `href`.
 
 **Example Request**
 
@@ -2615,7 +2615,7 @@ Mirrored directories, after initial configuration, are accessible through the Ag
 
 To create an LDAP/AD mirrored directory, you must log in to the Stormpath Admin Console.
 
-For more information on setting up a Mirrored Directory and using the Stormpath Admin Console, refer to the [Stormpath Admin Console product guide](http://www.stormpath.com/docs/console/product-guide#!CreateDir).
+For more information on setting up a Mirrored Directory and using the Stormpath Admin Console, refer to the [Stormpath Admin Console product guide](/console/product-guide#!CreateDir).
 
 <a class="anchor" name="associate-directories-with-applications"></a>
 #### Associate Directories with Applications
@@ -3205,14 +3205,14 @@ To create a new `group` resource instance in a specified directory which is acce
 
 This creates a new group in the application group creation acceptable designated directory. The group data POSTed is the same required for the existing directory-specific group creation endpoint.
 
-If there is no acceptable designated directory account store, the REST API error code [5102](http://www.stormpath.com/docs/errors#5102) is returned:
+If there is no acceptable designated directory account store, the REST API error code [5102](/errors#5102) is returned:
 
     {
       "status": 409,
       "code": 5102,
       "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
       "developerMessage": "No account store assigned to this application has been configured as the default storage location for newly created groups.  To fix this problem: in the application's 'account stores' configuration, specify the account store that will be used to store newly created groups."
-      "moreInfo": "http://www.stormpath.com/docs/errors/5102"
+      "moreInfo": "http://docs.stormpath.com/errors/5102"
     }
 
 <a class="anchor" name="group-retrieve"></a>
@@ -4058,14 +4058,14 @@ On the client side, then, you do not need to worry about salting or storing pass
 
 This code creates a new account in the acceptable account creation designated account store for the application. The account data POSTed is the same required for the existing directory-specific account creation endpoint.
 
-If there is no acceptable account creation designated account store, the REST API error code [5100](http://www.stormpath.com/docs/errors#5100) is returned:
+If there is no acceptable account creation designated account store, the REST API error code [5100](/errors#5100) is returned:
 
     {
       "status": 409,
       "code": 5100,
       "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
       "developerMessage": "No account store assigned to this application has been configured as the default storage location for newly created accounts.  To fix this problem: in the application's 'account stores' configuration, specify the account store that will be used to store newly created accounts."
-      "moreInfo": "http://www.stormpath.com/docs/errors/5100"
+      "moreInfo": "http://docs.stormpath.com/errors/5100"
     }
 
 If the designated account creation account store is a directory, then the account is created in the directory. If the designated account creation account store is a group:

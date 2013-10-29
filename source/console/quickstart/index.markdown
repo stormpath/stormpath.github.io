@@ -137,4 +137,4 @@ The account cannot be moved to a different directory after it has been created.
 
 We hope you have found this Quickstart helpful!
 
-For full coverage of Stormpath's Admin Console, including how to edit application details, edit accounts, create groups and assign accounts to groups, reset passwords via password reset emails, and more, please see our [Admin Console](http://www.stormpath.com/docs/console/product-guide).
+For full coverage of Stormpath's Admin Console, including how to edit application details, edit accounts, create groups and assign accounts to groups, reset passwords via password reset emails, and more, please see our [Admin Console](/console/product-guide).

@@ -30,7 +30,7 @@ To quickly get started using Stormpath to secure your online applications, pleas
 
 4. Create your API key.
 	
-	All requests to the Stormpath [REST API](http://www.stormpath.com/docs/ruby/product-guide#RESTAPIdef) must be authenticated with an [API key](http://www.stormpath.com/docs/ruby/product-guide#APIKey). To get an API key:
+	All requests to the Stormpath [REST API](/ruby/product-guide#RESTAPIdef) must be authenticated with an [API key](/ruby/product-guide#APIKey). To get an API key:
 	
 	1. Log in to the Stormpath Admin Console using the email address and password provided during sign-up.
 	2. After logging in, navigate to your account page by clicking **Settings**, **My Account** in the top-right corner of the screen.
@@ -59,7 +59,7 @@ To quickly get started using Stormpath to secure your online applications, pleas
 
 	More information on different ways to configure and retrieve information from this file can be found in the [README file](https://github.com/stormpath/stormpath-sdk-ruby/blob/master/README.md) of the Ruby SDK.
 
-5. Configure your application to create a Stormpath SDK [client](http://www.stormpath.com/docs/ruby/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
+5. Configure your application to create a Stormpath SDK [client](/ruby/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
 
 		require "stormpath-sdk"
 		...
@@ -95,7 +95,7 @@ To quickly get started using Stormpath to secure your online applications, pleas
 
 8. Register applications.
 
-	To authenticate a user account in your [application](http://www.stormpath.com/docs/ruby/product-guide#Application), you must first register the application with Stormpath.
+	To authenticate a user account in your [application](/ruby/product-guide#Application), you must first register the application with Stormpath.
 
 	To register an application you must create it from the client instance:
 
@@ -156,4 +156,4 @@ To quickly get started using Stormpath to secure your online applications, pleas
 
 We hope you have found this Quickstart helpful!
 
-For full coverage of Stormpath's Ruby SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide)
+For full coverage of Stormpath's Ruby SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [Ruby Product Guide](/ruby/product-guide)

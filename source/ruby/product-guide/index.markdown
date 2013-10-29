@@ -6,7 +6,7 @@ title: Stormpath Ruby Product Guide
 
 Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
 
-For help to quickly get started with Stormpath, refer to the [Ruby Quickstart Guide](http://www.stormpath.com/docs/ruby/quickstart).
+For help to quickly get started with Stormpath, refer to the [Ruby Quickstart Guide](/ruby/quickstart).
 
 ***
 
@@ -46,7 +46,7 @@ The Stormpath API offers authorized developers and administrators programmatic a
 * Manage groups.
 * Initiate and process account automations.
 
-For more detailed documentation on the Stormpath API, visit the [API Reference Documentation](http://www.stormpath.com/docs/rest/api/).
+For more detailed documentation on the Stormpath API, visit the [REST Product Guide](/rest/product-guide).
 
 
 ### Ruby SDK
@@ -57,7 +57,7 @@ When you make SDK method calls, the calls are translated into HTTPS requests to 
 
 This SDK is compatible with the *1.9.3* and later versions of Ruby. The sample codes of this documentation are based on version *1.0.0.beta* or greater of the Ruby SDK.
 
-Stormpath also offers guides and SDKs for [Java](www.stormpath.com/docs/java/product-guide), [PHP](www.stormpath.com/docs/php/product-guide), and [Python](www.stormpath.com/docs/python/product-guide).
+Stormpath also offers guides and SDKs for [Java](/java/product-guide), [PHP](/php/product-guide), and [Python](/python/product-guide).
 
 If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the <a href="/docs/rest/product-guide" title="API">REST API Product Guide.</a>
 
@@ -88,7 +88,7 @@ This is heavily recommended if you have access to the file system.
 
 #### Single URL Configuration
 
-The [Ruby Quickstart Guide](http://www.stormpath.com/docs/ruby/quickstart) assumes you have easy access to an `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance using a single URL, where often the URL is available as an environment variable, such as `ENV`.
+The [Ruby Quickstart Guide](/ruby/quickstart) assumes you have easy access to an `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance using a single URL, where often the URL is available as an environment variable, such as `ENV`.
 
 This technique requires embedding the API key ID and Secret as components in a URL allowing you to have a single URL that contains all necessary information required to construct a `Client`.
 
