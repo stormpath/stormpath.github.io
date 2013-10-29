@@ -20,7 +20,7 @@ To quickly get started using Stormpath to secure your online applications, pleas
 
 3. Create your API key.
 
-	All requests to the Stormpath [REST API](http://www.stormpath.com/docs/python/product-guide#RESTAPIdef) must be authenticated with an [API key](http://www.stormpath.com/docs/python/product-guide#APIKey). To get an API key:
+	All requests to the Stormpath [REST API](/python/product-guide#RESTAPIdef) must be authenticated with an [API key](/python/product-guide#APIKey). To get an API key:
 	
 	1. Log in to the Stormpath Admin Console using the email address and password provided during sign-up.
 	2. After logging in, navigate to your account page by clicking **Settings**, **My Account** in the top-right corner of the screen.
@@ -49,7 +49,7 @@ To quickly get started using Stormpath to secure your online applications, pleas
 			> cd $HOME/.stormpath
 			> chmod go-rwx apiKey.properties
 
-4. Configure your application to create a Stormpath SDK [client](http://www.stormpath.com/docs/python/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
+4. Configure your application to create a Stormpath SDK [client](/python/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
 
 		from stormpath import Client
 		...
@@ -103,7 +103,7 @@ Mandatory characters | The required character patterns which new passwords will 
 
 7. Register applications.
 
-	To authenticate a user account in your [application](http://www.stormpath.com/docs/python/product-guide#Application), you must first register the application with Stormpath.
+	To authenticate a user account in your [application](/python/product-guide#Application), you must first register the application with Stormpath.
 
 	To register an application you must create it from the client instance:
 
@@ -159,4 +159,4 @@ This is useful if you don't want to be bothered with organizing your directories
 
 We hope you have found this Quickstart helpful!
 
-For full coverage of Stormpath's Python SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [Python Product Guide](http://www.stormpath.com/docs/python/product-guide)
+For full coverage of Stormpath's Python SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [Python Product Guide](/python/product-guide)

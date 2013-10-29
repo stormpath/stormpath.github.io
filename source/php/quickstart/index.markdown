@@ -103,7 +103,7 @@ To get started, you'll need to configure your application to include the SDK. Gi
     StormpathService::configure($key, $secret);
 <!-- {.php} -->
 
-Once the application is configured with your key, create a Stormpath SDK [`ResourceManager`](http://www.stormpath.com/docs/PHP/product-guide#Client) instance. The ResourceManager instance is your starting point for all operations with the Stormpath service:
+Once the application is configured with your key, create a Stormpath SDK [`ResourceManager`](/PHP/product-guide#Client) instance. The ResourceManager instance is your starting point for all operations with the Stormpath service:
 
     $resourceManager = StormpathService::getResourceManager();
 <!-- {.php} -->
@@ -225,4 +225,4 @@ Use the ResourceManager instance to interact with your tenant data, such as appl
 
 We hope you have found this Quickstart helpful!
 
-For full coverage of Stormpath's PHP SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, reset passwords via password reset emails, and more, please see our [PHP Product Guide](http://www.stormpath.com/docs/PHP/product-guide).
+For full coverage of Stormpath's PHP SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, reset passwords via password reset emails, and more, please see our [PHP Product Guide](/PHP/product-guide).

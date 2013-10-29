@@ -6,7 +6,7 @@ title: Stormpath Python Product Guide
 
 Stormpath provides developers with a simple yet powerful REST+JSON API that enables user management control for organizations and applications.
 
-For help to quickly get started with Stormpath, refer to the [Python Quickstart Guide](http://www.stormpath.com/docs/python/quickstart).
+For help to quickly get started with Stormpath, refer to the [Python Quickstart Guide](/python/quickstart).
 
 ***
 
@@ -46,7 +46,7 @@ The Stormpath API offers authorized developers and administrators programmatic a
 * Manage groups.
 * Initiate and process account automations.
 
-For more detailed documentation on the Stormpath API, visit the [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide).
+For more detailed documentation on the Stormpath API, visit the [REST Product Guide](/rest/product-guide).
 
 
 ### Python SDK
@@ -88,7 +88,7 @@ This is heavily recommended if you have access to the file system.
 
 #### API Key Configuration
 
-The [Python Quickstart Guide](http://www.stormpath.com/docs/python/quickstart) assumes you have easy access to an `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance by directly providing the API key and, where often they are available as environment variables, such as `$_ENV`.
+The [Python Quickstart Guide](/python/quickstart) assumes you have easy access to an `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance by directly providing the API key and, where often they are available as environment variables, such as `$_ENV`.
 
 {% docs warning %}
 Do not use this technique if you have access to a file system. Depending on the environment, environment variables are less secure than reading a permission-restricted file like `apiKey.properties`.

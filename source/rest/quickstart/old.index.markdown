@@ -202,4 +202,4 @@ If the authentication attempt fails, you will see an [error response](product-gu
 
 We hope you have found this Quickstart helpful!
 
-For full coverage of Stormpath's REST API, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [REST API Product Guide](http://www.stormpath.com/docs/rest/product-guide)
+For full coverage of Stormpath's REST API, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [REST API Product Guide](/rest/product-guide)

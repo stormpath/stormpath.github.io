@@ -6,7 +6,7 @@ title: Stormpath Ruby Product Guide
 
 Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
 
-For help to quickly get started with Stormpath, refer to the [Ruby Quickstart Guide](http://www.stormpath.com/docs/ruby/quickstart).
+For help to quickly get started with Stormpath, refer to the [Ruby Quickstart Guide](/ruby/quickstart).
 
 ***
 
@@ -46,7 +46,7 @@ The Stormpath API offers authorized developers and administrators programmatic a
 * Manage groups.
 * Initiate and process account automations.
 
-For more detailed documentation on the Stormpath API, visit the [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide).
+For more detailed documentation on the Stormpath API, visit the [REST Product Guide](/rest/product-guide).
 
 
 ### Ruby SDK
@@ -88,7 +88,7 @@ This is heavily recommended if you have access to the file system.
 
 #### Single URL Configuration
 
-The [Ruby Quickstart Guide](http://www.stormpath.com/docs/ruby/quickstart) assumes you have easy access to an `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance using a single URL, where often the URL is available as an environment variable, such as `ENV`.
+The [Ruby Quickstart Guide](/ruby/quickstart) assumes you have easy access to an `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku) applications. In these cases, you can also create a client instance using a single URL, where often the URL is available as an environment variable, such as `ENV`.
 
 This technique requires embedding the API key ID and Secret as components in a URL allowing you to have a single URL that contains all necessary information required to construct a `Client`.
 

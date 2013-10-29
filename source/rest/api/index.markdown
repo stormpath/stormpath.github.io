@@ -23,7 +23,7 @@ This document has been deprecated.  Please refer to the [REST Product Guide](pro
 <p>Every request to the Stormpath REST API must be authenticated with an API key over HTTPS (HTTP is not supported). If you want to make a REST request to Stormpath, we assume you have already:</p>
 <ol>
 <li><a href="http://www.stormpath.com/" title="Sign up">Signed up for Stormpath</a>.</li>
-<li><a href="http://www.stormpath.com/docs/console/product-guide#GetAPI" title="Get API key">Obtained your API key</a>.</li>
+<li><a href="/console/product-guide#GetAPI" title="Get API key">Obtained your API key</a>.</li>
 </ol>
 <p>When you have an API key, you can choose one of two ways to authenticate with Stormpath:</p>
 <ul>
@@ -32,7 +32,7 @@ This document has been deprecated.  Please refer to the [REST Product Guide](pro
 </ul>
 <p><strong>Security Notice</strong></p>
 <p>Any account that can access the Stormpath application within the Stormpath Admin Console has full administrative access to your Stormpath data and settings, including access to the REST API if they have an API Key.</p>
-<p>Assign user accounts to Stormpath, through <a href="http://www.stormpath.com/docs/console/product-guide#ManageLoginSources" title="login sources">login sources</a>, wisely.</p>
+<p>Assign user accounts to Stormpath, through <a href="/console/product-guide#ManageLoginSources" title="login sources">login sources</a>, wisely.</p>
 <p><strong>HTTPS</strong></p>
 <p>To help ensure data security, only secure (HTTPS) communication is allowed when communicating with the Stormpath API servers. Standard HTTP is not supported.</p>
 
@@ -57,7 +57,7 @@ HTTP basic password: apiKey.secret value
 <p>Stormpath also supports a more secure authentication scheme known as digest authentication. This approach computes a <a href="http://en.wikipedia.org/wiki/Cryptographic_hash_function" title="cryptographic digest">cryptographic digest</a> of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated.</p>
 <p>This technique is especially secure because the API key secret is <em>never transmitted outside of the application</em>, making it extremely difficult for anything (or anyone) outside of the application to interfere with a request or see the secret.</p>
 <p>We recommend using digest authentication whenever possible because it is inherently more secure. However, due to its complexity, it might not be feasible for some projects.</p>
-<p>All Stormpath SDKs (currently <a href="http://www.stormpath.com/docs/java/product-guide" title="Java">Java</a>, <a href="http://www.stormpath.com/docs/ruby/product-guide" title="Ruby">Ruby</a>, <a href="http://www.stormpath.com/docs/python/product-guide">Python</a> and&nbsp;<a href="http://www.stormpath.com/docs/php/product-guide" title="PHP">PHP</a>) use this more secure digest authentication so we recommend that you use the SDKs whenever possible. However, if we do not yet have an SDK for your programming language, you should use basic authentication over HTTPS.</p>
+<p>All Stormpath SDKs (currently <a href="/java/product-guide" title="Java">Java</a>, <a href="/ruby/product-guide" title="Ruby">Ruby</a>, <a href="/python/product-guide">Python</a> and&nbsp;<a href="/php/product-guide" title="PHP">PHP</a>) use this more secure digest authentication so we recommend that you use the SDKs whenever possible. However, if we do not yet have an SDK for your programming language, you should use basic authentication over HTTPS.</p>
 <p>Finally, if you would like to use Stormpath digest authentication in a programming langauge that Stormpath does not yet support, you can attempt to port the algorithm to that language. You can try to replicate the algorithm and use Stormpath existing code as examples to help:</p>
 <ul>
 <li>Java: <a href="https://github.com/stormpath/stormpath-sdk-java/blob/master/impl/src/main/java/com/stormpath/sdk/impl/http/authc/Sauthc1Signer.java" title="Sauthc1Signer">Sauthc1Signer</a> (the <strong>sign</strong> method)</li>
@@ -788,7 +788,7 @@ Content-Type: application/json;charset=UTF-8
 ### Applications
 
 <p>An <a href="#Application" title="applications">application</a> in Stormpath represents a real world application that can communicate with and be provisioned by Stormpath. After it is defined, an application is mapped to one or more directories or groups, whose users are then granted access to the application.</p>
-<p>You can control access to your Stormpath Admin Console and API by managing the <a href="http://www.stormpath.com/docs/console/product-guide#ManageLoginSources" title="login sources">login sources</a> for the listed Stormpath application.</p>
+<p>You can control access to your Stormpath Admin Console and API by managing the <a href="/console/product-guide#ManageLoginSources" title="login sources">login sources</a> for the listed Stormpath application.</p>
 
 <a id="ApplicationInstanceResource"></a>
 #### Application Instance Resource

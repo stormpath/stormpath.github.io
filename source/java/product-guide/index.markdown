@@ -6,7 +6,7 @@ title: Stormpath Java Product Guide
 
 Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
 
-For help to quickly get started with Stormpath, refer to the [Java Quickstart Guide](http://www.stormpath.com/docs/java/quickstart).
+For help to quickly get started with Stormpath, refer to the [Java Quickstart Guide](/java/quickstart).
 
 ***
 
@@ -46,7 +46,7 @@ The Stormpath API offers authorized developers and administrators programmatic a
 * Manage groups.
 * Initiate and process account automations.
 
-For more detailed documentation on the Stormpath API, visit the [REST Product Guide](http://www.stormpath.com/docs/rest/product-guide).
+For more detailed documentation on the Stormpath API, visit the [REST Product Guide](/rest/product-guide).
 
 ### Java SDK
 
@@ -54,9 +54,9 @@ The Stormpath Java SDK allows any JVM-based application to easily use the Stormp
 
 When making SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Java SDK therefore provides a clean object-oriented paradigm natural to JVM developers and alleviates the need to know how to make REST+JSON requests. Any JVM-based programming language can use the Stormpath Java SDK. JVM languages include Java, Groovy, Scala, Clojure, Kotlin, Jython, and JRuby.
 
-Stormpath also offers guides and SDKs for [Ruby](https://www.stormpath.com/docs/ruby/product-guide), [PHP](https://www.stormpath.com/docs/php/product-guide), and [Python](https://www.stormpath.com/docs/python/product-guide).
+Stormpath also offers guides and SDKs for [Ruby](/ruby/product-guide), [PHP](/php/product-guide), and [Python](/python/product-guide).
 
-If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](https://www.stormpath.com/docs/rest/product-guide).
+If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](/rest/product-guide).
 
 ***
 
@@ -85,7 +85,7 @@ This is heavily recommended if you have access to the file system.
 
 #### Single URL Configuration
 
-The [Java Quickstart Guide](http://www.stormpath.com/docs/java/quickstart) assumes you have easy access to a private `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku applications). In these cases, you can also create a client instance using a single URL, where often the URL is available as an environment variable, such as `System.getenv()`.
+The [Java Quickstart Guide](/java/quickstart) assumes you have easy access to a private `apiKey.properties` file. Some applications however might not have access to the file system (such as Heroku applications). In these cases, you can also create a client instance using a single URL, where often the URL is available as an environment variable, such as `System.getenv()`.
 
 This technique requires embedding the API key ID and secret as components in a URL, which allows you to have a single URL that contains all necessary information required to construct a `Client`.
 

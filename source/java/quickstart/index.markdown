@@ -69,7 +69,7 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
         <scope>runtime</scope>
     </dependency>
 
-If you are not using a Maven Repository-compatable tool, follow these [instructions](http://www.stormpath.com/docs/java/product-guide#Appendix).
+If you are not using a Maven Repository-compatable tool, follow these [instructions](/java/product-guide#Appendix).
 
 More information on different ways to configure and retrieve information from this file can be found in the [Client Builder](https://github.com/stormpath/stormpath-sdk-java/blob/master/api/src/main/java/com/stormpath/sdk/client/ClientBuilder.java) API documentation.
 
@@ -79,7 +79,7 @@ More information on different ways to configure and retrieve information from th
 
 ### Configure your Java application
 
-Create a Stormpath SDK [`Client`](http://www.stormpath.com/docs/java/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
+Create a Stormpath SDK [`Client`](/java/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
 
     import com.stormpath.sdk.client.*;
     ...
@@ -203,4 +203,4 @@ Use the client instance to interact with your tenant data, such as applications,
 
 We hope you have found this Quickstart helpful!
 
-For full coverage of Stormpath's Java SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, reset passwords via password reset emails, and more, please see our [Java Product Guide](http://www.stormpath.com/docs/java/product-guide).
+For full coverage of Stormpath's Java SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, reset passwords via password reset emails, and more, please see our [Java Product Guide](/java/product-guide).

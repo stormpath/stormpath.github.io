@@ -78,7 +78,7 @@ Once the gem is installed, add the Stormpath Ruby SDK .gem to your application u
 
 ### Configure your Ruby application
 
-Create a Stormpath SDK [`Client`](http://www.stormpath.com/docs/ruby/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
+Create a Stormpath SDK [`Client`](/ruby/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
 
     require "stormpath-sdk"
     ...
@@ -142,4 +142,4 @@ Use the client instance to interact with tenant data, such as applications, dire
 
 We hope you have found this Quickstart helpful!
 
-For full coverage of Stormpath's Ruby SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [Ruby Product Guide](http://www.stormpath.com/docs/ruby/product-guide).
+For full coverage of Stormpath's Ruby SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [Ruby Product Guide](/ruby/product-guide).
