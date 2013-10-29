@@ -57,7 +57,7 @@ When you make SDK method calls, the calls are translated into HTTPS requests to 
 
 This SDK is compatible with the *1.9.3* and later versions of Ruby. The sample codes of this documentation are based on version *1.0.0.beta* or greater of the Ruby SDK.
 
-Stormpath also offers guides and SDKs for [Java](www.stormpath.com/docs/java/product-guide), [PHP](www.stormpath.com/docs/php/product-guide), and [Python](www.stormpath.com/docs/python/product-guide).
+Stormpath also offers guides and SDKs for [Java](/java/product-guide), [PHP](/php/product-guide), and [Python](/python/product-guide).
 
 If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the <a href="/docs/rest/product-guide" title="API">REST API Product Guide.</a>
 

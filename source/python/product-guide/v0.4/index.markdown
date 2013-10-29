@@ -59,9 +59,9 @@ When you make SDK method calls, the calls are translated into HTTPS requests to 
 
 This SDK is compatible with the 2.7 and later versions of Python.
 
-Stormpath also offers guides and SDKs for [Ruby](www.stormpath.com/docs/ruby/product-guide),  [Java](www.stormpath.com/docs/java/product-guide), and [PHP](www.stormpath.com/docs/php/product-guide).
+Stormpath also offers guides and SDKs for [Ruby](/ruby/product-guide),  [Java](/java/product-guide), and [PHP](/php/product-guide).
 
-If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](www.stormpath.com/docs/rest/product-guide).
+If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](/rest/product-guide).
 
 ***
 

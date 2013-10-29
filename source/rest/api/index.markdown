@@ -1226,7 +1226,7 @@ Content-Type: application/json;charset=UTF-8
 </ul>
 </li>
 </ul>
-<p>For more information about directories, see the <a href="www.stormpath.com/docs/console/product-guide#directories" title="Stormpath Admin Console">Stormpath Admin Console Product Guide</a>.</p>
+<p>For more information about directories, see the <a href="/console/product-guide#directories" title="Stormpath Admin Console">Stormpath Admin Console Product Guide</a>.</p>
 
 <a id="DirectoryInstanceResource"></a>
 #### Directory Instance Resource
