@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <title>Stormpath PHP Quickstart - Stormpath</title>
-  <meta name="author" content="Stormpath, Inc.">
+  <meta name="author" content="Your Name">
 
   
   <meta name="description" content="Welcome to Stormpath&rsquo;s PHP SDK Quickstart! This quickstart will get you up and running with Stormpath in about 10 minutes and give you a good &hellip;">
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://docs.stormpath.com/php/quickstart">
+  <link rel="canonical" href="http://stormpath.github.io/php/quickstart">
   <link href="/favicon.ico" rel="icon">
 
 
@@ -177,9 +177,9 @@
 
 <p>With Stormpath, you can offload repetitive security-sensitive logic to Stormpath and get back to building your application&rsquo;s core functionality.  Never worry about storing passwords again!</p>
 
-<p>The PHP SDK can be found on <a href="https://github.com/stormpath/stormpath-sdk-php">Github</a>.</p>
+<p>The Stormpath PHP SDK can be found on <a href="https://github.com/stormpath/stormpath-sdk-php">Github</a>.</p>
 
-<div class='docs-note'><p>The PHP SDK is built upon Zend&#8217;s note of a Service and is thus only compatible with version <em>2.2</em> and higher of the [Zend Framework|http://framework.zend.com/].</p>
+<div class='docs-note'><p>The PHP SDK is compatible with PHP version <em>5.3</em> and higher. The sample codes of this documentation are based on version <em>1.0.0.beta</em> of the PHP SDK.</p>
 </div>
 
 
@@ -193,8 +193,6 @@
 </ol>
 
 
-<hr />
-
 <h2><a id="-get-an-api-key"></a><a name="apiKey"></a> Get an API Key</h2>
 
 <p>All requests back to Stormpath using the Stormpath SDK must be authenticated with an API Key. To get an API key:</p>
@@ -203,7 +201,7 @@
 <li><p>Log in to the <a href="https://api.stormpath.com">Stormpath Admin Console</a> using the email address and password you used to register with Stormpath.</p></li>
 <li><p>In the top-right corner of the resulting page, visit <strong>Settings</strong> > <strong>My Account</strong>.</p>
 
-<p> <!-- TODO: SCREENSHOT (arrow calling attention to the 'My Accounts' menu item --></p></li>
+<p> <!-- TODO: SCREENSHOT (arrow calling attention to the 'My Accounts' menu item)   --></p></li>
 <li><p>On the Account Details page, under <strong>Security Credentials</strong>, click <strong>Create API Key</strong>.</p>
 
 <p> <!-- TODO: SCREENSHOT (arrow calling attention to the 'Create API Key' button) --></p>
@@ -228,20 +226,22 @@
 
 <h2><a id="add-the-stormpath-php-sdk-to-your-project"></a>Add the Stormpath PHP SDK to your Project</h2>
 
-<p>The <a href="https://github.com/stormpath/stormpath-sdk-php">Stormpath PHP SDK</a> is built upon the Zend Framework. In order to add it to your application, you&rsquo;ll need to use Composer:</p>
+<p>Configure the stormpath/sdk dependency in your <code>composer.json</code> file:</p>
 
-<ol>
-<li><p>Navigate to your project folder. If you&rsquo;re new to Zend, consider cloning the <a href="https://github.com/zendframework/ZendSkeletonApplication">Zend skeleton application</a> and using that as your first project.</p></li>
-<li><p>Copy the &ldquo;test&rdquo; and &ldquo;src&rdquo; folders provided in the SDK into the &ldquo;module/Application&rdquo; folder of your project. Likewise, copy the &ldquo;vendor&rdquo; folder to your project root.</p></li>
-<li><p>Modify your project&rsquo;s &ldquo;composer.json&rdquo; to add in the dependencies found in the SDK&rsquo;s &ldquo;composer.json&rdquo;.</p></li>
-<li><p>Install dependencies via Composer</p>
+<pre><code>"require": {
+    "stormpath/sdk": "1.0.*@beta"
+}
+</code></pre>
 
-<pre><code> $ php composer.phar install
-</code></pre></li>
-</ol>
+<p>If you still haven&rsquo;t, install composer:</p>
 
+<pre><code>curl -s http://getcomposer.org/installer
+</code></pre>
 
-<p>Your project should now be set up to use the Stormpath PHP SDK. For additional details about installing and configuring the PHP SDK, be sure to review the SDK&rsquo;s <a href="https://github.com/stormpath/stormpath-sdk-php/blob/master/README.md">README.md file</a>.</p>
+<p>Install the <a href="https://github.com/stormpath/stormpath-sdk-php">Stormpath PHP SDK</a> on your application root using:</p>
+
+<pre><code>php composer.phar install
+</code></pre>
 
 <hr />
 
@@ -249,160 +249,77 @@
 
 <h3><a id="configure-your-php-application"></a>Configure your PHP application</h3>
 
-<p>To get started, you&rsquo;ll need to configure your application to include the SDK. Given your ApiKey, configure the service as follows:</p>
+<p>Configure a Stormpath SDK <a href="http://www.stormpath.com/docs/php/product-guide#Client"><code>Client</code></a> based on your API key. The <code>Client</code> is your starting point for all operations with the Stormpath service. For example:</p>
 
-<pre><code>//Include Stormpath SDK
-use Stormpath\Service\StormpathService;
+<pre><code>require 'vendor/autoload.php';
+...
 
-//Read API key file
-try {
-    $reader = new Zend\Config\Reader\Ini();
-    $config = $reader-&gt;fromFile('/Users/frankcaron/.stormpath/apiKey.properties');    
-} catch (Exception $e) {
-    throw new Exception("Dayum", 0, $e);
-}
-
-//Get values from file
-$key = $config['apiKey']['id'];
-$secret = $config['apiKey']['secret'];
-
-//Configure the service to connect given the API key file values
-StormpathService::configure($key, $secret);
+\Stormpath\Client::$apiKeyFileLocation = $_SERVER['HOME'] . '/.stormpath/apiKey.properties';
 </code></pre>
 
-<!-- {.php} -->
-
-
-<p>Once the application is configured with your key, create a Stormpath SDK <a href="/PHP/product-guide#Client"><code>ResourceManager</code></a> instance. The ResourceManager instance is your starting point for all operations with the Stormpath service:</p>
-
-<pre><code>$resourceManager = StormpathService::getResourceManager();
-</code></pre>
-
-<!-- {.php} -->
-
-
-<p>The <code>ResourceManager</code> instance is intended to be an application singleton. You should reuse this instance throughout your application code. You <em>should not</em> create multiple ResourceManager instances as it could negatively affect caching.</p>
+<p>The <code>Client</code> instance that will be generated from here is a singleton that will be used to interact with Stormpath.</p>
 
 <h3><a id="register-your-application-with-stormpath"></a>Register your application with Stormpath</h3>
 
-<p>Registering an application with Stormpath allows that application to use Stormpath for its user management and authentication needs. Use the <code>ResourceManager</code> you instantiated and a new <code>Application</code> resource to do so as follows:</p>
+<p>Registering an application with Stormpath allows that application to use Stormpath for its user management and authentication needs. Use the <code>create</code> method of the <code>Application</code> resource class as follows:</p>
 
-<pre><code>use Stormpath\Resource\Application;
-
-//Create an Application resource
-$app = new Application;
-$app-&gt;setName('My Test PHP App');
-$app-&gt;setDescription('Test App created via PHP application');
-$app-&gt;setStatus('ENABLED');
-$app-&gt;setAutoCreateDirectory(true); //Automatically create a directory
-
-//Add the application to the ResourceManager
-$resourceManager-&gt;persist($app);
-
-try {
-    //Create the application
-    $resourceManager-&gt;flush();
-} catch (Exception $e) {
-    throw new Exception("Error creating application: ", 0, $e);
-}
+<pre><code>$application = \Stormpath\Resource\Application::create(
+  array('name' =&gt; 'My Application',
+        'description' =&gt; 'My Application Description'),
+  array('createDirectory' =&gt; true));
 </code></pre>
 
-<!-- {.php} -->
-
-
-<p>Once the application is created, it will automatically create a <code>Directory</code> resource based on the name of application and set it as the default account store. New accounts will be created in the default account store.</p>
+<p>Once the application is created, it will automatically create a <code>Directory</code> resource based on the name of the application and set it as the default account store. New accounts will be created in the default account store.</p>
 
 <h3><a id="create-an-account"></a>Create an account</h3>
 
-<p>Now that we&rsquo;ve created an <code>Application</code>, let&rsquo;s create an <code>Account</code> so someone can log in to (i.e. authenticate with) the application. To do so, use the <code>_setters_</code> of a new account instance to set the values and create the account in a directory as follows:</p>
+<p>Now that we&rsquo;ve created an <code>Application</code>, let&rsquo;s create an <code>Account</code> so someone can log in to (i.e. authenticate with) the application. To do so,</p>
 
-<pre><code>//Use the applicationId to target your application (not the full href)
-$applicationId = $YOUR_APP_ID; //retrieve from $app.getHref() or Admin console
-$application = $resourceManager-&gt;find('Stormpath\Resource\Application', $applicationId);
+<pre><code>$account = \Stormpath\Resource\Account::instantiate(
+    array('givenName' =&gt; 'John',
+          'surname' =&gt; 'Smith',
+          'username' =&gt; 'johnsmith',
+          'email' =&gt; 'john.smith@example.com',
+          'password' =&gt; '4P@$$w0rd!'));
 
-//Create the account resource
-$account = new Account;
-$account-&gt;setUsername("username");
-$account-&gt;setEmail("email");
-$account-&gt;setPassword("password");
-$account-&gt;setGivenName('First Name');
-$account-&gt;setMiddleName('Middle Name');
-$account-&gt;setSurname('Last Name');
-$account-&gt;setStatus('Enabled');
-
-//Assign the account to the application instantiated previously
-$account-&gt;setApplication($application);
-
-//Add the application to the ResourceManager
-$resourceManager-&gt;persist($account);
-
-//Create the application
-$resourceManager-&gt;flush();
+$application-&gt;createAccount($account);
 </code></pre>
-
-<!-- {.php} -->
-
 
 <h3><a id="authenticate-an-account"></a>Authenticate an Account</h3>
 
-<p>Now we have an account that can use your application.  But how do you authenticate an account logging in to the application? You use the application instance and a <code>LoginAttempt</code> resource as follows:</p>
+<p>Now that we have an account we can use, we can log in to the application. But how do we authenticate an account logging in to the application? We use the previously-created application instance as follows:</p>
 
-<pre><code>use Stormpath\Exception\ApiException;
-use Stormpath\Resource\LoginAttempt;
-
-//Capture the username and password from the form
-$usernameOrEmail = "usernameOrEmail";
-$rawPassword = "password";
-
-//Create a new LoginAttempt
-$loginAttempt = new LoginAttempt;
-$loginAttempt-&gt;setUsername($usernameOrEmail); //get from form
-$loginAttempt-&gt;setPassword($rawPassword); //get from form
-$loginAttempt-&gt;setApplication($application);
-
-//Add the loginAttempt to the resourceManager
-$resourceManager-&gt;persist($loginAttempt);
-
-try {
-    //Process the log in attempt
-    $resourceManager-&gt;flush();
-    //Get the authorized account back
-    $authorizedAccount = $loginAttempt-&gt;getAccount();
-} catch (ApiException $e) {
-    if ($e-&gt;getCode() == 400) {
-        $userMessage = $e-&gt;getMessage();  # will = There is no account with that email address.
-    }
-}
+<pre><code>$authResult = $application-&gt;authenticate('johnsmith', '4P@$$w0rd!');
+$account = $authResult-&gt;account;
 </code></pre>
 
-<!-- {.php} -->
-
-
-<p>If the authentication attempt fails, you will receive a <code>ApiException</code> which contains details of the error.</p>
+<p>If the authentication request is successful, the <code>$authResult</code> will return the account instance for the authorized account.</p>
 
 <h3><a id="experiment"></a>Experiment!</h3>
 
-<p>Use the ResourceManager instance to interact with your tenant data, such as applications, directories, and accounts:</p>
+<p>Use the client configuration to interact with tenant data, such as applications, directories, and accounts:</p>
 
-<pre><code>use Stormpath\Resource\Tenant;
+<pre><code>$tenant = \Stormpath\Resource\Tenant::get();
+foreach($tenant-&gt;applications as $app)
+{
+    print $app-&gt;name;
 
-$currentTenant = $resourceManager-&gt;find('Stormpath\Resource\Tenant', 'current');
-
-//Print application name
-$applications = $currentTenant-&gt;getApplications();
-foreach ($applications as $application) {
-    echo "Application Name: " . $application-&gt;getName() . "&lt;br /&gt;";
+    foreach($dir-&gt;accounts as $acc)
+    {
+        print $acc-&gt;givenName;
+    }
 }
 
-//Print directory names
-$directories = $currentTenant-&gt;getDirectories();
-foreach ($directories as $directory) {
-    echo "Application Name: " . $directory-&gt;getName() . "&lt;br /&gt;";
+foreach($tenant-&gt;directories as $dir)
+{
+    print $dir-&gt;name;
+
+    foreach($dir-&gt;accounts as $acc)
+    {
+        print $acc-&gt;givenName;
+    }
 }
 </code></pre>
-
-<!-- {.php} -->
-
 
 <hr />
 
@@ -410,7 +327,7 @@ foreach ($directories as $directory) {
 
 <p>We hope you have found this Quickstart helpful!</p>
 
-<p>For full coverage of Stormpath&rsquo;s PHP SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, reset passwords via password reset emails, and more, please see our <a href="/PHP/product-guide">PHP Product Guide</a>.</p>
+<p>For full coverage of Stormpath&rsquo;s PHP SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our <a href="http://www.stormpath.com/docs/php/product-guide">PHP Product Guide</a>.</p>
 
 
 <script src="/javascripts/stormpath_docs.js"></script>
@@ -588,6 +505,9 @@ foreach ($directories as $directory) {
 			sp_docs_menu['ruby'].push('product-guide');
 		
 			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['stormpath-error-codes'] = [];
 		
 	
 		sp_docs_menu['stylesheets'] = [];
