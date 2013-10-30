@@ -80,26 +80,25 @@ Install the [Stormpath PHP SDK](https://github.com/stormpath/stormpath-sdk-php) 
 
 ### Configure your PHP application
 
-Configure a Stormpath SDK [`Client`](http://www.stormpath.com/docs/php/product-guide#Client) based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
+Configure a Stormpath SDK [`Client`](http://www.stormpath.com/docs/php/product-guide#Client) based on your API key. The `Client` is your starting point for all operations with the Stormpath service. For example:
 
     require 'vendor/autoload.php';
     ...
 
     \Stormpath\Client::$apiKeyFileLocation = $_SERVER['HOME'] . '/.stormpath/apiKey.properties';
 
-The `Client` instance that will be generated from here is intended to be an application singleton. You should reuse this instance throughout your application code.
+The `Client` instance that will be generated from here is a singleton that will be used to interact with Stormpath.
 
 ### Register your application with Stormpath
 
 Registering an application with Stormpath allows that application to use Stormpath for its user management and authentication needs. Use the `create` method of the `Application` resource class as follows:
 
     $application = \Stormpath\Resource\Application::create(
-      array('name' => 'May Application',
+      array('name' => 'My Application',
             'description' => 'My Application Description'),
-      array('createDirectory' => true)
-       );
+      array('createDirectory' => true));
 
-Once the application is created, it will automatically create a `Directory` resource based on the name of application and set it as the default account store. New accounts will be created in the default account store.
+Once the application is created, it will automatically create a `Directory` resource based on the name of the application and set it as the default account store. New accounts will be created in the default account store.
 
 ### Create an account
 
@@ -107,10 +106,10 @@ Now that we've created an `Application`, let's create an `Account` so someone ca
 
     $account = \Stormpath\Resource\Account::instantiate(
         array('givenName' => 'John',
-          'surname' => 'Smith',
-          'username' => 'johnsmith',
-          'email' => 'john.smith@example.com',
-          'password' => '4P@$$w0rd!'));
+              'surname' => 'Smith',
+              'username' => 'johnsmith',
+              'email' => 'john.smith@example.com',
+              'password' => '4P@$$w0rd!'));
 
     $application->createAccount($account);
 
