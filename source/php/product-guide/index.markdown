@@ -1,12 +1,12 @@
 ---
 layout: doc
 lang: php
-title: Stormpath PHP SDK Product Guide
+title: Stormpath PHP Product Guide
 ---
 
 Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
 
-To get started with the basics of Stormpath quickly, check out the [PHP Quickstart Guide](http://www.stormpath.com/docs/php/quickstart). For a more complete understanding and reference of the full Stormpath service, read on.
+To get started with the basics of Stormpath quickly, check out the [PHP Quickstart Guide](/php/quickstart/). For a more complete understanding and reference of the full Stormpath service, read on.
 
 ***
 
@@ -91,7 +91,7 @@ The Stormpath API offers authorized developers and administrators programmatic a
 * Manage groups.
 * Initiate and process account automations.
 
-For more detailed documentation on the Stormpath API, visit the [API Reference Documentation](http://www.stormpath.com/docs/rest/api/).
+For more detailed documentation on the Stormpath API, visit the [REST API Product Guide](/rest/product-guide/).
 
 <a class="anchor" name="php-sdk"></a>
 ### PHP SDK
@@ -102,9 +102,9 @@ When you make SDK method calls, the calls are translated into HTTPS requests to 
 
 This SDK is compatible with PHP version `5.3` and higher.
 
-Stormpath also offers guides and SDKs for [Ruby](www.stormpath.com/docs/ruby/product-guide), [Java](www.stormpath.com/docs/java/product-guide), and [Python](www.stormpath.com/docs/python/product-guide).
+Stormpath also offers guides and SDKs for [Ruby](/ruby/product-guide/), [Java](/java/product-guide/), and [Python](/python/product-guide/).
 
-If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](www.stormpath.com/docs/rest/product-guide).
+If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](/rest/product-guide/).
 
 ***
 
@@ -838,7 +838,6 @@ Attribute | Description | Type | Valid Value
 For Tenants, you can:
 
 * [Retrieve a tenant](#tenant-retrieve)
-* [Retrieve the current tenant](#tenant-current)
 * [Access a tenant's applications](#tenant-applications)
 * [Access a tenant's directories](#tenant-directories)
 
@@ -846,8 +845,8 @@ For Tenants, you can:
 
 "Create" and "Delete" Tenant operations are currently not supported via the REST API. If you require this functionality, please email <support@stormpath.com> and request it.
 
-<a class="anchor" name="tenant-current"></a>
-### Retrieve the Current Tenant
+<a class="anchor" name="tenant-retrieve"></a>
+### Retrieve A Tenant
 
 You may only retrieve your own Tenant: every API Key that executes REST requests is associated with a Tenant, and the request caller may only retrieve the Tenant corresponding to the API Key used.
 
@@ -1172,7 +1171,7 @@ If you delete an application, you must manually delete any auto-created director
 
 After you have created an application, you may retrieve its contents by requesting an application instance using its URL, returned in the `href` attribute.
 
-If you don't have the application's URL, you can find it by [looking it up in the Stormpath Admin Console](http://www.stormpath.com/docs/console/product-guide#!LocateAppURL) or by [searching your tenant's applications](#tenant-applications-search) for the application and then using its `href`.
+If you don't have the application's URL, you can find it by [looking it up in the Stormpath Admin Console](/console/product-guide#!LocateAppURL) or by [searching your tenant's applications](#tenant-applications-search) for the application and then using its `href`.
 
 **Example Request Using the Static Client Configuration**
 
@@ -1309,7 +1308,7 @@ Applications additionally support the following account-specific functionality:
 * [Log In (Authenticate) an Account](#application-account-authc)
 * [Reset An Account's Password](#application-password-reset)
 * [List an Application's Accounts](#application-accounts-list)
-* [Search an Application's Accounts](#application-accounts-list)
+* [Search an Application's Accounts](#application-accounts-search)
 
 <a class="anchor" name="application-account-register"></a>
 #### Register a New Account
@@ -1351,7 +1350,7 @@ The `createAccount` method is a convenience: when you create a new `account` res
 
 For most applications that have only a single assigned directory, the account is persisted in that directory immediately - the application developer does not even really need to know that Stormpath automates this.
 
-However, applications that map more than one directory or group to define their account base have the option of specifying _which_ of those mapped locations should receive newly created accounts.  You can choose a default `new account location`.  If you do not choose one, the first one in the list of mapped directories is the default location to store new accounts.
+However, applications that map more than one directory or group to define their account base have the option of specifying _which_ of those mapped locations should receive newly created accounts.  You must choose a default [new account location](#account-store-mapping-default-account-store).
 
 <a class="anchor" name="application-welcome-email"></a>
 ##### Send a Welcome Email
@@ -1393,13 +1392,13 @@ If the login attempt is successful, an `AuthenticationResult` object is returned
 
     $account = $result->account;
 
-If the login attempt fails, a `400 Bad Request` is returned with an [error payload](#errors) explaining why the attempt failed:
+If the login attempt fails, a `400 Bad Request` is returned with an [error payload](#error-handling) explaining why the attempt failed:
 
 **Example Login Attempt Failure Handling**
 
     try {
 
-        $application->authenticate('johnsmith', '4P@$$w0rd!');
+        $application->authenticate('johnsmith', 'badPassword');
 
     } catch (\Stormpath\Resource\ResourceError $re)
     {
@@ -1453,7 +1452,7 @@ The `sendPasswordResetEmail` method of an application instance must be called to
 
 A successfully returned account by this request indicates that a password reset email will be sent as soon as possible to the email specified.
 
-If the password reset token creation fails, a `400 Bad Request` is returned with an [error payload](#errors) explaining why the attempt failed:
+If the password reset token creation fails, a `400 Bad Request` is returned with an [error payload](#error-handling) explaining why the attempt failed:
 
 At this point, an email will be built using the [password reset base URL](#password-reset-base-URL) specified in the Stormpath Admin Console.
 
@@ -1546,9 +1545,45 @@ However, many applications do not need this feature.  The most common use case i
 
 Applications additionally support the following group-specific functionality:
 
-* [Register A New Group](#application-group-register)
+* [Register A New Group](#application-groups-register)
 * [List an Application's Groups](#application-groups-list)
 * [Search an Application's Groups](#application-groups-search)
+
+<a class="anchor" name="application-groups-register"></a>
+#### Register a New Group
+
+If your application wants to register a new group, you create a new `group` resource on the application instance.
+
+Set the [group resource attributes](#group) required and any additional ones you desire.
+
+**Example Request Using the Static Client Configuration**
+
+    $group = \Stormpath\Resource\Group::instantiate(
+      array('name' => 'My Group',
+            'description' => 'My Group Description'));
+
+    $application->createGroup($group);
+
+**Example Request Using the Client Instance**
+
+    $group = $client->
+             dataStore->
+             instantiate(\Stormpath\Stormpath::GROUP);
+
+    $group->name = 'My Group';
+    $group->description = 'My Group Description';
+
+    $application->createGroup($group);
+
+**How does this work?**
+
+As we [said previously](#application-groups), an Application does not 'own' groups of its own - it has access to groups in one or more directories and the directories actually own the groups.  So how are we able to create a new group based on only the application?
+
+The `createGroup` method is a convenience: when you create a new `group` resource, Stormpath will automatically route that creation request to a designated directory assigned to the Application.  The group is then persisted in that directory and then made immediately available to the application.
+
+For most applications that have only a single assigned directory, the group is persisted in that directory immediately - the application developer does not even really need to know that Stormpath automates this.
+
+However, applications that map more than one directory to define their group base have the option of specifying _which_ of those mapped locations should receive newly created groups.  You must choose a default [new group location](#account-store-mapping-default-group-store).
 
 <a class="anchor" name="application-groups-list"></a>
 #### List Application Groups
@@ -1603,7 +1638,7 @@ This is a powerful feature within Stormpath that allows you to segment account p
 
 However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application's needs.  This is a totally valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications.
 
-You define an application's account store mappings by creating, modifying or deleting [Account Store Mapping](#accountStoreMapping) resources
+You define an application's account store mappings by creating, modifying or deleting [Account Store Mapping](#account-store-mappings) resources
 
 **Application Account Store Mappings Collection Resource**
 
@@ -1749,7 +1784,7 @@ You may use the response's `$accountStoreMapping` instance to further interact w
 
 After you have created an account store mapping, you may retrieve its contents by sending a request to the static `get` method of the account store mapping class with the `href` attribute, or using a Client instance.
 
-If you don't have the account store mapping's URL, you can find it in the [application's account store mappings list](#application-account-store-mapping-list).
+If you don't have the account store mapping's `href`, you can find it in the [application's account store mappings list](#application-account-store-mappings-list).
 
 **Example Request Using the Static Client Configuration**
 
@@ -1783,8 +1818,8 @@ Call the `save` method on an accountStoreMapping when you want to change one or 
 **Updatable Application Attributes**
 
 * [listIndex](#list-index)
-* [isDefaultAccountStore](#isDefaultAccountStore)
-* [isDefaultGroupStore](#isDefaultGroupStore)
+* [isDefaultAccountStore](#account-store-mapping-resource-is-default-account-store)
+* [isDefaultGroupStore](#account-store-mapping-resource-is-default-group-store)
 
 **Example Request**
 
@@ -1926,7 +1961,7 @@ A Directory is a top-level storage containers of Accounts and Groups. A Director
 1. Natively hosted ‘Cloud’ directories that originate in Stormpath and
 2. ‘Mirror’ directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers.
 
-Directories can be used to cleanly manage segmented account populations.  For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.  You can [associate directories to applications](#accountStoreMappings) (or groups within a directory) to allow its accounts to login to applications.
+Directories can be used to cleanly manage segmented account populations.  For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.  You can [associate directories to applications](#account-store-mappings) (or groups within a directory) to allow its accounts to login to applications.
 
 <a class="anchor" name="directory"></a>
 ### Directory Resource
@@ -1981,9 +2016,10 @@ For directories, you can:
 * [Delete a directory](#directory-delete)
 * [List directories](#directory-list)
 * [Search directories](#directory-search)
-* [Work with directories](#directory-workflows)
+* [Work with directories](#work-with-directories)
     * [Enforce Account Password Restrictions](#directories-password-restrictions)
-    * [Register A New Account](#directories-reg)
+    * [Register A New Account](#directories-account-reg)
+    * [Register A New Group](#directories-group-reg)
     * [Verify An Account's Email Address](#directories-verify-email)
     * [Log In (Authenticate) an Account](#directories-account-authc)
     * [Reset An Account's Password](#directories-password-reset)
@@ -2073,7 +2109,7 @@ Mirrored directories, after initial configuration, are accessible through the Ag
 
 To create an LDAP/AD mirrored directory, you must log in to the Stormpath Admin Console.
 
-For more information on setting up a Mirrored Directory and using the Stormpath Admin Console, refer to the [Stormpath Admin Console product guide](http://www.stormpath.com/docs/console/product-guide#!CreateDir).
+For more information on setting up a Mirrored Directory and using the Stormpath Admin Console, refer to the [Stormpath Admin Console product guide](/console/product-guide#!CreateDir).
 
 <a class="anchor" name="associate-directories-with-applications"></a>
 #### Associate Directories with Applications
@@ -2190,7 +2226,7 @@ To enable or disable a directory, use the `save` method to set the `status` to e
 <a class="anchor" name="update-agent-configuration"></a>
 #### Update Agent Configuration
 
-A [Directory Agent](#Agent) is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory. This is critical part of [a mirrored directory](#directories-mirrored).
+A [Directory Agent](#directory-agent) is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory. This is critical part of [a mirrored directory](#directories-mirrored).
 
 You can modify an agent configuration going through the "Directories" or "Agent" tabs on the Stormpath Admin Console. For more information on administering Mirrored Directory agents, refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!UpdateAgent).
 
@@ -2251,6 +2287,11 @@ Directory Collection Resource | Search Functionality
 :----- | :-----
 $tenant->directories | A search across directories owned by the specified tenant.
 
+<a class="anchor" name="work-with-directories"></a>
+### Work With Directories
+
+From a directory you can do things like enforce account password restrictions, register new accounts and groups, configure the account email verification workflow, configure the account password reset workflow, among other functionalities. Read below to find more information about these features.
+
 <a class="anchor" name="directories-password-restrictions"></a>
 ### Enforce Account Password Restrictions
 
@@ -2275,17 +2316,19 @@ More information about configuring a cloud directory's password restrictions can
 Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
 {% enddocs %}
 
-<a class="anchor" name="directories-reg"></a>
+<a class="anchor" name="directories-account-reg"></a>
 ### Register A New Account
 
-This workflow allows you to create an account at an application level rather than at a directory level. The application will populate the directory set as the default account store.
+This workflow allows you to create an account at a directory level.
 
-This workflow relies on the `account` resource as a starting point. For more information on working with these workflows via the PHP SDK after they have already been configured, refer to the [Working With Applications](#application-account-register) section of this guide.
-This workflow is disabled by default for accounts, but you can enable it easily in the Stormpath Admin Console UI. Refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation) for complete instructions.
+This workflow relies on the `account` resource as a starting point. For more information refer to the [Create an Account](#account-create) section of this guide.
 
-{% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the PHP SDK. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
-{% enddocs %}
+<a class="anchor" name="directories-group-reg"></a>
+### Register A New Group
+
+This workflow allows you to create an group at a directory level.
+
+This workflow relies on the `group` resource as a starting point. For more information refer to the [Create a Group](#group-create) section of this guide.
 
 <a class="anchor" name="directories-verify-email"></a>
 ### Verify An Account's Email Address
@@ -2429,7 +2472,7 @@ Account resources support the full suite of CRUD commands and other interactions
 <a class="anchor" name="groups"></a>
 ## Groups
 
-Groups are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with [role](#Role).
+Groups are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with [role](#role).
 
 You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:
 
@@ -2892,7 +2935,8 @@ Deleting a group membership completely erases the `groupMembership` resource fro
 
 You can list group memberships by [account](#group-membership-by-account) or [group](#account-membership-by-group).
 
-#### List Group Memberships For An Account {#group-membership-by-account}
+<a class="anchor" name="group-membership-by-account"></a>
+#### List Group Memberships For An Account
 
 The account `groupMemberships` resource is a [Collection Resource](#collections) representing all group memberships where the account is involved.
 
@@ -2909,9 +2953,10 @@ A request returns a paginated list of the group memberships where the account is
         print $gms->group->name;
     }
 
-#### List Account Memberships For A Group {#account-membership-by-group}
+<a class="anchor" name="account-membership-by-group"></a>
+#### List Account Memberships For A Group
 
-The group `accountMemberships` resource is a [Collection Resource](#collections representing all group memberships where the group is involved.
+The group `accountMemberships` resource is a collections representing all group memberships where the group is involved.
 
     $group->accountMemberships
 
@@ -3289,6 +3334,11 @@ $directory->accounts | A search across accounts in the specified directory.
 $application->accounts | A search across accounts that are users of the specified application.
 $group->accounts | A search across accounts in the specified group.
 
+<a class="anchor" name="accounts-workflow"></a>
+### Work With Accounts
+
+If you want to learn about other account functionalities, such as [verify an email address](#account-verify-email), [log in (authenticate) an account](#accounts-authenticate) and [reset an account password](#accounts-reset), read the instructions below.
+
 <a class="anchor" name="account-verify-email"></a>
 ### Verify An Email Address
 
@@ -3354,12 +3404,12 @@ For example, if you were to request the account object for a user who has not ye
     }
 
 {% docs tip %}
-As an end-developer, all you need to do to create email verification tokens when a new account is created is to [configure the workflow](#verification-configuration) for the appropriate directory.
+As an end-developer, all you need to do to create email verification tokens when a new account is created is to [configure the workflow](#accounts-verification-configuration) for the appropriate directory.
 {% enddocs %}
 
 #### Verifying The Account (Consume The Token)
 
-When a new account is registered after configuration, either programmatically or through an account creation form in your application, an email verification token is created and Stormpath then automatically sends an email to the user. This email will include a link to the base URL you've [configured](#verification-configuration) with the following query string parameter:
+When a new account is registered after configuration, either programmatically or through an account creation form in your application, an email verification token is created and Stormpath then automatically sends an email to the user. This email will include a link to the base URL you've [configured](#accounts-verification-configuration) with the following query string parameter:
 
     http://www.yourapplicationurl.com/path/to/validator?sptoken=$VERIFICATION_TOKEN
 
@@ -3381,7 +3431,7 @@ To verify the account, you use the token from the query string to form the above
 
 If the validation succeeds, you will receive back the `account` resource which has now been verified. An email confirming the verification will be automatically sent to the account's email address by Stormpath afterwards, and the account will then be able to authenticate successfully.
 
-If the verification token is not found, a `404 Not Found` is returned with an [error payload](#errors) explaining why the attempt failed:
+If the verification token is not found, a `404 Not Found` is returned with an [error payload](#error-handling) explaining why the attempt failed:
 
 **Example Email Verification Failure Response**
 
@@ -3429,7 +3479,7 @@ The account's `groups` resource is a [Collection Resource](#collections) which r
 <a class="anchor" name="list-account-groups"></a>
 #### List Account Groups
 
-A request returns a Collection Resource containing links for all [groups](#Groups) where a specific account is a member.
+A request returns a Collection Resource containing links for all [groups](#groups) where a specific account is a member.
 
 **Example Request**
 
