@@ -929,8 +929,8 @@ You can request the `current` Tenant resource, and the API server will automatic
 Most REST libraries and web browsers will automatically issue a request for the resource in the `Location` header.  If you do not see this, just execute a `GET` request to that `Location` and you will see your `Tenant` resource.
 
 <!-- TODO: re-enable after AM-1903 is complete:
-
-### Update a Tenant {#tenant-update}
+<a class="anchor" name="tenant-update"></a>
+### Update a Tenant {#tenant-update}  <-- FYI, this type or anchor tag doesn't work.
 
 If you want to update one or more attribute of your `Tenant` resource, execute an HTTP `POST` request to the tenant URI.  Unspecified attribute are not changed. At least one attribute must be specified.
 
@@ -1551,7 +1551,7 @@ Applications additionally support the following account-specific functionality:
 * [Log In (Authenticate) an Account](#application-account-authc)
 * [Reset An Account's Password](#application-password-reset)
 * [List an Application's Accounts](#application-accounts-list)
-* [Search an Application's Accounts](#application-accounts-list)
+* [Search an Application's Accounts](#application-accounts-search)
 
 <a class="anchor" name="application-account-register"></a>
 #### Register a New Account
@@ -2016,7 +2016,7 @@ This is a powerful feature within Stormpath that allows you to segment account p
 
 However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application's needs.  This is a totally valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications.
 
-You define an application's account store mappings by creating, modifying or deleting [Account Store Mapping](#accountStoreMapping) resources
+You define an application's account store mappings by creating, modifying or deleting [Account Store Mapping](#account-store-mappings) resources
 
 **Application Account Store Mappings Collection Resource URI**
 
@@ -2183,7 +2183,7 @@ You may use the response's `Location` header or the top-level `href` attribute t
 
 After you have created an account store mapping, you may retrieve its contents by sending a `GET` request to the account store mapping's URL returned in the `Location` header or `href` attribute.
 
-If you don't have the account store mapping's URL, you can find it in the [application's account store mappings list](#application-account-store-mapping-list).
+If you don't have the account store mapping's URL, you can find it in the [application's account store mappings list](#account-store-mapping-list).
 
 **Example Request**
 
@@ -2227,8 +2227,8 @@ Submit an HTTP `POST` to an accountStoreMapping's `href` when you want to change
 **Updatable Application Attributes**
 
 * [listIndex](#list-index)
-* [isDefaultAccountStore](#isDefaultAccountStore)
-* [isDefaultGroupStore](#isDefaultGroupStore)
+* [isDefaultAccountStore](#account-store-mapping-resource-is-default-account-store)
+* [isDefaultGroupStore](#account-store-mapping-resource-is-default-group-store)
 
 **Example Request**
 
@@ -2445,7 +2445,7 @@ A Directory is a top-level storage containers of Accounts and Groups. A Director
 1. Natively hosted ‘Cloud’ directories that originate in Stormpath and
 2. ‘Mirror’ directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers.
 
-Directories can be used to cleanly manage segmented account populations.  For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.  You can [associate directories to applications](#accountStoreMappings) (or groups within a directory) to allow its accounts to login to applications.
+Directories can be used to cleanly manage segmented account populations.  For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.  You can [associate directories to applications](#account-store-mappings) (or groups within a directory) to allow its accounts to login to applications.
 
 <a class="anchor" name="directory"></a>
 ### Directory Resource
@@ -2457,7 +2457,7 @@ An individual `directory` resource may be accessed via its Resource URI:
     /v1/directories/:directoryId
 
 <a id="directory-attributes"></a> 
-**Resource Attributes** {#directory-attributes}
+**Resource Attributes**
 
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
@@ -2764,7 +2764,7 @@ To enable or disable a directory, use HTTP `POST` to set the `status` to either 
 <a class="anchor" name="update-agent-configuration"></a>
 #### Update Agent Configuration
 
-A [Directory Agent](#Agent) is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory. This is critical part of [a mirrored directory](#directories-mirrored).
+A [Directory Agent](#directory-agent) is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory. This is critical part of [a mirrored directory](#directories-mirrored).
 
 You can modify an agent configuration going through the "Directories" or "Agent" tabs on the Stormpath Admin Console. For more information on administering Mirrored Directory agents, refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!UpdateAgent).
 
@@ -3070,7 +3070,7 @@ Account resources support the full suite of CRUD commands and other interactions
 <a class="anchor" name="groups"></a>
 ## Groups
 
-Groups are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with [role](#Role).
+Groups are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with [role](#role).
 
 You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:
 
@@ -3787,7 +3787,8 @@ Deleting a group membership completely erases the `groupMembership` resource fro
 
 You can list group memberships by [account](#group-membership-by-account) or [group](#account-membership-by-group).
 
-#### List Group Memberships For An Account {#group-membership-by-account}
+<a class="anchor" name="group-membership-by-account"></a>
+#### List Group Memberships For An Account
 
 The account `groupMemberships` endpoint is a [Collection Resource](#collections) representing all group memberships where the account is involved.
 
@@ -3827,7 +3828,8 @@ The account `groupMemberships` endpoint is a [Collection Resource](#collections)
         } ]
     }
 
-#### List Account Memberships For A Group {#account-membership-by-group}
+<a class="anchor" name="account-membership-by-group"></a>
+#### List Account Memberships For A Group
 
 The group `accountMemberships` endpoint is a [Collection Resource](#collections representing all group memberships where the group is involved.
 
@@ -4650,12 +4652,12 @@ For example, if you were to request the account object for a user who has not ye
     }
 
 {% docs tip %}
-As an end-developer, all you need to do to create email verification tokens when a new account is created is to [configure the workflow](#verification-configuration) for the appropriate directory.
+As an end-developer, all you need to do to create email verification tokens when a new account is created is to [configure the workflow](#accounts-verification-configuration) for the appropriate directory.
 {% enddocs %}
 
 #### Verifying The Account (Consume The Token)
 
-When a new account is registered after configuration, either programmatically or through an account creation form in your application, an email verification token is created and Stormpath then automatically sends an email to the user. This email will include a link to the base URL you've [configured](#verification-configuration) with the following query string parameter:
+When a new account is registered after configuration, either programmatically or through an account creation form in your application, an email verification token is created and Stormpath then automatically sends an email to the user. This email will include a link to the base URL you've [configured](#accounts-verification-configuration) with the following query string parameter:
 
     http://www.yourapplicationurl.com/path/to/validator?sptoken=$VERIFICATION_TOKEN
 
@@ -4733,7 +4735,7 @@ The account's `groups` resource is a [Collection Resource](#collections) which r
 <a class="anchor" name="list-account-groups"></a>
 #### List Account Groups
 
-HTTP `GET` returns a Collection Resource containing links for all [groups](#Groups) where a specific account is a member.
+HTTP `GET` returns a Collection Resource containing links for all [groups](#groups) where a specific account is a member.
 
 **Example Request**
 
