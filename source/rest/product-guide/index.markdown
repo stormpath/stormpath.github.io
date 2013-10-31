@@ -2854,6 +2854,11 @@ Directory Collection Resource | Search Functionality
 :----- | :-----
 /v1/tenants/:tenantId/directories | A search across directories owned by the specified tenant. |
 
+<a class="anchor" name="work-with-directories"></a>
+### Work With Directories
+
+From a directory you can do things like enforce account password restrictions, register new accounts and groups, configure the account email verification workflow, configure the account password reset workflow, among other functionalities. Read below to find more information about these features.
+
 <a class="anchor" name="directories-password-restrictions"></a>
 ### Enforce Account Password Restrictions
 
@@ -2889,6 +2894,11 @@ This workflow is disabled by default for accounts, but you can enable it easily 
 {% docs note %}
 Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
 {% enddocs %}
+
+<a class="anchor" name="accounts-workflow"></a>
+### Work With Accounts
+
+If you want to learn about other account functionalities, such as [verify an email address](#account-verify-email), [log in (authenticate) an account](#accounts-authenticate) and [reset an account password](#accounts-reset), read the instructions below.
 
 <a class="anchor" name="directories-verify-email"></a>
 ### Verify An Account's Email Address
