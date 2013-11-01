@@ -1913,7 +1913,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
 
     curl -u $API_KEY_ID:$API_KEY_SECRET \
          -H "Accept: application/json" \
-         "https://api.stormpath.com/v1/applications/$APPLICATION_ID/accounts?q=foo&orderBy=name&offset=0&limit=50"
+         "https://api.stormpath.com/v1/applications/$APPLICATION_ID/accounts?q=foo&orderBy=surname&offset=0&limit=50"
 <!-- {: .bash} -->
 
 #### More Account Functionality
@@ -3068,7 +3068,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
 
     curl -u $API_KEY_ID:$API_KEY_SECRET \
          -H "Accept: application/json" \
-         "https://api.stormpath.com/v1/directories/$DIRECTORY_ID/accounts?q=foo&orderBy=name&offset=0&limit=50"
+         "https://api.stormpath.com/v1/directories/$DIRECTORY_ID/accounts?q=foo&orderBy=surname&offset=0&limit=50"
 <!-- {: .bash} -->
 
 #### Working With Directory Accounts
@@ -3260,7 +3260,7 @@ HTTP `GET` returns a representation of a `group` resource that includes the reso
 
 When retrieving an application, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the `expand` query parameter.
 
-The following `Application` attributes are expandable:
+The following `Groups` attributes are expandable:
 
 * `tenant`
 * `directory`
@@ -3268,7 +3268,7 @@ The following `Application` attributes are expandable:
 
 Also, because `accounts` is a [Collection Resources](#collections) itself, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
 
-    GET https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA?expand=tenant,directory,accounts(offset:0,limit:50)
+    GET https://api.stormpath.com/v1/groups/WpM9nyZ2TbaEzfbRvLk9KA?expand=tenant,directory,accounts(offset:0,limit:50)
 
 See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
 
@@ -3578,7 +3578,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
 
     curl -u $API_KEY_ID:$API_KEY_SECRET \
          -H "Accept: application/json" \
-         "https://api.stormpath.com/v1/applications/$APPLICATION_ID/accounts?q=foo&orderBy=name&offset=0&limit=50"
+         "https://api.stormpath.com/v1/groups/$GROUP_ID/accounts?q=foo&orderBy=surname&offset=0&limit=50"
 <!-- {: .bash} -->
 
 <a class="anchor" name="working-with-group-accounts"></a>
@@ -4195,7 +4195,7 @@ The following `Account` attributes are expandable:
 
 Also, because these are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
 
-    GET https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA?expand=tenant,directory,accounts(offset:0,limit:50),groups(offset:0,limit:50),groupMemberships(offset:0,limit:50)
+    GET https://api.stormpath.com/v1/accounts/WpM9nyZ2TbaEzfbRvLk9KA?expand=tenant,directory,groups(offset:0,limit:50),groupMemberships(offset:0,limit:50)
 
 See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
 
@@ -4800,7 +4800,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
 
     curl -u $API_KEY_ID:$API_KEY_SECRET \
          -H "Accept: application/json" \
-         "https://api.stormpath.com/v1/applications/$APPLICATION_ID/groups?q=foo&orderBy=name&offset=0&limit=50"
+         "https://api.stormpath.com/v1/accounts/$ACCOUNT_ID/groups?q=foo&orderBy=name&offset=0&limit=50"
 <!-- {: .bash} -->
 
 <a class="anchor" name="working-with-account-groups"></a>
