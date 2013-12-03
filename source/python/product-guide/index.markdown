@@ -880,6 +880,8 @@ When you submit creation request, at least the `name` attribute must be specifie
 * [description](#application-description)
 * [status](#application-status) - if unspecified, the default is `enabled`.
 
+**Example Request**
+
     application = client.applications.create({
         "name": 'My application',
         "description": 'My application description',
@@ -1452,6 +1454,8 @@ You do this by calling the `create` method on the `AccountStoreMappings` resourc
 * [is_default_account_store](#account-store-mapping-resource-is-default-account-store) - if unspecified, the default is `False`
 * [is_default_group_store](#account-store-mapping-resource-is-default-group-store) - if unspecified, the default is `False`
 
+**Example Request**
+
     account_store_mapping = client.account_store_mappings.create({
         'application': application,
         'account_store': directory,
@@ -1764,9 +1768,11 @@ To create a new `directory` resource within the caller tenant:
 * [description](#directory-resource-description)
 * [status](#directory-resource-status)
 
+**Example Request**
+
     directory = client.directories.create({
         'name': 'Captains',
-        'description': 'Captains from a variety of stories'})
+		'description': 'Captains from a variety of stories'})
 
 
 <a class="anchor" name="directories-mirrored"></a>
@@ -2177,6 +2183,7 @@ To create a new `group` resource instance in a specified directory which is acce
 * [description](#group-resource-description)
 * [status](#group-resource-status)
 
+**Example Request**
 
     group = directory.groups.create({
         'name': 'Aquanauts',
