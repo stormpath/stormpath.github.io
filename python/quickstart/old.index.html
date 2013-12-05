@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Documentation - Stormpath</title>
+  <title>Stormpath Python Quickstart - Stormpath</title>
   <meta name="author" content="Stormpath, Inc.">
 
   
-  <meta name="description" content="Documentation Need more details? Check out in-depth documentation guides below. Rest API Docs REST API Quickstart Guide
-REST API Product Guide Ruby &hellip;">
+  <meta name="description" content="The Python SDK can be found on Github. To quickly get started using Stormpath to secure your online applications, please complete the following steps &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ REST API Product Guide Ruby &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://docs.stormpath.com">
+  <link rel="canonical" href="http://docs.stormpath.com/python/quickstart/old.">
   <link href="/favicon.ico" rel="icon">
 
 
@@ -104,7 +103,7 @@ REST API Product Guide Ruby &hellip;">
 
 </head>
 
-<body  class="not-front  page-docs   no-sidebars ">
+<body  class="not-front  node-type-documentation  ">
 <!-- Qualaroo for stormpath.com -->
 <script type="text/javascript">var _kiq = _kiq || [];</script>
 <script type="text/javascript" src="//s3.amazonaws.com/ki.js/47725/9JM.js" async="true"></script>
@@ -154,21 +153,256 @@ REST API Product Guide Ruby &hellip;">
     </header>
   </div>
   
-    <div id="content-top-wrapper">
-      <div class="region region-content-top">
-        <div id="block-boxes-docs-select-box" class="block block-boxes block-boxes-simple first last odd">
+  <div id="main-wrapper">
+    <div id="main" class="container">
+      <div id="main-inner">
+        <div id="main-inner-inner">
+          <div id="content" class="column" role="main">
+            <a id="main-content"></a>
+            
+              <h1 class="title" id="page-title">Stormpath Python Quickstart</h1>
+            
+          	<p>The Python SDK can be found on <a href="https://github.com/stormpath/stormpath-sdk-python">Github</a>.</p>
 
-      
-  <div id="boxes-box-docs_select_box" class="boxes-box"><div class="boxes-box-content"> <section id="docs-get-started">
-<p><img src="/images/docs-main.png"></p>
-<div class="wide-center">
-<h2><a id="GetStartedwithStormpath"></a>Get Started with Stormpath</h2>
-<p>Quickly setup your application with our Quickstart Guides</p>
-<form class="stormpath-docs-select-lang"><select name="language" class="stormpath-fancy-select"><option value="rest" selected="selected">REST API Quickstart</option><option value="java">Java Quickstart</option> <option value="php">PHP Quickstart</option> <option value="ruby">Ruby Quickstart</option> <option value="python">Python Quickstart</option></select> <input type="submit" value="Get Started"></form></div>
-</section> </div></div>
-</div>
+<p>To quickly get started using Stormpath to secure your online applications, please complete the following steps:</p>
+
+<ol>
+<li><p><a href="https://api.stormpath.com/register">Sign up for service</a>.</p>
+
+<ol>
+<li>Provide your first and last name, email address, company, and a password.</li>
+<li>When all fields are complete, click <strong>Start</strong>.<br>You will receive a registration successful email.</li>
+<li>In the confirmation email, click the link.</li>
+<li>Follow the onscreen instructions.<br>After completing this process, you are ready to use Stormpath for free!</li>
+</ol>
+</li>
+<li><p>Download the Python SDK:</p>
+
+<ul>
+<li><a href="https://github.com/stormpath/stormpath-sdk-python">stormpath-sdk-python</a> &ndash; Official Python SDK for the Stormpath REST+JSON API</p></li>
+</ul>
+</li>
+<li><p>Create your API key.</p>
+
+<p> All requests to the Stormpath <a href="/python/product-guide#RESTAPIdef">REST API</a> must be authenticated with an <a href="/python/product-guide#APIKey">API key</a>. To get an API key:</p>
+
+<ol>
+<li>Log in to the Stormpath Admin Console using the email address and password provided during sign-up.</li>
+<li>After logging in, navigate to your account page by clicking <strong>Settings</strong>, <strong>My Account</strong> in the top-right corner of the screen.</li>
+<li><p>On the Account Details page, under Security Credentials, click <strong>Create API Key</strong>.</p>
+
+<ul>
+<li>This will generate your API key and download it to your computer as an <code>apiKey.properties</code> file.</li>
+<li><p>If you open the file in a text editor, you will see something similar to the following:</p>
+
+<pre><code>  apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
+
+  apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
+</code></pre></li>
+</ul>
+</li>
+<li><p>Store your API key file somewhere secure (readable only by you), for example:</p>
+
+<pre><code> /home/myhomedir/.stormpath/apiKey.properties
+</code></pre>
+
+<p> The file contents should contain the following name/value pairs (using your own values of course):</p>
+
+<pre><code> $ cat /home/myhomedir/.stormpath/apiKey.properties
+
+ apiKey.id = YOURAPIKEYIDHEREREPLACEME
+ apiKey.secret = YoUrReAlLyLongSecretValueHereReplaceMeWithYourValue
+</code></pre></li>
+<li><p>Copy your existing <code>apiKey.properties</code> file to a new file and make sure it is readable only by you:</p>
+
+<pre><code> &gt; cd $HOME/.stormpath
+ &gt; chmod go-rwx apiKey.properties
+</code></pre></li>
+</ol>
+</li>
+<li><p>Configure your application to create a Stormpath SDK <a href="/python/product-guide#Client">client</a> instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:</p>
+
+<pre><code> from stormpath import Client
+ ...
+
+ api_key_file = "/home/myhomedir/.stormpath/apiKey.properties"
+
+ client = Client(api_key_file_location=api_key_file)
+</code></pre></li>
+<li><p>Use the client instance to interact with your tenant data, such as applications, directories, and accounts:</p>
+
+<pre><code> tenant_href = client.tenant.href
+ print(tenant.href)
+
+ applications = client.applications
+
+ for application in applications:
+     print('Application ' + application.name)
+
+ directories = client.directories
+
+ for directory in directories:
+     print('Directory ' + directory.name)
+
+    accounts = directory.accounts
+
+     for account in accounts:
+         print('Account ' + account.given_name)
+</code></pre></li>
+<li><p>Create the necessary directories:</p>
+
+<p> To create a directory, you must log in to the Stormpath Admin Console.</p>
+
+<ol>
+<li>Click the <strong>Directories</strong> tab.</li>
+<li>Click <strong>Create Directory</strong>.</li>
+<li><p>Click <strong>Cloud</strong>.</p>
+
+<p> <img src="http://www.stormpath.com/sites/default/files/docs/CreateCloudDirectory.png" alt="Create Cloud Directory" title="Create Cloud Directory" width="650" height="440"></p></li>
+<li><p>Complete the field values as follows: <br></p>
+
+<table>
+<thead>
+<tr>
+<th align="left"> Attribute </th>
+<th align="left"> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Name </td>
+<td align="left"> The name used to identify the directory within Stormpath. This value must be unique. |</td>
+</tr>
+<tr>
+<td align="left">Description </td>
+<td align="left"> Details about this specific directory.|</td>
+</tr>
+<tr>
+<td align="left">Status </td>
+<td align="left"> By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application. |</td>
+</tr>
+<tr>
+<td align="left">Min characters </td>
+<td align="left"> The minimum number of acceptable characters for the account password. |</td>
+</tr>
+<tr>
+<td align="left">Max characters </td>
+<td align="left"> The maximum number of acceptable characters for the account password. |</td>
+</tr>
+<tr>
+<td align="left">Mandatory characters </td>
+<td align="left"> The required character patterns which new passwords will be validated against. For example, for an alphanumeric password of at least 8 characters with at least one lowercase and one uppercase character, select the abc, ABC, and 012 options. The more patterns selected, the more secure the passwords but the more complicated for a user.|</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Click <strong>Create</strong>. </p></li>
+</ol>
+</li>
+<li><p>Register applications.</p>
+
+<p> To authenticate a user account in your <a href="/python/product-guide#Application">application</a>, you must first register the application with Stormpath.</p>
+
+<p> To register an application you must create it from the client instance:</p>
+
+<p> application = client.applications.create({
+   &lsquo;name&rsquo;: &lsquo;This Is My Python App&rsquo;,
+   &lsquo;description&rsquo;: &lsquo;This is my python app description&rsquo;
+ })</p></li>
+</ol>
+
+
+<p>You can also register an application, create a directory and link the application with the directory in one step:</p>
+
+<pre><code>application = client.applications.create({
+  "name": 'This Is My Python App',
+  "description": 'This is my python app description'
+}, create_directory="Directory")
+</code></pre>
+
+<p>If <code>True</code> is used instead of a string that represents the directory name, a generic directory name is derived from the name of the newly created application.
+This is useful if you don&rsquo;t want to be bothered with organizing your directories and prefer to start using the application functionality as soon as possible.</p>
+
+<ol>
+<li><p>Create accounts.</p>
+
+<p> To create a user account, you must:</p>
+
+<ol>
+<li>Get the directory instance from the client and the directory href.</li>
+<li>Create the account from the directory instance.</li>
+</ol>
+
+
+<p> directory_href = &lsquo;<a href="https://api.stormpath.com/v1/directories/YOUR_DIRECTORY_ID">https://api.stormpath.com/v1/directories/YOUR_DIRECTORY_ID</a>&rsquo;</p>
+
+<p> directory = client.directories.get(directory_href)</p>
+
+<p> account = directory.accounts.create({
+   &lsquo;givenName&rsquo;: &lsquo;John&rsquo;,
+   &lsquo;surname&rsquo;: &lsquo;Smith&rsquo;,
+   &lsquo;email&rsquo;: &lsquo;<a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#106;&#111;&#104;&#x6e;&#x2e;&#115;&#x6d;&#x69;&#x74;&#x68;&#x40;&#101;&#120;&#97;&#109;&#112;&#108;&#101;&#x2e;&#x63;&#111;&#109;">&#106;&#111;&#x68;&#x6e;&#46;&#x73;&#109;&#x69;&#x74;&#x68;&#x40;&#x65;&#120;&#97;&#109;&#x70;&#x6c;&#x65;&#46;&#99;&#x6f;&#109;</a>&rsquo;,
+   &lsquo;username&rsquo;: &lsquo;johnsmith&rsquo;,
+   &lsquo;password&rsquo;: &lsquo;4P@$$w0rd!&rsquo;
+ })</p>
+
+<p> If you want to associate the account to a group, add the following:</p>
+
+<pre><code> account.add_group(group)
+</code></pre></li>
+<li><p>Authenticate accounts.</p>
+
+<p> To authenticate an account you must have the application the account authenticates against. With the application, the account is authenticated by providing the username and password as follows:</p>
+
+<pre><code> application_href = 'https://api.stormpath.com/v1/applications/YOUR_APPLICATION_ID'
+ application = client.applications.get(application_href)
+
+ account = application.authenticate_account('johnsmith', '4P@$$w0rd!')
+</code></pre></li>
+</ol>
+
+
+<h2><a id="next-steps"></a>Next Steps</h2>
+
+<p>We hope you have found this Quickstart helpful!</p>
+
+<p>For full coverage of Stormpath&rsquo;s Python SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our <a href="/python/product-guide">Python Product Guide</a></p>
+
 
 <script src="/javascripts/stormpath_docs.js"></script>
+
+<div style="margin: 40px;">&nbsp;</div>
+    	  </div>
+
+
+
+<aside class="sidebars">
+  
+    <section class="region region-sidebar-first column sidebar">
+      
+<div id="block-stormpath-docs-languages" class="block block-stormpath-docs first odd">
+ <form class="stormpath-docs-select-language" action="/docs/java/product-guide" method="post" id="stormpath-docs-language-form" accept-charset="UTF-8"><div><div class="form-item form-type-select form-item-language">
+  <label for="edit-language">Language: </label>
+ <select id="edit-language" name="language" class="form-select">
+ 	
+ 		<option value="php">PHP</option>
+ 	
+ 		<option value="python" selected>Python</option>
+ 	
+ 		<option value="ruby">Ruby</option>
+ 	
+ 		<option value="java">Java</option>
+ 	
+ 		<option value="rest">REST API</option>
+ 	
+ 		<option value="console">Admin Console</option>
+ 	
+ </select>
+</div>
+<input type="hidden" name="form_id" value="stormpath_docs_language_form">
+</div></form>
+</div>
+
 <script type="text/javascript">
 	var sp_docs_menu = {};
 	
@@ -316,230 +550,82 @@ REST API Product Guide Ruby &hellip;">
 		
 	
 </script>
-
-      </div>
-    </div>
-  
-  <div id="main-wrapper">
-    <div id="main" class="container">
-      <div id="main-inner">
-        <div id="main-inner-inner">
-          <div id="content" class="column" role="main">
-            <a id="main-content"></a>
-            
-              <h1 class="title" id="page-title">Documentation</h1>
-            
-          	<div class="panel-display panel-3col-33-stacked  clearfix">
-      <div class="panel-panel panel-col-top">
-      <div class="inside"><div class="panel-pane pane-custom pane-1">
-  
-        <h2 class="pane-title">Documentation</h2>
-    
-  
-  <div class="pane-content">
-     <p>Need more details? Check out in-depth documentation guides below.</p>   </div>
+<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
 
   
-  </div>
+  	
+  
+  	
+  
+  	
+  
+  	
+  
+  	
+		<ul class="menu">
+		
+			<li class="leaf active-trail">
+			
+				<a href="/python/quickstart">Python Quickstart Guide</a>
+			
+			
+				<ul class="menu"><li class="leaf"><a href="#next-steps" data-level="0" class="fragment">Next Steps</a><ul class="menu"></ul></li></ul>
+			
+			</li>	
+		
+			<li class="leaf">
+			
+				<a href="/python/product-guide">Python Product Guide</a>
+			
+			
+			</li>	
+		
+			<li class="leaf">
+			
+				<a href="https://github.com/stormpath/stormpath-sdk-python" target="_blank"><span>Python SDK on GitHub</span></a>
+			
+			
+			</li>	
+		
+			<li class="leaf">
+			
+				<a href="https://pypi.python.org/pypi/stormpath-sdk" target="_blank"><span>Python SDK on PyPi</span></a>
+			
+			
+			</li>	
+		
+			<li class="leaf">
+			
+				<a href="https://github.com/stormpath/stormpath-python-samples" target="_blank"><span>Python Sample App</span></a>
+			
+			
+			</li>	
+		
+			<li class="leaf">
+			
+				<a href="https://github.com/stormpath/stormpath-django" target="_blank"><span>Django Integration</span></a>
+			
+			
+			</li>	
+		
+		</ul>
+  	
+  
+  	
+  
+ 
 </div>
-    </div>
+    </section>
   
-  <div class="center-wrapper">
-    <div class="panel-panel panel-col-first">
-      <div class="inside"><div class="panel-pane pane-block pane-menu-menu-docs-restapi">
-  
-        <h2 class="pane-title">Rest API Docs</h2>
-    
-  
-  <div class="pane-content">
-    <ul class="menu"><li class="first leaf"><a href="/rest/quickstart" title="">REST API Quickstart Guide</a></li>
-<li class="last leaf"><a href="/rest/product-guide" title="">REST API Product Guide</a></li>
-</ul>  </div>
 
   
-  </div>
-<div class="panel-separator"></div><div class="panel-pane pane-block pane-menu-menu-docs-ruby">
-  
-        <h2 class="pane-title">Ruby Docs</h2>
-    
-  
-  <div class="pane-content">
-    <ul class="menu"><li class="first leaf"><a href="/ruby/quickstart" title="">Ruby Quickstart Guide</a></li>
-<li class="leaf"><a href="/ruby/product-guide" title="">Ruby Product Guide</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-ruby" title="">Ruby SDK on Github</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-ruby-samples" title="">Ruby Sample App</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-rails" title="">Rails Ruby Gem</a></li>
-<li class="last leaf"><a href="https://github.com/stormpath/stormpath-rails-sample" title="">Rails Stormpath Web App</a></li>
-<li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-ruby/archive/master.zip">Download SDK</a></li>
-</ul>  </div>
-
-  
-  </div>
-</div>
-    </div>
-
-    <div class="panel-panel panel-col">
-      <div class="inside"><div class="panel-pane pane-block pane-menu-menu-docs-java">
-  
-        <h2 class="pane-title">Java Docs</h2>
-    
-  
-  <div class="pane-content">
-    <ul class="menu"><li class="first leaf"><a href="/java/quickstart" title="">Java Quickstart Guide</a></li>
-<li class="leaf"><a href="/java/product-guide" title="">Java Product Guide</a></li>
-<li class="leaf"><a href="java/apidocs" title="Stormpath Java SDK API Documentation (JavaDoc)">Java SDK API (JavaDoc)</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-java" title="">Java SDK on GitHub</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-spring-samples" title="">Java Sample App</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-shiro" title="">Apache Shiro Integration</a></li>
-<li class="last leaf"><a href="https://github.com/stormpath/stormpath-shiro-web-sample" title="">Apache Shiro Sample App</a></li>
-<li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-java/archive/master.zip">Download SDK</a></li>
-</ul>  </div>
-
-  
-  </div>
-<div class="panel-separator"></div><div class="panel-pane pane-block pane-menu-menu-docs-python">
-  
-        <h2 class="pane-title">Python Docs</h2>
-    
-  
-  <div class="pane-content">
-    <ul class="menu"><li class="first leaf"><a href="/python/quickstart" title="">Python Quickstart Guide</a></li>
-<li class="leaf"><a href="/python/product-guide" title="">Python Product Guide</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-python" title="">Python SDK on GitHub</a></li>
-<li class="last leaf"><a href="https://pypi.python.org/pypi/stormpath-sdk/0.2.0" title="">Python SDK on PyPi</a></li>
-<li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-python/archive/master.zip">Download SDK</a></li>
-</ul>  </div>
-
-  
-  </div>
-</div>
-    </div>
-
-    <div class="panel-panel panel-col-last">
-      <div class="inside"><div class="panel-pane pane-block pane-menu-menu-docs-php">
-  
-        <h2 class="pane-title">PHP Docs</h2>
-    
-  
-  <div class="pane-content">
-    <ul class="menu"><li class="first leaf"><a href="/php/quickstart" title="">PHP Quickstart Guide</a></li>
-<li class="leaf"><a href="/php/product-guide" title="">PHP Product Guide</a></li>
-<li class="last leaf"><a href="https://github.com/stormpath/stormpath-sdk-php" title="">PHP SDK on GitHub</a></li>
-<li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-php/archive/master.zip">Download SDK</a></li>
-</ul>  </div>
-
-  
-  </div>
-<div class="panel-separator"></div><div class="panel-pane pane-block pane-menu-menu-docs-admin-console">
-  
-        <h2 class="pane-title">Admin Console Docs</h2>
-    
-  
-  <div class="pane-content">
-    <ul class="menu"><li class="first leaf"><a href="/console/quickstart" title="">Stormpath Admin Quickstart Guide</a></li>
-<li class="last leaf"><a href="/console/product-guide" title="">Stormpath Admin Console Guide</a></li>
-</ul>  </div>
-
-  
-  </div>
-</div>
-    </div>
-  </div>
-
-  </div>
-
-
-<!-- block__no_wrapper -->
-
-
-<!-- region__no_wrapper -->
-
-
-    	  </div>
-
-
+</aside>
 
 
         </div>
       </div>
     </div>
   </div>
-  
-    <div id="footer-wrapper">
-      <div id="footer-wrapper">
-                <footer id="footer" class="region region-footer">
-    <div id="block-boxes-follow-footer" class="block block-boxes block-boxes-simple first odd">
-
-        <h2 class="block-title">Connect with us</h2>
-    
-  <div id='boxes-box-follow_footer' class='boxes-box'><div class="boxes-box-content"> <ul class="follow-links-footer">
-<li><a href="https://github.com/stormpath" class="github">GitHub</a></li>
-<li><a href="http://www.twitter.com/gostormpath" class="twitter">Twitter</a></li>
-<li><a href="http://www.facebook.com/pages/Stormpath/259202314149649" class="facebook">Facebook</a></li>
-<li><a href="mailto:info@stormpath.com" class="email">E-mail us</a></li>
-
-</ul> </div></div>
-</div><!-- /.block -->
-<div id="block-boxes-footer-left" class="block block-boxes block-boxes-simple even">
-
-      
-  <div id='boxes-box-footer_left' class='boxes-box'><div class="boxes-box-content"> <h2 class="stormpath-footer">Stormpath</h2>
-<p class="p1">Stormpath is the first easy and secure user management and authentication service for developers. &nbsp;With a simple REST API integration, developers can reduce development and operations costs, while protecting users with best-in-class security.</p> </div></div>
-</div><!-- /.block -->
-<div id="block-menu-menu-main-footer-menu" class="block block-menu odd" role="navigation">
-
-      
-<ul class="menu">
-  <li class="first leaf"><a href="http://www.stormpath.com/resources" title="Stormpath Resources">Resources</a></li>
-  <li class="leaf"><a href="http://www.stormpath.com/about" title="">About</a></li>
-  <li class="leaf"><a href="http://www.stormpath.com/blog" title="">Blog</a></li>
-  <li class="leaf"><a href="http://www.stormpath.com/press" title="">Press &amp; News</a></li>
-  <li class="leaf"><a href="http://www.jobscore.com/jobs/stormpath" title="">Jobs</a></li>
-  <li class="leaf"><a href="http://status.stormpath.com" title="Status Report for Stormpath API service and Management Console">Status Report</a></li>
-  <li class="last leaf"><a href="http://www.stormpath.com/contact" title="">Contact</a></li>
-</ul>
-</div><!-- /.block -->
-<div id="block-menu-menu-documentation" class="block block-menu even" role="navigation">
-
-        <h2 class="block-title">Documentation</h2>
-    
-<ul class="menu">
-  <li class="first leaf"><a href="/rest/quickstart" title="REST API Documentation">REST API Documentation</a></li>
-  <li class="leaf"><a href="/java/quickstart" title="Java Documentation">Java Documentation</a></li>
-  <li class="leaf"><a href="/php/quickstart" title="PHP Documentation">PHP Documentation</a></li>
-  <li class="leaf"><a href="/ruby/quickstart" title="Ruby Documentation">Ruby Documentation</a></li>
-  <li class="last leaf"><a href="/python/quickstart" title="Python Documentation">Python Documentation</a></li>
-</ul>
-</div><!-- /.block -->
-<div id="block-boxes-get-started-box" class="block block-boxes block-boxes-simple odd">
-
-      
-  <div id='boxes-box-get_started_box' class='boxes-box'><div class="boxes-box-content"> <a href="https://api.stormpath.com/register" class="medium-green-button">Get Started for Free</a> </div></div>
-</div><!-- /.block -->
-
-  </footer><!-- region__footer -->
-  
-
-      </div>
-
-      <div id="bottom-wrapper">
-                <div class="region region-bottom">
-    <div id="block-block-1" class="block block-block first odd">
-
-      
-   Copyright © 2013 StormPath&nbsp;&nbsp;|&nbsp;&nbsp;All rights reserved 
-</div><!-- /.block -->
-<div id="block-menu-menu-footer-menu" class="block block-menu last even" role="navigation">
-
-      
-  <ul class="menu"><li class="first leaf"><a href="http://www.stormpath.com/privacy_policy">Privacy policy</a></li>
-<li class="last leaf"><a href="http://www.stormpath.com/terms_of_service">Terms of Service</a></li>
-</ul>
-</div><!-- /.block -->
-  </div><!-- /.region -->
-
-      </div>
-    </div>
   
 </div>
   
