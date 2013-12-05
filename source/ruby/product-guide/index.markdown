@@ -249,7 +249,6 @@ For applications, you can:
 * [Retrieve an application](#retrieve-an-application).
 * [Register an application](#register-an-application).
 * [Edit the details of an application](#edit-an-application).
-* [Manage application account stores](#manage-account-stores), including [adding account stores](#add-account-stores), [changing the account store priority order](#change-account-store-priority), and [removing account stores](#remove-account-store).
 * [Enable an application](#enable-an-application).
 * [Disable an application](#disable-an-application).
 * [Delete an application](#disable-an-application).</p>
@@ -313,12 +312,6 @@ To edit applications, use the `_accessors_` of an existing application instance 
 	application.description = 'New Application Description'
 
 	application.save
-
-### Manage Account Stores
-
-[Account Store](#Account Store) define the user base for a given application. Account stores determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.
-
-In Stormpath, a directory or group can be a account store for an application. At least one account store must be associated with an application for accounts to log in to that application.
 
 ### Enable an Application
 
