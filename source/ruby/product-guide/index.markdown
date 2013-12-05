@@ -406,6 +406,7 @@ For Account Store Mappings you may:
 * [Create an account store mapping](#create-an-account-store-mapping)
 * [Retrive an account store mapping](#retrive-an-account-store-mapping)
 * [Change the account store priority order](#change-account-store-priority)
+* [Change Default Account Store and Default Group Store](#change-default-account-store-and-default-group-store)
 * [Remove account stores](#remove-account-store).
 
 To manage application account stores, you must log in to the Stormpath Admin Console:
@@ -414,8 +415,6 @@ To manage application account stores, you must log in to the Stormpath Admin Con
 2. Click the **Applications** tab.
 3. Click the application name.
 4. Click the **Account Stores** tab.<br>
-The account stores appear in order of priority.<br> 
-	<img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
 
 #### Create an Account Store Mapping
 
@@ -427,11 +426,8 @@ Adding a account store to an application provisions a directory or group to that
 4. Click the **Account Store** tab.
 5. Click **Add Account Store**.
 6. In the *account store* list, select the appropriate directory.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown1.png" alt="Login Sources" title="Login Sources"><br>
-7.  If the directory contains groups, you can select all users or specific group for access.<br> 
-	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown2.png" alt="Login Sources" title="Login Sources"><br>
+7. If the directory contains groups, you can select all users or specific group for access.<br> 
 8. Click **Add Account Store**.<br>
-The new account store is added to the bottom of the account store list.    
 
 **Code:**
 
@@ -457,8 +453,8 @@ Account store mappings are retrivable through their REST URL:
 		application = account_store_mapping.application 
 		account_store = account_store_mapping.account_store # this could be a directory or a group instance 
 		list_index = account_store_mapping.list_index 
-		is_default_account_store = account_store_mapping.default_account_store? 
-		is_default_group_store = account_store_mapping.default_group_store? 
+		is_default_account_store = account_store_mapping.default_account_store? # true of false
+		is_default_group_store = account_store_mapping.default_group_store? # true or false
 
 ***
 
@@ -476,8 +472,7 @@ To specify the account store order:
 4. Click the **Account Store** tab.
 5. Click the row of the directory to move.
 6. Drag the row to the appropriate order.<br>
-	For example, if you want to switch the first account store and the second account store, click anywhere in the first row of the account store table and drop the row on the second row.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
+	For example, if you want to switch the first account store and the second account store, click anywhere in the first row of the account store table and drop the row on the second row.
 7. Click **Save Priorities**.
 
 **Code:**
@@ -501,8 +496,6 @@ To specify the default account or group store:
 3. Click the application name.
 4. Click the **Account Store** tab.
 5. Click the radio buttons to toggle between default account and group locations (stores).
-<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
 6. Click **Save**.
 
 **Code:**
