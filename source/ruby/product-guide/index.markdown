@@ -433,6 +433,8 @@ Adding a account store to an application provisions a directory or group to that
 8. Click **Add Account Store**.<br>
 The new account store is added to the bottom of the account store list.    
 
+**Code:**
+
 	account_store_mapping = client.account_store_mappings.create({ 
   	application: application, # an application resource object 
  		account_store: directory, # a directory or a group resource object 
@@ -441,17 +443,23 @@ The new account store is added to the bottom of the account store list.
   	is_default_group_store: true 
 	}) 
 
+***
+
 #### Retrive an account store mapping
 
 Account store mappings are retrivable through their REST URL:
 
-	account_store_mapping = client.account_store_mappings.get 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId;
+**Code:**
+
+	example_url = 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId'
+	account_store_mapping = client.account_store_mappings.get example_url
 	application = account_store_mapping.application 
 	account_store = account_store_mapping.account_store # this could be a directory or a group instance 
 	list_index = account_store_mapping.list_index 
-	default_account_store = account_store_mapping.default_account_store? 
-	default_group_store = account_store_mapping.default_group_store? 
+	is_default_account_store = account_store_mapping.default_account_store? 
+	is_default_group_store = account_store_mapping.default_group_store? 
 
+***
 
 #### Change Account Store Priority
 
@@ -471,9 +479,14 @@ To specify the account store order:
 	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
 7. Click **Save Priorities**.
 
-		account_store_mapping = client.account_store_mappings.get 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId;
+**Code:**
+
+		example_url = 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId'
+		account_store_mapping = client.account_store_mappings.get example_url
 		account_store_mapping.list_index = 1 # or whichever index number you prefer
 		account_store_mapping.save
+
+***
 
 #### Change Default Account Store and Default Group Store:
 
@@ -493,10 +506,15 @@ To specify the default account or group store:
 	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
 6. Click **Save**.
 
-		account_store_mapping = client.account_store_mappings.get 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId;
+**Code:**
+
+		example_url = 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId'
+		account_store_mapping = client.account_store_mappings.get example_url
 		account_store_mapping.default_account_store = directory # this can be a directory or a group instance
 		account_store.mapping.default_group_store = directory # this can only be a directory instance
 		account_store_mapping.save
+
+***
 
 #### Remove Account Stores
 
@@ -510,10 +528,14 @@ To remove a account store from an application:
 4. Click the **Account stores** tab.
 5. On the Account stores tab, locate the directory or group.
 6. Under the Actions column, click **Remove**.
+		
+**Code:**
 
-		account_store_mapping = client.account_store_mappings.get 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId;
+		example_url = 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId'
+		account_store_mapping = client.account_store_mappings.get example_url
 		account_store_mapping.delete
 
+***
 
 ## Directories
 
