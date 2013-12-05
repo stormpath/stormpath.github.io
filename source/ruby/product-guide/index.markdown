@@ -395,11 +395,11 @@ An individual `accountStoreMapping` resource may be accessed via its Resource UR
 Attribute | Description | Type
 :----- | :----- | :----
 href | The Account Store Mapping resource's fully qualified location URI. | String
-application | A link to the mapping's Application | link 
-accountStore | A link to the mapping's Account Store (either a Group or Directory) containing accounts that may login to the application. | link 
+application | A link to the mapping's Application | Link 
+accountStore | A link to the mapping's Account Store (either a Group or Directory) containing accounts that may login to the application. | Link 
 listIndex | The order (priority) when the associated Account Store will be consulted by the Application during an authentication attempt.  This is a zero-based index; an account store at listIndex of `0` will be consulted first (has the highest priority), followed the account store at listIndex `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A listIndex of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer
-isDefaultAccountStore | A `true` value indicates that new accounts created by the application will be automatically saved to the mapping's Account Store. A `false` value indicates that new accounts created by the application will not be saved to the Account Store. | boolean
-isDefaultGroupStore | A `true` value indicates that new groups created by the Application will be automatically saved to the mapping's AccountStore. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `true` if the AccountStore is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean
+isDefaultAccountStore | A `true` value indicates that new accounts created by the application will be automatically saved to the mapping's Account Store. A `false` value indicates that new accounts created by the application will not be saved to the Account Store. | Boolean
+isDefaultGroupStore | A `true` value indicates that new groups created by the Application will be automatically saved to the mapping's AccountStore. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `true` if the AccountStore is a Directory.  Stormpath does not currently support Groups storing other Groups.** | Boolean
 
 For Account Store Mappings you may:
 
