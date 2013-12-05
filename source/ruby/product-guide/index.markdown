@@ -398,7 +398,7 @@ Attribute | Description | Type | Valid Value
 <a id="account-store-application"></a>`application` | A link to the mapping's Application. Required. | link | <span>--</span>
 <a id="account-store-accountStore"></a>`accountStore` | A link to the mapping's account store (either a Group or Directory) containing accounts that may login to the `application`.  Required. | link | <span>--</span>
 <a id="list-index"></a>`listIndex` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `listIndex` of `0` will be consulted first (has the highest priority), followed the account store at `listIndex` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `listIndex` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size
-<a id="account-store-mapping-resource-is-default-account-store"></a>`isDefaultAccountStore` | A `true` value indicates that new accounts [created by the application](#application-account-register) will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
+<a id="account-store-mapping-resource-is-default-account-store"></a>`isDefaultAccountStore` | A `true` value indicates that new accounts created by the application will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
 <a id="account-store-mapping-resource-is-default-group-store"></a>`isDefaultGroupStore` | A `true` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `true` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `true`,`false`
 
 For Account Store Mappings you may:
@@ -436,11 +436,11 @@ The new account store is added to the bottom of the account store list.
 **Code:**
 
 	account_store_mapping = client.account_store_mappings.create({ 
-  	application: application, # an application resource object 
- 		account_store: directory, # a directory or a group resource object 
-  	list_index: 0, 
-  	is_default_account_store: true, 
-  	is_default_group_store: true 
+		application: application, # an application resource object 
+		account_store: directory, # a directory or a group resource object 
+		list_index: 0, 
+		is_default_account_store: true, 
+		is_default_group_store: true 
 	}) 
 
 ***
@@ -451,13 +451,14 @@ Account store mappings are retrivable through their REST URL:
 
 **Code:**
 
-	example_url = 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId'
-	account_store_mapping = client.account_store_mappings.get example_url
-	application = account_store_mapping.application 
-	account_store = account_store_mapping.account_store # this could be a directory or a group instance 
-	list_index = account_store_mapping.list_index 
-	is_default_account_store = account_store_mapping.default_account_store? 
-	is_default_group_store = account_store_mapping.default_group_store? 
+		example_url = 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId'
+		account_store_mapping = client.account_store_mappings.get example_url
+
+		application = account_store_mapping.application 
+		account_store = account_store_mapping.account_store # this could be a directory or a group instance 
+		list_index = account_store_mapping.list_index 
+		is_default_account_store = account_store_mapping.default_account_store? 
+		is_default_group_store = account_store_mapping.default_group_store? 
 
 ***
 
@@ -481,9 +482,7 @@ To specify the account store order:
 
 **Code:**
 
-		example_url = 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId'
-		account_store_mapping = client.account_store_mappings.get example_url
-		account_store_mapping.list_index = 1 # or whichever index number you prefer
+		account_store_mapping.list_index = 1
 		account_store_mapping.save
 
 ***
@@ -508,8 +507,6 @@ To specify the default account or group store:
 
 **Code:**
 
-		example_url = 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId'
-		account_store_mapping = client.account_store_mappings.get example_url
 		account_store_mapping.default_account_store = directory # this can be a directory or a group instance
 		account_store.mapping.default_group_store = directory # this can only be a directory instance
 		account_store_mapping.save
@@ -531,8 +528,6 @@ To remove a account store from an application:
 		
 **Code:**
 
-		example_url = 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId'
-		account_store_mapping = client.account_store_mappings.get example_url
 		account_store_mapping.delete
 
 ***
