@@ -188,7 +188,7 @@ If the authentication attempt is successful (the username and password match and
 
 You can use the returned `href` to `GET` the account's details (first name, last name, email, etc).
 
-If the authentication attempt fails, you will see an [error response](product-guide#Errors) instead:
+If the authentication attempt fails, you will see an [error response](/rest/product-guide#Errors) instead:
 
     {
       "status": 400,
