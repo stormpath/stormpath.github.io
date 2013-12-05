@@ -244,15 +244,15 @@ A URL for the application is often helpful.
 
 For applications, you can: 
 
-* [Locate the application REST URL](#LocateAppURL) within the Stormpath Admin Console.
-* [List applications](#ListApps).
-* [Retrieve an application](#RetrieveApps).
-* [Register an application](#RegisterApps).
-* [Edit the details of an application](#EditApps).
-* [Manage application login sources](#ManageLoginSources), including [adding another login source](#AddLoginSource), [changing the login source priority order](#ChangeLoginSourcePriority), and [removing login sources](#RemoveLoginSource).
-* [Enable an application](#EnableApps).
-* [Disable an application](#DisableApps).
-* [Delete an application](#DeleteApps).</p>
+* [Locate the application REST URL](#locate-the-application-rest-url) within the Stormpath Admin Console.
+* [List applications](#list-applications).
+* [Retrieve an application](#retrieve-an-application).
+* [Register an application](#register-an-application).
+* [Edit the details of an application](#edit-an-application).
+* [Manage application account stores](#manage-account-stores), including [adding account stores](#add-account-stores), [changing the account store priority order](#change-account-store-priority), and [removing account stores](#remove-account-store).
+* [Enable an application](#enable-an-application).
+* [Disable an application](#disable-an-application).
+* [Delete an application](#disable-an-application).</p>
 
 
 ### Locate the Application REST URL
@@ -314,103 +314,15 @@ To edit applications, use the `_accessors_` of an existing application instance 
 
 	application.save
 
-### Manage Application Login Sources
+### Manage Account Stores
 
-[Login sources](#LoginSource) define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.
+[Account Store](#Account Store) define the user base for a given application. Account stores determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.
 
-In Stormpath, a directory or group can be a login source for an application. At least one login source must be associated with an application for accounts to log in to that application.
-
-####How Login Attempts Work
-
-**Example:**
-Assume an application named Foo has been mapped to two login sources, the Customers and Employees directories, in that order.
-
-Here is what happens when a user attempts to log in to an application named Foo:  
-
-<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Login Sources Diagram" width="650" height="500">
-
-You can configure multiple login sources, but only one is required for logging in. Multiple login sources allows each application to view multiple directories as a single repository during a login attempt.
-
-After an application has been registered, or created, within Stormpath, you can:
-
-* [Change default account and group locations](#ChangeDefaults)
-* [Add another login source](#AddLoginSource) (directories)
-* [Change the login source priority order](#ChangeLoginSourcePriority)
-* [Remove login sources](#RemoveLoginSource)
-
-To manage application login sources, you must log in to the Stormpath Admin Console:
-
-1. Log in to the Stormpath Admin Console.
-2. Click the **Applications** tab.
-3. Click the application name.
-4. Click the **Login Sources** tab.<br>
-The login sources appear in order of priority.<br> 
-	<img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
-
-#### Change Default Account and Group Locations
-
-On the Login Sources tab for applications, you can select the login sources (directory or group) to use as the default locations when creating new accounts and groups.
-
-1. Log in to the Stormpath Admin Console.
-2. Click the **Applications** tab.
-3. Click the application name.
-4. Click the **Login Sources** tab.
-	a. To specify the default creation location(directory) for new accounts created in the application, in the appropriate row, select **New Account Location**.
-	b. To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select **New Group Location**.
-5. Click **Save**.
-
-
-#### Add Another Login Source
-
-Adding a login source to an application provisions a directory or group to that application.  By doing so, all login source accounts can log into the application.
-
-1. Log in to the Stormpath Admin Console.
-2. Click the **Applications** tab.
-3. Click the application name.
-4. Click the **Login Sources** tab.
-5. Click **Add Login Source**.
-6. In the *login source* list, select the appropriate directory.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown1.png" alt="Login Sources" title="Login Sources"><br>
-7.  If the directory contains groups, you can select all users or specific group for access.<br> 
-	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown2.png" alt="Login Sources" title="Login Sources"><br>
-8. Click **Add Login Source**.<br>
-The new login source is added to the bottom of the login sources list.    
-
-#### Change Login Source Priority Order
-
-When you map multiple login sources to an application, you must also define the login source order.
-
-The login source order is important during the login attempt for a user account because of cases where the same user account exists in multiple directories. When a user account attempts to log in to an application, Stormpath searches the listed login sources in the order specified, and uses the credentials (password) of the first occurrence of the user account to validate the login attempt.
-
-To specify the login source order:
-
-1. Log in to the Stormpath Admin Console.
-2. Click the **Applications** tab.
-3. Click the application name.
-4. Click the **Login Sources** tab.
-5. Click the row of the directory to move.
-6. Drag the row to the appropriate order.<br>
-	For example, if you want to move the first login source to the second login source, click anywhere in the first row of the login source table and drop the row on the second row.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
-7. Click **Save Priorities**.
-
-#### Remove Login Sources
-
-Removing a login source from an application deprovisions that directory or group from the application. By doing so, all accounts from the login source are no longer able to log into the application.
-
-To remove a login source from an application:
-
-1. Log in to the Stormpath Admin Console.
-2. Click the **Applications** tab.
-3. Click the application name.
-4. Click the **Login Sources** tab.
-5. On the Login Sources tab, locate the directory or group.
-6. Under the Actions column, click **Remove**.
-
+In Stormpath, a directory or group can be a account store for an application. At least one account store must be associated with an application for accounts to log in to that application.
 
 ### Enable an Application
 
-Enabling a previously disabled application allows any enabled directories, groups, and accounts associated with the application login sources in Stormpath to log in. 
+Enabling a previously disabled application allows any enabled directories, groups, and accounts associated with the application account store in Stormpath to log in. 
 
 To enable an application, you must set the 'ENABLED' status to the application instance and call the 'save' method on it:
 
@@ -456,6 +368,160 @@ To delete an application, you must call the 'delete' method on the application i
 
 ***	
 
+## Account Store Mappings
+
+Account Store is a generic term for either a Directory or a Group. Directories and Groups are both considered “account stores” because they both contain, or ‘store’, Accounts. An Account Store Mapping, then, is a relationship between an Account Store and an Application.
+
+In Stormpath, you control who may login to an application by associating (or ‘mapping’) one or more account stores to an application. All of the accounts in the application’s assigned account stores form the application’s effective user base; those accounts may login to the application. If no account stores are assigned to an application, no accounts will be able to login to the application.
+
+You control which account stores are assigned (mapped) to an application, and the order in which they are consulted during a login attempt, by manipulating an application’s `AccountStoreMapping` resources.
+
+####How Login Attempts Work
+
+**Example:**
+Assume an application named Foo has been mapped to two account stores, the Customers and Employees directories, in that order.
+
+Here is what happens when a user attempts to log in to an application named Foo:  
+
+<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Login Sources Diagram" width="650" height="500">
+
+You can configure multiple account stores, but only one is required for logging in. Multiple account stores allows each application to view multiple directories as a single repository during a login attempt.
+
+### Account Store Mapping Resource
+
+An individual `accountStoreMapping` resource may be accessed via its Resource URI:
+
+<a class="anchor" name="account-store-mapping-url"></a>
+**Resource URI**
+
+    /v1/accountStoreMappings/:accountStoreMappingId
+
+<a class="anchor" name="account-store-mapping-resource-attributes"></a>
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`href` | The account store mapping resource's fully qualified location URI. | String | <span>--</span>
+<a id="account-store-application"></a>`application` | A link to the mapping's Application. Required. | link | <span>--</span>
+<a id="account-store-accountStore"></a>`accountStore` | A link to the mapping's account store (either a Group or Directory) containing accounts that may login to the `application`.  Required. | link | <span>--</span>
+<a id="list-index"></a>`listIndex` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `listIndex` of `0` will be consulted first (has the highest priority), followed the account store at `listIndex` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `listIndex` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size
+<a id="account-store-mapping-resource-is-default-account-store"></a>`isDefaultAccountStore` | A `true` value indicates that new accounts [created by the application](#application-account-register) will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
+<a id="account-store-mapping-resource-is-default-group-store"></a>`isDefaultGroupStore` | A `true` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `true` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `true`,`false`
+
+For Account Store Mappings you may:
+
+* [Create an account store mapping](#create-an-account-store-mapping)
+* [Retrive an account store mapping](#retrive-an-account-store-mapping)
+* [Change the account store priority order](#change-account-store-priority)
+* [Remove account stores](#remove-account-store).
+
+To manage application account stores, you must log in to the Stormpath Admin Console:
+
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Click the application name.
+4. Click the **Account Stores** tab.<br>
+The account stores appear in order of priority.<br> 
+	<img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
+
+#### Create an Account Store Mapping
+
+Adding a account store to an application provisions a directory or group to that application.  By doing so, all accounts in the account store can log into the application.
+
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Click the application name.
+4. Click the **Account Store** tab.
+5. Click **Add Account Store**.
+6. In the *account store* list, select the appropriate directory.<br>
+	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown1.png" alt="Login Sources" title="Login Sources"><br>
+7.  If the directory contains groups, you can select all users or specific group for access.<br> 
+	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown2.png" alt="Login Sources" title="Login Sources"><br>
+8. Click **Add Account Store**.<br>
+The new account store is added to the bottom of the account store list.    
+
+	account_store_mapping = client.account_store_mappings.create({ 
+  	application: application, # an application resource object 
+ 		account_store: directory, # a directory or a group resource object 
+  	list_index: 0, 
+  	is_default_account_store: true, 
+  	is_default_group_store: true 
+	}) 
+
+#### Retrive an account store mapping
+
+Account store mappings are retrivable through their REST URL:
+
+	account_store_mapping = client.account_store_mappings.get 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId;
+	application = account_store_mapping.application 
+	account_store = account_store_mapping.account_store # this could be a directory or a group instance 
+	list_index = account_store_mapping.list_index 
+	default_account_store = account_store_mapping.default_account_store? 
+	default_group_store = account_store_mapping.default_group_store? 
+
+
+#### Change Account Store Priority
+
+When you map multiple account store to an application, you must also define the account store order.
+
+The account store order is important during the login attempt for a user account because of cases where the same user account exists in multiple directories. When a user account attempts to log in to an application, Stormpath searches the listed account store in the order specified, and uses the credentials (password) of the first occurrence of the user account to validate the login attempt.
+
+To specify the account store order:
+
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Click the application name.
+4. Click the **Account Store** tab.
+5. Click the row of the directory to move.
+6. Drag the row to the appropriate order.<br>
+	For example, if you want to switch the first account store and the second account store, click anywhere in the first row of the account store table and drop the row on the second row.<br>
+	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
+7. Click **Save Priorities**.
+
+		account_store_mapping = client.account_store_mappings.get 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId;
+		account_store_mapping.list_index = 1 # or whichever index number you prefer
+		account_store_mapping.save
+
+#### Change Default Account Store and Default Group Store:
+
+When you map multiple account store to an application, you must also define the account store order.
+
+New accounts created by the application will be automatically saved to the mapping’s default account store.
+New groups created by the application will be automatically saved to the mapping’s default group store.
+
+To specify the default account or group store:
+
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Click the application name.
+4. Click the **Account Store** tab.
+5. Click the radio buttons to toggle between default account and group locations (stores).
+<br>
+	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
+6. Click **Save**.
+
+		account_store_mapping = client.account_store_mappings.get 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId;
+		account_store_mapping.default_account_store = directory # this can be a directory or a group instance
+		account_store.mapping.default_group_store = directory # this can only be a directory instance
+		account_store_mapping.save
+
+#### Remove Account Stores
+
+Removing a account store from an application deprovisions that directory or group from the application. By doing so, all accounts from the account store are no longer able to log into the application.
+
+To remove a account store from an application:
+
+1. Log in to the Stormpath Admin Console.
+2. Click the **Applications** tab.
+3. Click the application name.
+4. Click the **Account stores** tab.
+5. On the Account stores tab, locate the directory or group.
+6. Under the Actions column, click **Remove**.
+
+		account_store_mapping = client.account_store_mappings.get 'https://api.stormpath.com/v1/accountStoreMappings/:accountStoreMappingId;
+		account_store_mapping.delete
+
+
 ## Directories
 
 [Directories](#Directory) contain [authentication](#Authentication) and [authorization](#Authorization) information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.
@@ -466,7 +532,7 @@ Attribute | Description
 :----- | :-----
 Name | The name used to identify the directory within Stormpath. This value must be unique.
 Description | Details about this specific directory. (Optional)
-Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
+Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as an account store to an application.
 
 Within Stormpath, there are two types of directories you can implement:
 
@@ -476,7 +542,7 @@ Within Stormpath, there are two types of directories you can implement:
 	* You can specify various LDAP/AD object and attribute settings of the specific LDAP/AD server for users and groups via the Stormpath Admin Console.
 	* If the agent status is Online, but you are unable to see any data when browsing your LDAP/AD mapped directory, it is likely that your object and filters are configured incorrectly.
 
-You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#LoginSource" title="login source">login sources</a>.
+You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#LoginSource" title="login source">account stores</a>.
 
 LDAP/AD accounts and groups are automatically deleted when:
 
@@ -587,7 +653,7 @@ Mirrored directories, after initial configuration, are accessible through the Ag
 :----- | :-----
 Directory Name | A short name for this directory, unique from your other Stormpath directories.
 Directory Description | An optional description explaining the purpose for the directory.
-Directory Status | Whether or not the directory is to be used to authenticate accounts for any assigned applications. By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
+Directory Status | Whether or not the directory is to be used to authenticate accounts for any assigned applications. By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a account store to an application.
 
 5. Click **Next**.
 
@@ -668,8 +734,8 @@ Currently, you can only associate directories with application in the Stormpath 
 2. Click the **Directories** tab.
 3. Click the directory name.
 4. Click the **Applications** tab.<br>The applications table shows the application for which the directory is providing account authentication, or log in, credentials.
-5. To change the login source, you must modify the application login source information.<br>If the directory is currently not specified as a login source for an application, the table contains the following message:<br>	
-	*Currently, there are no applications associated with this directory. To create an association, click here, and select an application. From the login sources tab, you can create the association.*
+5. To change a account store, you must modify the application account store information.<br>If the directory is currently not specified as a account store for an application, the table contains the following message:<br>	
+	*Currently, there are no applications associated with this directory. To create an association, click here, and select an application. From the account stores tab, you can create the association.*
 
 
 ### Edit Directory Details
@@ -722,7 +788,7 @@ If you do not see an Agent Configuration tab, you are looking at a Stormpath clo
 
 ### Enable a Directory
 
-Enabling previously disabled directories allows the groups and accounts to log into any applications for which the directory is defined as a login source.
+Enabling previously disabled directories allows the groups and accounts to log into any applications for which the directory is defined as a account store.
 
 To enable a directory, you must:
 
@@ -1082,7 +1148,7 @@ The remove an account from, or delete the account as a member of, a group you mu
 
 ### Enable Accounts
 
-Enabling a previously disabled account allows the account to log in to any applications where the directory or group is defined as an application login source.
+Enabling a previously disabled account allows the account to log in to any applications where the directory or group is defined as an application account store.
 
 {% docs note %}
 Enabling and disabling accounts for mirrored (LDAP) directories is not available in Stormpath. You manage mirrored (LDAP) accounts on the primary server installation.
@@ -1179,7 +1245,7 @@ Attribute | Description
 :--- | :---
 Name | The name of the group. Within a given directory, this value must be unique.
 Description | A short description of the group.
-Status | This is set to Enabled by default. This is only set to Disabled to prevent all group accounts from logging into any application even when the group is set as a login source to an application.
+Status | This is set to Enabled by default. This is only set to Disabled to prevent all group accounts from logging into any application even when the group is set as a account store to an application.
 
 {% docs note %}
 If an account is also a member to another group that does have access to an application, then the account can login.
@@ -1302,11 +1368,11 @@ To edit groups, use the `_accesors_` of an existing group instance to set the va
 
 ### Enable a Group
 
-If the group is contained within an <em>enabled directory where the directory is defined as a login source</em>, then enabling or re-enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as a login source.
+If the group is contained within an <em>enabled directory where the directory is defined as a account store</em>, then enabling or re-enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as a login source.
 
-If the group is contained within a <em>disabled directory where the directory is defined as a login source</em>, the group status is irrelevant and the group members are not be able to log in to any applications for which the directory is defined as a login source.
+If the group is contained within a <em>disabled directory where the directory is defined as a account store</em>, the group status is irrelevant and the group members are not be able to log in to any applications for which the directory is defined as a account store.
 
-If the group is defined as a login source, then enabling or re-enabling the group allows accounts contained within the group (membership list) to log in to any applications for which the group is defined as a login source.
+If the group is defined as a account store, then enabling or re-enabling the group allows accounts contained within the group (membership list) to log in to any applications for which the group is defined as a account store.
 
 To enable a group, you must:
 
@@ -1330,7 +1396,7 @@ To enable a group, you must:
 
 ### Disable a Group
 
-If a group is explicitly set as an application login source, then disabling that group prevents any of its user accounts from logging into that application but retains the group data and memberships. You would typically disable a group if you must shut off a group of user accounts quickly and easily.
+If a group is explicitly set as an application account store, then disabling that group prevents any of its user accounts from logging into that application but retains the group data and memberships. You would typically disable a group if you must shut off a group of user accounts quickly and easily.
 
 To disable a group, you must:
 
