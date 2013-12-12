@@ -74,7 +74,9 @@ Only use this code if a more accurate status code is not available. For example,
 
 <a id="5102"></a>[**5102**](errors/5102): The group storage location is unspecified. 
 
-<a id="5103"></a>[**5103**](errors/5103): The group storage location is disabled. 
+<a id="5103"></a>[**5103**](errors/5103): The group storage location is disabled.
+
+<a id="5114"></a>[**5114**](errors/5114): The specified application account store reference is invalid.
 
 </p>
 

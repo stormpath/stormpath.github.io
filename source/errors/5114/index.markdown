@@ -3,7 +3,7 @@ layout: default
 ---
 
 #Error: 5114
-##Invalid account store reference.
+##The specified application account store reference is invalid.
 
 Example:
 
