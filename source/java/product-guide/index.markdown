@@ -6,15 +6,15 @@ title: Stormpath Java Product Guide
 
 Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert support make it easy for developers to authenticate, manage and secure users and roles in any application.
 
-For help to quickly get started with Stormpath, refer to the [Java Quickstart Guide](/java/quickstart).
+To get started with the basics of Stormpath quickly, check out the [Java Quickstart Guide](/java/quickstart). For a more complete understanding and reference of the full Stormpath service, read on.
 
 ***
 
 ## What is Stormpath?
 
-Stormpath is the first easy, secure user management and authentication service for developers. 
+Stormpath is the first easy, secure user management and authentication service for developers.
 
-Fast and intuitive to use, Stormpath enables plug-and-play security and accelerates application development on any platform. 
+Fast and intuitive to use, Stormpath enables plug-and-play security and accelerates application development on any platform.
 
 Built for developers, it offers an easy API, open source SDKs, and an active community. The flexible cloud service can manage millions of users with a scalable pricing model that is ideal for projects of any size.
 
@@ -91,8 +91,9 @@ The Stormpath API offers authorized developers and administrators programmatic a
 * Manage groups.
 * Initiate and process account automations.
 
-For more detailed documentation on the Stormpath API, visit the [REST Product Guide](/rest/product-guide).
+For more detailed documentation on the Stormpath API, visit the [REST API Product Guide](/rest/product-guide/).
 
+<a class="anchor" name="java-sdk"></a>
 ### Java SDK
 
 The Stormpath Java SDK allows any JVM-based application to easily use the Stormpath user management service for all authentication and access control needs. The Java SDK can be found on [Github](https://github.com/stormpath/stormpath-sdk-java).
@@ -103,7 +104,7 @@ Any JVM-based programming language can use the Stormpath Java SDK. JVM languages
 
 Stormpath also offers guides and SDKs for [Ruby](/ruby/product-guide), [PHP](/php/product-guide), and [Python](/python/product-guide).
 
-If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](/rest/product-guide).
+If you are using a language that does not yet have an SDK, you can use the REST API directly and refer to the [REST API Product Guide](/rest/product-guide/).
 
 ***
 
@@ -177,9 +178,10 @@ DO NOT specify your actual `apiKey.id` and `apiKey.secret` values in source code
 
 Only use this technique if the values are obtained at runtime using a configuration mechanism that is not hard-coded into source code or easily-visible configuration files.
 
+<!--
 {% docs note %}
 Only if the `Client` is configured using the static properties, the static calls to resources will run successfully. If the `Client` is directly instantiated (using the `ClientBuilder` or the `Client` constructor), the `Client` instance must be used to start interactions with Stormpath. The code samples will show how to interact with Stormpath using both options.
-{% enddocs %}
+{% enddocs %} -->
 
 <a class="anchor" name="high-level-overview"></a>
 ### High-level Overview
@@ -334,7 +336,7 @@ Using [fluent DSL](http://en.wikipedia.org/wiki/Fluent_interface) queries that r
     	System.out.println(app.getName());
     }
 
-Alternatively, there is an `options` array in all collection resource getters that you can use to specify the pagination:
+Alternatively, there is a map in all collection resource getters that you can use to specify the pagination:
 
 	Map<String, Object> queryParams = new HashMap<String, Object>();
     queryParams.put("offset", 10);
@@ -378,12 +380,13 @@ Now you can loop though the collection resource and get the results according to
 
 You can search for specific resources within a Collection Resource by using certain query parameters to specify your search criteria.
 
-There are currently two different types of searches that might be performed: a generic [Filter](#search-filter)-based search and a more targeted [Attribute](#search-attribute)-based search. Both options support result [ordering](#sorting), [pagination](#pagination), and [link expansion](#links-expansion).
+There is currently one type of searche that might be performed: a targeted [Attribute](#search-attribute)-based search. It supports result [ordering](#sorting), [pagination](#pagination), and [link expansion](#links-expansion).
 
 {% docs note %}
 Currently, a search request must be targeted at resources of the same type. For example, a search can be performed across accounts or groups, but not both at the same time. Because the Stormpath REST API always represents one or more resources of the same type as a Collection Resource, a search is always sent to a Collection Resource endpoint.
 {% enddocs %}
 
+<!--
 <a class="anchor" name="search-filter"></a>
 #### Filter Search
 
@@ -435,35 +438,32 @@ In other words, each attribute comparison is similar to a 'like' operation in tr
         (lower(givenName) like '%joe%' OR
          lower(surname) like '%joe%' OR
          lower(email) like '%joe%' OR ... );
-
+-->
 
 <a class="anchor" name="search-attribute"></a>
 #### Attribute Search
 
 Attribute-based search is the ability to find resources based on full and partial matching of specific individual resource attributes:
 
-    $collectionResource->search = array('anAttribute' => 'someValue',
-                                        'anotherAttribute' => 'anotherValue');
+    Map<String, Object> queryParams = new HashMap<String, Object>();
+    queryParams.put("anAttribute", "someValue");
+    queryParams.put("anotherAttribute", "anotherValue");
 
-For example, to search an application's accounts for an account with a `givenName` of `Joe`:
+For example, to search an application's accounts for an account with a `givenName` of `Joe` (type-unsafe query):
 
-    $accounts = $application->accounts;
-    $accounts->search = array('givenName' => 'Joe');
+	Map<String, Object> queryParams = new HashMap<String, Object>();
+    queryParams.put("givenName", "Joe");
+    AccountList accounts = application.getAccounts(queryParams);
 
-Or, using the `Search` object;
+Or, for type-safe queries:
 
-    $search = new \Stormpath\Resource\Search();
-    $accounts->search = $search->addEquals('givenName', 'Joe');
-
-Alternatively, you can use the collection getter options to specify the search:
-
-    $accounts = $application->getAccounts(array('givenName' => 'Joe'));
+    AccountCriteria criteria = Accounts.where(Accounts.givenName().eqIgnoreCase("Joe"));
+    AccountList accounts = application.getAccounts(criteria);
 
 Now you can loop through the collection resource and get the results according to the specified search:
 
-    foreach($accounts as $acc)
-    {
-        print $acc->givenName . ' ' . $account->surname;
+    for(Account account: accounts) {
+    	System.out.println(account.getGivenName() + " " + account.getSurname());
     }
 
 **Matching Logic**
@@ -479,40 +479,41 @@ Attribute-based queries use standard URI query parameters and function as follow
 
 For example, consider the following search:
 
-    $accounts->search = array('givenName' => 'Joe',
-                              'middleName' => '*aul',
-                              'surname' => '*mit*',
-                              'email' => 'joePaul*',
-                              'status' => 'disabled');
+	Map<String, Object> queryParams = new HashMap<String, Object>();
+    queryParams.put("givenName", "Joe");
+    queryParams.put("middleName", "*aul");
+    queryParams.put("surname", "*mit*");
+    queryParams.put("email", "joePaul*");
+    queryParams.put("status", "disabled");
+    AccountList accounts = application.getAccounts(queryParams);
 
-Or using the `Search` object methods, where you don't need to specify the asterisks:
+Or using the `Criteria` object methods, where you don't need to specify the asterisks:
 
-    $search = new \Stormpath\Resource\Search();
-
-    $account->search = $search->addEquals('givenName', 'Joe')->
-                                addEndsWith('middleName', 'aul')->
-                                addMatchAnywhere('surname', 'mit')->
-                                addStartsWith('email', 'joePaul')->
-                                addEquals('status', 'disabled');
+	AccountCriteria criteria1 = Accounts
+                .where(Accounts.givenName().eqIgnoreCase("Joe"))
+                .and(Accounts.middleName().endsWithIgnoreCase("aul"))
+                .and(Accounts.surname().containsIgnoreCase("mit"))
+                .and(Accounts.email().startsWithIgnoreCase("joePaul"))
+                .and(Accounts.status().eq(AccountStatus.DISABLED));
+    AccountList accounts = application.getAccounts(criteria);
 
 Now you can loop through the collection resource and get the results according to the specified search:
 
-    foreach($accounts as $acc)
-    {
-        print $acc->givenName . ' ' . $account->surname;
+    for(Account account: accounts) {
+    	System.out.println(account.getGivenName() + " " + account.getSurname());
     }
 
 This returns all accounts where:
 
-- Each account is owned by the caller [tenant](#tenants).
+- Each account has access to the application.
 - The account `givenName` is equal to 'Joe' (case insensitive) AND
 - The account `middleName` ends with 'aul' (case insensitive) AND
 - The account `surname` equals or contains 'mit' (case insensitive) AND
-- The account `email` starts with with 'joePaul' (case insensitive) AND
+- The account `email` starts with 'joePaul' (case insensitive) AND
 - The account `status` equals 'disabled' (case insensitive).
 
 {% docs note %}
-For resources with a `status` attribute, status query values **must be the exact value**. For example, `enabled` or `disabled` must be passed and fragments such as `ena`, `dis`, `bled` are not acceptable.
+For resources with a `status` attribute, string values can also be used; however, they **must be the exact value**. For example, `enabled` or `disabled` can be passed but fragments such as `ena`, `dis`, `bled` are not acceptable.
 {% enddocs %}
 
 <a class="anchor" name="links-expansion"></a>
@@ -574,29 +575,6 @@ Notice that the account's `directory` attribute is no longer a link; it has been
 
 You can use this technique to reduce the number of round-trip communication requests to Stormpath API server, enhancing the performance of your application.
 
-In the Java SDK you can do this the following way:
-
-    $expansion = new \Stormpath\Resource\Expansion();
-    $expansion->addProperty('directory');
-    $accountHref = 'https://api.stormpath.com/v1/accounts/$ACCOUNT_ID';
-    $account = \Stormpath\Resource\Account::get($accountHref, $expansion->toExpansionArray());
-
-Or, if you are using a `Client` instance instead of the static `Client` configuration:
-
-    $account = $client->
-               dataStore->
-               getResource($accountHref,
-                          \Stormpath\Stormpath::ACCOUNT,
-                          $expansion->toExpansionArray());
-
-The result of a call to `$expansion->toExpansionArray()` will be the array `array('expand' => 'directory')`.
-
-After this request, when you call the `directory` property of the `account` instance, the SDK won't have to call the server because the `directory` would have already been loaded.
-
-#### Expandable Attributes
-
-Most link attributes are expandable. Check the resource's specific documentation to see which of its link attributes are expandable.
-
 #### Expansion Depth Limit
 
 It is currently only possible to expand a resource's immediate links. It is not currently possible to expand links of links.
@@ -605,151 +583,37 @@ For example, it would not be possible to return an account with its directory ex
 
 If you have a critical need of multi-depth expansion, please contact us at <support@stormpath.com> and submit a feature request.
 
-#### Expanding Multiple Links
-
-You can specify more than one link attribute by specifying a list of attribute names to expand.
-
-For example, to expand the example account's `directory` and `tenant` links, execute the following request:
-
-    $expansion = new \Stormpath\Resource\Expansion();
-    $expansion->addProperty('directory')->addProperty('tenant');
-    $accountHref = 'https://api.stormpath.com/v1/accounts/$ACCOUNT_ID';
-
-    $account = \Stormpath\Resource\Account::get($accountHref, $expansion->toExpansionArray());
-
-    // This last call could have also been made by specifying the expansion object in the options array:
-
-    $account = \Stormpath\Resource\Account::get($accountHref, array('expand' => $expansion));
-
-Or, if you are using a `Client` instance instead of the static `Client` configuration:
-
-    $account = $client->
-               dataStore->
-               getResource($accountHref,
-                          \Stormpath\Stormpath::ACCOUNT,
-                          $expansion->toExpansionArray());
-
-    // This call could have also been made by specifying the expansion object in the options array:
-
-    $account = $client->
-               dataStore->
-               getResource($accountHref,
-                          \Stormpath\Stormpath::ACCOUNT,
-                           array('expand' => $expansion));
-
-The result of a call to `$expansion->toExpansionArray()` will be the array `array('expand' => 'directory,tenant')`.
-
-After this request, when you call the `directory` or the `tenant` property of the `account` instance, the SDK won't have to call the server because those properties would have already been loaded.
-
-#### Expanding Collection Links
-
-It is possible to expand links to Collection Resources as well.  You can additionally provide pagination parameters to control the paged output of the expanded collection.
-
-For example, to expand the above account's groups (starting at the first group - index 0) and limiting to 10 results total, you can specify the `groups` attribute name followed by an array with `offset` and/or `limit` parameters with their corresponding values. For example:
-
-    $expansion = new \Stormpath\Resource\Expansion();
-    $expansion->addProperty('groups', array('offset' => 0, 'limit' => 10));
-    $accountHref = 'https://api.stormpath.com/v1/accounts/$ACCOUNT_ID';
-
-    $account = \Stormpath\Resource\Account::get($accountHref, $expansion->toExpansionArray());
-
-    // This last call could have also been made by specifying the expansion object in the options array:
-
-    $account = \Stormpath\Resource\Account::get($accountHref, array('expand' => $expansion));
-
-Or, if you are using a `Client` instance instead of the static `Client` configuration:
-
-    $account = $client->
-               dataStore->
-               getResource($accountHref,
-                          \Stormpath\Stormpath::ACCOUNT,
-                          $expansion->toExpansionArray());
-
-    // This call could have also been made by specifying the expansion object in the options array:
-
-    $account = $client->
-               dataStore->
-               getResource($accountHref,
-                          \Stormpath\Stormpath::ACCOUNT,
-                           array('expand' => $expansion));
-
-The result of a call to `$expansion->toExpansionArray()` will be the array `array('expand' => 'groups(offset:0,limit:10)')`.
-
-After this request, when you call the `groups` property of the `account` instance, the SDK won't have to call the server because the `groups` collection resource would have already been loaded.
-
-{% docs note %}
-If you construct the expansion array yourself, instead of using the `Expansion` object, you need to consider that if you specify parenthesis for a collection expansion, you **must** specify an `offset` value or a `limit` value or both. Parenthesis without an `offset` or `limit` is a query syntax error and should be fixed. For example, `array('expand' => 'groups()')` is invalid and should be changed to only `array('expand' => 'groups')`.
-{% enddocs %}
-
-If you expand a Collection Resource and you do not specify an offset or limit (for example `array('expand' => 'groups')`), the default [pagination](#pagination) values are used automatically.
-
 #### Expanding Collection Resources
 
-It is also possible to expand properties of Collection Resources when you are directly requesting them. For example, to expand the directory of all the groups of an account.
+In the Java SDK you can only expand properties of Collection Resources when you are directly requesting them. For example, to expand the directory of all the groups of an account:
 
-Setting an `Expansion` object to the collection resource:
-
-    $expansion = new \Stormpath\Resource\Expansion();
-    $expansion->addProperty('directory');
-    $groups = $account->groups;
-    $groups->expansion = $expansion;
-
-Or, setting the expansion using the `options` array:
-
-    $groups = $account->getGroups($expansion->toExpansionArray());
-
-    // This call could have also been made by specifying the expansion object in the options array:
-
-    $groups = $account->getGroups(array('expand' => $expansion));
-
-The result of a call to `$expansion->toExpansionArray()` will be the array `array('expand' => 'directory')`;
+	GroupList groups = account.getGroups(Groups.criteria().withDirectory());
 
 Now you can loop through the collection resource and get the results according to the specified expansion:
 
-    foreach($groups as $grp)
-    {
-        print $grp->directory->name;
+    for(Group group: groups) {
+    	System.out.println(group.getDirectory().getName());
     }
 
 After this request, when you call the `directory` property of each `group` instance of the `groups` collection resource, the SDK won't have to call the server because the `directory` would have already been loaded.
 
-#### Expansion Combinations
+#### Paginated Expansion
 
-Finally, it should be noted that you can expand both standard (non-collection) links and collection links in the same `expand` directive. For example:
+You can additionally provide pagination parameters to control the paged output of the expanded collection.
 
-    $expansion = new \Stormpath\Resource\Expansion();
-    $expansion->addProperty('groups', array('offset' => 0, 'limit' => 10))->
-                addProperty('directory');
+For example, to expand the `accountMemberships` (starting at the first one - index 0) and limiting to 10 results total:
 
-    $accountHref = 'https://api.stormpath.com/v1/accounts/$ACCOUNT_ID';
+	GroupList groups = account.getGroups(Groups.criteria().withAccountMemberships(0, 10));
 
-    $account = \Stormpath\Resource\Account::get($accountHref, $expansion->toExpansionArray());
+#### Expanding Multiple Links
 
-    // This last call could have also been made by specifying the expansion object in the options array:
+You can specify more than one link attribute by specifying a list of attribute names to expand.
 
-    $account = \Stormpath\Resource\Account::get($accountHref, array('expand' => $expansion));
+For example, to retrieve the groups of an account with `directory` and `tenant` expanded, execute the following request:
 
-Or, if you are using a `Client` instance instead of the static `Client` configuration:
+    GroupList groups = account.getGroups(Groups.criteria().withDirectory().withTenant());
 
-    $account = $client->
-               dataStore->
-               getResource($accountHref,
-                          \Stormpath\Stormpath::ACCOUNT,
-                          $expansion->toExpansionArray());
-
-    // This call could have also been made by specifying the expansion object in the options array:
-
-    $account = $client->
-               dataStore->
-               getResource($accountHref,
-                          \Stormpath\Stormpath::ACCOUNT,
-                           array('expand' => $expansion));
-
-The result of a call to `$expansion->toExpansionArray()` will be the array `array('expand' => 'groups(offset:0,limit:10)'),directory`.
-
-After this request, when you call the `directory` or `groups` property of the `account` instance, the SDK won't have to call the server because those properties would have already been loaded.
-
-You can combine the two techniques to more precisely customize your desired output.
+After this request, when you call the `directory` or the `tenant` property of each retrieved `group`, the SDK won't have to call the server because those properties would have already been loaded.
 
 
 <a class="anchor" name="tenants"></a>
@@ -873,11 +737,11 @@ ApplicationList applications = tenant.getApplications(Applications.where(Applica
 <a class="anchor" name="tenant-applications-search"></a>
 #### Search Tenant Applications
 
-You may search for applications by requesting your tenant's `applications` Collection Resource using [search query parameters](#search).  Any matching applications within your tenant will be returned as a [paginated](#pagination) list.
+You may search for applications by requesting your tenant's `applications` Collection Resource using [search query parameters](#search). Any matching applications within your tenant will be returned as a [paginated](#pagination) list.
 
 ##### Searchable Application Attributes
 
-The following application attributes are searchable via [filter](#search-filter) and [attribute](#search-attribute) searches:
+The following application attributes are searchable via [attribute](#search-attribute) searches:
 
 * `name`
 * `description`
@@ -931,7 +795,7 @@ You may search for directories by requesting your tenant's `directories` Collect
 
 ##### Searchable Directory Attributes
 
-The following [directory attributes](#directory) are searchable via [filter](#search-filter) and [attribute](#search-attribute) searches:
+The following [directory attributes](#directory) are searchable via [attribute](#search-attribute) searches:
 
 * `name`
 * `description`
@@ -1016,12 +880,14 @@ For example, if you want to find an application named "My Application", you'll n
 
 **Example Request**
 
-    $search = \Stormpath\Resource\Search();
-    $search->addEquals('name', 'My Application');
-    $applications = $tenant->applications;
-    $applications->search = $search;
+	ApplicationCriteria criteria = Applications.where(Applications.name().eqIgnoreCase("My Application"));
+    tenant.getApplications(criteria);
 
-If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., `$search->addEquals('name', 'My Application')`) or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., `$search->filter = 'My'`) to narrow the results.
+Or, if you only know a part of the name, you can use:
+
+	ApplicationCriteria criteria = Applications.where(Applications.name().containsIgnoreCase("My"));
+	tenant.getApplications(criteria);
+
 
 <a class="anchor" name="application-create"></a>
 ### Create an Application (aka Register an Application with Stormpath)
@@ -1063,9 +929,9 @@ The above Create Application POST request assumes you will later assign [account
 
 For many use cases, that is unnecessary work.  If you want to associate the Application with a new Directory automatically so you can start creating accounts and groups for the application immediately (without having to map other [account stores](#account-store-mappings), you can use the `createDirectory` option.
 
-##### createDirectory=true
+##### createDirectory()
 
-When sending the creation request, you can append a `'createDirectory' => true` option pair to the `options` array:
+When sending the creation request, you can append the `createDirectory()` method:
 
 	Application application = client.instantiate(Application.class);
     application.setName("My Application");
@@ -1121,10 +987,12 @@ After you have created an application, you may retrieve its contents by requesti
 
 If you don't have the application's URL, you can find it by [looking it up in the Stormpath Admin Console](/console/product-guide#!LocateAppURL) or by [searching your tenant's applications](#tenant-applications-search) for the application and then using its `href`.
 
-**Example Request Using the Client Instance**
+**Example Request**
 
     Application application = client.getResource(applicationHref, Application.class);
 
+
+<!-- 
 <a class="anchor" name="application-resources-expand"></a>
 #### Expandable Resources
 
@@ -1149,6 +1017,7 @@ Or
                    getResource($href, \Stormpath\Stormpath::APPLICATION, $expansion->toExpansionArray());
 
 See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
+-->
 
 <a class="anchor" name="application-update"></a>
 ### Update an Application
@@ -1216,7 +1085,7 @@ The `Stormpath` console application cannot be deleted.
 <a class="anchor" name="applications-list"></a>
 ### List Applications
 
-You may list your tenant's applications as described in [List Tenant Applications](#tenant-applications-list).
+You may list your tenant's applications: as described in [List Tenant Applications](#tenant-applications-list).
 
 <a class="anchor" name="applications-search"></a>
 ### Search Applications
@@ -1258,7 +1127,7 @@ If your application wants to register a new account, you create a new `account` 
 
 Set the [account resource attributes](#account-resource) required and any additional ones you desire.
 
-**Example Request Using the Client Instance**
+**Example Request**
 
     Account account = client.instantiate(Account.class);
     account.setGivenName("Jean-Luc");
@@ -1448,7 +1317,7 @@ You may search for directories by sending a request to your application's `accou
 
 ##### Searchable Account Attributes
 
-The following [account attributes](#account-resource) are searchable via [filter](#search-filter) and [attribute](#search-attribute) searches:
+The following [account attributes](#account-resource) are searchable via [attribute](#search-attribute) searches:
 
 * `givenName`
 * `middleName`
@@ -1458,15 +1327,14 @@ The following [account attributes](#account-resource) are searchable via [filter
 
 In addition to the [search query parameters](#search), you may also use [pagination](#pagination) and [sorting](#sorting) query parameters to customize the paginated response.  For example:
 
-    $accounts = $application->accounts;
-    $accounts->search = 'foo';
-    $accounts->offset = 0;
-    $accounts->limit = 50;
-    $accounts->order = 'givenName';
+	AccountCriteria criteria = Accounts.where(Accounts.givenName().containsIgnoreCase("foo"))
+                .offsetBy(0)
+                .limitTo(50)
+                .orderByGivenName();
+    AccountList accounts = application.getAccounts(criteria);
 
-    foreach($accounts as $acc)
-    {
-        print $acc->givenName . ' ' . $account->surname;
+    for(Account account: accounts) {
+    	System.out.println(account.getGivenName() + " " + account.getSurname());
     }
 
 #### More Account Functionality
@@ -1543,22 +1411,20 @@ You may search for groups by sending a request to your application's `groups` Co
 
 ##### Searchable Group Attributes
 
-The following [account attributes](#account-resource) are searchable via [filter](#search-filter) and [attribute](#search-attribute) searches:
+The following [account attributes](#account-resource) are searchable via [attribute](#search-attribute) searches:
 
 * `name`
 * `description`
 
 In addition to the [search query parameters](#search), you may also use [pagination](#pagination) and [sorting](#sorting) query parameters to customize the paginated response.  For example:
 
-    $groups = $application->groups;
-    $groups->search = 'foo';
-    $groups->offset = 0;
-    $groups->limit = 50;
-    $groups->order = 'name';
-
-    foreach($groups as $grp)
-    {
-        print $grp->name;
+	GroupCriteria criteria = Groups.where(Groups.name().containsIgnoreCase("foo"))
+                .offsetBy(0)
+                .limitTo(50)
+                .orderByName();
+    GroupList groups = application.getGroups(criteria);
+    for(Group group: groups) {
+    	System.out.println(group.getName());
     }
 
 #### More Group Functionality
@@ -1578,7 +1444,7 @@ You define an application's account store mappings by creating, modifying or del
 
 **Application Account Store Mappings Collection Resource**
 
-    $application->accountStoreMappings
+    application.getAccountStoreMappings();
 
 <a class="anchor" name="application-account-store-mappings-list"></a>
 #### List Application Account Store Mappings
@@ -1589,10 +1455,9 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
 
 **Example Request**
 
-    $accountStoreMappings = $application->accountStoreMappings;
-    foreach($accountStoreMappings as $asm)
-    {
-        print $asm->accountStore->name;
+	AccountStoreMappingList mappings = application.getAccountStoreMappings();
+    for (AccountStoreMapping mapping: mappings) {
+    	System.out.println(mapping.getAccountStore().getHref());
     }
 
 ***
@@ -1679,41 +1544,16 @@ You do this by calling the `create` method on the `AccountStoreMapping` resource
 * [isDefaultAccountStore](#account-store-mapping-resource-is-default-account-store) - if unspecified, the default is `false`
 * [isDefaultGroupStore](#account-store-mapping-resource-is-default-group-store) - if unspecified, the default is `false`
 
-**Example Request Using the Static Client Configuration**
+Creating it from an application instance:
 
-    $accountStoreMapping = \Stormpath\Resource\AccountStoreMapping::create(
-        array('accountStore' => $accountStore, // this could be an existing group or a directory
-              'application' => $application,
-              'isDefaultAccountStore' => true,
-              'isDefaultGroupStore' => true,
-              'listIndex' => 0)
-        );
+    AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class);
+    accountStoreMapping.setAccountStore(accountStore); // this could be an existing group or a directory
+    accountStoreMapping.setApplication(application);
+    accountStoreMapping.setDefaultAccountStore(Boolean.TRUE);
+    accountStoreMapping.setDefaultGroupStore(Boolean.FALSE);
+    accountStoreMapping.setListIndex(0);
+    application.createAccountStoreMapping(accountStoreMapping);
 
-Or, creating it from an application instance:
-
-    $accountStoreMapping = \Stormpath\Resource\AccountStoreMapping::instantiate(
-        array('accountStore' => $accountStore, // this could be an existing group or a directory
-              'isDefaultAccountStore' => true,
-              'isDefaultGroupStore' => true,
-              'listIndex' => 0)
-        );
-
-     $application->createAccountStoreMapping($accountStoreMapping);
-
-Notice that when creating the account store mapping from an application we didn't need to specify the application when we called the static `instantiate` method of the `AccountStoreMapping` class.
-
-**Example Request Using a Client Instance**
-
-    $accountStoreMapping = $client->
-                         dataStore->
-                         instantiate(\Stormpath\Stormpath::ACCOUNT_STORE_MAPPING);
-    $accountStoreMapping->accountStore = $accountStore; // this could be an existing group or a directory
-    $accountStoreMapping->defaultAccountStore = true;
-    $accountStoreMapping->defaultGroupStore = true;
-    $accountStoreMapping->listIndex = 0;
-    $application->createAccountStoreMapping($accountStoreMapping);
-
-You may use the response's `$accountStoreMapping` instance to further interact with your new `AccountStoreMapping` resource.
 
 <a class="anchor" name="account-store-mapping-retrieve"></a>
 ### Retrieve An Account Store Mapping
@@ -1722,17 +1562,11 @@ After you have created an account store mapping, you may retrieve its contents b
 
 If you don't have the account store mapping's `href`, you can find it in the [application's account store mappings list](#application-account-store-mappings-list).
 
-**Example Request Using the Static Client Configuration**
+**Example Request**
 
-    $href = 'https://api.stormpath.com/v1/accountStoreMappings/WpM9nyZ2TbayIfbRvLk9CO';
-    $accountStoreMapping = \Stormpath\Resource\AccountStoreMapping::get($href);
+	String href = "https://api.stormpath.com/v1/accountStoreMappings/WpM9nyZ2TbayIfbRvLk9CO";
+    AccountStoreMapping accountStoreMapping = client.getResource(href, AccountStoreMapping.class);
 
-**Example Request Using a Client Instance**
-
-    $href = 'https://api.stormpath.com/v1/accountStoreMappings/WpM9nyZ2TbayIfbRvLk9CO';
-    $accountStoreMapping = $client->
-                           dataStore->
-                           getResource($href, \Stormpath\Stormpath::ACCOUNT_STORE_MAPPING);
 
 <a class="anchor" name="account-store-mapping-resources-expand"></a>
 #### Expandable Resources
@@ -1759,8 +1593,8 @@ Call the `save` method on an accountStoreMapping when you want to change one or 
 
 **Example Request**
 
-    $accountStoreMapping->defaultAccountStore = true;
-    $accountStoreMapping->save();
+    accountStoreMapping.setDefaultAccountStore(Boolean.FALSE);
+    accountStoreMapping.save();
 
 <a class="anchor" name="account-store-mapping-update-priority"></a>
 #### Set the Login Priority of an Assigned Account Store
@@ -1776,8 +1610,8 @@ If you wish to change an account store's login priority for an application, you 
 
 For example, assume that an account store represented by mapping `$accountStoreMapping` has a list index of `0` (first in the list), and we wanted to lower its priority to `1` (second in the list):
 
-    $accountStoreMapping->listIndex = 1;
-    $accountStoreMapping->save();
+    accountStoreMapping.setListIndex(1);
+    accountStoreMapping.save();
 
 <a class="anchor" name="account-store-mapping-default-account-store"></a>
 #### Set The Default Account Store for new Application Accounts
@@ -1791,8 +1625,8 @@ You specify an application's default account store by setting the AccountStoreMa
 
 **Example Request**
 
-    $accountStoreMapping->defaultAccountStore = true;
-    $accountStoreMapping->save();
+    accountStoreMapping.setDefaultAccountStore(Boolean.TRUE);
+	accountStoreMapping.save();
 
 Now, any time a new account is created from an application's `createAccount` method, the account will actually be created in the designated default account store.
 
@@ -1829,8 +1663,8 @@ You specify an application's default group store by setting the `AccountStoreMap
 
 **Example Request**
 
-    $accountStoreMapping->defaultGroupStore = true;
-    $accountStoreMapping->save();
+    accountStoreMapping.setDefaultGroupStore(Boolean.TRUE);
+    accountStoreMapping.save();
 
 Now, any time a new group is created from an application's `createGroup` method, the group will actually be created in the designated default group store.
 
@@ -1870,7 +1704,7 @@ Also, note that if no `AccountStoreMapping` is designated as the default group s
 
 For example, to delete the application-accountStore association we created in the above previous example:
 
-    $accountStoreMapping->delete();
+    accountStoreMapping.delete();
 
 <a class="anchor" name="account-store-mapping-list"></a>
 ### List Account Store Mappings
@@ -1881,10 +1715,9 @@ The response is a paginated list of `accountStoreMapping` resources.  You may us
 
 **Example Request**
 
-    $accountStoreMappings = $application->accountStoreMappings;
-    foreach($accountStoreMappings as $asm)
-    {
-        print $asm->accountStore->name;
+    AccountStoreMappingList accountStoreMappings = application.getAccountStoreMappings();
+    for (AccountStoreMapping accountStoreMapping : accountStoreMappings) {
+    	System.out.println(accountStoreMapping.getAccountStore().getHref());
     }
 
 ***
@@ -1994,7 +1827,7 @@ If you know the name exactly, you can use an [attribute search](#search-attribut
     	System.out.println(directory.getName());
     }
     
-If you only know a small part, you can use a [filter search](#search-filter) (e.g., `$search->filter='My'`) to narrow down the selection.
+If you only know a small part, you can use the asterisk wildcard (e.g., `queryParams.put("name", "My*");`) to narrow down the selection.
 
 <a class="anchor" name="directory-create"></a>
 ### Create a Directory
@@ -2027,23 +1860,15 @@ To create a new `directory` resource within the caller tenant:
 * [description](#directory-resource-description)
 * [status](#directory-resource-status)
 
-**Example Request Using the Static Client Configuration**
+**Example Request**
 
-    $directory = \Stormpath\Resource\Directory::create(
-        array('name' => 'Captains',
-              'description' => 'Captains from a variety of stories'));
+	Directory directory = client.getDataStore().instantiate(Directory.class);
 
-**Example Request Using a Client Instance**
+    directory.setName("Captains");
+    directory.setDescription("Captains from a variety of stories");
 
-    $directory = $client->
-                 dataStore->
-                 instantiate(\Stormpath\Stormpath::DIRECTORY);
-
-    $directory->name = 'Captains';
-    $directory->description = 'Captains from a variety of stories';
-
-    $tenant->createDirectory($directory);
-
+    tenant.createDirectory(directory);
+    
 <a class="anchor" name="directories-mirrored"></a>
 #### Create a Mirrored (LDAP/AD) Directory
 
@@ -2058,43 +1883,21 @@ For more information on setting up a Mirrored Directory and using the Stormpath 
 
 In order to associate a directory with an application, you'll need to create an [Account Store Mapping](#account-store-mappings). An account store mapping associates an account store (such as a directory or a group) with an application.
 
-You do this by calling the `create` method on the `AccountStoreMapping` resource class, or by calling the `createAccountStoreMapping` on an `Application` instance, and passing the `directory` as the `accountStore`.
+You do this by calling the `createAccountStoreMapping` on an `Application` instance, and passing the `directory` as the `accountStore`.
 
-**Example Request Using the Static Client Configuration**
+**Example Request**
 
-    $accountStoreMapping = \Stormpath\Resource\AccountStoreMapping::create(
-        array('accountStore' => $directory,
-              'application' => $application,
-              'isDefaultAccountStore' => true,
-              'isDefaultGroupStore' => true,
-              'listIndex' => 0)
-        );
+    AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class);
+    accountStoreMapping.setAccountStore(directory);
+    accountStoreMapping.setApplication(application);
+    accountStoreMapping.setDefaultAccountStore(Boolean.TRUE);
+    accountStoreMapping.setDefaultGroupStore(Boolean.TRUE);
+    accountStoreMapping.setListIndex(0);
 
-Or, creating it from an application instance:
+	accountStoreMapping = application.createAccountStoreMapping(accountStoreMapping);
 
-    $accountStoreMapping = \Stormpath\Resource\AccountStoreMapping::instantiate(
-        array('accountStore' => $directory,
-              'isDefaultAccountStore' => true,
-              'isDefaultGroupStore' => true,
-              'listIndex' => 0)
-        );
 
-     $application->createAccountStoreMapping($accountStoreMapping);
-
-Notice that when creating the account store mapping from an application we didn't need to specify the application when we called the static `instantiate` method of the `AccountStoreMapping` class.
-
-**Example Request Using a Client Instance**
-
-    $accountStoreMapping = $client->
-                         dataStore->
-                         instantiate(\Stormpath\Stormpath::ACCOUNT_STORE_MAPPING);
-    $accountStoreMapping->accountStore = $directory;
-    $accountStoreMapping->defaultAccountStore = true;
-    $accountStoreMapping->defaultGroupStore = true;
-    $accountStoreMapping->listIndex = 0;
-    $application->createAccountStoreMapping($accountStoreMapping);
-
-You may use the response's `$accountStoreMapping` instance to further interact with your new `AccountStoreMapping` resource.
+You may use the response's `accountStoreMapping` instance to further interact with your new `AccountStoreMapping` resource.
 
 For more information on Account Store Mappings, refer to the [Account Store Mapping](#account-store-mappings) section.
 
@@ -2107,6 +1910,7 @@ Retrieve a directory by calling the `get` method on the `Directory` resource cla
 
     Directory directory = client.getResource(href, Directory.class);
 
+<!-- 
 <a class="anchor" name="directory-resources-expand"></a>
 #### Expandable Resources
 
@@ -2129,6 +1933,7 @@ Also, because `accounts` and `groups` are [Collection Resources](#collections) t
 The result of a call to `$expansion->toExpansionArray()` will be the array `array('expand' => 'groups(offset:0,limit:10),accounts(offset:0,limit:50),tenant')`.
 
 See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
+-->
 
 <a class="anchor" name="directory-update"></a>
 ### Update a Directory
@@ -2328,21 +2133,21 @@ You may search for groups by sending a request to your directory's `groups` Coll
 
 ##### Searchable Group Attributes
 
-The following [account attributes](#account-resource) are searchable via [filter](#search-filter) and [attribute](#search-attribute) searches:
+The following [account attributes](#account-resource) are searchable via [attribute](#search-attribute) searches:
 
 * `name`
 * `description`
 
 In addition to the [search query parameters](#search), you may also use [pagination](#pagination) and [sorting](#sorting) query parameters to customize the paginated response.  For example:
 
-    $groups = $directory->groups;
-    $groups->search = 'foo';
-    $groups->order = 'name';
-    $groups->offset = 0;
-    $groups->limit = 50;
-    foreach($groups as $grp)
-    {
-        print $grp->name;
+    GroupCriteria criteria = Groups.where(Groups.name().eqIgnoreCase("foo"))
+                .orderByName()
+                .offsetBy(0)
+                .limitTo(50);
+    GroupList groups = directory.getGroups(criteria);
+
+    for(Group group : groups) {
+    	System.out.println(group.getName());
     }
 
 #### Working With Directory Groups
@@ -2377,7 +2182,7 @@ You may search for accounts by sending a request to your directory's `account` C
 
 ##### Searchable Account Attributes
 
-The following [account attributes](#account-resource) are searchable via [filter](#search-filter) and [attribute](#search-attribute) searches:
+The following [account attributes](#account-resource) are searchable via [attribute](#search-attribute) searches:
 
 * `username`
 * `email`
@@ -2387,14 +2192,14 @@ The following [account attributes](#account-resource) are searchable via [filter
 
 In addition to the [search query parameters](#search), you may also use [pagination](#pagination) and [sorting](#sorting) query parameters to customize the paginated response.  For example:
 
-    $accounts = $directory->accounts;
-    $accounts->search = 'foo';
-    $accounts->order = 'givenName';
-    $accounts->offset = 0;
-    $accounts->limit = 50;
-    foreach($accounts as $acc)
-    {
-        print $acc->givenName;
+    AccountCriteria criteria = Accounts.where(Accounts.givenName().eqIgnoreCase("foo"))
+                .orderByGivenName()
+                .offsetBy(0)
+                .limitTo(50);
+    AccountList accounts = directory.getAccounts(criteria);
+
+    for(Account account : accounts) {
+    	System.out.println(account.getGivenName());
     }
 
 #### Working With Directory Accounts
@@ -2484,7 +2289,7 @@ If you know the name exactly, you can use an [attribute search](#search-attribut
     	System.out.println(group.getName());
     }
 
-If you only know a small part, you can use a [filter search](#search-filter) (e.g., `array('q' => 'My')`) to narrow down the selection.
+If you only know a small part, you can use the asterisk wildcard (e.g., `queryParams.put("name", "My*");`) to narrow down the selection.
 
 <a class="anchor" name="group-create"></a>
 ### Create a Group
@@ -2518,6 +2323,7 @@ A request via the `get` method of the Client data store, returns a representatio
 
     Group group = client.getResource(href, Group.class);
 
+<!--
 <a class="anchor" name="group-resources-expand"></a>
 #### Expandable Resources
 
@@ -2540,6 +2346,7 @@ Also, because `accounts` is a [Collection Resources](#collections) itself, you c
 The result of a call to `$expansion->toExpansionArray()` will be the array `array('expand' => 'tenant,directory,accounts(offset:0,limit:50)`.
 
 See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
+-->
 
 <a class="anchor" name="group-update"></a>
 ### Update a Group
@@ -2691,7 +2498,7 @@ You may search for directories by sending a  request to your application's `acco
 
 ##### Searchable Account Attributes
 
-The following [account attributes](#account-resource) are searchable via [filter](#search-filter) and [attribute](#search-attribute) searches:
+The following [account attributes](#account-resource) are searchable via [attribute](#search-attribute) searches:
 
 * `givenName`
 * `middleName`
@@ -2701,15 +2508,14 @@ The following [account attributes](#account-resource) are searchable via [filter
 
 In addition to the [search query parameters](#search), you may also use [pagination](#pagination) and [sorting](#sorting) query parameters to customize the paginated response.  For example:
 
-    $accounts = $group->accounts;
-    $accounts->search = 'foo';
-    $accounts->order = 'givenName';
-    $accounts->offset = 0;
-    $accounts->limit = 50;
+    AccountCriteria criteria = Accounts.where(Accounts.givenName().eqIgnoreCase("foo"))
+                .orderByGivenName()
+                .offsetBy(0)
+                .limitTo(50);
+    AccountList accounts = group.getAccounts(criteria);
 
-    foreach($accounts as $acc)
-    {
-        print $acc->givenName;
+    for(Account account : accounts) {
+    	System.out.println(account.getGivenName());
     }
 
 <a class="anchor" name="working-with-group-accounts"></a>
@@ -2961,15 +2767,14 @@ For example, if you want to find an account with the username "test" across an a
 
 **Example Request**
 
-	AccountCriteria criteria = Accounts.criteria()
-    		.add(Accounts.username().eqIgnoreCase("test"));
+	AccountCriteria criteria = Accounts.where(Accounts.username().eqIgnoreCase("test"));
     AccountList accounts = application.getAccounts(criteria);
     Account account;
     for(Account acc : accounts) {
     	account = acc;
     }
 
-If you know the username exactly, you can use an [attribute search](#search-attribute) (e.g., `$search->addEquals('username', 'test')`) or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., `$search->filter = 'test'`) to narrow down the selection.
+If you only know a small part of the username, you can use the `containsIgnoreCase` method (e.g., `Accounts.username().containsIgnoreCase("test")`) to narrow down the selection.
 
 <a class="anchor" name="account-create"></a>
 ### Create an Account
@@ -3010,12 +2815,10 @@ On the client side, then, you do not need to worry about salting or storing pass
 
     directory.createAccount(account);
 
-<!-- TODO: void Directory::createAccount(Account account, boolean registrationWorkflowEnabled); is supposed to be deprecated
+**Example request suppressing the email messages**
 
-**Example request suppressing the email messages (note the options array content):**
+	directory.createAccount(account, Boolean.FALSE);
 
-     directory.createAccount($account, array('registrationWorkflowEnabled' => false));
--->
 
 <a class="anchor" name="account-retrieve"></a>
 ### Retrieve an Account
@@ -3027,6 +2830,7 @@ A request to the `get` method of the `Account` resource class, or to the Client 
 	String href = "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA";
     Account account = client.getResource(href, Account.class);
 
+<!--
 <a class="anchor" name="account-resources-expand"></a>
 #### Expandable Resources
 
@@ -3056,6 +2860,7 @@ Using the Client data store:
                                                $expansion->toExpansionArray());
 
 The result of a call to `$expansion->toExpansionArray()` will be the array `array('expand' => 'tenant,directory,groups(offset:0,limit:50),groupMemberships(offset:0,limit:50)'`.
+-->
 
 See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
 
@@ -3359,7 +3164,7 @@ The account's `groups` resource is a [Collection Resource](#collections) which r
 
 **Resource URI**
 
-    $account->groups
+    account.getGroups();
 
 <a class="anchor" name="list-account-groups"></a>
 #### List Account Groups
@@ -3380,7 +3185,7 @@ You may search for directories by sending a request to your account's `groups` C
 
 ##### Searchable Group Attributes
 
-The following [group attributes](#account-resource) are searchable via [filter](#search-filter) and [attribute](#search-attribute) searches:
+The following [group attributes](#account-resource) are searchable via [attribute](#search-attribute) searches:
 
 * `name`
 * `description`
@@ -3388,14 +3193,14 @@ The following [group attributes](#account-resource) are searchable via [filter](
 
 In addition to the [search query parameters](#search), you may also use [pagination](#pagination) and [sorting](#sorting) query parameters to customize the paginated response.  For example:
 
-    $groups = $account->groups;
-    $groups->search = 'foo';
-    $groups->order = 'name';
-    $groups->offset = 0;
-    $groups->limit = 50;
-    foreach($groups as $grp)
-    {
-        print $grp->name;
+    GroupCriteria criteria = Groups.where(Groups.name().eqIgnoreCase("foo"))
+                .orderByName()
+                .offsetBy(0)
+                .limitTo(50);
+    GroupList groups = account.getGroups(criteria);
+
+    for(Group group : groups) {
+    	System.out.println(group.getName());
     }
 
 <a class="anchor" name="working-with-account-groups"></a>
