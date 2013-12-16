@@ -3350,35 +3350,3 @@ Attribute | Description
 {% enddocs %}
 
 ***
-
-## Java Sample Code 
-
-### Spring MVC Sample App 
-
-This <a href="https://github.com/stormpath/stormpath-spring-samples" title="pring MVC Sample">application</a> is a Spring MVC-based Twitter clone that helps demonstrate the core functionality of Stormpath. The sample application shows Stormpath-based login, user registration, email verification, password reset, group assignments, <a href="#RBAC" title="RBAC">RBAC</a> checks, and user profile updates.
-
-####Readme: 
-
-**stormpath-spring-samples**: Stormpath example applications based on the Spring Framework.
-
-**tooter** is a sample application that emulates some of the features of <a href="http://twitter.com" title="Twitter">Twitter</a> with the purpose of showing developers how to use the Stormpath Java SDK.
-
-This project requires Maven and access to the Maven Central repository.
-
-Get started:
-
-	$ git clone https://github.com/stormpath/stormpath-spring-samples.git
-	$ cd stormpath-spring-samples
-	$ mvn install
-
-
-Deploy the .war file to your web container/application server and launch/access it according to the container configuration.
-
-A detailed documentation on tooter and how to integrate with the Stormpath Java SDK can be found on the wiki <a href="https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter" title="tooter">https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter</a>.
-
-### Apache Shiro Sample Web App 
-
-This is a <a href="https://github.com/stormpath/stormpath-shiro-web-sample" title="shiro web sample">simple web application</a> secured by the Apache Shiro security framework and Stormpath. The example is based of the standard Apache Shiro web sample application and it shows login and <a href="#RBAC" title="RBAC">RBAC</a> using an authorization cache.
-
-***
-
