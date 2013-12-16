@@ -1,6 +1,7 @@
 ---
-layout: default
+layout: doc
 title: How Do I...?
+lang: common
 ---
 
 * [Create an account.](#CreateAccount)

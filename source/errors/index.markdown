@@ -2,6 +2,7 @@
 layout: doc
 title: Stormpath Error Codes
 alias: [/stormpath-error-codes]
+lang: common
 ---
 
 ##<a id="GeneralValidation"></a>2XXX: General Validation
