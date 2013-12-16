@@ -60,12 +60,12 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-api</artifactId>
-        <version>0.8.0</version>
+        <version>0.9.1</version>
     </dependency>
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-httpclient</artifactId>
-        <version>0.8.0</version>
+        <version>0.9.1</version>
         <scope>runtime</scope>
     </dependency>
 
@@ -91,55 +91,41 @@ The `Client` instance is intended to be an application singleton. You should reu
 
 ### Register your application with Stormpath
 
-Registering an application with Stormpath allows that application to use Stormpath for its user management and authentication needs. Use the `_setters_` of a new `Application` instance to set the values and then create the application from the tenant, as follows:
+Registering an application with Stormpath allows that application to use Stormpath for its user management and authentication needs.
+In this example, we'll create a Star Trek 'Captain's Log' application:
 
     import com.stormpath.sdk.tenant.*;
     import com.stormpath.sdk.application.*;
 
-    //Instantiate an application object.
     Application application = client.instantiate(Application.class);
-    application.setName("Application Name");
-    application.setDescription("Application Description");
+    application.setName("Captain's Log"); //must be unique among your other apps
 
-    //In order to specify that a directory be created automatically, use a CreateApplicationRequest
-    CreateApplicationRequest newAppRequest = Applications.newCreateRequestFor(application).createDirectory().build();
+    application = client.getCurrentTenant()
+        .createApplication(Applications.newCreateRequestFor(application).createDirectory().build());
 
-    //Create the application for your tenant
-    Tenant tenant = client.getCurrentTenant();
-    tenant.createApplication(newAppRequest);
-
-Once the application is created, it will automatically create a `Directory` resource based on the name of application and set it as the default account store. New accounts will be created in the default account store.
+Once the application is created, it will automatically create a `Directory` resource based on the name of application and set it as the default account store. New accounts will be created in this default account store.
 
 ### Create an account 
 
-Now that we've created an `Application`, let's create an `Account` so someone can log in to (i.e. authenticate with) the application. To do so, use the `_setters_` of a new account instance to set the values and create the account in a directory as follows:
+Now that we've created an `Application`, let's create an `Account` so someone can log in to (i.e. authenticate with) the application.
 
     import com.stormpath.sdk.account.*;
     import com.stormpath.sdk.application.*;
     import com.stormpath.sdk.directory.*;
     ...
 
-    //Retrieve directory
-    Directory directory = client.getDataStore().getResource($YOUR_DIRECTORY_URL, Directory.class);
-
     //Create the account object
     Account account = client.instantiate(Account.class);
 
     //Set the account properties
-    account.setGivenName("Given Name");	
-    account.setSurname("Surname");
-    account.setUsername("Username");
-    account.setEmail("my@emaill.com"); 
-    account.setMiddleName("Middle Name");
-    account.setPassword("Password123");
+    account.setGivenName("Jean-Luc");
+    account.setSurname("Picard");
+    account.setUsername("jlpicard"); //optional, defaults to email if unset
+    account.setEmail("jlpicard@starfleet.com");
+    account.setPassword("Changeme1!");
 
-    //Add account to directory
-    directory.createAccount(account);
-
-<!-- 
     //Create the account using the existing Application object
     application.createAccount(account);
--->
 
 ### Authenticate an Account
 
@@ -151,18 +137,17 @@ Now we have an account that can use your application.  But how do you authentica
     import com.stormpath.sdk.resource.ResourceException;
     ...
 
-    //Capture the username and password from the form
-    String usernameOrEmail = "usernameOrEmail";
-    String rawPassword = "password";
+    //Capture the username and password, such as via an SSL-encrypted web HTML form.
+    //We'll just simulate a form lookup and use the values we used above:
+    String usernameOrEmail = "jlpicard@starfleet.com"; //todo: get from form
+    String rawPassword = "Changeme1!"; //todo: get from form
 
     //Create an authentication request using the credentials
-    AuthenticationRequest request = new UsernamePasswordRequest(usernameOrEmail,rawPassword);
+    AuthenticationRequest request = new UsernamePasswordRequest(usernameOrEmail, rawPassword);
 
-    //Request authentication
+    //Now let's authenticate the account with the application:
     try {
-        // when the account is authenticated, it produces an AuthenticationResult
-        AuthenticationResult result = application.authenticateAccount(request);
-        return result.getAccount();
+        return application.authenticateAccount(request).getAccount();
     } catch (ResourceException name) {
         //...catch the error and print it to the syslog if it wasn't.
         log.error("Auth error: " + name.getDeveloperMessage());

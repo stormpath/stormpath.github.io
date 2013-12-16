@@ -1546,15 +1546,16 @@ However, many applications do not need this feature.  The most common use case i
 
 Applications additionally support the following account-specific functionality:
 
-* [Register A New Account](#application-account-register)
-* [Verify An Account's Email Address](#application-verify-email)
-* [Log In (Authenticate) an Account](#application-account-authc)
-* [Reset An Account's Password](#application-password-reset)
+* [Register A New Application Account](#application-account-register)
+    * and optionally specify your own [account-specific custom data](#application-account-register-with-customData)
+* [Verify An Application Account's Email Address](#application-verify-email)
+* [Log In (Authenticate) an Application Account](#application-account-authc)
+* [Reset An Application Account's Password](#application-password-reset)
 * [List an Application's Accounts](#application-accounts-list)
 * [Search an Application's Accounts](#application-accounts-search)
 
 <a class="anchor" name="application-account-register"></a>
-#### Register a New Account
+#### Register a New Application Account
 
 If your application wants to register a new account, you create a new `account` resource on the application's `accounts` endpoint.
 
@@ -1562,17 +1563,19 @@ If your application wants to register a new account, you create a new `account` 
 
 **Example Request**
 
-    POST https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA/accounts
-    Content-Type: application/json;charset=UTF-8
-
-    {
-      "username" : "jlpicard",
-      "email" : "capt@enterprise.com",
-      "givenName" : "Jean-Luc",
-      "middleName" : "",
-      "surname" : "Picard",
-      "status" : "ENABLED",
-    }
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json" \
+         -d '{
+             "username" : "jlpicard",
+             "email" : "capt@enterprise.com",
+             "givenName" : "Jean-Luc",
+             "middleName" : "",
+             "surname" : "Picard",
+             "password" : "uGhd%a8Kl!"
+             "status" : "ENABLED",
+         }' \
+     "https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA/accounts"
 
 The response will contain the newly saved resource:
 
@@ -1590,6 +1593,9 @@ The response will contain the newly saved resource:
       "middleName" : "",
       "surname" : "Picard",
       "status" : "ENABLED",
+      "customData": {
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData"
+      },
       "groups" : {
         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
       },
@@ -1614,6 +1620,33 @@ The `v1/applications/:applicationId/accounts` URI is a convenience: when you `PO
 For most applications that have only a single assigned directory, the account is persisted in that directory immediately - the application developer does not even really need to know that Stormpath automates this.
 
 However, applications that map more than one directory or group to define their account base have the option of specifying _which_ of those mapped locations should receive newly created accounts.  You can choose a default `new account location`.  If you do not choose one, the first one in the list of mapped directories is the default location to store new accounts.
+
+<a class="anchor" name="application-account-register-with-customData"></a>
+##### Register a New Application Account with your own Custom Data
+
+When you create an application account, in addition to Stormpath's account attributes, you may also specify [your own custom data](#custom-data) by including a `customData` JSON object:
+
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json" \
+         -d '{
+                 "username" : "jlpicard",
+                 "email" : "capt@enterprise.com",
+                 "givenName" : "Jean-Luc",
+                 "middleName" : "",
+                 "surname" : "Picard",
+                 "password" : "uGhd%a8Kl!"
+                 "status" : "ENABLED",
+                 "customData": {
+                     "rank": "Captain",
+                     "birthDate": "2305-07-13",
+                     "birthPlace": "La Barre, France"
+                     "favoriteDrink": "Earl Grey tea"
+                 }
+             }' \
+         "https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA/accounts"
+
+Once created, you can further modify the custom data - delete it, add and remove attributes, etc as necessary.  See the [custom data](#custom-data) section for more information and customData requirements/restrictions.
 
 <a class="anchor" name="application-welcome-email"></a>
 ##### Send a Welcome Email
@@ -2859,8 +2892,8 @@ Directory Collection Resource | Search Functionality
 
 From a directory you can do things like enforce account password restrictions, register new accounts and groups, configure the account email verification workflow, configure the account password reset workflow, among other functionalities. Read below to find more information about these features.
 
-<a class="anchor" name="directories-password-restrictions"></a>
-### Enforce Account Password Restrictions
+<a class="anchor" name="directories-account-password-policy"></a><a class="anchor" name="directories-password-restrictions"></a>
+### Account Password Policy
 
 Directories can be configured to enforce specific restrictions on passwords for accounts associated with, such as requiring at least one or more non-alphanumeric characters.
 
@@ -3103,6 +3136,7 @@ Attribute | Description | Type | Valid Value
 <a id="group-resource-name"></a>`name` | The name of the group. Must be unique within a directory. | String | 1 < N <= 255 characters
 <a id="group-resource-description"></a>`description` | The description of the group. | String | 1 < N <= 1000 characters
 <a id="group-resource-status"></a>`status` | Enabled groups are able to authenticate against an application. Disabled groups cannot authenticate against an application. | Enum  |`enabled`,`disabled`
+<a id="group-resource-custom-data"></a>`customData` | A link to the group's [customData](#group-custom-data) resource that you can use to store your own group-specific custom fields. | Link | <span>--</span>
 <a class="anchor" name="group-resource-tenant"></a>`tenant` | The tenant that owns the directory containing this group. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-directory"></a>`directory` | A link to the directory resource that the group belongs to. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-accounts"></a>`accounts` | A link to the accounts that are contained within this group. | Link | <span>--</span>
@@ -3116,6 +3150,7 @@ With groups, you can:
     * [Enable a group](#group-enable)
     * [Disable a group](#group-disable)
 * [Delete a group](#group-delete)
+* [Manage your own custom group data](#group-custom-data)
 * [List groups](#groups-list)
 * [Search groups](#groups-search)
 * [Access a group's accounts](#group-accounts)
@@ -3283,6 +3318,14 @@ Use HTTP `POST` when you want to change one or more specific attributes of a `gr
 * [description](#group-resource-description)
 * [status](#group-resource-status)
 
+Here are some account update examples:
+
+* [Simple Update Group Example](#account-update-simple)
+* [Enable a Group](#group-enable)
+* [Disable a Group](#group-disable)
+* [Update a Group and its Custom Data simultaneously](#update-custom-data-embedded)
+
+<a class="anchor" name="group-update-simple"></a>
 **Example Request**
 
     POST https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ
@@ -3409,6 +3452,12 @@ To delete a cloud directory group:
 **Example Response**
 
     HTTP/1.1 204 No Content
+
+### Group Custom Data
+
+While Stormpath's default Group attributes are useful to many applications, you might want to add your own custom data to a Stormpath group.  If you want, you can store all of your custom group information in Stormpath so you don't have to maintain another separate database to store your specific group data.
+
+Please see the [custom data section](#custom-data) for more information and requirements/restrictions for creating, retrieving, updating and deleting group custom data. 
 
 <a class="anchor" name="groups-list"></a>
 ### List Groups
@@ -3930,6 +3979,7 @@ Attribute | Description | Type | Valid Value
 <a id="middleName"></a>`middleName` | The middle (second) name for the account holder. | String | 1 < N <= 255 characters
 <a id="surname"></a>`surname` | The surname (last name) for the account holder. | String | 1 < N <= 255 characters
 <a id="status"></a>`status` | `enabled` accounts are able to login to their assigned [applications](#Applications), `disabled` accounts may not login to applications, `unverified` accounts are disabled and have not verified their email address. | Enum | `enabled`,`disabled`,`unverified`
+<a id="account-resource-custom-data"></a>`customData` | A link to the account's [customData](#custom-data) resource that you can use to store your own account-specific custom fields. | Link | <span>--</span>
 <a id="account-resource-groups"></a>`groups` | A link to the [groups](#Groups) that the account belongs to. | Link | <span>--</span>
 <a id="account-resource-group-memberships"></a>`groupMemberships` | A link to the group memberships that the account belongs to. | Link | <span>--</span>
 <a id="account-resource-directory"></a>`directory` | A link to the account's directory. | Link | <span>--</span>
@@ -3946,6 +3996,7 @@ For accounts, you can:
     * [Remove accounts from groups](#account-remove-group)
     * [Enable or Disable an account](#account-enable)
 * [Delete an accounts](#account-delete)
+* [Manage account-specific custom data](#custom-data)
 * [List accounts](#accounts-list)
     * [List application accounts](#accounts-application-accounts-list)
     * [List group members](#accounts-application-group-members)
@@ -3994,16 +4045,22 @@ If you know the username exactly, you can use an [attribute search](#search-attr
 <a class="anchor" name="account-create"></a>
 ### Create an Account
 
-Through Stormpath's API and Admin Console, you can only create accounts for cloud, or Stormpath-managed, directories. For LDAP, the accounts must be created on the LDAP server and they will be mirrored to the Stormpath agent.
+Because Accounts are 'owned' by Directories, you create new accounts by adding them to a Directory.  You can add an account to a directory directly or you can indirectly add an account to a Directory by [registering an Account with an Application](#application-account-register)
 
-**Resource URI**
+This section will show examples using a Directory `/accounts` href, but they will function the same if you use an Application's `/accounts` href as well.
+
+{% docs note %}
+You may only create accounts for Stormpath-manageed 'Cloud' directories.  Mirrored accounts from LDAP or Active Directory must be created in the LDAP/AD server and they will be reflected in Stormpath accordingly.  You cannot manually create accounts in a Mirrored directory.
+{% enddocs %}
+
+**Directory Accounts Resource URI**
 
     /v1/directories/:directoryId/accounts
 
 **Required Attributes**
 
 * [email](#email)
-* [password](#password)
+* [password](#password) (see note below)
 * [givenName](#givenName)
 * [surname](#surname)
 
@@ -4012,6 +4069,7 @@ Through Stormpath's API and Admin Console, you can only create accounts for clou
 * [username](#username)
 * [middleName](#middleName)
 * [status](#status)
+* [customData](#account-resource-custom-data)
 
 {% docs note %}
 The password in the request is being sent to Stormpath as plain text. This is one of the reasons why Stormpath only allows requests via HTTPS. Stormpath implements the latest password hashing and cryptographic best-practices that are automatically upgraded over time so the developer does not have to worry about this. Stormpath can only do this for the developer if Stormpath receives the plaintext password so we can hash it using these techniques.
@@ -4023,11 +4081,20 @@ Most importantly, Stormpath does not persist nor relay plaintext passwords in an
 On the client side, then, you do not need to worry about salting or storing passwords at any point; you need only pass them to Stormpath for hashing, salting, and persisting with the appropriate HTTPS API call (e.g., [Create An Account](#account-create) or [Update An Account](#account-update)).
 {% enddocs %}
 
+Here are some account creation examples:
+
+* [Simple Create Account Example](#account-create-simple)
+* [Create an Account with Custom Data](#account-create-with-custom-data)
+* [Create an Account and suppress registration emails](#account-create-no-email)
+
+<a class="anchor" name="account-create-simple"></a>
+Simple creation request:
+
 **Example Request**
 
     POST https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts
     Content-Type: application/json;charset=UTF-8
-
+    
     {
       "username" : "jlpicard",
       "email" : "capt@enterprise.com",
@@ -4041,7 +4108,7 @@ On the client side, then, you do not need to worry about salting or storing pass
     HTTP/1.1 201 Created
     Location: https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA
     Content-Type: application/json;charset=UTF-8;
-
+    
     {
       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
       "username" : "jlpicard",
@@ -4051,6 +4118,9 @@ On the client side, then, you do not need to worry about salting or storing pass
       "middleName" : "",
       "surname" : "Picard",
       "status" : "UNVERIFIED",
+      "customData": {
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+      },
       "groups" : {
         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
       },
@@ -4068,80 +4138,50 @@ On the client side, then, you do not need to worry about salting or storing pass
       }
     }
 
-This code creates a new account in the acceptable account creation designated account store for the application. The account data POSTed is the same required for the existing directory-specific account creation endpoint.
+<a class="anchor" name="account-create-with-custom-data"></a>
+#### Create Directory Account with Custom Data
+In addition to the Stormpath account attributes, you may also specify [your own custom data](#account-custom-data) by including a 'customData' JSON object:
 
-If there is no acceptable account creation designated account store, the REST API error code [5100](/errors#5100) is returned:
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json" \
+         -d '{
+                 "username" : "jlpicard",
+                 "email" : "capt@enterprise.com",
+                 "givenName" : "Jean-Luc",
+                 "middleName" : "",
+                 "surname" : "Picard",
+                 "password" : "uGhd%a8Kl!"
+                 "status" : "ENABLED",
+                 "customData": {
+                     "rank": "Captain",
+                     "birthDate": "2305-07-13",
+                     "birthPlace": "La Barre, France"
+                     "favoriteDrink": "Earl Grey tea"
+                 }
+             }' \
+         "https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts"
 
-    {
-      "status": 409,
-      "code": 5100,
-      "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
-      "developerMessage": "No account store assigned to this application has been configured as the default storage location for newly created accounts.  To fix this problem: in the application's 'account stores' configuration, specify the account store that will be used to store newly created accounts."
-      "moreInfo": "http://docs.stormpath.com/errors/5100"
-    }
+Once created, you can further modify the custom data resource: delete it, add and remove attributes, etc as necessary.  See the [account custom data](#account-custom-data) section for more information on custom data and custom data restrictions.
 
-If the designated account creation account store is a directory, then the account is created in the directory. If the designated account creation account store is a group:
+<a class="anchor" name="account-create-no-email"></a>
+#### Create Directory Account and Suppress Registration Email
 
-* The account is created in the group directory first.
-* The account is added as a member of the target group.
+If you want to create a directory account and you want to override the directory's account registration workflow email settings, you can specify a `registrationWorkflowEnabled=false` query parameter:
 
-To create an account:
-
-**Example Request**
-
-    POST https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts
-     Content-Type: application/json;charset=UTF-8
-
-     {
-       "username" : "jlpicard",
-       "email" : "capt@enterprise.com",
-       "givenName" : "Jean-Luc",
-       "surname" : "Picard",
-       "password" : "uGhd%a8Kl!"
-     }
-
-**Example request suppressing the email messages (note the query parameter):**
-
-    POST https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts?registrationWorkflowEnabled=false
-     Content-Type: application/json;charset=UTF-8
-
-     {
-       "username" : "jlpicard",
-       "email" : "capt@enterprise.com",
-       "givenName" : "Jean-Luc",
-       "surname" : "Picard",
-       "password" : "uGhd%a8Kl!"
-     }
-
-**Example Response**
-
-    HTTP/1.1 201 Created
-     Location: https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA
-     Content-Type: application/json;charset=UTF-8;
-
-     {
-      "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
-      "username" : "jlpicard",
-      "email" : "capt@enterprise.com",
-      "fullName" : "Jean-Luc Picard",
-      "givenName" : "Jean-Luc",
-      "middleName" : "",
-      "surname" : "Picard",
-      "status" : "ENABLED",
-      "groups" : {
-        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
-      },
-      "groupMemberships" : {
-        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groupMemberships"
-      },
-      "directory" : {
-        "href" : "https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA"
-      },
-      "tenant" : {
-        "href" : "https://api.stormpath.com/v1/tenants/Ad8mIcavSty7XzD-xZdP3g"
-      },
-      "emailVerificationToken" : null
-     }
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json" \
+         -d '{
+               "username" : "jlpicard",
+               "email" : "capt@enterprise.com",
+               "givenName" : "Jean-Luc",
+               "middleName" : "",
+               "surname" : "Picard",
+               "password" : "uGhd%a8Kl!"
+               "status" : "ENABLED",
+             }' \
+         "https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts?registrationWorkflowEnabled=false"
 
 <a class="anchor" name="account-retrieve"></a>
 ### Retrieve an Account
@@ -4156,7 +4196,7 @@ HTTP `GET` returns a representation of an `account` resource that includes the a
 
     HTTP/1.1 200 OK
     Content-Type: application/json;charset=UTF-8;
-
+    
     {
       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
       "username" : "jlpicard",
@@ -4166,6 +4206,9 @@ HTTP `GET` returns a representation of an `account` resource that includes the a
       "middleName" : "",
       "surname" : "Picard",
       "status" : "ENABLED",
+      "customData": {
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+      },
       "groups" : {
         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
       },
@@ -4188,12 +4231,13 @@ When retrieving an account, you can also retrieve one or more of its linked reso
 
 The following `Account` attributes are expandable:
 
+* `customData`
 * `tenant`
 * `directory`
 * `groups`
 * `groupMemberships`
 
-Also, because these are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
+Also, because `groups` and `groupMemberships` are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
 
     GET https://api.stormpath.com/v1/accounts/WpM9nyZ2TbaEzfbRvLk9KA?expand=tenant,directory,groups(offset:0,limit:50),groupMemberships(offset:0,limit:50)
 
@@ -4217,6 +4261,7 @@ Changes made to an account are immediately reflected in any application that has
 * [middleName](#middleName)
 * [surname](#surname)
 * [status](#status)
+* [customData](#account-resource-custom-data)
 
 {% docs note %}
 The password in the request is being sent to Stormpath as plain text. This is one of the reasons why Stormpath only allows requests via HTTPS. Stormpath implements the latest password hashing and cryptographic best-practices that are automatically upgraded over time so the developer does not have to worry about this. Stormpath can only do this for the developer if Stormpath receives the plaintext password so we can hash it using these techniques.
@@ -4228,12 +4273,19 @@ Most importantly, Stormpath does not persist nor relay plaintext passwords in an
 On the client side, then, you do not need to worry about salting or storing passwords at any point; you need only pass them to Stormpath for hashing, salting, and persisting with the appropriate HTTPS API call (e.g., [Create An Account](#account-create) or [Update An Account](#account-update)).
 {% enddocs %}
 
-<a class="anchor" name="UpdateAccountName"></a>
+Here are some account update examples:
+
+* [Simple Update Account Example](#account-update-simple)
+* [Create an Account and suppress registration emails](#account-create-no-email)
+* [Update an Account's password directly](#ChangeAccountPassword)
+* [Update an Account and its Custom Data simultaneously](#update-custom-data-embedded)
+
+<a class="anchor" name="UpdateAccountName"></a><a class="anchor" name="account-update-simple"></a>
 **Example Request to Update the Name**
 
     POST https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb
     Content-Type: application/json;charset=UTF-8
-
+    
     {
       "username" : "jlpicard",
       "givenName" : "Jean-Luc",
@@ -4244,7 +4296,7 @@ On the client side, then, you do not need to worry about salting or storing pass
 
     HTTP/1.1 200 OK
     Content-Type: application/json;charset=UTF-8;
-
+    
     {
       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
       "username" : "jlpicard",
@@ -4254,6 +4306,9 @@ On the client side, then, you do not need to worry about salting or storing pass
       "middleName" : "",
       "surname" : "Picard",
       "status" : "ENABLED",
+      "customData": {
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+      },
       "groups" : {
         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
       },
@@ -4269,45 +4324,14 @@ On the client side, then, you do not need to worry about salting or storing pass
       "emailVerificationToken" : null
     }
 
-If the account is part of a directory containing groups, you can associate the account with a group.
-
-<a class="anchor" name="AddAccountGroup"></a>
-**Example Request to Add an Account to a Group**
-
-    POST https://api.stormpath.com/v1/groupMemberships
-     Content-Type: application/json;charset=UTF-8
-
-     {
-       "account" : {
-         "href" : "https://api.stormpath.com/v1/accounts/Gu8oshf7HdsspjHs3uhd7jGd"
-       },
-       "group" : {
-         "href" : "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ"
-       }
-     }
-
-**Example Response**
-
-    HTTP/1.1 201 Created
-     Location: https://api.stormpath.com/v1/groupMemberships/cJoiwjorTTmLDDBsf04Abi
-     Content-Type: application/json;charset=UTF-8;
-
-     {
-       "href" : "https://api.stormpath.com/v1/groupMemberships/cJoiwjorTTmLDDBsf04Abi",
-       "account" : {
-         "href" : "https://api.stormpath.com/v1/accounts/Gu8oshf7HdsspjHs3uhd7jGd"
-       },
-       "group" : {
-         "href" : "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ"
-       }
-     }
-
 <a class="anchor" name="ChangeAccountPassword"></a>
+#### Update an Account's Password Directly    
+
 **Example Request to Change an Account Password**
 
     POST https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb
     Content-Type: application/json;charset=UTF-8
-
+    
     {
       "password" : "L9%hw4c5q"
     }
@@ -4316,7 +4340,7 @@ If the account is part of a directory containing groups, you can associate the a
 
     HTTP/1.1 200 OK
     Content-Type: application/json;charset=UTF-8;
-
+    
     {
       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
       "username" : "jlpicard",
@@ -4326,6 +4350,9 @@ If the account is part of a directory containing groups, you can associate the a
       "middleName" : "",
       "surname" : "Picard",
       "status" : "ENABLED",
+      "customData": {
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+      },
       "groups" : {
         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
       },
@@ -4351,32 +4378,32 @@ To assign an account to a group:
 **Example Request**
 
     POST https://api.stormpath.com/v1/groupMemberships
-     Content-Type: application/json;charset=UTF-8
-
-     {
-       "account" : {
-         "href" : "https://api.stormpath.com/v1/accounts/Gu8oshf7HdsspjHs3uhd7jGd"
-       },
-       "group" : {
-         "href" : "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ"
-       }
-     }
+    Content-Type: application/json;charset=UTF-8
+    
+    {
+      "account" : {
+        "href" : "https://api.stormpath.com/v1/accounts/Gu8oshf7HdsspjHs3uhd7jGd"
+      },
+      "group" : {
+        "href" : "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ"
+      }
+    }
 
 **Example Response**
 
     HTTP/1.1 201 Created
-     Location: https://api.stormpath.com/v1/groupMemberships/cJoiwjorTTmLDDBsf04Abi
-     Content-Type: application/json;charset=UTF-8;
-
-     {
-       "href" : "https://api.stormpath.com/v1/groupMemberships/cJoiwjorTTmLDDBsf04Abi",
-       "account" : {
-         "href" : "https://api.stormpath.com/v1/accounts/Gu8oshf7HdsspjHs3uhd7jGd"
-       },
-       "group" : {
-         "href" : "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ"
-       }
-     }
+    Location: https://api.stormpath.com/v1/groupMemberships/cJoiwjorTTmLDDBsf04Abi
+    Content-Type: application/json;charset=UTF-8;
+    
+    {
+      "href" : "https://api.stormpath.com/v1/groupMemberships/cJoiwjorTTmLDDBsf04Abi",
+      "account" : {
+        "href" : "https://api.stormpath.com/v1/accounts/Gu8oshf7HdsspjHs3uhd7jGd"
+      },
+      "group" : {
+        "href" : "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ"
+      }
+    }
 
 <a class="anchor" name="account-remove-group"></a>
 #### Remove an Account from a Group
@@ -4405,11 +4432,11 @@ For example, to enable an account:
 **Example Request**
 
     POST https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb
-     Content-Type: application/json;charset=UTF-8
-
-     {
-       "status" : "ENABLED"
-     }
+    Content-Type: application/json;charset=UTF-8
+    
+    {
+      "status" : "ENABLED"
+    }
 
 <a class="anchor" name="account-delete"></a>
 ### Delete an Account
@@ -4429,6 +4456,12 @@ To delete an account:
 **Example Response**
 
     HTTP/1.1 204 No Content
+
+### Account Custom Data
+
+While Stormpath's default Account attributes are useful to many applications, you might want to add your own custom data to a Stormpath account.  If you want, you can store all of your custom account information in Stormpath so you don't have to maintain another separate database to store your specific account data.
+
+Please see the [custom data section](#custom-data) for more information and requirements/restrictions for creating, retrieving, updating and deleting account custom data.
 
 <a class="anchor" name="accounts-list"></a>
 ### List Accounts
@@ -4452,7 +4485,7 @@ Example response:
 
     HTTP/1.1 200 OK
     Content-Type: application/json;charset=UTF-8;
-
+    
     {
       "href": "https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA/accounts"
       "offset": 0,
@@ -4501,7 +4534,7 @@ Example response:
 
     HTTP/1.1 200 OK
      Content-Type: application/json;charset=UTF-8;
-
+    
      {
        "href": "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ/accounts"
        "offset": 0,
@@ -4862,6 +4895,261 @@ An account's `groupMemberships` resource is a [Collection Resource](#collections
 
 Groups Membership resources support the full suite of CRUD commands and other interactions. Please see the [Group Memberships section](#group-memberships) for more information.
 
+*** 
+## Custom Data
+
+Account and Group resources have predefined fields that are useful to many applications, but you are likely to have your own custom data that you need to associate with an account or group as well.
+
+For this reason, both the account and group resources support a linked `customData` resource that you can use for your own needs.
+
+The `customData` resource is a schema-less JSON object (aka 'map', 'associative array', or 'dictionary') that allows you to specify whatever name/value pairs you wish.
+
+The `customData` resource `href` is always the account or group `href` with a `/customData` suffix:
+
+<a class="anchor" name="account-custom-data-resource-uri"></a>
+**Account Custom Data Resource URI**
+
+    /v1/accounts/:accountId/customData
+
+<a class="anchor" name="group-custom-data-resource-uri"></a>
+**Group Custom Data Resource URI**
+
+    /v1/groups/:groupId/customData
+
+In addition to your custom name/value pairs, a `customData` resource will always contain 3 reserved read-only fields:
+
+- `href`: The fully qualified location of the custom data resource
+- `createdAt`: the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string, for example `2017-04-01T14:35:16.235Z`
+- `modifiedAt`: the UTC timestamp with millisecond precision of when the resource was last updated in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string.
+
+You can store an unlimited number of additional name/value pairs in the `customData` resource, with the following restrictions:
+
+* The total storage size of a single `customData` resource cannot exceed 10 MB (megabytes).  **The `href`, `createdAt` and `modifiedAt` field names and values do not count against your resource size quota.**
+* Field names must:
+    * be 1 or more characters long, but less than or equal to 255 characters long (1 <= N <= 255).
+    * contain only alphanumeric characters `0-9A-Za-z`, underscores `_` or dashes `-` but cannot start with a dash `-`.
+    * may not equal any of the following reserved names: `href`, `createdAt`, `modifiedAt`, `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta`.
+
+{% docs note %}
+While the `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta` fields are not returned in the response today, they might be used in the future.  As is the case with all JSON use cases, ensure your REST client will not break if it encounters one of these (or other fields it does not recognize) at some time in the future.
+{% enddocs %}
+
+For Custom Data, you can:
+
+* [Create Custom Data](#create-custom-data)
+* [Retrieve Custom Data](#retrieve-custom-data)
+* [Update Custom Data](#update-custom-data)
+* [Delete All Custom Data](#update-custom-data)
+* [Delete a single Custom Data field](#delete-custom-data-field)
+
+<a class="anchor" name="create-custom-data"></a>
+### Create Custom Data
+
+Whenever you create an account or a group, an empty `customData` resource is created for that account or group automatically - you do not need to explicitly execute a request to create it.
+
+However, it is often useful to populate custom data at the same time you create an account or group.  You can do this by embedding the `customData` directly in the account or group resource. For example:
+
+**Example Create Account with Custom Data**
+
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json" \
+         -d '{
+               "username" : "jlpicard",
+               "email" : "capt@enterprise.com",
+               "givenName" : "Jean-Luc",
+               "middleName" : "",
+               "surname" : "Picard",
+               "password" : "uGhd%a8Kl!"
+               "status" : "ENABLED",
+               "customData": {
+                 "rank": "Captain",
+                 "birthDate": "2305-07-13",
+                 "birthPlace": "La Barre, France"
+                 "favoriteDrink": "Earl Grey tea"
+               }
+             }' \
+     "https://api.stormpath.com/v1/directories/exampleDirectoryId/accounts"
+
+**Example Create Group with Custom Data**
+
+     curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+          -H "Accept: application/json" \
+          -H "Content-Type: application/json" \
+          -d '{
+                "name" : "Starfleet Officers",
+                "customData": {
+                  "headquarters": "San Francisco, CA"
+                }
+              }' \
+      "https://api.stormpath.com/v1/directories/exampleDirectoryId/groups"
+
+<a class="anchor" name="retrieve-custom-data"></a>
+### Retrieve Custom Data
+
+A common way to retrieve an account or group's custom data is to use [link expansion](#links-expansion) and retrieve the custom data at the same time as when you retrieve an account or group.
+
+**Example: Retrieve an Account with its Custom Data**
+
+    curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/accounts/exampleAccountId?expand=customData
+
+**Example: Retrieve a Group with its Custom Data**
+
+    curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/groups/exampleGroupId?expand=customData
+
+You can also of course return an account or group's custom data resource by executing a `GET` request directly to the account-specific or group-specific Custom Data Resource URI.
+
+**Example Retrieve Account Custom Data Request**
+
+    curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/accounts/exampleAccountId/customData
+
+**Example Retrieve Group Custom Data Request**
+
+    curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/groups/exampleGroupId/customData
+
+**Example Response**
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+    
+    {
+      "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData",
+      "createdAt": "2014-07-16T13:48:22.378Z",
+      "modifiedAt": "2014-07-16T13:48:22.378Z",
+      "birthDate": "1985-07-15",
+      "favoriteColor": "blue",
+    }
+
+<a class="anchor" name="update-custom-data"></a>
+### Update Custom Data
+
+You may update an account or group's custom data, in one of two ways:
+
+* by [updating the customData resource directly](#update-custom-data-directly), independent of the group or account, or
+* by [embedding customData changes in an account or group update request](#update-custom-data-embedded)
+
+<a class="anchor" name="update-custom-data-directly"></a>
+#### Update Custom Data Directly
+
+The first way to update an account or group's custom data is by `POST`ing changes directly to the custom data's HREF.  This allows you to interact with the customData resource directly, without having to do so 'through' an account or group request.
+
+In the following example request, we're interacting with a `customData` resource directly, and we're changing the value of an existing field named `favoriteColor` and we're adding a brand new field named `hobby`:
+
+**Example Account Custom Data Update**
+
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json;charset=UTF-8" \
+         -d '{
+               "favoriteColor": "red",
+               "hobby": "Kendo"
+             }' \
+      "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb/customData"
+
+The response will contain the resource with the latest values:
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+    
+    {
+      "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData",
+      "createdAt": "2014-07-16T13:48:22.378Z",
+      "modifiedAt": "2014-07-16T13:48:22.378Z",
+      "birthDate": "1985-07-15",
+      "favoriteColor": "red",
+      "hobby": "Kendo"
+    }
+
+As you can see, the response contains the 'merged' representation of what was already on the server plus what was sent in the request, and at no point did we need to interact with the account directly.
+
+<a class="anchor" name="update-custom-data-embedded"></a>
+#### Update Custom Data as part of an Account or Group Request
+
+Sometimes it is helpful to update an account or group's `customData` as part of an update request for the account or group.  In this case, just specify customData changes in an embedded `customData` field embedded in the account or group request resource.  For example:
+
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json" \
+         -d '{
+               "status" : "ENABLED",
+               "customData": {
+                   "favoriteColor": "blue",
+                   "hobby": "Kendo"
+               }
+             }' \
+        "https://api.stormpath.com/v1/accounts/exampleAccountId"
+
+In the above example, we're performing 3 modifications in one request:
+
+1. We're modifying the account's `status` attribute and setting it to `ENABLED`.  We're _also_
+2. Changing the existing customData `favoriteColor` field value to `blue` (it was previously `red`) and
+3. Adding a new customData `hobby` field with a value of `Kendo`.
+
+This request modifies both the account resource _and_ that account's custom data in a single request.
+
+The same simultaneous update behavior may be performed for Group updates as well.
+
+<a class="anchor" name="delete-custom-data"></a>
+### Delete Custom Data
+
+You may delete all of an account or group's custom data by sending a `DELETE` request to the account or group's customData `href`:
+
+**Example: Delete all of an Account's Custom Data**
+
+    curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/accounts/exampleAccountId/customData
+
+**Example: Delete all of a Group's Custom Data**
+
+    curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/groups/exampleGroupId/customData
+
+**Example Response**
+
+    HTTP/1.1 204 No Content
+
+This will delete all of the respective account or group's custom data fields, but it leaves the `customData` placeholder in the account or group resource.  You cannot delete the `customData` resource entirely - it will be automatically permanently deleted when the account or group is deleted.
+
+<a class="anchor" name="delete-account-custom-data-field"></a>
+### Delete Custom Data Field
+
+You may also delete an individual custom data field entirely.  
+
+To understand field deletion, we should have a quick reminder about JSON `null` values.  `null` is a valid value for JSON fields and may be specified.  For example:
+
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json;charset=UTF-8" \
+         -d '{
+               "favoriteColor": null
+             }' \
+      "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb/customData"
+
+
+This request is valid and indicates that the `favoriteColor` field still exists on the customData resource, and it is a meaningful field, it just does not currently have a value (maybe it will be populated later).
+
+Because `null` is an important and often useful value for JSON data, then, we can't delete a field (remove it entirely from the customData resource) by simply setting it to `null`.
+
+Therefore, to delete a customData field, we must send an explicit `DELETE` request to an href representing the exact field to delete, using the following resource URI:
+
+**Account Custom Data Field Resource URI**
+
+    https://api.stormpath.com/v1/accounts/:accountId/customData/:fieldName
+
+**Group Custom Data Field Resource URI**
+
+    https://api.stormpath.com/v1/groups/:groupId/customData/:fieldName
+
+These URIs only supports `DELETE` requests.
+
+**Example Request**
+
+    DELETE https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb/customData/favoriteColor
+
+**Example Response**
+
+    HTTP/1.1 204 No Content
+
+This request would remove the `favoriteColor` field entirely from the customData resource.  The next time the resource is [retrieved](#retrieve-custom-data), the field will be missing entirely.
+
 ***
 
 <a class="anchor" name="administration"></a>
@@ -4873,7 +5161,6 @@ For more information about administering Stormpath using the Admin Console, plea
 
 <a class="anchor" name="glossary"></a>
 ## Glossary of Terms
-
 
 Attribute | Description
 :----- | :----- |
