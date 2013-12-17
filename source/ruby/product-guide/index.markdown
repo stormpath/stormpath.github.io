@@ -1476,12 +1476,12 @@ For Custom Data, you can:
 
 You can add or update custom data fields by using the `put` method: 
 	
-  account = directory.accounts.create email: 'jabba.hutt@example.com', password: 'Jabba123!', username: 'Jabba'
+  	account = directory.accounts.create email: 'jabba.hutt@example.com', password: 'Jabba123!', username: 'Jabba'
   
-  custom_data = account.custom_data
+  	custom_data = account.custom_data
 
-  custom_data.put(:vehicle, "Sail barge")
-  custom_data.put(:homeworld, "Tatooine")
+  	custom_data.put(:vehicle, "Sail barge")
+  	custom_data.put(:homeworld, "Tatooine")
 
 After modifying the desired custom data fields, you can push the changes by using the `save` method on the custom data resource:
 
