@@ -1436,6 +1436,95 @@ A group can be deleted by invoking the `delete` method on the group instance:
 
 ***
 
+## Custom Data
+
+Account and Group resources have predefined fields that are useful to many applications, but you are likely to have your own custom data that you need to associate with an account or group as well.
+
+For this reason, both the account and group resources support a linked `custom_data` resource that you can use for your own needs.
+
+The `custom_data` resource is a schema-less JSON object (aka 'hash') that allows you to specify whatever name/value pairs you wish.
+
+The `custom_data` resource is always connected to an account or group and you can always reach it by calling the `.custom_data` method on the account or group resource instance.
+
+In addition to your custom name/value pairs, a `customData` resource will always contain 3 reserved read-only fields:
+
+- `href`: The fully qualified location of the custom data resource
+- `createdAt`: the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string, for example `2017-04-01T14:35:16.235Z`
+- `modifiedAt`: the UTC timestamp with millisecond precision of when the resource was last updated in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string.
+
+You can store an unlimited number of additional name/value pairs in the `customData` resource, with the following restrictions:
+
+* The total storage size of a single `customData` resource cannot exceed 10 MB (megabytes).  **The `href`, `createdAt` and `modifiedAt` field names and values do not count against your resource size quota.**
+* Field names must:
+    * be 1 or more characters long, but less than or equal to 255 characters long (1 <= N <= 255).
+    * contain only alphanumeric characters `0-9A-Za-z`, underscores `_` or dashes `-` but cannot start with a dash `-`.
+    * may not equal any of the following reserved names: `href`, `createdAt`, `modifiedAt`, `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta`.
+
+{% docs note %}
+While the `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta` fields are not returned in the response today, they might be used in the future.  As is the case with all JSON use cases, ensure your REST client will not break if it encounters one of these (or other fields it does not recognize) at some time in the future.
+{% enddocs %}
+
+For Custom Data, you can:
+
+* [Create Custom Data](#create-custom-data)
+* [Retrieve Custom Data](#retrieve-custom-data)
+* [Update Custom Data](#update-custom-data)
+* [Delete All Custom Data](#update-custom-data)
+* [Delete a Custom Data field](#delete-custom-data-field)
+
+### Create Custom Data
+
+You can add or update custom data fields by using the `put` method: 
+	
+	  account = directory.accounts.create email: 'jabba.hutt@example.com', password: 'Jabba123!', username: 'Jabba The Hutt'
+	  
+	  custom_data = account.custom_data
+
+	  custom_data.put(:vehicle, "Sail barge")
+	  custom_data.put(:homeworld, "Tatooine")
+
+After modifying the desired custom data fields, you can push the changes by using the `save` method on the custom data resource:
+
+  	custom_data.save
+
+Whenever an `account` or `group` resource is saved, the connected `custom data` is also saved, so you can save changes by calling the `save` method on the `account` or `group` resource.
+
+		account.save
+
+### Retrieve Custom Data
+
+Retrieving an account or group’s custom data is managed by using the `custom_data` method on those resources, and fetching each individual field using the `get` method on the `custom_data` resource:
+
+		account = directory.accounts.create email: 'jabba.hutt@example.com', password: 'Jabba123!', username: 'Jabba The Hutt'
+		account.custom_data.get("vehicle")
+		#=> Sail barge
+
+### Update Custom Data
+
+Updating custom_data is managed in the same manner as creating new resources, by using the `put` method:
+
+		account = directory.accounts.create email: 'jabba.hutt@example.com', password: 'Jabba123!', username: 'Jabba The Hutt'
+		
+		account.custom_data.get("vehicle")
+		#=> Sail barge
+
+	  account.custom_data.put(:vehicle, "Jedi Starfighter")
+
+### Delete Custom Data
+
+You may delete all of an account or group’s custom data by calling the `delete` method on the account or group’s custom_data:
+
+		account.custom_data.delete
+
+		group.custom_data.delete
+
+### Delete Custom Data Field
+
+You may also delete an individual custom data field entirely by calling the `delete` method on the account or group's custom_data with stating the custom data field as a parameter:
+
+		account.custom_data.delete("vehicle")
+
+		group.custom_data.delete("location")
 
 ## Workflow Automations
 
