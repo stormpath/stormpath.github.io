@@ -1476,55 +1476,55 @@ For Custom Data, you can:
 
 You can add or update custom data fields by using the `put` method: 
 	
-	  account = directory.accounts.create email: 'jabba.hutt@example.com', password: 'Jabba123!', username: 'Jabba The Hutt'
-	  
-	  custom_data = account.custom_data
+  account = directory.accounts.create email: 'jabba.hutt@example.com', password: 'Jabba123!', username: 'Jabba'
+  
+  custom_data = account.custom_data
 
-	  custom_data.put(:vehicle, "Sail barge")
-	  custom_data.put(:homeworld, "Tatooine")
+  custom_data.put(:vehicle, "Sail barge")
+  custom_data.put(:homeworld, "Tatooine")
 
 After modifying the desired custom data fields, you can push the changes by using the `save` method on the custom data resource:
 
-  	custom_data.save
+	custom_data.save
 
 Whenever an `account` or `group` resource is saved, the connected `custom data` is also saved, so you can save changes by calling the `save` method on the `account` or `group` resource.
 
-		account.save
+	account.save
 
 ### Retrieve Custom Data
 
 Retrieving an account or group’s custom data is managed by using the `custom_data` method on those resources, and fetching each individual field using the `get` method on the `custom_data` resource:
 
-		account = directory.accounts.create email: 'jabba.hutt@example.com', password: 'Jabba123!', username: 'Jabba The Hutt'
-		account.custom_data.get("vehicle")
-		#=> Sail barge
+	account = directory.accounts.create email: 'jabba.hutt@example.com', password: 'Jabba123!', username: 'Jabba'
+	account.custom_data.get("vehicle")
+	#=> Sail barge
 
 ### Update Custom Data
 
 Updating custom_data is managed in the same manner as creating new resources, by using the `put` method:
 
-		account = directory.accounts.create email: 'jabba.hutt@example.com', password: 'Jabba123!', username: 'Jabba The Hutt'
-		
-		account.custom_data.get("vehicle")
-		#=> Sail barge
+	account = directory.accounts.create email: 'jabba.hutt@example.com', password: 'Jabba123!', username: 'Jabba'
 
-	  account.custom_data.put(:vehicle, "Jedi Starfighter")
+	account.custom_data.get("vehicle")
+	#=> Sail barge
+
+	account.custom_data.put(:vehicle, "Jedi Starfighter")
 
 ### Delete Custom Data
 
 You may delete all of an account or group’s custom data by calling the `delete` method on the account or group’s custom_data:
 
-		account.custom_data.delete
+	account.custom_data.delete
 
-		group.custom_data.delete
+	group.custom_data.delete
 
 ### Delete Custom Data Field
 
 You may also delete an individual custom data field entirely by calling the `delete` method on the account or group's custom_data with stating the custom data field as a parameter:
 
-		account.custom_data.delete("vehicle")
+	account.custom_data.delete("vehicle")
 
-		group.custom_data.delete("location")
+	group.custom_data.delete("location")
 
 ## Workflow Automations
 
