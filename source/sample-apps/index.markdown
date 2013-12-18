@@ -74,7 +74,7 @@ body_id: [sample-apps-page]
         </div>
       </div>
     </div>
-    <div class="panel-container second-container">
+    <div class="panel-container">
       <div class="panel-title">Ruby Web App Sample (Rails)</div>
       <div class="panel-inner">
         <div class="panel-text">
@@ -87,7 +87,7 @@ body_id: [sample-apps-page]
         </div>
       </div>
     </div>
-    <div class="panel-container third-container">
+    <div class="panel-container">
       <div class="panel-title">Stormpath Omniauth Exasmle (Sinatra)</div>
       <div class="panel-inner">
         <div class="panel-text">
@@ -100,7 +100,7 @@ body_id: [sample-apps-page]
         </div>
       </div>
     </div>
-    <div class="panel-container forth-container">
+    <div class="panel-container">
       <div class="panel-title">Ruby Web App Sample (Sinatra)</div>
       <div class="panel-inner">
         <div class="panel-text">
