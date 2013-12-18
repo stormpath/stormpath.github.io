@@ -1382,8 +1382,6 @@ Workflows are only available on cloud directories and only configurable using th
 
 You may authenticate an account by calling the `authenticate` method of an application instance:
 
-**Execute Account Login Attempt**
-
 **Example Request**
 
     $result = $application->authenticate('usernameOrEmail', 'password');
@@ -2021,7 +2019,6 @@ For directories, you can:
     * [Register A New Account](#directories-account-reg)
     * [Register A New Group](#directories-group-reg)
     * [Verify An Account's Email Address](#directories-verify-email)
-    * [Log In (Authenticate) an Account](#directories-account-authc)
     * [Reset An Account's Password](#directories-password-reset)
 * [Work with directory groups](#directory-groups)
 * [Work with directory accounts](#directory-accounts)
@@ -2340,17 +2337,6 @@ This workflow is disabled by default for accounts, but you can enable it easily 
 
 {% docs note %}
 Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the PHP SDK. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
-{% enddocs %}
-
-<a class="anchor" name="directories-account-authc"></a>
-### Log In (Authenticate) an Account
-
-This workflow allows you to authenticate an account given an input of a username or email and a password from an end-user, system, or application.
-
-The authentication workflow relies on the `application` resource as a starting point. For more information on working with these workflows via the PHP SDK after they have already been configured, refer to the [Working With Applications](#application-account-authc) section of this guide.
-
-{% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the PHP SDK. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
 {% enddocs %}
 
 <a class="anchor" name="directories-password-reset"></a>
@@ -3446,13 +3432,9 @@ If the verification token is not found, a `404 Not Found` is returned with an [e
 <a class="anchor" name="accounts-authenticate"></a>
 ### Authenticate An Account
 
-This workflow allows you to authenticate an account given an input of a username or email and a password from an end-user, system, or application.
+After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts. 
 
-The authentication workflow relies on the `application` resource as a starting point. For more information on working with these workflows via REST after they have already been configured, refer to the [Working With Applications](#application-account-authc) section of this guide.
-
-{% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
-{% enddocs %}
+For more information on working with applications and authentication, refer to the [Log in (Authenticate) an Account](#application-account-authc) section of this guide.
 
 <a class="anchor" name="accounts-reset"></a>
 ### Reset An Account's Password

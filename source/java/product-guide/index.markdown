@@ -914,7 +914,7 @@ The account cannot be moved to a different directory after it has been created.
 For accounts, you can: 
 
 * [Locate the account REST URL](#locate-the-account-rest-url)
-* [Authenticate accounts](#authenticate-accounts)
+* [Authenticate an account](#authenticate-accounts)
 * [List accounts](#list-accounts)
 	* [List accounts by group](#list-accounts-by-group)
 	* [List accounts by directory](#list-accounts-by-directory)
@@ -939,9 +939,11 @@ To obtain an account REST URL:
 3. In the Accounts table, click the account name.<br>
 The REST URL appears on the Details tab.
 
-### Authenticate Accounts 
+### Authenticate An Account 
 
-To authenticate an account you must have the application the account authenticates against. With the application, the account is authenticated by providing the username and password as follows:
+After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts. 
+
+With the application, the account is authenticated by providing the username and password as follows:
 
 	import com.stormpath.sdk.client.*;
 	import com.stormpath.sdk.ds.*;

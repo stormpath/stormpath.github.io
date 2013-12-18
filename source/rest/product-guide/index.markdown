@@ -2537,7 +2537,6 @@ For directories, you can:
     * [Enforce Account Password Restrictions](#directories-password-restrictions)
     * [Register A New Account](#directories-reg)
     * [Verify An Account's Email Address](#directories-verify-email)
-    * [Log In (Authenticate) an Account](#directories-account-authc)
     * [Reset An Account's Password](#directories-password-reset)
 * [Work with directory groups](#directory-groups)
 * [Work with directory accounts](#directory-accounts)
@@ -2943,17 +2942,6 @@ This workflow is disabled by default for accounts, but you can enable it easily 
 
 {% docs note %}
 Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
-{% enddocs %}
-
-<a class="anchor" name="directories-account-authc"></a>
-### Log In (Authenticate) an Account
-
-This workflow allows you to authenticate an account given an input of a username or email and a password from an end-user, system, or application.
-
-The authentication workflow relies on the `application` resource as a starting point. For more information on working with these workflows via REST after they have already been configured, refer to the [Working With Applications](#application-account-authc) section of this guide.
-
-{% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
 {% enddocs %}
 
 <a class="anchor" name="directories-password-reset"></a>
@@ -4745,13 +4733,33 @@ If the verification token is not found, a `404 Not Found` is returned with an [e
 <a class="anchor" name="accounts-authenticate"></a>
 ### Authenticate An Account
 
-This workflow allows you to authenticate an account given an input of a username or email and a password from an end-user, system, or application.
+After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts. 
 
-The authentication workflow relies on the `application` resource as a starting point. For more information on working with these workflows via REST after they have already been configured, refer to the [Working With Applications](#application-account-authc) section of this guide.
+Once you have the application resource you may attempt authentication by sending a 'POST' request to the application's `loginAttempts` endpoint and providing a base64 encoded username and password pair that is seperated with a colon (for example - testuser:testpassword).  Stormpath requires that the username and password are base64 encoded so these values are not passed as clear text.
 
-{% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
-{% enddocs %}
+**Example Request**
+
+    POST https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA/loginAttempts
+    Content-Type: application/json;charset=UTF-8
+
+    {
+       "type": "basic",
+       "value": "anNtaXRoOmNoYW5nZW1l"
+    }
+
+
+**Example Successful Response**
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "account": {
+        "href" : "https://api.stormpath.com/v1/accounts/5BedLIvyfLjdKKEEXAMPLE"
+      }
+    }
+
+For more information on working with applications and authentication, refer to the [Log in (Authenticate) an Account](#application-account-authc) section of this guide.
 
 <a class="anchor" name="accounts-reset"></a>
 ### Reset An Account's Password
