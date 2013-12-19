@@ -20,6 +20,7 @@ module Stormpath
       end
     end
 
+    # Split document body to the sections, used for menu rendering.
     def split_docs_sections(input)
       result = Hash.new
       sections = Hash.new
@@ -43,6 +44,7 @@ module Stormpath
       result
     end
 
+    # Render documents menu.
     def render_docs_menu(sections, level = 0) 
       out =  '<ul class="menu">'
       sections.each do |id, section|
@@ -59,6 +61,7 @@ module Stormpath
 
     private
 
+    # Generate new id from the anchor title.
     def make_id(title)
       @@ids = []
       id = Sanitize.clean(title)
@@ -76,6 +79,7 @@ module Stormpath
 end
 
 
+# Custom generator for the doc pages.
 module Jekyll
 
   class DocsGenerator < Generator
