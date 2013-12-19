@@ -1690,6 +1690,7 @@ Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 <a class="anchor" name="login-attempt-type"></a>`type` | The type of the login attempt. The only currently supported type is `basic`. Additional types will likely be supported in the future. | Enum | basic
 <a class="anchor" name="login-attempt-value"></a>`value` | The Base64 encoded username:plaintextPassword pair. For example, for username `jsmith` or email `jsmith@email.com` and plaintext password `mySecretPassword` this `value` attribute would be set to the following computed result: `base64_encode("jsmith:mySecretPassword");` </p> The `base64_encode` method call is only an example. You will need to use the Base64 encoding method is available to you in your chosen programming language and/or software frameworks. | String | Base64 encoded String
+<a class="anchor" name="login-attempt-accountStore"></a>`accountStore` | A link to the accountStore that contains the account attempting to login.  This is an optional attribute. | link | --
 
 **Execute Account Login Attempt (HTTP POST)**
 
@@ -1748,6 +1749,98 @@ If the login attempt fails, a `400 Bad Request` is returned with an [error paylo
       "developerMessage": "Invalid username or password.",
       "moreInfo": "mailto:support@stormpath.com"
     }
+
+If you desire to target a specific accountStore, then include the reference in the request.  For example:
+
+**Example Request with AccountStore**
+
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d '{
+           "type": "basic",
+           "value": "anNtaXRoOmNoYW5nZW1l"
+           "accountStore": {
+                 "href": "https://api.stormpath.com/v1/groups/$YOUR_GROUP_ID"
+           }
+         }' \
+     "https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/loginAttempts"
+
+If the login attempt is successful, a `200 OK` response is returned with a [link](#links) to the successfully authenticated account:
+
+**Example Login Attempt with AccountStore Success Response**
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "account": {
+        "href" : "https://api.stormpath.com/v1/accounts/5BedLIvyfLjdKKEEXAMPLE"
+      }
+    }
+
+If the login attempt fails, a `400 Bad Request` is returned with an [error payload](#errors) explaining why the attempt failed:
+
+**Example Login Attempt with AccountStore Failure Response**
+
+    HTTP/1.1 400 Bad Request
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "status" : 400,
+      "code" : 5114,
+      "message" : "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
+      "developerMessage" : "The specified application account store reference is invalid: the specified account store is not one of the application's assigned account stores.  Targeted authentication attempts must target one of the application's existing assigned account stores.",
+      "moreInfo" : "https://www.stormpath.com/docs/errors/5114"
+    }
+
+If you want the actual account object returned from a successful authentication attempt, then you can [expand the account in-line](#links-expansion) using the `expand` query parameter.  For example:
+
+**Example Request with Account Expansion**
+
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d '{
+           "type": "basic",
+           "value": "anNtaXRoOmNoYW5nZW1l"
+         }' \
+     "https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/loginAttempts?expand=account"
+
+If the login attempt is successful, a `200 OK` response is returned with the successfully authenticated account:
+
+**Example Response with Account Expansion**
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
+      "username" : "jsmith",
+      "email" : "jsmith@mailinator.com",
+      "fullName" : "John Smith",
+      "givenName" : "John",
+      "middleName" : "",
+      "surname" : "Smith",
+      "status" : "ENABLED",
+      "customData": {
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData"
+      },
+      "groups" : {
+        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
+      },
+      "groupMemberships" : {
+        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groupMemberships"
+      },
+      "directory" : {
+        "href" : "https://api.stormpath.com/v1/directories/1FaQ6kZxTL4DVJXWeXtUh7"
+      },
+      "tenant" : {
+        "href" : "https://api.stormpath.com/v1/tenants/Ad8mIcavSty7XzD-xZdP3g"
+      },
+      "emailVerificationToken" : null
+    }
+
 
 <a class="anchor" name="application-password-reset"></a>
 #### Reset An Account's Password
