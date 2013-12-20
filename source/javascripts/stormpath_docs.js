@@ -23,7 +23,7 @@
             e.stopPropagation();
             return false;
           }
-        });ex
+        });
       }
       // Make language select "fancy".
       $('select.stormpath-fancy-select:not(.processed)').each(function() {
