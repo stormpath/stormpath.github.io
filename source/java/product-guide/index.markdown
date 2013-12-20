@@ -178,11 +178,6 @@ DO NOT specify your actual `apiKey.id` and `apiKey.secret` values in source code
 
 Only use this technique if the values are obtained at runtime using a configuration mechanism that is not hard-coded into source code or easily-visible configuration files.
 
-<!--
-{% docs note %}
-Only if the `Client` is configured using the static properties, the static calls to resources will run successfully. If the `Client` is directly instantiated (using the `ClientBuilder` or the `Client` constructor), the `Client` instance must be used to start interactions with Stormpath. The code samples will show how to interact with Stormpath using both options.
-{% enddocs %} -->
-
 <a class="anchor" name="high-level-overview"></a>
 ### High-level Overview
 
@@ -385,60 +380,6 @@ There is currently one type of searche that might be performed: a targeted [Attr
 {% docs note %}
 Currently, a search request must be targeted at resources of the same type. For example, a search can be performed across accounts or groups, but not both at the same time. Because the Stormpath REST API always represents one or more resources of the same type as a Collection Resource, a search is always sent to a Collection Resource endpoint.
 {% enddocs %}
-
-<!--
-<a class="anchor" name="search-filter"></a>
-#### Filter Search
-
-A filter search consists of specifying a search value on a Collection Resource, or a `q` option and a corresponding search value on a Collection Resource:
-
-    $collectionResource->search = 'searchValue';
-
-For example, to search across an application's accounts for any account that has a searchable attribute containing the text 'Joe':
-
-    $search = new \Stormpath\Resource\Search();
-    $search->filter = 'Joe';
-    $accounts->search = $search;
-
-Or simply:
-
-    $accounts = $application->accounts;
-    $accounts->search = 'Joe';
-
-Alternatively, you can use the collection getter options to specify the search:
-
-    $accounts = $application->getAccounts(array('q' => 'Joe'));
-
-Now you can loop through the collection resource and get the results according to the specified search:
-
-    foreach($accounts as $acc)
-    {
-        print $acc->givenName . ' ' . $account->surname;
-    }
-
-**Matching Logic**
-
-If the entered criteria, through a case-_insensitive_ comparison, exists within (or is equal to) any viewable attribute on an instance in the collection, that instance is included in the query results. Only instances visible to the current caller (owned by the caller's tenant), are returned in the query results.
-
-For example, consider the following query:
-
-    $accounts->search = 'Joe';
-
-This returns all accounts where:
-
-- Each account is owned by the caller's [tenant](#tenants)
-- The account `givenName` equals or contains 'joe' (case insensitive) OR
-- The account `surname` equals or contains 'joe' (case insensitive) OR
-- The account `email` equals or contains 'joe' (case insensitive) OR
-- ... etc ...
-
-In other words, each attribute comparison is similar to a 'like' operation in traditional RDBMS contexts. For example, if SQL was used to execute the query, it might look like this:
-
-    select * from my_tenant_accounts where
-        (lower(givenName) like '%joe%' OR
-         lower(surname) like '%joe%' OR
-         lower(email) like '%joe%' OR ... );
--->
 
 <a class="anchor" name="search-attribute"></a>
 #### Attribute Search
