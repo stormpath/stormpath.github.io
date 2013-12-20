@@ -608,43 +608,6 @@ You can request the `current` Tenant resource, and the Java SDK will automatical
 
     Tenant tenant = client.getCurrentTenant();
 
-<!-- TODO: re-enable after AM-1903 is complete:
-
-### Update a Tenant {#tenant-update}
-
-If you want to update one or more attribute of your `Tenant` resource, execute an HTTP `POST` request to the tenant URI.  Unspecified attribute are not changed. At least one attribute must be specified.
-
-**Optional Attributes**
-
-* [name](#Tname)
-
-**Example Request**
-
-    POST https://api.stormpath.com/v1/tenants/WpM9nyZ2TbaEzfbRvLk9KA
-
-    {
-      "name": "New Name"
-    }
-
-**Example Response**
-
-    HTTP/1.1 200 OK
-    Content-Type: application/json;charset=UTF-8
-
-    {
-      "href": "https://api.stormpath.com/v1/tenants/cJoiwcorTTmkDDBsf02AbA",
-      "name": "New Name",
-      "key": "my-existing-key",
-      "applications": {
-        "href": "https://api.stormpath.com/v1/tenants/cJoiwcorTTmkDDBsf02AbA/applications"
-      },
-      "directories": {
-        "href": "https://api.stormpath.com/v1/tenants/cJoiwcorTTmkDDBsf02AbA/directories"
-      }
-    }
-
--->
-
 <a class="anchor" name="tenant-applications"></a>
 ### Tenant Applications
 
@@ -932,33 +895,6 @@ If you don't have the application's URL, you can find it by [looking it up in th
 
     Application application = client.getResource(applicationHref, Application.class);
 
-
-<!-- 
-<a class="anchor" name="application-resources-expand"></a>
-#### Expandable Resources
-
-When retrieving an application, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion).
-
-The following `Application` attributes are expandable:
-
-* `tenant`
-* `accounts`
-* `groups`
-
-Also, because `accounts` and `groups` are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
-
-    $expansion = new \Stormpath\Resource\Expansion();
-    $expansion->addProperty('accounts', array('offset' => 0, 'limit' => 50))->addProperty('tenant');
-    $application = \Stormpath\Resource\Application::get($href, $expansion->toExpansionArray());
-
-Or
-    
-    $application = $client->
-                   dataStore->
-                   getResource($href, \Stormpath\Stormpath::APPLICATION, $expansion->toExpansionArray());
-
-See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
--->
 
 <a class="anchor" name="application-update"></a>
 ### Update an Application
@@ -1848,31 +1784,6 @@ Retrieve a directory by calling the `get` method on the `Directory` resource cla
 
     Directory directory = client.getResource(href, Directory.class);
 
-<!-- 
-<a class="anchor" name="directory-resources-expand"></a>
-#### Expandable Resources
-
-When retrieving a directory, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the expansion options.
-
-The following `Directory` attributes are expandable:
-
-* `accounts`
-* `groups`
-* `tenant`
-
-Also, because `accounts` and `groups` are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection. For example:
-
-    $expansion = new \Stormpath\Resource\Expansion();
-    $expansion->addProperty('groups', array('offset' => 0, 'limit' => 50))->
-                addProperty('accounts', array('offset' => 0, 'limit' => 50))->
-                addProperty('tenant');
-    $account = \Stormpath\Resource\Account::get($accountHref, $expansion->toExpansionArray());
-
-The result of a call to `$expansion->toExpansionArray()` will be the array `array('expand' => 'groups(offset:0,limit:10),accounts(offset:0,limit:50),tenant')`.
-
-See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
--->
-
 <a class="anchor" name="directory-update"></a>
 ### Update a Directory
 
@@ -2250,30 +2161,6 @@ A request via the `get` method of the Client data store, returns a representatio
 
     Group group = client.getResource(href, Group.class);
 
-<!--
-<a class="anchor" name="group-resources-expand"></a>
-#### Expandable Resources
-
-When retrieving a group, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the expansion options.
-
-The following `Group` attributes are expandable:
-
-* `tenant`
-* `directory`
-* `accounts`
-
-Also, because `accounts` is a [Collection Resources](#collections) itself, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
-
-    $expansion = new \Stormpath\Resource\Expansion();
-    $expansion->addProperty('tenant')->
-                addProperty('directory')->
-                addProperty('accounts', array('offset' => 0, 'limit' => 50));
-    $group = \Stormpath\Resource\Group::get($href, $expansion->toExpansionArray());
-
-The result of a call to `$expansion->toExpansionArray()` will be the array `array('expand' => 'tenant,directory,accounts(offset:0,limit:50)`.
-
-See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
--->
 
 <a class="anchor" name="group-update"></a>
 ### Update a Group
@@ -2756,38 +2643,6 @@ A request to the `get` method of the `Account` resource class, or to the Client 
 
 	String href = "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA";
     Account account = client.getResource(href, Account.class);
-
-<!--
-<a class="anchor" name="account-resources-expand"></a>
-#### Expandable Resources
-
-When retrieving an account, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the expansion options.
-
-The following `Account` attributes are expandable:
-
-* `tenant`
-* `directory`
-* `groups`
-* `groupMemberships`
-
-Also, because some of these are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
-
-    $expansion = new \Stormpath\Resource\Expansion();
-    $expansion->addProperty('tenant')->
-                addProperty('directory')->
-                addProperty('groups', array('offset' => 0, 'limit' => 50))->
-                addProperty('groupMemberships', array('offset' => 0, 'limit' => 50));
-
-    $account = \Stormpath\Resource\Account::get($href, $expansion->toExpansionArray());
-
-Using the Client data store:
-
-    $account = $client->dataStore->getResource($href,
-                                               \Stormpath\Stormpath::ACCOUNT,
-                                               $expansion->toExpansionArray());
-
-The result of a call to `$expansion->toExpansionArray()` will be the array `array('expand' => 'tenant,directory,groups(offset:0,limit:50),groupMemberships(offset:0,limit:50)'`.
--->
 
 See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
 
