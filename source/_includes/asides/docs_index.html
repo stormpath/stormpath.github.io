@@ -1,7 +1,19 @@
-<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
+{% comment %}
+  site.sp_docs_menu contains all menus from section sp_docs_menu in _config.yml.
+  first element is menu name, second is menu items array.
+{% endcomment %}
 
+<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
+  {% assign menu_was_added = false %}
   {% for lang in site.sp_docs_menu %}
-  	{% if page.lang == lang[0] %}
+        {% comment %}
+          We append menu if it related to the page and also append commmon menu.
+        {% endcomment %}
+  	{% if page.lang == lang[0] or (lang[0] == 'common' and lang[1] | size > 1) %}
+                {% if menu_was_added %}
+                       <div class="menu-divider"></div> 
+                {% endif %}
+                {% assign menu_was_added = true %}
 		<ul class="menu">
 		{% for lang_page in lang[1] %}
 			<li class="leaf{% if page.url contains lang_page.url %} active-trail{% endif %}">
@@ -13,10 +25,9 @@
 			{% if page.url contains lang_page.url %}
 				{{ content | split_docs_sections | render_docs_menu }}
 			{% endif %}
-			</li>	
+			</li>
 		{% endfor %}
 		</ul>
   	{% endif %}
   {% endfor %}
- 
 </div>
