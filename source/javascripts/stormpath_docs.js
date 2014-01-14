@@ -1,24 +1,13 @@
-;(function ($) {
+(function ($) {
+  var current_page = '';
+  var languages = [];  
   
   $(document).ready(function(e) {
-      var languages = typeof sp_docs_menu !== 'undefined' ? sp_docs_menu : {};
-      var parts = window.location.pathname.split('/');
-      var current_page = parts.slice(2);
+      // Initialize global variables.
+      languages = typeof sp_docs_menu !== 'undefined' ? sp_docs_menu : {};
+      current_page = window.location.pathname.split('/').slice(2);
       current_page = current_page.length ? current_page[0] : undefined;
       var $form = $('form.stormpath-docs-select-language');
-      function do_redirect(lang) {
-          if (current_page !== undefined && languages[lang].indexOf(current_page) >= 0) {
-            window.location.pathname = lang +'/'+ current_page;
-          }
-          else if (current_page !== undefined && languages[lang].indexOf('quickstart') >= 0) {
-            window.location.pathname = lang +'/quickstart';
-          }
-          else if (current_page !== undefined) {
-            window.location.pathname = lang +'/'+ languages[lang][0];
-          } else {
-            window.location.pathname = lang +'/quickstart';
-          }
-      }
       if ($form.length) {
         $form.find('select[name="language"]').change(function(e) {
           var lang = $('> option:selected', this).val();
@@ -34,18 +23,9 @@
             e.stopPropagation();
             return false;
           }
-        }); 
+        });
       }
-      $('form.stormpath-docs-select-lang input[type="submit"]').click(function(e) {
-        var lang = $(this).parents('form').find('select[name="language"] option:selected').val();
-        if (lang && lang in languages) {
-          do_redirect(lang);
-          e.preventDefault();
-          e.stopPropagation();
-          return false;
-        }
-      });
-
+      // Make language select "fancy".
       $('select.stormpath-fancy-select:not(.processed)').each(function() {
         var $fancy_select = new fancySelect(this);
         $(this).addClass('processed');
@@ -58,14 +38,43 @@
           });
         }
       });
+      // Hide all 3+ level menues. Active menu branch will be shown later on window.load
+      $('.block-stormpath-docs .menu .menu .menu').hide();
+      // For the front page.
       var max_height = 0;
       $('body.page-docs .center-wrapper .pane-block').each(function() {
         max_height = Math.max(max_height, $(this).height());
       });
-      $('body.page-docs .center-wrapper .pane-block').css('height', max_height);
+      $('body.page-docs .center-wrapper .pane-block').css('height', max_height);      
   });
-  
-  strormpath_docs_menu_map = function($anchors) {
+
+  /**
+   * Redirect browser to another language.
+   */
+  function do_redirect(lang) {
+    if (current_page !== undefined && languages[lang].indexOf(current_page) >= 0) {
+      window.location.pathname = lang +'/'+ current_page;
+    }
+    else if (current_page !== undefined && languages[lang].indexOf('quickstart') >= 0) {
+      window.location.pathname = lang +'/quickstart';
+    }
+    else if (current_page !== undefined) {
+      window.location.pathname = lang +'/'+ languages[lang][0];
+    } else {
+      window.location.pathname = lang +'/quickstart';
+    }
+  }
+
+  /**
+   *
+   */
+  strormpath_docs_menu_map = function($_anchors) {
+    $anchors = $_anchors.filter(function() {
+      // Fill menu map.
+      var id = this.hash.substring(1);
+      return (document.getElementById(id) != null);
+    });
+    
     var _this = this;
     this.current = null;
     this.current_branch = null;
@@ -96,10 +105,16 @@
         _this[_this.length - 2].end = _this[_this.length - 1].start;
       } 
     });
-    _this[_this.length - 1].end = Infinity;
+    if (_this.length > 0) {
+      _this[_this.length - 1].end = Infinity;
+    }
   };
-  strormpath_docs_menu_map.prototype = new Array();
   
+  strormpath_docs_menu_map.prototype = new Array();
+
+  /**
+   * Find element by id.
+   */
   strormpath_docs_menu_map.prototype.findById = function(id) {
     for (var key in this) {
       if (this.hasOwnProperty(key) && (parseInt(key) == key) && this[key].id === id) {
@@ -108,12 +123,19 @@
     }
     return undefined;
   }
+
+  /**
+   * Push old status to the history.
+   */
   strormpath_docs_menu_map.prototype.pushHistoryState = function(path) {
     if (typeof window.history.pushState === 'function') {
       history.pushState({}, '', path);
-    }  
+    }
   }
-  
+
+  /**
+   * Set new current item in the docs menu.
+   */
   strormpath_docs_menu_map.prototype.setCurrent = function(current) {
     var prev_item = this.current;
     if (this.current !== null) {
@@ -142,14 +164,13 @@
     $(this.current_branch).show();
     $(this.current_branch).height(); // Do not remove.
   }
+
+  /**
+   * Get currently selected branch.
+   */
   strormpath_docs_menu_map.prototype.getCurrentBranch = function() {
     return this.current_branch === null ? undefined : this.current_branch;
   }
-  
-  $(document).ready(function() {
-    // Hide all 3+ level menues. Active menu branch will be shown later on window.load
-    $('.block-stormpath-docs .menu .menu .menu').hide();
-  });
   
   $(window).load(function() {
     // Offset from the top of the content area to the header of current section.
@@ -207,6 +228,8 @@
     // User could already had scrolled content area until window.load triggered.
     $(content_area).trigger('scroll');
   });
+
+  // Fancy select functions.
 
   function fancySelect(select) {
     var _this = this;
