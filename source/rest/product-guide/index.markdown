@@ -1640,7 +1640,7 @@ When you create an application account, in addition to Stormpath's account attri
                  "customData": {
                      "rank": "Captain",
                      "birthDate": "2305-07-13",
-                     "birthPlace": "La Barre, France"
+                     "birthPlace": "La Barre, France",
                      "favoriteDrink": "Earl Grey tea"
                  }
              }' \
@@ -4237,7 +4237,7 @@ In addition to the Stormpath account attributes, you may also specify [your own 
                  "customData": {
                      "rank": "Captain",
                      "birthDate": "2305-07-13",
-                     "birthPlace": "La Barre, France"
+                     "birthPlace": "La Barre, France",
                      "favoriteDrink": "Earl Grey tea"
                  }
              }' \
@@ -5066,7 +5066,7 @@ However, it is often useful to populate custom data at the same time you create 
                "customData": {
                  "rank": "Captain",
                  "birthDate": "2305-07-13",
-                 "birthPlace": "La Barre, France"
+                 "birthPlace": "La Barre, France",
                  "favoriteDrink": "Earl Grey tea"
                }
              }' \
