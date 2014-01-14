@@ -7,7 +7,7 @@
       languages = typeof sp_docs_menu !== 'undefined' ? sp_docs_menu : {};
       current_page = window.location.pathname.split('/').slice(2);
       current_page = current_page.length ? current_page[0] : undefined;
-      var $form = $('form.stormpath-docs-select-lang');
+      var $form = $('form.stormpath-docs-select-language');
       if ($form.length) {
         $form.find('select[name="language"]').change(function(e) {
           var lang = $('> option:selected', this).val();
