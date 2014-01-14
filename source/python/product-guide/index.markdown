@@ -206,10 +206,10 @@ The core component concepts of the SDK are as follows:<br>
 
 * **Client** is the root entry point for SDK functionality and accessing other SDK components, such as the `DataStore`. A client is constructed with a Stormpath API key which is required to communicate with the Stormpath API server. After it is constructed, the client delegates to an internal DataStore to do most of its work.
 * **DataStore** is central to the Stormpath SDK. It is responsible for managing all Python `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on Python `resource` objects into REST requests to the Stormpath API server as necessary. It works between your application and the Stormpath API server.
-	* **HttpExecutor** is an internal infrastructure component used by the `DataStore` to execute HTTP requests (`GET`, `PUT`, `POST`, `DELETE`) as necessary. When the DataStore needs to send a Python `Resource` instance state to or query the server for resources, it delegates to the RequestExecutor to perform the actual HTTP requests. The Stormpath SDK default `HttpExecutor` implementation is `HttpExecutor` which uses the [Requests Http library](http://www.python-requests.org/) to execute the raw requests and read the raw responses.
-	* **Cache** is an internal infrastructure component used by the `DataStore` to access data and translate it into standard Python `resource` objects. The Cache fetches or saves `resource` data from or to its internal storage instead of the Stormpath server. The cache is configurable and can user different [caching mechanisms](#caching). This saves on REST API calls if the data is already available inside the cache. Each cached resource is represented as a `CacheEntry`.
-	* **Resources** are standard Python objects that have a 1-to-1 correlation with REST data resources in the Stormpath API server such as applications and directories. Applications directly use these `resource` objects for security needs, such as authenticating user accounts, finding application accounts, assigning accounts to groups, and resetting passwords.
-    * **ResourcesLists** are standard Python objects that have a 1-to-N correlation with REST data resources in the Stormpath API server such as lists of applications or directories. These lists can be used to access a particular resource belonging to that list and create additional resources like applications, directories, groups and accounts.
+    * **HttpExecutor** is an internal infrastructure component used by the `DataStore` to execute HTTP requests (`GET`, `PUT`, `POST`, `DELETE`) as necessary. When the DataStore needs to send a Python `Resource` instance state to or query the server for resources, it delegates to the RequestExecutor to perform the actual HTTP requests. The Stormpath SDK default `HttpExecutor` implementation is `HttpExecutor` which uses the [Requests Http library](http://www.python-requests.org/) to execute the raw requests and read the raw responses.
+    * **Cache** is an internal infrastructure component used by the `DataStore` to access data and translate it into standard Python `resource` objects. The Cache fetches or saves `resource` data from or to its internal storage instead of the Stormpath server. The cache is configurable and can user different [caching mechanisms](#caching). This saves on REST API calls if the data is already available inside the cache. Each cached resource is represented as a `CacheEntry`.
+    * **Resources** are standard Python objects that have a 1-to-1 correlation with REST data resources in the Stormpath API server such as applications and directories. Applications directly use these `resource` objects for security needs, such as authenticating user accounts, finding application accounts, assigning accounts to groups, and resetting passwords.
+    * **ResourcesLists** are standard Python objects that have a 1-to-N correlation with REST data resources in the Stormpath API server such as lists of applications or directories. These lists can be used to access a particular resource belonging to that list and create additional resources like applications, directories, groups and accounts. These are also called Collection Resources.
 
 <a class="anchor" name="resources-proxying"></a>
 ### Resources and Proxying
@@ -225,17 +225,17 @@ This retrieves the account at the specified `href` location using an HTTP `GET` 
 
 If you also want information about the `directory` owning that account, every account has a reference to the parent directory location in the JSON representation. For example:
 
-	{
-	  "givenName": "John",
-	  "surname": "Smith",
-	  ...
-	  "directory": {
-	      "href": "https://api.stormpath.com/v1/directories/DIR_UID_HERE"
-	  }
-	  ...
-	}
+    {
+      "givenName": "John",
+      "surname": "Smith",
+      ...
+      "directory": {
+          "href": "https://api.stormpath.com/v1/directories/DIR_UID_HERE"
+      }
+      ...
+    }
 
-Notice the JSON `directory` property is only a link (pointer) to the directory; it does not contain any of the directory properties. The JSON shows we should be able to reference the `directory` property, and then reference the `href` property, and do another lookup (pseudo code):
+Notice the JSON `directory` property is only a reference (pointer) to the directory; it does not contain any of the directory properties. The JSON shows we should be able to reference the `directory` property, and then reference the `href` property, and do another lookup (pseudo code):
 
     href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE'
     directory = client.directories.get(href)
@@ -244,7 +244,7 @@ This technique is cumbersome, verbose, and requires a lot of boilerplate code in
 
 The previous lookup becomes:
 
-	directory = account.directory
+    directory = account.directory
 
 If the directory already exists in memory because the `DataStore` has previously loaded it, the directory is immediately returned. However, if the directory is not present, the directory `href` is used to return the directory properties (the immediate data loaded) automatically for you. This technique is known as *lazy loading* which allows you to traverse entire object graphs automatically without requiring constant knowledge of `href` URLs.
 
@@ -365,7 +365,7 @@ Each `orderStatement` is defined as follows:
 
 where:
 
-- `sortableAttributeName` is the name of a sortable attribute of a resource in the `items` array. Sortable attributes are primitives (non-complex and non-link) attributes, such as integers and strings.
+- `sortableAttributeName` is the name of a sortable attribute of a resource in the `items` array. Sortable attributes are primitives (non-complex and non-reference) attributes, such as integers and strings.
 - `optionalAscendingOrDescendingStatement` is composed of the following:
     - a space character followed by:
     - the token `asc` (ascending) or `desc` (descending)
@@ -439,7 +439,7 @@ In other words, each attribute comparison is similar to a 'like' operation in tr
 Attribute-based search is the ability to find resources based on full and partial matching of specific individual resource attributes:
 
     CollectionResource.search({'anAttribute': 'someValue',
-                                'anotherAttribute':'anotherValue'});
+                                'anotherAttribute':'anotherValue'})
 
 For example, to search an application's accounts for an account with a specific `email`:
 
@@ -492,7 +492,7 @@ For resources with a `status` attribute, status query values **must be the exact
 <a class="anchor" name="links-expansion"></a>
 ### Link Expansion
 
-When requesting a resource you might want the Stormpath API server to return not only that resource, but also one or more of its linked resources. Link expansion allows you to retrieve related resources in a single request to the server instead of having to issue multiple separate requests.
+When requesting a resource you might want the Stormpath API server to return not only that resource, but also one or more of its referenced resources. Link expansion allows you to retrieve related resources in a single request to the server instead of having to issue multiple separate requests.
 
 #### `expand` Query Parameter
 
@@ -552,30 +552,30 @@ In the Python SDK you can do this the following way:
 
     from stormpath.resource import Expansion
 
-    expansion = Expansion();
-    expansion.add_property('directory');
-    href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_ID';
-    account = client.accounts.get(href, expansion);
+    expansion = Expansion()
+    expansion.add_property('directory')
+    href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_ID'
+    account = client.accounts.get(href, expansion)
 
 After this request, when you call the `directory` property of the `account` instance, the SDK won't have to call the server because the `directory` would have already been loaded.
 
 #### Expandable Attributes
 
-Most link attributes are expandable. Check the resource's specific documentation to see which of its link attributes are expandable.
+Most resource attributes are expandable. Check the resource's specific documentation to see which of its resource attributes are expandable.
 
 #### Expansion Depth Limit
 
-It is currently only possible to expand a resource's immediate links. It is not currently possible to expand links of links.
+It is currently only possible to expand a resource's immediate references. It is not currently possible to expand references of references.
 
 For example, it would not be possible to return an account with its directory expanded and also the directory's groups expanded as well. Link expansion is currently only possible one level 'deep'.
 
 If you have a critical need of multi-depth expansion, please contact us at <support@stormpath.com> and submit a feature request.
 
-#### Expanding Multiple Links
+#### Expanding Multiple Resources
 
-You can specify more than one link attribute by specifying a list of attribute names to expand.
+You can specify more than one resource attribute by specifying a list of attribute names to expand.
 
-For example, to expand the example account's `directory` and `tenant` links, execute the following request:
+For example, to expand the example account's `directory` and `tenant` resources, execute the following request:
 
     from stormpath.resource import Expansion
 
@@ -586,19 +586,19 @@ For example, to expand the example account's `directory` and `tenant` links, exe
 
 After this request, when you call the `directory` or the `tenant` property of the `account` instance, the SDK won't have to call the server because those properties would have already been loaded.
 
-#### Expanding Collection Links
+#### Expanding Collection Resources
 
-It is possible to expand links to Collection Resources as well.  You can additionally provide pagination parameters to control the paged output of the expanded collection.
+It is possible to expand Collection Resources as well.  You can additionally provide pagination parameters to control the paged output of the expanded collection.
 
 For example, to expand the above account's groups (starting at the first group - index 0) and limiting to 10 results total, you can specify the `groups` attribute name followed by `offset` and/or `limit` parameters with their corresponding values. For example:
 
-    from stormpath.resource.base import Expansion
+    from stormpath.resource import Expansion
 
     expansion = Expansion('directory')
     href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_ID'
     expansion.add_property('groups', limit=10)
 
-    account = client.accounts.get(href, expansion);
+    account = client.accounts.get(href, expansion)
 
 After this request, when you call the `groups` property of the `account` instance, the SDK won't have to call the server because the `groups` collection resource would have already been loaded.
 
@@ -611,7 +611,7 @@ Stormpath is a [multi-tenant](http://en.wikipedia.org/wiki/Multitenancy) softwar
 
 It might help to think of a tenant as a Stormpath customer.  As a Stormpath tenant (customer), you own your `Tenant` resource and everything in it - applications, directories, accounts, groups, and so on.
 
-In the Stormpath REST API specifically, your `Tenant` resource can be thought of as your global starting point.  You can access everything in your Tenant space by accessing your Tenant resource first and then interacting with its other linked resources (applications collection, directories collection, etc).
+In the Stormpath REST API specifically, your `Tenant` resource can be thought of as your global starting point.  You can access everything in your Tenant space by accessing your Tenant resource first and then interacting with its other referenced resources (applications collection, directories collection, etc).
 
 <a class="anchor" name="tenant-resource"></a>
 ### Tenant Resource
@@ -629,8 +629,8 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="tenant-resource-href"></a>`href` | The tenant resource's fully qualified URL. | String | <span>--</span>
 <a class="anchor" name="tenant-resource-name"></a>`name` | The name of the tenant. Unique across all tenants. | String | 1 < N <= 255 characters
 <a class="anchor" name="tenant-resource-key"></a>`key` | Human readable tenant key. Unique across all tenants. | String | 1 < N <= 63 characters, no whitespace, lower-case a-z and dash '-' characters only, cannot start or end with a dash '-' character.
-<a class="anchor" name="tenant-resource-applications"></a>`applications` | A link to the tenant's applications. | link | <span>--</span>
-<a class="anchor" name="tenant-resource-directories"></a>`directories` | A link to the tenant's directories. | link | <span>--</span>
+<a class="anchor" name="tenant-resource-applications"></a>`applications` | Tenant's applications. | CollectionResource | <span>--</span>
+<a class="anchor" name="tenant-resource-directories"></a>`directories` | Tenant's directories. | CollectionResource | <span>--</span>
 
 For Tenants, you can:
 
@@ -824,15 +824,15 @@ Attribute | Description | Type | Valid Value
 `href` | The application's fully qualified URL. | String | <span>--</span>
 <a class="anchor" name="application-name"></a>`name` | The name of the application.  Must be unique across all applications within a [tenant](#tenants). | String | 1 <= N <= 255 characters. Unique within a tenant
 <a class="anchor" name="application-description"></a>`description` | A description of the application. For example, providing the application's homepage URL might be helpful. | String | 0 <= N <= 4000 chars
-<a class="anchor" name="application-status"></a>`status` | `enabled` applications allow accounts to login. `disabled` applications prevent accounts from logging in.  Newly created applications are `enabled` by default. | enum | `enabled`, `disabled`
-<a class="anchor" name="application-tenant"></a>`tenant` | A link to the tenant that owns the application. | link | <span>--</span>
-<a class="anchor" name="application-passwordResetTokens"></a>`password_reset_tokens` | A link to the application's password reset tokens collection, used in [password reset workflows](#application-password-reset). | link | <span>--</span>
-<a class="anchor" name="application-loginAttempts"></a>`login_attempts` | A link to to the application's login attempts collection.  When an account [attempts to login to an application](#workflow-login-attempt), the login attempt is submitted to this linked resource. | link | <span>--</span>
-<a class="anchor" name="application-accounts-collection"></a>`accounts` | A link to all accounts that may login to the application.  This is an aggregate view of all accounts in the application's [assigned account stores](#account-store-mappings). | link | <span>--</span>
-<a class="anchor" name="application-groups-attrib"></a>`groups` | A link to all groups that are accessible to the application for authorization (access control) needs.  This is an aggregate view of all groups in the application's [assigned account stores](#account-store-mappings). | collection resource | <span>--</span>
-<a class="anchor" name="application-accountStoreMappings"></a>`account_store_mappings` | A link to the collection of all [account store mappings](#account-store-mappings) that represent the application.  The accounts and groups within the mapped account stores are obtainable by the `accounts` and `groups` links respectively. | link | <span>--</span>
-<a class="anchor" name="application-defaultAccountStoreMapping"></a>`default_account_store_mapping` | A link to the account store mapping that reflects the [default account store](#account-store-mapping-default-account-store) where the application will store newly created accounts.  (A request to the `create` method will result in storing the new account in the default account store). A `None` value disables the application from directly creating new accounts. | link | `None` or resource
-<a class="anchor" name="application-defaultGroupStoreMapping"></a>`default_group_store_mapping` | A link to the account store mapping that reflects the [default group store](#account-store-mapping-default-group-store) where the application will store newly created groups.  (A request to the `create` method will result in storing the new group in the default group store). A `None` value disables the application from directly creating new groups. | link | `None` or resource
+<a class="anchor" name="application-status"></a>`status` | `enabled` applications allow accounts to login. `disabled` applications prevent accounts from logging in.  Newly created applications are `enabled` by default. | String | `enabled`, `disabled`
+<a class="anchor" name="application-tenant"></a>`tenant` | The tenant that owns the application. | Resource | <span>--</span>
+<a class="anchor" name="application-passwordResetTokens"></a>`password_reset_tokens` | The application's password reset tokens collection, used in [password reset workflows](#application-password-reset). | CollectionResource | <span>--</span>
+<a class="anchor" name="application-loginAttempts"></a>`login_attempts` | The application's login attempts collection.  When an account [attempts to login to an application](#workflow-login-attempt), the login attempt is submitted to this referenced resource. | CollectionResource | <span>--</span>
+<a class="anchor" name="application-accounts-collection"></a>`accounts` | All accounts that may login to the application.  This is an aggregate view of all accounts in the application's [assigned account stores](#account-store-mappings). | CollectionResource | <span>--</span>
+<a class="anchor" name="application-groups-attrib"></a>`groups` | All groups that are accessible to the application for authorization (access control) needs.  This is an aggregate view of all groups in the application's [assigned account stores](#account-store-mappings). | CollectionResource | <span>--</span>
+<a class="anchor" name="application-accountStoreMappings"></a>`account_store_mappings` | The collection of all [account store mappings](#account-store-mappings) that represent the application.  The accounts and groups within the mapped account stores are obtainable by the `accounts` and `groups` resources respectively. | CollectionResource | <span>--</span>
+<a class="anchor" name="application-defaultAccountStoreMapping"></a>`default_account_store_mapping` | The account store mapping that reflects the [default account store](#account-store-mapping-default-account-store) where the application will store newly created accounts.  (A request to the `create` method will result in storing the new account in the default account store). A `None` value disables the application from directly creating new accounts. | Resource | `None` or Resource
+<a class="anchor" name="application-defaultGroupStoreMapping"></a>`default_group_store_mapping` | The account store mapping that reflects the [default group store](#account-store-mapping-default-group-store) where the application will store newly created groups.  (A request to the `create` method will result in storing the new group in the default group store). A `None` value disables the application from directly creating new groups. | Resource | `None` or Resource
 
 For Applications, you can:
 
@@ -956,7 +956,7 @@ If you don't have the application's URL, you can find it by [looking it up in th
 <a class="anchor" name="application-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving an application, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion).
+When retrieving an application, you can also retrieve one or more of its referenced resources by [expanding them in-line](#links-expansion).
 
 The following `Application` attributes are expandable:
 
@@ -970,7 +970,7 @@ Also, because `accounts` and `groups` are [Collection Resources](#collections) t
     expansion.add_property('accounts', offset=0, limit=50).add_property('tenant')
     application = client.applications.get(href, expansion)
 
-See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding resource attributes.
 
 <a class="anchor" name="application-update"></a>
 ### Update an Application
@@ -1193,7 +1193,7 @@ The `send_password_reset_email` method of an application instance must be called
 
 **Example Request**
 
-    account = application.send_password_reset_email('john.smith@example.com');
+    account = application.send_password_reset_email('john.smith@example.com')
 
 A successfully returned account by this request indicates that a password reset email will be sent as soon as possible to the email specified.
 
@@ -1216,7 +1216,7 @@ Retrieving a token resource successfully using a call to the `verify_password_re
 
 **Example Request**
 
-    account = application.verify_password_reset_token('TOKEN');
+    account = application.verify_password_reset_token('TOKEN')
 
 If the password reset token is invalid - it never existed or has expired - a `404 Not Found` response is returned.
 
@@ -1413,10 +1413,10 @@ An individual `accountStoreMapping` resource may be accessed via its Resource UR
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `href` | The account store mapping resource's fully qualified location URI. | String | <span>--</span>
-<a id="account-store-application"></a>`application` | A link to the mapping's Application. Required. | link | <span>--</span>
-<a id="account-store-accountStore"></a>`account_store` | A link to the mapping's account store (either a Group or Directory) containing accounts that may login to the `application`.  Required. | link | <span>--</span>
+<a id="account-store-application"></a>`application` | The mapping's Application. Required. | resource | <span>--</span>
+<a id="account-store-accountStore"></a>`account_store` | The mapping's account store (either a Group or Directory) containing accounts that may login to the `application`.  Required. | resource | <span>--</span>
 <a id="list-index"></a>`list_index` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `list_index` of `0` will be consulted first (has the highest priority), followed the account store at `list_index` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `list_index` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size
-<a id="account-store-mapping-resource-is-default-account-store"></a>`is_default_account_store` | A `True` value indicates that new accounts [created by the application](#application-account-register) will be automatically saved to the mapping's `accountStore`. A `False` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
+<a id="account-store-mapping-resource-is-default-account-store"></a>`is_default_account_store` | A `True` value indicates that new accounts [created by the application](#application-account-register) will be automatically saved to the mapping's `accountStore`. A `False` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `True`,`False`
 <a id="account-store-mapping-resource-is-default-group-store"></a>`is_default_group_store` | A `True` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `False` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `True` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `True`,`False`
 
 For Account Store Mappings, you may:
@@ -1490,14 +1490,14 @@ If you don't have the account store mapping's `href`, you can find it in the [ap
 <a class="anchor" name="account-store-mapping-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving an Account Store Mapping, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the expansion options.
+When retrieving an Account Store Mapping, you can also retrieve one or more of its referenced resources by [expanding them in-line](#links-expansion) using the expansion options.
 
 The following `AccountStoreMapping` attributes are expandable:
 
 * `account_store`
 * `application`
 
-See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding resource attributes.
 
 <a class="anchor" name="account-store-mapping-update"></a>
 ### Update An Account Store Mapping
@@ -1667,10 +1667,10 @@ Attribute | Description | Type | Valid Value
 `href` | The resource fully qualified location URI | String | <span>--</span>
 <a id="directory-resource-name"></a>`name` | Name of the directory. Must be unique within a [tenant](#tenants). | String | 1 < N <= 255 characters
 <a id="directory-resource-description"></a>`description` | The description of the directory. | String | 0 < N <= 1000 characters
-<a id="directory-resource-status"></a>`status` | Enabled directories can be used as account stores for applications. Disabled directories cannot be used for login. | Enum | `enabled`,`disabled`
-<a class="anchor" name="directory-resource-accounts"></a>`accounts` | A link to the accounts owned by the directory. | Link | <span>--</span>
-<a class="anchor" name="directory-resource-groups"></a>`groups` | A link to the groups owned by the directory. | Link | <span>--</span>
-<a class="anchor" name="directory-resource-tenant"></a>`tenant` | A link to the owning tenant. | Link | <span>--</span>
+<a id="directory-resource-status"></a>`status` | Enabled directories can be used as account stores for applications. Disabled directories cannot be used for login. | String | `enabled`,`disabled`
+<a class="anchor" name="directory-resource-accounts"></a>`accounts` | The accounts owned by the directory. | CollectionResource | <span>--</span>
+<a class="anchor" name="directory-resource-groups"></a>`groups` | The groups owned by the directory. | CollectionResource | <span>--</span>
+<a class="anchor" name="directory-resource-tenant"></a>`tenant` | The owning tenant. | Resource | <span>--</span>
 
 Within Stormpath, there are two types of directories you can implement:
 
@@ -1824,7 +1824,7 @@ Retrieve a directory by calling the `get` method on the Client, and passing the 
 <a class="anchor" name="directory-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving a directory, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the expansion options.
+When retrieving a directory, you can also retrieve one or more of its referenced resources by [expanding them in-line](#links-expansion) using the expansion options.
 
 The following `Directory` attributes are expandable:
 
@@ -1839,7 +1839,7 @@ Also, because `accounts` and `groups` are [Collection Resources](#collections) t
     directory = directories.get(href, expansion)
 
 
-See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding resource attributes.
 
 <a class="anchor" name="directory-update"></a>
 ### Update a Directory
@@ -2112,10 +2112,10 @@ Attribute | Description | Type | Valid Value
 `href` | The resource fully qualified location URI | String | <span>--</span>
 <a id="group-resource-name"></a>`name` | The name of the group. Must be unique within a directory. | String | 1 < N <= 255 characters
 <a id="group-resource-description"></a>`description` | The description of the group. | String | 1 < N <= 1000 characters
-<a id="group-resource-status"></a>`status` | Enabled groups are able to authenticate against an application. Disabled groups cannot authenticate against an application. | Enum  |`enabled`,`disabled`
-<a class="anchor" name="group-resource-tenant"></a>`tenant` | The tenant that owns the directory containing this group. | Link | <span>--</span>
-<a class="anchor" name="directory-resource-directory"></a>`directory` | A link to the directory resource that the group belongs to. | Link | <span>--</span>
-<a class="anchor" name="directory-resource-accounts"></a>`accounts` | A link to the accounts that are contained within this group. | Link | <span>--</span>
+<a id="group-resource-status"></a>`status` | Enabled groups are able to authenticate against an application. Disabled groups cannot authenticate against an application. | String  |`enabled`,`disabled`
+<a class="anchor" name="group-resource-tenant"></a>`tenant` | The tenant that owns the directory containing this group. | Resource | <span>--</span>
+<a class="anchor" name="directory-resource-directory"></a>`directory` | The directory resource that the group belongs to. | Resource | <span>--</span>
+<a class="anchor" name="directory-resource-accounts"></a>`accounts` | The accounts that are contained within this group. | CollectionResource | <span>--</span>
 
 With groups, you can:
 
@@ -2192,7 +2192,7 @@ A request to the `get` method of the Client, returns a representation of a `grou
 <a class="anchor" name="group-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving a group, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the expansion options.
+When retrieving a group, you can also retrieve one or more of its referenced resources by [expanding them in-line](#links-expansion) using the expansion options.
 
 The following `Group` attributes are expandable:
 
@@ -2206,7 +2206,7 @@ Also, because `accounts` is a [Collection Resources](#collections) itself, you c
     expansion.add_property('tenant').add_property('directory').add_property('accounts', offset=0, limit=50)
     group = client.groups.get(href, expansion)
 
-See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding resource attributes.
 
 <a class="anchor" name="group-update"></a>
 ### Update a Group
@@ -2276,7 +2276,7 @@ The application groups is a [Collection Resource](#collections) representing all
 
     application.groups
 
-HTTP GET returns a paginated list of links for groups accessible to an application.
+HTTP GET returns a paginated list of groups accessible to an application.
 
 **Example request:**
 
@@ -2290,7 +2290,7 @@ The account `groups` resource is a [Collection Resource](#collections) represent
 
     account.groups
 
-The request returns a paginated list of links for groups for which an account is a member.
+The request returns a paginated list of groups for which an account is a member.
 
 **Example Request**
 
@@ -2304,7 +2304,7 @@ The directory `groups` resource is a [Collection Resource](#collections) represe
 
     directory.groups
 
-The request returns a paginated list of links for groups that belong to this directory.
+The request returns a paginated list of groups that belong to this directory.
 
 **Example Request**
 
@@ -2338,7 +2338,7 @@ The Group `accounts` Collection for a `Group` Resource represents all accounts t
 
     group.accounts
 
-The request returns a paginated list of links for accounts that are members of a specific group.
+The request returns a paginated list of accounts that are members of a specific group.
 
 **Example Request**
 
@@ -2418,8 +2418,8 @@ A Group Membership resource represents the link between an [account](#accounts) 
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 <a class="anchor" name="group-membership-href"></a>`href` | The resource fully qualified location URI. | String | —
-<a class="anchor" name="group-membership-account"></a>`account` | A link to the account of the group membership. | Link | —
-<a class="anchor" name="group-membership-group"></a>`group` | A link to the group of the group membership. | Link | —
+<a class="anchor" name="group-membership-account"></a>`account` | The account of the group membership. | Resource | —
+<a class="anchor" name="group-membership-group"></a>`group` | The group of the group membership. | Resource | —
 
 For group memberships, you can:
 
@@ -2479,14 +2479,14 @@ A request returns a representation of a `groupMembership` resource that includes
 <a class="anchor" name="group-membership-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving an application, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the expansion options.
+When retrieving an application, you can also retrieve one or more of its referenced resources by [expanding them in-line](#links-expansion) using the expansion options.
 
 The following `Application` attributes are expandable:
 
 * `account`
 * `group`
 
-See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding resource attributes.
 
 <a class="anchor" name="group-membership-delete"></a>
 ### Delete a Group Membership
@@ -2581,12 +2581,12 @@ Attribute | Description | Type | Valid Value
 <a id="givenName"></a>`given_name` | The given (first) name for the account holder. | String | 1 < N <= 255 characters
 <a id="middleName"></a>`middle_name` | The middle (second) name for the account holder. | String | 1 < N <= 255 characters
 <a id="surname"></a>`surname` | The surname (last name) for the account holder. | String | 1 < N <= 255 characters
-<a id="status"></a>`status` | `enabled` accounts are able to login to their assigned [applications](#Applications), `disabled` accounts may not login to applications, `unverified` accounts are disabled and have not verified their email address. | Enum | `enabled`,`disabled`,`unverified`
-<a id="account-resource-groups"></a>`groups` | A link to the [groups](#Groups) that the account belongs to. | Link | <span>--</span>
-<a id="account-resource-group-memberships"></a>`group_memberships` | A link to the group memberships that the account belongs to. | Link | <span>--</span>
-<a id="account-resource-directory"></a>`directory` | A link to the account's directory. | Link | <span>--</span>
-<a id="account-resource-tenant"></a>`tenant` | A link to the tenant that owns the account's directory. | Link | <span>--</span>
-<a id="account-resource-emailVerificationToken"></a>`email_verification_token` | A link to the account's email verification token.  This will only be set if the account needs to be verified. | Link | <span>--</span>
+<a id="status"></a>`status` | `enabled` accounts are able to login to their assigned [applications](#Applications), `disabled` accounts may not login to applications, `unverified` accounts are disabled and have not verified their email address. | String | `enabled`,`disabled`,`unverified`
+<a id="account-resource-groups"></a>`groups` | The [groups](#Groups) that the account belongs to. | CollectionResource | <span>--</span>
+<a id="account-resource-group-memberships"></a>`group_memberships` | The group memberships that the account belongs to. | CollectionResource | <span>--</span>
+<a id="account-resource-directory"></a>`directory` | The account's directory. | Resource | <span>--</span>
+<a id="account-resource-tenant"></a>`tenant` | The tenant that owns the account's directory. | CollectionResource | <span>--</span>
+<a id="account-resource-emailVerificationToken"></a>`email_verification_token` | The account's email verification token.  This will only be set if the account needs to be verified. | Resource | <span>--</span>
 
 For accounts, you can:
 
@@ -2681,7 +2681,7 @@ A request to the `get` method of the `Accounts` collections resource class, retu
 <a class="anchor" name="account-resources-expand"></a>
 #### Expandable Resources
 
-When retrieving an account, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the expansion options.
+When retrieving an account, you can also retrieve one or more of its referenced resources by [expanding them in-line](#links-expansion) using the expansion options.
 
 The following `Account` attributes are expandable:
 
@@ -2699,7 +2699,7 @@ Also, because some of these are [Collection Resources](#collections) themselves,
 
     account = client.accounts.get(href, expansion)
 
-See the [Link Expansion](#links-expansion) section for more information on expanding link attributes.
+See the [Link Expansion](#links-expansion) section for more information on expanding resource attributes.
 
 <a class="anchor" name="account-update"></a>
 ### Update an Account
@@ -2816,7 +2816,7 @@ An application's `accounts` is a [Collection Resource](#collections) that repres
 <a class="anchor" name="accounts-application-accounts-list"></a>
 #### List Application Accounts
 
-A request returns a paginated list of links for accounts within a specified application.
+A request returns a paginated list of accounts within a specified application.
 
 Example request:
 
@@ -2996,7 +2996,7 @@ The account's `groups` resource is a [Collection Resource](#collections) which r
 <a class="anchor" name="list-account-groups"></a>
 #### List Account Groups
 
-A request returns a Collection Resource containing links for all [groups](#groups) where a specific account is a member.
+A request returns a Collection Resource containing all [groups](#groups) where a specific account is a member.
 
 **Example Request**
 
