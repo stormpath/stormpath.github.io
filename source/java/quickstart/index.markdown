@@ -1,7 +1,7 @@
 ---
 layout: doc
 lang: java
-title: Stormpath Java Product Guide
+title: Stormpath Java Quickstart Guide
 ---
 
 Welcome to Stormpath's Java SDK Quickstart!
