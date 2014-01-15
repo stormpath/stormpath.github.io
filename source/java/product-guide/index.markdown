@@ -829,7 +829,7 @@ Account store association however is mostly used for more complex applications. 
 <a class="anchor" name="application-create-with-directory"></a>
 #### Create an Application and Directory
 
-The above Create Application POST request assumes you will later assign [account stores](#account-store-mappings) to the application so accounts may log in to the application.  This means that, by default, no one can login to a newly created application, nor can the application create new accounts or new groups directly.  For this additional functionality, one or more account stores must be associated with the application.
+The above Create Application request assumes you will later assign [account stores](#account-store-mappings) to the application so accounts may log in to the application.  This means that, by default, no one can login to a newly created application, nor can the application create new accounts or new groups directly.  For this additional functionality, one or more account stores must be associated with the application.
 
 For many use cases, that is unnecessary work.  If you want to associate the Application with a new Directory automatically so you can start creating accounts and groups for the application immediately (without having to map other [account stores](#account-store-mappings), you can use the `createDirectory` option.
 
@@ -991,6 +991,7 @@ However, many applications do not need this feature.  The most common use case i
 Applications additionally support the following account-specific functionality:
 
 * [Register A New Account](#application-account-register)
+    * and optionally specify your own [account-specific custom data](#application-account-register-with-customData)
 * [Verify An Account's Email Address](#application-verify-email)
 * [Log In (Authenticate) an Account](#application-account-authc)
 * [Reset An Account's Password](#application-password-reset)
@@ -1024,6 +1025,28 @@ The `createAccount` method is a convenience: when you create a new `account` res
 For most applications that have only a single assigned directory, the account is persisted in that directory immediately - the application developer does not even really need to know that Stormpath automates this.
 
 However, applications that map more than one directory or group to define their account base have the option of specifying _which_ of those mapped locations should receive newly created accounts.  You must choose a default [new account location](#account-store-mapping-default-account-store).
+
+<a class="anchor" name="application-account-register-with-customData"></a>
+##### Register a New Application Account with your own Custom Data
+
+When you create an application account, in addition to Stormpath's account attributes, you may also specify [your own custom data](#custom-data) by including a `CustomData` object:
+
+	Account account = client.instantiate(Account.class);
+    account.setUsername("jlpicard");
+    account.setEmail("capt@enterprise.com");
+    account.setGivenName("Jean-Luc");
+    account.setMiddleName("");
+    account.setSurname("Picard");
+    account.setPassword("uGhd%a8Kl!");
+    account.setStatus(AccountStatus.ENABLED);
+    CustomData customData = account.getCustomData();
+    customData.put("rank", "Captain");
+    customData.put("birthDate", "2305-07-13");
+    customData.put("birthPlace", "La Barre, France");
+    customData.put("favoriteDrink", "Earl Grey tea");
+    application.createAccount(account);
+
+Once created, you can further modify the custom data - delete it, add and remove attributes, etc as necessary.  See the [custom data](#custom-data) section for more information and customData requirements/restrictions.
 
 <a class="anchor" name="application-welcome-email"></a>
 ##### Send a Welcome Email
@@ -2173,6 +2196,13 @@ Use the `save` method when you want to change one or more specific attributes of
 * [description](#group-resource-description)
 * [status](#group-resource-status)
 
+Here are some account update examples:
+
+* [Simple Update Group Example](#account-update-simple)
+* [Enable a Group](#group-enable)
+* [Disable a Group](#group-disable)
+* [Update a Group and its Custom Data simultaneously](#update-custom-data-embedded)
+
 **Example Request**
 
 	group.setDescription("Sea Voyagers");
@@ -2230,7 +2260,7 @@ The application groups is a [Collection Resource](#collections) representing all
 
 	application.getGroups();
 
-HTTP GET returns a paginated list of links for groups accessible to an application.
+It returns a paginated list of links for groups accessible to an application.
 
 **Example request**
 
@@ -2261,7 +2291,7 @@ The directory `groups` resource is a [Collection Resource](#collections) represe
 
     directory.getGroups();
 
-HTTP GET returns a paginated list of links for groups for which an account is a member.
+It returns a paginated list of links for groups for which an account is a member.
 
 **Example Request**
 
@@ -2675,7 +2705,7 @@ Most importantly, Stormpath does not persist nor relay plaintext passwords in an
 On the client side, then, you do not need to worry about salting or storing passwords at any point; you need only pass them to Stormpath for hashing, salting, and persisting with the appropriate HTTPS API call (e.g., [Create An Account](#account-create) or [Update An Account](#account-update)).
 {% enddocs %}
 
-<a class="anchor" name="UpdateAccountName"></a>
+<a class="anchor" name="UpdateAccountName"></a><a class="anchor" name="account-update-simple"></a>
 **Example Update Request**
 
 	account.setSurname("jlpicard");
@@ -3012,6 +3042,183 @@ A request returns a Collection Resource containing the group memberships to whic
 #### Working With Account Group Memberships
 
 Groups Membership resources support the full suite of CRUD commands and other interactions. Please see the [Group Memberships section](#group-memberships) for more information.
+
+***
+## Custom Data
+
+Account and Group resources have predefined fields that are useful to many applications, but you are likely to have your own custom data that you need to associate with an account or group as well.
+
+For this reason, both the account and group resources support a linked `CustomData` resource that you can use for your own needs.
+
+The `CustomData` resource is a schema-less JSON object (aka 'map', 'associative array', or 'dictionary') that allows you to specify whatever name/value pairs you wish.
+
+The `CustomData` resource is always conected to an account or group and you can always reach it  by calling the `getCustomData()` method on the account or group resource instance:
+
+<a class="anchor" name="account-custom-data-resource-uri"></a>
+**Account Custom Data Resource URI**
+
+	account.getCustomData().getHref()
+
+<a class="anchor" name="group-custom-data-resource-uri"></a>
+**Group Custom Data Resource URI**
+
+    group.getCustomData().getHref()
+
+In addition to your custom name/value pairs, a `CustomData` resource will always contain 3 reserved read-only fields:
+
+- `href`: The fully qualified location of the custom data resource
+- `createdAt`: the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string, for example `2017-04-01T14:35:16.235Z`
+- `modifiedAt`: the UTC timestamp with millisecond precision of when the resource was last updated in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string.
+
+You can store an unlimited number of additional name/value pairs in the `CustomData` resource, with the following restrictions:
+
+* The total storage size of a single `CustomData` resource cannot exceed 10 MB (megabytes).  **The `href`, `createdAt` and `modifiedAt` field names and values do not count against your resource size quota.**
+* Field names must:
+    * be 1 or more characters long, but less than or equal to 255 characters long (1 <= N <= 255).
+    * contain only alphanumeric characters `0-9A-Za-z`, underscores `_` or dashes `-` but cannot start with a dash `-`.
+    * may not equal any of the following reserved names: `href`, `createdAt`, `modifiedAt`, `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta`.
+
+{% docs note %}
+While the `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta` fields are not returned in the response today, they might be used in the future.  As is the case with all JSON use cases, ensure your REST client will not break if it encounters one of these (or other fields it does not recognize) at some time in the future.
+{% enddocs %}
+
+For Custom Data, you can:
+
+* [Create Custom Data](#create-custom-data)
+* [Retrieve Custom Data](#retrieve-custom-data)
+* [Update Custom Data](#update-custom-data)
+* [Delete All Custom Data](#update-custom-data)
+* [Delete a single Custom Data field](#delete-custom-data-field)
+
+<a class="anchor" name="create-custom-data"></a>
+### Create Custom Data
+
+Whenever you create an account or a group, an empty `CustomData` resource is created for that account or group automatically - you do not need to explicitly execute a request to create it.
+
+However, it is often useful to populate custom data at the same time you create an account or group. You can do this by embedding the `customData` directly in the account or group resource. For example:
+
+**Example Create Account with Custom Data**
+
+	Account account = client.instantiate(Account.class);
+    account.setUsername("jlpicard");
+    account.setEmail("capt@enterprise.com");
+    account.setGivenName("Jean-Luc");
+    account.setMiddleName("");
+    account.setSurname("Picard");
+    account.setPassword("uGhd%a8Kl!");
+    account.setStatus(AccountStatus.ENABLED);
+    CustomData customData = account.getCustomData();
+    customData.put("rank", "Captain");
+    customData.put("birthDate", "2305-07-13");
+    customData.put("favoriteDrink", "favoriteDrink");
+    directory.createAccount(account);
+
+**Example Create Group with Custom Data**
+
+	Group group = client.instantiate(Group.class);
+    group.setName("Starfleet Officers");
+    CustomData customData = group.getCustomData();
+    customData.put("headquarters", "San Francisco, CA");
+    directory.createGroup(group);
+
+<a class="anchor" name="retrieve-custom-data"></a>
+### Retrieve Custom Data
+
+In order to retrieve an account' or group's custom data directly you can get the `CustomData` resource through the client instance providing the custom data href:
+
+**Example: Retrieve an Account's Custom Data**
+
+	Account account = client.getResource("https://api.stormpath.com/v1/accounts/someAccountId", Account.class);
+	CustomData customData = client.getResource(account.getCustomData().getHref(), CustomData.class);
+
+Another alternative using [link expansion](#link-expansion):
+
+	AccountList accounts = application.getAccounts(
+                Accounts.where(Accounts.email().eqIgnoreCase("some@email.com"))
+                        .withCustomData()
+	);	
+
+**Example: Retrieve a Group with its Custom Data**
+
+	Group group = client.getResource("https://api.stormpath.com/v1/groups/someGroupId", Group.class);
+    CustomData customData = client.getResource(group.getCustomData().getHref(), CustomData.class);
+
+Another alternative using [link expansion](#link-expansion):
+
+	GroupList groups = application.getGroups(
+                Groups.where(Groups.name().eqIgnoreCase("Group Name"))
+                        .withCustomData()
+	);
+
+<a class="anchor" name="update-custom-data"></a>
+### Update Custom Data
+
+You may update an account' or group's custom data, in one of two ways:
+
+* by [updating the customData resource directly](#update-custom-data-directly), independent of the group or account, or
+* by [embedding customData changes in an account or group update request](#update-custom-data-embedded)
+
+<a class="anchor" name="update-custom-data-directly"></a>
+#### Update Custom Data Directly
+
+The first way to update an account or group's custom data is by saving changes directly to the `CustomData` resource.  This allows you to interact with the customData resource directly, without having to do so 'through' an account or group request.
+
+In the following example request, we're interacting with a `CustomData` resource directly, and we're changing the value of an existing field named `favoriteColor` and we're adding a brand new field named `hobby`:
+
+**Example Account Custom Data Update**
+
+	customData.put("favoriteColor", "red");
+    customData.put("hobby", "Kendo");
+    customData.save();
+
+<a class="anchor" name="update-custom-data-embedded"></a>
+#### Update Custom Data as part of an Account or Group Request
+
+Sometimes it is helpful to update an account or group's `CustomData` as part of an update request for the account or group.  In this case, just specify customData changes in an embedded `CustomData` field embedded in the account or group request resource.  For example:
+
+	account.setStatus(AccountStatus.ENABLED);
+    CustomData customData = account.getCustomData();
+    customData.put("aaa", "aaaNEW");
+    customData.put("favoriteColor", "blue");
+	customData.put("favoriteMovie", "Star Wars");
+    account.save();
+
+In the above example, we're performing 3 modifications in one request:
+
+1. We're modifying the account's `status` attribute and setting it to `ENABLED`.  We're _also_
+2. Changing the existing customData `favoriteColor` field value to `blue` (it was previously `red`) and
+3. Adding a new customData field `favoriteMovie` with a value of `Star Wars`.
+
+This request modifies both the account resource _and_ that account's custom data in a single request.
+
+The same simultaneous update behavior may be performed for Group updates as well.
+
+<a class="anchor" name="delete-custom-data"></a>
+### Delete Custom Data
+
+You may delete all of an account or group's custom data by invoking the `delete()` method to the account or group's `CustomData`:
+
+**Example: Delete all of an Account's Custom Data**
+
+	account.getCustomData().delete();
+
+**Example: Delete all of a Group's Custom Data**
+
+    group.getCustomData().delete();
+
+This will delete all of the respective account or group's custom data fields, but it leaves the `CustomData` placeholder in the account or group resource.  You cannot delete the `CustomData` resource entirely - it will be automatically permanently deleted when the account or group is deleted.
+
+<a class="anchor" name="delete-account-custom-data-field"></a>
+### Delete Custom Data Field
+
+You may also delete an individual custom data field entirely by calling the `remove()` method on the account or group's CustomData while stating the custom data field as a parameter and then saving it.
+
+**Account or Group Custom Data Field Deletion**
+
+	customData.remove("favoriteColor");
+    customData.save();
+
+This request would remove the `favoriteColor` field entirely from the customData resource.  The next time the resource is [retrieved](#retrieve-custom-data), the field will be missing entirely.
 
 ***
 
