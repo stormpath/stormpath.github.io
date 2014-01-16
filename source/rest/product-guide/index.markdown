@@ -154,7 +154,7 @@ Finally, if you would like to use Stormpath digest authentication in a programmi
 
 If you port the algorithm to other languages, please let us know. We are happy to help. Email us at <support@stormpath.com> and we will help as best as we can.
 
-{% docs note %}
+{% docs info %}
 The Stormpath `SAuthc1` digest algorithm is NOT the same as [RFC 2617](http://www.ietf.org/rfc/rfc2617.txt "RFC 2617") HTTP digest authentication. The Stormpath `SAuthc1` digest-based authentication scheme is more secure than standard HTTP digest authentication.
 {% enddocs %}
 
@@ -444,7 +444,7 @@ REST API responses indicating an error or warning are represented by a proper re
 Attribute | Description | Type
 :----- | :----- | :----
 <a class="anchor" name="errors-status"></a>`status` | The corresponding HTTP status code. | Integer
-<a class="anchor" name="errors-code"></a>`code` | A Stormpath-specific error code that can be used to obtain more information. | Integer
+<a class="anchor" name="errors-code"></a>`code` | A [Stormpath-specific error code](http://docs.stormpath.com/errors) that can be used to obtain more information. | Integer
 <a class="anchor" name="errors-message"></a>`message` | A simple, easy to understand message that you can show directly to your application end-user. | String
 <a class="anchor" name="errors-developer-message"></a>`developerMessage` | A clear, plain text explanation with technical details that might assist a developer calling the Stormpath API. | String
 `moreInfo` | A fully qualified URL that may be accessed to obtain more information about the error. | String
@@ -470,6 +470,10 @@ Example response:
       "moreInfo": "http://docs.stormpath.com/errors/404"
     }
 <!-- {: .http} -->
+
+#### Error Code Reference
+
+The [Stormpath Error Code Reference](http://docs.stormpath.com/errors) provides the list of all Stormpath-specific error codes and their meanings.
 
 <a class="anchor" name="collections"></a>
 ### Collection Resources
@@ -584,8 +588,10 @@ You can search for specific resources within a Collection Resource by using cert
 
 There are currently two different types of searches that might be performed: a generic [Filter](#search-filter)-based search and a more targeted [Attribute](#search-attribute)-based search. Both options support result [ordering](#sorting), [pagination](#pagination), and [link expansion](#links-expansion).
 
-{% docs note %}
-Currently, a REST search request must be targeted at resources of the same type. For example, a search can be performed across accounts or groups, but not both at the same time. Because the Stormpath REST API always represents one or more resources of the same type as a Collection Resource, a REST search is always sent to a Collection Resource endpoint.
+{% docs info %}
+Currently, a REST search request must be targeted at resources of the same type. For example, a search can be performed across accounts or groups, but not both at the same time. 
+
+Because the Stormpath REST API always represents one or more resources of the same type as a Collection Resource, a REST search is always sent to a Collection Resource endpoint.
 {% enddocs %}
 
 <a class="anchor" name="search-filter"></a>
@@ -911,7 +917,7 @@ If you do not have your Tenant's specific URI handy, you can always retrieve you
 
 Because a REST caller can retrieve one and only one `Tenant` resource, it is often more convenient not to be concerned with the Tenant-specific URL is when performing a request, and instead use a simpler permanent alias.
 
-You can request the `current` Tenant resource, and the API server will automatically issue a `302` redirect to the `Tenant` resource corresponding to the currently executing API caller. In other words, this endpoint redirects the API caller to its own Tenant-specific REST resource URI.
+You can request the `current` Tenant resource, and the API server will automatically issue a `302` redirect to the `Tenant` resource corresponding to the currently executing API caller. In other words, this endpoint redirects the API caller to their own Tenant's URI.
 
 **Example Request**
 
@@ -968,7 +974,7 @@ If you want to update one or more attribute of your `Tenant` resource, execute a
 <a class="anchor" name="tenant-applications"></a>
 ### Tenant Applications
 
-A `Tenant` has one or more [Applications](#applications) registered with Stormpath.  Each registered application may use Stormpath to simplify and automate its user management and authentication needs.
+A `Tenant` has one or more [Applications](#applications) registered with Stormpath.  Each registered application may communicate with Stormpath to simplify and automate its user management and authentication needs.
 
 **Tenant Applications Collection Resource URI**
 
@@ -1116,7 +1122,7 @@ Directory resources support the full suite of CRUD commands and other interactio
 
 An application in Stormpath represents any real world piece of software that communicates with Stormpath to offload its user management and authentication needs.  The application can be anything that can make a REST API call - a web application that you are writing, a web server like Apache or Nginx, a Linux operating system, etc - basically anything that a user can login to.  A [tenant](#tenants) administrator can register one or more applications with Stormpath.
 
-You control who may login to an application by assigning (or 'mapping') one or more directories or groups (generically called [account stores](#account-store-mappings) to an application.  The accounts in these associated directories or groups (again, _account stores_) collectively form the application's user base. These accounts are considered the application's users and they can login to the application.  Therefore, you can control who may login to an application by managing which [account stores](#account-store-mappings) are assigned to the application.
+You control who may login to an application by assigning (or 'mapping') one or more directories or groups (generically called [account stores](#account-store-mappings)) to an application.  The accounts in these associated directories or groups (again, _account stores_) collectively form the application's user base. These accounts are considered the application's users and they can login to the application.  Therefore, you can control user population that may login to an application by managing which [account stores](#account-store-mappings) are assigned to the application.
 
 Even the Stormpath Admin Console and API is represented as an Application (named `Stormpath`), so you can control who has administrative access to your Stormpath [tenant](#tenants) by managing the `Stormpath` application's associated account stores.
 
@@ -1200,9 +1206,9 @@ If you know the name exactly, you can use an [attribute search](#search-attribut
 <a class="anchor" name="application-create"></a>
 ### Create an Application (aka Register an Application with Stormpath)
 
-For an application to communicate with Stormpath, you must register first it with Stormpath.
+For an application to communicate with Stormpath, you must first register it with Stormpath.
 
-You register an application with Stormpath by creating a new `application` resource.  This is performed by submitting an HTTP `POST` request to the `/v1/applications` endpoint.  This will create a new `Application` instance within the caller's tenant.
+You register an application with Stormpath by simply creating a new `application` resource.  This is performed by submitting an HTTP `POST` request to the `/v1/applications` endpoint.  This will create a new `Application` instance within the caller's tenant.
 
 When you submit the `POST`, at least the `name` attribute must be specified, and it must be unique compared to all other applications in your tenant.  The `description` and `status` attribute are optional.
 
@@ -1511,7 +1517,7 @@ If you wish to delete an application:
 
     HTTP/1.1 204 No Content
 
-{% docs note %}
+{% docs info %}
 The `Stormpath` console application cannot be deleted.
 {% enddocs %}
 
@@ -1613,13 +1619,15 @@ The response will contain the newly saved resource:
 
 **How does this work?**
 
-As we [said previously](#application-accounts), an Application does not 'own' accounts of its own - it has access to accounts in one or more directories and the directories actually own the accounts.  So how are we able to create a new account based on only the application?
+As we [said previously](#application-accounts), an Application does not 'own' accounts of its own - it has access to accounts in one or more directories or groups and the directories actually own the accounts.  So how are we able to create a new account based on only the application?
 
-The `v1/applications/:applicationId/accounts` URI is a convenience: when you `POST` a new `account` resource, Stormpath will automatically route that creation request to a designated directory (or group) assigned to the Application.  The account is then persisted in that directory and then made immediately available to the application.
+The `v1/applications/:applicationId/accounts` URI is a convenience: when you `POST` a new `account` resource, Stormpath will automatically route that creation request to a designated directory or group assigned to the Application.  The account is then persisted in that directory or group and then made immediately available to the application.
 
-For most applications that have only a single assigned directory, the account is persisted in that directory immediately - the application developer does not even really need to know that Stormpath automates this.
+Stormpath uses a generic term, _Account Store_, to generically refer to either a directory or a group since they are both containers for (store) accounts.
 
-However, applications that map more than one directory or group to define their account base have the option of specifying _which_ of those mapped locations should receive newly created accounts.  You can choose a default `new account location`.  If you do not choose one, the first one in the list of mapped directories is the default location to store new accounts.
+For most applications that have only a single assigned _account store_ (again, a directory or group), the account is persisted in that account store immediately - the application developer does not even really need to know that Stormpath automates this.
+
+However, applications that map more than one account store to define their account base have the option of specifying _which_ of those mapped account stores should receive newly created accounts.  You can choose a _default_ account store.  If you do not choose one, the first one in the list of mapped account stores is the default location to store new accounts.  We'll talk about setting the default account store and managing an application's assigned account stores later in [Application Account Store Mappings](#application-account-store-mappings).
 
 <a class="anchor" name="application-account-register-with-customData"></a>
 ##### Register a New Application Account with your own Custom Data
@@ -1690,7 +1698,7 @@ Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 <a class="anchor" name="login-attempt-type"></a>`type` | The type of the login attempt. The only currently supported type is `basic`. Additional types will likely be supported in the future. | Enum | basic
 <a class="anchor" name="login-attempt-value"></a>`value` | The Base64 encoded username:plaintextPassword pair. For example, for username `jsmith` or email `jsmith@email.com` and plaintext password `mySecretPassword` this `value` attribute would be set to the following computed result: `base64_encode("jsmith:mySecretPassword");` </p> The `base64_encode` method call is only an example. You will need to use the Base64 encoding method is available to you in your chosen programming language and/or software frameworks. | String | Base64 encoded String
-<a class="anchor" name="login-attempt-accountStore"></a>`accountStore` | A link to the accountStore that contains the account attempting to login.  This is an optional attribute. | link | --
+<a class="anchor" name="login-attempt-accountStore"></a>`accountStore` | A (optional) link to the accountStore that you know contains the account attempting to login.  <p>Specifying this attribute can speed up logins if you know exactly which of the application's assigned account stores contains the account: Stormpath will not have to [iterate over the assigned account stores](#workflow-login-attempt) to find the account to authenticate it.  This can speed up logins significantly if you have many account stores (> 15) assigned to the application.</p> This is an optional attribute. | link | --
 
 **Execute Account Login Attempt (HTTP POST)**
 
@@ -2136,7 +2144,9 @@ Group CRUD and other behavior that is not application-specific is covered in the
 <a class="anchor" name="application-account-store-mappings"></a>
 ### Application Account Store Mappings
 
-An application's `accountStoreMappings` collection reflects all [groups](#groups) and [directories](#directories) that are assigned to that application for the purpose of providing accounts that may login to the application.  By managing these mappings, you can control which account populations may login to an application.  In this way, applications do not have _direct_ account stores of their own; account stores are instead _made available to_ applications based on associations with directories and groups.
+Stormpath uses the term _Account Store_ to generically refer to either a [group](#groups) or a [directory](#directories), since they both are containers of (store) accounts.
+
+An application's `accountStoreMappings` collection, then, reflects all [groups](#groups) and [directories](#directories) that are assigned to that application for the purpose of providing accounts that may login to the application.  By managing these mappings, you can control which account populations may login to an application.  In this way, applications do not have _direct_ account stores of their own; account stores are instead _made available to_ applications based on associations with directories and groups.
 
 This is a powerful feature within Stormpath that allows you to segment account populations and control how accounts may use one or more applications.  For example, the "Admin" user in an "Employees" directory vs. the "Admin" user in a "Customers" directory might require very different functionality in your application.
 
@@ -2348,7 +2358,7 @@ See the [Link Expansion](#links-expansion) section for more information on expan
 <a class="anchor" name="account-store-mapping-update"></a>
 ### Update An Account Store Mapping
 
-Submit an HTTP `POST` to an accountStoreMapping's `href` when you want to change one or more specific application attributes. Unspecified attributes are not changed, but at least one attribute must be specified.
+Submit an HTTP `POST` to an accountStoreMapping's `href` when you want to change one or more of the account store mapping's attributes. Unspecified attributes are not changed, but at least one attribute must be specified.
 
 **Updatable Application Attributes**
 
