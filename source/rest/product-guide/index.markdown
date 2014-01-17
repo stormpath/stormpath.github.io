@@ -1621,13 +1621,13 @@ The response will contain the newly saved resource:
 
 As we [said previously](#application-accounts), an Application does not 'own' accounts of its own - it has access to accounts in one or more directories or groups and the directories actually own the accounts.  So how are we able to create a new account based on only the application?
 
-The `v1/applications/:applicationId/accounts` URI is a convenience: when you `POST` a new `account` resource, Stormpath will automatically route that creation request to a designated directory or group assigned to the Application.  The account is then persisted in that directory or group and then made immediately available to the application.
+The `v1/applications/:applicationId/accounts` URI is a convenience: when you `POST` a new `account` resource, Stormpath will automatically route that creation request to a [designated directory or group assigned to the Application](#application-defaultAccountStoreMapping).  The account is then persisted in that directory or group and then made immediately available to the application.
 
 Stormpath uses a generic term, _Account Store_, to generically refer to either a directory or a group since they are both containers for (store) accounts.
 
 For most applications that have only a single assigned _account store_ (again, a directory or group), the account is persisted in that account store immediately - the application developer does not even really need to know that Stormpath automates this.
 
-However, applications that map more than one account store to define their account base have the option of specifying _which_ of those mapped account stores should receive newly created accounts.  You can choose a _default_ account store.  If you do not choose one, the first one in the list of mapped account stores is the default location to store new accounts.  We'll talk about setting the default account store and managing an application's assigned account stores later in [Application Account Store Mappings](#application-account-store-mappings).
+However, applications that map more than one account store to define their account population have the option of specifying _which_ of those mapped account stores should receive newly created accounts.  You can choose a [_default_ account store](#application-defaultAccountStoreMapping).  If you do not choose one, the first one in the list of mapped account stores is the default location to store new accounts.  We'll talk about setting the default account store and managing an application's assigned account stores later in [Application Account Store Mappings](#application-account-store-mappings).
 
 <a class="anchor" name="application-account-register-with-customData"></a>
 ##### Register a New Application Account with your own Custom Data
@@ -1698,7 +1698,7 @@ Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 <a class="anchor" name="login-attempt-type"></a>`type` | The type of the login attempt. The only currently supported type is `basic`. Additional types will likely be supported in the future. | Enum | basic
 <a class="anchor" name="login-attempt-value"></a>`value` | The Base64 encoded username:plaintextPassword pair. For example, for username `jsmith` or email `jsmith@email.com` and plaintext password `mySecretPassword` this `value` attribute would be set to the following computed result: `base64_encode("jsmith:mySecretPassword");` </p> The `base64_encode` method call is only an example. You will need to use the Base64 encoding method is available to you in your chosen programming language and/or software frameworks. | String | Base64 encoded String
-<a class="anchor" name="login-attempt-accountStore"></a>`accountStore` | A (optional) link to the accountStore that you know contains the account attempting to login.  <p>Specifying this attribute can speed up logins if you know exactly which of the application's assigned account stores contains the account: Stormpath will not have to [iterate over the assigned account stores](#workflow-login-attempt) to find the account to authenticate it.  This can speed up logins significantly if you have many account stores (> 15) assigned to the application.</p> This is an optional attribute. | link | --
+<a class="anchor" name="login-attempt-accountStore"></a>`accountStore` | An optional link to the application's accountStore (directory or group) that you are certain contains the account attempting to login.  <p>Specifying this attribute can speed up logins if you know exactly which of the application's assigned account stores contains the account: Stormpath will not have to [iterate over the assigned account stores](#workflow-login-attempt) to find the account to authenticate it.  This can speed up logins significantly if you have many account stores (> 15) assigned to the application.</p> This is an optional attribute. | link | --
 
 **Execute Account Login Attempt (HTTP POST)**
 
@@ -1848,7 +1848,6 @@ If the login attempt is successful, a `200 OK` response is returned with the suc
       },
       "emailVerificationToken" : null
     }
-
 
 <a class="anchor" name="application-password-reset"></a>
 #### Reset An Account's Password
@@ -2057,17 +2056,22 @@ Account CRUD and other behavior that is not application-specific is covered in t
 <a class="anchor" name="application-groups"></a>
 ### Application Groups
 
-An application's group base is the collection of all [groups](#groups) that are accessible to that application. This is an aggregate of all groups that are visible to the application, which will be an aggregate view of all the groups that belong to [directories](#directories) associated with that application.
+As we've seen with [application accounts](#application-accounts), applications themselves also do not have _direct_ groups of their own.  Like accounts, groups are 'owned' by [directories](#directories) and instead _made available to_ applications.
 
-You define an application's group base by assigning one or more [directories](#directories) to that application.
+This means an application's collection of groups is _virtual_.  This virtual collection is an aggregate 'view' of all groups that are:
 
-In this way, applications do not have _direct_ groups of their own (groups are 'owned' by [directories](#directories)) - groups are instead _made available to_ applications based on associations with directories.
+1. directly assigned to the application as an [account store](#account-store-mappings)
+2. in a directory that is assigned to the application as an [account store](#account-store-mappings)
 
-This is a powerful feature within Stormpath that allows you to segment account populations and control how accounts may use one or more applications.  For example, you might have an "Admin" group and a "User" group, which would enable very different functionality in your application when a user is associated with one group or the other.
+This is a powerful and convenient feature: as you add or remove account stores from an application to control its user population, you automatically 'bring in' any groups that may be assigned to your user accounts.  You can interact with this collection, like [search it](#application-groups-search) or [add groups to it](#application-group-register), like you would a normal group collection.
 
-**The aggregate collection of all group's across all assigned directories is the application's effective group base.**
+You can then reference these groups in the application's source code to check group membership and perform Role Based Access Control (RBAC).  For example, you might have an "Admin" group and a "User" group which would enable very different functionality in your application when a user account is associated with one group or the other.
 
-However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application's needs.  This is a totally valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications.
+{% docs info %}
+Most application developers do not need to be aware that an application's `groups` collection is virtual.  The most common case in Stormpath for simpler apps is to just [create an application with its own directory](#application-create-with-directory) for its own needs.  Used this way, the application's and the directory's accounts and groups are the same.  
+
+But it is nice to know that you can customize the application's account population with other directories or groups in the future if you need to do so.
+{% enddocs %}
 
 **Application Groups Collection Resource URI**
 
@@ -2075,9 +2079,79 @@ However, many applications do not need this feature.  The most common use case i
 
 Applications additionally support the following group-specific functionality:
 
-* [Register A New Group](#application-group-register)
+* [Create A New Application Group](#application-group-create)
 * [List an Application's Groups](#application-groups-list)
 * [Search an Application's Groups](#application-groups-search)
+
+<a class="anchor" name="application-groups-create"></a>
+#### Create a New Application Group
+
+If your application wants to create a new account, POST the [group resource attributes](#group) application’s `groups` endpoint.
+
+**Example Request**
+
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json" \
+         -d '{
+           "name": "Jedi High Council"
+           "description": "Elected leaders of the Jedi Order."
+           "status": "ENABLED"
+         }' \
+      "https://api.stormpath.com/v1/applications/bckhcGMXQDujIXpbCDRb2Q/groups"
+
+**Example Response**
+
+    HTTP/1.1 201 Created
+    Location: https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ
+    Content-Type: application/json;charset=UTF-8;
+    
+    {
+      "href" : "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ",
+      "name" : "Jedi High Council",
+      "description" : "Elected leaders of the Jedi Order.",
+      "status" : "ENABLED",
+      "directory" : {
+        "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q"
+      },
+      "tenant" : {
+        "href" : "https://api.stormpath.com/v1/tenants/Gh9238fksJlsieJkPkQuW"
+      },
+      "accounts" : {
+        "href" : "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ/accounts"
+      }
+    }
+
+**How does this work?**
+
+As we [mentioned above](#application-groups), an Application does not 'own' groups of its own - it has access to groups directly (or indirectly) assigned to it.  So how are we able to create a new group based on only the application?
+
+The `v1/applications/:applicationId/groups` URI is a convenience: when you `POST` a new `group` resource, Stormpath will automatically route that creation request to a [designated directory assigned to the Application](#application-defaultGroupStoreMapping).  The group is then persisted in that directory and then made immediately available to the application.
+
+For most applications that have only a single assigned account store, the group is persisted in that account store immediately - the application developer does not even really need to know that Stormpath automates this.
+
+However, applications that are assigned more than one account store have the option of specifying _which_ of those mapped account stores should receive newly created groups.  You can choose a [_default_ group store](#application-defaultGroupStoreMapping).  If you do not choose one, the first one in the list of mapped account stores is the default location to store newly created groups.  We'll talk about setting the default group store and managing an application's assigned account stores later in [Application Account Store Mappings](#application-account-store-mappings).
+
+<a class="anchor" name="application-groups-create-with-customData"></a>
+##### Create a New Application Group with your own Custom Data
+
+When you create an application group, in addition to Stormpath's group attributes, you may also specify [your own custom data](#custom-data) by including a `customData` JSON object:
+
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json" \
+         -d '{
+                 "name" : "Jedi High Council",
+                 "description": "Elected leaders of the Jedi Order",
+                 "status": "ENABLED",
+                 "customData": {
+                     "Headquarters": "High Council Chamber, High Council Tower, Jedi Temple, Coruscant",
+                     "Affiliation": "Jedi Order",
+                 }
+             }' \
+         "https://api.stormpath.com/v1/applications/bckhcGMXQDujIXpbCDRb2Q/groups"
+
+Once created, you can further modify the custom data - delete it, add and remove attributes, etc as necessary.  See the [custom data](#custom-data) section for more information and customData requirements/restrictions.
 
 <a class="anchor" name="application-groups-list"></a>
 #### List Application Groups
@@ -5142,7 +5216,7 @@ You may update an account or group's custom data, in one of two ways:
 <a class="anchor" name="update-custom-data-directly"></a>
 #### Update Custom Data Directly
 
-The first way to update an account or group's custom data is by `POST`ing changes directly to the custom data's HREF.  This allows you to interact with the customData resource directly, without having to do so 'through' an account or group request.
+The first way to update an account or group's custom data is by `POST`ing changes directly to the custom data's `href`.  This allows you to interact with the customData resource directly, without having to do so 'through' an account or group request.
 
 In the following example request, we're interacting with a `customData` resource directly, and we're changing the value of an existing field named `favoriteColor` and we're adding a brand new field named `hobby`:
 
@@ -5176,7 +5250,7 @@ As you can see, the response contains the 'merged' representation of what was al
 <a class="anchor" name="update-custom-data-embedded"></a>
 #### Update Custom Data as part of an Account or Group Request
 
-Sometimes it is helpful to update an account or group's `customData` as part of an update request for the account or group.  In this case, just specify customData changes in an embedded `customData` field embedded in the account or group request resource.  For example:
+Sometimes it is helpful to update an account or group's `customData` as part of an update request for the account or group.  In this case, just submit customData changes in an embedded `customData` field embedded in the account or group request resource.  For example:
 
     curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
          -H "Accept: application/json" \
