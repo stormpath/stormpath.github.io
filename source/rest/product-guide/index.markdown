@@ -2079,7 +2079,7 @@ But it is nice to know that you can customize the application's account populati
 
 Applications additionally support the following group-specific functionality:
 
-* [Create A New Application Group](#application-group-create)
+* [Create A New Application Group](#application-groups-create)
 * [List an Application's Groups](#application-groups-list)
 * [Search an Application's Groups](#application-groups-search)
 
@@ -2218,15 +2218,13 @@ Group CRUD and other behavior that is not application-specific is covered in the
 <a class="anchor" name="application-account-store-mappings"></a>
 ### Application Account Store Mappings
 
-Stormpath uses the term _Account Store_ to generically refer to either a [group](#groups) or a [directory](#directories), since they both are containers of (store) accounts.
+Stormpath uses the term _Account Store_ to generically refer to either a [group](#groups) or a [directory](#directories), since they both contain (store) accounts.
 
-An application's `accountStoreMappings` collection, then, reflects all [groups](#groups) and [directories](#directories) that are assigned to that application for the purpose of providing accounts that may login to the application.  By managing these mappings, you can control which account populations may login to an application.  In this way, applications do not have _direct_ account stores of their own; account stores are instead _made available to_ applications based on associations with directories and groups.
+An application's `accountStoreMappings` collection, then, reflects all [groups](#groups) and [directories](#directories) that are assigned to that application for the purpose of providing accounts that may login to the application.  This is a powerful feature in Stormpath that allows you to control which account populations may login to an application.
 
-This is a powerful feature within Stormpath that allows you to segment account populations and control how accounts may use one or more applications.  For example, the "Admin" user in an "Employees" directory vs. the "Admin" user in a "Customers" directory might require very different functionality in your application.
+However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application's needs.  This is a valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications.
 
-However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application's needs.  This is a totally valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications.
-
-You define an application's account store mappings by creating, modifying or deleting [Account Store Mapping](#account-store-mappings) resources
+You define and modify an application's account store mappings by creating, modifying or deleting [Account Store Mapping](#account-store-mappings) resources.
 
 **Application Account Store Mappings Collection Resource URI**
 
@@ -2276,10 +2274,10 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
 <a class="anchor" name="account-store-mappings"></a>
 ## Account Store Mappings
 
-_Account Store_ is a generic term for either a [Directory](#directories) or a [Group](#groups).  Directories and Groups are both are considered "account stores" because they both contain, or 'store', Accounts. An _Account Store Mapping_, then, is a relationship between an Account Store and an Application.
+_Account Store_ is a generic term for either a [Directory](#directories) or a [Group](#groups).  Directories and Groups are both are considered "account stores" because they both contain, or 'store', Accounts. An _Account Store Mapping_, then, represents an Account Store mapped (assigned) to an Application.
 
 In Stormpath, you control who may login to an application by associating (or 'mapping') one or more account
-stores to an application.  All of the accounts in the application's assigned account stores form the application's
+stores to an application.  All of the accounts across all of an application's assigned account stores form the application's
 effective _user base_; those accounts may login to the application.  If no account stores are assigned to an application, no accounts will be able to login to the application.
 
 You control which account stores are assigned (mapped) to an application, and the order in which they are consulted during a login attempt, by manipulating an application's `AccountStoreMapping` resources.
@@ -2287,9 +2285,9 @@ You control which account stores are assigned (mapped) to an application, and th
 <a class="anchor" name="workflow-login-attempt"></a> 
 **How Login Attempts Work**
 
-When an account tries to login to an application, the application's assigned account stores are consulted _in the order that they are assigned to the application_.  When a matching account is discovered in a mapped account store, it is used to verify the authentication attempt and all subsequent account stores are ignored.  In other words, accounts are matched for application login based on a 'first match wins' policy.
+When an account tries to login to your application, you submit a request to your application's `/loginAttempts` endpoint.  Stormpath then consults the application's assigned account stores _in the order that they are assigned to the application_.  When a matching account is discovered in a mapped account store, it is used to verify the authentication attempt and all subsequent account stores are ignored.  In other words, accounts are matched for application login based on a 'first match wins' policy.
 
-Let's look at an example to illustrate this behavior.  Assume an application named Foo has been assigned (mapped) to two account stores, a 'Customers' directory and an 'Employees' directory, in that order.
+Let's look at an example to illustrate this behavior.  Assume that two account stores, a 'Customers' directory and an 'Employees' directory have been assigned (mapped) to a 'Foo' application, in that order.
 
 The following flow chart shows what happens when an account attempts to login to the Foo application:
 
@@ -2506,7 +2504,7 @@ For example, assume that the account store represented by mapping https://api.st
 <a class="anchor" name="account-store-mapping-default-account-store"></a>
 #### Set The Default Account Store for new Application Accounts
 
-Applications cannot store Accounts directly - Accounts are always stored in a Directory or Group.  Therefore, if you would like an application to be able to create new accounts, you must specify which of the application's associated account stores should store the application's newly created accounts.  This designated account store is called the application's _default account store_.
+Applications cannot store Accounts directly - Accounts are always stored in an Account Store (a Directory or Group).  Therefore, if you would like an application to be able to create new accounts, you must specify which of the application's associated account stores should store the application's newly created accounts.  This designated account store is called the application's _default account store_.
 
 You specify an application's default account store by setting the AccountStoreMapping's `isDefaultAccountStore` attribute to equal `true`.  You can do this when you create the `accountStoreMapping` resource.  Or if the resource has already been created:
 
@@ -2588,11 +2586,11 @@ Lastly, note that mirrored directories are read-only; they cannot be set as an a
 
 You remove an assigned account store from an application by `DELETE`ing the `accountStoreMapping` resource that links the accountStore and the application together.  This removes the possibility of the accounts in the associated account store from being able to login to the application.
 
-{% docs note %}
+{% docs info %}
 Deleting an `accountStoreMapping` resource *does not* delete either the account store or the application resources themselves - only the association between the two.
 {% enddocs %}
 
-{% docs warning %}
+{% docs note %}
 Deleting an account store mapping will remove the ability for accounts in the account store from authenticating with the application unless they are associated with an account store that is still mapped to the application. Be careful when removing mappings.
 
 Also, note that if no `AccountStoreMapping` is designated as the default group store, the application _WILL NOT_ be able to create new groups.
