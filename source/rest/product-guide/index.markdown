@@ -60,7 +60,7 @@ You can assign one or more Directories and/or Groups to an Application.  Account
 
 **Directories**
 
-A [Directory](#directories) is a top-level storage containers of Accounts and Groups.  A Directory also manages security policies (like password strength) for the Accounts it contains.  Stormpath supports two types of Directories: natively hosted 'Cloud' directories that originate in Stormpath and 'Mirror' directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers.
+A [Directory](#directories) is a top-level storage container of Accounts and Groups.  A Directory also manages security policies (like password strength) for the Accounts it contains.  Stormpath supports two types of Directories: natively hosted 'Cloud' directories that originate in Stormpath and 'Mirror' directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers.
 
 Directories can be used to cleanly manage segmented account populations - for example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.
 
@@ -72,7 +72,7 @@ It might be helpful to note that Stormpath does not have an explicit Role concep
 
 **Accounts**
 
-An [Account](#accounts) is a unique identity within a Directory, with a unique username and/or email address. An account can log in to applications using either the email address or username associated with it. Accounts can represent end-users, but they can also be used to represent services, platforms, or any "entity" that needs to connect to a Stormpath-powered service.
+An [Account](#accounts) is a unique identity within a Directory, with a unique username and/or email address. An account can log in to applications using either the email address or username associated with it. Accounts can represent people end-users, but they can also be used to represent services, machines, or any 'entity' that needs to login to a Stormpath-enabled application.
 
 **Tenants**
 
@@ -92,7 +92,7 @@ All URLs referenced in the API documentation begin with the following base URL:
 <a class="anchor" name="authentication"></a>
 ### Authentication
 
-Every request to the Stormpath REST API must be authenticated with an API key over HTTPS (HTTP is not supported). If you want to make a REST request to Stormpath, we assume you have already:
+Every request to the Stormpath REST API must be authenticated with an API key over HTTPS. HTTP is not supported. If you want to make a REST request to Stormpath, we assume you have already:
 
 1. [Signed up for Stormpath](https://api.stormpath.com/register).
 2. [Obtained your API key](/console/product-guide#!ManageAPIkeys).
@@ -737,7 +737,7 @@ When requesting a resource you might want the Stormpath API server to return not
 
 #### `expand` Query Parameter
 
-For example, to retrieve an account including its parent directory information, instead of issuing two requests (one for the account and another for its directory) add an `expand` query parameter with a value of `directory` to the resource URI.
+For example, to retrieve an account and its parent directory, instead of issuing two requests (one for the account and another for its directory) add an `expand` query parameter with a value of `directory` to the resource URI.
 
 For example:
 
@@ -2086,7 +2086,7 @@ Applications additionally support the following group-specific functionality:
 <a class="anchor" name="application-groups-create"></a>
 #### Create a New Application Group
 
-If your application wants to create a new account, POST the [group resource attributes](#group) application’s `groups` endpoint.
+If your application wants to create a new group, POST the [group resource attributes](#group) application’s `groups` endpoint.
 
 **Example Request**
 
