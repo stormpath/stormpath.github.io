@@ -1113,7 +1113,7 @@ By association then, if you add an account to your application programmatically 
 This workflow is disabled by default on Directories, but you can enable it easily in the Stormpath Admin Console UI. Refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation) for complete instructions.
 
 <a class="anchor" name="application-verify-email"></a>
-#### Verify An Account's Email Address
+#### Verifying An Account's Email Address
 
 This workflow allows you to send a welcome email to a newly registered account and optionally verify that they own the email addressed used during registration.
 
@@ -1155,7 +1155,7 @@ If the login attempt fails, a `400 Bad Request` is returned with an [error paylo
         print(re.more_info)  # Will output: "mailto:support@stormpath.com"
 
 <a class="anchor" name="application-password-reset"></a>
-#### Reset An Account's Password
+#### Resetting An Account's Password
 
 Stormpath has a comprehensive mechanism for secure password reset, as well.
 
@@ -1987,7 +1987,7 @@ Workflows are only available on cloud directories and only configurable using th
 {% enddocs %}
 
 <a class="anchor" name="directories-password-reset"></a>
-### Reset An Account's Password
+### Resetting An Account's Password
 
 This is a self-service password reset workflow.  The account is sent an email with a secure link.  The person owning the account can click on the link and be shown a password reset form to reset their password.  This is strongly recommended to reduce support requests to your application team as well as to reduce your exposure to account passwords for added security.
 
@@ -2965,7 +2965,7 @@ If the verification token is not found, a `404 Not Found` is returned with an [e
     }
 
 <a class="anchor" name="accounts-authenticate"></a>
-### Authenticate An Account
+### Authenticating An Account
 
 After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts. 
 

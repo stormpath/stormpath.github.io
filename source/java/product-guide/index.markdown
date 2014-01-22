@@ -1688,7 +1688,7 @@ For directories, you can:
     * [Register A New Account](#directories-account-reg)
     * [Register A New Group](#directories-group-reg)
     * [Verify An Account's Email Address](#directories-verify-email)
-    * [Reset An Account's Password](#directories-password-reset)
+    * [Resetting An Account's Password](#directories-password-reset)
 * [Work with directory groups](#directory-groups)
 * [Work with directory accounts](#directory-accounts)
 
@@ -1954,7 +1954,7 @@ Workflows are only available on cloud directories and only configurable using th
 {% enddocs %}
 
 <a class="anchor" name="directories-password-reset"></a>
-### Reset An Account's Password
+### Resetting An Account's Password
 
 This is a self-service password reset workflow.  The account is sent an email with a secure link.  The person owning the account can click on the link and be shown a password reset form to reset their password.  This is strongly recommended to reduce support requests to your application team as well as to reduce your exposure to account passwords for added security.
 
