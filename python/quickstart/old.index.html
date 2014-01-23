@@ -1,0 +1,924 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Stormpath Python Quickstart - Stormpath</title>
+  <meta name="author" content="Stormpath, Inc.">
+
+  
+  <meta name="description" content="The Python SDK can be found on Github. To quickly get started using Stormpath to secure your online applications, please complete the following steps &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stormpath.github.io/python/quickstart/old.">
+  <link href="/favicon.ico" rel="icon">
+
+  <style>
+  @import url("/stylesheets/normalize.css?mrrrji");
+  @import url("/stylesheets/wireframes.css?mrrrji");
+  @import url("/stylesheets/html-elements.css?mrrrji");
+  @import url("/stylesheets/tabs.css?mrrrji");
+  @import url("/stylesheets/tinybox2.css?mrrrji");
+  @import url("/stylesheets/pages.css?mrrrji");
+  @import url("/stylesheets/docs.css?mrrrji");
+  @import url("/stylesheets/blocks.css?mrrrji");
+  @import url("/stylesheets/navigation.css?mrrrji");
+  @import url("/stylesheets/views-styles.css?mrrrji");
+  @import url("/stylesheets/nodes.css?mrrrji");
+  @import url("/stylesheets/comments.css?mrrrji");
+  @import url("/stylesheets/forms.css?mrrrji");
+  @import url("/stylesheets/fields.css?mrrrji");
+  @import url("/stylesheets/layouts/responsive-sidebars.css?mrrrji");
+  </style>
+
+  <link href="/atom.xml" rel="alternate" title="Stormpath" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Covered+By+Your+Grace|Open+Sans:300italic,400italic,600italic,700italic,800italic,300,400,600,700,800" media="all" />
+
+<!--[if lt IE 9]>
+<script src="/javascripts/html5-respond.js"></script>
+<![endif]-->
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-29159574-1']);
+  _gaq.push(['_setDomainName', 'stormpath.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+<!-- kissmetrics -->
+<script type="text/javascript">
+  var _kmq = _kmq || [];
+  var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+  function _kms(u){
+    setTimeout(function(){
+      var d = document, f = d.getElementsByTagName('script')[0],
+      s = d.createElement('script');
+      s.type = 'text/javascript'; s.async = true; s.src = u;
+      f.parentNode.insertBefore(s, f);
+    }, 1);
+  }
+  _kms('//i.kissmetrics.com/i.js');
+  _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+</script>
+
+<!-- Optimizely -->
+<script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+  
+
+</head>
+
+<body  class="not-front  node-type-documentation  ">
+<!-- Qualaroo for stormpath.com -->
+<script type="text/javascript">var _kiq = _kiq || [];</script>
+<script type="text/javascript" src="//s3.amazonaws.com/ki.js/47725/9JM.js" async="true"></script>
+      
+<script type="text/javascript" src="//assets.zendesk.com/external/zenbox/v2.6/zenbox.js"></script>
+<style type="text/css" media="screen, projection">
+  @import url(//assets.zendesk.com/external/zenbox/v2.6/zenbox.css);
+</style>
+<script type="text/javascript">
+  if (typeof(Zenbox) !== "undefined") {
+    Zenbox.init({
+      dropboxID:   "20184231",
+      url:         "https://stormpath.zendesk.com",
+      tabTooltip:  "Get Help",
+      tabImageURL: "/images/tab_questions_black_right.png",
+      tabColor:    "689ed0",
+      tabPosition: "Right"
+    });
+  }
+</script>
+
+
+<script src="/javascripts/stormpath_docs.js"></script>
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+</script>
+
+<div id="page">
+
+  <div id="header-wrapper">
+  	<header id="header" role="banner" class="container">
+      <hgroup id="name-and-slogan">
+  <h1 id="site-name">
+    <a href="http://www.stormpath.com/" title="Home" rel="home"><span>Stormpath</span></a>
+  </h1>
+</hgroup><!-- /#name-and-slogan -->
+
+<div id="navigation"><div class="menu-button">Menu</div>
+<nav id="main-menu" role="navigation">
+  <h2 class="element-invisible">Main menu</h2>
+<ul class="links inline clearfix">
+<li class="menu-1413 first"><a href="/" title="Documentation">Docs</a></li>
+<li class="menu-710"><a href="http://www.stormpath.com/product">Product</a></li>
+<li class="menu-709"><a href="http://www.stormpath.com/pricing">Pricing</a></li>
+<li class="menu-438"><a href="https://support.stormpath.com/" title="">Support</a></li>
+<li class="menu-547"><a href="http://www.jobscore.com/jobs/stormpath" title="Jobs at Stormpath. Join us!">Jobs</a></li>
+<li class="menu-556"><a href="http://api.stormpath.com" title="">Log in</a></li>
+<li class="menu-1328 last"><a href="https://api.stormpath.com/register" title="">Sign up</a></li>
+</ul>
+</nav>
+</div>
+    </header>
+  </div>
+  <div id="main-wrapper">
+    <div id="main" class="container">
+      <div id="main-inner">
+        <div id="main-inner-inner">
+          <div id="content" class="column" role="main">
+            <a id="main-content"></a>
+            
+              <h1 class="title" id="page-title">Stormpath Python Quickstart</h1>
+            
+          	<p>The Python SDK can be found on <a href="https://github.com/stormpath/stormpath-sdk-python">Github</a>.</p>
+
+<p>To quickly get started using Stormpath to secure your online applications, please complete the following steps:</p>
+
+<ol>
+<li><p><a href="https://api.stormpath.com/register">Sign up for service</a>.</p>
+
+<ol>
+<li>Provide your first and last name, email address, company, and a password.</li>
+<li>When all fields are complete, click <strong>Start</strong>.<br>You will receive a registration successful email.</li>
+<li>In the confirmation email, click the link.</li>
+<li>Follow the onscreen instructions.<br>After completing this process, you are ready to use Stormpath for free!</li>
+</ol>
+</li>
+<li><p>Download the Python SDK:</p>
+
+<ul>
+<li><a href="https://github.com/stormpath/stormpath-sdk-python">stormpath-sdk-python</a> &ndash; Official Python SDK for the Stormpath REST+JSON API</p></li>
+</ul>
+</li>
+<li><p>Create your API key.</p>
+
+<p> All requests to the Stormpath <a href="/python/product-guide#RESTAPIdef">REST API</a> must be authenticated with an <a href="/python/product-guide#APIKey">API key</a>. To get an API key:</p>
+
+<ol>
+<li>Log in to the Stormpath Admin Console using the email address and password provided during sign-up.</li>
+<li>After logging in, navigate to your account page by clicking <strong>Settings</strong>, <strong>My Account</strong> in the top-right corner of the screen.</li>
+<li><p>On the Account Details page, under Security Credentials, click <strong>Create API Key</strong>.</p>
+
+<ul>
+<li>This will generate your API key and download it to your computer as an <code>apiKey.properties</code> file.</li>
+<li><p>If you open the file in a text editor, you will see something similar to the following:</p>
+
+<pre><code>  apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
+
+  apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
+</code></pre></li>
+</ul>
+</li>
+<li><p>Store your API key file somewhere secure (readable only by you), for example:</p>
+
+<pre><code> /home/myhomedir/.stormpath/apiKey.properties
+</code></pre>
+
+<p> The file contents should contain the following name/value pairs (using your own values of course):</p>
+
+<pre><code> $ cat /home/myhomedir/.stormpath/apiKey.properties
+
+ apiKey.id = YOURAPIKEYIDHEREREPLACEME
+ apiKey.secret = YoUrReAlLyLongSecretValueHereReplaceMeWithYourValue
+</code></pre></li>
+<li><p>Copy your existing <code>apiKey.properties</code> file to a new file and make sure it is readable only by you:</p>
+
+<pre><code> &gt; cd $HOME/.stormpath
+ &gt; chmod go-rwx apiKey.properties
+</code></pre></li>
+</ol>
+</li>
+<li><p>Configure your application to create a Stormpath SDK <a href="/python/product-guide#Client">client</a> instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:</p>
+
+<pre><code> from stormpath import Client
+ ...
+
+ api_key_file = "/home/myhomedir/.stormpath/apiKey.properties"
+
+ client = Client(api_key_file_location=api_key_file)
+</code></pre></li>
+<li><p>Use the client instance to interact with your tenant data, such as applications, directories, and accounts:</p>
+
+<pre><code> tenant_href = client.tenant.href
+ print(tenant.href)
+
+ applications = client.applications
+
+ for application in applications:
+     print('Application ' + application.name)
+
+ directories = client.directories
+
+ for directory in directories:
+     print('Directory ' + directory.name)
+
+    accounts = directory.accounts
+
+     for account in accounts:
+         print('Account ' + account.given_name)
+</code></pre></li>
+<li><p>Create the necessary directories:</p>
+
+<p> To create a directory, you must log in to the Stormpath Admin Console.</p>
+
+<ol>
+<li>Click the <strong>Directories</strong> tab.</li>
+<li>Click <strong>Create Directory</strong>.</li>
+<li><p>Click <strong>Cloud</strong>.</p>
+
+<p> <img src="http://www.stormpath.com/sites/default/files/docs/CreateCloudDirectory.png" alt="Create Cloud Directory" title="Create Cloud Directory" width="650" height="440"></p></li>
+<li><p>Complete the field values as follows: <br></p>
+
+<table>
+<thead>
+<tr>
+<th align="left"> Attribute </th>
+<th align="left"> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Name </td>
+<td align="left"> The name used to identify the directory within Stormpath. This value must be unique. |</td>
+</tr>
+<tr>
+<td align="left">Description </td>
+<td align="left"> Details about this specific directory.|</td>
+</tr>
+<tr>
+<td align="left">Status </td>
+<td align="left"> By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application. |</td>
+</tr>
+<tr>
+<td align="left">Min characters </td>
+<td align="left"> The minimum number of acceptable characters for the account password. |</td>
+</tr>
+<tr>
+<td align="left">Max characters </td>
+<td align="left"> The maximum number of acceptable characters for the account password. |</td>
+</tr>
+<tr>
+<td align="left">Mandatory characters </td>
+<td align="left"> The required character patterns which new passwords will be validated against. For example, for an alphanumeric password of at least 8 characters with at least one lowercase and one uppercase character, select the abc, ABC, and 012 options. The more patterns selected, the more secure the passwords but the more complicated for a user.|</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>Click <strong>Create</strong>. </p></li>
+</ol>
+</li>
+<li><p>Register applications.</p>
+
+<p> To authenticate a user account in your <a href="/python/product-guide#Application">application</a>, you must first register the application with Stormpath.</p>
+
+<p> To register an application you must create it from the client instance:</p>
+
+<p> application = client.applications.create({
+   &lsquo;name&rsquo;: &lsquo;This Is My Python App&rsquo;,
+   &lsquo;description&rsquo;: &lsquo;This is my python app description&rsquo;
+ })</p></li>
+</ol>
+
+
+<p>You can also register an application, create a directory and link the application with the directory in one step:</p>
+
+<pre><code>application = client.applications.create({
+  "name": 'This Is My Python App',
+  "description": 'This is my python app description'
+}, create_directory="Directory")
+</code></pre>
+
+<p>If <code>True</code> is used instead of a string that represents the directory name, a generic directory name is derived from the name of the newly created application.
+This is useful if you don&rsquo;t want to be bothered with organizing your directories and prefer to start using the application functionality as soon as possible.</p>
+
+<ol>
+<li><p>Create accounts.</p>
+
+<p> To create a user account, you must:</p>
+
+<ol>
+<li>Get the directory instance from the client and the directory href.</li>
+<li>Create the account from the directory instance.</li>
+</ol>
+
+
+<p> directory_href = &lsquo;<a href="https://api.stormpath.com/v1/directories/YOUR_DIRECTORY_ID">https://api.stormpath.com/v1/directories/YOUR_DIRECTORY_ID</a>&rsquo;</p>
+
+<p> directory = client.directories.get(directory_href)</p>
+
+<p> account = directory.accounts.create({
+   &lsquo;givenName&rsquo;: &lsquo;John&rsquo;,
+   &lsquo;surname&rsquo;: &lsquo;Smith&rsquo;,
+   &lsquo;email&rsquo;: &lsquo;<a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#x3a;&#x6a;&#111;&#104;&#110;&#x2e;&#115;&#x6d;&#x69;&#x74;&#x68;&#x40;&#x65;&#x78;&#97;&#x6d;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#x6d;">&#106;&#111;&#104;&#x6e;&#x2e;&#x73;&#109;&#105;&#116;&#104;&#64;&#101;&#120;&#x61;&#109;&#x70;&#x6c;&#x65;&#x2e;&#99;&#111;&#109;</a>&rsquo;,
+   &lsquo;username&rsquo;: &lsquo;johnsmith&rsquo;,
+   &lsquo;password&rsquo;: &lsquo;4P@$$w0rd!&rsquo;
+ })</p>
+
+<p> If you want to associate the account to a group, add the following:</p>
+
+<pre><code> account.add_group(group)
+</code></pre></li>
+<li><p>Authenticate accounts.</p>
+
+<p> To authenticate an account you must have the application the account authenticates against. With the application, the account is authenticated by providing the username and password as follows:</p>
+
+<pre><code> application_href = 'https://api.stormpath.com/v1/applications/YOUR_APPLICATION_ID'
+ application = client.applications.get(application_href)
+
+ account = application.authenticate_account('johnsmith', '4P@$$w0rd!')
+</code></pre></li>
+</ol>
+
+
+<h2><a id="next-steps"></a>Next Steps</h2>
+
+<p>We hope you have found this Quickstart helpful!</p>
+
+<p>For full coverage of Stormpath&rsquo;s Python SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our <a href="/python/product-guide">Python Product Guide</a></p>
+
+            <div id="bottom-wrapper">
+                     <div class="region region-bottom">
+    <div id="block-block-1" class="block block-block first odd">
+
+      
+   Copyright © 2013 StormPath&nbsp;&nbsp;|&nbsp;&nbsp;All rights reserved 
+</div><!-- /.block -->
+<div id="block-menu-menu-footer-menu" class="block block-menu last even" role="navigation">
+
+      
+  <ul class="menu"><li class="first leaf"><a href="http://www.stormpath.com/privacy_policy">Privacy policy</a></li>
+<li class="last leaf"><a href="http://www.stormpath.com/terms_of_service">Terms of Service</a></li>
+</ul>
+</div><!-- /.block -->
+  </div><!-- /.region -->
+
+            </div>          	
+    	  </div>
+
+
+
+<aside class="sidebars">
+  
+    <section class="region region-sidebar-first column sidebar">
+      
+<div id="block-stormpath-docs-languages" class="block block-stormpath-docs first odd">
+ <form class="stormpath-docs-select-language" action="/docs/java/product-guide" method="post" id="stormpath-docs-language-form" accept-charset="UTF-8"><div><div class="form-item form-type-select form-item-language">
+  <label for="edit-language">Language: </label>
+ <select id="edit-language" name="language" class="form-select">
+  
+  
+ 	
+    <option value="php">PHP</option>
+ 	
+    <option value="python" selected>Python</option>
+ 	
+    <option value="ruby">Ruby</option>
+ 	
+    <option value="java">Java</option>
+ 	
+    <option value="rest">REST API</option>
+ 	
+    <option value="console">Admin Console</option>
+ 	
+ </select>
+</div>
+<input type="hidden" name="form_id" value="stormpath_docs_language_form">
+</div></form>
+</div>
+
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+</script>
+
+
+<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
+  
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf active-trail">
+			
+				<a href="/python/quickstart">Python Quickstart Guide</a>
+			
+			
+				<ul class="menu"><li class="leaf"><a href="#next-steps" data-level="0" class="fragment">Next Steps</a><ul class="menu"></ul></li></ul>
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/python/product-guide">Python Product Guide</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="https://github.com/stormpath/stormpath-sdk-python" target="_blank"><span>Python SDK on GitHub</span></a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="https://pypi.python.org/pypi/stormpath-sdk" target="_blank"><span>Python SDK on PyPi</span></a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="https://github.com/stormpath/stormpath-python-samples" target="_blank"><span>Python Sample App</span></a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="https://github.com/stormpath/stormpath-django" target="_blank"><span>Django Integration</span></a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+        
+  	
+  
+        
+  	
+                
+                       <div class="menu-divider"></div> 
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/how-do-i">How Do I..?</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/errors">Stormpath Error Codes</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+</div>
+    </section>
+  
+
+  
+</aside>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<!-- Google Code for Remarketing tag -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1002663385;
+var google_conversion_label = "wSRZCLfkjQQQ2duN3gM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1002663385/?value=0&amp;label=wSRZCLfkjQQQ2duN3gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<!-- AdRoll Code -->
+<script type="text/javascript">
+adroll_adv_id = "RVWGHIV3GJCLHIUDNFIMNY";
+adroll_pix_id = "L2WE5KAWDRDBVP46PZZBQJ";
+(function () {
+var oldonload = window.onload;
+window.onload = function(){
+__adroll_loaded=true;
+var scr = document.createElement("script");
+var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+scr.setAttribute('async', 'true');
+scr.type = "text/javascript";
+scr.src = host + "/j/roundtrip.js";
+((document.getElementsByTagName('head') || [null])[0] ||
+document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+if(oldonload){oldonload()}};
+}());
+</script>
+
+<!-- Start Visual Website Optimizer Asynchronous Code -->
+<script type="text/javascript">
+var _vwo_code=(function(){
+var account_id=36938,
+settings_tolerance=2000,
+library_tolerance=1500,
+use_existing_jquery=false,
+// DO NOT EDIT BELOW THIS LINE
+f=false,d=document;return{use_existing_jquery:function(){return use_existing_jquery;},library_tolerance:function(){return library_tolerance;},finish:function(){if(!f){f=true;var a=d.getElementById('_vis_opt_path_hides');if(a)a.parentNode.removeChild(a);}},finished:function(){return f;},load:function(a){var b=d.createElement('script');b.src=a;b.type='text/javascript';b.innerText;b.onerror=function(){_vwo_code.finish();};d.getElementsByTagName('head')[0].appendChild(b);},init:function(){settings_timer=setTimeout('_vwo_code.finish()',settings_tolerance);this.load('//dev.visualwebsiteoptimizer.com/j.php?a='+account_id+'&u='+encodeURIComponent(d.URL)+'&r='+Math.random());var a=d.createElement('style'),b='body{opacity:0 !important;filter:alpha(opacity=0) !important;background:none !important;}',h=d.getElementsByTagName('head')[0];a.setAttribute('id','_vis_opt_path_hides');a.setAttribute('type','text/css');if(a.styleSheet)a.styleSheet.cssText=b;else a.appendChild(d.createTextNode(b));h.appendChild(a);return settings_timer;}};}());_vwo_settings_timer=_vwo_code.init();
+</script>
+<!-- End Visual Website Optimizer Asynchronous Code -->
+
+<!-- CrazyEgg -->
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0017/1602.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+
+<!-- Perfect Audience -->
+<script type="text/javascript">
+(function() {
+window._pa = window._pa || {};
+// _pa.orderId = "";
+// _pa.revenue = "";
+var pa = document.createElement('script'); pa.type = 'text/javascript'; pa.async = true;
+pa.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + "//tag.perfectaudience.com/serve/51fc2c6f1b440adfcc000099.js";
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pa, s);
+})();
+</script>
+
+
+</body>
+</html>
