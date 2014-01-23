@@ -30,11 +30,18 @@
         var $fancy_select = new fancySelect(this);
         $(this).addClass('processed');
         var $form = $(this).parents('form');
+        $form.find('input[type="submit"]').click(function(e) {
+          var lang = $(this).parents('form').find('select[name="language"] option:selected').val();
+          window.location.href = '/' + lang + '/quickstart';
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        });
         // When lang is selected redirect user immediately.
         if ($form.hasClass('stormpath-docs-select-lang')) {
-          $fancy_select.blur({form: $form}, function(e) {
-            e.data.form.find('input[type="submit"]').click();
-            e.stopPropagation(); // Form is submitted, stop propagation.
+          $fancy_select.find('span:not(.first)').click(function(e) {
+            window.location.href = '/' + $(this).attr('value') + '/quickstart';
+            e.stopPropagation();
           });
         }
       });
