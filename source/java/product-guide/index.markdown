@@ -1942,7 +1942,7 @@ This workflow allows you to create an group at a directory level.
 This workflow relies on the `group` resource as a starting point. For more information refer to the [Create a Group](#group-create) section of this guide.
 
 <a class="anchor" name="directories-verify-email"></a>
-### Verify An Account's Email Address
+### Verifying An Account's Email Address
 
 This workflow allows you to send a welcome email to a newly registered account and optionally verify that they own the email addressed used during registration.
 
