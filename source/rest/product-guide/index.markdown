@@ -2648,12 +2648,39 @@ The response is a paginated list of `accountStoreMapping` resources.  You may us
 <a class="anchor" name="directories"></a>
 ## Directories
 
-A Directory is a top-level storage containers of Accounts and Groups. A Directory also manages security policies (like password strength) for the Accounts it contains. Stormpath supports two types of Directories:
+A Directory is a top-level storage containers of Accounts and Groups. A Directory also manages security policies (like password strength) for the Accounts it contains.
+
+
+
+Stormpath supports two types of Directories:
 
 1. Natively hosted ‘Cloud’ directories that originate in Stormpath and
 2. ‘Mirror’ directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers.
 
-Directories can be used to cleanly manage segmented account populations.  For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.  You can [associate directories to applications](#account-store-mappings) (or groups within a directory) to allow its accounts to login to applications.
+Directories can be used to cleanly manage segmented account populations.  For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.  You can [associate directories to applications](#account-store-mappings) (or groups within a directory) to allow the directory's accounts to login to applications.
+
+You can add as many directories of each type as you require. Adding or deleting accounts, groups and group memberships in directories affects ALL applications to which the directories are mapped as [account stores](#account-store-mappings)
+
+#### Mirror Directories
+
+Mirror directories are a big benefit to Stormpath customers who need LDAP or Active Directory accounts to securely login to public web applications _without breaking corporate firewall policies_. Here is how they work:
+
+* After creating an LDAP or AD Directory in Stormpath, you download a Stormpath Agent.  This is a simple standalone software application that you install behind the corporate firewall so it can communicate directly with the LDAP or AD server.
+* You configure the agent via LDAP filters to view only the accounts that you want to expose to your Stormpath-enabled applications.
+* The Agent will start synchronizing immediately, pushing this select data _outbound_ to Stormpath over a TLS (HTTPS) connection.  The synchronized accounts and groups appear in the Stormpath Directory.  The accounts will be able to login to any Stormpath-enabled application that [you assign](#account-store-mappings).
+* When the Agent detects local LDAP or AD changes, additions or deletions to these specific accounts or groups, it will automatically propagate those changes to Stormpath to be reflected by your Stormpath-enabled applications.
+
+LDAP or Active Directory are still the 'system of record' or source of identity 'truth' for these accounts and groups.  The big benefit is that your Stormpath-enabled applications still use the same convenient REST+JSON API - they do not need to know anything about LDAP, Active Directory or legacy connection protocols!
+
+{% docs tip %}
+The Stormpath Agent is _firewall friendly_: you do not need to open any inbound holes in your firewall.  The only requirement is that the Agent be able to make an outbound HTTPS connection to https://api.stormpath.com, 
+{% enddocs %}
+
+Finally, please note that mirrored accounts and groups in Stormpath are automatically deleted when:
+
+* The backing object is deleted from the LDAP or AD directory service.
+* The backing LDAP/AD object information no longer matches the account filter criteria configured for the agent.
+* The LDAP/AD directory is deleted.
 
 <a class="anchor" name="directory"></a>
 ### Directory Resource
@@ -2676,23 +2703,6 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="directory-resource-accounts"></a>`accounts` | A link to the accounts owned by the directory. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-groups"></a>`groups` | A link to the groups owned by the directory. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-tenant"></a>`tenant` | A link to the owning tenant. | Link | <span>--</span>
-
-Within Stormpath, there are two types of directories you can implement:
-
-* A <strong>Cloud</strong> directory, also known as Stormpath-managed directories, which are hosted by Stormpath and use the Stormpath data model to store account and group information. This is the default and most common type of directory in Stormpath.
-* A <strong>Mirrored</strong> directory, which is a Stormpath-hosted directory populated with data pushed from your existing LDAP/AD directory using a Stormpath synchronization agent. All user management is done on your existing LDAP/AD directory, but the cloud mirror can be accessed through the Stormpath APIs on your modern applications.
-
-    * Agent directories cannot be created using the API.
-    * You can specify various LDAP/AD object and attribute settings of the specific LDAP/AD server for accounts and groups.
-    * If the agent status is `Online`, but you are unable to see any data when browsing your LDAP/AD mapped directory, it is likely that your object and filters are configured incorrectly.
-
-You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as [account stores](#account-store-mappings)</a>.
-
-LDAP/AD accounts and groups are automatically deleted when:
-
-* The backing object is deleted from the LDAP/AD directory service.
-* The backing LDAP/AD object information no longer matches the account filter criteria configured for the agent.
-* The LDAP/AD directory is deleted.
 
 For directories, you can:
 
