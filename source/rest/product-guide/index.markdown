@@ -1534,17 +1534,22 @@ You may search for applications as described in [Search Tenant Applications](#te
 <a class="anchor" name="application-accounts"></a>
 ### Application Accounts
 
-An application's account base is the collection of all [accounts](#accounts) that are accessible to that application.
+An application's `accounts` collection is the collection of all accounts that are _accessible to_ the application.  
 
-You define an application's account base by assigning one or more [directories](#directories) (or [groups](#groups) within directories) to that application; by association, **any accounts within assigned directories (or groups) may login to the application**.
+It might sound a little odd to phrase it that way (_accessible to_), but it makes sense when you realize that applications do not have _direct_ accounts of their own.  Accounts are 'owned' by [directories](#directories) and instead _made available to_ applications.
 
-In this way, applications do not have _direct_ accounts of their own (accounts are 'owned' by [directories](#directories)) - accounts are instead _made available to_ applications based on associations with directories or groups within directories.
+This means that an application's `accounts` collection is _virtual_.  This virtual collection is an aggregate 'view' of all accounts that are:
 
-This is a powerful feature within Stormpath that allows you to segment account populations and control how accounts may use one or more applications.  For example, you might have an "Employees" directory and a "Customers" directory, which are two very different account populations that may or may not have access to the same applications.
+1. in any directory [assigned to the application](#account-store-mappings)
+2. in any group directly [assigned to the application](#account-store-mappings)
 
-**The aggregate collection of all accounts across all assigned directories or groups is the application's effective account base.**
+This is a powerful and convenient feature: as you add or remove account stores from an application to control its user population, you automatically 'bring in' any of their accounts.  You can interact with the application's `accounts` collection, like [search for accounts](#application-accounts-search) or [add new accounts](#application-account-register), like you would a normal collection.
 
-However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application's needs.  This is a totally valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications. We'll cover directory and group associations for login more in-depth later.
+{% docs info %}
+Most application developers do not need to be aware that an application's `accounts` collection is virtual.  The most common case in Stormpath for simpler apps is to just [create an application with its own directory](#application-create-with-directory) for its own needs.  Used this way, the application's and the directory's accounts (and groups) are the same.  
+
+But it is nice to know that you can customize the application's account population with other directories or groups in the future if you need to do so.
+{% enddocs %}
 
 **Application Accounts Collection Resource URI**
 
@@ -2650,36 +2655,47 @@ The response is a paginated list of `accountStoreMapping` resources.  You may us
 
 A Directory is a top-level storage containers of Accounts and Groups. A Directory also manages security policies (like password strength) for the Accounts it contains.
 
+Additionally:
 
+* All accounts within a Directory have a unique email address and/or username.
+* All groups within a Directory have a unique name.
 
 Stormpath supports two types of Directories:
 
 1. Natively hosted ‘Cloud’ directories that originate in Stormpath and
 2. ‘Mirror’ directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers.
 
+{% docs info %}
+Directories are a more advanced feature of Stormpath.  If you have a single application or multiple applications that access the same accounts, you usually only need a single directory, and you do not need to be concerned with creating or managing multiple directories.
+
+If however, your application(s) needs to support login for external 3rd party accounts like those in LDAP or Active Directory, or you have more complex account segmentation needs, directories will be a powerful tool to manage your application(s) user base.
+{% enddocs %}
+
 Directories can be used to cleanly manage segmented account populations.  For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.  You can [associate directories to applications](#account-store-mappings) (or groups within a directory) to allow the directory's accounts to login to applications.
 
-You can add as many directories of each type as you require. Adding or deleting accounts, groups and group memberships in directories affects ALL applications to which the directories are mapped as [account stores](#account-store-mappings)
+You can add as many directories of each type as you require. Adding or deleting accounts, groups and group memberships in directories affects ALL applications to which the directories are mapped as [account stores](#account-store-mappings).
 
+<a class="anchor" name="directory-mirror"></a>
 #### Mirror Directories
 
-Mirror directories are a big benefit to Stormpath customers who need LDAP or Active Directory accounts to securely login to public web applications _without breaking corporate firewall policies_. Here is how they work:
+Mirror directories are a big benefit to Stormpath customers who need LDAP or Active Directory accounts to be able to securely login to public web applications _without breaking corporate firewall policies_. Here is how they work:
 
 * After creating an LDAP or AD Directory in Stormpath, you download a Stormpath Agent.  This is a simple standalone software application that you install behind the corporate firewall so it can communicate directly with the LDAP or AD server.
 * You configure the agent via LDAP filters to view only the accounts that you want to expose to your Stormpath-enabled applications.
-* The Agent will start synchronizing immediately, pushing this select data _outbound_ to Stormpath over a TLS (HTTPS) connection.  The synchronized accounts and groups appear in the Stormpath Directory.  The accounts will be able to login to any Stormpath-enabled application that [you assign](#account-store-mappings).
+* The Agent will start synchronizing immediately, pushing this select data _outbound_ to Stormpath over a TLS (HTTPS) connection.
+* The synchronized accounts and groups appear in the Stormpath Directory.  The accounts will be able to login to any Stormpath-enabled application [that you assign](#account-store-mappings).
 * When the Agent detects local LDAP or AD changes, additions or deletions to these specific accounts or groups, it will automatically propagate those changes to Stormpath to be reflected by your Stormpath-enabled applications.
 
 LDAP or Active Directory are still the 'system of record' or source of identity 'truth' for these accounts and groups.  The big benefit is that your Stormpath-enabled applications still use the same convenient REST+JSON API - they do not need to know anything about LDAP, Active Directory or legacy connection protocols!
 
 {% docs tip %}
-The Stormpath Agent is _firewall friendly_: you do not need to open any inbound holes in your firewall.  The only requirement is that the Agent be able to make an outbound HTTPS connection to https://api.stormpath.com, 
+The Stormpath Agent is **firewall friendly**: you do not need to open any inbound holes in your company firewall.  The only requirement is that the Agent be able to make an _outbound_ HTTPS connection to https://api.stormpath.com 
 {% enddocs %}
 
-Finally, please note that mirrored accounts and groups in Stormpath are automatically deleted when:
+Finally, note that accounts and groups in mirrored directories are automatically deleted when:
 
-* The backing object is deleted from the LDAP or AD directory service.
-* The backing LDAP/AD object information no longer matches the account filter criteria configured for the agent.
+* The original object is deleted from the LDAP or AD directory service.
+* The original LDAP/AD object information no longer matches the account filter criteria configured for the agent.
 * The LDAP/AD directory is deleted.
 
 <a class="anchor" name="directory"></a>
@@ -2718,7 +2734,7 @@ For directories, you can:
 * [Delete a directory](#directory-delete)
 * [List directories](#directory-list)
 * [Search directories](#directory-search)
-* [Work with directories](#directory-workflows)
+* Work with directories:
     * [Enforce Account Password Restrictions](#directories-password-restrictions)
     * [Register A New Account](#directories-reg)
     * [Verify An Account's Email Address](#directories-verify-email)
@@ -2729,60 +2745,56 @@ For directories, you can:
 <a class="anchor" name="locate-a-directorys-rest-url"></a>
 ### Locate a Directory's REST URL
 
-When communicating with the Stormpath REST API, you might need to reference a directory directly using its REST URL or `href`.
+When communicating with the Stormpath REST API, you might need to reference a directory using its REST URL or `href`.
 
 There are multiple ways to find a directory `href` depending on what information you have available:
 
-* Retrieve a full list of directories from the tenant
+* [Search your tenant's `directories`](#tenant-directories-search)
 * Retrieve an application's `accountStoreMappings` and extract the directories iteratively
-* Retrieve an account and determine its directory
+* View an account's `directory` field.
 
-In all cases, the process is fundamentally the same. Consider the first case as example. In order to locate a directory's `href`, you'll need to first search the tenant for the specific directory using some information that you have available. If you want to find the `href` for a directory with the name "My Directory", you'll need to search the tenant for the "test" application object:
+For example, if you need the `href` for a directory named "My Directory", you can search your tenant's `directories` collection:
 
 **Example Request**
 
     curl -u $API_KEY_ID:$API_KEY_SECRET \
          -H "Accept: application/json" \
-         "https://api.stormpath.com/v1/directories/"
+         "https://api.stormpath.com/v1/tenants/23mq7BPIxNgPUPZDwj04SZ/directories?name=My%20Directory"
 
 **Example Response**
 
     HTTP/1.1 200 OK
     Content-Type: application/json;charset=UTF-8
 
-    [8]
     {
-        -0: {
-              href: "https://api.stormpath.com/v1/directories/5D1bvO5To6KQBaGFh793Zz"
-              name: "My Directory"
-              ... remaining Directory name/value pairs ...
-
-      }
+        "href": "https://api.stormpath.com/v1/tenants/23mq7BPIxNgPUPZDwj04SZ/directories",
+        "offset": 0,
+        "limit": 25,
+        "items": [
+          {
+            "href": "https://api.stormpath.com/v1/directories/3hFENJHLaH1Vy4GSbscrtv"
+            "name": "My Directory"
+            ... remaining Directory name/value pairs ...
+          }
+        ]
     }
 
-If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., "name=") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "q=My") to narrow down the selection.
+If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., `name=`) or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., `q=My`) to narrow the results.
 
 <a class="anchor" name="directory-create"></a>
 ### Create a Directory
 
-To create a directory to store user accounts, you must know which type of directory service to use.
+{% docs info %}
+It is currently only possible to create a standard (non-mirrored) Directory via the REST API.  If you need to create a [mirror directory](#directory-mirror) for LDAP or Active Directory, you must use the [Stormpath Admin Console](/console/product-guide#create-a-mirrored-directory).
+{% enddocs %}
 
-You can create a:
-
-* Cloud directory, which is hosted by Stormpath and uses the Stormpath data model to store account and group information. This is the most common type of directory in Stormpath.
-
-**OR**
-
-* Mirrored directory, which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.
-
+<a class="anchor" name="directory-create-cloud"></a>
 <a class="anchor" name="create-a-cloud-directory"></a>
 #### Create a Cloud Directory
 
-To create a new `directory` resource within the caller tenant:
+You create a new directory by submitting an HTTP POST request to the `/v1/directories` endpoint. This will create a new Directory instance within the caller’s tenant.
 
-**Resource URI**
-
-    /v1/directories
+When you submit the POST, at least the `name` attribute must be specified, and it must be unique compared to all other directories in your tenant. The `description` and `status` attribute are optional.
 
 **Required Attribute**
 
@@ -2813,7 +2825,7 @@ To create a new `directory` resource within the caller tenant:
       "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q",
       "name" : "Captains",
       "description" : "Captains from a variety of stories",
-      "status" : "enabled",
+      "status" : "ENABLED",
       "tenant" : {
         "href" : "https://api.stormpath.com/v1/tenants/Gh9238fksJlsieJkPkQuW"
       },
@@ -2825,59 +2837,20 @@ To create a new `directory` resource within the caller tenant:
       }
     }
 
-<a class="anchor" name="directories-mirrored"></a>
+<a class="anchor" name="directory-create-mirror"></a>
 #### Create a Mirrored (LDAP/AD) Directory
 
-Mirrored directories, after initial configuration, are accessible through the Agents tab of the directory.
-
-To create an LDAP/AD mirrored directory, you must log in to the Stormpath Admin Console.
-
-For more information on setting up a Mirrored Directory and using the Stormpath Admin Console, refer to the [Stormpath Admin Console product guide](/console/product-guide#!CreateDir).
+It is currently only possible to create a standard (non-mirrored) Directory via the REST API.  If you need to create a [mirror directory](#directory-mirror) for LDAP or Active Directory, you must use the [Stormpath Admin Console](/console/product-guide#create-a-mirrored-directory).
 
 <a class="anchor" name="associate-directories-with-applications"></a>
 #### Associate Directories with Applications
 
-In order to associate a directory with an application, you'll need to create an [Account Store Mapping](#account-store-mappings). An account store mapping associates an account store (such as a directory or a group) with an application.
-
-HTTP `POST` against the account store mapping end-point with the directory and application `href` in order to create an association.
-
-**Example Request**
-
-    curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
-         -H "Content-Type: application/json;charset=UTF-8" \
-         -d '{
-               "application": {
-                 "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
-               }
-               "accountStore": {
-                 "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpExAmPLe"
-               },
-               "isDefaultAccountStore": true,
-               "isDefaultGroupStore": true
-             }' \
-         'https://api.stormpath.com/v1/accountStoreMappings'
-
-**Example Response**
-
-    {
-        "href": "https://api.stormpath.com/v1/accountStoreMappings/7Ui2gpn9tV75y3TExAmPLe",
-        "accountStore": {
-            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpExAmPLe"
-        },
-        "application": {
-            "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
-        },
-        "listIndex": 0,
-        "isDefaultAccountStore": true,
-        "isDefaultGroupStore": true
-    }
-
-For more information on Account Store Mappings, refer to the [Account Store Mapping](#account-store-mappings) section.
+If you want to assign a directory to an application so the directory's accounts may login to the application, you will need to [create an AccountStoreMapping](#create-an-account-store-mapping).
 
 <a class="anchor" name="directory-retrieve"></a>
 ### Retrieve a Directory
 
-HTTP `GET` returns a representation of a `directory` resource that includes the resource attributes.
+To retrieve a Directory, execute a `GET` request to a directory's `href`:
 
 **Example Request**
 
@@ -2938,7 +2911,7 @@ Use HTTP `POST` when you want to change one or more specific attributes of a `di
     Content-Type: application/json;charset=UTF-8
 
     {
-      "name" : "Captains",
+      "name" : "Captains Directory",
     }
 
 **Example Response**
@@ -2948,7 +2921,7 @@ Use HTTP `POST` when you want to change one or more specific attributes of a `di
 
     {
       "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q",
-      "name" : "Captains",
+      "name" : "Captains Directory",
       "description" : "Captains from a variety of stories",
       "status" : "enabled",
       "tenant" : {
@@ -2965,9 +2938,9 @@ Use HTTP `POST` when you want to change one or more specific attributes of a `di
 <a class="anchor" name="enable-or-disable-a-directory"></a>
 #### Enable Or Disable a Directory
 
-A directory has two statuses: enabled and disabled. An enabled directory allows the groups and accounts to log into any applications for which the directory is defined as an account store while a disabled directory does not.
+A directory's status can be either `enabled` or `disabled`. An `enabled` directory allows its accounts and groups to login to any [assigned](#account-store-mappings) application.  A `disabled` directory does not allow its accounts and groups to login to applications.
 
-To enable or disable a directory, use HTTP `POST` to set the `status` to either `ENABLED` or `DISABLE`.
+To enable or disable a directory, use HTTP `POST` to set the `status` to either `ENABLED` or `DISABLED`.
 
 **Example Request**
 
@@ -2981,18 +2954,20 @@ To enable or disable a directory, use HTTP `POST` to set the `status` to either 
 <a class="anchor" name="update-agent-configuration"></a>
 #### Update Agent Configuration
 
-A [Directory Agent](#directory-agent) is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory. This is critical part of [a mirrored directory](#directories-mirrored).
+A [Directory Agent](#directory-agent) is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath [mirror directory](#directory-mirrored).
 
 You can modify an agent configuration going through the "Directories" or "Agent" tabs on the Stormpath Admin Console. For more information on administering Mirrored Directory agents, refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!UpdateAgent).
 
 <a class="anchor" name="directory-delete"></a>
 ### Delete a Directory
 
-Deleting a directory completely erases the directory and all group and account data from Stormpath.
+{% docs note %}
+Deleting a directory completely erases the directory and all of its accounts and groups from Stormpath.
+{% enddocs %}
 
-We recommend that you disable a directory rather than delete it, in case an associated application contains historical data associated with accounts in the directory.
+Before you permanently delete a directory, it can be a good practice to disable it in case an associated application contains historical data associated with accounts in the directory.
 
-The Stormpath Administrators directory cannot be deleted.
+Note: The `Stormpath Administrators` directory cannot be deleted.
 
 To delete a directory:
 
@@ -3004,78 +2979,17 @@ To delete a directory:
 
     HTTP/1.1 204 No Content
 
-{% docs warning %}
-You cannot delete a directory that is still associated with an application and thus you cannot delete a directory that is marked as the "Default Account Store" or contains a "Default Group" doing so will result in a 400 Bad Request error
-{% enddocs %}
-
-**Example Error Response**
-
-    {
-      status: 400
-      code: 400
-      message: "Directory is referenced by 1 Application(s) and may not be deleted until those applications are disassociated"
-      developerMessage: "Directory is referenced by 1 Application(s) and may not be deleted until those applications are disassociated"
-      moreInfo: "mailto:support@stormpath.com"
-    }
-
 <a class="anchor" name="directory-list"></a>
 ### List Directories
 
-To list directories:
-
-**Example Request**
-
-    GET https://api.stormpath.com/v1/tenants/fRlKUJtWRHes4q6M2_TX5w/directories
-
-**Example Response**
-
-    HTTP/1.1 200 OK
-     Content-Type: application/json;charset=UTF-8;
-
-     {
-       "href": "https://api.stormpath.com/v1/tenants/fRlKUJtWRHes4q6M2_TX5w/directories"
-       "offset": 0,
-       "limit": 25,
-       "items" : [
-         {
-           "href" : "https://api.stormpath.com/v1/directories/Wp831krnTZm81wVZni6Jtw",
-           "name" : "My directory",
-           "description" : "My directory description",
-           "status" : "ENABLED",
-           "accounts" : {
-             "href" : "https://api.stormpath.com/v1/directories/Wp831krnTZm81wVZni6Jtw/accounts"
-           },
-           "groups" : {
-             "href" : "https://api.stormpath.com/v1/directories/Wp831krnTZm81wVZni6Jtw/groups"
-           },
-           "tenant" : {
-             "href" : "https://api.stormpath.com/v1/tenants/fRlKUJtWRHes4q6M2_TX5w"
-           }
-         },
-         ... additional Directory resources ...
-       ]
-     }
+You may list your tenant's directories as described in [List Tenant Directories](#tenant-directories-list).
 
 <a class="anchor" name="directory-search"></a>
 ### Search Directories
 
-Directory attributes supported for search include:
-
-* name
-* description
-* status
-
-**Searchable Directory Collection Resources**
-
-Directory Collection Resource | Search Functionality
-:----- | :-----
-/v1/tenants/:tenantId/directories | A search across directories owned by the specified tenant. |
+You may search for directories as described in [Search Tenant directories](#tenant-directories-search).
 
 <a class="anchor" name="work-with-directories"></a>
-### Work With Directories
-
-From a directory you can do things like enforce account password restrictions, register new accounts and groups, configure the account email verification workflow, configure the account password reset workflow, among other functionalities. Read below to find more information about these features.
-
 <a class="anchor" name="directories-account-password-policy"></a><a class="anchor" name="directories-password-restrictions"></a>
 ### Account Password Policy
 
@@ -3094,10 +3008,14 @@ With Stormpath's Cloud directories, you can configure custom restrictions for th
 
 By default, passwords must be of mixed case, include at least one number, and be between 8 and 100 characters in length.
 
-More information about configuring a cloud directory's password restrictions can be found in the [Stormpath Admin Console product guide](http://stormpath.com/docs/console/product-guide#!CreateDir).
+{% docs note %}
+It is not currently possible to configure a Directory's account password policy via the REST API.  You must use the [Stormpath Admin Console](https://api.stormpath.com) (Directories --> &lt;choose your directory&gt; --> Details tab).
+{% enddocs %}
 
 {% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
+Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. 
+
+Additionally, the `Stormpath Administrator` directory's automated workflows cannot be altered.
 {% enddocs %}
 
 <a class="anchor" name="directories-reg"></a>
