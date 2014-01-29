@@ -2598,7 +2598,7 @@ Deleting an `accountStoreMapping` resource *does not* delete either the account 
 {% docs note %}
 Deleting an account store mapping will remove the ability for accounts in the account store from authenticating with the application unless they are associated with an account store that is still mapped to the application. Be careful when removing mappings.
 
-Also, note that if no `AccountStoreMapping` is designated as the default group store, the application _WILL NOT_ be able to create new groups.
+Also, note that if no `AccountStoreMapping` is designated as the default account store, the application _WILL NOT_ be able to create new accounts.  Similarly, if there is no designated default group store, the application will not be able to create new groups.
 {% enddocs %}
 
 **Example Request**
