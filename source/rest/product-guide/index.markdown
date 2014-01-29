@@ -2961,13 +2961,11 @@ You can modify an agent configuration going through the "Directories" or "Agent"
 <a class="anchor" name="directory-delete"></a>
 ### Delete a Directory
 
-{% docs note %}
+{% docs warning %}
 Deleting a directory completely erases the directory and all of its accounts and groups from Stormpath.
 {% enddocs %}
 
-Before you permanently delete a directory, it can be a good practice to disable it in case an associated application contains historical data associated with accounts in the directory.
-
-Note: The `Stormpath Administrators` directory cannot be deleted.
+We recommend that you disable a directory instead of deleting it if you anticipate that you might use the directory again or if you want to retain its data for historical reference.
 
 To delete a directory:
 
@@ -2978,6 +2976,10 @@ To delete a directory:
 **Example Response**
 
     HTTP/1.1 204 No Content
+    
+{% docs info %}
+The `Stormpath Administrators` directory cannot be deleted.
+{% enddocs %}
 
 <a class="anchor" name="directory-list"></a>
 ### List Directories
