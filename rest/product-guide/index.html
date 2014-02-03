@@ -334,7 +334,7 @@
 <li>Account email verification (send email &ndash;> user clicks a link &ndash;> their account is verified and they can login)</li>
 <li>Secure password storage with continuously updated cryptography best practices</li>
 <li>Password reset (send email &ndash;> user clicks a link &ndash;> sets new password &ndash;> account password encrypted and stored securely)</li>
-<li>Account login (aka authentication)</li>
+<li>Account login (authentication)</li>
 <li>Seamless integration with LDAP and Active Directory &ndash; you&rsquo;ll never have to worry about integrating your application with them again</li>
 <li>A complete administrative user interface to allow you to manage your applications, directories, accounts and groups</li>
 <li>And more&hellip;</li>
@@ -357,6 +357,7 @@
 <li>Groups</li>
 <li>Accounts</li>
 <li>Tenants</li>
+<li>Account Stores</li>
 </ul>
 
 
@@ -386,7 +387,11 @@
 
 <p><strong>Tenants</strong></p>
 
-<p>Stormpath is a <a href="http://en.wikipedia.org/wiki/Multitenancy">multi-tenant</a> software service. When you <a href="https://api.stormpath.com/register">sign up for Stormpath</a>, a private data &lsquo;space&rsquo;, called a <code>Tenant</code>, is created for you.  This private <a href="#tenants">tenant space</a> contains all of the data you own, including your applications, directories, accounts and groups and more.  The <code>Tenant</code> concept is mostly &lsquo;behind the scenes&rsquo; and you don&rsquo;t need to use it all that often, but sometimes it is necessary or useful to use directly.</p>
+<p>Stormpath is a <a href="http://en.wikipedia.org/wiki/Multitenancy">multi-tenant</a> software service. When you <a href="https://api.stormpath.com/register">sign up for Stormpath</a>, a private data &lsquo;space&rsquo;, called a Tenant, is created for you.  This private <a href="#tenants">tenant space</a> contains all of the data you own, including your applications, directories, accounts and groups and more.  The Tenant concept is mostly &lsquo;behind the scenes&rsquo; and you don&rsquo;t need to use it all that often, but sometimes it is necessary or useful to use directly.</p>
+
+<p><strong>Account Stores</strong></p>
+
+<p>An <a href="#account-store-mappings">Account Store</a> is a generic term for either a <code>Directory</code> or a <code>Group</code>. Directories and Groups are both are considered &lsquo;account stores&rsquo; because they both contain, or &lsquo;store&rsquo;, Accounts. In Stormpath, you control who may login to an application by associating (or &lsquo;mapping&rsquo;) one or more account stores to an application. The accounts across all of an application’s assigned account stores form the application’s user base; those accounts may login to the application.</p>
 
 <hr />
 
@@ -421,15 +426,11 @@
 </ul>
 
 
-<p><strong>Security Notice</strong></p>
-
-<p>Any account that can access the Stormpath application within the Stormpath Admin Console has full administrative access to your Stormpath data and settings, including access to the REST API if they have an API Key.</p>
+<div class='docs-note'><p>Security Notice: Any account that can access the Stormpath application within the Stormpath Admin Console has full administrative access to your Stormpath data and settings, including access to the REST API if they have an API Key.</p>
 
 <p>Assign user accounts to Stormpath, through <a href="#account-store-mappings">account stores</a>, wisely.</p>
+</div>
 
-<p><strong>HTTPS</strong></p>
-
-<p>To help ensure data security, only secure (HTTPS) communication is allowed when communicating with the Stormpath API servers. Standard HTTP is not supported.</p>
 
 <p><a class="anchor" name="authentication-basic"></a></p>
 
@@ -483,7 +484,7 @@ HTTP basic password: apiKey.secret value
 </ul>
 
 
-<p>If you port the algorithm to other languages, please let us know. We are happy to help. Email us at <a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#x73;&#x75;&#x70;&#x70;&#111;&#114;&#116;&#x40;&#115;&#116;&#x6f;&#114;&#x6d;&#x70;&#x61;&#x74;&#104;&#46;&#x63;&#x6f;&#109;">&#x73;&#117;&#112;&#112;&#x6f;&#114;&#116;&#64;&#x73;&#116;&#111;&#114;&#x6d;&#x70;&#97;&#116;&#104;&#x2e;&#99;&#111;&#x6d;</a> and we will help as best as we can.</p>
+<p>If you port the algorithm to other languages, please let us know. We are happy to help. Email us at <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x73;&#117;&#x70;&#112;&#x6f;&#114;&#116;&#x40;&#115;&#x74;&#x6f;&#114;&#109;&#112;&#97;&#116;&#104;&#x2e;&#x63;&#111;&#109;">&#115;&#x75;&#112;&#112;&#111;&#114;&#x74;&#x40;&#x73;&#116;&#111;&#114;&#109;&#x70;&#x61;&#116;&#x68;&#x2e;&#x63;&#x6f;&#109;</a> and we will help as best as we can.</p>
 
 <div class='docs-info'><p>The Stormpath <code>SAuthc1</code> digest algorithm is NOT the same as <a href="http://www.ietf.org/rfc/rfc2617.txt" title="RFC 2617">RFC 2617</a> HTTP digest authentication. The Stormpath <code>SAuthc1</code> digest-based authentication scheme is more secure than standard HTTP digest authentication.</p>
 </div>
@@ -493,7 +494,7 @@ HTTP basic password: apiKey.secret value
 
 <h3><a id="resource-format"></a>Resource Format</h3>
 
-<p>The Stormpath REST API currently only supports JSON resource representations. If you would like other formats supported, please email us at <a href="&#109;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#115;&#x75;&#x70;&#x70;&#111;&#x72;&#x74;&#x40;&#x73;&#x74;&#x6f;&#x72;&#x6d;&#x70;&#x61;&#x74;&#x68;&#46;&#x63;&#x6f;&#x6d;">&#x73;&#x75;&#112;&#x70;&#111;&#114;&#116;&#64;&#x73;&#x74;&#111;&#114;&#109;&#x70;&#97;&#116;&#104;&#x2e;&#x63;&#111;&#x6d;</a> to let us know!</p>
+<p>The Stormpath REST API currently only supports JSON resource representations. If you would like other formats supported, please email us at <a href="&#x6d;&#x61;&#105;&#x6c;&#116;&#x6f;&#58;&#x73;&#x75;&#112;&#x70;&#111;&#x72;&#116;&#64;&#x73;&#x74;&#x6f;&#x72;&#109;&#112;&#x61;&#116;&#x68;&#46;&#99;&#111;&#x6d;">&#x73;&#x75;&#112;&#x70;&#x6f;&#114;&#116;&#x40;&#x73;&#x74;&#111;&#114;&#x6d;&#112;&#97;&#116;&#104;&#46;&#99;&#x6f;&#109;</a> to let us know!</p>
 
 <p><a class="anchor" name="resource-create"></a></p>
 
@@ -1432,7 +1433,7 @@ Content-Type: application/json;charset=UTF-8;
 
 <p>When requesting a resource you might want the Stormpath API server to return not only that resource, but also one or more of its linked resources. Link expansion allows you to retrieve related resources in a single request to the server instead of having to issue multiple separate requests.</p>
 
-<h4><code>expand</code> Query Parameter</h4>
+<h4>Expand Query Parameter</h4>
 
 <p>For example, to retrieve an account and its parent directory, instead of issuing two requests (one for the account and another for its directory) add an <code>expand</code> query parameter with a value of <code>directory</code> to the resource URI.</p>
 
@@ -1496,7 +1497,7 @@ Content-Type: application/json;charset=UTF-8;
 
 <p>For example, it would not be possible to return an account with its directory expanded and also the directory&rsquo;s groups expanded as well. Link expansion is currently only possible one level &lsquo;deep&rsquo;.</p>
 
-<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#x73;&#117;&#x70;&#112;&#x6f;&#114;&#x74;&#x40;&#115;&#x74;&#111;&#x72;&#109;&#112;&#97;&#x74;&#104;&#46;&#x63;&#111;&#109;">&#115;&#117;&#x70;&#x70;&#111;&#x72;&#x74;&#64;&#x73;&#x74;&#111;&#x72;&#109;&#112;&#x61;&#116;&#104;&#46;&#x63;&#x6f;&#109;</a> and submit a feature request.</p>
+<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#115;&#x75;&#112;&#x70;&#x6f;&#114;&#116;&#64;&#115;&#x74;&#x6f;&#114;&#109;&#x70;&#97;&#x74;&#x68;&#x2e;&#99;&#x6f;&#x6d;">&#115;&#x75;&#x70;&#x70;&#111;&#x72;&#x74;&#64;&#115;&#x74;&#111;&#114;&#x6d;&#x70;&#x61;&#x74;&#104;&#x2e;&#99;&#x6f;&#109;</a> and submit a feature request.</p>
 
 <h4>Expanding Multiple Links</h4>
 
@@ -1556,9 +1557,9 @@ Content-Type: application/json;charset=UTF-8;
 
 <p>Stormpath is a <a href="http://en.wikipedia.org/wiki/Multitenancy">multi-tenant</a> software service. When you <a href="https://api.stormpath.com/register">sign up for Stormpath</a>, a private data &lsquo;space&rsquo; is created for you.  This space is represented as a <code>Tenant</code> resource in the Stormpath REST API.</p>
 
-<p>It might help to think of a tenant as a Stormpath customer.  As a Stormpath tenant (customer), you own your <code>Tenant</code> resource and everything in it &ndash; applications, directories, accounts, groups, and so on.</p>
+<p>It might help to think of a <code>Tenant</code> as a Stormpath customer.  As a Stormpath Tenant (customer), you own your Tenant resource and everything in it &ndash; <code>Applications</code>, <code>Directories</code>, <code>Accounts</code>, <code>Groups</code>, and so on.</p>
 
-<p>In the Stormpath REST API specifically, your <code>Tenant</code> resource can be thought of as your global starting point.  You can access everything in your Tenant space by accessing your Tenant resource first and then interacting with its other linked resources (applications collection, directories collection, etc).</p>
+<p>In the Stormpath REST API specifically, your <code>Tenant</code> resource can be thought of as your global starting point.  You can access everything in your tenant space by accessing your tenant resource first and then interacting with its other linked resources (applications collection, directories collection, etc).</p>
 
 <p><a class="anchor" name="tenant-resource"></a></p>
 
@@ -1632,7 +1633,7 @@ Content-Type: application/json;charset=UTF-8;
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
 
-<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#115;&#x75;&#x70;&#112;&#111;&#114;&#x74;&#64;&#x73;&#116;&#111;&#114;&#x6d;&#112;&#97;&#116;&#x68;&#x2e;&#99;&#x6f;&#x6d;">&#x73;&#117;&#112;&#112;&#111;&#x72;&#116;&#x40;&#115;&#x74;&#x6f;&#x72;&#109;&#112;&#x61;&#116;&#x68;&#x2e;&#99;&#111;&#109;</a> and request it.</p>
+<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#115;&#117;&#x70;&#112;&#x6f;&#114;&#x74;&#64;&#115;&#116;&#111;&#114;&#109;&#112;&#97;&#x74;&#x68;&#x2e;&#x63;&#x6f;&#109;">&#x73;&#117;&#112;&#x70;&#x6f;&#114;&#x74;&#64;&#x73;&#x74;&#111;&#x72;&#109;&#x70;&#x61;&#116;&#104;&#x2e;&#99;&#x6f;&#x6d;</a> and request it.</p>
 
 <p><a class="anchor" name="tenant-retrieve"></a></p>
 
@@ -1913,17 +1914,17 @@ Content-Type: application/json;charset=UTF-8;
 
 <h2><a id="applications"></a>Applications</h2>
 
-<p>An application in Stormpath represents any real world piece of software that communicates with Stormpath to offload its user management and authentication needs.  The application can be anything that can make a REST API call &ndash; a web application that you are writing, a web server like Apache or Nginx, a Linux operating system, etc &ndash; basically anything that a user can login to.  A <a href="#tenants">tenant</a> administrator can register one or more applications with Stormpath.</p>
+<p>An <code>Application</code> in Stormpath represents any real world piece of software that communicates with Stormpath to offload its user management and authentication needs.  The application can be anything that can make a REST API call &ndash; a web application that you are writing, a web server like Apache or Nginx, a Linux operating system, etc &ndash; basically anything that a user can login to.  A <a href="#tenants">tenant</a> administrator can register one or more applications with Stormpath.</p>
 
-<p>You control who may login to an application by assigning (or &lsquo;mapping&rsquo;) one or more directories or groups (generically called <a href="#account-store-mappings">account stores</a>) to an application.  The accounts in these associated directories or groups (again, <em>account stores</em>) collectively form the application&rsquo;s user base. These accounts are considered the application&rsquo;s users and they can login to the application.  Therefore, you can control user population that may login to an application by managing which <a href="#account-store-mappings">account stores</a> are assigned to the application.</p>
+<p>You control who may login to an application by assigning (or &lsquo;mapping&rsquo;) one or more <code>Directories</code> or <code>Groups</code> (generically called <a href="#account-store-mappings">account stores</a>) to an application.  The <code>Accounts</code> in these associated directories or groups (again, <em>account stores</em>) collectively form the application&rsquo;s user base. These accounts are considered the application&rsquo;s users and they can login to the application.  Therefore, you can control user population that may login to an application by managing which <a href="#account-store-mappings">account stores</a> are assigned to the application.</p>
 
-<p>Even the Stormpath Admin Console and API is represented as an Application (named <code>Stormpath</code>), so you can control who has administrative access to your Stormpath <a href="#tenants">tenant</a> by managing the <code>Stormpath</code> application&rsquo;s associated account stores.</p>
+<p>Even the Stormpath Admin Console and API is represented as an <code>Application</code> (named Stormpath), so you can control who has administrative access to your Stormpath <a href="#tenants">tenant</a> by managing the Stormpath application&rsquo;s associated account stores.</p>
 
 <p><a class="anchor" name="application"></a></p>
 
 <h3><a id="application-resource"></a>Application Resource</h3>
 
-<p>An individual <code>application</code> resource may be accessed via its Resource URI:</p>
+<p>An individual <code>Application</code> resource may be accessed via its Resource URI:</p>
 
 <p><strong>Resource URI</strong></p>
 
@@ -2069,9 +2070,9 @@ Content-Type: application/json;charset=UTF-8
     "limit": 25,
     "items": [
       {
-        "href": "https://api.stormpath.com/v1/applications/3hFENJHLaH1Vy4GSbscrtv"
+        "href": "https://api.stormpath.com/v1/applications/3hFENJHLaH1Vy4GSbscrtv",
         "name": "My Application"
-        ... remaining Application name/value pairs ...
+        /* remaining Application name/value pairs */
       }
     ]
 }
@@ -2158,6 +2159,12 @@ Content-Type: application/json;charset=UTF-8;
 
 <p>For many use cases, that is unnecessary work.  If you want to associate the Application with a new Directory automatically so you can start creating accounts and groups for the application immediately (without having to map other <a href="#account-store-mappings">account stores</a>, you can use the <code>createDirectory</code> query parameter.</p>
 
+<div class='docs-note'><p>Automatically creating a directory when creating an application <em>does not</em> make that <code>Directory</code> private or restrict usage to only that <code>Application</code>. The created directory is no different than any other directory. The <code>createDirectory</code> query parameter exists as a convenience to reduce the number of steps you would have had to execute otherwise.</p>
+
+<p>If you delete an application, you must manually delete any auto-created directory yourself.  There is no shortcut to delete an auto-created directory.  This is to ensure safety in case the directory might be used by other applications.</p>
+</div>
+
+
 <h5>createDirectory=true</h5>
 
 <p>When sending the <code>POST</code> request, you can append a <code>createDirectory=true</code> query parameter name/value pair to the POST URL:</p>
@@ -2204,12 +2211,6 @@ Content-Type: application/json;charset=UTF-8
 <li>Enable the new Directory as the application&rsquo;s <a href="#application-defaultAccountStoreMapping">default account store</a>, ensuring any new accounts created directly by the application are stored in the new Directory.</li>
 <li>Enable the new Directory as the application&rsquo;s <a href="#application-defaultGroupStoreMapping">default group store</a>, ensuring any new groups created directly by the application are stored in the new Directory.</li>
 </ol>
-
-
-<div class='docs-note'><p>Automatically creating a directory when creating an application <em>does not</em> make that Directory private or restrict usage to only that application. The created directory is no different than any other directory. The <code>createDirectory</code> query parameter exists as a convenience to reduce the number of steps you would have had to execute otherwise.</p>
-
-<p>If you delete an application, you must manually delete any auto-created directory yourself.  There is no shortcut to delete an auto-created directory.  This is to ensure safety in case the directory might be used by other applications.</p>
-</div>
 
 
 <p><a class="anchor" name="application-retrieve"></a></p>
@@ -2968,7 +2969,7 @@ Content-Type: application/json;charset=UTF-8;
 
 <p>Once the user clicks this browser, your controller should retrieve the token from the query string and check it against the Stormpath API.</p>
 
-<p>Retrieving a token resource successfully using an <code>HTTP GET</code> indicates that the token is valid. Thus, to validate a token, you call to the <code>passwordResetTokens</code> end point and specify the token captured from the query string as the specific resource to request:</p>
+<p>Retrieving a token resource successfully using an HTTP <code>GET</code> indicates that the token is valid. Thus, to validate a token, you call to the <code>passwordResetTokens</code> end point and specify the token captured from the query string as the specific resource to request:</p>
 
 <p><strong>Example GET Request</strong></p>
 
@@ -3338,7 +3339,7 @@ Content-Type: application/json;charset=UTF-8
 
 <h2><a id="account-store-mappings"></a>Account Store Mappings</h2>
 
-<p><em>Account Store</em> is a generic term for either a <a href="#directories">Directory</a> or a <a href="#groups">Group</a>.  Directories and Groups are both are considered &ldquo;account stores&rdquo; because they both contain, or &lsquo;store&rsquo;, Accounts. An <em>Account Store Mapping</em>, then, represents an Account Store mapped (assigned) to an Application.</p>
+<p><em>Account Store</em> is a generic term for either a <a href="#directories">Directory</a> or a <a href="#groups">Group</a>.  Directories and Groups are both are considered &ldquo;account stores&rdquo; because they both contain, or &lsquo;store&rsquo;, <code>Accounts</code>. An <em>Account Store Mapping</em>, then, represents an Account Store mapped (assigned) to an <code>Application</code>.</p>
 
 <p>In Stormpath, you control who may login to an application by associating (or &lsquo;mapping&rsquo;) one or more account
 stores to an application.  All of the accounts across all of an application&rsquo;s assigned account stores form the application&rsquo;s
@@ -3681,17 +3682,19 @@ Content-Type: application/json;charset=UTF-8;
 
 <div class='docs-note'><p>Only one of an application&#8217;s mapped account stores may be the default account store.</p>
 
-<p>In addition, setting an AccountStoreMapping&#8217;s <code>isDefaultAccountStore</code> value to <code>true</code> will automatically set the application&#8217;s other AccountStoreMappings&#8217; <code>isDefaultAccountStore</code> values to <code>false</code>. HOWEVER:</p>
-
-<p>Lastly, note that setting an AccountStoreMapping&#8217;s <code>isDefaultAccountStore</code> value to <code>false</code> <strong>WILL NOT</strong> automatically set another AccountStoreMapping&#8217;s <code>isDefaultAccountStore</code> to <code>true</code>.  You are responsible for explicitly setting <code>isDefaultAccountStore</code> to <code>true</code> if you want the application to be able to create new accounts.</p>
+<p>In addition, setting an AccountStoreMapping&#8217;s <code>isDefaultAccountStore</code> value to <code>true</code> will automatically set the application&#8217;s other AccountStoreMappings&#8217; <code>isDefaultAccountStore</code> values to <code>false</code>. However, note that setting an AccountStoreMapping&#8217;s <code>isDefaultAccountStore</code> value to <code>false</code> <strong>WILL NOT</strong> automatically set another AccountStoreMapping&#8217;s <code>isDefaultAccountStore</code> to <code>true</code>.  You are responsible for explicitly setting <code>isDefaultAccountStore</code> to <code>true</code> if you want the application to be able to create new accounts.</p>
 </div>
 
 
 
 
-<div class='docs-warning'><p>If none of the application&#8217;s AccountStoreMappings are designated as the default account store, the application <em>WILL NOT</em> be able to create new accounts.</p>
+<div class='docs-warning'><p>If none of the application&#8217;s AccountStoreMappings are designated as the default account store, the application <em>WILL NOT</em> be able to create new accounts from the applications endpoint.  It is still possible to create accounts from the <a href="#account-create">accounts endpoint</a>.</p>
+</div>
 
-<p>Also note that Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application&#8217;s default account store.  Attempting to set <code>isDefaultAccountStore</code> to <code>true</code> on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.</p>
+
+
+
+<div class='docs-warning'><p>Also note that Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application&#8217;s default account store.  Attempting to set <code>isDefaultAccountStore</code> to <code>true</code> on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.</p>
 </div>
 
 
@@ -3753,7 +3756,7 @@ Content-Type: application/json;charset=UTF-8;
 
 <div class='docs-note'><p>Deleting an account store mapping will remove the ability for accounts in the account store from authenticating with the application unless they are associated with an account store that is still mapped to the application. Be careful when removing mappings.</p>
 
-<p>Also, note that if no <code>AccountStoreMapping</code> is designated as the default group store, the application <em>WILL NOT</em> be able to create new groups.</p>
+<p>Also, note that if no <code>AccountStoreMapping</code> is designated as the default account store, the application <em>WILL NOT</em> be able to create new accounts.  Similarly, if there is no designated default group store, the application will not be able to create new groups.</p>
 </div>
 
 
@@ -3815,13 +3818,13 @@ Content-Type: application/json;charset=UTF-8;
 
 <h2><a id="directories"></a>Directories</h2>
 
-<p>A Directory is a top-level storage containers of Accounts and Groups. A Directory also manages security policies (like password strength) for the Accounts it contains.</p>
+<p>A <code>Directory</code> is a top-level storage containers of <code>Accounts</code> and <code>Groups</code>. A Directory also manages security policies (like password strength) for the Accounts it contains.</p>
 
 <p>Additionally:</p>
 
 <ul>
-<li>All accounts within a Directory have a unique email address and/or username.</li>
-<li>All groups within a Directory have a unique name.</li>
+<li>All <code>Accounts</code> within a directory have a unique email address and/or username.</li>
+<li>All <code>Groups</code> within a directory have a unique name.</li>
 </ul>
 
 
@@ -4522,7 +4525,7 @@ Content-Type: application/json;charset=UTF-8
 
 <h2><a id="groups"></a>Groups</h2>
 
-<p>Groups are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with <a href="#role">role</a>.</p>
+<p>A <code>Group</code> is a collection of <code>Accounts</code> within a <code>Directory</code> that are often used for authorization and access control to the <code>Application</code>. In Stormpath, the term <code>Group</code> is synonymous with <a href="#role">role</a>.</p>
 
 <p>You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -4985,7 +4988,7 @@ Content-Type: application/json;charset=UTF-8;
 <pre><code>/v1/applications/:applicationUid/groups
 </code></pre>
 
-<p>HTTP GET returns a paginated list of links for groups accessible to an application.</p>
+<p>HTTP <code>GET</code> returns a paginated list of links for groups accessible to an application.</p>
 
 <p><strong>Example request:</strong></p>
 
@@ -5028,7 +5031,7 @@ Content-Type: application/json;charset=UTF-8;
 <pre><code>/v1/accounts/:accountUid/groups
 </code></pre>
 
-<p>HTTP GET returns a paginated list of links for groups for which an account is a member.</p>
+<p>HTTP <code>GET</code> returns a paginated list of links for groups for which an account is a member.</p>
 
 <p><strong>Example Request</strong></p>
 
@@ -5071,7 +5074,7 @@ Content-Type: application/json;charset=UTF-8;
 <pre><code>/v1/directories/:directoryUid/groups
 </code></pre>
 
-<p>HTTP GET returns a paginated list of links for groups for which an account is a member.</p>
+<p>HTTP <code>GET</code> returns a paginated list of links for groups for which an account is a member.</p>
 
 <p><strong>Example Request</strong></p>
 
@@ -5205,7 +5208,7 @@ Content-Type: application/json;charset=UTF-8;
 
 <h4>List Account Memberships</h4>
 
-<p><code>HTTP GET</code> returns a Collection Resource containing the group memberships to which a specific group is a member.</p>
+<p>HTTP <code>GET</code> returns a Collection Resource containing the group memberships to which a specific group is a member.</p>
 
 <p><strong>Example Request</strong></p>
 
@@ -5253,7 +5256,7 @@ Content-Type: application/json;charset=UTF-8;
 
 <h2><a id="group-memberships"></a>Group Memberships</h2>
 
-<p>A Group Membership resource represents the link between an <a href="#accounts">account</a> and a <a href="#groups">group</a>. When an account is associated with a group or a group is associated with an account, a group membership is created.</p>
+<p>A <code>Group Membership</code> resource represents the link between an <a href="#accounts">account</a> and a <a href="#groups">group</a>. When an <code>Account</code> is associated with a <code>Group</code> or a <code>Group</code> is associated with an <code>Account</code>, a group membership is created.</p>
 
 <p><a class="anchor" name="group-membership-resource"></a></p>
 
@@ -5399,7 +5402,7 @@ Content-Type: application/json;charset=UTF-8
 
 <h3><a id="retrieve-a-group-membership"></a>Retrieve a Group Membership</h3>
 
-<p>HTTP GET returns a representation of a <code>groupMembership</code> resource that includes the account and the group hrefs.</p>
+<p>HTTP <code>GET</code> returns a representation of a <code>groupMembership</code> resource that includes the account and the group hrefs.</p>
 
 <p><strong>Example Request</strong></p>
 
@@ -5469,7 +5472,7 @@ Content-Type: application/json;charset=UTF-8
 <pre><code>/v1/accounts/:accountId/groupMemberships
 </code></pre>
 
-<p><code>HTTP GET</code> returns a paginated list of the group memberships where the account is involved.</p>
+<p>HTTP <code>GET</code> returns a paginated list of the group memberships where the account is involved.</p>
 
 <p><strong>Example Request</strong></p>
 
@@ -5516,7 +5519,7 @@ Content-Type: application/json;charset=UTF-8
 
 <p>List Group Group Memberships (HTTP GET)</p>
 
-<p><code>HTTP GET</code> returns a paginated list of the group memberships where the group is involved.</p>
+<p>HTTP <code>GET</code> returns a paginated list of the group memberships where the group is involved.</p>
 
 <p><strong>Example Request</strong></p>
 
@@ -5561,12 +5564,12 @@ Content-Type: application/json;charset=UTF-8
 
 <h2><a id="accounts"></a>Accounts</h2>
 
-<p>An Account is a unique identity within a Directory, with a unique username and/or email address. An account can log in to applications using either the email address or username associated with it. Accounts can represent your end users (people), but they can also be used to represent services, daemons, processes, or any &ldquo;entity&rdquo; that needs to login to a Stormpath-enabled application.  Additionally, an account may only exist in a single directory and may be in multiple groups owned by that directory.  Accounts may not be assigned to groups within other directories.</p>
+<p>An <code>Account</code> is a unique identity within a <code>Directory</code>, with a unique username and/or email address. An <code>Account</code> can log in to an <code>Application</code> using either the email address or username associated with it. Accounts can represent your end users (people), but they can also be used to represent services, daemons, processes, or any &ldquo;entity&rdquo; that needs to login to a Stormpath-enabled application.  Additionally, an account may only exist in a single directory and may be in multiple groups owned by that directory.  Accounts may not be assigned to groups within other directories.</p>
 
 <p>It should be noted that the words &lsquo;User&rsquo; and &lsquo;Account&rsquo; usually mean the same thing, but there is a subtle difference that can be important at times:</p>
 
 <ul>
-<li>An Account is a unique identity within a Directory.</li>
+<li>An Account is a unique identity within a Directory. An account can exist in only a single directory but can be a part of multiple groups owned by that directory.</li>
 <li>When an account is granted access to an application (by <a href="#account-store-mappings">mapping a Directory or Group</a> that contains the account to the application), it becomes a &lsquo;User&rsquo; of that application.</li>
 </ul>
 
@@ -5575,7 +5578,7 @@ Content-Type: application/json;charset=UTF-8
 
 <h4>LDAP/AD Accounts</h4>
 
-<p>It should be noted that Accounts that originate in LDAP or Active Directory (AD) are mirrored in Stormpath, and they are special: you cannot create, update or delete Accounts that originate in an LDAP mirrored directory &ndash; you can only read them or use them for login.  This is because LDAP is the source of &lsquo;truth&rsquo; and Stormpath does not (currently) have write-access to LDAP installations.</p>
+<p>It should be noted that Accounts that originate in LDAP or Active Directory (AD) are mirrored in Stormpath. You cannot create, update or delete Accounts that originate in an LDAP mirrored directory &ndash; you can only read them or use them for login.  This is because LDAP is the source of &lsquo;truth&rsquo; and Stormpath does not (currently) have write-access to LDAP installations.</p>
 
 <p>You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -5585,8 +5588,6 @@ Content-Type: application/json;charset=UTF-8
 <li>The LDAP/AD directory is deleted.</li>
 </ul>
 
-
-<p>An account is a unique identity within a directory. An account can exist in only a single directory but can be a part of multiple groups owned by that directory.</p>
 
 <p><a class="anchor" name="account"></a></p>
 
@@ -6243,7 +6244,7 @@ Content-Type: application/json;charset=UTF-8
 
 <h3><a id="account-custom-data"></a>Account Custom Data</h3>
 
-<p>While Stormpath&rsquo;s default Account attributes are useful to many applications, you might want to add your own custom data to a Stormpath account.  If you want, you can store all of your custom account information in Stormpath so you don&rsquo;t have to maintain another separate database to store your specific account data.</p>
+<p>While Stormpath&rsquo;s default <code>Account</code> attributes are useful to many applications, you might want to add your own custom data to a Stormpath account.  If you want, you can store all of your custom account information in Stormpath so you don&rsquo;t have to maintain another separate database to store your specific account data.</p>
 
 <p>Please see the <a href="#custom-data">custom data section</a> for more information and requirements/restrictions for creating, retrieving, updating and deleting account custom data.</p>
 
@@ -6251,160 +6252,14 @@ Content-Type: application/json;charset=UTF-8
 
 <h3><a id="list-accounts"></a>List Accounts</h3>
 
-<p>Using the API, you can view <a href="#accounts-application-accounts-list">all accounts of an application</a>, <a href="#accounts-application-group-members">all members of a group</a>, or <a href="#accounts-application-directory-accounts">all accounts/members of a directory</a>.</p>
+<p>The <code>accounts</code> resource is a <a href="#collections">Collection Resource</a> that represents all accounts associated with their parent.  There are different endpoints that can list their associated accounts. Using the API, you can access:</p>
 
-<p>An application&rsquo;s <code>accounts</code> is a <a href="#collections">Collection Resource</a> that represents all accounts that can log in to the application.</p>
+<ul>
+<li><a href="#application-accounts-list">All accounts of an application</a></li>
+<li><a href="#group-accounts">All members of a group</a></li>
+<li><a href="#directory-accounts">All accounts/members of a directory</a></li>
+</ul>
 
-<pre><code>/v1/applications/:applicationUid/accounts
-</code></pre>
-
-<p><a class="anchor" name="accounts-application-accounts-list"></a></p>
-
-<h4>List Application Accounts</h4>
-
-<p>HTTP GET returns a paginated list of links for accounts within a specified application.</p>
-
-<p>Example request:</p>
-
-<pre><code>GET https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA/accounts
-</code></pre>
-
-<p>Example response:</p>
-
-<pre><code>HTTP/1.1 200 OK
-Content-Type: application/json;charset=UTF-8;
-
-{
-  "href": "https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA/accounts"
-  "offset": 0,
-  "limit": 25,
-  "items" : [
-     {
-       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb"
-       "username" : "jlpicard",
-       "email" : "capt@enterprise.com",
-       "fullName" : "Jean-Luc Picard",
-       "givenName" : "Jean-Luc",
-       "middleName" : "",
-       "surname" : "Picard",
-       "status" : "DISABLED",
-       "groups" : {
-         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
-       },
-       "groupMemberships" : {
-         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groupMemberships"
-       },
-       "directory" : {
-         "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q"
-       },
-       "tenant" : {
-         "href" : "https://api.stormpath.com/v1/tenants/Ad8mIcavSty7XzD-xZdP3g"
-       },
-       "emailVerificationToken" : null
-     },
-     {
-       "href" : "https://api.stormpath.com/v1/accounts/tHEcAkeiSAlIe9sdh8KjdJda"
-       "username" : "st131",
-       ...remaining Account key/value pairs...
-    }
-    ...
-  ]
-}
-</code></pre>
-
-<p><a class="anchor" name="accounts-application-group-members"></a></p>
-
-<h4>List Group Members</h4>
-
-<p><strong>Example Request</strong></p>
-
-<pre><code>GET https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ/accounts
-</code></pre>
-
-<p><strong>Example Response</strong></p>
-
-<pre><code>HTTP/1.1 200 OK
- Content-Type: application/json;charset=UTF-8;
-
- {
-   "href": "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ/accounts"
-   "offset": 0,
-   "limit": 25,
-   "items" : [
-     {
-       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb"
-       "username" : "jlpicard",
-       "email" : "capt@enterprise.com",
-       "fullName" : "Jean-Luc Picard",
-       "givenName" : "Jean-Luc",
-       "middleName" : "",
-       "surname" : "Picard",
-       "status" : "DISABLED",
-       "groups" : {
-         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
-       },
-       "groupMemberships" : {
-         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groupMemberships"
-       },
-       "directory" : {
-         "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q"
-       },
-       "tenant" : {
-         "href" : "https://api.stormpath.com/v1/tenants/Ad8mIcavSty7XzD-xZdP3g"
-       },
-       "emailVerificationToken" : null
-     },
-     ... additional account resources ...
-   ]
- }
-</code></pre>
-
-<p><a class="anchor" name="accounts-application-directory-accounts"></a></p>
-
-<h4>List Directory Accounts</h4>
-
-<p><strong>Example Request From a Directory</strong></p>
-
-<pre><code>GET https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/accounts
-</code></pre>
-
-<p><strong>Example Response From a Directory</strong></p>
-
-<pre><code>HTTP/1.1 200 OK
- Content-Type: application/json;charset=UTF-8;
-
- {
-   "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/accounts"
-   "offset": 0,
-   "limit": 25,
-   "items" : [
-     {
-       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb"
-       "username" : "jlpicard",
-       "email" : "capt@enterprise.com",
-       "fullName" : "Jean-Luc Picard",
-       "givenName" : "Jean-Luc",
-       "middleName" : "",
-       "surname" : "Picard",
-       "status" : "DISABLED",
-       "groups" : {
-         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
-       },
-       "groupMemberships" : {
-         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groupMemberships"
-       },
-       "directory" : {
-         "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q"
-       },
-       "tenant" : {
-         "href" : "https://api.stormpath.com/v1/tenants/Ad8mIcavSty7XzD-xZdP3g"
-       },
-       "emailVerificationToken" : null
-     },
-     ... additional Account resources ...
-   ]
- }
-</code></pre>
 
 <h3><a id="search-accounts"></a>Search Accounts</h3>
 
@@ -6490,29 +6345,28 @@ Content-Type: application/json;charset=UTF-8;
 <p>For example, if you were to request the account object for a user who has not yet been verified, you will note that the account <code>status</code> is set to <code>UNVERIFIED</code> and <code>emailVerificationToken</code> will have an <code>href</code>:</p>
 
 <pre><code>{
-  href: "https://api.stormpath.com/v1/accounts/6XLbNaUsKm3E0kXMTTr10V"
-  username: "test"
-  email: "frank@stormpath.com"
-  fullName: "test test test"
-  givenName: "test"
-  middleName: "test"
-  surname: "test"
-  status: "UNVERIFIED"
- -groups: {
+  href: "https://api.stormpath.com/v1/accounts/6XLbNaUsKm3E0kXMTTr10V",
+  username: "testuser",
+  email: "test@stormpath.com",
+  fullName: "test user",
+  givenName: "test",
+  surname: "user",
+  status: "UNVERIFIED",
+  groups: {
     href: "https://api.stormpath.com/v1/accounts/6XLbNaUsKm3E0kXMTTr10V/groups"
-  }
- -groupMemberships: {
+  },
+  groupMemberships: {
     href: "https://api.stormpath.com/v1/accounts/6XLbNaUsKm3E0kXMTTr10V/groupMemberships"
-  }
- -directory: {
+  },
+  directory: {
     href: "https://api.stormpath.com/v1/directories/5D1bvO5To6KQBaGFh793Zz"
-  }-
- -tenant: {
+  },
+  tenant: {
     href: "https://api.stormpath.com/v1/tenants/23mq7BPIxNgPUPZDwj04SZ"
-  }
- -emailVerificationToken: {
+  },
+  emailVerificationToken: {
     href: "https://api.stormpath.com/v1/accounts/emailVerificationTokens/6YJv9XBH1dZGP5A8rq7Zyl"
-  }-
+  }
 }
 </code></pre>
 
@@ -6719,7 +6573,7 @@ Content-Type: application/json;charset=UTF-8;
 
 <h4>List Account Group Memberships</h4>
 
-<p><code>HTTP GET</code> returns a Collection Resource containing the group memberships to which a specific account is a member.</p>
+<p>HTTP <code>GET</code> returns a Collection Resource containing the group memberships to which a specific account is a member.</p>
 
 <p><strong>Example Request</strong></p>
 
@@ -6768,7 +6622,7 @@ Content-Type: application/json;charset=UTF-8;
 
 <h2><a id="custom-data"></a>Custom Data</h2>
 
-<p>Account and Group resources have predefined fields that are useful to many applications, but you are likely to have your own custom data that you need to associate with an account or group as well.</p>
+<p><code>Account</code> and <code>Group</code> resources have predefined fields that are useful to many <code>Applications</code>, but you are likely to have your own custom data that you need to associate with an account or group as well.</p>
 
 <p>For this reason, both the account and group resources support a linked <code>customData</code> resource that you can use for your own needs.</p>
 
