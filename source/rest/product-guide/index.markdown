@@ -57,19 +57,23 @@ These resources and their relationships are manageable by the REST API as descri
 
 An [Application](#applications) is a real-world software application that communicates with Stormpath to offload user management, authentication, and security workflows.  Each application that communicates with Stormpath is represented within Stormpath so you may manage its security needs.
 
-You can assign one or more Directories and/or Groups to an Application.  Accounts within assigned directories and groups may login to the application.
+You can assign one or more *Account Stores* to an Application.  Accounts within assigned account stores may login to the application.
 
-**Directories**
+**Account Stores**
 
-A [Directory](#directories) is a top-level storage container of Accounts and Groups.  A Directory also manages security policies (like password strength) for the Accounts it contains.  Stormpath supports two types of Directories: natively hosted 'Cloud' directories that originate in Stormpath and 'Mirror' directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers.
+An *Account Store* is a generic term for either a `Directory` or a `Group`. Directories and Groups are both are considered 'account stores' because they both contain, or 'store', Accounts. 
 
-Directories can be used to cleanly manage segmented account populations - for example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.
+* **Directories**
 
-**Groups**
+  A [Directory](#directories) is a top-level storage container of Accounts and Groups.  A Directory also manages security policies (like password strength) for the Accounts it contains.  Stormpath supports two types of Directories: natively hosted 'Cloud' directories that originate in Stormpath and 'Mirror' directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers. 
 
-A [Group](#groups) is a uniquely named collection of Accounts within a Directory.  Each Group within a Directory must have a unique name and may contain Accounts within their own Directory.  Groups are mostly used for security and access control, often called Role-Based Access Control.  For example, you might only show a particular user interface button if an Account is in the 'Administrators' Group.
+  Directories can be used to cleanly manage segmented account populations - for example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.
 
-It might be helpful to note that Stormpath does not have an explicit Role concept - you use Stormpath Groups as Roles for Role-Based Access Control.
+* **Groups**
+
+  A [Group](#groups) is a uniquely named collection of Accounts within a Directory.  Each Group within a Directory must have a unique name and may contain Accounts within their own Directory.  Groups are mostly used for security and access control, often called Role-Based Access Control.  
+
+  For example, you might only show a particular user interface button if an Account is in the 'Administrators' Group. It might be helpful to note that Stormpath does not have an explicit Role concept - you use Stormpath Groups as Roles for Role-Based Access Control.
 
 **Accounts**
 
@@ -78,10 +82,6 @@ An [Account](#accounts) is a unique identity within a Directory, with a unique u
 **Tenants**
 
 Stormpath is a [multi-tenant](http://en.wikipedia.org/wiki/Multitenancy) software service. When you [sign up for Stormpath](https://api.stormpath.com/register), a private data 'space', called a Tenant, is created for you.  This private [tenant space](#tenants) contains all of the data you own, including your applications, directories, accounts and groups and more.  The Tenant concept is mostly 'behind the scenes' and you don't need to use it all that often, but sometimes it is necessary or useful to use directly.
-
-**Account Stores**
-
-An [Account Store](#account-store-mappings) is a generic term for either a `Directory` or a `Group`. Directories and Groups are both are considered 'account stores' because they both contain, or 'store', Accounts. In Stormpath, you control who may login to an application by associating (or 'mapping') one or more account stores to an application. The accounts across all of an application’s assigned account stores form the application’s user base; those accounts may login to the application.
 
 ***
 
