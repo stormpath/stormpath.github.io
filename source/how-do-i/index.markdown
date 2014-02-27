@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: How Do I...?
-lang: common
+lang: rest
 ---
 
 * [Create an account.](#CreateAccount)
