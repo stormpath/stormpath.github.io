@@ -178,6 +178,25 @@ DO NOT specify your actual `apiKey.id` and `apiKey.secret` values in source code
 
 Only use this technique if the values are obtained at runtime using a configuration mechanism that is not hard-coded into source code or easily-visible configuration files.
 
+<a class="anchor" name="authentication-scheme-configuration"></a>
+#### Authentication Scheme Configuration
+
+You can choose one of two authentication schemes to authenticate with Stormpath: 
+
+1. **Basic Authentication over HTTPS**: is the simplest technique for enforcing access controls to web resources because it does not require cookies, session identifier and login pages. Rather, Basic Authentication uses static, standard HTTP headers which means that no handshakes have to be done in anticipation.
+2. **Digest Authentication**:  this approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath Sauthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.
+
+When no authentication scheme is explicitly defined, Sauthc1 is used by default.
+
+Having the flexibility to set the authentication scheme is helpful in cases where the code is run in a platform where the header information for outgoing HTTP requests is modified. For example, for the SDK to work in Google App Engine you need to instruct the `Client` to use Basic Authentication in order for your code to properly communicate with Stormpath API server. For example:
+
+	String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
+	Client client = new ClientBuilder()
+						.setApiKeyFileLocation(path)
+						.setAuthenticationScheme(AuthenticationScheme.Basic) //Basic Authentication
+						.build();
+
+
 <a class="anchor" name="high-level-overview"></a>
 ### High-level Overview
 
