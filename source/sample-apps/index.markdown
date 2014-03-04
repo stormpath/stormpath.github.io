@@ -127,7 +127,7 @@ body_id: [sample-apps-page]
         </div>
         <div class="panel-buttons">
           <a class="btn-download" href="https://github.com/stormpath/stormpath-ruby-samples/archive/master.zip">Download ZIP</a>
-          <a class="btn-github" href="http://https://github.com/stormpath/stormpath-ruby-samples">View on GitHub</a>
+          <a class="btn-github" href="https://github.com/stormpath/stormpath-ruby-samples">View on GitHub</a>
         </div>
       </div>
     </div>
