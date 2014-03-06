@@ -22,7 +22,7 @@ By offloading user management and authentication to Stormpath, developers can br
 
 ### Overview
 
-<img src="http://www.stormpath.com/sites/default/files/docs/Architecture.png" alt="High-level Architecture" title="High-level Architecture" width="700" height="430">
+![](/images/docs/Architecture.png "High-level Architecture")
 
 Stormpath is a REST API service. You use a REST client (or one of our open-source language-specific SDKs) inside your application to communicate with the Stormpath API. Stormpath's API allows you to offload user management and authentication by helping you do the following:
 
@@ -204,8 +204,9 @@ The Stormpath SDK and the associated components reside and execute within your a
 
 The HTTPS request allows you to program your application code to use regular Java objects and alleviates you from worrying about the lower-level HTTP REST+JSON details and individual REST resource HTTP endpoints.
 
-Here is how the communication works:<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/SDKCommunicationFlow.png" alt="SDK Communication Flow" title="SDK Communication Flow" width="700">
+Here is how the communication works:<br />
+
+![](/images/docs/SDKCommunicationFlow.png =700x "SDK Communication Flow")
 
 In this example scenario, we have an existing SDK `account` resource instance, and we want its `directory`.
 
@@ -233,8 +234,9 @@ Java instances representing REST resources use the [Proxy software design patter
 <a class="anchor" name="architectural-components"></a>
 #### Architectural Components
 
-The core component concepts of the SDK are as follows:<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/ComponentArchitecture.png" alt="Stormpath SDK Component Architecture" title="Stormpath SDK Component Architecture" width="670">
+The core component concepts of the SDK are as follows:<br />
+
+![](/images/docs/ComponentArchitecture.png =700x430 "Stormpath SDK Component Architecture")
 
 * **Client** is the root entry point for SDK functionality and accessing other SDK components, such as the `DataStore`. A client is constructed with a Stormpath API key which is required to communicate with the Stormpath API server. After it is constructed, the client delegates to an internal DataStore to do most of its work.
 * **DataStore** is central to the Stormpath SDK. It is responsible for managing all Java `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on Java `resource` objects into REST requests to the Stormpath API server as necessary. It works between your application and the Stormpath API server.
@@ -1399,7 +1401,7 @@ Let's look at an example to illustrate this behavior.  Assume an application nam
 
 The following flow chart shows what happens when an account attempts to login to the Foo application:
 
-<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Account Stores Diagram" title="Account Stores Diagram" width="650" height="500">
+![Account Stores Diagram](/images/docs/LoginAttemptFlow.png =650x500 "Account Stores Diagram")
 
 As you can see, Stormpath tries to find the account in the 'Customers' directory first because it has a higher _priority_ than the 'Employees' directory.  If not found, the 'Employees' directory is tried next as it has a lower priority.
 

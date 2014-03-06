@@ -22,7 +22,7 @@ By offloading user management and authentication to Stormpath, developers can br
 
 ### Architectural Overview
 
-<img src="http://www.stormpath.com/sites/default/files/docs/Architecture.png" alt="High-level Architecture" title="High-level Architecture" width="700" height="430">
+![High-level Architecture](/images/docs/Architecture.png =700x430 "High-level Architecture")
 
 ### Stormpath Admin Console
 
@@ -102,7 +102,7 @@ When you initially sign up for Stormpath, three resources are automatically esta
 
 You can invite other administrator users to help you manage Stormpath applications, directories, and other aspects of your Stormpath tenant. 
 
-<img src="http://www.stormpath.com/sites/default/files/docs/InviteAdmin.png" alt="Invite Another Admin" title="Invite Another Admin" width="670">
+![Invite Another Admin](/images/docs/InviteAdmin.png =670x "Invite Another Admin")
 
 To invite an administrator, use the Add Admin feature. This feature sends an invitation for other administrators to collaborate with you in Stormpath.
 
@@ -157,7 +157,7 @@ For API keys, you can [assign or create new keys](#assign-new-api-keys), [activa
 
 Deactivating the API key prevents it from making API calls, while deleting the API key permanently removes it from Stormpath.
 
-<img src="http://www.stormpath.com/sites/default/files/docs/APIKeys.png" alt="API Keys" title="API Keys" width="760">
+![API Keys](/images/docs/APIKeys.png =760x "API Keys")
 
 <a name="assign-new-api-keys"></a>
 #### Assign New API Keys
@@ -191,7 +191,9 @@ To deactivate an API key for a user:
 2. Click the **Accounts** tab.
 3. Locate the account and click the account link or under Actions, click **Edit**.
 4. Under Security Credentials, in the Status column, click **Deactivate**.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/DeactivateAPIKey.png" alt="Deactivate API Key" title="Deactivate API Key" width="700">
+
+	![Deactivate API Key](/images/docs/DeactivateAPIKey.png =700x "Deactivate API Key")
+
 5. In the confirmation window, click **Ok**.
 
 {% docs note %}
@@ -207,7 +209,7 @@ To delete an API key for a user:
 2. Click the **Accounts** tab.
 3. Locate the account and click the account link or under Actions, click **Edit**.
 4. Under Security Credentials, in the Status column, click **Delete**.<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/DeleteAPIKey.png" alt="Delete API Key" title="Delete API Key" width="700">
+![Delete API Key](/images/docs/DeleteAPIKey.png =700x "Delete API Key")
 5. In the confirmation window, click **Ok**.<br>The API key has been permanently deleted from Stormpath.
 
 {% docs note %}
@@ -267,8 +269,9 @@ To obtain an application REST URL:
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. In the Applications table, click the application name.<br>
-The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/AppResturl.png" alt="Application Resturl" title="Application Resturl">
+The REST URL appears on the Details tab.<br>
 
+![Application Resturl](/images/docs/AppResturl.png)
 
 ### Navigate the Application Browser
 The application browser enables you to view and search for integrated applications.
@@ -290,7 +293,7 @@ To register an application:
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. Click **Register Application**.<br> 
-	<img src="http://www.stormpath.com/sites/default/files/docs/ApplicationRegistrationWizard.png" alt="Register Application Wizard" title="Register Application Wizard" width="700"> 
+	![Register Application Wizard](/images/docs/ApplicationRegistrationWizard.png =700x "Register Application Wizard")
 4. Complete the fields as follows:
 
 	Attribute | Description
@@ -332,7 +335,7 @@ In Stormpath, a directory or group can be a login source for an application. At 
 
 Here is what happens when a user attempts to log in to an application named Foo:
 
-<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Login Sources Diagram" width="650" height="500">
+![Login Sources Diagram](/images/docs/LoginAttemptFlow.png =650x500 "Login Sources Diagram")
 
 You can configure multiple login sources, but only one is required for logging in. Multiple login sources allows each application to view multiple directories as a single repository during a login attempt.
 
@@ -350,7 +353,7 @@ To manage application login sources, you must log in to the Stormpath Admin Cons
 3. Click the application name.
 4. Click the **Login Sources** tab.<br>
 The login sources appear in order of priority.<br> 
-	<img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
+	![Login Sources](/images/docs/LoginSources.png =650x170 "Login Sources")
 
 <a name="change-default-account-and-group-locations"></a>
 #### Change Default Account and Group Locations
@@ -376,9 +379,10 @@ Adding a login source to an application provisions a directory or group to that 
 4. Click the **Login Sources** tab.
 5. Click **Add Login Source**.
 6. In the *login source* list, select the appropriate directory.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown1.png" alt="Login Sources" title="Login Sources"><br>
+	![Login Sources](/images/docs/LSDropdown1.png "Login Sources")
+
 7. If the directory contains groups, you can select all users or specific group for access.<br> 
-	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown2.png" alt="Login Sources" title="Login Sources"><br>
+	![Login Sources](/images/docs/LSDropdown2.png "Login Sources")<br>
 8. Click **Add Login Source**.<br>
 The new login source is added to the bottom of the login sources list. 
 
@@ -397,7 +401,7 @@ To specify the login source order:
 4. Click the **Login Sources** tab.
 5. Click the row of the directory to move.
 6. Drag the row to the appropriate order.<br>For example, if you want to move the first login source to the second login source, click anywhere in the first row of the login source table and drop the row on the second row.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
+	![Login Sources](/images/docs/LoginPriority.png =650x "Login Sources")
 7. Click **Save Priorities**.
 
 <a name="remove-login-sources"></a>
@@ -523,8 +527,8 @@ To obtain a directory REST URL:
 1. Log in to the Stormpath Admin Console.
 2. Click the **Directories** tab.
 3. In the Directories table, click the directory name.<br>
-The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/Resturl.png" alt="Application Resturl" title="Application Resturl">
-
+The REST URL appears on the Details tab.<br>
+![Application Resturl](/images/docs/Resturl.png "Application Resturl")
 
 ### Navigate the Directory Browser
 
@@ -565,7 +569,7 @@ The ability to create a mirrored, or agent, directory is connected to your subsc
 4. Complete the field values noted in the table that follows.
 5. Click **Create**. 
 
-<img src="http://www.stormpath.com/sites/default/files/docs/CreateCloudDirectory.png" alt="Create Cloud Directory" title="Create Cloud Directory" width="650" height="460">
+![Create Cloud Directory](/images/docs/CreateCloudDirectory.png =650x460 "Create Cloud Directory")
 
 Attribute | Description
 :----- | :-----
@@ -584,7 +588,7 @@ Mirrored directories, after initial configuration, are accessible through the Ag
 1. Click the **Directories** tab.
 2. Click **Create Directory**.
 3. Click **Mirror**. <br> 
-<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAPDirectory.png" alt="Create LDAP Directory" title="Create Mirrored Directory" width="650">
+![Create Mirrored Directory](/images/docs/CreateLDAPDirectory.png =650x "Create Mirrored Directory")
 
 4. On the 1. Directory Basics tab, complete the field values as follows:
 	
@@ -595,8 +599,7 @@ Directory Description | An optional description explaining the purpose for the d
 Directory Status | Whether or not the directory is to be used to authenticate accounts for any assigned applications. By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
 
 5. Click **Next**.
-
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP2.png" alt="Agent Configuration" title="Agent Configuration" width="640">
+	![Agent Configuration](/images/docs/CreateLDAP2.png =640x "Agent Configuration")
 	
 6. On the 2. Agent Configuration tab, complete the field values as follows::
 	
@@ -612,9 +615,7 @@ Base DN | The base Distinguished Name (DN) to use when querying the directory. F
 Directory Services Poll Interval | How often (in minutes) to poll the directory to detect directory object changes.
 
 7. Click **Next**.
-
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP3.png" alt="Account Configuration" title="Account Configuration" width="640">
-
+	![Account Configuration](/images/docs/CreateLDAP3.png =640x "Account Configuration")
 		
 8. On the 3. Account Configuration tab, complete the field values as follows:
 		
@@ -631,8 +632,7 @@ Account Login Name Attribute |  The attribute field to use when logging in the a
 Account Password Attribute | The attribute field to use when loading the account password. Example: `password`
 
 9. Click **Next**.
-
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP4.png" alt="Group Configuration" title="Group Configuration" width="640">
+	![Group Configuration](/images/docs/CreateLDAP4.png =640x "Group Configuration")
 
 10. On the 4. Group Configuration tab, complete the field values as follows:
 	
@@ -649,7 +649,7 @@ Group Members Attribute | The attribute field to use when loading the group memb
 12. On the 5. Confirm tab, review the information and click **Create Directory**.<br>The webpage refreshes with the populated directory information. 
 13. Review the Download Agent tab and perform the steps as directed.
 	
-	<img src="http://www.stormpath.com/sites/default/files/docs/LastLDAPCreate.png" alt="Download Agent" title="Download Agent">
+	![Download Agent](/images/docs/LastLDAPCreate.png "Download Agent")
 
 The `agent.id` and `agent.key` values will be specific to the agent of this directory.
 
@@ -785,7 +785,7 @@ Workflows are only available on cloud directories and only configurable using th
 
 On the Workflows tab, you can automate <a href="#account-registration-and-verification" title="account registration and verification">account registration and verification</a> and <a href="#password-reset" title="password reset">password resets</a>.
 
-<img src="http://www.stormpath.com/sites/default/files/docs/ManageWorkflows.png" alt="Workflow Automation" title="Workflow Automation" width="670" height="250">
+![Workflow Automation](/images/docs/ManageWorkflows.png =670x250 "Workflow Automation")
 
 <a name="account-registration-and-verification"></a>
 #### Account Registration and Verification
@@ -813,8 +813,7 @@ To configure account registration and verification:
 	* By default, the Account Registration and Verification workflow automation is disabled. By leaving this workflow off, all accounts created in the directory are enabled, unless otherwise specified, and the user does not receive any registration or verification emails from Stormpath.
 	* By only enabling **Enable Registration and Verification Workflow** and not also enabling **Require newly registered accounts to verify their email address**, new accounts are marked as enabled and the users receive a registration success email.
 
-		<img src="http://www.stormpath.com/sites/default/files/docs/RegistrationVerification.png" alt="Account Registration and Verification" title="Account Registration and Verification" width="650" height="430">
-
+		![Account Registration and Verification](/images/docs/RegistrationVerification.png =650x430 "Account Registration and Verification")
 
 	* You configure the Registration Success Message with the following attributes:
 	
@@ -829,8 +828,7 @@ Body | The value for the body of the message. Variable substitution is supported
 	* By also selecting **Require newly registered accounts to verify their email address**:
 		* Newly created accounts are given an *unverified* status and a verification email is sent to the user. The verification email contains a token unique to the user account. When the user clicks the link, they are sent to the verification base URL where the token is submitted to Stormpath for verification. If verified, the account status changes to enabled and a verification success email is sent to the user.
 		* An Account Verification Message section appears.
-		
-			<img src="http://www.stormpath.com/sites/default/files/docs/AccountVerificationMessage.png" alt="Account Verification" title="Account Verification" width="700" height="420">
+			![Account Verification](/images/docs/AccountVerificationMessage.png =700x420 "Account Verification")
 
 		* You configure the Account Verification Message with the following attributes: 
 
@@ -842,7 +840,9 @@ From" Name | The value to display in the "From" field of the Account Success mes
 "From" Email Address | The email address from which the Account Verification message is sent.
 Subject | The value for the subject field of the Account Verification message.
 Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered and the url (containing the token) that the user must click.
-		* A Verification Success Message section appears.<br><img src="http://www.stormpath.com/sites/default/files/docs/VerificationEmailParams.png" alt="Email Verification" title="Email Verification" width="700" height="420">
+		* A Verification Success Message section appears.<br>
+
+		![Email Verification](/images/docs/VerificationEmailParams.png =700x420 "Email Verification")	
 
 		* You configure the Verification Success Message with the following attributes:
 
@@ -900,9 +900,9 @@ To configure the password reset workflow:
 2. Click the **Directories** tab.
 3. Click the directory name.
 4. Click **Workflows** tab.
-5. On the Workflows tab, next to Password Reset, click **show**.
+5. On the Workflows tab, next to Password Reset, click **show**.<br />
+	![Password Reset](/images/docs/ResetPW1.png =640x430 "Password Reset")
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/ResetPW1.png" alt="Password Reset" title="Password Reset" width="640" height="430">
 6. Complete the values as follows:<br>
 		
 	Attribute | Description
@@ -929,8 +929,7 @@ Message Format | The message format for the body of the Password Reset Success e
 "From" Email Address | The email address from which the Password Reset Success message is sent.
 Subject | The value for the subject field of the Password Reset Success message.
 Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
-
-	<img src="http://www.stormpath.com/sites/default/files/docs/ResetPW2.png" alt="Password Reset Message" title="Password Reset Message" width="640" height="418">
+	![Password Reset Message](/images/docs/ResetPW2.png =640x418 "Password Reset Message")
 
 9. When all the fields are complete, click **Update**.
 
@@ -1117,7 +1116,8 @@ You can only create accounts for cloud, or Stormpath-managed directories. For ac
 2. Click the **Accounts** tab.
 3. Click **Create an Account**.
 4. Complete the fields as follows:<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/CreateAccount.png" alt="Create Account" title="Create Account" width="640" height="380">
+
+![Create Account](/images/docs/CreateAccount.png =640x380 "Create Account")
 	
 	Attribute | Description
 :----- | :-----
@@ -1153,7 +1153,8 @@ After adding an account, you can specify its group membership, specify any admin
 3. Under the Name column, click the account name link.<br>
 	**OR**<br>	
 4. Under the Actions column for the account, click **Edit**.<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/AccountDetail.png" alt="Edit Account" title="Edit Account" width="700"><br>
+![Edit Account](/images/docs/AccountDetail.png =700x "Edit Account")
+<br>
 5. On the Details tab, change the values as required, noting the following information:
 	
 	Attribute | Description
@@ -1184,7 +1185,8 @@ To change an account password:
 2. Click the **Accounts** tab.
 3. Under the Name column, click the account name.
 4. On the Details tab, under Security Credentials, click **Change Password**.<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/PasswordChange.png" alt="Change Password" title="Change Password" width="700"><br>
+![Change Password](/images/docs/PasswordChange.png =700x "Change Password")
+<br>
 5. You can cancel the password change, select to have the user reset the password, or change the password for the user.
 6. When all updates are complete, click **Update**.
 	
@@ -1318,7 +1320,8 @@ To create a group:
 3. Click the directory name.
 4. Click the **Groups** tab.
 5. Click **Create Group**.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateGroup.png" alt="Create Groups" title="Create Groups" width="700"><br>
+	![Create Groups](/images/docs/CreateGroup.png =700x "Create Groups")
+<br>
 6. Complete the fields as follows:
 	
 	Attribute | Description

@@ -22,7 +22,7 @@ By offloading user management and authentication to Stormpath, developers can br
 
 ### Architectural Overview
 
-<img src="http://www.stormpath.com/sites/default/files/docs/Architecture.png" alt="High-level Architecture" title="High-level Architecture" width="700" height="430">
+![](/images/docs/Architecture.png "High-level Architecture")
 
 ### Stormpath Admin Console
 
@@ -131,8 +131,8 @@ The Stormpath SDK and the associated components reside and execute within your a
 
 The HTTPS request allows you to program your application code to use regular Ruby objects and alleviates you from worrying about the lower-level HTTP REST+JSON details and individual REST resource HTTP endpoints.
 
-Here is how the communication works:<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/SDKCommunicationFlow.png" alt="SDK Communication Flow" title="SDK Communication Flow" width="700">
+Here is how the communication works:<br />
+![](/images/docs/SDKCommunicationFlow.png =700x "SDK Communication Flow")
 
 In this example, the request is trying to determine the <code>directory</code> of the existing SDK <code>account</code> resource instance.
 
@@ -150,16 +150,16 @@ The request is broken down as follows:
 
 The Stormpath SDK is designed with two primary design principles:
 
-* **Composition**<br>
+* **Composition**<br />
 Although most SDK end users never need to customize the implementation behavior of an SDK, the SDK is pluggable meaning that the functionality can be customized by plugging in new implementations of relevant components. The SDK leans toward the [programming to interfaces](http://en.wikipedia.org/wiki/Software_interface#Software_interfaces) (as much it they can be applied to Ruby) and principles of [object composition](http://en.wikipedia.org/wiki/Object_composition) to support pluggability. Even if SDK end users never leverage this design, the design helps the Stormpath development team provide support and bug fixes without disrupting existing SDK usages.
 
-* **Proxying**<br>
+* **Proxying**<br />
 Ruby instances representing REST resources use the [Proxy software design pattern](http://en.wikipedia.org/wiki/Proxy_pattern) to intercept property access allowing the SDK implementation to automatically load the resource data or other referenced resources if necessary.
 
 #### Architectural Components
 
-The core component concepts of the SDK are as follows:<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/ComponentArchitecture.png" alt="Stormpath SDK Component Architecture" title="Stormpath SDK Component Architecture" width="670">
+The core component concepts of the SDK are as follows:<br />
+![](/images/docs/ComponentArchitecture.png =700x430 "Stormpath SDK Component Architecture")
 
 * **Client** is the root entry point for SDK functionality and accessing other SDK components, such as the `DataStore`. A client is constructed with a Stormpath API key which is required to communicate with the Stormpath API server. After it is constructed, the client delegates to an internal DataStore to do most of its work.
 * **DataStore** is central to the Stormpath SDK. It is responsible for managing all Ruby `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on Ruby `resource` objects into REST requests to the Stormpath API server as necessary. It works between your application and the Stormpath API server
@@ -262,8 +262,9 @@ To obtain an application REST URL:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
-3. In the Applications table, click the application name.<br>
-The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/AppResturl.png" alt="Application Resturl" title="Application Resturl">
+3. In the Applications table, click the application name.<br />
+The REST URL appears on the Details tab.<br />
+![](/images/docs/AppResturl.png "Application Resturl")
 
 
 ### List Applications
@@ -376,7 +377,7 @@ Assume an application named Foo has been mapped to two account stores, the Custo
 
 Here is what happens when a user attempts to log in to an application named Foo:  
 
-<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Login Sources Diagram" width="650" height="500">
+![Account Stores Diagram](/images/docs/LoginAttemptFlow.png =650x500 "Account Stores Diagram")
 
 You can configure multiple account stores, but only one is required for logging in. Multiple account stores allows each application to view multiple directories as a single repository during a login attempt.
 
@@ -414,7 +415,7 @@ To manage application account stores, you must log in to the Stormpath Admin Con
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. Click the application name.
-4. Click the **Account Stores** tab.<br>
+4. Click the **Account Stores** tab.<br />
 
 #### Create an Account Store Mapping
 
@@ -425,9 +426,9 @@ Adding a account store to an application provisions a directory or group to that
 3. Click the application name.
 4. Click the **Account Store** tab.
 5. Click **Add Account Store**.
-6. In the *account store* list, select the appropriate directory.<br>
-7. If the directory contains groups, you can select all users or specific group for access.<br> 
-8. Click **Add Account Store**.<br>
+6. In the *account store* list, select the appropriate directory.<br />
+7. If the directory contains groups, you can select all users or specific group for access.<br /> 
+8. Click **Add Account Store**.<br />
 
 **Code:**
 
@@ -471,7 +472,7 @@ To specify the account store order:
 3. Click the application name.
 4. Click the **Account Store** tab.
 5. Click the row of the directory to move.
-6. Drag the row to the appropriate order.<br>
+6. Drag the row to the appropriate order.<br />
 	For example, if you want to switch the first account store and the second account store, click anywhere in the first row of the account store table and drop the row on the second row.
 7. Click **Save Priorities**.
 
@@ -576,9 +577,9 @@ To obtain a directory REST URL:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Directories** tab.
-3. In the Directories table, click the directory name.<br>
-The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/Resturl.png" alt="Application Resturl" title="Application Resturl">
-
+3. In the Directories table, click the directory name.<br />
+The REST URL appears on the Details tab.<br />
+![](/images/docs/Resturl.png "Application Resturl")
 
 ### List Directories
 To retrieve directories, you must:
@@ -647,8 +648,8 @@ Mirrored directories, after initial configuration, are accessible through the Ag
 1. Click the **Directories** tab.
 2. Click **Create Directory**.
 3. Click **Mirror**. 
-
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAPDirectory.png" alt="Create LDAP Directory" title="Create Mirrored Directory" width="650">
+	
+	![Create LDAP Directory](/images/docs/CreateLDAPDirectory.png =650x "Create Mirrored Directory")
 
 4. On the 1. Directory Basics tab, complete the field values as follows:
 	
@@ -660,7 +661,7 @@ Directory Status | Whether or not the directory is to be used to authenticate ac
 
 5. Click **Next**.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP2.png" alt="Agent Configuration" title="Agent Configuration" width="640">
+	![Agent Configuration](/images/docs/CreateLDAP2.png =650x "Agent Configuration")
 	
 6. On the 2. Agent Configuration tab, complete the field values as follows::
 	
@@ -677,8 +678,7 @@ Directory Services Poll Interval | How often (in minutes) to poll the directory 
 
 7. Click **Next**.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP3.png" alt="Account Configuration" title="Account Configuration" width="640">
-
+	![Account Configuration](/images/docs/CreateLDAP3.png =640x "Account Configuration")
 		
 8. On the 3. Account Configuration tab, complete the field values as follows:
 		
@@ -696,7 +696,7 @@ Account Password Attribute | The attribute field to use when loading the account
 
 9. Click **Next**.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP4.png" alt="Group Configuration" title="Group Configuration" width="640">
+	![Group Configuration](/images/docs/CreateLDAP4.png =640x "Group Configuration")
 
 10. On the 4. Group Configuration tab, complete the field values as follows:
 	
@@ -710,10 +710,10 @@ Group Description Attribute | The attribute field to use when loading the group 
 Group Members Attribute | The attribute field to use when loading the group members. Example: `member`
 
 11. Click **Next**.
-12. On the 5. Confirm tab, review the information and click **Create Directory**.<br>The webpage refreshes with the populated directory information. 
+12. On the 5. Confirm tab, review the information and click **Create Directory**.<br />The webpage refreshes with the populated directory information. 
 13. Review the Download Agent tab and perform the steps as directed.
 	
-	<img src="http://www.stormpath.com/sites/default/files/docs/LastLDAPCreate.png" alt="Download Agent" title="Download Agent">
+	![Download Agent](/images/docs/LastLDAPCreate.png "Download Agent")
 
 The `agent.id` and `agent.key` values will be specific to the agent of this directory.
 
@@ -736,8 +736,8 @@ Currently, you can only associate directories with application in the Stormpath 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Directories** tab.
 3. Click the directory name.
-4. Click the **Applications** tab.<br>The applications table shows the application for which the directory is providing account authentication, or log in, credentials.
-5. To change a account store, you must modify the application account store information.<br>If the directory is currently not specified as a account store for an application, the table contains the following message:<br>	
+4. Click the **Applications** tab.<br />The applications table shows the application for which the directory is providing account authentication, or log in, credentials.
+5. To change a account store, you must modify the application account store information.<br />If the directory is currently not specified as a account store for an application, the table contains the following message:<br />	
 	*Currently, there are no applications associated with this directory. To create an association, click here, and select an application. From the account stores tab, you can create the association.*
 
 
@@ -904,7 +904,7 @@ To obtain a directory REST URL:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Accounts** tab.
-3. In the Accounts table, click the account name.<br>
+3. In the Accounts table, click the account name.<br />
 The REST URL appears on the Details tab.
 
 ### Authenticate an Account
@@ -1278,7 +1278,7 @@ To obtain a group REST URL:
 2. Click the **Directories** tab.
 3. In the Directories table, click the directory name.
 4. Click the **Groups** tab.
-5. Click the group name.<br>
+5. Click the group name.<br />
 The REST URL appears on the Details tab.
 
 ### List Groups
@@ -1532,12 +1532,11 @@ You may also delete an individual custom data field entirely by calling the `del
 
 Workflows are common user management operations that are automated for you by Stormpath. Account Registration and Verification workflow configurations manage how accounts are created in your directory. The Password Reset workflow enables you to configure how password reset works and the context of messages. For both workflows, messages can be formatted in plain text or HTML.
 
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.The Stormpath Administrator directory has default workflow automations which cannot be altered.<br>
+Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.The Stormpath Administrator directory has default workflow automations which cannot be altered.<br />
 
 On the Workflows tab, you can automate <a href="#AccountRegistration" title="account registration and verification">account registration and verification</a> and <a href="#PasswordReset" title="password reset">password resets</a>.
 
-<img src="http://www.stormpath.com/sites/default/files/docs/ManageWorkflows.png" alt="Workflow Automation" title="Workflow Automation" width="670" height="250">
-
+![Workflow Automation](/images/docs/ManageWorkflows.png =670x250 "Workflow Automation")
 
 ### Account Registration and Verification
 
@@ -1546,7 +1545,7 @@ For the Account Registration and Verification workflow, you must perform the fol
 * <a href="#ConfigureAccountRegistration" title="Configure Account Registration and Verification">Configure account registration and verification</a>
 * <a href="#InitiateAccountRegistration" title="Initiate Account Registration and Verification">Initiate account registration and verification</a>
 * <a href="#VerifyAccount" title="Verify the Account">Verify the account</a>
-<br>
+<br />
 
 {% docs note %}
 The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.
@@ -1562,10 +1561,9 @@ To configure account registration and verification:
 4. Click **Workflows** tab.
 5. On the Workflows tab, next to Registration and Verification, click **show**.
 	* By default, the Account Registration and Verification workflow automation is disabled. By leaving this workflow off, all accounts created in the directory are enabled, unless otherwise specified, and the user does not receive any registration or verification emails from Stormpath.
-	* By only enabling <strong>Enable Registration and Verification Workflow</strong> and not also enabling <strong>Require newly registered accounts to verify their email address</strong>, new accounts are marked as enabled and the users receive a registration success email. <br>
+	* By only enabling <strong>Enable Registration and Verification Workflow</strong> and not also enabling <strong>Require newly registered accounts to verify their email address</strong>, new accounts are marked as enabled and the users receive a registration success email. <br />
 
-		<img src="http://www.stormpath.com/sites/default/files/docs/RegistrationVerification.png" alt="Account Registration and Verification" title="Account Registration and Verification" width="650" height="430">
-
+		![Account Registration and Verification](/images/docs/RegistrationVerification.png =650x430 "Account Registration and Verification")
 
 	* You configure the Registration Success Message with the following attributes:
 	
@@ -1579,11 +1577,11 @@ Body | The value for the body of the message. Variable substitution is supported
 
 	* By also selecting **Require newly registered accounts to verify their email address**:
 		* Newly created accounts are given an *unverified* status and a verification email is sent to the user. The verification email contains a token unique to the user account. When the user clicks the link, they are sent to the verification base URL where the token is submitted to Stormpath for verification. If verified, the account status changes to enabled and a verification success email is sent to the user.
-		* An Account Verification Message section appears.<br>
+		* An Account Verification Message section appears.<br />
 		
-			<img src="http://www.stormpath.com/sites/default/files/docs/AccountVerificationMessage.png" alt="Account Verification" title="Account Verification" width="700" height="420">
+			![Account Verification](/images/docs/AccountVerificationMessage.png =700x420 "Account Verification")
 
-		* You configure the Account Verification Message with the following attributes: <br>
+		* You configure the Account Verification Message with the following attributes: <br />
 
 			Attribute | Description
 :----- | :-----
@@ -1593,11 +1591,10 @@ From" Name | The value to display in the "From" field of the Account Success mes
 "From" Email Address | The email address from which the Account Verification message is sent.
 Subject | The value for the subject field of the Account Verification message.
 Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered and the url (containing the token) that the user must click.
-		* A Verification Success Message section appears.<br>
+		* A Verification Success Message section appears.<br />
+			![Email Verification](/images/docs/VerificationEmailParams.png =700x420 "Email Verification")
 
-			<img src="http://www.stormpath.com/sites/default/files/docs/VerificationEmailParams.png" alt="Email Verification" title="Email Verification" width="700" height="420">
-
-		* You configure the Verification Success Message with the following attributes: <br>
+		* You configure the Verification Success Message with the following attributes: <br />
 
 			Attribute | Description
 :----- | :-----
@@ -1652,15 +1649,16 @@ To configure the password reset workflow:
 4. Click **Workflows** tab.
 5. On the Workflows tab, next to Password Reset, click **show**.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/ResetPW1.png" alt="Password Reset" title="Password Reset" width="640" height="430">
-6. Complete the values as follows:<br>
+	![Password Reset](/images/docs/ResetPW1.png =640x430 "Password Reset")
+
+6. Complete the values as follows:<br />
 		
 	Attribute | Description
 :----- | :-----
 <a id ="BaseURL"></a>Base URL | Your application URL which receives the token and completes the workflow. Stormpath offers a default base URL to help during development.
 Expiration Window | The number of hours that the password reset token remains valid from the time it is sent.
 
-7. Under Password Reset Message, complete the values as follows:<br>
+7. Under Password Reset Message, complete the values as follows:<br />
 
 	Attribute | Description
 :----- | :-----
@@ -1670,7 +1668,7 @@ Message Format | The message format for the body of the Password Reset email. It
 Subject | The value for the subject field of the Password Reset message.
 Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered, the url the user must click to verify their account, and the number of hours for which the URL is valid.
 
-8. Under Password Reset Success Message, complete the values as follows:<br>
+8. Under Password Reset Success Message, complete the values as follows:<br />
 
 	Attribute | Description
 :----- | :-----
@@ -1680,7 +1678,7 @@ Message Format | The message format for the body of the Password Reset Success e
 Subject | The value for the subject field of the Password Reset Success message.
 Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/ResetPW2.png" alt="Password Reset Message" title="Password Reset Message" width="640" height="418">
+	![Password Reset](/images/docs/ResetPW2.png =640x418 "Password Reset")
 
 9. When all the fields are complete, click **Update**.
 

@@ -47,8 +47,8 @@ To create an application, do the following:
 
 1. Click the <strong>Applications</strong> tab along the top of the page.
     2. Click the <strong>Register Application</strong> button.
-    
-        <img src="http://www.stormpath.com/sites/default/files/docs/ApplicationRegistrationWizard.png" alt="Register Application Wizard" title="Register Application Wizard" width="700">
+
+        ![Register Application Wizard]/images/docs/ApplicationRegistrationWizard.png =700x "Register Application Wizard")
         
     3. Complete the fields as follows:
 
@@ -82,7 +82,7 @@ To create a directory, do the following:
 2. Click <strong>Create Directory</strong>.
 3. Click <strong>Cloud</strong>.
 
-    <img src="http://www.stormpath.com/sites/default/files/docs/CreateCloudDirectory.png" alt="Create Cloud Directory" title="Create Cloud Directory" width="650" height="440">
+    ![Create Cloud Directory](/images/docs/CreateCloudDirectory.png =650x440 "Create Cloud Directory")
 
 4. Complete the field values as follows: <br>
 
@@ -106,7 +106,7 @@ A `account` represents an entity that can authenticate with your application. Th
 1. Click the <strong>Accounts</strong> tab.
 2. Click <strong>Create an Account</strong>.
 
-    <img src="http://www.stormpath.com/sites/default/files/docs/CreateAccount.png" alt="Create Account" title="Create Account" width="640" height="380">
+    ![Create Account](/images/docs/CreateAccount.png =640x380 "Create Account")
 
 3. Complete the fields as follows: <br>
 
