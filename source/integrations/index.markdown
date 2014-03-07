@@ -24,7 +24,7 @@ body_id: [integrations-page]
       <div class="panel-title">Spring Security Plugin</div>
       <div class="panel-inner">
         <div class="panel-text">
-          The stormpath-spring-security plugin allows a Spring Security-enabled application to use Stormpath.
+          The stormpath-spring-security integration allows a Spring Security-enabled application to use Stormpath.
           <ul>
             <li>Integrates Stormpath with Spring Security</li>
             <li>Requires Maven</li>
@@ -96,7 +96,7 @@ body_id: [integrations-page]
     <a id="sample-apps-ruby-container-jump"></a>
     <div class="ruby-title">Ruby</div>
     <div class="panel-container">
-      <div class="panel-title">Rails Plugins</div>
+      <div class="panel-title">Rails Integrations</div>
       <div class="panel-inner">
         <div class="panel-text">
            Stormpath-rails is the Rails gem to quickly integrate Stormpath and its features with any Rails-based application.
