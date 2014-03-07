@@ -193,7 +193,7 @@ Having the flexibility to set the authentication scheme is helpful in cases wher
 	String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
 	Client client = new ClientBuilder()
 						.setApiKeyFileLocation(path)
-						.setAuthenticationScheme(AuthenticationScheme.Basic) //Basic Authentication
+						.setAuthenticationScheme(AuthenticationScheme.BASIC) //Basic Authentication
 						.build();
 
 
