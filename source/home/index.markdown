@@ -46,7 +46,7 @@ alias: [index.html]
       <li class="leaf"><a href="/ruby/product-guide" title="">Ruby Product Guide</a></li>
       <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-ruby" title="">Ruby SDK on Github</a></li>
       <li class="leaf"><a href="/sample-apps/#sample-apps-ruby-container-jump" title="">Ruby Samples</a></li>
-      <li class="last leaf"><a href="/plugins/#sample-apps-ruby-container-jump" title="">Ruby Plugins</a></li>
+      <li class="last leaf"><a href="/integrations/#sample-apps-ruby-container-jump" title="">Ruby Integrations</a></li>
       <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-ruby/archive/master.zip">Download SDK</a></li>
   </ul>  
 </div>
@@ -68,7 +68,7 @@ alias: [index.html]
     <li class="leaf"><a href="/java/product-guide" title="">Java Product Guide</a></li>
     <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-java" title="">Java SDK on GitHub</a></li>
     <li class="leaf"><a href="/sample-apps/#sample-apps-java-container-jump" title="">Java Samples</a></li>
-    <li class="last leaf"><a href="/plugins/#sample-apps-java-container-jump" title="">Java Plugins</a></li>
+    <li class="last leaf"><a href="/integrations/#sample-apps-java-container-jump" title="">Java Integrations</a></li>
     <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-java/archive/master.zip">Download SDK</a></li>
   </ul>  
 </div>
@@ -85,7 +85,7 @@ alias: [index.html]
     <li class="leaf"><a href="/python/product-guide" title="">Python Product Guide</a></li>
     <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-python" title="">Python SDK on GitHub</a></li>
     <li class="leaf"><a href="/sample-apps/#sample-apps-python-container-jump" title="">Python Samples</a></li>
-    <li class="last leaf"><a href="/plugins/#sample-apps-python-container-jump" title="">Python Plugins</a></li>
+    <li class="last leaf"><a href="/integrations/#sample-apps-python-container-jump" title="">Python Integrations</a></li>
     <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-python/archive/master.zip">Download SDK</a></li>
   </ul>  
 </div>
