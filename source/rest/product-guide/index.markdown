@@ -22,7 +22,7 @@ By offloading user management and authentication to Stormpath, developers can br
 
 ### Overview
 
-<img src="http://www.stormpath.com/sites/default/files/docs/Architecture.png" alt="High-level Architecture" title="High-level Architecture" width="700" height="430">
+<img src="/images/docs/Architecture.png" alt="High-level Architecture" title="High-level Architecture" width="700" height="430">
 
 Stormpath is a REST API service.  You use a REST client (or one of our open-source language-specific SDKs) inside your application to communicate with the Stormpath API. Stormpath's API allows you to offload user management and authentication by helping you do the following:
 
@@ -2298,7 +2298,7 @@ Let's look at an example to illustrate this behavior.  Assume that two account s
 
 The following flow chart shows what happens when an account attempts to login to the Foo application:
 
-<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Account Stores Diagram" title="Account Stores Diagram" width="650" height="500">
+<img src="/images/docs/LoginAttemptFlow.png" alt="Account Stores Diagram" title="Account Stores Diagram" width="650" height="500">
 
 As you can see, Stormpath tries to find the account in the 'Customers' directory first because it has a higher _priority_ than the 'Employees' directory.  If not found, the 'Employees' directory is tried next as it has a lower priority.
 
