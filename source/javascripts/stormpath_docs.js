@@ -199,6 +199,7 @@
         return false; // break;
       }
     });
+    /*
     $anchors.click(function(e) {
       // Scroll content area manually.
       var id = this.hash.substr(1);
@@ -208,6 +209,7 @@
       e.preventDefault();
       return false;
     });
+    */
     var current_root = $('.block-stormpath-docs .menu .leaf.active-trail > a').get(0);
     $(current_root).removeClass('active');
     if (menu_map.current === null) {
