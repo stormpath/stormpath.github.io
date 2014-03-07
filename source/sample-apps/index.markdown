@@ -8,7 +8,7 @@ body_id: [sample-apps-page]
 <div id="sample-apps-wrapper">
   <div class="sample-apps-top">
     <div class="sample-apps-top-text">
-      Stormpath sample applications show you how to implement our SDKs and get started with Stormpath. Every example is open source and available on GitHub – Pull Requests welcome!
+      Stormpath sample applications show you how to implement our SDKs and get started with Stormpath. Every example is open source and available on GitHub – Pull requests welcome!
     </div>
     <div class="sample-apps-jump-to">
       <span>Jump to:</span>
