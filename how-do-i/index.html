@@ -49,6 +49,17 @@ Associate a directory &hellip;">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
+    <!-- Fix FOUC-->
+   <style type="text/css">
+    .hidden {display:none;}
+  </style>
+  <script type="text/javascript">
+    $('html').addClass('hidden');
+    $(document).ready(function() {
+      $('html').show();
+     });  
+   </script>
+
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Covered+By+Your+Grace|Open+Sans:300italic,400italic,600italic,700italic,800italic,300,400,600,700,800" media="all" />
 
@@ -259,9 +270,6 @@ Associate a directory &hellip;">
 			sp_docs_menu['php'].push('quickstart');
 		
 	
-		sp_docs_menu['plugins'] = [];
-		
-	
 		sp_docs_menu['python'] = [];
 		
 			sp_docs_menu['python'].push('product-guide');
@@ -339,7 +347,8 @@ Associate a directory &hellip;">
 <li><a href="#UseLDAP">Use an LDAP directory.</a></li>
 <li><a href="#CreateDirGroups">Create roles within directories.</a></li>
 <li><a href="#EstConnectionAppSP">Add an application for Stormpath authorization.</a></li>
-<li><a href="#ManageWA">Manage workflow automations.</a></li>
+<li><a href="#PasswordReset">Reset an account&rsquo;s password</a></li>
+<li><a href="#VerifyEmail">Verify an account&rsquo;s email</a></li>
 </ul>
 
 
@@ -347,22 +356,14 @@ Associate a directory &hellip;">
 
 <h2><a id="CreateAccount"></a>Create an Account</h2>
 
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Accounts</strong> tab.</li>
-<li>Click <strong>Create an Account</strong>.</li>
-</ol>
-
-
 <p>For information about creating an account, refer to the appropriate product guide:</p>
 
 <ul>
-<li><a href="/console/product-guide#CreateAccounts">Console Product Guide</a></li>
-<li><a href="/rest/product-guide#CreateAccounts">REST Product Guide</a></li>
-<li><a href="/java/product-guide#CreateAccounts">Java Product Guide</a></li>
-<li><a href="/php/product-guide#CreateAccounts">PHP Product Guide</a></li>
-<li><a href="/ruby/product-guide#CreateAccounts">Ruby Product Guide</a></li>
-<li><a href="/python/product-guide#CreateAccounts">Python Product Guide</a></li>
+<li><a href="/rest/product-guide/#account-create">REST Product Guide</a></li>
+<li><a href="/java/product-guide/#account-create">Java Product Guide</a></li>
+<li><a href="/php/product-guide/#account-create">PHP Product Guide</a></li>
+<li><a href="/ruby/product-guide/#account-create">Ruby Product Guide</a></li>
+<li><a href="/python/product-guide/#account-create">Python Product Guide</a></li>
 </ul>
 
 
@@ -370,126 +371,61 @@ Associate a directory &hellip;">
 
 <p>In Stormpath, roles are represented as groups. A group is a collection of accounts within a directory. If the account is part of a directory containing groups, you can associate the account with a group.</p>
 
-<ol>
-<li>Navigate to the appropriate account.</li>
-<li>Click the <strong>Groups</strong> tab.</li>
-<li>Click <strong>Assign to group</strong>.</li>
-<li>In the Assign account dialog, select the appropriate groups and click <strong>Assign</strong>.</li>
-</ol>
-
-
-<p>The Account Groups tab refreshes to include the new group.</p>
-
 <p>For information about assigning an account to a group, refer to the appropriate product guide:</p>
 
 <ul>
-<li><a href="/console/product-guide#AssignAccountGroups">Console Product Guide</a></li>
-<li><a href="/rest/product-guide#AssignAccountGroup">REST Product Guide</a></li>
-<li><a href="/java/product-guide#AssignAccountGroup">Java Product Guide</a></li>
-<li><a href="/php/product-guide#AssignAccountGroup">PHP Product Guide</a></li>
-<li><a href="/ruby/product-guide#AssignAccountGroup">Ruby Product Guide</a></li>
-<li><a href="/python/product-guide#AssignAccountGroup">Python Product Guide</a></li>
+<li><a href="/rest/product-guide#account-add-group">REST Product Guide</a></li>
+<li><a href="/java/product-guide#account-add-group">Java Product Guide</a></li>
+<li><a href="/php/product-guide#account-add-group">PHP Product Guide</a></li>
+<li><a href="/ruby/product-guide#account-add-group">Ruby Product Guide</a></li>
+<li><a href="/python/product-guide#account-add-group">Python Product Guide</a></li>
 </ul>
 
 
 <h2><a id="CreateDirectory"></a>Create a New Directory</h2>
 
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Directories</strong> tab.</li>
-<li>Click <strong>Create Directory</strong>.</li>
-</ol>
-
-
 <p>For information about creating directories, refer to the appropriate product guide:</p>
 
 <ul>
-<li><a href="/console/product-guide#CreateCloud">Create a Stormpath Cloud Directory: Console Product Guide</a></li>
-<li><a href="/console/product-guide#CreateDir">Create an LDAP Directory: Console Product Guide</a></li>
-<li><a href="/rest/product-guide#CreateDir">REST Product Guide</a></li>
-<li><a href="/java/product-guide#CreateDir">Java Product Guide</a></li>
-<li><a href="/php/product-guide#CreateDir">PHP Product Guide</a></li>
-<li><a href="/ruby/product-guide#CreateDir">Ruby Product Guide</a></li>
-<li><a href="/python/product-guide#CreateDir">Python Product Guide</a></li>
+<li><a href="/rest/product-guide#directory-create">REST Product Guide</a></li>
+<li><a href="/java/product-guide#directory-create">Java Product Guide</a></li>
+<li><a href="/php/product-guide#directory-create">PHP Product Guide</a></li>
+<li><a href="/ruby/product-guide#directory-create">Ruby Product Guide</a></li>
+<li><a href="/python/product-guide#directory-create">Python Product Guide</a></li>
 </ul>
 
 
 <h2><a id="UpdateDirectories"></a>Update a Directory</h2>
 
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Directories</strong> tab.</li>
-<li>Scroll the Directories table and click the directory name.</li>
-<li>Make the necessary changes and click <strong>Update</strong>.</li>
-</ol>
-
-
 <p>For information about updating a cloud directory or agent configuration, refer to the appropriate product guide:</p>
 
 <ul>
-<li><a href="/console/product-guide#EditDir">Edit a Cloud Directory: Console Product Guide</a></li>
-<li><a href="/console/product-guide#UpdateAgent">Update LDAP Agent Configuration: Console Product Guide</a></li>
-<li><a href="/rest/product-guide#EditDir">Edit a Cloud Directory: REST Product Guide</a></li>
-<li><a href="/java/product-guide#EditDir">Edit a Cloud Directory: Java Product Guide</a></li>
-<li><a href="/php/product-guide#EditDir">Edit a Cloud Directory: PHP Product Guide</a></li>
-<li><a href="/ruby/product-guide#EditDir">Edit a Cloud Directory: Ruby Product Guide</a></li>
-<li><a href="/python/product-guide#EditDir">Edit a Cloud Directory: Python Product Guide</a></li>
+<li><a href="/rest/product-guide#update-a-directory">Edit a Cloud Directory: REST Product Guide</a></li>
+<li><a href="/java/product-guide#update-a-directory">Edit a Cloud Directory: Java Product Guide</a></li>
+<li><a href="/php/product-guide#update-a-directory">Edit a Cloud Directory: PHP Product Guide</a></li>
+<li><a href="/ruby/product-guide#update-a-directory">Edit a Cloud Directory: Ruby Product Guide</a></li>
+<li><a href="/python/product-guide#update-a-directory">Edit a Cloud Directory: Python Product Guide</a></li>
 </ul>
 
 
-<h2><a id="AddLS"></a>Add Another Login Source</h2>
+<h2><a id="AddLS"></a>Add an Application Account Store Mapping</h2>
 
-<p>Adding a login source to an application provisions a directory or group to that application.  By doing so, all login source accounts can log into the application.</p>
-
-<ol>
-<li>Click <strong>Add Login Source</strong>.</li>
-<li>In the login source list, select the appropriate directory.</li>
-<li>If the directory contains groups, you can select all users or specific group for access.</li>
-<li><p>Click <strong>Add Login Source</strong>.</p>
-
-<p> The new login source is added to the bottom of the login sources list.</p></li>
-</ol>
-
+<p>Adding an account store mapping to an application provisions a directory or group to that application.  By doing so, all account store accounts can log into the application.  Sometimes this is called associating a directory with an application or associating a group with an application.</p>
 
 <p>For information about adding login sources, refer to the appropriate product guide:</p>
 
 <ul>
-<li><a href="/console/product-guide#AddLoginSource">Console Product Guide</a></li>
-<li><a href="/rest/product-guide#AddLoginSource">REST Product Guide</a></li>
-<li><a href="/java/product-guide#AddLoginSource">Java Product Guide</a></li>
-<li><a href="/php/product-guide#AddLoginSource">PHP Product Guide</a></li>
-<li><a href="/ruby/product-guide#AddLoginSource">Ruby Product Guide</a></li>
-<li><a href="/python/product-guide#AddLoginSource">Python Product Guide</a></li>
-</ul>
-
-
-<h2><a id="AssociateDir"></a>Associate a Directory with an Application</h2>
-
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Applications</strong> tab.</li>
-<li>Click the application name.</li>
-<li>Click the <strong>Login Sources</strong> tab.</li>
-<li>Click <strong>Add Login Source</strong>.</li>
-<li>In the login source list, select the appropriate directory.</li>
-<li>Select all users or specific group for access.</li>
-<li>Click <strong>Add Login Source</strong>.</li>
-</ol>
-
-
-<p>For information about associating directories and applications, refer to the appropriate product guide:</p>
-
-<ul>
-<li><a href="/console/product-guide#AssocApplications">Console Product Guide</a></li>
-<li><a href="/rest/product-guide#AssocApplications">REST Product Guide</a></li>
-<li><a href="/java/product-guide#AssocApplications">Java Product Guide</a></li>
-<li><a href="/php/product-guide#AssocApplications">PHP Product Guide</a></li>
-<li><a href="/ruby/product-guide#AssocApplications">Ruby Product Guide</a></li>
-<li><a href="/python/product-guide#AssocApplications">Python Product Guide</a></li>
+<li><a href="/rest/product-guide#create-an-account-store-mapping">REST Product Guide</a></li>
+<li><a href="/java/product-guide#create-an-account-store-mapping">Java Product Guide</a></li>
+<li><a href="/php/product-guide#create-an-account-store-mapping">PHP Product Guide</a></li>
+<li><a href="/ruby/product-guide#create-an-account-store-mapping">Ruby Product Guide</a></li>
+<li><a href="/python/product-guide#create-an-account-store-mapping">Python Product Guide</a></li>
 </ul>
 
 
 <h2><a id="AuthenticateUser"></a>Authenticate a User</h2>
+
+<p>Below is the generic flow for authenticating a user in Stormpath:</p>
 
 <ol>
 <li>Collect your end-user&rsquo;s plaintext username (or email) and password.</li>
@@ -501,7 +437,6 @@ Associate a directory &hellip;">
 <p>For information about authenticating users, refer to the appropriate product guide:</p>
 
 <ul>
-<li><a href="/console/product-guide#AuthenticateAccounts">Console Product Guide</a></li>
 <li><a href="/rest/product-guide#AuthenticateAccounts">REST Product Guide</a></li>
 <li><a href="/java/product-guide#AuthenticateAccounts">Java Product Guide</a></li>
 <li><a href="/php/product-guide#AuthenticateAccounts">PHP Product Guide</a></li>
@@ -515,12 +450,11 @@ Associate a directory &hellip;">
 <p>For information about using an LDAP directory, refer to the appropriate product guide:</p>
 
 <ul>
-<li><a href="/console/product-guide#CreateDir">Console Product Guide</a></li>
-<li><a href="/rest/product-guide#CreateDir">REST Product Guide</a></li>
-<li><a href="/java/product-guide#CreateDir">Java Product Guide</a></li>
-<li><a href="/php/product-guide#CreateDir">PHP Product Guide</a></li>
-<li><a href="/ruby/product-guide#CreateDir">Ruby Product Guide</a></li>
-<li><a href="/python/product-guide#CreateDir">Python Product Guide</a></li>
+<li><a href="/rest/product-guide#directory-mirror">REST Product Guide</a></li>
+<li><a href="/java/product-guide#directory-mirror">Java Product Guide</a></li>
+<li><a href="/php/product-guide#directory-mirror">PHP Product Guide</a></li>
+<li><a href="/ruby/product-guide#directory-mirror">Ruby Product Guide</a></li>
+<li><a href="/python/product-guide#directory-mirror">Python Product Guide</a></li>
 </ul>
 
 
@@ -528,25 +462,14 @@ Associate a directory &hellip;">
 
 <p>Groups are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is used in place of role.</p>
 
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Directories</strong> tab.</li>
-<li>Click the directory name.</li>
-<li>Click the <strong>Groups</strong> tab.</li>
-<li>Click <strong>Create Group</strong>.</li>
-<li>Complete the fields and click <strong>Create</strong>.</li>
-</ol>
-
-
 <p>For information about creating groups, refer to the appropriate product guide:</p>
 
 <ul>
-<li><a href="/console/product-guide#CreateGroups">Console Product Guide</a></li>
-<li><a href="/rest/product-guide#CreateGroups">REST Product Guide</a></li>
-<li><a href="/java/product-guide#CreateGroups">Java Product Guide</a></li>
-<li><a href="/php/product-guide#CreateGroups">PHP Product Guide</a></li>
-<li><a href="/ruby/product-guide#CreateGroups">Ruby Product Guide</a></li>
-<li><a href="/python/product-guide#CreateGroups">Python Product Guide</a></li>
+<li><a href="/rest/product-guide#create-a-group">REST Product Guide</a></li>
+<li><a href="/java/product-guide#create-a-group">Java Product Guide</a></li>
+<li><a href="/php/product-guide#create-a-group">PHP Product Guide</a></li>
+<li><a href="/ruby/product-guide#create-a-group">Ruby Product Guide</a></li>
+<li><a href="/python/product-guide#create-a-group">Python Product Guide</a></li>
 </ul>
 
 
@@ -554,57 +477,41 @@ Associate a directory &hellip;">
 
 <p>To associate an application with Stormpath for authentication and authorization, you must register the application within Stormpath. When registering an application with Stormpath, you are adding the application for authentication through Stormpath.</p>
 
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Applications</strong> tab.</li>
-<li>Click <strong>Register Application</strong>.</li>
-<li>Complete the steps in the Register Application wizard.</li>
-</ol>
-
-
 <p>For information about connecting applications with Stormpath, refer to the appropriate product guide:</p>
 
 <ul>
-<li><a href="/console/product-guide#RegisterApps">Console Product Guide</a></li>
-<li><a href="/rest/product-guide#RegisterApps">REST Product Guide</a></li>
-<li><a href="/java/product-guide#RegisterApps">Java Product Guide</a></li>
-<li><a href="/php/product-guide#RegisterApps">PHP Product Guide</a></li>
-<li><a href="/ruby/product-guide#RegisterApps">Ruby Product Guide</a></li>
-<li><a href="/python/product-guide#RegisterApps">Python Product Guide</a></li>
+<li><a href="/rest/product-guide#create-an-application-aka-register-an-application-with-stormpath">REST Product Guide</a></li>
+<li><a href="/java/product-guide#create-an-application-aka-register-an-application-with-stormpath">Java Product Guide</a></li>
+<li><a href="/php/product-guide#create-an-application-aka-register-an-application-with-stormpath">PHP Product Guide</a></li>
+<li><a href="/ruby/product-guide#create-an-application-aka-register-an-application-with-stormpath">Ruby Product Guide</a></li>
+<li><a href="/python/product-guide#create-an-application-aka-register-an-application-with-stormpath">Python Product Guide</a></li>
 </ul>
 
 
-<h2><a id="ManageWA"></a>Manage Workflow Automations</h2>
+<h2><a id="#PasswordReset"></a>Resetting an Account&rsquo;s Password</h2>
 
-<p>Workflows are common user management operations that are automated for you by Stormpath. You can only use this feature on cloud directories and configurations for workflow automations are applied at the directory level.</p>
-
-<ol>
-<li>Log in to the Stormpath Admin Console.</li>
-<li>Click the <strong>Directories</strong> tab.</li>
-<li>Click the directory name.</li>
-<li>Click <strong>Workflows</strong> tab.</li>
-</ol>
-
+<p>Workflows are common user management operations that are automated for you by Stormpath. You can only use the Password Reset Workflow on cloud directories and configurations for workflow automations are applied at the directory level.</p>
 
 <p>For information about managing workflow automations, refer to the appropriate product guide:</p>
 
 <ul>
-<li><a href="/console/product-guide#ManageWorkflowAutomation">Console Product Guide</a></li>
-<li><a href="/rest/product-guide#ManageWorkflowAutomation">REST Product Guide</a></li>
-<li><a href="/java/product-guide#ManageWorkflowAutomation">Java Product Guide</a></li>
-<li><a href="/php/product-guide#ManageWorkflowAutomation">PHP Product Guide</a></li>
-<li><a href="/ruby/product-guide#ManageWorkflowAutomation">Ruby Product Guide</a></li>
-<li><a href="/python/product-guide#ManageWorkflowAutomation">Python Product Guide</a></li>
+<li><a href="/rest/product-guide#application-password-reset">REST Product Guide</a></li>
+<li><a href="/java/product-guide#application-password-reset">Java Product Guide</a></li>
+<li><a href="/php/product-guide#application-password-reset">PHP Product Guide</a></li>
+<li><a href="/ruby/product-guide#application-password-reset">Ruby Product Guide</a></li>
+<li><a href="/python/product-guide#application-password-reset">Python Product Guide</a></li>
 </ul>
 
 
-<!--
-//TODO: add REST API links to each item
-//TODO: add "How do I" for Password reset AND include the details of creating the password reset page
-//TODO: add "How do I" for Verification AND include the details of creating the verification page
--->
+<h2><a id="#VerifyEmail"></a>Verifying an Account&rsquo;s Email</h2>
 
+<p>To enable Account Registration and Verification on an application, you must use the Admin Console to configure and enable this workflow.</p>
 
+<p>For information about managing workflow automations, refer to the appropriate product guide:</p>
+
+<ul>
+<li><a href="/console/product-guide#account-registration-and-verification">Admin Console Product Guide</a></li>
+</ul>
 
 
             <div id="bottom-wrapper">
@@ -798,9 +705,6 @@ Associate a directory &hellip;">
 			sp_docs_menu['php'].push('quickstart');
 		
 	
-		sp_docs_menu['plugins'] = [];
-		
-	
 		sp_docs_menu['python'] = [];
 		
 			sp_docs_menu['python'].push('product-guide');
@@ -856,6 +760,20 @@ Associate a directory &hellip;">
 			
 			</li>
 		
+			<li class="leaf">
+			
+				<a href="/sample-apps">Stormpath Samples</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/integrations">Stormpath Integrations</a>
+			
+			
+			</li>
+		
 		</ul>
   	
   
@@ -887,20 +805,13 @@ Associate a directory &hellip;">
 				<a href="/how-do-i">How Do I..?</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#CreateAccount" data-level="0" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#AssignAcGps" data-level="0" class="fragment">Assign Accounts to Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateDirectory" data-level="0" class="fragment">Create a New Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#UpdateDirectories" data-level="0" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#AddLS" data-level="0" class="fragment">Add Another Login Source</a><ul class="menu"></ul></li><li class="leaf"><a href="#AssociateDir" data-level="0" class="fragment">Associate a Directory with an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#AuthenticateUser" data-level="0" class="fragment">Authenticate a User</a><ul class="menu"></ul></li><li class="leaf"><a href="#UseLDAP" data-level="0" class="fragment">Use an LDAP directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateDirGroups" data-level="0" class="fragment">Create Roles Within Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#EstConnectionAppSP" data-level="0" class="fragment">Add an Application to Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#ManageWA" data-level="0" class="fragment">Manage Workflow Automations</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#CreateAccount" data-level="0" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#AssignAcGps" data-level="0" class="fragment">Assign Accounts to Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateDirectory" data-level="0" class="fragment">Create a New Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#UpdateDirectories" data-level="0" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#AddLS" data-level="0" class="fragment">Add an Application Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#AuthenticateUser" data-level="0" class="fragment">Authenticate a User</a><ul class="menu"></ul></li><li class="leaf"><a href="#UseLDAP" data-level="0" class="fragment">Use an LDAP directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#CreateDirGroups" data-level="0" class="fragment">Create Roles Within Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#EstConnectionAppSP" data-level="0" class="fragment">Add an Application to Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="##PasswordReset" data-level="0" class="fragment">Resetting an Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="##VerifyEmail" data-level="0" class="fragment">Verifying an Account’s Email</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
 			<li class="leaf">
 			
 				<a href="/errors">Stormpath Error Codes</a>
-			
-			
-			</li>
-		
-			<li class="leaf">
-			
-				<a href="/sample-apps">Sample Apps</a>
 			
 			
 			</li>
