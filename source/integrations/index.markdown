@@ -21,7 +21,7 @@ body_id: [integrations-page]
     <a id="sample-apps-java-container-jump"></a>
     <div class="java-title">Java</div>
     <div class="panel-container">
-      <div class="panel-title">Spring Security Plugin</div>
+      <div class="panel-title">Spring Security Integration</div>
       <div class="panel-inner">
         <div class="panel-text">
           The stormpath-spring-security integration allows a Spring Security-enabled application to use Stormpath.
@@ -37,10 +37,10 @@ body_id: [integrations-page]
       </div>
     </div>
     <div class="panel-container">
-      <div class="panel-title">Apache Shiro Plugin</div>
+      <div class="panel-title">Apache Shiro Integration</div>
       <div class="panel-inner">
         <div class="panel-text">
-          The stormpath-shiro plugin allows an Apache Shiro-enabled application to use Stormpath.
+          The stormpath-shiro integration allows an Apache Shiro-enabled application to use Stormpath.
           <ul>
             <li>Integrates Stormpath with Apache Shiro</li>
             <li>Extends Shiro with user account, roles and permissions support</li>
@@ -59,10 +59,10 @@ body_id: [integrations-page]
     <a id="sample-apps-python-container-jump"></a>
     <div class="python-title">Python</div>
     <div class="panel-container">
-      <div class="panel-title">Django Plugin</div>
+      <div class="panel-title">Django Integration</div>
       <div class="panel-inner">
         <div class="panel-text">
-          The stormpath-django plugin allows Django web apps to Stormpath User Management & Authentication service.
+          The stormpath-django integration allows Django web apps to Stormpath User Management & Authentication service.
           <ul>
             <li>Seamless Django integration simplifies user authentication and access control</li>
             <li>Works with Python 2.7 and 3.3</li>
@@ -75,10 +75,10 @@ body_id: [integrations-page]
       </div>
     </div>
     <div class="panel-container">
-      <div class="panel-title">Flask Plugin</div>
+      <div class="panel-title">Flask Integration</div>
       <div class="panel-inner">
         <div class="panel-text">
-          Build simple, secure web applications with Stormpath and Flask using the stormpath-flask plugin!
+          Build simple, secure web applications with Stormpath and Flask using the stormpath-flask integration!
           <ul>
             <li>Extends Flask-Login to use Stormpath's REST API and Stormpath's User Management</li>
             <li>Works with Python 2.7 and 3.3</li>

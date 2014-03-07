@@ -3,6 +3,7 @@ layout: default
 classes_array: [page-docs]
 title: Documentation
 content_top: [docs_top.html]
+alias: [index.html]
 ---
                  
 
@@ -28,10 +29,14 @@ content_top: [docs_top.html]
         <h2 class="pane-title">Rest API Docs</h2>
     
   
-  <div class="pane-content">
-    <ul class="menu"><li class="first leaf"><a href="/rest/quickstart" title="">REST API Quickstart Guide</a></li>
-<li class="last leaf"><a href="/rest/product-guide" title="">REST API Product Guide</a></li>
-</ul>  </div>
+<div class="pane-content">
+  <ul class="menu">
+    <li class="first leaf"><a href="/rest/quickstart" title="">REST API Quickstart Guide</a></li>
+    <li class="leaf"><a href="/rest/product-guide" title="">REST API Product Guide</a></li>
+    <li class="leaf"><a href="/how-do-i" title="">How do I...</a></li>
+    <li class="last leaf"><a href="/errors" title="">REST Error Codes</a></li>
+  </ul>
+</div>
 
   
   </div>
@@ -40,15 +45,15 @@ content_top: [docs_top.html]
         <h2 class="pane-title">Ruby Docs</h2>
     
   
-  <div class="pane-content">
-    <ul class="menu"><li class="first leaf"><a href="/ruby/quickstart" title="">Ruby Quickstart Guide</a></li>
-<li class="leaf"><a href="/ruby/product-guide" title="">Ruby Product Guide</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-ruby" title="">Ruby SDK on Github</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-ruby-samples" title="">Ruby Sample App</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-rails" title="">Rails Ruby Gem</a></li>
-<li class="last leaf"><a href="https://github.com/stormpath/stormpath-rails-sample" title="">Rails Stormpath Web App</a></li>
-<li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-ruby/archive/master.zip">Download SDK</a></li>
-</ul>  </div>
+<div class="pane-content">
+  <ul class="menu"><li class="first leaf"><a href="/ruby/quickstart" title="">Ruby Quickstart Guide</a></li>
+      <li class="leaf"><a href="/ruby/product-guide" title="">Ruby Product Guide</a></li>
+      <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-ruby" title="">Ruby SDK on Github</a></li>
+      <li class="leaf"><a href="/sample-apps/#sample-apps-ruby-container-jump" title="">Ruby Samples</a></li>
+      <li class="last leaf"><a href="/integrations/#sample-apps-ruby-container-jump" title="">Ruby Integrations</a></li>
+      <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-ruby/archive/master.zip">Download SDK</a></li>
+  </ul>  
+</div>
 
   
   </div>
@@ -61,16 +66,16 @@ content_top: [docs_top.html]
         <h2 class="pane-title">Java Docs</h2>
     
   
-  <div class="pane-content">
-    <ul class="menu"><li class="first leaf"><a href="/java/quickstart" title="">Java Quickstart Guide</a></li>
-<li class="leaf"><a href="/java/product-guide" title="">Java Product Guide</a></li>
-<li class="leaf"><a href="java/apidocs" title="Stormpath Java SDK API Documentation (JavaDoc)">Java SDK API (JavaDoc)</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-java" title="">Java SDK on GitHub</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-spring-samples" title="">Java Sample App</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-shiro" title="">Apache Shiro Integration</a></li>
-<li class="last leaf"><a href="https://github.com/stormpath/stormpath-shiro-web-sample" title="">Apache Shiro Sample App</a></li>
-<li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-java/archive/master.zip">Download SDK</a></li>
-</ul>  </div>
+<div class="pane-content">
+  <ul class="menu">
+    <li class="first leaf"><a href="/java/quickstart" title="">Java Quickstart Guide</a></li>
+    <li class="leaf"><a href="/java/product-guide" title="">Java Product Guide</a></li>
+    <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-java" title="">Java SDK on GitHub</a></li>
+    <li class="leaf"><a href="/sample-apps/#sample-apps-java-container-jump" title="">Java Samples</a></li>
+    <li class="last leaf"><a href="/integrations/#sample-apps-java-container-jump" title="">Java Integrations</a></li>
+    <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-java/archive/master.zip">Download SDK</a></li>
+  </ul>  
+</div>
 
   
   </div>
@@ -79,13 +84,15 @@ content_top: [docs_top.html]
         <h2 class="pane-title">Python Docs</h2>
     
   
-  <div class="pane-content">
-    <ul class="menu"><li class="first leaf"><a href="/python/quickstart" title="">Python Quickstart Guide</a></li>
-<li class="leaf"><a href="/python/product-guide" title="">Python Product Guide</a></li>
-<li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-python" title="">Python SDK on GitHub</a></li>
-<li class="last leaf"><a href="https://pypi.python.org/pypi/stormpath-sdk/0.2.0" title="">Python SDK on PyPi</a></li>
-<li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-python/archive/master.zip">Download SDK</a></li>
-</ul>  </div>
+<div class="pane-content">
+  <ul class="menu"><li class="first leaf"><a href="/python/quickstart" title="">Python Quickstart Guide</a></li>
+    <li class="leaf"><a href="/python/product-guide" title="">Python Product Guide</a></li>
+    <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-python" title="">Python SDK on GitHub</a></li>
+    <li class="leaf"><a href="/sample-apps/#sample-apps-python-container-jump" title="">Python Samples</a></li>
+    <li class="last leaf"><a href="/integrations/#sample-apps-python-container-jump" title="">Python Integrations</a></li>
+    <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-python/archive/master.zip">Download SDK</a></li>
+  </ul>  
+</div>
 
   
   </div>
