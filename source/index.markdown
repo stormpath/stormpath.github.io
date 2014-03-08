@@ -71,6 +71,7 @@ alias: [index.html]
     <li class="first leaf"><a href="/java/quickstart" title="">Java Quickstart Guide</a></li>
     <li class="leaf"><a href="/java/product-guide" title="">Java Product Guide</a></li>
     <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-java" title="">Java SDK on GitHub</a></li>
+    <li class="leaf"><a href="/java/apidocs/" title="">Java SDK API (JavaDocs)</a></li>
     <li class="leaf"><a href="/sample-apps/#sample-apps-java-container-jump" title="">Java Samples</a></li>
     <li class="last leaf"><a href="/integrations/#sample-apps-java-container-jump" title="">Java Integrations</a></li>
     <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-java/archive/master.zip">Download SDK</a></li>
