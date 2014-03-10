@@ -3036,7 +3036,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
 <a class="anchor" name="check-account-member-of-group"></a>
 #### Check if an Account is Member of a Group
 
-The account resource provides the `isMemberOfGroup` operation. This operation returns `true` if the account belongs to a group whose name or href is equal to the passed String value. No wildcard substitution takes place internally, just a literal case-insensitive comparison will be executed against groups' name and href. Usage example:
+The account resource provides the `isMemberOfGroup` operation. This operation returns `true` if the account belongs to a group whose name or href is (case insensitive) equal to the specified `String` value. For example:
 
 	String groupName = "Foo Group";
 	account.isMemberOfGroup(groupName);
