@@ -40,12 +40,6 @@ Only use this code if a more accurate status code is not available. For example,
 
 <a id="2015"></a>[**2015**](/errors/2015): Unknown property. For example, trying to set a 'srname' property instead of 'surname'.
 
-<a id="2016"></a>[**2016**](/errors/2016): Unsupported Query Property: specifying a property not recognized as queryable.
-
-<a id="2017"></a>[**2017**](/errors/2017): Unsupported Order Property: specifying a property for sort order when the property cannot be used for sort ordering.
-
-<a id="2018"></a>[**2018**](/errors/2018): Unsupported Expand Property: specifying a property for expansion when the property is not expandable.
-
 <a id="2100"></a>[**2100**](/errors/2100): Malformed query. One or more query criteria parameters was not specified correctly.
 
 <a id="2101"></a>[**2101**](/errors/2101): The supplied query parameter must have a corresponding value.
@@ -62,33 +56,60 @@ Only use this code if a more accurate status code is not available. For example,
 
 <a id="2107"></a>[**2107**](/errors/2107): Unsupported Expand Property: specifying a property for expansion when the property is not expandable.
 
+***
 
-</p>
+##<a id="CustomData"></a>3XXX: Custom Data
+
+<a id="3000"></a>[**3000**](/errors/3000): Property names cannot be null, empty or blank.
+
+<a id="3001"></a>[**3001**](/errors/3001): Property name is invalid.  Property names cannot exceed 255 characters.
+
+<a id="3002"></a>[**3002**](/errors/3002): Property name is invalid.  Property names may contain only alphanumeric characters, underscores, or dashes, but cannot start with a dash.
+
+<a id="3003"></a>[**3003**](/errors/3003): Property names may not equal any of the following reserved names: 'href', createdAt', modifiedAt', 'meta', 'spMeta', 'spmeta', 'ionmeta', or 'ionMeta'.
+
+<a id="3004"></a>[**3004**](/errors/3004): Property value exceeded maximum size. The value exceeds the maximum storage size limit of 10 MB per resource.
 
 ***
 
+##<a id="Tenant"></a> 4XXX: Tenant
+
+<a id="4001"></a>[**4001**](/errors/4001): Your Stormpath tenant owner account cannot be deleted.
+
+<a id="4002"></a>[**4002**](/errors/4002): Your Stormpath tenant owner account's status cannot be modified.
+
+***
+
+
 ##<a id="Application"></a>5XXX: Application
-<br>
+
+<a id="5010"></a>[**5010**](/errors/5010): The specified directory name is already in use by another directory and cannot be used to auto-create a directory for the new application. Please choose a different directory name for the auto-created directory.
+
 <a id="5100"></a>[**5100**](/errors/5100): The account storage location is unspecified. 
 
 <a id="5101"></a>[**5101**](/errors/5101): The account storage location is disabled.
 
 <a id="5102"></a>[**5102**](/errors/5102): The group storage location is unspecified. 
 
-<a id="5103"></a>[**5103**](/errors/5103): The group storage location is disabled. 
+<a id="5103"></a>[**5103**](/errors/5103): This application's default storage location for new groups is disabled.  New groups cannot be added to disabled directories. 
+
+<a id="5104"></a>[**5104**](/errors/5104): The specified account store is already mapped to that Application. Please choose another group or directory. 
+
+<a id="5106"></a>[**5106**](/errors/5106): The specified directory account store is a read-only mirror of an externally managed directory. It cannot be used to directly store new accounts. 
+
+<a id="5108"></a>[**5108**](/errors/5108): The specified group account store is a read-only mirror of an externally managed group. It cannot be used to directly store new accounts. 
+
+<a id="5110"></a>[**5110**](/errors/5110): The specified directory account store is a read-only mirror of an externally managed directory. It cannot be used to directly store new groups. 
+
+<a id="5112"></a>[**5112**](/errors/5112): Specifying a group as a defaultGroupStore is not currently supported. 
 
 <a id="5114"></a>[**5114**](/errors/5114): The specified account store reference is invalid.
 
-</p>
-
 ***
-
 
 ##<a id="Directory"></a>6XXX: Directory
 
 <a id="6100"></a>[**6100**](/errors/6100): The directory does not allow creation of new accounts or groups.
-
-</p>
 
 ***
 
@@ -108,4 +129,3 @@ Only use this code if a more accurate status code is not available. For example,
 
 <a id="9006"></a>[**9006**](/errors/9006): Stormpath, while acting as a gateway/proxy to your Active Directory server, encountered a referral error while communicating with the AD server. Potential solutions are to ensure that your AD server's DNS settings are correctly configured or to log in to the Stormpath UI Console and change your AD server's Stormpath Agent configuration to 'Ignore Referral Issues'.
 
-</p>
