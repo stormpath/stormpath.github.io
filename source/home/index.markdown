@@ -37,6 +37,7 @@ alias: [/index.html]
             <ul class="menu"><li class="first leaf"><a href="/python/quickstart" title="">Quickstart Guide</a></li>
               <li class="leaf"><a href="/python/product-guide" title="">Product Guide</a></li>
               <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-python" title="">SDK on GitHub</a></li>
+              <li class="leaf"><a href="/python/apidocs/" title="">API Docs (Sphinx)</a></li>
               <li class="leaf"><a href="/sample-apps/#sample-apps-python-container-jump" title="">Sample Apps</a></li>
               <li class="last leaf"><a href="/integrations/#sample-apps-python-container-jump" title="">Framework Integrations</a></li>
               <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-python/archive/master.zip">Download SDK</a></li>
