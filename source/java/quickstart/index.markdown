@@ -60,12 +60,12 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-api</artifactId>
-        <version>0.9.1</version>
+        <version>0.9.3</version>
     </dependency>
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-httpclient</artifactId>
-        <version>0.9.1</version>
+        <version>0.9.3</version>
         <scope>runtime</scope>
     </dependency>
 
@@ -85,7 +85,13 @@ Create a Stormpath SDK [`Client`](/java/product-guide#Client) instance based on 
     ...
 
     String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
-    Client client = new ClientBuilder().setApiKeyFileLocation(path).build();	
+    Client client = new ClientBuilder().setApiKeyFileLocation(path).build();
+    
+    //If using Google App Engine, you must use Basic authentication:
+    //Client client = new ClientBuilder().setApiKeyFileLocation(path)
+    //    .setAuthenticationScheme(AuthenticationScheme.BASIC)
+    //    .build();
+    	
 
 The `Client` instance is intended to be an application singleton. You should reuse this instance throughout your application code. You *should not* create multiple Client instances as it could negatively affect caching.
 
