@@ -415,12 +415,12 @@
 <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;com.stormpath.sdk&lt;/groupId&gt;
     &lt;artifactId&gt;stormpath-sdk-api&lt;/artifactId&gt;
-    &lt;version&gt;0.9.1&lt;/version&gt;
+    &lt;version&gt;0.9.3&lt;/version&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;com.stormpath.sdk&lt;/groupId&gt;
     &lt;artifactId&gt;stormpath-sdk-httpclient&lt;/artifactId&gt;
-    &lt;version&gt;0.9.1&lt;/version&gt;
+    &lt;version&gt;0.9.3&lt;/version&gt;
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;
 </code></pre>
@@ -441,7 +441,12 @@
 ...
 
 String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
-Client client = new ClientBuilder().setApiKeyFileLocation(path).build();    
+Client client = new ClientBuilder().setApiKeyFileLocation(path).build();
+
+//If using Google App Engine, you must use Basic authentication:
+//Client client = new ClientBuilder().setApiKeyFileLocation(path)
+//    .setAuthenticationScheme(AuthenticationScheme.BASIC)
+//    .build();
 </code></pre>
 
 <p>The <code>Client</code> instance is intended to be an application singleton. You should reuse this instance throughout your application code. You <em>should not</em> create multiple Client instances as it could negatively affect caching.</p>
