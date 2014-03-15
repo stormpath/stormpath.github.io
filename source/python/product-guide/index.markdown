@@ -1337,16 +1337,17 @@ However, applications that map more than one directory to define their group bas
 ##### Create a New Application Group with your own Custom Data
 
 When you create an application group, in addition to Stormpath's group attributes, you may also specify [your own custom data](#custom-data) by including a `custom_data` field:
-        group = application.groups.create(
-        {
-            "name" : "Jedi High Council",
-            "description": "Elected leaders of the Jedi Order",
-            "status": "ENABLED",
-            "custom_data": {
-                "Headquarters": "High Council Chamber, High Council Tower, Jedi Temple, Coruscant",
-                "Affiliation": "Jedi Order"
-            }
-        })
+
+    group = application.groups.create(
+    {
+        "name" : "Jedi High Council",
+        "description": "Elected leaders of the Jedi Order",
+        "status": "ENABLED",
+        "custom_data": {
+            "Headquarters": "High Council Chamber, High Council Tower, Jedi Temple, Coruscant",
+            "Affiliation": "Jedi Order"
+        }
+    })
 
 Once created, you can further modify the custom data - delete it, add and remove attributes, etc as necessary.  See the [custom data](#custom-data) section for more information and custom data requirements/restrictions.
 
