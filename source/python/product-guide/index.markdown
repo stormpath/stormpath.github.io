@@ -2269,6 +2269,12 @@ To delete a cloud directory group:
 
     group.delete()
 
+### Group Custom Data
+
+While Stormpath's default Group attributes are useful to many applications, you might want to add your own custom data to a Stormpath group.  If you want, you can store all of your custom group information in Stormpath so you don't have to maintain another separate database to store your specific group data.
+
+Please see the [custom data section](#custom-data) for more information and requirements/restrictions for creating, retrieving, updating and deleting group custom data.
+
 <a class="anchor" name="groups-list"></a>
 ### List Groups
 
@@ -2600,6 +2606,7 @@ For accounts, you can:
     * [Remove accounts from groups](#account-remove-group)
     * [Enable or Disable an account](#account-enable)
 * [Delete an accounts](#account-delete)
+* [Manage account-specific custom data](#custom-data)
 * [List accounts](#accounts-list)
     * [List application accounts](#accounts-application-accounts-list)
     * [List group members](#accounts-application-group-members)
@@ -2806,6 +2813,12 @@ To delete an account:
 
     account.delete()
 
+### Account Custom Data
+
+While Stormpath's default `Account` attributes are useful to many applications, you might want to add your own custom data to a Stormpath account.  If you want, you can store all of your custom account information in Stormpath so you don't have to maintain another separate database to store your specific account data.
+
+Please see the [custom data section](#custom-data) for more information and requirements/restrictions for creating, retrieving, updating and deleting account custom data.
+
 <a class="anchor" name="accounts-list"></a>
 ### List Accounts
 
@@ -2969,7 +2982,7 @@ If the verification token is not found, a `404 Not Found` is returned with an [e
 <a class="anchor" name="accounts-authenticate"></a>
 ### Authenticating An Account
 
-After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts. 
+After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts.
 
 For more information on working with applications and authentication, refer to the [Log in (Authenticate) an Account](#application-account-authc) section of this guide.
 
@@ -3057,8 +3070,127 @@ A request returns a Collection Resource containing the group memberships to whic
 Groups Membership resources support the full suite of CRUD commands and other interactions. Please see the [Group Memberships section](#group-memberships) for more information.
 
 ***
+<a class="anchor" name="custom-data"></a>
+## Custom Data
+
+Account and Group resources have predefined fields that are useful to many applications, but you are likely to have your own custom data that you need to associate with an account or group as well.
+
+For this reason, both the account and group resources support a linked `custom_data` resource that you can use for your own needs.
+
+The `custom_data` resource is always connected to an account or group and you can always reach it by accessing the `custom_data` attribute on the account or group resource instance.
+
+In addition to your custom name/value pairs, a `customData` resource will always contain 3 reserved read-only fields:
+
+- `href`: The fully qualified location of the custom data resource
+- `createdAt`: the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string, for example `2017-04-01T14:35:16.235Z`
+- `modifiedAt`: the UTC timestamp with millisecond precision of when the resource was last updated in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string.
+
+You can store an unlimited number of additional name/value pairs in the `customData` resource, with the following restrictions:
+
+* The total storage size of a single `customData` resource cannot exceed 10 MB (megabytes).  **The `href`, `createdAt` and `modifiedAt` field names and values do not count against your resource size quota.**
+* Field names must:
+    * be 1 or more characters long, but less than or equal to 255 characters long (1 <= N <= 255).
+    * contain only alphanumeric characters `0-9A-Za-z`, underscores `_` or dashes `-` but cannot start with a dash `-`.
+    * may not equal any of the following reserved names: `href`, `createdAt`, `modifiedAt`, `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta`.
+
+For Custom Data, you can:
+
+* [Create Custom Data](#create-custom-data)
+* [Retrieve Custom Data](#retrieve-custom-data)
+* [Update Custom Data](#update-custom-data)
+* [Delete All Custom Data](#update-custom-data)
+* [Delete a single Custom Data field](#delete-custom-data-field)
 
 <a class="anchor" name="administration"></a>
+### Create Custom Data
+
+Whenever you create an account or a group, an empty `customData` resource is created for that account or group automatically - you do not need to explicitly execute a request to create it.
+
+However, it is often useful to populate custom data at the same time you create an account or group.  You can do this by embedding the `customData` directly in the account or group resource. For example:
+
+        account = directory.accounts.create({
+            "username" : "jlpicardp",
+            "email" : "capt@enterprise.cpm",
+            "given_name" : "Jean-Luc",
+            "middle_name" : "",
+            "surname" : "Picard",
+            "password" : "uGhd%a8Kl!",
+            "status" : "ENABLED",
+            "custom_data": {
+                "rank": "Captain",
+                "birthDate": "2305-07-13",
+                "birthPlace": "La Barre, France",
+                "favoriteDrink": "Earl Grey tea"
+                "favoriteColor": "red",
+            }
+        })
+
+<a class="anchor" name="retrieve-custom-data"></a>
+### Retrieve Custom Data
+
+Retrieving an account or group’s custom data is managed by accessing the `custom_data` attribute on those resources, and fetching each individual field like you would when fetching a Python dictionary field:
+
+        print(account.custom_data["rank"])
+
+### Update Custom Data
+
+You may update an account or group's custom data, in one of two ways:
+
+* by [updating the custom_data resource directly](#update-custom-data-directly), independent of the group or account, or
+* by [embedding custom_data changes in an account or group update request](#update-custom-data-embedded)
+
+<a class="anchor" name="update-custom-data-directly"></a>
+#### Update Custom Data Directly
+
+Updating custom_data is managed in the same manner as saving resources, by using the `save` method:
+
+        account.custom_data["favoriteColor"] = "blue"
+        account.custom_data.save()
+
+<a class="anchor" name="update-custom-data-embedded"></a>
+#### Update Custom Data as part of an Account or Group Request
+
+Sometimes it is helpful to update an account or group's `custom_data` as part of an update request for the account or group.  In this case, just submit customData changes in an embedded `custom_data` field embedded in the account or group request resource.  For example:
+
+        account.status = "ENABLED"
+        account.custom_data["favoriteColor"] = "blue"
+        account.custom_data["hobby"] = "Kendo"
+        account.save()
+
+In the above example, we're performing 3 modifications in one request:
+
+1. We're modifying the account's `status` attribute and setting it to `ENABLED`.  We're _also_
+2. Changing the existing custom_data `favoriteColor` field value to `blue` (it was previously `red`) and
+3. Adding a new custom_data `hobby` field with a value of `Kendo`.
+
+This request modifies both the account resource _and_ that account's custom data in a single request.
+
+The same simultaneous update behavior may be performed for Group updates as well.
+
+<a class="anchor" name="delete-custom-data"></a>
+### Delete Custom Data
+
+You may delete all of an account or group’s custom data by calling `delete` method on the account or group’s custom_data:
+
+        account.custom_data.delete()
+
+        group.custom_data.delete()
+
+This will delete all of the respective account or group's custom data fields, but it leaves the `custom_data` placeholder in the account or group resource.  You cannot delete the `custom_data` resource entirely - it will be automatically permanently deleted when the account or group is deleted.
+
+<a class="anchor" name="delete-account-custom-data-field"></a>
+### Delete Custom Data Field
+
+You may also delete an individual custom data field by calling the `del` method on the account or group's custom_data while stating the custom data field as a parameter:
+
+        del account.custom_data["vehicle"]
+
+        account.custom_data.save()
+
+{% docs note %}
+The `custom_data` field isn't actually deleted on Stormpath until the `save` method is called. You should consider that in situations where you rely that your local resource object is in sync with Stormpath.
+{% enddocs %}
+
 ## Administering Stormpath
 
 For more information about administering Stormpath using the Admin Console, please refer to the [Admin Console Product Guide](http://stormpath.com/docs/console/product-guide).
