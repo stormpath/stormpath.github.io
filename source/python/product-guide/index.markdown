@@ -1068,7 +1068,8 @@ However, many applications do not need this feature.  The most common use case i
 
 Applications additionally support the following account-specific functionality:
 
-* [Register A New Account](#application-account-register)
+* [Register A New Application Account](#application-account-register)
+    * and optionally specify your own [account-specific custom data](#application-account-register-with-customData)
 * [Verify An Account's Email Address](#application-verify-email)
 * [Log In (Authenticate) an Account](#application-account-authc)
 * [Reset An Account's Password](#application-password-reset)
@@ -1100,6 +1101,29 @@ The `create` method is a convenience: when you create a new `account` resource, 
 For most applications that have only a single assigned directory, the account is persisted in that directory immediately - the application developer does not even really need to know that Stormpath automates this.
 
 However, applications that map more than one directory or group to define their account base have the option of specifying _which_ of those mapped locations should receive newly created accounts.  You must choose a default [new account location](#account-store-mapping-default-account-store).
+
+<a class="anchor" name="application-account-register-with-customData"></a>
+##### Register a New Application Account with your own Custom Data
+
+When you create an application account, in addition to Stormpath's account attributes, you may also specify [your own custom data](#custom-data) by including a `custom_data` field:
+
+        account = application.accounts.create({
+            "username" : "jlpicardp",
+            "email" : "capt@enterprise.cpm",
+            "given_name" : "Jean-Luc",
+            "middle_name" : "",
+            "surname" : "Picard",
+            "password" : "uGhd%a8Kl!",
+            "status" : "ENABLED",
+            "custom_data": {
+                "rank": "Captain",
+                "birthDate": "2305-07-13",
+                "birthPlace": "La Barre, France",
+                "favoriteDrink": "Earl Grey tea"
+            }
+        })
+
+Once created, you can further modify the custom data - delete it, add and remove attributes, etc as necessary.  See the [custom data](#custom-data) section for more information and custom data requirements/restrictions.
 
 <a class="anchor" name="application-welcome-email"></a>
 ##### Send a Welcome Email
@@ -1308,6 +1332,23 @@ The `create` method is a convenience: when you create a new `group` resource, St
 For most applications that have only a single assigned directory, the group is persisted in that directory immediately - the application developer does not even really need to know that Stormpath automates this.
 
 However, applications that map more than one directory to define their group base have the option of specifying _which_ of those mapped locations should receive newly created groups.  You must choose a default [new group location](#account-store-mapping-default-group-store).
+
+<a class="anchor" name="application-groups-create-with-customData"></a>
+##### Create a New Application Group with your own Custom Data
+
+When you create an application group, in addition to Stormpath's group attributes, you may also specify [your own custom data](#custom-data) by including a `custom_data` field:
+        group = application.groups.create(
+        {
+            "name" : "Jedi High Council",
+            "description": "Elected leaders of the Jedi Order",
+            "status": "ENABLED",
+            "custom_data": {
+                "Headquarters": "High Council Chamber, High Council Tower, Jedi Temple, Coruscant",
+                "Affiliation": "Jedi Order"
+            }
+        })
+
+Once created, you can further modify the custom data - delete it, add and remove attributes, etc as necessary.  See the [custom data](#custom-data) section for more information and custom data requirements/restrictions.
 
 <a class="anchor" name="application-groups-list"></a>
 #### List Application Groups
@@ -2115,6 +2156,7 @@ Attribute | Description | Type | Valid Value
 <a id="group-resource-name"></a>`name` | The name of the group. Must be unique within a directory. | String | 1 < N <= 255 characters
 <a id="group-resource-description"></a>`description` | The description of the group. | String | 1 < N <= 1000 characters
 <a id="group-resource-status"></a>`status` | Enabled groups are able to authenticate against an application. Disabled groups cannot authenticate against an application. | String  |`enabled`,`disabled`
+<a class="anchor" name="group-resource-custom-data"></a>`custom_data` | The group's [custom data](#group-custom-data) resource that you can use to store your own group-specific custom fields. | Resource | <span>--</span>
 <a class="anchor" name="group-resource-tenant"></a>`tenant` | The tenant that owns the directory containing this group. | Resource | <span>--</span>
 <a class="anchor" name="directory-resource-directory"></a>`directory` | The directory resource that the group belongs to. | Resource | <span>--</span>
 <a class="anchor" name="directory-resource-accounts"></a>`accounts` | The accounts that are contained within this group. | CollectionResource | <span>--</span>
@@ -2128,6 +2170,7 @@ With groups, you can:
     * [Enable a group](#group-enable)
     * [Disable a group](#group-disable)
 * [Delete a group](#group-delete)
+* [Manage your own custom group data](#group-custom-data)
 * [List groups](#groups-list)
 * [Search groups](#groups-search)
 * [Access a group's accounts](#group-accounts)
@@ -2590,6 +2633,7 @@ Attribute | Description | Type | Valid Value
 <a id="middleName"></a>`middle_name` | The middle (second) name for the account holder. | String | 1 < N <= 255 characters
 <a id="surname"></a>`surname` | The surname (last name) for the account holder. | String | 1 < N <= 255 characters
 <a id="status"></a>`status` | `enabled` accounts are able to login to their assigned [applications](#Applications), `disabled` accounts may not login to applications, `unverified` accounts are disabled and have not verified their email address. | String | `enabled`,`disabled`,`unverified`
+<a class="anchor" name="account-resource-custom-data"></a>`custom_data` | The account's [custom data](#account-custom-data) resource that you can use to store your own account-specific custom fields. | Resource | <span>--</span>
 <a id="account-resource-groups"></a>`groups` | The [groups](#Groups) that the account belongs to. | CollectionResource | <span>--</span>
 <a id="account-resource-group-memberships"></a>`group_memberships` | The group memberships that the account belongs to. | CollectionResource | <span>--</span>
 <a id="account-resource-directory"></a>`directory` | The account's directory. | Resource | <span>--</span>
@@ -2650,6 +2694,7 @@ Through Stormpath's API and Admin Console, you can only create accounts for clou
 * [username](#username)
 * [middle_name](#middleName)
 * [status](#status)
+* [custom_data](#custom-data)
 
 {% docs note %}
 The password in the request is being sent to Stormpath as plain text. This is one of the reasons why Stormpath only allows requests via HTTPS. Stormpath implements the latest password hashing and cryptographic best-practices that are automatically upgraded over time so the developer does not have to worry about this. Stormpath can only do this for the developer if Stormpath receives the plaintext password so we can hash it using these techniques.
@@ -2666,7 +2711,13 @@ On the client side, then, you do not need to worry about salting or storing pass
         'surname': 'Smith',
         'username': 'johnsmith',
         'email': 'john.smith@example.com',
-        'password': '4P@$$w0rd!'
+        'password': '4P@$$w0rd!',
+        'custom_data': {
+            "rank": "Captain",
+            "birthDate": "2305-07-13",
+            "birthPlace": "La Barre, France",
+            "favoriteDrink": "Earl Grey tea"
+        }
     })
 
 **Example request suppressing the email messages:**
@@ -2698,6 +2749,7 @@ The following `Account` attributes are expandable:
 * `directory`
 * `groups`
 * `group_memberships`
+* `custom_data`
 
 Also, because some of these are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
 
@@ -2728,6 +2780,7 @@ Changes made to an account are immediately reflected in any application that has
 * [middle_name](#middleName)
 * [surname](#surname)
 * [status](#status)
+* [custom_data](#custom-data)
 
 {% docs note %}
 The password in the request is being sent to Stormpath as plain text. This is one of the reasons why Stormpath only allows requests via HTTPS. Stormpath implements the latest password hashing and cryptographic best-practices that are automatically upgraded over time so the developer does not have to worry about this. Stormpath can only do this for the developer if Stormpath receives the plaintext password so we can hash it using these techniques.
