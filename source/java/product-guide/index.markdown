@@ -1117,12 +1117,11 @@ Workflows are only available on cloud directories and only configurable using th
 <a class="anchor" name="application-account-authc"></a>
 #### Log In (Authenticate) an Account
 
-You may authenticate an account by calling the `authenticate` method of an application instance:
+You may authenticate an account by calling the `authenticateAccount` method of an application instance:
 
 **Example Request**
 
-	UsernamePasswordRequest authenticationRequest = 
-								new UsernamePasswordRequest("usernameOrEmail", "password");
+	UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("usernameOrEmail", "password");
     AuthenticationResult result = application.authenticateAccount(authenticationRequest);
 
 If the login attempt is successful, an `AuthenticationResult` object is returned with a reference to the successfully authenticated account:
@@ -1134,8 +1133,7 @@ If the login attempt fails, a `400 Bad Request` is returned with an [error paylo
 **Example Login Attempt Failure Handling**
 
 	try {
-    	UsernamePasswordRequest authenticationRequest = 
-    							new UsernamePasswordRequest("johnsmith", "badPassword");
+    	UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("johnsmith", "badPassword");
         application.authenticateAccount(authenticationRequest);
 	} catch (ResourceException ex) {
     	System.out.println(ex.getStatus()); // Will output: 400
@@ -1144,6 +1142,19 @@ If the login attempt fails, a `400 Bad Request` is returned with an [error paylo
         System.out.println(ex.getDeveloperMessage()); // Will output: "Invalid username or password."
         System.out.println(ex.getMoreInfo()); // Will output: "mailto:support@stormpath.com"
 	}
+
+#### Log In (Authenticate) an Account with Specific AccountStore
+
+When you submit an authentication request to Stormpath, instead of executing the default login logic that cycles through account stores to find an account match, you can specify the `AccountStore` where the login attempt will be issued to.
+
+At the time you create the request, it is likely that you may know the account store where the account resides, therefore you can target it directly. This will speed up the authentication attempt (especially if you have a very large number of account stores).
+
+**Example Request**
+	
+	AccountStore accountStore = anAccountStoreMapping.getAccountStore();
+	UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("usernameOrEmail", "password");
+	authenticationRequest.setAccountStore(accountStore);
+    AuthenticationResult result = application.authenticateAccount(authenticationRequest);
 
 <a class="anchor" name="application-password-reset"></a>
 #### Reset An Account's Password
