@@ -37,7 +37,7 @@ client.getGroupMembership(&#39;https://api.stormpath.com/v1/groupMemberships/2Ob
   console.log(application);
 });</code></pre><h3 id="create-an-application">Create an Application</h3><p>Registering your Application with Stormpath is as easy as creating a new <code>Application</code> record:</p><pre><code class="lang-javascript">var app = {
   name: &#39;My Awesome Application!&#39;,
-  description: &#39;No, Srsly. It&#39;&#39;s Awesome.&#39;
+  description: &#39;No, Srsly. It\&#39;s Awesome.&#39;
 };
 
 client.createApplication(app, {createDirectory:true}, function onAppCreated(err, createdApp) {
@@ -45,7 +45,7 @@ client.createApplication(app, {createDirectory:true}, function onAppCreated(err,
   console.log(createdApp);
 });</code></pre><p>Did you see the optional options argument we specified: <code>{createDirectory:true}</code>? This will automatically create a new <code>Directory</code> to store all accounts and groups for that Application and assign it to the Application.</p><p>For more advanced use cases, you can omit the <code>options</code> argument and set up different account stores for your Application later, for example:</p><pre><code class="lang-javascript">var app = {
   name: &#39;My Awesome Application!&#39;,
-  description: &#39;No, Srsly. It&#39;&#39;s Awesome.&#39;
+  description: &#39;No, Srsly. It\&#39;s Awesome.&#39;
 };
 
 client.createApplication(app, function onAppCreated(err, createdApp) {
@@ -74,13 +74,15 @@ createdAccount.save(function onSave(err, savedAccount) {
 createdApp.authenticateAccount(authcRequest, function onAuthcResult(err, result) {
   if (err) throw err;
 
-  //if successful, the result will have an account field of the successfully authenticated account:
-  console.log(result.account);
+  //if successful, you can obtain the account by calling result.getAccount:
+  return result.getAccount(function(err2, account) { //this is cached and will execute immediately (no server request):
+    if(err) throw err;
+    console.log(account);
+  });
 };</code></pre><h3 id="send-a-password-reset-email">Send a Password Reset Email</h3><p>If your end-user forgets their password, you can trigger the &#39;forgot password&#39; reset workflow, and we&#39;ll send the email:</p><pre><code class="lang-javascript">var emailOrUsername = &#39;jlpicard&#39;; //or we could have entered &#39;jlpicard@starfleet.com&#39;;
 
 createdApp.sendPasswordResetEmail(emailOrUsername, function onEmailSent(err, token) {
   if (err) throw err;
-
   console.log(token);
 });</code></pre><h3 id="create-a-group">Create a Group</h3><p>In Stormpath, the best way to think about roles and permissions is with <a href="http://docs.stormpath.com/rest/product-guide/#groups">Groups</a>. Groups allow you to categorize Accounts and build complex permission systems.</p><p>Creating a new Group is easy:</p><pre><code class="lang-javascript">var group = {name: &#39;Administrators&#39;}
 
