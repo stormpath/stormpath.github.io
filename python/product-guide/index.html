@@ -392,7 +392,7 @@
 
 <h3><a id="core-concepts"></a>Core Concepts</h3>
 
-<p>Stormpath has five core concepts, and everything else in the Stormpath REST API exists to support them:</p>
+<p>Stormpath has six core concepts, and everything else in the Stormpath REST API exists to support them:</p>
 
 <ul>
 <li>Applications</li>
@@ -400,6 +400,7 @@
 <li>Groups</li>
 <li>Accounts</li>
 <li>Tenants</li>
+<li>Account Stores</li>
 </ul>
 
 
@@ -411,25 +412,35 @@
 
 <p>You can assign one or more Directories and/or Groups to an Application.  Accounts within assigned directories and groups may login to the application.</p>
 
-<p><strong>Directories</strong></p>
+<p><strong>Account Stores</strong></p>
+
+<p>An <em>Account Store</em> is a generic term for either a <code>Directory</code> or a <code>Group</code>. Directories and Groups are both are considered &lsquo;account stores&rsquo; because they both contain, or &lsquo;store&rsquo;, Accounts.</p>
+
+<ul>
+<li><strong>Directories</strong></li>
+</ul>
+
 
 <p>A <a href="#directories">Directory</a> is a top-level storage containers of Accounts and Groups.  A Directory also manages security policies (like password strength) for the Accounts it contains.  Stormpath supports two types of Directories: natively hosted &lsquo;Cloud&rsquo; directories that originate in Stormpath and &lsquo;Mirror&rsquo; directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers.</p>
 
 <p>Directories can be used to cleanly manage segmented account populations &ndash; for example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.</p>
 
-<p><strong>Groups</strong></p>
+<ul>
+<li><strong>Groups</strong></li>
+</ul>
 
-<p>A <a href="#groups">Group</a> is a uniquely named collection of Accounts within a Directory.  Each Group within a Directory must have a unique name and may contain Accounts within their own Directory.  Groups are mostly used for security and access control, often called Role-Based Access Control.  For example, you might only show a particular user interface button if an Account is in the &lsquo;Administrators&rsquo; Group.</p>
 
-<p>It might be helpful to note that Stormpath does not have an explicit Role concept &ndash; you use Stormpath Groups as Roles for Role-Based Access Control.</p>
+<p>A <a href="#groups">Group</a> is a uniquely named collection of Accounts within a Directory.  Each Group within a Directory must have a unique name and may contain Accounts within their own Directory.  Groups are mostly used for security and access control, often called Role-Based Access Control.</p>
+
+<p>For example, you might only show a particular user interface button if an Account is in the &lsquo;Administrators&rsquo; Group. It might be helpful to note that Stormpath does not have an explicit Role concept &ndash; you use Stormpath Groups as Roles for Role-Based Access Control.</p>
 
 <p><strong>Accounts</strong></p>
 
-<p>An <a href="#accounts">Account</a> is a unique identity within a Directory, with a unique username and/or email address. An account can log in to applications using either the email address or username associated with it. Accounts can represent end-users, but they can also be used to represent services, platforms, or any &ldquo;entity&rdquo; that needs to connect to a Stormpath-powered service.</p>
+<p>An <a href="#accounts">Account</a> is a unique identity within a Directory, with a unique username and/or email address. An account can log in to applications using either the email address or username associated with it. Accounts can represent people end-users, but they can also be used to represent services, machines, or any &lsquo;entity&rsquo; that needs to login to a Stormpath-enabled application.</p>
 
 <p><strong>Tenants</strong></p>
 
-<p>Stormpath is a <a href="http://en.wikipedia.org/wiki/Multitenancy">multi-tenant</a> software service. When you <a href="https://api.stormpath.com/register">sign up for Stormpath</a>, a private data &lsquo;space&rsquo;, called a <code>Tenant</code>, is created for you.  This private <a href="#tenants">tenant space</a> contains all of the data you own, including your applications, directories, accounts and groups and more.  The <code>Tenant</code> concept is mostly &lsquo;behind the scenes&rsquo; and you don&rsquo;t need to use it all that often, but sometimes it is necessary or useful to use directly.</p>
+<p>Stormpath is a <a href="http://en.wikipedia.org/wiki/Multitenancy">multi-tenant</a> software service. When you <a href="https://api.stormpath.com/register">sign up for Stormpath</a>, a private data &lsquo;space&rsquo;, called a <code>Tenant</code>, is created for you.  This private <a href="#tenants">tenant space</a> contains all of the data you own, including your applications, directories, accounts and groups and more.  The Tenant concept is mostly &lsquo;behind the scenes&rsquo; and you don&rsquo;t need to use it all that often, but sometimes it is necessary or useful to use directly.</p>
 
 <hr />
 
@@ -515,7 +526,7 @@ bar = 'APIKEYSECRET'
 
 <p>The client can be configured by passing the <code>id</code> and <code>secret</code> parameters to create the Client instance:</p>
 
-<pre><code>client = Client(id=foo, secret=bar)
+<pre><code>client = Client(id='foo', secret='bar')
 </code></pre>
 
 <p><a class="anchor" name="api-key-configuration"></a></p>
@@ -532,6 +543,25 @@ bar = 'APIKEYSECRET'
 
 
 <p>Only use this technique if the values are obtained at runtime using a configuration mechanism that is not hard-coded into source code or easily-visible configuration files.</p>
+
+<p><a class="anchor" name="authentication-scheme-configuration"></a></p>
+
+<h4>Authentication Scheme Configuration</h4>
+
+<p>You can choose one of two authentication schemes to authenticate with Stormpath:</p>
+
+<ol>
+<li><strong>Stormpath SAuthc1 Authentication</strong>:  This is the recommended approach, and the default setting.  This approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath SAuthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.</li>
+<li><strong>Basic Authentication</strong>: This is <em>only</em> recommended when your application runs in an environment outside of your control, and that environment manipulates your application&rsquo;s request headers when requests are made.  Google App Engine is one known such environment.  However, Basic Authentication is not as secure as Stormpath&rsquo;s <code>SAuthc</code> algorithm, so only use this if you are forced to do so by your application runtime environement.</li>
+</ol>
+
+
+<p>When no authentication scheme is explicitly configured, <code>Sauthc1</code> is used by default.</p>
+
+<p>If you must change to basic authentication for these special environments, set the <code>scheme</code> property:</p>
+
+<pre><code>client = Client(id='foo', secret='bar', scheme='basic')
+</code></pre>
 
 <p><a class="anchor" name="high-level-overview"></a></p>
 
@@ -638,29 +668,6 @@ directory = client.directories.get(href)
 
 <p>If the directory already exists in memory because the <code>DataStore</code> has previously loaded it, the directory is immediately returned. However, if the directory is not present, the directory <code>href</code> is used to return the directory properties (the immediate data loaded) automatically for you. This technique is known as <em>lazy loading</em> which allows you to traverse entire object graphs automatically without requiring constant knowledge of <code>href</code> URLs.</p>
 
-<p><a class="anchor" name="error-handling"></a></p>
-
-<h3><a id="error-handling"></a>Error Handling</h3>
-
-<p>Errors thrown from the server are translated to a <a href="https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/error.py">\stormpath\error\Error</a>. This applies to all requests to the Stormpath API endpoints.</p>
-
-<p>For example, when getting the current tenant from the client you can catch any error that the request might produce as following:</p>
-
-<pre><code>from stormpath.error import Error
-
-try:
-    account = client.accounts.get(NONEXISTENT_STORMPATH_ACCOUNT)
-    account.username
-except Error as re:
-    print('Message: ' + re.message)
-    print('HTTP Status: ' + str(re.status))
-    print('Developer Message: ' + re.developer_message)
-    print('More Information: ' + re.more_info)
-    print('Error Code: ' + str(re.code))
-</code></pre>
-
-<hr />
-
 <p><a class="anchor" name="caching"></a></p>
 
 <h3><a id="caching"></a>Caching</h3>
@@ -700,6 +707,75 @@ client = Client(api_key={'id': 'apiKeyId', 'secret': 'apiKeySecret'},
 </ol>
 
 
+<p><a class="anchor" name="errors"></a></p>
+
+<h3><a id="errors"></a>Errors</h3>
+
+<p>REST API responses indicating an error or warning are represented by a proper response HTTP status code (403, 404, etc). Additionally, a response body is provided containing the following information:</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description </th>
+<th align="left"> Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><a class="anchor" name="errors-status"></a><code>status</code> </td>
+<td align="left"> The corresponding HTTP status code. </td>
+<td align="left"> Integer</td>
+</tr>
+<tr>
+<td align="left"><a class="anchor" name="errors-code"></a><code>code</code> </td>
+<td align="left"> A <a href="http://docs.stormpath.com/errors">Stormpath-specific error code</a> that can be used to obtain more information. </td>
+<td align="left"> Integer</td>
+</tr>
+<tr>
+<td align="left"><a class="anchor" name="errors-message"></a><code>message</code> </td>
+<td align="left"> A simple, easy to understand message that you can show directly to your application end-user. </td>
+<td align="left"> String</td>
+</tr>
+<tr>
+<td align="left"><a class="anchor" name="errors-developer-message"></a><code>developer_message</code> </td>
+<td align="left"> A clear, plain text explanation with technical details that might assist a developer calling the Stormpath API. </td>
+<td align="left"> String</td>
+</tr>
+<tr>
+<td align="left"><code>more_info</code> </td>
+<td align="left"> A fully qualified URL that may be accessed to obtain more information about the error. </td>
+<td align="left"> String</td>
+</tr>
+</tbody>
+</table>
+
+
+<h4>Error Code Reference</h4>
+
+<p>The <a href="http://docs.stormpath.com/errors">Stormpath Error Code Reference</a> provides the list of all Stormpath-specific error codes and their meanings.</p>
+
+<p><a class="anchor" name="error-handling"></a></p>
+
+<h4>Error Handling</h4>
+
+<p>Errors thrown from the server are translated to a <a href="https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/error.py">\stormpath\error\Error</a>. This applies to all requests to the Stormpath API endpoints.</p>
+
+<p>For example, when getting the current tenant from the client you can catch any error that the request might produce as following:</p>
+
+<pre><code>from stormpath.error import Error
+
+try:
+    account = client.accounts.get(NONEXISTENT_STORMPATH_ACCOUNT)
+    account.username
+except Error as re:
+    print('Message: ' + re.message)
+    print('HTTP Status: ' + str(re.status))
+    print('Developer Message: ' + re.developer_message)
+    print('More Information: ' + re.more_info)
+    print('Error Code: ' + str(re.code))
+</code></pre>
+
 <p><a class="anchor" name="collections"></a></p>
 
 <h3><a id="collection-resources"></a>Collection Resources</h3>
@@ -731,9 +807,9 @@ applications = client.applications
 
 <p><a class="anchor" name="pagination-query-parameters"></a></p>
 
-<h4>Pagination Options</h4>
+<h4>Query Parameters</h4>
 
-<p>There are two pagination options that may be specified to control pagination:</p>
+<p>There are two optional query parameters that may be specified to control pagination:</p>
 
 <ul>
 <li><a href="#collections-offset">offset</a>: The zero-based starting index in the entire collection of the first item to return. Default is <code>0</code>.</li>
@@ -928,9 +1004,9 @@ For example, a sorted request might look like this:</p>
 
 <h3><a id="link-expansion"></a>Link Expansion</h3>
 
-<p>When requesting a resource you might want the Stormpath API server to return not only that resource, but also one or more of its referenced resources. Link expansion allows you to retrieve related resources in a single request to the server instead of having to issue multiple separate requests.</p>
+<p>When requesting a resource you might want the Stormpath API server to return not only that resource, but also one or more of its linked resources. Link expansion allows you to retrieve related resources in a single request to the server instead of having to issue multiple separate requests.</p>
 
-<h4><code>expand</code> Query Parameter</h4>
+<h4>Expand Query Parameter</h4>
 
 <p>For example, to retrieve an account including its parent directory information, instead of issuing two requests (one for the account and another for its directory) add an <code>expand</code> query parameter with a value of <code>directory</code> to the resource URI.</p>
 
@@ -1008,7 +1084,7 @@ account = client.accounts.get(href, expansion)
 
 <p>For example, it would not be possible to return an account with its directory expanded and also the directory&rsquo;s groups expanded as well. Link expansion is currently only possible one level &lsquo;deep&rsquo;.</p>
 
-<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#x73;&#x75;&#x70;&#x70;&#111;&#114;&#x74;&#x40;&#115;&#116;&#111;&#x72;&#109;&#x70;&#97;&#116;&#x68;&#46;&#x63;&#x6f;&#109;">&#x73;&#x75;&#x70;&#x70;&#111;&#x72;&#116;&#64;&#115;&#116;&#x6f;&#x72;&#x6d;&#112;&#x61;&#116;&#x68;&#46;&#99;&#x6f;&#109;</a> and submit a feature request.</p>
+<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#115;&#x75;&#112;&#112;&#111;&#x72;&#x74;&#x40;&#x73;&#116;&#111;&#x72;&#109;&#112;&#97;&#x74;&#x68;&#x2e;&#x63;&#x6f;&#109;">&#x73;&#117;&#112;&#112;&#x6f;&#x72;&#116;&#64;&#115;&#116;&#111;&#x72;&#x6d;&#112;&#97;&#116;&#x68;&#x2e;&#99;&#x6f;&#x6d;</a> and submit a feature request.</p>
 
 <h4>Expanding Multiple Resources</h4>
 
@@ -1051,7 +1127,7 @@ account = client.accounts.get(href, expansion)
 
 <p>Stormpath is a <a href="http://en.wikipedia.org/wiki/Multitenancy">multi-tenant</a> software service. When you <a href="https://api.stormpath.com/register">sign up for Stormpath</a>, a private data &lsquo;space&rsquo; is created for you.  This space is represented as a <code>Tenant</code> resource in the Stormpath REST API.</p>
 
-<p>It might help to think of a tenant as a Stormpath customer.  As a Stormpath tenant (customer), you own your <code>Tenant</code> resource and everything in it &ndash; applications, directories, accounts, groups, and so on.</p>
+<p>It might help to think of a <code>Tenant</code> as a Stormpath customer.  As a Stormpath Tenant (customer), you own your Tenant resource and everything in it &ndash; <code>Applications</code>, <code>Directories</code>, <code>Accounts</code>, <code>Groups</code>, and so on.</p>
 
 <p>In the Stormpath REST API specifically, your <code>Tenant</code> resource can be thought of as your global starting point.  You can access everything in your Tenant space by accessing your Tenant resource first and then interacting with its other referenced resources (applications collection, directories collection, etc).</p>
 
@@ -1063,7 +1139,7 @@ account = client.accounts.get(href, expansion)
 
 <h4>Resource Class</h4>
 
-<pre><code>\stormpath\resource\tenant
+<pre><code>\stormpath\resources\tenant
 </code></pre>
 
 <p><a class="anchor" name="tenant-resource-attributes"></a></p>
@@ -1126,7 +1202,7 @@ account = client.accounts.get(href, expansion)
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
 
-<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#97;&#x69;&#x6c;&#116;&#x6f;&#58;&#x73;&#117;&#112;&#112;&#x6f;&#x72;&#x74;&#x40;&#x73;&#116;&#x6f;&#x72;&#109;&#x70;&#97;&#x74;&#x68;&#x2e;&#x63;&#x6f;&#x6d;">&#x73;&#117;&#112;&#x70;&#111;&#x72;&#116;&#64;&#115;&#116;&#x6f;&#114;&#x6d;&#x70;&#x61;&#116;&#x68;&#x2e;&#x63;&#x6f;&#109;</a> and request it.</p>
+<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#115;&#117;&#112;&#x70;&#111;&#114;&#x74;&#x40;&#115;&#x74;&#x6f;&#114;&#109;&#x70;&#97;&#x74;&#x68;&#46;&#x63;&#111;&#x6d;">&#x73;&#117;&#x70;&#112;&#111;&#114;&#x74;&#x40;&#x73;&#x74;&#x6f;&#x72;&#x6d;&#112;&#x61;&#116;&#x68;&#x2e;&#99;&#111;&#109;</a> and request it.</p>
 
 <p><a class="anchor" name="tenant-retrieve"></a></p>
 
@@ -1183,7 +1259,7 @@ If you want to update one or more attribute of your `Tenant` resource, execute a
 
 <p><a class="anchor" name="tenant-applications"></a></p>
 
-<h3><a id="applications"></a>Applications</h3>
+<h3><a id="tenant-applications"></a>Tenant Applications</h3>
 
 <p>A <code>Tenant</code> has one or more <a href="#applications">Applications</a> registered with Stormpath.  Each registered application may use Stormpath to simplify and automate its user management and authentication needs.</p>
 
@@ -1309,25 +1385,25 @@ for directory in directories:
 
 <h2><a id="applications"></a>Applications</h2>
 
-<p>An application in Stormpath represents any real world piece of software that communicates with Stormpath to offload its user management and authentication needs.  The application can be anything that can make a REST API call &ndash; a web application that you are writing, a web server like Apache or Nginx, a Linux operating system, etc &ndash; basically anything that a user can login to.  A <a href="#tenants">tenant</a> administrator can register one or more applications with Stormpath.</p>
+<p>An <code>Application</code> in Stormpath represents any real world piece of software that communicates with Stormpath to offload its user management and authentication needs.  The application can be anything that can make a REST API call &ndash; a web application that you are writing, a web server like Apache or Nginx, a Linux operating system, etc &ndash; basically anything that a user can login to.  A <a href="#tenants">tenant</a> administrator can register one or more applications with Stormpath.</p>
 
-<p>You control who may login to an application by assigning (or &lsquo;mapping&rsquo;) one or more directories or groups (generically called <a href="#account-store-mappings">account stores</a> to an application.  The accounts in these associated directories or groups (again, <em>account stores</em>) collectively form the application&rsquo;s user base. These accounts are considered the application&rsquo;s users and they can login to the application.  Therefore, you can control who may login to an application by managing which <a href="#account-store-mappings">account stores</a> are assigned to the application.</p>
+<p>You control who may login to an application by assigning (or &lsquo;mapping&rsquo;) one or more <code>Directories</code> or <code>Groups</code> (generically called <a href="#account-store-mappings">account stores</a> to an application.  The <code>Accounts</code> in these associated directories or groups (again, <em>account stores</em>) collectively form the application&rsquo;s user base. These accounts are considered the application&rsquo;s users and they can login to the application.  Therefore, you can control user population that may login to an application by managing which <a href="#account-store-mappings">account stores</a> are assigned to the application.</p>
 
-<p>Even the Stormpath Admin Console and API is represented as an Application (named <code>Stormpath</code>), so you can control who has administrative access to your Stormpath <a href="#tenants">tenant</a> by managing the <code>Stormpath</code> application&rsquo;s associated account stores.</p>
+<p>Even the Stormpath Admin Console and API is represented as an <code>Application</code> (named Stormpath), so you can control who has administrative access to your Stormpath <a href="#tenants">tenant</a> by managing the Stormpath application&rsquo;s associated account stores.</p>
 
 <p><a class="anchor" name="application"></a></p>
 
 <h3><a id="application-resource"></a>Application Resource</h3>
 
-<p>An individual <code>application</code> resource may be accessed via its Resource URI:</p>
+<p>An individual <code>application</code> resource may be accessed via its Resource Class:</p>
 
-<p><strong>Resource URI</strong></p>
+<p><strong>Resource Class</strong></p>
 
-<pre><code>/v1/applications/:applicationId
+<pre><code>\stormpath\resources\application
 </code></pre>
 
 <p><a class="anchor" name="application-attributes"></a>
-<strong>Resource Attributes</strong></p>
+<strong>Application Resource Attributes</strong></p>
 
 <table>
 <thead>
@@ -1441,7 +1517,7 @@ for directory in directories:
 
 <h3><a id="search-for-an-application"></a>Search for an Application</h3>
 
-<p>When communicating with the Stormpath REST API, you might need to search for an application.</p>
+<p>When communicating with the Stormpath Python API, you might need to search for an application.</p>
 
 <p>For example, if you want to find an application named &ldquo;My Application&rdquo;, you&rsquo;ll need to search the tenant for the &ldquo;My Application&rdquo; <code>application</code> resource:</p>
 
@@ -1458,7 +1534,7 @@ for directory in directories:
 
 <p>For an application to communicate with Stormpath, you must register it first with Stormpath.</p>
 
-<p>You register an application with Stormpath by creating a new <code>application</code> resource.  This is performed by submitting creation request on the <code>Application</code> collection class.  This will create a new <code>Application</code> instance within the caller&rsquo;s tenant.</p>
+<p>You register an application with Stormpath by creating a new <code>application</code> resource.  This is performed by submitting a creation request on the <code>Application</code> collection class.  This will create a new <code>Application</code> instance within the caller&rsquo;s tenant.</p>
 
 <p>When you submit creation request, at least the <code>name</code> attribute must be specified, and it must be unique compared to all other applications in your tenant.  The <code>description</code> and <code>status</code> attributes are optional.</p>
 
@@ -1496,9 +1572,15 @@ for directory in directories:
 
 <h4>Create an Application and Directory</h4>
 
-<p>The above Create Application POST request assumes you will later assign <a href="#account-store-mappings">account stores</a> to the application so accounts may log in to the application.  This means that, by default, no one can login to a newly created application, nor can the application create new accounts or new groups directly.  For this additional functionality, one or more account stores must be associated with the application.</p>
+<p>The above Create Application request assumes you will later assign <a href="#account-store-mappings">account stores</a> to the application so accounts may log in to the application.  This means that, by default, no one can login to a newly created application, nor can the application create new accounts or new groups directly.  For this additional functionality, one or more account stores must be associated with the application.</p>
 
 <p>For many use cases, that is unnecessary work.  If you want to associate the Application with a new Directory automatically so you can start creating accounts and groups for the application immediately (without having to map other <a href="#account-store-mappings">account stores</a>, you can use the <code>create_directory</code> option.</p>
+
+<div class='docs-note'><p>Automatically creating a directory when creating an application <em>does not</em> make that <code>Directory</code> private or restrict usage to only that <code>Application</code>. The created directory is no different than any other directory. The <code>create_directory</code> option exists as a convenience to reduce the number of steps you would have had to execute otherwise.</p>
+
+<p>If you delete an application, you must manually delete any auto-created directory yourself.  There is no shortcut to delete an auto-created directory.  This is to ensure safety in case the directory might be used by other applications.</p>
+</div>
+
 
 <h5>create_directory=True</h5>
 
@@ -1541,12 +1623,6 @@ for directory in directories:
 <li>Enable the new Directory as the application&rsquo;s <a href="#application-defaultAccountStoreMapping">default account store</a>, ensuring any new accounts created directly by the application are stored in the new Directory.</li>
 <li>Enable the new Directory as the application&rsquo;s <a href="#application-defaultGroupStoreMapping">default group store</a>, ensuring any new groups created directly by the application are stored in the new Directory.</li>
 </ol>
-
-
-<div class='docs-note'><p>Automatically creating a directory when creating an application <em>does not</em> make that Directory private or restrict usage to only that application. The created directory is no different than any other directory. The <code>create_directory</code> parameter exists as a convenience to reduce the number of steps you would have had to execute otherwise.</p>
-
-<p>If you delete an application, you must manually delete any auto-created directory yourself.  There is no shortcut to delete an auto-created directory.  This is to ensure safety in case the directory might be used by other applications.</p>
-</div>
 
 
 <p><a class="anchor" name="application-retrieve"></a></p>
@@ -1675,17 +1751,25 @@ application.save()
 
 <h3><a id="application-accounts"></a>Application Accounts</h3>
 
-<p>An application&rsquo;s account base is the collection of all <a href="#accounts">accounts</a> that are accessible to that application.</p>
+<p>An application&rsquo;s <code>accounts</code> base is the collection of all accounts that are <em>accessible to</em> that application.</p>
 
-<p>You define an application&rsquo;s account base by assigning one or more <a href="#directories">directories</a> (or <a href="#groups">groups</a> within directories) to that application; by association, <strong>any accounts within assigned directories (or groups) may login to the application</strong>.</p>
+<p>It might sound a little odd to phrase it that way (<em>accessible to</em>), but it makes sense when you realize that applications do not have <em>direct</em> accounts of their own.  Accounts are &lsquo;owned&rsquo; by <a href="#directories">directories</a> and instead <em>made available to</em> applications.</p>
 
-<p>In this way, applications do not have <em>direct</em> accounts of their own (accounts are &lsquo;owned&rsquo; by <a href="#directories">directories</a>) &ndash; accounts are instead <em>made available to</em> applications based on associations with directories or groups within directories.</p>
+<p>This means that an application&rsquo;s <code>accounts</code> collection is <em>virtual</em>.  This virtual collection is an aggregate &lsquo;view&rsquo; of all accounts that are:</p>
 
-<p>This is a powerful feature within Stormpath that allows you to segment account populations and control how accounts may use one or more applications.  For example, you might have an &ldquo;Employees&rdquo; directory and a &ldquo;Customers&rdquo; directory, which are two very different account populations that may or may not have access to the same applications.</p>
+<ol>
+<li>in any directory <a href="#account-store-mappings">assigned to the application</a></li>
+<li>in any group directly <a href="#account-store-mappings">assigned to the application</a></li>
+</ol>
 
-<p><strong>The aggregate collection of all accounts across all assigned directories or groups is the application&rsquo;s effective account base.</strong></p>
 
-<p>However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application&rsquo;s needs.  This is a totally valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications. We&rsquo;ll cover directory and group associations for login more in-depth later.</p>
+<p>This is a powerful and convenient feature: as you add or remove account stores from an application to control its user population, you automatically &lsquo;bring in&rsquo; any of their accounts.  You can interact with the application&rsquo;s <code>accounts</code> collection, like <a href="#application-accounts-search">search for accounts</a> or <a href="#application-account-register">add new accounts</a>, like you would a normal collection.</p>
+
+<div class='docs-info'><p>Most application developers do not need to be aware that an application&#8217;s <code>accounts</code> collection is virtual.  The most common case in Stormpath for simpler apps is to just <a href="#application-create-with-directory">create an application with its own directory</a> for its own needs.  Used this way, the application&#8217;s and the directory&#8217;s accounts (and groups) are the same.</p>
+
+<p>But it is nice to know that you can customize the application&#8217;s account population with other directories or groups in the future if you need to do so.</p>
+</div>
+
 
 <p><strong>Application Accounts Collection Resource</strong></p>
 
@@ -1701,9 +1785,14 @@ application.save()
 <li>and optionally specify your own <a href="#application-account-register-with-customData">account-specific custom data</a></li>
 </ul>
 </li>
-<li><a href="#application-verify-email">Verify An Account&rsquo;s Email Address</a></li>
-<li><a href="#application-account-authc">Log In (Authenticate) an Account</a></li>
-<li><a href="#application-password-reset">Reset An Account&rsquo;s Password</a></li>
+<li><a href="#application-verify-email">Verify An Application Account&rsquo;s Email Address</a></li>
+<li><a href="#application-account-authc">Log In (Authenticate) an Application Account</a>
+
+<ul>
+<li>and optionaly specify an <a href="#application-account-store-authc">account store</a></li>
+</ul>
+</li>
+<li><a href="#application-password-reset">Reset An Application Account&rsquo;s Password</a></li>
 <li><a href="#application-accounts-list">List an Application&rsquo;s Accounts</a></li>
 <li><a href="#application-accounts-search">Search an Application&rsquo;s Accounts</a></li>
 </ul>
@@ -1711,9 +1800,9 @@ application.save()
 
 <p><a class="anchor" name="application-account-register"></a></p>
 
-<h4>Register a New Account</h4>
+<h4>Register a New Application Account</h4>
 
-<p>If your application wants to register a new account, you create a new <code>account</code> resource on the application instance.</p>
+<p>If your application wants to register a new account, you create a new <code>account</code> resource on the application&rsquo;s <code>accounts</code> instance.</p>
 
 <p>Set the <a href="#account-resource">account resource attributes</a> required and any additional ones you desire.</p>
 
@@ -1728,13 +1817,13 @@ application.save()
 
 <p><strong>How does this work?</strong></p>
 
-<p>As we <a href="#application-accounts">said previously</a>, an Application does not &lsquo;own&rsquo; accounts of its own &ndash; it has access to accounts in one or more directories and the directories actually own the accounts.  So how are we able to create a new account based on only the application?</p>
+<p>As we <a href="#application-accounts">said previously</a>, an Application does not &lsquo;own&rsquo; accounts of its own &ndash; it has access to accounts in one or more directories or groups and the directories actually own the accounts.  So how are we able to create a new account based on only the application?</p>
 
-<p>The <code>create</code> method is a convenience: when you create a new <code>account</code> resource, Stormpath will automatically route that creation request to a designated directory (or group) assigned to the Application.  The account is then persisted in that directory and then made immediately available to the application.</p>
+<p>The <code>create</code> method is a convenience: when you create a new <code>account</code> resource, Stormpath will automatically route that creation request to a <a href="#application-defaultAccountStoreMapping">designated directory or group assigned to the Application</a>.  The account is then persisted in that directory or group and then made immediately available to the application.</p>
 
-<p>For most applications that have only a single assigned directory, the account is persisted in that directory immediately &ndash; the application developer does not even really need to know that Stormpath automates this.</p>
+<p>For most applications that have only a single assigned <em>account store</em> (again, a directory or group), the account is persisted in that account store immediately &ndash; the application developer does not even really need to know that Stormpath automates this.</p>
 
-<p>However, applications that map more than one directory or group to define their account base have the option of specifying <em>which</em> of those mapped locations should receive newly created accounts.  You must choose a default <a href="#account-store-mapping-default-account-store">new account location</a>.</p>
+<p>However, applications that map more than one account store to define their account population have the option of specifying <em>which</em> of those mapped account stores should receive newly created accounts.  You can choose a <a href="#application-defaultAccountStoreMapping"><em>default</em> account store</a>.  If you do not choose one, the first one in the list of mapped account stores is the default location to store new accounts.  We&rsquo;ll talk about setting the default account store and managing an application&rsquo;s assigned account stores later in <a href="#application-account-store-mappings">Application Account Store Mappings</a>.</p>
 
 <p><a class="anchor" name="application-account-register-with-customData"></a></p>
 
@@ -1822,9 +1911,20 @@ except Error as re:
     print(re.more_info)  # Will output: "mailto:support@stormpath.com"
 </code></pre>
 
+<p><a class="anchor" name="application-account-store-authc"></a></p>
+
+<h4>Specify an Account Store to authenticate with</h4>
+
+<p>When you create an application account, in addition to Stormpath&rsquo;s account attributes, you may also specify an <a href="#account-store-mappings">account store</a> instance</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>result = application.authenticate_account('jsmith@mailinator.com', 'Ephai9ti', account_store)
+</code></pre>
+
 <p><a class="anchor" name="application-password-reset"></a></p>
 
-<h4>Resetting An Account&rsquo;s Password</h4>
+<h4>Reset An Account&rsquo;s Password</h4>
 
 <p>Stormpath has a comprehensive mechanism for secure password reset, as well.</p>
 
@@ -1857,8 +1957,6 @@ except Error as re:
 <p>The application password reset tokens endpoint supports the password reset workflow for an account in the application&rsquo;s assigned <a href="#account-store-mappings">account stores</a>.</p>
 
 <p>Creating a new password reset token automatically sends a password reset email to the destination email address if that address corresponds to an account listed in the application <a href="#account-store-mappings">account stores</a>.</p>
-
-<p>A successful request sends a password reset email to the first discovered account associated with the corresponding application. The email recipient can then click a password reset URL in the email to reset their password in a web form.</p>
 
 <p>The <code>send_password_reset_email</code> method of an application instance must be called to send the email with the URL that includes the token:</p>
 
@@ -1946,17 +2044,25 @@ for acc in accounts:
 
 <h3><a id="application-groups"></a>Application Groups</h3>
 
-<p>An application&rsquo;s group base is the collection of all <a href="#groups">groups</a> that are accessible to that application. This is an aggregate of all groups that are visible to the application, which will be an aggregate view of all the groups that belong to <a href="#directories">directories</a> associated with that application.</p>
+<p>As we&rsquo;ve seen with <a href="#application-accounts">application accounts</a>, applications themselves also do not have <em>direct</em> groups of their own.  Like accounts, groups are &lsquo;owned&rsquo; by <a href="#directories">directories</a> and instead <em>made available to</em> applications.</p>
 
-<p>You define an application&rsquo;s group base by assigning one or more <a href="#directories">directories</a> to that application.</p>
+<p>This means an application&rsquo;s collection of groups is <em>virtual</em>.  This virtual collection is an aggregate &lsquo;view&rsquo; of all groups that are:</p>
 
-<p>In this way, applications do not have <em>direct</em> groups of their own (groups are &lsquo;owned&rsquo; by <a href="#directories">directories</a>) &ndash; groups are instead <em>made available to</em> applications based on associations with directories.</p>
+<ol>
+<li>directly assigned to the application as an <a href="#account-store-mappings">account store</a></li>
+<li>in a directory that is assigned to the application as an <a href="#account-store-mappings">account store</a></li>
+</ol>
 
-<p>This is a powerful feature within Stormpath that allows you to segment account populations and control how accounts may use one or more applications.  For example, you might have an &ldquo;Admin&rdquo; group and a &ldquo;User&rdquo; group, which would enable very different functionality in your application when a user is associated with one group or the other.</p>
 
-<p><strong>The aggregate collection of all group&rsquo;s across all assigned directories is the application&rsquo;s effective group base.</strong></p>
+<p>This is a powerful and convenient feature: as you add or remove account stores from an application to control its user population, you automatically &lsquo;bring in&rsquo; any groups that may be assigned to your user accounts.  You can interact with this collection, like <a href="#application-groups-search">search it</a> or <a href="#application-group-register">add groups to it</a>, like you would a normal group collection.</p>
 
-<p>However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application&rsquo;s needs.  This is a totally valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications.</p>
+<p>You can then reference these groups in the application&rsquo;s source code to check group membership and perform Role Based Access Control (RBAC).  For example, you might have an &ldquo;Admin&rdquo; group and a &ldquo;User&rdquo; group which would enable very different functionality in your application when a user account is associated with one group or the other.</p>
+
+<div class='docs-info'><p>Most application developers do not need to be aware that an application&#8217;s <code>groups</code> collection is virtual.  The most common case in Stormpath for simpler apps is to just <a href="#application-create-with-directory">create an application with its own directory</a> for its own needs.  Used this way, the application&#8217;s and the directory&#8217;s accounts and groups are the same.</p>
+
+<p>But it is nice to know that you can customize the application&#8217;s account population with other directories or groups in the future if you need to do so.</p>
+</div>
+
 
 <p><strong>Application Groups Collection Resource </strong></p>
 
@@ -1974,13 +2080,13 @@ for acc in accounts:
 
 <p><a class="anchor" name="application-groups-register"></a></p>
 
-<h4>Register a New Group</h4>
+<h4>Register a New Application Group</h4>
 
-<p>If your application wants to register a new group, you create a new <code>group</code> resource on the application instance.</p>
+<p>If your application wants to create a new group, set the <a href="#group">group resource attributes</a> application’s <code>groups</code> anc call <code>create</code>.</p>
 
-<p>Set the <a href="#group">group resource attributes</a> required and any additional ones you desire.</p>
+<p><strong>Example Request</strong></p>
 
-<pre><code>group = application.accounts.create({
+<pre><code>group = application.groups.create({
     'name': 'My Group',
     'description': 'My Group Description'
 })
@@ -1988,13 +2094,13 @@ for acc in accounts:
 
 <p><strong>How does this work?</strong></p>
 
-<p>As we <a href="#application-groups">said previously</a>, an Application does not &lsquo;own&rsquo; groups of its own &ndash; it has access to groups in one or more directories and the directories actually own the groups.  So how are we able to create a new group based on only the application?</p>
+<p>As we <a href="#application-groups">mentioned above</a>, an Application does not &lsquo;own&rsquo; groups of its own &ndash; it has access to groups directly (or indirectly) assigned to it.  So how are we able to create a new group based on only the application?</p>
 
-<p>The <code>create</code> method is a convenience: when you create a new <code>group</code> resource, Stormpath will automatically route that creation request to a designated directory assigned to the Application.  The group is then persisted in that directory and then made immediately available to the application.</p>
+<p>The <code>v1/applications/:applicationId/groups</code> URI is a convenience: when you <code>POST</code> a new <code>group</code> resource, Stormpath will automatically route that creation request to a <a href="#application-defaultGroupStoreMapping">designated directory assigned to the Application</a>.  The group is then persisted in that directory and then made immediately available to the application.</p>
 
-<p>For most applications that have only a single assigned directory, the group is persisted in that directory immediately &ndash; the application developer does not even really need to know that Stormpath automates this.</p>
+<p>For most applications that have only a single assigned account store, the group is persisted in that account store immediately &ndash; the application developer does not even really need to know that Stormpath automates this.</p>
 
-<p>However, applications that map more than one directory to define their group base have the option of specifying <em>which</em> of those mapped locations should receive newly created groups.  You must choose a default <a href="#account-store-mapping-default-group-store">new group location</a>.</p>
+<p>However, applications that are assigned more than one account store have the option of specifying <em>which</em> of those mapped account stores should receive newly created groups.  You can choose a <a href="#application-defaultGroupStoreMapping"><em>default</em> group store</a>.  If you do not choose one, the first one in the list of mapped account stores is the default location to store newly created groups.  We&rsquo;ll talk about setting the default group store and managing an application&rsquo;s assigned account stores later in <a href="#application-account-store-mappings">Application Account Store Mappings</a>.</p>
 
 <p><a class="anchor" name="application-groups-create-with-customData"></a></p>
 
@@ -2062,13 +2168,14 @@ for grp in groups:
 
 <h3><a id="application-account-store-mappings"></a>Application Account Store Mappings</h3>
 
-<p>An application&rsquo;s <code>accountStoreMappings</code> collection reflects all <a href="#groups">groups</a> and <a href="#directories">directories</a> that are assigned to that application for the purpose of providing accounts that may login to the application.  By managing these mappings, you can control which account populations may login to an application.  In this way, applications do not have <em>direct</em> account stores of their own; account stores are instead <em>made available to</em> applications based on associations with directories and groups.</p>
+<p>Stormpath uses the term <em>Account Store</em> to generically refer to either a <a href="#groups">group</a> or a <a href="#directories">directory</a>, since they both contain (store) accounts.</p>
 
-<p>This is a powerful feature within Stormpath that allows you to segment account populations and control how accounts may use one or more applications.  For example, the &ldquo;Admin&rdquo; user in an &ldquo;Employees&rdquo; directory vs. the &ldquo;Admin&rdquo; user in a &ldquo;Customers&rdquo; directory might require very different functionality in your application.</p>
+<p>An application&rsquo;s <code>accountStoreMappings</code> collection, then, reflects all <a href="#groups">groups</a> and <a href="#directories">directories</a> that are assigned to that application for the purpose of providing accounts that may login to the application.  This is a powerful feature in Stormpath that allows you to control which account populations may login to an application.</p>
 
-<p>However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application&rsquo;s needs.  This is a totally valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications.</p>
+<p>However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application&rsquo;s needs.  This is a valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications.</p>
 
-<p>You define an application&rsquo;s account store mappings by creating, modifying or deleting <a href="#account-store-mappings">Account Store Mapping</a> resources</p>
+<p>You define and modify an application&rsquo;s account store mappings by creating, modifying or deleting <a href="#account-store-mappings">Account Store Mapping</a> resources.
+You define an application&rsquo;s account store mappings by creating, modifying or deleting <a href="#account-store-mappings">Account Store Mapping</a> resources</p>
 
 <p><strong>Application Account Store Mappings Collection Resource</strong></p>
 
@@ -2096,10 +2203,10 @@ for asm in account_store_mappings:
 
 <h2><a id="account-store-mappings"></a>Account Store Mappings</h2>
 
-<p><em>Account Store</em> is a generic term for either a <a href="#directories">Directory</a> or a <a href="#groups">Group</a>.  Directories and Groups are both considered &ldquo;account stores&rdquo; because they both contain, or &lsquo;store&rsquo;, Accounts. An <em>Account Store Mapping</em>, then, is a relationship between an Account Store and an Application.</p>
+<p><em>Account Store</em> is a generic term for either a <a href="#directories">Directory</a> or a <a href="#groups">Group</a>.  Directories and Groups are both are considered &ldquo;account stores&rdquo; because they both contain, or &lsquo;store&rsquo;, <code>Accounts</code>. An <em>Account Store Mapping</em>, then, represents an Account Store mapped (assigned) to an <code>Application</code>.</p>
 
 <p>In Stormpath, you control who may login to an application by associating (or &lsquo;mapping&rsquo;) one or more account
-stores to an application.  All of the accounts in the application&rsquo;s assigned account stores form the application&rsquo;s
+stores to an application.  All of the accounts across all of an application&rsquo;s assigned account stores form the application&rsquo;s
 effective <em>user base</em>; those accounts may login to the application.  If no account stores are assigned to an application, no accounts will be able to login to the application.</p>
 
 <p>You control which account stores are assigned (mapped) to an application, and the order in which they are consulted during a login attempt, by manipulating an application&rsquo;s <code>AccountStoreMapping</code> resources.</p>
@@ -2109,7 +2216,7 @@ effective <em>user base</em>; those accounts may login to the application.  If n
 
 <p>When an account tries to login to an application, the application&rsquo;s assigned account stores are consulted <em>in the order that they are assigned to the application</em>.  When a matching account is discovered in a mapped account store, it is used to verify the authentication attempt and all subsequent account stores are ignored.  In other words, accounts are matched for application login based on a &lsquo;first match wins&rsquo; policy.</p>
 
-<p>Let&rsquo;s look at an example to illustrate this behavior.  Assume an application named Foo has been assigned (mapped) to two account stores, a &lsquo;Customers&rsquo; directory and an &lsquo;Employees&rsquo; directory, in that order.</p>
+<p>Let&rsquo;s look at an example to illustrate this behavior.  Assume that two account stores, a &lsquo;Customers&rsquo; directory and an &lsquo;Employees&rsquo; directory have been assigned (mapped) to a &lsquo;Foo&rsquo; application, in that order.</p>
 
 <p>The following flow chart shows what happens when an account attempts to login to the Foo application:</p>
 
@@ -2121,12 +2228,12 @@ effective <em>user base</em>; those accounts may login to the application.  If n
 
 <h3><a id="account-store-mapping-resource"></a>Account Store Mapping Resource</h3>
 
-<p>An individual <code>accountStoreMapping</code> resource may be accessed via its Resource URI:</p>
+<p>An individual <code>accountStoreMapping</code> resource may be accessed via its Resource Class:</p>
 
 <p><a class="anchor" name="account-store-mapping-url"></a>
-<strong>Resource URI</strong></p>
+<strong>Resource Class</strong></p>
 
-<pre><code>/v1/accountStoreMappings/:accountStoreMappingId
+<pre><code>\stormpath\resources\account_store_mapping
 </code></pre>
 
 <p><a class="anchor" name="account-store-mapping-resource-attributes"></a>
@@ -2264,7 +2371,7 @@ effective <em>user base</em>; those accounts may login to the application.  If n
 
 <p>If you don&rsquo;t have the account store mapping&rsquo;s <code>href</code>, you can find it in the <a href="#application-account-store-mappings-list">application&rsquo;s account store mappings list</a>.</p>
 
-<pre><code>href = 'https://api.stormpath.com/v1/accountStoreMappings/WpM9nyZ2TbayIfbRvLk9CO'
+<pre><code>href = 'https://api.stormpath.com/v1/accountStoreMappings/7Ui2gpn9tV75y3TExAmPLe'
 account_store_mapping = client.account_store_mappings.get(href)
 </code></pre>
 
@@ -2361,17 +2468,19 @@ account_store_mapping.save()
 
 <div class='docs-note'><p>Only one of an application&#8217;s mapped account stores may be the default account store.</p>
 
-<p>In addition, setting an AccountStoreMapping&#8217;s <code>is_default_account_store</code> value to <code>True</code> will automatically set the application&#8217;s other AccountStoreMappings&#8217; <code>is_default_account_store</code> values to <code>False</code>. HOWEVER:</p>
-
-<p>Lastly, note that setting an AccountStoreMapping&#8217;s <code>is_default_account_store</code> value to <code>False</code> <strong>WILL NOT</strong> automatically set another AccountStoreMapping&#8217;s <code>is_default_account_store</code> to <code>True</code>.  You are responsible for explicitly setting <code>is_default_account_store</code> to <code>True</code> if you want the application to be able to create new accounts.</p>
+<p>In addition, setting an AccountStoreMapping&#8217;s <code>is_default_account_store</code> value to <code>True</code> will automatically set the application&#8217;s other AccountStoreMappings&#8217; <code>is_default_account_store</code> values to <code>False</code>. However, note that setting an AccountStoreMapping&#8217;s <code>is_default_account_store</code> value to <code>False</code> <strong>WILL NOT</strong> automatically set another AccountStoreMapping&#8217;s <code>is_default_account_store</code> to <code>True</code>.  You are responsible for explicitly setting <code>is_default_account_store</code> to <code>True</code> if you want the application to be able to create new accounts.</p>
 </div>
 
 
 
 
-<div class='docs-warning'><p>If none of the application&#8217;s AccountStoreMappings are designated as the default account store, the application <em>WILL NOT</em> be able to create new accounts.</p>
+<div class='docs-warning'><p>If none of the application&#8217;s AccountStoreMappings are designated as the default account store, the application <em>WILL NOT</em> be able to create new accounts from the applications endpoint.  It is still possible to create accounts from the <a href="#account-create">accounts endpoint</a>.</p>
+</div>
 
-<p>Also note that Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application&#8217;s default account store.  Attempting to set <code>is_default_account_store</code> to <code>True</code> on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.</p>
+
+
+
+<div class='docs-warning'><p>Also note that Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application&#8217;s default account store.  Attempting to set <code>isDefaultAccountStore</code> to <code>true</code> on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.</p>
 </div>
 
 
@@ -2399,9 +2508,7 @@ account_store_mappint.save()
 
 <div class='docs-note'><p>Only one of an application&#8217;s mapped account stores may be the default group store.</p>
 
-<p>Also, note that setting an AccountStoreMapping&#8217;s <code>is_default_group_store</code> value to <code>True</code> will automatically set the application&#8217;s other AccountStoreMappings&#8217; <code>is_default_group_store</code> values to <code>False</code>. HOWEVER:</p>
-
-<p>Lastly, setting an AccountStoreMapping&#8217;s <code>is_default_group_store</code> value to <code>False</code> <strong>WILL NOT</strong> automatically set another AccountStoreMapping&#8217;s <code>is_default_group_store</code> to <code>True</code>.  You are responsible for explicitly setting <code>is_default_group_store</code> to <code>True</code> if you want the application to be able to create new groups.</p>
+<p>Also, note that setting an AccountStoreMapping&#8217;s <code>is_default_group_store</code> value to <code>True</code> will automatically set the application&#8217;s other AccountStoreMappings&#8217; <code>is_default_group_store</code> values to <code>False</code>. However, setting an AccountStoreMapping&#8217;s <code>is_default_group_store</code> value to <code>False</code> <strong>WILL NOT</strong> automatically set another AccountStoreMapping&#8217;s <code>is_default_group_store</code> to <code>True</code>.  You are responsible for explicitly setting <code>is_default_group_store</code> to <code>True</code> if you want the application to be able to create new groups.</p>
 </div>
 
 
@@ -2411,7 +2518,7 @@ account_store_mappint.save()
 
 <p>Also, note that Stormpath does not currently support storing groups within groups.  Therefore <code>is_default_group_store</code> can only be set to <code>True</code> when the AccountStoreMapping&#8217;s <code>accountStore</code> is a Directory.  Attempting to set <code>is_default_group_store</code> to <code>True</code> on an AccountStoreMapping that reflects a group will result in an error response.</p>
 
-<p>Lastly, note that mirrored directories are read-only; they cannot be set as an application&#8217;s default group store. Attempting to set <code>is_default_group_store</code> to <code>true</code> on an AccountStoreMapping that reflects a mirrored directory will result in an error response.</p>
+<p>Lastly, note that mirrored directories are read-only; they cannot be set as an application&#8217;s default group store. Attempting to set <code>is_default_group_store</code> to <code>True</code> on an AccountStoreMapping that reflects a mirrored directory will result in an error response.</p>
 </div>
 
 
@@ -2429,7 +2536,7 @@ account_store_mappint.save()
 
 <div class='docs-warning'><p>Deleting an account store mapping will remove the ability for accounts in the account store from authenticating with the application unless they are associated with an account store that is still mapped to the application. Be careful when removing mappings.</p>
 
-<p>Also, note that if no <code>AccountStoreMapping</code> is designated as the default group store, the application <em>WILL NOT</em> be able to create new groups.</p>
+<p>Also, note that if no <code>AccountStoreMapping</code> is designated as the default account store, the application <em>WILL NOT</em> be able to create new accounts.  Similarly, if there is no designated default group store, the application will not be able to create new groups.</p>
 </div>
 
 
@@ -2446,7 +2553,7 @@ account_store_mappint.save()
 
 <p>You can list an applications&rsquo;s mapped account stores by issuing a request to the application&rsquo;s <code>AccountStoreMappings</code> Collection Resource.</p>
 
-<p>The response is a paginated list of <code>AccountStoreMapping</code> resources.  You may use collection <a href="#pagination">pagination</a> query parameters to customize the paginated response.</p>
+<p>The response is a paginated list of <code>accountStoreMapping</code> resources.  You may use collection <a href="#pagination">pagination</a> query parameters to customize the paginated response.</p>
 
 <p><strong>Example Request</strong></p>
 
@@ -2461,7 +2568,17 @@ for asm in account_store_mappings:
 
 <h2><a id="directories"></a>Directories</h2>
 
-<p>A Directory is a top-level storage containers of Accounts and Groups. A Directory also manages security policies (like password strength) for the Accounts it contains. Stormpath supports two types of Directories:</p>
+<p>A <code>Directory</code> is a top-level storage containers of <code>Accounts</code> and <code>Groups</code>. A Directory also manages security policies (like password strength) for the Accounts it contains.</p>
+
+<p>Additionally:</p>
+
+<ul>
+<li>All <code>Accounts</code> within a directory have a unique email address and/or username.</li>
+<li>All <code>Groups</code> within a directory have a unique name.</li>
+</ul>
+
+
+<p>Stormpath supports two types of Directories:</p>
 
 <ol>
 <li>Natively hosted ‘Cloud’ directories that originate in Stormpath and</li>
@@ -2469,17 +2586,55 @@ for asm in account_store_mappings:
 </ol>
 
 
-<p>Directories can be used to cleanly manage segmented account populations.  For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.  You can <a href="#account-store-mappings">associate directories to applications</a> (or groups within a directory) to allow its accounts to login to applications.</p>
+<div class='docs-info'><p>Directories are a more advanced feature of Stormpath.  If you have a single application or multiple applications that access the same accounts, you usually only need a single directory, and you do not need to be concerned with creating or managing multiple directories.</p>
+
+<p>If however, your application(s) needs to support login for external 3rd party accounts like those in LDAP or Active Directory, or you have more complex account segmentation needs, directories will be a powerful tool to manage your application(s) user base.</p>
+</div>
+
+
+<p>Directories can be used to cleanly manage segmented account populations.  For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.  You can <a href="#account-store-mappings">associate directories to applications</a> (or groups within a directory) to allow the directory&rsquo;s accounts to login to applications.</p>
+
+<p>You can add as many directories of each type as you require. Adding or deleting accounts, groups and group memberships in directories affects ALL applications to which the directories are mapped as <a href="#account-store-mappings">account stores</a>.</p>
+
+<p><a class="anchor" name="directory-mirror"></a></p>
+
+<h4>Mirror Directories</h4>
+
+<p>Mirror directories are a big benefit to Stormpath customers who need LDAP or Active Directory accounts to be able to securely login to public web applications <em>without breaking corporate firewall policies</em>. Here is how they work:</p>
+
+<ul>
+<li>After creating an LDAP or AD Directory in Stormpath, you download a Stormpath Agent.  This is a simple standalone software application that you install behind the corporate firewall so it can communicate directly with the LDAP or AD server.</li>
+<li>You configure the agent via LDAP filters to view only the accounts that you want to expose to your Stormpath-enabled applications.</li>
+<li>The Agent will start synchronizing immediately, pushing this select data <em>outbound</em> to Stormpath over a TLS (HTTPS) connection.</li>
+<li>The synchronized accounts and groups appear in the Stormpath Directory.  The accounts will be able to login to any Stormpath-enabled application <a href="#account-store-mappings">that you assign</a>.</li>
+<li>When the Agent detects local LDAP or AD changes, additions or deletions to these specific accounts or groups, it will automatically propagate those changes to Stormpath to be reflected by your Stormpath-enabled applications.</li>
+</ul>
+
+
+<p>LDAP or Active Directory are still the &lsquo;system of record&rsquo; or source of identity &lsquo;truth&rsquo; for these accounts and groups.  The big benefit is that your Stormpath-enabled applications still use the same convenient REST+JSON API &ndash; they do not need to know anything about LDAP, Active Directory or legacy connection protocols!</p>
+
+<div class='docs-tip'><p>The Stormpath Agent is <strong>firewall friendly</strong>: you do not need to open any inbound holes in your company firewall.  The only requirement is that the Agent be able to make an <em>outbound</em> HTTPS connection to https://api.stormpath.com</p>
+</div>
+
+
+<p>Finally, note that accounts and groups in mirrored directories are automatically deleted when:</p>
+
+<ul>
+<li>The original object is deleted from the LDAP or AD directory service.</li>
+<li>The original LDAP/AD object information no longer matches the account filter criteria configured for the agent.</li>
+<li>The LDAP/AD directory is deleted.</li>
+</ul>
+
 
 <p><a class="anchor" name="directory"></a></p>
 
 <h3><a id="directory-resource"></a>Directory Resource</h3>
 
-<p>An individual <code>directory</code> resource may be accessed via its Resource URI:</p>
+<p>An individual <code>directory</code> resource may be accessed via its Resource Class:</p>
 
-<p><strong>Resource URI</strong></p>
+<p><strong>Resource Class</strong></p>
 
-<pre><code>/v1/directories/:directoryId
+<pre><code>\stormpath\resources\directory
 </code></pre>
 
 <p><a class="anchor" name="directory-attributes"></a>
@@ -2541,32 +2696,6 @@ for asm in account_store_mappings:
 </table>
 
 
-<p>Within Stormpath, there are two types of directories you can implement:</p>
-
-<ul>
-<li>A <strong>Cloud</strong> directory, also known as Stormpath-managed directories, which are hosted by Stormpath and use the Stormpath data model to store account and group information. This is the default and most common type of directory in Stormpath.</li>
-<li><p>A <strong>Mirrored</strong> directory, which is a Stormpath-hosted directory populated with data pushed from your existing LDAP/AD directory using a Stormpath synchronization agent. All user management is done on your existing LDAP/AD directory, but the cloud mirror can be accessed through the Stormpath APIs on your modern applications.</p>
-
-<ul>
-<li>Agent directories cannot be created using the API.</li>
-<li>You can specify various LDAP/AD object and attribute settings of the specific LDAP/AD server for accounts and groups.</li>
-<li>If the agent status is <code>Online</code>, but you are unable to see any data when browsing your LDAP/AD mapped directory, it is likely that your object and filters are configured incorrectly.</li>
-</ul>
-</li>
-</ul>
-
-
-<p>You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as <a href="#account-store-mappings">account stores</a></a>.</p>
-
-<p>LDAP/AD accounts and groups are automatically deleted when:</p>
-
-<ul>
-<li>The backing object is deleted from the LDAP/AD directory service.</li>
-<li>The backing LDAP/AD object information no longer matches the account filter criteria configured for the agent.</li>
-<li>The LDAP/AD directory is deleted.</li>
-</ul>
-
-
 <p>For directories, you can:</p>
 
 <ul>
@@ -2590,12 +2719,11 @@ for asm in account_store_mappings:
 <li><a href="#directory-delete">Delete a directory</a></li>
 <li><a href="#directory-list">List directories</a></li>
 <li><a href="#directory-search">Search directories</a></li>
-<li><a href="#work-with-directories">Work with directories</a>
+<li>Work with directories:
 
 <ul>
 <li><a href="#directories-password-restrictions">Enforce Account Password Restrictions</a></li>
-<li><a href="#directories-account-reg">Register A New Account</a></li>
-<li><a href="#directories-group-reg">Register A New Group</a></li>
+<li><a href="#directories-reg">Register A New Account</a></li>
 <li><a href="#directories-verify-email">Verify An Account&rsquo;s Email Address</a></li>
 <li><a href="#directories-password-reset">Reset An Account&rsquo;s Password</a></li>
 </ul>
@@ -2614,9 +2742,9 @@ for asm in account_store_mappings:
 <p>There are multiple ways to find a directory <code>href</code> depending on what information you have available:</p>
 
 <ul>
-<li>Retrieve a full list of directories from the tenant</li>
+<li><a href="#tenant-directories-search">Search your tenant&rsquo;s <code>directories</code></a></li>
 <li>Retrieve an application&rsquo;s <code>accountStoreMappings</code> and extract the directories iteratively</li>
-<li>Retrieve an account and determine its directory</li>
+<li>View an account&rsquo;s <code>directory</code> field.</li>
 </ul>
 
 
@@ -2638,32 +2766,18 @@ for dire in directories:
 
 <h3><a id="create-a-directory"></a>Create a Directory</h3>
 
-<p>To create a directory to store user accounts, you must know which type of directory service to use.</p>
-
-<p>You can create a:</p>
-
-<ul>
-<li>Cloud directory, which is hosted by Stormpath and uses the Stormpath data model to store account and group information. This is the most common type of directory in Stormpath.</li>
-</ul>
+<div class='docs-info'><p>It is currently only possible to create a standard (non-mirrored) Directory via the REST API.  If you need to create a <a href="#directory-mirror">mirror directory</a> for LDAP or Active Directory, you must use the <a href="/console/product-guide#create-a-mirrored-directory">Stormpath Admin Console</a>.</p>
+</div>
 
 
-<p><strong>OR</strong></p>
-
-<ul>
-<li>Mirrored directory, which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.</li>
-</ul>
-
-
-<p><a class="anchor" name="create-a-cloud-directory"></a></p>
+<p><a class="anchor" name="directory-create-cloud"></a>
+<a class="anchor" name="create-a-cloud-directory"></a></p>
 
 <h4>Create a Cloud Directory</h4>
 
-<p>To create a new <code>directory</code> resource within the caller tenant:</p>
+<p>You create a new directory resource within the caller tenant by calling the <code>create</code> method on its directories Collecion Resource.</p>
 
-<p><strong>Resource URI</strong></p>
-
-<pre><code>/v1/directories/:directoryId
-</code></pre>
+<p>At least the <code>name</code> attribute must be specified, and it must be unique compared to all other directories in your tenant. The <code>description</code> and <code>status</code> attribute are optional.</p>
 
 <p><strong>Required Attribute</strong></p>
 
@@ -2691,49 +2805,21 @@ for dire in directories:
 
 <h4>Create a Mirrored (LDAP/AD) Directory</h4>
 
-<p>Mirrored directories, after initial configuration, are accessible through the Agents tab of the directory.</p>
-
-<p>To create an LDAP/AD mirrored directory, you must log in to the Stormpath Admin Console.</p>
-
-<p>For more information on setting up a Mirrored Directory and using the Stormpath Admin Console, refer to the <a href="/console/product-guide#!CreateDir">Stormpath Admin Console product guide</a>.</p>
+<p>It is currently only possible to create a standard (non-mirrored) Directory via the REST API.  If you need to create a <a href="#directory-mirror">mirror directory</a> for LDAP or Active Directory, you must use the <a href="/console/product-guide#create-a-mirrored-directory">Stormpath Admin Console</a>.</p>
 
 <p><a class="anchor" name="associate-directories-with-applications"></a></p>
 
 <h4>Associate Directories with Applications</h4>
 
-<p>In order to associate a directory with an application, you&rsquo;ll need to create an <a href="#account-store-mappings">Account Store Mapping</a>. An account store mapping associates an account store (such as a directory or a group) with an application.</p>
-
-<p>You do this by calling the <code>create</code> method on the <code>AccountStoreMappings</code> resource class, and passing the <code>application</code> as the application to add the accountStore to and <code>directory</code> as the <code>accountStore</code>.</p>
-
-<pre><code>account_store_mapping = client.account_store_mappings.create({
-    'application': application,
-    'account_store': directory,
-    'list_index': 0,
-    'is_default_account_store': False,
-    'is_default_group_store': True
-})
-</code></pre>
-
-<p>Or, creating it from an application instance:</p>
-
-<pre><code>account_store_mapping = application.account_store_mappings.create({
-    'application': application,
-    'account_store': directory,
-    'list_index': 0,
-    'is_default_account_store': False,
-    'is_default_group_store': True
-})
-</code></pre>
-
-<p>You may use the response&rsquo;s <code>accountStoreMapping</code> instance to further interact with your new <code>AccountStoreMapping</code> resource.</p>
-
-<p>For more information on Account Store Mappings, refer to the <a href="#account-store-mappings">Account Store Mapping</a> section.</p>
+<p>If you want to assign a directory to an application so the directory&rsquo;s accounts may login to the application, you will need to <a href="#create-an-account-store-mapping">create an AccountStoreMapping</a>.</p>
 
 <p><a class="anchor" name="directory-retrieve"></a></p>
 
 <h3><a id="retrieve-a-directory"></a>Retrieve a Directory</h3>
 
 <p>Retrieve a directory by calling the <code>get</code> method on the Client, and passing the directory <code>href</code> as the parameter.</p>
+
+<p><strong>Example Request</strong></p>
 
 <pre><code>href = 'https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q'
 directory = client.directories.get(href)
@@ -2788,7 +2874,7 @@ directory.save()
 
 <h4>Enable Or Disable a Directory</h4>
 
-<p>A directory has two statuses: enabled and disabled. An enabled directory allows the groups and accounts to log into any applications for which the directory is defined as an account store while a disabled directory does not.</p>
+<p>A directory&rsquo;s status can be either <code>enabled</code> or <code>disabled</code>. An <code>enabled</code> directory allows its accounts and groups to login to any <a href="#account-store-mappings">assigned</a> application.  A <code>disabled</code> directory does not allow its accounts and groups to login to applications.</p>
 
 <p>To enable or disable a directory, use the <code>save</code> method to set the <code>status</code> to either <code>ENABLED</code> or <code>DISABLE</code>.</p>
 
@@ -2802,7 +2888,7 @@ directory.save()
 
 <h4>Update Agent Configuration</h4>
 
-<p>A <a href="#directory-agent">Directory Agent</a> is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory. This is critical part of <a href="#directories-mirrored">a mirrored directory</a>.</p>
+<p>A <a href="#directory-agent">Directory Agent</a> is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath <a href="#directory-mirrored">mirror directory</a>.</p>
 
 <p>You can modify an agent configuration going through the &ldquo;Directories&rdquo; or &ldquo;Agent&rdquo; tabs on the Stormpath Admin Console. For more information on administering Mirrored Directory agents, refer to the <a href="https://stormpath.com/docs/console/product-guide#!UpdateAgent">Stormpath Admin Console product guide</a>.</p>
 
@@ -2810,11 +2896,11 @@ directory.save()
 
 <h3><a id="delete-a-directory"></a>Delete a Directory</h3>
 
-<p>Deleting a directory completely erases the directory and all group and account data from Stormpath.</p>
+<div class='docs-warning'><p>Deleting a directory completely erases the directory and all of its accounts and groups from Stormpath.</p>
+</div>
 
-<p>We recommend that you disable a directory rather than delete it, in case an associated application contains historical data associated with accounts in the directory.</p>
 
-<p>The Stormpath Administrators directory cannot be deleted.</p>
+<p>We recommend that you disable a directory instead of deleting it if you anticipate that you might use the directory again or if you want to retain its data for historical reference.</p>
 
 <p>To delete a directory:</p>
 
@@ -2823,74 +2909,26 @@ directory.save()
 <pre><code>directory.delete()
 </code></pre>
 
-<div class='docs-warning'><p>You cannot delete a directory that is still associated with an application and thus you cannot delete a directory that is marked as the &#8220;Default Account Store&#8221; or contains a &#8220;Default Group&#8221; doing so will result in a 400 Bad Request error</p>
+<div class='docs-info'><p>The <code>Stormpath Administrators</code> directory cannot be deleted.</p>
 </div>
 
-
-<p><strong>Example Error Response</strong></p>
-
-<pre><code>{
-  status: 400
-  code: 400
-  message: "Directory is referenced by 1 Application(s) and may not be deleted until those applications are disassociated"
-  developerMessage: "Directory is referenced by 1 Application(s) and may not be deleted until those applications are disassociated"
-  moreInfo: "mailto:support@stormpath.com"
-}
-</code></pre>
 
 <p><a class="anchor" name="directory-list"></a></p>
 
 <h3><a id="list-directories"></a>List Directories</h3>
 
-<p>To list directories:</p>
-
-<p><strong>Example Request</strong></p>
-
-<pre><code>directories = tenant.directories
-for directory in directories:
-    print(directory.name)
-</code></pre>
+<p>You may list your tenant&rsquo;s directories as described in <a href="#tenant-directories-list">List Tenant Directories</a>.</p>
 
 <p><a class="anchor" name="directory-search"></a></p>
 
 <h3><a id="search-directories"></a>Search Directories</h3>
 
-<p>Directory attributes supported for search include:</p>
+<p>You may search for directories as described in <a href="#tenant-directories-search">Search Tenant directories</a>.</p>
 
-<ul>
-<li>name</li>
-<li>description</li>
-<li>status</li>
-</ul>
+<p><a class="anchor" name="work-with-directories"></a>
+<a class="anchor" name="directories-account-password-policy"></a><a class="anchor" name="directories-password-restrictions"></a></p>
 
-
-<p><strong>Searchable Directory Collection Resources</strong></p>
-
-<table>
-<thead>
-<tr>
-<th align="left">Directory Collection Resource </th>
-<th align="left"> Search Functionality</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">tenant.directories </td>
-<td align="left"> A search across directories owned by the specified tenant.</td>
-</tr>
-</tbody>
-</table>
-
-
-<p><a class="anchor" name="work-with-directories"></a></p>
-
-<h3><a id="work-with-directories"></a>Work With Directories</h3>
-
-<p>From a directory you can do things like enforce account password restrictions, register new accounts and groups, configure the account email verification workflow, configure the account password reset workflow, among other functionalities. Read below to find more information about these features.</p>
-
-<p><a class="anchor" name="directories-password-restrictions"></a></p>
-
-<h3><a id="enforce-account-password-restrictions"></a>Enforce Account Password Restrictions</h3>
+<h3><a id="account-password-policy"></a>Account Password Policy</h3>
 
 <p>Directories can be configured to enforce specific restrictions on passwords for accounts associated with, such as requiring at least one or more non-alphanumeric characters.</p>
 
@@ -2914,27 +2952,36 @@ for directory in directories:
 
 <p>By default, passwords must be of mixed case, include at least one number, and be between 8 and 100 characters in length.</p>
 
-<p>More information about configuring a cloud directory&rsquo;s password restrictions can be found in the <a href="http://stormpath.com/docs/console/product-guide#!CreateDir">Stormpath Admin Console product guide</a>.</p>
-
-<div class='docs-note'><p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory&#8217;s automated workflows cannot be altered.</p>
+<div class='docs-note'><p>It is not currently possible to configure a Directory&#8217;s account password policy via the REST API.  You must use the <a href="https://api.stormpath.com">Stormpath Admin Console</a> (Directories &#8211;> &lt;choose your directory&gt; &#8211;> Details tab).</p>
 </div>
 
 
-<p><a class="anchor" name="directories-account-reg"></a></p>
+
+
+<div class='docs-note'><p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API.</p>
+
+<p>Additionally, the <code>Stormpath Administrator</code> directory&#8217;s automated workflows cannot be altered.</p>
+</div>
+
+
+<p><a class="anchor" name="directories-reg"></a></p>
 
 <h3><a id="register-a-new-account"></a>Register A New Account</h3>
 
-<p>This workflow allows you to create an account at a directory level.</p>
+<p>This workflow allows you to create an account at an application level rather than at a directory level. The application will populate the directory set as the default account store.</p>
 
-<p>This workflow relies on the <code>account</code> resource as a starting point. For more information refer to the <a href="#account-create">Create an Account</a> section of this guide.</p>
+<p>This workflow relies on the <code>account</code> resource as a starting point. For more information on working with these workflows via REST after they have already been configured, refer to the <a href="#application-account-register">Working With Applications</a> section of this guide.
+This workflow is disabled by default for accounts, but you can enable it easily in the Stormpath Admin Console UI. Refer to the <a href="https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation">Stormpath Admin Console product guide</a> for complete instructions.</p>
 
-<p><a class="anchor" name="directories-group-reg"></a></p>
+<div class='docs-note'><p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the REST API. Also, the Stormpath Administrator directory&#8217;s automated workflows cannot be altered.</p>
+</div>
 
-<h3><a id="register-a-new-group"></a>Register A New Group</h3>
 
-<p>This workflow allows you to create an group at a directory level.</p>
+<p><a class="anchor" name="accounts-workflow"></a></p>
 
-<p>This workflow relies on the <code>group</code> resource as a starting point. For more information refer to the <a href="#group-create">Create a Group</a> section of this guide.</p>
+<h3><a id="work-with-accounts"></a>Work With Accounts</h3>
+
+<p>If you want to learn about other account functionalities, such as <a href="#account-verify-email">verify an email address</a>, <a href="#accounts-authenticate">log in (authenticate) an account</a> and <a href="#accounts-reset">reset an account password</a>, read the instructions below.</p>
 
 <p><a class="anchor" name="directories-verify-email"></a></p>
 
@@ -2942,24 +2989,21 @@ for directory in directories:
 
 <p>This workflow allows you to send a welcome email to a newly registered account and optionally verify that they own the email addressed used during registration.</p>
 
-<p>The email verification workflow involves changes to an account at an application level, and as such, this workflow relies on the <code>account</code> resource as a starting point. For more information on working with these workflows via the Python SDK after they have already been configured, refer to the <a href="#account-verify-email">Working With Accounts</a> section of this guide.
+<p>The email verification workflow involves changes to an account at an application level, and as such, this workflow relies on the <code>account</code> resource as a starting point. For more information on working with these workflows via REST after they have already been configured, refer to the <a href="#account-verify-email">Working With Accounts</a> section of this guide.
 This workflow is disabled by default for accounts, but you can enable it easily in the Stormpath Admin Console UI. Refer to the <a href="https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation">Stormpath Admin Console product guide</a> for complete instructions.</p>
 
-<div class='docs-note'><p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the Python SDK. Also, the Stormpath Administrator directory&#8217;s automated workflows cannot be altered.</p>
+<div class='docs-note'><p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the REST API. Also, the Stormpath Administrator directory&#8217;s automated workflows cannot be altered.</p>
 </div>
 
 
-<p><a class="anchor" name="directories-password-reset"></a></p>
+<p><a class="anchor" name="directories-password-reset"></a>
+This is a self-service password reset workflow.  The account is sent an email with a secure link.  The person owning the account can click on the link and be shown a password reset form to reset their password.  This is strongly recommended to reduce support requests to your application team as well as to reduce your exposure to account passwords for added security.</p>
 
-<h3><a id="resetting-an-accounts-password"></a>Resetting An Account&rsquo;s Password</h3>
-
-<p>This is a self-service password reset workflow.  The account is sent an email with a secure link.  The person owning the account can click on the link and be shown a password reset form to reset their password.  This is strongly recommended to reduce support requests to your application team as well as to reduce your exposure to account passwords for added security.</p>
-
-<p>The password reset workflow involves changes to an account at an application level, and as such, this workflow relies on the <code>application</code> resource as a starting point. For more information on working with this workflow via the Python SDK after they have already been configured, refer to the <a href="#application-password-reset">Working With Applications</a> section of this guide.</p>
+<p>The password reset workflow involves changes to an account at an application level, and as such, this workflow relies on the <code>application</code> resource as a starting point. For more information on working with this workflow via REST after they have already been configured, refer to the <a href="#application-password-reset">Working With Applications</a> section of this guide.</p>
 
 <p>This workflow is disabled by default for accounts, but you can enable it easily in the Stormpath Admin Console UI. Refer to the <a href="https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation">Stormpath Admin Console product guide</a> for complete instructions.</p>
 
-<div class='docs-note'><p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the Python SDK. Also, the Stormpath Administrator directory&#8217;s automated workflows cannot be altered.</p>
+<div class='docs-note'><p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory&#8217;s automated workflows cannot be altered.</p>
 </div>
 
 
@@ -2976,7 +3020,7 @@ This workflow is disabled by default for accounts, but you can enable it easily 
 
 <h4>List Directory Groups</h4>
 
-<p>You can list your directory&rsquo;s groups by sending a request to your directory&rsquo;s <code>groups</code> Collection Resource.  The response is a <a href="#pagination">paginated</a> list of directory groups.</p>
+<p>You can list your directory&rsquo;s groups by sending a <code>GET</code> request to your directory&rsquo;s <code>groups</code> Collection Resource <code>href</code> URL.  The response is a <a href="#pagination">paginated</a> list of directory groups.</p>
 
 <p>You may also use collection <a href="#pagination">pagination</a> and <a href="#sorting">sort ordering</a> query parameters to customize the paginated response.</p>
 
@@ -3064,11 +3108,13 @@ for acc in accounts:
 
 <p>Account resources support the full suite of CRUD commands and other interactions. Please see the <a href="#accounts">Accounts section</a> for more information.</p>
 
+<hr />
+
 <p><a class="anchor" name="groups"></a></p>
 
 <h2><a id="groups"></a>Groups</h2>
 
-<p>Groups are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with <a href="#role">role</a>.</p>
+<p>A <code>Group</code> is a collection of <code>Accounts</code> within a <code>Directory</code> that are often used for authorization and access control to the <code>Application</code>. In Stormpath, the term <code>Group</code> is synonymous with <a href="#role">role</a>.</p>
 
 <p>You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -3083,9 +3129,9 @@ for acc in accounts:
 
 <h3><a id="group-resource"></a>Group Resource</h3>
 
-<p><strong>Resource URI</strong></p>
+<p><strong>Resource Class</strong></p>
 
-<pre><code>/v1/groups/:groupId
+<pre><code>\stormpath\resources\group
 </code></pre>
 
 <p><strong>Resource Attributes</strong></p>
@@ -3235,13 +3281,26 @@ for grp in groups:
 })
 </code></pre>
 
-<p>This creates a new group in the directory.</p>
+<p>This creates a new group in the application group creation acceptable designated directory.</p>
+
+<p>If there is no acceptable designated directory account store, the REST API error code <a href="/errors#5102">5102</a> is returned:</p>
+
+<pre><code>{
+  "status": 409,
+  "code": 5102,
+  "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
+  "developerMessage": "No account store assigned to this application has been configured as the default storage location for newly created groups.  To fix this problem: in the application's 'account stores' configuration, specify the account store that will be used to store newly created groups."
+  "moreInfo": "http://docs.stormpath.com/errors/5102"
+}
+</code></pre>
 
 <p><a class="anchor" name="group-retrieve"></a></p>
 
 <h3><a id="retrieve-a-group"></a>Retrieve a Group</h3>
 
 <p>A request to the <code>get</code> method of the Client, returns a representation of a <code>group</code> resource that includes the resource attributes.</p>
+
+<p><strong>Example Request</strong></p>
 
 <pre><code>href = 'https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ'
 group = client.groups.get(href)
@@ -3286,7 +3345,18 @@ group = client.groups.get(href, expansion)
 </ul>
 
 
-<p><strong>Example Request</strong></p>
+<p>Here are some account update examples:</p>
+
+<ul>
+<li><a href="#account-update-simple">Simple Update Group Example</a></li>
+<li><a href="#group-enable">Enable a Group</a></li>
+<li><a href="#group-disable">Disable a Group</a></li>
+<li><a href="#update-custom-data-embedded">Update a Group and its Custom Data simultaneously</a></li>
+</ul>
+
+
+<p><a class="anchor" name="group-update-simple"></a>
+<strong>Example Request</strong></p>
 
 <pre><code>group.description = "Sea Voyagers"
 group.save()
@@ -3353,12 +3423,14 @@ group.save()
 
 <h4>Application Groups</h4>
 
-<p>The application groups is a <a href="#collections">Collection Resource</a> representing all application-accessible groups. A group is accessible to an application if it, or its directory, is assigned to the application as an account store.</p>
+<p>The application groups endpoint is a <a href="#collections">Collection Resource</a> representing all application-accessible groups. A group is accessible to an application if it, or its directory, is assigned to the application as an account store.</p>
+
+<p><strong>Application Groups Collection Resource</strong></p>
 
 <pre><code>application.groups
 </code></pre>
 
-<p>HTTP GET returns a paginated list of groups accessible to an application.</p>
+<p>The request returns a paginated list of groups accessible to an application.</p>
 
 <p><strong>Example request:</strong></p>
 
@@ -3370,6 +3442,8 @@ for grp in groups:
 <h5>Account Groups</h5>
 
 <p>The account <code>groups</code> resource is a <a href="#collections">Collection Resource</a> representing all account-associated groups. A group is associated with an account when an account has been assigned to that group as a member.</p>
+
+<p><strong>Accounts Groups Collection Resource</strong></p>
 
 <pre><code>account.groups
 </code></pre>
@@ -3386,6 +3460,8 @@ for grp in groups:
 <h5>Directory Groups</h5>
 
 <p>The directory <code>groups</code> resource is a <a href="#collections">Collection Resource</a> representing all directory-associated groups. Groups are defined as a subset of members in a directory.</p>
+
+<p><strong>Directory Groups Collection Resource</strong></p>
 
 <pre><code>directory.groups
 </code></pre>
@@ -3526,15 +3602,15 @@ for ams in account_memberships:
 
 <h2><a id="group-memberships"></a>Group Memberships</h2>
 
-<p>A Group Membership resource represents the link between an <a href="#accounts">account</a> and a <a href="#groups">group</a>. When an account is associated with a group or a group is associated with an account, a group membership is created.</p>
+<p>A <code>Group Membership</code> resource represents the link between an <a href="#accounts">account</a> and a <a href="#groups">group</a>. When an <code>Account</code> is associated with a <code>Group</code> or a <code>Group</code> is associated with an <code>Account</code>, a group membership is created.</p>
 
 <p><a class="anchor" name="group-membership-resource"></a></p>
 
 <h3><a id="group-membership-resource"></a>Group Membership Resource</h3>
 
-<p><strong>Resource URI</strong></p>
+<p><strong>Resource Class</strong></p>
 
-<pre><code>v1/groupMemberships/:groupMembershipId
+<pre><code>\stormpath\resources\group_membership
 </code></pre>
 
 <p><a class="anchor" name="group-membership-resource-attributes"></a>
@@ -3589,7 +3665,7 @@ for ams in account_memberships:
 
 <p>When communicating with the Stormpath REST API, you might need to reference a group membership using the REST URL or <code>href</code>.</p>
 
-<p>There are multiple ways to find a group membership, depending on what information you have available:</p>
+<p>There are multiple ways to find a group membership&rsquo;s <code>href</code> depending on what information you have available:</p>
 
 <ul>
 <li>Retrieve a full list of group memberships for an account</li>
@@ -3597,7 +3673,7 @@ for ams in account_memberships:
 </ul>
 
 
-<p>In all cases, the process is fundamentally the same. Consider the first case as example. If you want to find a specific group mapping on a specific account, you&rsquo;ll need to search the group memberships for the associated <code>account</code> resource:</p>
+<p>In all cases, the process is fundamentally the same. Consider the first case as example. If you want to find a specific group mapping on a specific account,  you&rsquo;ll need to search the group memberships for the associated <code>account</code> resource:</p>
 
 <p><strong>Example Request</strong></p>
 
@@ -3608,6 +3684,8 @@ for gms in group_membership:
         group_membership = gms
         break
 </code></pre>
+
+<p>If you know the name exactly, you can use an <a href="#search-attribute">attribute search</a> (e.g., &ldquo;name=&rdquo;) or, if you only know a small part, you can use a <a href="#search-filter">filter search</a> (e.g., &ldquo;My*&rdquo;) to narrow down the selection.</p>
 
 <p><a class="anchor" name="group-membership-create"></a></p>
 
@@ -3680,6 +3758,8 @@ group_membership = client.group_memberships.get(href)
 
 <p>The account <code>groupMemberships</code> resource is a <a href="#collections">Collection Resource</a> representing all group memberships where the account is involved.</p>
 
+<p><strong>Account Group Memberships Resource</strong></p>
+
 <pre><code>account.group_memberships
 </code></pre>
 
@@ -3698,6 +3778,8 @@ for gms in group_memberships:
 <h4>List Account Memberships For A Group</h4>
 
 <p>The group <code>accountMemberships</code> resource is a collections representing all group memberships where the group is involved.</p>
+
+<p><strong>Group Account Collection Resource</strong></p>
 
 <pre><code>group.account_memberships
 </code></pre>
@@ -3720,12 +3802,12 @@ for ams in account_memberships:
 
 <h2><a id="accounts"></a>Accounts</h2>
 
-<p>An Account is a unique identity within a Directory, with a unique username and/or email address. An account can log in to applications using either the email address or username associated with it. Accounts can represent your end users (people), but they can also be used to represent services, daemons, processes, or any &ldquo;entity&rdquo; that needs to login to a Stormpath-enabled application.  Additionally, an account may only exist in a single directory and may be in multiple groups owned by that directory.  Accounts may not be assigned to groups within other directories.</p>
+<p>An <code>Account</code> is a unique identity within a <code>Directory</code>, with a unique username and/or email address. An <code>Account</code> can log in to an <code>Application</code> using either the email address or username associated with it. Accounts can represent your end users (people), but they can also be used to represent services, daemons, processes, or any &ldquo;entity&rdquo; that needs to login to a Stormpath-enabled application.  Additionally, an account may only exist in a single directory and may be in multiple groups owned by that directory.  Accounts may not be assigned to groups within other directories.</p>
 
 <p>It should be noted that the words &lsquo;User&rsquo; and &lsquo;Account&rsquo; usually mean the same thing, but there is a subtle difference that can be important at times:</p>
 
 <ul>
-<li>An Account is a unique identity within a Directory.</li>
+<li>An Account is a unique identity within a Directory. An account can exist in only a single directory but can be a part of multiple groups owned by that directory.</li>
 <li>When an account is granted access to an application (by <a href="#account-store-mappings">mapping a Directory or Group</a> that contains the account to the application), it becomes a &lsquo;User&rsquo; of that application.</li>
 </ul>
 
@@ -3734,7 +3816,7 @@ for ams in account_memberships:
 
 <h4>LDAP/AD Accounts</h4>
 
-<p>It should be noted that Accounts that originate in LDAP or Active Directory (AD) are mirrored in Stormpath, and they are special: you cannot create, update or delete Accounts that originate in an LDAP mirrored directory &ndash; you can only read them or use them for login.  This is because LDAP is the source of &lsquo;truth&rsquo; and Stormpath does not (currently) have write-access to LDAP installations.</p>
+<p>It should be noted that Accounts that originate in LDAP or Active Directory (AD) are mirrored in Stormpath. You cannot create, update or delete Accounts that originate in an LDAP mirrored directory &ndash; you can only read them or use them for login.  This is because LDAP is the source of &lsquo;truth&rsquo; and Stormpath does not (currently) have write-access to LDAP installations.</p>
 
 <p>You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:</p>
 
@@ -3745,15 +3827,13 @@ for ams in account_memberships:
 </ul>
 
 
-<p>An account is a unique identity within a directory. An account can exist in only a single directory but can be a part of multiple groups owned by that directory.</p>
-
 <p><a class="anchor" name="account"></a></p>
 
 <h3><a id="account-resource"></a>Account Resource</h3>
 
-<p><strong>Resource URI</strong></p>
+<p><strong>Resource Class</strong></p>
 
-<pre><code>/v1/accounts/:accountId
+<pre><code>\stormpath\resources\account
 </code></pre>
 
 <p><strong>Resource Attributes</strong></p>
@@ -3916,11 +3996,22 @@ for acc in accounts:
     account = acc
 </code></pre>
 
+<p>If you know the username exactly, you can use an <a href="#search-attribute">attribute search</a> (e.g., &ldquo;username=&rdquo;) or, if you only know a small part, you can use a <a href="#search-filter">filter search</a> (e.g., &ldquo;test*&rdquo;) to narrow down the selection.</p>
+
 <p><a class="anchor" name="account-create"></a></p>
 
 <h3><a id="create-an-account"></a>Create an Account</h3>
 
-<p>Through Stormpath&rsquo;s API and Admin Console, you can only create accounts for cloud, or Stormpath-managed, directories. For LDAP, the accounts must be created on the LDAP server and they will be mirrored to the Stormpath agent.</p>
+<p>Because Accounts are &lsquo;owned&rsquo; by Directories, you create new accounts by adding them to a Directory.  You can add an account to a directory directly or you can indirectly add an account to a Directory by <a href="#application-account-register">registering an Account with an Application</a></p>
+
+<div class='docs-note'><p>You may only create accounts for Stormpath-manageed &#8216;Cloud&#8217; directories.  Mirrored accounts from LDAP or Active Directory must be created in the LDAP/AD server and they will be reflected in Stormpath accordingly.  You cannot manually create accounts in a Mirrored directory.</p>
+</div>
+
+
+<p><strong>Directory Accounts Resource</strong></p>
+
+<pre><code>directory.accounts
+</code></pre>
 
 <p><strong>Required Attributes</strong></p>
 
@@ -3952,6 +4043,37 @@ for acc in accounts:
 </div>
 
 
+<p>Here are some account creation examples:</p>
+
+<ul>
+<li><a href="#account-create-simple">Simple Create Account Example</a></li>
+<li><a href="#account-create-with-custom-data">Create an Account with Custom Data</a></li>
+<li><a href="#account-create-no-email">Create an Account and suppress registration emails</a></li>
+</ul>
+
+
+<p><a class="anchor" name="account-create-simple"></a>
+Simple creation request:</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>account = directory.accounts.create({
+    'given_name': 'John',
+    'surname': 'Smith',
+    'username': 'johnsmith',
+    'email': 'john.smith@example.com',
+    'password': '4P@$$w0rd!',
+})
+</code></pre>
+
+<p><a class="anchor" name="account-create-with-custom-data"></a></p>
+
+<h4>Create Directory Account with Custom Data</h4>
+
+<p>In addition to the Stormpath account attributes, you may also specify <a href="#account-custom-data">your own custom data</a> by including a &lsquo;customData&rsquo; JSON object.</p>
+
+<p><strong>Example Request</strong></p>
+
 <pre><code>account = directory.accounts.create({
     'given_name': 'John',
     'surname': 'Smith',
@@ -3967,7 +4089,13 @@ for acc in accounts:
 })
 </code></pre>
 
-<p><strong>Example request suppressing the email messages:</strong></p>
+<p>Once created, you can further modify the custom data resource: delete it, add and remove attributes, etc as necessary.  See the <a href="#account-custom-data">account custom data</a> section for more information on custom data and custom data restrictions.</p>
+
+<p><a class="anchor" name="account-create-no-email"></a></p>
+
+<h4>Create Directory Account and Suppress Registration Email</h4>
+
+<p>If you want to create a directory account and you want to override the directory&rsquo;s account registration workflow email settings, you can specify a <code>registration_workflow_enabled=False</code> option:</p>
 
 <pre><code>account = directory.accounts.create({
     'given_name': 'John',
@@ -3982,7 +4110,7 @@ for acc in accounts:
 
 <h3><a id="retrieve-an-account"></a>Retrieve an Account</h3>
 
-<p>A request to the <code>get</code> method of the <code>Accounts</code> collections resource class, returns a representation of an <code>account</code> resource that includes the attributes.</p>
+<p>A call to the <code>get</code> method of the <code>accounts</code> collections resource class returns a representation of an <code>account</code> resource that includes the attributes.</p>
 
 <pre><code>href = 'https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA'
 account = client.accounts.get(href)
@@ -3997,15 +4125,15 @@ account = client.accounts.get(href)
 <p>The following <code>Account</code> attributes are expandable:</p>
 
 <ul>
+<li><code>custom_data</code></li>
 <li><code>tenant</code></li>
 <li><code>directory</code></li>
 <li><code>groups</code></li>
 <li><code>group_memberships</code></li>
-<li><code>custom_data</code></li>
 </ul>
 
 
-<p>Also, because some of these are <a href="#collections">Collection Resources</a> themselves, you can additionally control <a href="#pagination">pagination</a> for either expanded collection.  For example:</p>
+<p>Also, because <code>groups</code> and <code>groupMemberships</code> are <a href="#collections">Collection Resources</a> themselves, you can additionally control <a href="#pagination">pagination</a> for either expanded collection.  For example:</p>
 
 <pre><code>expansion = Expansion()
 expansion.add_property('tenant').add_property('directory')
@@ -4037,7 +4165,7 @@ account = client.accounts.get(href, expansion)
 <li><a href="#middleName">middle_name</a></li>
 <li><a href="#surname">surname</a></li>
 <li><a href="#status">status</a></li>
-<li><a href="#custom-data">custom_data</a></li>
+<li><a href="#account-resource-custom-data">custom_data</a></li>
 </ul>
 
 
@@ -4051,8 +4179,18 @@ account = client.accounts.get(href, expansion)
 </div>
 
 
-<p><a class="anchor" name="UpdateAccountName"></a>
-<strong>Example Update Request</strong></p>
+<p>Here are some account update examples:</p>
+
+<ul>
+<li><a href="#account-update-simple">Simple Update Account Example</a></li>
+<li><a href="#account-create-no-email">Create an Account and suppress registration emails</a></li>
+<li><a href="#ChangeAccountPassword">Update an Account&rsquo;s password directly</a></li>
+<li><a href="#update-custom-data-embedded">Update an Account and its Custom Data simultaneously</a></li>
+</ul>
+
+
+<p><a class="anchor" name="UpdateAccountName"></a><a class="anchor" name="account-update-simple"></a>
+<strong>Example Request to Update the Name</strong></p>
 
 <pre><code>account.username = "jlpicard"
 account.given_name = "Jean-Luc"
@@ -4060,18 +4198,13 @@ account.surname = "Picard"
 account.save()
 </code></pre>
 
-<p>If the account is part of a directory containing groups, you can associate the account with a group.</p>
+<p><a class="anchor" name="ChangeAccountPassword"></a></p>
 
-<p><a class="anchor" name="AddAccountGroup"></a>
-<strong>Example Request to Add an Account to a Group</strong></p>
+<h4>Update an Account&rsquo;s Password Directly</h4>
 
-<pre><code>account.add_group(group)
-</code></pre>
+<p><strong>Example Request to Change an Account Password</strong></p>
 
-<p><a class="anchor" name="ChangeAccountPassword"></a>
-<strong>Example Request to Change an Account Password</strong></p>
-
-<pre><code>account.password = "L9%hw4c5q"
+<pre><code>account.password = "ooS3ohr8"
 account.save()
 </code></pre>
 
@@ -4083,12 +4216,8 @@ account.save()
 
 <p>To assign an account to a group:</p>
 
-<p><strong>Example Request</strong></p>
-
 <pre><code>account.add_group(group)
 </code></pre>
-
-<p>Both the account and the group must exist and contain a valid <code>href</code> property.</p>
 
 <p><a class="anchor" name="account-remove-group"></a></p>
 
@@ -4105,7 +4234,7 @@ account.save()
 
 <h4>Enable or Disable an Account</h4>
 
-<p>Accounts have a &ldquo;status&rdquo; which defines its state in the systems: enabled and disabled. An enabled account can be successfully authenticated if it is assigned to an active account store in an application while a disabled account cannot.</p>
+<p>Accounts have an &ldquo;status&rdquo; which defines its state in the systems: enabled and disabled. An enabled account can be successfully authenticated if it is assigned to an active account store in an application while a disabled account cannot.</p>
 
 <div class='docs-note'><p>Enabling and disabling accounts for mirrored (LDAP) directories is not available in Stormpath. You manage mirrored (LDAP) accounts on the primary server installation.</p>
 </div>
@@ -4146,47 +4275,14 @@ account.save()
 
 <h3><a id="list-accounts"></a>List Accounts</h3>
 
-<p>Using the API, you can view <a href="#accounts-application-accounts-list">all accounts of an application</a>, <a href="#accounts-application-group-members">all members of a group</a>, or <a href="#accounts-application-directory-accounts">all accounts/members of a directory</a>.</p>
+<p>The <code>accounts</code> resource is a <a href="#collections">Collection Resource</a> that represents all accounts associated with their parent.  There are different endpoints that can list their associated accounts. Using the API, you can access:</p>
 
-<p>An application&rsquo;s <code>accounts</code> is a <a href="#collections">Collection Resource</a> that represents all accounts that can log in to the application.</p>
+<ul>
+<li><a href="#application-accounts-list">All accounts of an application</a></li>
+<li><a href="#group-accounts">All members of a group</a></li>
+<li><a href="#directory-accounts">All accounts/members of a directory</a></li>
+</ul>
 
-<pre><code>application.accounts
-</code></pre>
-
-<p><a class="anchor" name="accounts-application-accounts-list"></a></p>
-
-<h4>List Application Accounts</h4>
-
-<p>A request returns a paginated list of accounts within a specified application.</p>
-
-<p>Example request:</p>
-
-<pre><code>accounts = application.accounts
-for acc in accounts:
-    print(acc.given_name + acc.surname)
-</code></pre>
-
-<p><a class="anchor" name="accounts-application-group-members"></a></p>
-
-<h4>List Group Members</h4>
-
-<p><strong>Example Request</strong></p>
-
-<pre><code>accounts = group.accounts
-for acc in accounts:
-    print(acc.given_name + acc.surname)
-</code></pre>
-
-<p><a class="anchor" name="accounts-application-directory-accounts"></a></p>
-
-<h4>List Directory Accounts</h4>
-
-<p><strong>Example Request From a Directory</strong></p>
-
-<pre><code>accounts = directory.accounts
-for acc in accounts:
-    print(acc.given_name + acc.surname)
-</code></pre>
 
 <h3><a id="search-accounts"></a>Search Accounts</h3>
 
@@ -4227,12 +4323,6 @@ for acc in accounts:
 </tbody>
 </table>
 
-
-<p><a class="anchor" name="accounts-workflow"></a></p>
-
-<h3><a id="work-with-accounts"></a>Work With Accounts</h3>
-
-<p>If you want to learn about other account functionalities, such as <a href="#account-verify-email">verify an email address</a>, <a href="#accounts-authenticate">log in (authenticate) an account</a> and <a href="#accounts-reset">reset an account password</a>, read the instructions below.</p>
 
 <p><a class="anchor" name="account-verify-email"></a></p>
 
@@ -4356,11 +4446,11 @@ for acc in accounts:
 
 <p>This is a self-service password reset workflow.  The account is sent an email with a secure link.  The person owning the account can click on the link and be shown a password reset form to reset their password.  This is strongly recommended to reduce support requests to your application team as well as to reduce your exposure to account passwords for added security.</p>
 
-<p>The password reset workflow involves changes to an account at an application level, and as such, this workflow relies on the <code>application</code> resource as a starting point. For more information on working with this workflow via the Python SDK after they have already been configured, refer to the <a href="#application-password-reset">Working With Applications</a> section of this guide.</p>
+<p>The password reset workflow involves changes to an account at an application level, and as such, this workflow relies on the <code>application</code> resource as a starting point. For more information on working with this workflow via REST after they have already been configured, refer to the <a href="#application-password-reset">Working With Applications</a> section of this guide.</p>
 
 <p>This workflow is disabled by default for accounts, but you can enable it easily in the Stormpath Admin Console UI. Refer to the <a href="https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation">Stormpath Admin Console product guide</a> for complete instructions.</p>
 
-<div class='docs-note'><p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the Python SDK. Also, the Stormpath Administrator directory&#8217;s automated workflows cannot be altered.</p>
+<div class='docs-note'><p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory&#8217;s automated workflows cannot be altered.</p>
 </div>
 
 
@@ -4370,7 +4460,7 @@ for acc in accounts:
 
 <p>The account&rsquo;s <code>groups</code> resource is a <a href="#collections">Collection Resource</a> which represents all groups where a specific account is a member.</p>
 
-<p><strong>Resource URI</strong></p>
+<p><strong>Resource</strong></p>
 
 <pre><code>account.groups
 </code></pre>
@@ -4531,6 +4621,8 @@ for gms in group_memberships:
 <pre><code>    print(account.custom_data["rank"])
 </code></pre>
 
+<p>A common way to retrieve an account or group&rsquo;s custom data is to use <a href="#links-expansion">link expansion</a> and retrieve the custom data at the same time as when you retrieve an account or group.</p>
+
 <h3><a id="update-custom-data"></a>Update Custom Data</h3>
 
 <p>You may update an account or group&rsquo;s custom data, in one of two ways:</p>
@@ -4603,6 +4695,8 @@ for gms in group_memberships:
 <div class='docs-note'><p>The <code>custom_data</code> field isn&#8217;t actually deleted on Stormpath until the <code>save</code> method is called. You should consider that in situations where you rely that your local resource object is in sync with Stormpath.</p>
 </div>
 
+
+<p><a class="anchor" name="administration"></a></p>
 
 <h2><a id="administering-stormpath"></a>Administering Stormpath</h2>
 
@@ -4977,7 +5071,7 @@ for gms in group_memberships:
 				<a href="/python/product-guide">Python Product Guide</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#python-sdk" data-level="1" class="fragment">Python SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#error-handling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li><li class="leaf"><a href="#caching" data-level="1" class="fragment">Caching</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#applications" data-level="1" class="fragment">Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-directories" data-level="1" class="fragment">Work With Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#enforce-account-password-restrictions" data-level="1" class="fragment">Enforce Account Password Restrictions</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-group" data-level="1" class="fragment">Register A New Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-accounts-email-address" data-level="1" class="fragment">Verify An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#resetting-an-accounts-password" data-level="1" class="fragment">Resetting An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-custom-data" data-level="1" class="fragment">Group Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticating-an-account" data-level="1" class="fragment">Authenticating An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#python-sdk" data-level="1" class="fragment">Python SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#caching" data-level="1" class="fragment">Caching</a><ul class="menu"></ul></li><li class="leaf"><a href="#errors" data-level="1" class="fragment">Errors</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-applications" data-level="1" class="fragment">Tenant Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-password-policy" data-level="1" class="fragment">Account Password Policy</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-accounts-email-address" data-level="1" class="fragment">Verify An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-custom-data" data-level="1" class="fragment">Group Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticating-an-account" data-level="1" class="fragment">Authenticating An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
