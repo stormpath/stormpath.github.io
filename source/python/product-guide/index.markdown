@@ -654,7 +654,7 @@ In the Stormpath REST API specifically, your `Tenant` resource can be thought of
 <a class="anchor" name="tenant-resource-class"></a>
 #### Resource Class
 
-    \stormpath\resource\tenant
+    \stormpath\resources\tenant
 
 <a class="anchor" name="tenant-resource-attributes"></a>
 #### Tenant Resource Attributes
@@ -845,14 +845,14 @@ Even the Stormpath Admin Console and API is represented as an `Application` (nam
 <a class="anchor" name="application"></a>
 ### Application Resource
 
-An individual `application` resource may be accessed via its Resource URI:
+An individual `application` resource may be accessed via its Resource Class:
 
-**Resource URI**
+**Resource Class**
 
-    /v1/applications/:applicationId
+    \stormpath\resources\application
 
 <a class="anchor" name="application-attributes"></a>
-**Resource Attributes**
+**Application Resource Attributes**
 
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
@@ -1497,12 +1497,12 @@ You can assign multiple account stores to an application, but only one is requir
 
 ### Account Store Mapping Resource
 
-An individual `accountStoreMapping` resource may be accessed via its Resource URI:
+An individual `accountStoreMapping` resource may be accessed via its Resource Class:
 
 <a class="anchor" name="account-store-mapping-url"></a>
-**Resource URI**
+**Resource Class**
 
-    /v1/accountStoreMappings/:accountStoreMappingId
+    \stormpath\resources\account_store_mapping
 
 <a class="anchor" name="account-store-mapping-resource-attributes"></a>
 **Resource Attributes**
@@ -1786,11 +1786,11 @@ Finally, note that accounts and groups in mirrored directories are automatically
 <a class="anchor" name="directory"></a>
 ### Directory Resource
 
-An individual `directory` resource may be accessed via its Resource URI:
+An individual `directory` resource may be accessed via its Resource Class:
 
-**Resource URI**
+**Resource Class**
 
-    /v1/directories/:directoryId
+    \stormpath\resources\directory
 
 <a class="anchor" name="directory-attributes"></a>
 **Resource Attributes**
@@ -2159,9 +2159,9 @@ You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts
 <a class="anchor" name="group"></a>
 ### Group Resource
 
-**Resource URI**
+**Resource Class**
 
-    /v1/groups/:groupId
+    \stormpath\resources\group
 
 **Resource Attributes**
 
@@ -2500,9 +2500,9 @@ A `Group Membership` resource represents the link between an [account](#accounts
 <a class="anchor" name="group-membership-resource"></a>
 ### Group Membership Resource
 
-**Resource URI**
+**Resource Class**
 
-    v1/groupMemberships/:groupMembershipId
+    \stormpath\resources\group_membership
 
 <a class="anchor" name="group-membership-resource-attributes"></a>
 **Resource Attributes**
@@ -2661,9 +2661,9 @@ You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accoun
 <a class="anchor" name="account"></a>
 ### Account Resource
 
-**Resource URI**
+**Resource Class**
 
-    /v1/accounts/:accountId
+    \stormpath\resources\account
 
 **Resource Attributes**
 
