@@ -42,13 +42,14 @@ By offloading all of this effort to Stormpath, a service with deep security root
 <a class="anchor" name="core"></a>
 ### Core Concepts
 
-Stormpath has five core concepts, and everything else in the Stormpath REST API exists to support them:
+Stormpath has six core concepts, and everything else in the Stormpath REST API exists to support them:
 
 * Applications
 * Directories
 * Groups
 * Accounts
 * Tenants
+* Account Stores
 
 These resources and their relationships are manageable by the REST API as described in this document, but you may also manage them via the [Stormpath Admin Console](https://api.stormpath.com) user interface.
 
@@ -58,25 +59,29 @@ An [Application](#applications) is a real-world software application that commun
 
 You can assign one or more Directories and/or Groups to an Application.  Accounts within assigned directories and groups may login to the application.
 
-**Directories**
+**Account Stores**
+
+An *Account Store* is a generic term for either a `Directory` or a `Group`. Directories and Groups are both are considered 'account stores' because they both contain, or 'store', Accounts.
+
+* **Directories**
 
 A [Directory](#directories) is a top-level storage containers of Accounts and Groups.  A Directory also manages security policies (like password strength) for the Accounts it contains.  Stormpath supports two types of Directories: natively hosted 'Cloud' directories that originate in Stormpath and 'Mirror' directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers.
 
 Directories can be used to cleanly manage segmented account populations - for example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.
 
-**Groups**
+* **Groups**
 
-A [Group](#groups) is a uniquely named collection of Accounts within a Directory.  Each Group within a Directory must have a unique name and may contain Accounts within their own Directory.  Groups are mostly used for security and access control, often called Role-Based Access Control.  For example, you might only show a particular user interface button if an Account is in the 'Administrators' Group.
+A [Group](#groups) is a uniquely named collection of Accounts within a Directory.  Each Group within a Directory must have a unique name and may contain Accounts within their own Directory.  Groups are mostly used for security and access control, often called Role-Based Access Control.
 
-It might be helpful to note that Stormpath does not have an explicit Role concept - you use Stormpath Groups as Roles for Role-Based Access Control.
+For example, you might only show a particular user interface button if an Account is in the 'Administrators' Group. It might be helpful to note that Stormpath does not have an explicit Role concept - you use Stormpath Groups as Roles for Role-Based Access Control.
 
 **Accounts**
 
-An [Account](#accounts) is a unique identity within a Directory, with a unique username and/or email address. An account can log in to applications using either the email address or username associated with it. Accounts can represent end-users, but they can also be used to represent services, platforms, or any "entity" that needs to connect to a Stormpath-powered service.
+An [Account](#accounts) is a unique identity within a Directory, with a unique username and/or email address. An account can log in to applications using either the email address or username associated with it. Accounts can represent people end-users, but they can also be used to represent services, machines, or any 'entity' that needs to login to a Stormpath-enabled application.
 
 **Tenants**
 
-Stormpath is a [multi-tenant](http://en.wikipedia.org/wiki/Multitenancy) software service. When you [sign up for Stormpath](https://api.stormpath.com/register), a private data 'space', called a `Tenant`, is created for you.  This private [tenant space](#tenants) contains all of the data you own, including your applications, directories, accounts and groups and more.  The `Tenant` concept is mostly 'behind the scenes' and you don't need to use it all that often, but sometimes it is necessary or useful to use directly.
+Stormpath is a [multi-tenant](http://en.wikipedia.org/wiki/Multitenancy) software service. When you [sign up for Stormpath](https://api.stormpath.com/register), a private data 'space', called a `Tenant`, is created for you.  This private [tenant space](#tenants) contains all of the data you own, including your applications, directories, accounts and groups and more.  The Tenant concept is mostly 'behind the scenes' and you don't need to use it all that often, but sometimes it is necessary or useful to use directly.
 
 ***
 
@@ -150,7 +155,7 @@ You could configure the Client with the following parameters:
 
 The client can be configured by passing the `id` and `secret` parameters to create the Client instance:
 
-    client = Client(id=foo, secret=bar)
+    client = Client(id='foo', secret='bar')
 
 <a class="anchor" name="api-key-configuration"></a>
 #### API Key Configuration
@@ -164,6 +169,20 @@ DO NOT specify your actual `apiKey.id` and `apiKey.secret` values in source code
 {% enddocs %}
 
 Only use this technique if the values are obtained at runtime using a configuration mechanism that is not hard-coded into source code or easily-visible configuration files.
+
+<a class="anchor" name="authentication-scheme-configuration"></a>
+#### Authentication Scheme Configuration
+
+You can choose one of two authentication schemes to authenticate with Stormpath:
+
+1. **Stormpath SAuthc1 Authentication**:  This is the recommended approach, and the default setting.  This approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath SAuthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.
+2. **Basic Authentication**: This is _only_ recommended when your application runs in an environment outside of your control, and that environment manipulates your application's request headers when requests are made.  Google App Engine is one known such environment.  However, Basic Authentication is not as secure as Stormpath's `SAuthc` algorithm, so only use this if you are forced to do so by your application runtime environement.
+
+When no authentication scheme is explicitly configured, `Sauthc1` is used by default.
+
+If you must change to basic authentication for these special environments, set the `scheme` property:
+
+    client = Client(id='foo', secret='bar', scheme='basic')
 
 <a class="anchor" name="high-level-overview"></a>
 ### High-level Overview
@@ -250,27 +269,6 @@ The previous lookup becomes:
 
 If the directory already exists in memory because the `DataStore` has previously loaded it, the directory is immediately returned. However, if the directory is not present, the directory `href` is used to return the directory properties (the immediate data loaded) automatically for you. This technique is known as *lazy loading* which allows you to traverse entire object graphs automatically without requiring constant knowledge of `href` URLs.
 
-<a class="anchor" name="error-handling"></a>
-### Error Handling
-
-Errors thrown from the server are translated to a [\stormpath\error\Error](https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/error.py). This applies to all requests to the Stormpath API endpoints.
-
-For example, when getting the current tenant from the client you can catch any error that the request might produce as following:
-
-    from stormpath.error import Error
-
-    try:
-        account = client.accounts.get(NONEXISTENT_STORMPATH_ACCOUNT)
-        account.username
-    except Error as re:
-        print('Message: ' + re.message)
-        print('HTTP Status: ' + str(re.status))
-        print('Developer Message: ' + re.developer_message)
-        print('More Information: ' + re.more_info)
-        print('Error Code: ' + str(re.code))
-
-***
-
 <a class="anchor" name="caching"></a>
 ### Caching
 
@@ -305,6 +303,41 @@ The cache options dictionary can have a complex structure if we want to fine-tun
 5. `tti` - Time To Interact. If this amount of time has passed after the resource was last accessed, it will be considered expired.
 6. `store_opts` - The store-specific options, if any. E.g. `RedisStore` requires a host and a port to be set because we need that information when accessing Redis, while `MemoryStore` requires no further options.
 
+<a class="anchor" name="errors"></a>
+### Errors
+
+REST API responses indicating an error or warning are represented by a proper response HTTP status code (403, 404, etc). Additionally, a response body is provided containing the following information:
+
+Attribute | Description | Type
+:----- | :----- | :----
+<a class="anchor" name="errors-status"></a>`status` | The corresponding HTTP status code. | Integer
+<a class="anchor" name="errors-code"></a>`code` | A [Stormpath-specific error code](http://docs.stormpath.com/errors) that can be used to obtain more information. | Integer
+<a class="anchor" name="errors-message"></a>`message` | A simple, easy to understand message that you can show directly to your application end-user. | String
+<a class="anchor" name="errors-developer-message"></a>`developer_message` | A clear, plain text explanation with technical details that might assist a developer calling the Stormpath API. | String
+`more_info` | A fully qualified URL that may be accessed to obtain more information about the error. | String
+
+#### Error Code Reference
+
+The [Stormpath Error Code Reference](http://docs.stormpath.com/errors) provides the list of all Stormpath-specific error codes and their meanings.
+
+<a class="anchor" name="error-handling"></a>
+#### Error Handling
+
+Errors thrown from the server are translated to a [\stormpath\error\Error](https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/error.py). This applies to all requests to the Stormpath API endpoints.
+
+For example, when getting the current tenant from the client you can catch any error that the request might produce as following:
+
+    from stormpath.error import Error
+
+    try:
+        account = client.accounts.get(NONEXISTENT_STORMPATH_ACCOUNT)
+        account.username
+    except Error as re:
+        print('Message: ' + re.message)
+        print('HTTP Status: ' + str(re.status))
+        print('Developer Message: ' + re.developer_message)
+        print('More Information: ' + re.more_info)
+        print('Error Code: ' + str(re.code))
 
 <a class="anchor" name="collections"></a>
 ### Collection Resources
@@ -335,9 +368,9 @@ If a Collection Resource represents a large enough number of resource instances,
 
 
 <a class="anchor" name="pagination-query-parameters"></a>
-#### Pagination Options
+#### Query Parameters
 
-There are two pagination options that may be specified to control pagination:
+There are two optional query parameters that may be specified to control pagination:
 
 - [offset](#collections-offset): The zero-based starting index in the entire collection of the first item to return. Default is <code>0</code>.
 - [limit](#collections-limit): The maximum number of collection items to return for a single request. Minimum value is <code>1</code>. Maximum value is <code>100</code>. Default is <code>25</code>.
@@ -494,9 +527,9 @@ For resources with a `status` attribute, status query values **must be the exact
 <a class="anchor" name="links-expansion"></a>
 ### Link Expansion
 
-When requesting a resource you might want the Stormpath API server to return not only that resource, but also one or more of its referenced resources. Link expansion allows you to retrieve related resources in a single request to the server instead of having to issue multiple separate requests.
+When requesting a resource you might want the Stormpath API server to return not only that resource, but also one or more of its linked resources. Link expansion allows you to retrieve related resources in a single request to the server instead of having to issue multiple separate requests.
 
-#### `expand` Query Parameter
+#### Expand Query Parameter
 
 For example, to retrieve an account including its parent directory information, instead of issuing two requests (one for the account and another for its directory) add an `expand` query parameter with a value of `directory` to the resource URI.
 
@@ -611,7 +644,7 @@ If you expand a Collection Resource and you do not specify an offset or limit, t
 
 Stormpath is a [multi-tenant](http://en.wikipedia.org/wiki/Multitenancy) software service. When you [sign up for Stormpath](https://api.stormpath.com/register), a private data 'space' is created for you.  This space is represented as a `Tenant` resource in the Stormpath REST API.
 
-It might help to think of a tenant as a Stormpath customer.  As a Stormpath tenant (customer), you own your `Tenant` resource and everything in it - applications, directories, accounts, groups, and so on.
+It might help to think of a `Tenant` as a Stormpath customer.  As a Stormpath Tenant (customer), you own your Tenant resource and everything in it - `Applications`, `Directories`, `Accounts`, `Groups`, and so on.
 
 In the Stormpath REST API specifically, your `Tenant` resource can be thought of as your global starting point.  You can access everything in your Tenant space by accessing your Tenant resource first and then interacting with its other referenced resources (applications collection, directories collection, etc).
 
@@ -621,7 +654,7 @@ In the Stormpath REST API specifically, your `Tenant` resource can be thought of
 <a class="anchor" name="tenant-resource-class"></a>
 #### Resource Class
 
-    \stormpath\resource\tenant
+    \stormpath\resources\tenant
 
 <a class="anchor" name="tenant-resource-attributes"></a>
 #### Tenant Resource Attributes
@@ -695,7 +728,7 @@ If you want to update one or more attribute of your `Tenant` resource, execute a
 -->
 
 <a class="anchor" name="tenant-applications"></a>
-### Applications
+### Tenant Applications
 
 A `Tenant` has one or more [Applications](#applications) registered with Stormpath.  Each registered application may use Stormpath to simplify and automate its user management and authentication needs.
 
@@ -803,23 +836,23 @@ Directory resources support the full suite of CRUD commands and other interactio
 <a class="anchor" name="applications"></a>
 ## Applications
 
-An application in Stormpath represents any real world piece of software that communicates with Stormpath to offload its user management and authentication needs.  The application can be anything that can make a REST API call - a web application that you are writing, a web server like Apache or Nginx, a Linux operating system, etc - basically anything that a user can login to.  A [tenant](#tenants) administrator can register one or more applications with Stormpath.
+An `Application` in Stormpath represents any real world piece of software that communicates with Stormpath to offload its user management and authentication needs.  The application can be anything that can make a REST API call - a web application that you are writing, a web server like Apache or Nginx, a Linux operating system, etc - basically anything that a user can login to.  A [tenant](#tenants) administrator can register one or more applications with Stormpath.
 
-You control who may login to an application by assigning (or 'mapping') one or more directories or groups (generically called [account stores](#account-store-mappings) to an application.  The accounts in these associated directories or groups (again, _account stores_) collectively form the application's user base. These accounts are considered the application's users and they can login to the application.  Therefore, you can control who may login to an application by managing which [account stores](#account-store-mappings) are assigned to the application.
+You control who may login to an application by assigning (or 'mapping') one or more `Directories` or `Groups` (generically called [account stores](#account-store-mappings) to an application.  The `Accounts` in these associated directories or groups (again, _account stores_) collectively form the application's user base. These accounts are considered the application's users and they can login to the application.  Therefore, you can control user population that may login to an application by managing which [account stores](#account-store-mappings) are assigned to the application.
 
-Even the Stormpath Admin Console and API is represented as an Application (named `Stormpath`), so you can control who has administrative access to your Stormpath [tenant](#tenants) by managing the `Stormpath` application's associated account stores.
+Even the Stormpath Admin Console and API is represented as an `Application` (named Stormpath), so you can control who has administrative access to your Stormpath [tenant](#tenants) by managing the Stormpath application's associated account stores.
 
 <a class="anchor" name="application"></a>
 ### Application Resource
 
-An individual `application` resource may be accessed via its Resource URI:
+An individual `application` resource may be accessed via its Resource Class:
 
-**Resource URI**
+**Resource Class**
 
-    /v1/applications/:applicationId
+    \stormpath\resources\application
 
 <a class="anchor" name="application-attributes"></a>
-**Resource Attributes**
+**Application Resource Attributes**
 
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
@@ -854,7 +887,7 @@ For Applications, you can:
 <a class="anchor" name="application-search"></a>
 ### Search for an Application
 
-When communicating with the Stormpath REST API, you might need to search for an application.
+When communicating with the Stormpath Python API, you might need to search for an application.
 
 For example, if you want to find an application named "My Application", you'll need to search the tenant for the "My Application" `application` resource:
 
@@ -869,7 +902,7 @@ If you know the name exactly, you can use an [attribute search](#search-attribut
 
 For an application to communicate with Stormpath, you must register it first with Stormpath.
 
-You register an application with Stormpath by creating a new `application` resource.  This is performed by submitting creation request on the `Application` collection class.  This will create a new `Application` instance within the caller's tenant.
+You register an application with Stormpath by creating a new `application` resource.  This is performed by submitting a creation request on the `Application` collection class.  This will create a new `Application` instance within the caller's tenant.
 
 When you submit creation request, at least the `name` attribute must be specified, and it must be unique compared to all other applications in your tenant.  The `description` and `status` attributes are optional.
 
@@ -900,9 +933,15 @@ Account store association however is mostly used for more complex applications. 
 <a class="anchor" name="application-create-with-directory"></a>
 #### Create an Application and Directory
 
-The above Create Application POST request assumes you will later assign [account stores](#account-store-mappings) to the application so accounts may log in to the application.  This means that, by default, no one can login to a newly created application, nor can the application create new accounts or new groups directly.  For this additional functionality, one or more account stores must be associated with the application.
+The above Create Application request assumes you will later assign [account stores](#account-store-mappings) to the application so accounts may log in to the application.  This means that, by default, no one can login to a newly created application, nor can the application create new accounts or new groups directly.  For this additional functionality, one or more account stores must be associated with the application.
 
 For many use cases, that is unnecessary work.  If you want to associate the Application with a new Directory automatically so you can start creating accounts and groups for the application immediately (without having to map other [account stores](#account-store-mappings), you can use the `create_directory` option.
+
+{% docs note %}
+Automatically creating a directory when creating an application *does not* make that `Directory` private or restrict usage to only that `Application`. The created directory is no different than any other directory. The `create_directory` option exists as a convenience to reduce the number of steps you would have had to execute otherwise.
+
+If you delete an application, you must manually delete any auto-created directory yourself.  There is no shortcut to delete an auto-created directory.  This is to ensure safety in case the directory might be used by other applications.
+{% enddocs %}
 
 ##### create_directory=True
 
@@ -938,12 +977,6 @@ this request will:
 3. Set the new Directory as the application's initial [account store](#account-store-mappings).
 4. Enable the new Directory as the application's [default account store](#application-defaultAccountStoreMapping), ensuring any new accounts created directly by the application are stored in the new Directory.
 5. Enable the new Directory as the application's [default group store](#application-defaultGroupStoreMapping), ensuring any new groups created directly by the application are stored in the new Directory.
-
-{% docs note %}
-Automatically creating a directory when creating an application *does not* make that Directory private or restrict usage to only that application. The created directory is no different than any other directory. The `create_directory` parameter exists as a convenience to reduce the number of steps you would have had to execute otherwise.
-
-If you delete an application, you must manually delete any auto-created directory yourself.  There is no shortcut to delete an auto-created directory.  This is to ensure safety in case the directory might be used by other applications.
-{% enddocs %}
 
 <a class="anchor" name="application-retrieve"></a>
 ### Retrieve an Application
@@ -1050,17 +1083,22 @@ You may search for applications as described in [Search Tenant Applications](#te
 <a class="anchor" name="application-accounts"></a>
 ### Application Accounts
 
-An application's account base is the collection of all [accounts](#accounts) that are accessible to that application.
+An application's `accounts` base is the collection of all accounts that are _accessible to_ that application.
 
-You define an application's account base by assigning one or more [directories](#directories) (or [groups](#groups) within directories) to that application; by association, **any accounts within assigned directories (or groups) may login to the application**.
+It might sound a little odd to phrase it that way (_accessible to_), but it makes sense when you realize that applications do not have _direct_ accounts of their own.  Accounts are 'owned' by [directories](#directories) and instead _made available to_ applications.
 
-In this way, applications do not have _direct_ accounts of their own (accounts are 'owned' by [directories](#directories)) - accounts are instead _made available to_ applications based on associations with directories or groups within directories.
+This means that an application's `accounts` collection is _virtual_.  This virtual collection is an aggregate 'view' of all accounts that are:
 
-This is a powerful feature within Stormpath that allows you to segment account populations and control how accounts may use one or more applications.  For example, you might have an "Employees" directory and a "Customers" directory, which are two very different account populations that may or may not have access to the same applications.
+1. in any directory [assigned to the application](#account-store-mappings)
+2. in any group directly [assigned to the application](#account-store-mappings)
 
-**The aggregate collection of all accounts across all assigned directories or groups is the application's effective account base.**
+This is a powerful and convenient feature: as you add or remove account stores from an application to control its user population, you automatically 'bring in' any of their accounts.  You can interact with the application's `accounts` collection, like [search for accounts](#application-accounts-search) or [add new accounts](#application-account-register), like you would a normal collection.
 
-However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application's needs.  This is a totally valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications. We'll cover directory and group associations for login more in-depth later.
+{% docs info %}
+Most application developers do not need to be aware that an application's `accounts` collection is virtual.  The most common case in Stormpath for simpler apps is to just [create an application with its own directory](#application-create-with-directory) for its own needs.  Used this way, the application's and the directory's accounts (and groups) are the same.
+
+But it is nice to know that you can customize the application's account population with other directories or groups in the future if you need to do so.
+{% enddocs %}
 
 **Application Accounts Collection Resource**
 
@@ -1070,16 +1108,17 @@ Applications additionally support the following account-specific functionality:
 
 * [Register A New Application Account](#application-account-register)
     * and optionally specify your own [account-specific custom data](#application-account-register-with-customData)
-* [Verify An Account's Email Address](#application-verify-email)
-* [Log In (Authenticate) an Account](#application-account-authc)
-* [Reset An Account's Password](#application-password-reset)
+* [Verify An Application Account's Email Address](#application-verify-email)
+* [Log In (Authenticate) an Application Account](#application-account-authc)
+    * and optionaly specify an [account store](#application-account-store-authc)
+* [Reset An Application Account's Password](#application-password-reset)
 * [List an Application's Accounts](#application-accounts-list)
 * [Search an Application's Accounts](#application-accounts-search)
 
 <a class="anchor" name="application-account-register"></a>
-#### Register a New Account
+#### Register a New Application Account
 
-If your application wants to register a new account, you create a new `account` resource on the application instance.
+If your application wants to register a new account, you create a new `account` resource on the application's `accounts` instance.
 
 Set the [account resource attributes](#account-resource) required and any additional ones you desire.
 
@@ -1094,13 +1133,14 @@ Set the [account resource attributes](#account-resource) required and any additi
 
 **How does this work?**
 
-As we [said previously](#application-accounts), an Application does not 'own' accounts of its own - it has access to accounts in one or more directories and the directories actually own the accounts.  So how are we able to create a new account based on only the application?
+As we [said previously](#application-accounts), an Application does not 'own' accounts of its own - it has access to accounts in one or more directories or groups and the directories actually own the accounts.  So how are we able to create a new account based on only the application?
 
-The `create` method is a convenience: when you create a new `account` resource, Stormpath will automatically route that creation request to a designated directory (or group) assigned to the Application.  The account is then persisted in that directory and then made immediately available to the application.
+The `create` method is a convenience: when you create a new `account` resource, Stormpath will automatically route that creation request to a [designated directory or group assigned to the Application](#application-defaultAccountStoreMapping).  The account is then persisted in that directory or group and then made immediately available to the application.
 
-For most applications that have only a single assigned directory, the account is persisted in that directory immediately - the application developer does not even really need to know that Stormpath automates this.
+For most applications that have only a single assigned _account store_ (again, a directory or group), the account is persisted in that account store immediately - the application developer does not even really need to know that Stormpath automates this.
 
-However, applications that map more than one directory or group to define their account base have the option of specifying _which_ of those mapped locations should receive newly created accounts.  You must choose a default [new account location](#account-store-mapping-default-account-store).
+However, applications that map more than one account store to define their account population have the option of specifying _which_ of those mapped account stores should receive newly created accounts.  You can choose a [_default_ account store](#application-defaultAccountStoreMapping).  If you do not choose one, the first one in the list of mapped account stores is the default location to store new accounts.  We'll talk about setting the default account store and managing an application's assigned account stores later in [Application Account Store Mappings](#application-account-store-mappings).
+
 
 <a class="anchor" name="application-account-register-with-customData"></a>
 ##### Register a New Application Account with your own Custom Data
@@ -1180,8 +1220,17 @@ If the login attempt fails, a `400 Bad Request` is returned with an [error paylo
         print(re.developer_message)  # Will output: "Invalid username or password."
         print(re.more_info)  # Will output: "mailto:support@stormpath.com"
 
+<a class="anchor" name="application-account-store-authc"></a>
+#### Specify an Account Store to authenticate with
+
+When you create an application account, in addition to Stormpath's account attributes, you may also specify an [account store](#account-store-mappings) instance
+
+**Example Request**
+
+    result = application.authenticate_account('jsmith@mailinator.com', 'Ephai9ti', account_store)
+
 <a class="anchor" name="application-password-reset"></a>
-#### Resetting An Account's Password
+#### Reset An Account's Password
 
 Stormpath has a comprehensive mechanism for secure password reset, as well.
 
@@ -1212,8 +1261,6 @@ Generating a `passwordResetToken` will inform Stormpath that you wish to initiat
 The application password reset tokens endpoint supports the password reset workflow for an account in the application's assigned [account stores](#account-store-mappings).
 
 Creating a new password reset token automatically sends a password reset email to the destination email address if that address corresponds to an account listed in the application [account stores](#account-store-mappings).
-
-A successful request sends a password reset email to the first discovered account associated with the corresponding application. The email recipient can then click a password reset URL in the email to reset their password in a web form.
 
 The `send_password_reset_email` method of an application instance must be called to send the email with the URL that includes the token:
 
@@ -1289,17 +1336,22 @@ Account CRUD and other behavior that is not application-specific is covered in t
 <a class="anchor" name="application-groups"></a>
 ### Application Groups
 
-An application's group base is the collection of all [groups](#groups) that are accessible to that application. This is an aggregate of all groups that are visible to the application, which will be an aggregate view of all the groups that belong to [directories](#directories) associated with that application.
+As we've seen with [application accounts](#application-accounts), applications themselves also do not have _direct_ groups of their own.  Like accounts, groups are 'owned' by [directories](#directories) and instead _made available to_ applications.
 
-You define an application's group base by assigning one or more [directories](#directories) to that application.
+This means an application's collection of groups is _virtual_.  This virtual collection is an aggregate 'view' of all groups that are:
 
-In this way, applications do not have _direct_ groups of their own (groups are 'owned' by [directories](#directories)) - groups are instead _made available to_ applications based on associations with directories.
+1. directly assigned to the application as an [account store](#account-store-mappings)
+2. in a directory that is assigned to the application as an [account store](#account-store-mappings)
 
-This is a powerful feature within Stormpath that allows you to segment account populations and control how accounts may use one or more applications.  For example, you might have an "Admin" group and a "User" group, which would enable very different functionality in your application when a user is associated with one group or the other.
+This is a powerful and convenient feature: as you add or remove account stores from an application to control its user population, you automatically 'bring in' any groups that may be assigned to your user accounts.  You can interact with this collection, like [search it](#application-groups-search) or [add groups to it](#application-group-register), like you would a normal group collection.
 
-**The aggregate collection of all group's across all assigned directories is the application's effective group base.**
+You can then reference these groups in the application's source code to check group membership and perform Role Based Access Control (RBAC).  For example, you might have an "Admin" group and a "User" group which would enable very different functionality in your application when a user account is associated with one group or the other.
 
-However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application's needs.  This is a totally valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications.
+{% docs info %}
+Most application developers do not need to be aware that an application's `groups` collection is virtual.  The most common case in Stormpath for simpler apps is to just [create an application with its own directory](#application-create-with-directory) for its own needs.  Used this way, the application's and the directory's accounts and groups are the same.
+
+But it is nice to know that you can customize the application's account population with other directories or groups in the future if you need to do so.
+{% enddocs %}
 
 **Application Groups Collection Resource **
 
@@ -1312,26 +1364,26 @@ Applications additionally support the following group-specific functionality:
 * [Search an Application's Groups](#application-groups-search)
 
 <a class="anchor" name="application-groups-register"></a>
-#### Register a New Group
+#### Register a New Application Group
 
-If your application wants to register a new group, you create a new `group` resource on the application instance.
+If your application wants to create a new group, set the [group resource attributes](#group) application’s `groups` anc call `create`.
 
-Set the [group resource attributes](#group) required and any additional ones you desire.
+**Example Request**
 
-    group = application.accounts.create({
+    group = application.groups.create({
         'name': 'My Group',
         'description': 'My Group Description'
     })
 
 **How does this work?**
 
-As we [said previously](#application-groups), an Application does not 'own' groups of its own - it has access to groups in one or more directories and the directories actually own the groups.  So how are we able to create a new group based on only the application?
+As we [mentioned above](#application-groups), an Application does not 'own' groups of its own - it has access to groups directly (or indirectly) assigned to it.  So how are we able to create a new group based on only the application?
 
-The `create` method is a convenience: when you create a new `group` resource, Stormpath will automatically route that creation request to a designated directory assigned to the Application.  The group is then persisted in that directory and then made immediately available to the application.
+The `v1/applications/:applicationId/groups` URI is a convenience: when you `POST` a new `group` resource, Stormpath will automatically route that creation request to a [designated directory assigned to the Application](#application-defaultGroupStoreMapping).  The group is then persisted in that directory and then made immediately available to the application.
 
-For most applications that have only a single assigned directory, the group is persisted in that directory immediately - the application developer does not even really need to know that Stormpath automates this.
+For most applications that have only a single assigned account store, the group is persisted in that account store immediately - the application developer does not even really need to know that Stormpath automates this.
 
-However, applications that map more than one directory to define their group base have the option of specifying _which_ of those mapped locations should receive newly created groups.  You must choose a default [new group location](#account-store-mapping-default-group-store).
+However, applications that are assigned more than one account store have the option of specifying _which_ of those mapped account stores should receive newly created groups.  You can choose a [_default_ group store](#application-defaultGroupStoreMapping).  If you do not choose one, the first one in the list of mapped account stores is the default location to store newly created groups.  We'll talk about setting the default group store and managing an application's assigned account stores later in [Application Account Store Mappings](#application-account-store-mappings).
 
 <a class="anchor" name="application-groups-create-with-customData"></a>
 ##### Create a New Application Group with your own Custom Data
@@ -1389,12 +1441,13 @@ Group CRUD and other behavior that is not application-specific is covered in the
 <a class="anchor" name="application-account-store-mappings"></a>
 ### Application Account Store Mappings
 
-An application's `accountStoreMappings` collection reflects all [groups](#groups) and [directories](#directories) that are assigned to that application for the purpose of providing accounts that may login to the application.  By managing these mappings, you can control which account populations may login to an application.  In this way, applications do not have _direct_ account stores of their own; account stores are instead _made available to_ applications based on associations with directories and groups.
+Stormpath uses the term _Account Store_ to generically refer to either a [group](#groups) or a [directory](#directories), since they both contain (store) accounts.
 
-This is a powerful feature within Stormpath that allows you to segment account populations and control how accounts may use one or more applications.  For example, the "Admin" user in an "Employees" directory vs. the "Admin" user in a "Customers" directory might require very different functionality in your application.
+An application's `accountStoreMappings` collection, then, reflects all [groups](#groups) and [directories](#directories) that are assigned to that application for the purpose of providing accounts that may login to the application.  This is a powerful feature in Stormpath that allows you to control which account populations may login to an application.
 
-However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application's needs.  This is a totally valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications.
+However, many applications do not need this feature.  The most common use case in Stormpath is to create an application and a single directory solely for the purpose of that application's needs.  This is a valid approach and a good idea when starting with Stormpath.  However, rest assured that you have the flexibility to control your account populations in convenient ways as you expand to use Stormpath for any of your other applications.
 
+You define and modify an application's account store mappings by creating, modifying or deleting [Account Store Mapping](#account-store-mappings) resources.
 You define an application's account store mappings by creating, modifying or deleting [Account Store Mapping](#account-store-mappings) resources
 
 **Application Account Store Mappings Collection Resource**
@@ -1419,10 +1472,10 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
 <a class="anchor" name="account-store-mappings"></a>
 ## Account Store Mappings
 
-_Account Store_ is a generic term for either a [Directory](#directories) or a [Group](#groups).  Directories and Groups are both considered "account stores" because they both contain, or 'store', Accounts. An _Account Store Mapping_, then, is a relationship between an Account Store and an Application.
+_Account Store_ is a generic term for either a [Directory](#directories) or a [Group](#groups).  Directories and Groups are both are considered "account stores" because they both contain, or 'store', `Accounts`. An _Account Store Mapping_, then, represents an Account Store mapped (assigned) to an `Application`.
 
 In Stormpath, you control who may login to an application by associating (or 'mapping') one or more account
-stores to an application.  All of the accounts in the application's assigned account stores form the application's
+stores to an application.  All of the accounts across all of an application's assigned account stores form the application's
 effective _user base_; those accounts may login to the application.  If no account stores are assigned to an application, no accounts will be able to login to the application.
 
 You control which account stores are assigned (mapped) to an application, and the order in which they are consulted during a login attempt, by manipulating an application's `AccountStoreMapping` resources.
@@ -1432,7 +1485,7 @@ You control which account stores are assigned (mapped) to an application, and th
 
 When an account tries to login to an application, the application's assigned account stores are consulted _in the order that they are assigned to the application_.  When a matching account is discovered in a mapped account store, it is used to verify the authentication attempt and all subsequent account stores are ignored.  In other words, accounts are matched for application login based on a 'first match wins' policy.
 
-Let's look at an example to illustrate this behavior.  Assume an application named Foo has been assigned (mapped) to two account stores, a 'Customers' directory and an 'Employees' directory, in that order.
+Let's look at an example to illustrate this behavior.  Assume that two account stores, a 'Customers' directory and an 'Employees' directory have been assigned (mapped) to a 'Foo' application, in that order.
 
 The following flow chart shows what happens when an account attempts to login to the Foo application:
 
@@ -1444,12 +1497,12 @@ You can assign multiple account stores to an application, but only one is requir
 
 ### Account Store Mapping Resource
 
-An individual `accountStoreMapping` resource may be accessed via its Resource URI:
+An individual `accountStoreMapping` resource may be accessed via its Resource Class:
 
 <a class="anchor" name="account-store-mapping-url"></a>
-**Resource URI**
+**Resource Class**
 
-    /v1/accountStoreMappings/:accountStoreMappingId
+    \stormpath\resources\account_store_mapping
 
 <a class="anchor" name="account-store-mapping-resource-attributes"></a>
 **Resource Attributes**
@@ -1527,7 +1580,7 @@ After you have created an account store mapping, you may retrieve its contents b
 
 If you don't have the account store mapping's `href`, you can find it in the [application's account store mappings list](#application-account-store-mappings-list).
 
-    href = 'https://api.stormpath.com/v1/accountStoreMappings/WpM9nyZ2TbayIfbRvLk9CO'
+    href = 'https://api.stormpath.com/v1/accountStoreMappings/7Ui2gpn9tV75y3TExAmPLe'
     account_store_mapping = client.account_store_mappings.get(href)
 
 
@@ -1603,15 +1656,15 @@ If the application's default account store is a:
 {% docs note %}
 Only one of an application's mapped account stores may be the default account store.
 
-In addition, setting an AccountStoreMapping's `is_default_account_store` value to `True` will automatically set the application's other AccountStoreMappings' `is_default_account_store` values to `False`. HOWEVER:
-
-Lastly, note that setting an AccountStoreMapping's `is_default_account_store` value to `False` **WILL NOT** automatically set another AccountStoreMapping's `is_default_account_store` to `True`.  You are responsible for explicitly setting `is_default_account_store` to `True` if you want the application to be able to create new accounts.
+In addition, setting an AccountStoreMapping's `is_default_account_store` value to `True` will automatically set the application's other AccountStoreMappings' `is_default_account_store` values to `False`. However, note that setting an AccountStoreMapping's `is_default_account_store` value to `False` **WILL NOT** automatically set another AccountStoreMapping's `is_default_account_store` to `True`.  You are responsible for explicitly setting `is_default_account_store` to `True` if you want the application to be able to create new accounts.
 {% enddocs %}
 
 {% docs warning %}
-If none of the application's AccountStoreMappings are designated as the default account store, the application _WILL NOT_ be able to create new accounts.
+If none of the application's AccountStoreMappings are designated as the default account store, the application _WILL NOT_ be able to create new accounts from the applications endpoint.  It is still possible to create accounts from the [accounts endpoint](#account-create).
+{% enddocs %}
 
-Also note that Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application's default account store.  Attempting to set `is_default_account_store` to `True` on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.
+{% docs warning %}
+Also note that Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application's default account store.  Attempting to set `isDefaultAccountStore` to `true` on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.
 {% enddocs %}
 
 <a class="anchor" name="account-store-mapping-default-group-store"></a>
@@ -1634,9 +1687,7 @@ Now, any time a new group is created from an application's groups `create` metho
 {% docs note %}
 Only one of an application's mapped account stores may be the default group store.
 
-Also, note that setting an AccountStoreMapping's `is_default_group_store` value to `True` will automatically set the application's other AccountStoreMappings' `is_default_group_store` values to `False`. HOWEVER:
-
-Lastly, setting an AccountStoreMapping's `is_default_group_store` value to `False` **WILL NOT** automatically set another AccountStoreMapping's `is_default_group_store` to `True`.  You are responsible for explicitly setting `is_default_group_store` to `True` if you want the application to be able to create new groups.
+Also, note that setting an AccountStoreMapping's `is_default_group_store` value to `True` will automatically set the application's other AccountStoreMappings' `is_default_group_store` values to `False`. However, setting an AccountStoreMapping's `is_default_group_store` value to `False` **WILL NOT** automatically set another AccountStoreMapping's `is_default_group_store` to `True`.  You are responsible for explicitly setting `is_default_group_store` to `True` if you want the application to be able to create new groups.
 {% enddocs %}
 
 {% docs warning %}
@@ -1645,7 +1696,7 @@ If no `AccountStoreMapping` is designated as the default group store, the applic
 
 Also, note that Stormpath does not currently support storing groups within groups.  Therefore `is_default_group_store` can only be set to `True` when the AccountStoreMapping's `accountStore` is a Directory.  Attempting to set `is_default_group_store` to `True` on an AccountStoreMapping that reflects a group will result in an error response.
 
-Lastly, note that mirrored directories are read-only; they cannot be set as an application's default group store. Attempting to set `is_default_group_store` to `true` on an AccountStoreMapping that reflects a mirrored directory will result in an error response.
+Lastly, note that mirrored directories are read-only; they cannot be set as an application's default group store. Attempting to set `is_default_group_store` to `True` on an AccountStoreMapping that reflects a mirrored directory will result in an error response.
 {% enddocs %}
 
 <a class="anchor" name="account-store-mapping-delete"></a>
@@ -1660,7 +1711,7 @@ Deleting an `accountStoreMapping` resource *does not* delete either the account 
 {% docs warning %}
 Deleting an account store mapping will remove the ability for accounts in the account store from authenticating with the application unless they are associated with an account store that is still mapped to the application. Be careful when removing mappings.
 
-Also, note that if no `AccountStoreMapping` is designated as the default group store, the application _WILL NOT_ be able to create new groups.
+Also, note that if no `AccountStoreMapping` is designated as the default account store, the application _WILL NOT_ be able to create new accounts.  Similarly, if there is no designated default group store, the application will not be able to create new groups.
 {% enddocs %}
 
 **Example Request**
@@ -1674,7 +1725,7 @@ For example, to delete the application-account_store association we created in t
 
 You can list an applications's mapped account stores by issuing a request to the application's `AccountStoreMappings` Collection Resource.
 
-The response is a paginated list of `AccountStoreMapping` resources.  You may use collection [pagination](#pagination) query parameters to customize the paginated response.
+The response is a paginated list of `accountStoreMapping` resources.  You may use collection [pagination](#pagination) query parameters to customize the paginated response.
 
 **Example Request**
 
@@ -1687,21 +1738,59 @@ The response is a paginated list of `AccountStoreMapping` resources.  You may us
 <a class="anchor" name="directories"></a>
 ## Directories
 
-A Directory is a top-level storage containers of Accounts and Groups. A Directory also manages security policies (like password strength) for the Accounts it contains. Stormpath supports two types of Directories:
+A `Directory` is a top-level storage containers of `Accounts` and `Groups`. A Directory also manages security policies (like password strength) for the Accounts it contains.
+
+Additionally:
+
+* All `Accounts` within a directory have a unique email address and/or username.
+* All `Groups` within a directory have a unique name.
+
+Stormpath supports two types of Directories:
 
 1. Natively hosted ‘Cloud’ directories that originate in Stormpath and
 2. ‘Mirror’ directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers.
 
-Directories can be used to cleanly manage segmented account populations.  For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.  You can [associate directories to applications](#account-store-mappings) (or groups within a directory) to allow its accounts to login to applications.
+{% docs info %}
+Directories are a more advanced feature of Stormpath.  If you have a single application or multiple applications that access the same accounts, you usually only need a single directory, and you do not need to be concerned with creating or managing multiple directories.
+
+If however, your application(s) needs to support login for external 3rd party accounts like those in LDAP or Active Directory, or you have more complex account segmentation needs, directories will be a powerful tool to manage your application(s) user base.
+{% enddocs %}
+
+Directories can be used to cleanly manage segmented account populations.  For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.  You can [associate directories to applications](#account-store-mappings) (or groups within a directory) to allow the directory's accounts to login to applications.
+
+You can add as many directories of each type as you require. Adding or deleting accounts, groups and group memberships in directories affects ALL applications to which the directories are mapped as [account stores](#account-store-mappings).
+
+<a class="anchor" name="directory-mirror"></a>
+#### Mirror Directories
+
+Mirror directories are a big benefit to Stormpath customers who need LDAP or Active Directory accounts to be able to securely login to public web applications _without breaking corporate firewall policies_. Here is how they work:
+
+* After creating an LDAP or AD Directory in Stormpath, you download a Stormpath Agent.  This is a simple standalone software application that you install behind the corporate firewall so it can communicate directly with the LDAP or AD server.
+* You configure the agent via LDAP filters to view only the accounts that you want to expose to your Stormpath-enabled applications.
+* The Agent will start synchronizing immediately, pushing this select data _outbound_ to Stormpath over a TLS (HTTPS) connection.
+* The synchronized accounts and groups appear in the Stormpath Directory.  The accounts will be able to login to any Stormpath-enabled application [that you assign](#account-store-mappings).
+* When the Agent detects local LDAP or AD changes, additions or deletions to these specific accounts or groups, it will automatically propagate those changes to Stormpath to be reflected by your Stormpath-enabled applications.
+
+LDAP or Active Directory are still the 'system of record' or source of identity 'truth' for these accounts and groups.  The big benefit is that your Stormpath-enabled applications still use the same convenient REST+JSON API - they do not need to know anything about LDAP, Active Directory or legacy connection protocols!
+
+{% docs tip %}
+The Stormpath Agent is **firewall friendly**: you do not need to open any inbound holes in your company firewall.  The only requirement is that the Agent be able to make an _outbound_ HTTPS connection to https://api.stormpath.com
+{% enddocs %}
+
+Finally, note that accounts and groups in mirrored directories are automatically deleted when:
+
+* The original object is deleted from the LDAP or AD directory service.
+* The original LDAP/AD object information no longer matches the account filter criteria configured for the agent.
+* The LDAP/AD directory is deleted.
 
 <a class="anchor" name="directory"></a>
 ### Directory Resource
 
-An individual `directory` resource may be accessed via its Resource URI:
+An individual `directory` resource may be accessed via its Resource Class:
 
-**Resource URI**
+**Resource Class**
 
-    /v1/directories/:directoryId
+    \stormpath\resources\directory
 
 <a class="anchor" name="directory-attributes"></a>
 **Resource Attributes**
@@ -1715,23 +1804,6 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="directory-resource-accounts"></a>`accounts` | The accounts owned by the directory. | CollectionResource | <span>--</span>
 <a class="anchor" name="directory-resource-groups"></a>`groups` | The groups owned by the directory. | CollectionResource | <span>--</span>
 <a class="anchor" name="directory-resource-tenant"></a>`tenant` | The owning tenant. | Resource | <span>--</span>
-
-Within Stormpath, there are two types of directories you can implement:
-
-* A <strong>Cloud</strong> directory, also known as Stormpath-managed directories, which are hosted by Stormpath and use the Stormpath data model to store account and group information. This is the default and most common type of directory in Stormpath.
-* A <strong>Mirrored</strong> directory, which is a Stormpath-hosted directory populated with data pushed from your existing LDAP/AD directory using a Stormpath synchronization agent. All user management is done on your existing LDAP/AD directory, but the cloud mirror can be accessed through the Stormpath APIs on your modern applications.
-
-    * Agent directories cannot be created using the API.
-    * You can specify various LDAP/AD object and attribute settings of the specific LDAP/AD server for accounts and groups.
-    * If the agent status is `Online`, but you are unable to see any data when browsing your LDAP/AD mapped directory, it is likely that your object and filters are configured incorrectly.
-
-You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped as [account stores](#account-store-mappings)</a>.
-
-LDAP/AD accounts and groups are automatically deleted when:
-
-* The backing object is deleted from the LDAP/AD directory service.
-* The backing LDAP/AD object information no longer matches the account filter criteria configured for the agent.
-* The LDAP/AD directory is deleted.
 
 For directories, you can:
 
@@ -1747,10 +1819,9 @@ For directories, you can:
 * [Delete a directory](#directory-delete)
 * [List directories](#directory-list)
 * [Search directories](#directory-search)
-* [Work with directories](#work-with-directories)
+* Work with directories:
     * [Enforce Account Password Restrictions](#directories-password-restrictions)
-    * [Register A New Account](#directories-account-reg)
-    * [Register A New Group](#directories-group-reg)
+    * [Register A New Account](#directories-reg)
     * [Verify An Account's Email Address](#directories-verify-email)
     * [Reset An Account's Password](#directories-password-reset)
 * [Work with directory groups](#directory-groups)
@@ -1763,9 +1834,9 @@ When communicating with the Stormpath REST API, you might need to reference a di
 
 There are multiple ways to find a directory `href` depending on what information you have available:
 
-* Retrieve a full list of directories from the tenant
+* [Search your tenant's `directories`](#tenant-directories-search)
 * Retrieve an application's `accountStoreMappings` and extract the directories iteratively
-* Retrieve an account and determine its directory
+* View an account's `directory` field.
 
 In all cases, the process is fundamentally the same. Consider the first case as example. In order to locate a directory's `href`, you'll need to first search the tenant for the specific directory using some information that you have available. If you want to find the `href` for a directory with the name "My Directory", you'll need to search the tenant for the directory object:
 
@@ -1783,24 +1854,17 @@ If you know the name exactly, you can use an [attribute search](#search-attribut
 <a class="anchor" name="directory-create"></a>
 ### Create a Directory
 
-To create a directory to store user accounts, you must know which type of directory service to use.
+{% docs info %}
+It is currently only possible to create a standard (non-mirrored) Directory via the REST API.  If you need to create a [mirror directory](#directory-mirror) for LDAP or Active Directory, you must use the [Stormpath Admin Console](/console/product-guide#create-a-mirrored-directory).
+{% enddocs %}
 
-You can create a:
-
-* Cloud directory, which is hosted by Stormpath and uses the Stormpath data model to store account and group information. This is the most common type of directory in Stormpath.
-
-**OR**
-
-* Mirrored directory, which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.
-
+<a class="anchor" name="directory-create-cloud"></a>
 <a class="anchor" name="create-a-cloud-directory"></a>
 #### Create a Cloud Directory
 
-To create a new `directory` resource within the caller tenant:
+You create a new directory resource within the caller tenant by calling the `create` method on its directories Collecion Resource.
 
-**Resource URI**
-
-    /v1/directories/:directoryId
+At least the `name` attribute must be specified, and it must be unique compared to all other directories in your tenant. The `description` and `status` attribute are optional.
 
 **Required Attribute**
 
@@ -1821,46 +1885,19 @@ To create a new `directory` resource within the caller tenant:
 <a class="anchor" name="directories-mirrored"></a>
 #### Create a Mirrored (LDAP/AD) Directory
 
-Mirrored directories, after initial configuration, are accessible through the Agents tab of the directory.
-
-To create an LDAP/AD mirrored directory, you must log in to the Stormpath Admin Console.
-
-For more information on setting up a Mirrored Directory and using the Stormpath Admin Console, refer to the [Stormpath Admin Console product guide](/console/product-guide#!CreateDir).
+It is currently only possible to create a standard (non-mirrored) Directory via the REST API.  If you need to create a [mirror directory](#directory-mirror) for LDAP or Active Directory, you must use the [Stormpath Admin Console](/console/product-guide#create-a-mirrored-directory).
 
 <a class="anchor" name="associate-directories-with-applications"></a>
 #### Associate Directories with Applications
 
-In order to associate a directory with an application, you'll need to create an [Account Store Mapping](#account-store-mappings). An account store mapping associates an account store (such as a directory or a group) with an application.
-
-You do this by calling the `create` method on the `AccountStoreMappings` resource class, and passing the `application` as the application to add the accountStore to and `directory` as the `accountStore`.
-
-    account_store_mapping = client.account_store_mappings.create({
-        'application': application,
-        'account_store': directory,
-        'list_index': 0,
-        'is_default_account_store': False,
-        'is_default_group_store': True
-    })
-
-Or, creating it from an application instance:
-
-    account_store_mapping = application.account_store_mappings.create({
-        'application': application,
-        'account_store': directory,
-        'list_index': 0,
-        'is_default_account_store': False,
-        'is_default_group_store': True
-    })
-
-
-You may use the response's `accountStoreMapping` instance to further interact with your new `AccountStoreMapping` resource.
-
-For more information on Account Store Mappings, refer to the [Account Store Mapping](#account-store-mappings) section.
+If you want to assign a directory to an application so the directory's accounts may login to the application, you will need to [create an AccountStoreMapping](#create-an-account-store-mapping).
 
 <a class="anchor" name="directory-retrieve"></a>
 ### Retrieve a Directory
 
 Retrieve a directory by calling the `get` method on the Client, and passing the directory `href` as the parameter.
+
+**Example Request**
 
     href = 'https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q'
     directory = client.directories.get(href)
@@ -1904,7 +1941,7 @@ Use the `save` method when you want to change one or more specific attributes of
 <a class="anchor" name="enable-or-disable-a-directory"></a>
 #### Enable Or Disable a Directory
 
-A directory has two statuses: enabled and disabled. An enabled directory allows the groups and accounts to log into any applications for which the directory is defined as an account store while a disabled directory does not.
+A directory's status can be either `enabled` or `disabled`. An `enabled` directory allows its accounts and groups to login to any [assigned](#account-store-mappings) application.  A `disabled` directory does not allow its accounts and groups to login to applications.
 
 To enable or disable a directory, use the `save` method to set the `status` to either `ENABLED` or `DISABLE`.
 
@@ -1916,18 +1953,18 @@ To enable or disable a directory, use the `save` method to set the `status` to e
 <a class="anchor" name="update-agent-configuration"></a>
 #### Update Agent Configuration
 
-A [Directory Agent](#directory-agent) is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath cloud directory. This is critical part of [a mirrored directory](#directories-mirrored).
+A [Directory Agent](#directory-agent) is a Stormpath software application installed on your corporate network to securely synchronize an on-premise directory, such as LDAP or Active Directory, into a Stormpath [mirror directory](#directory-mirrored).
 
 You can modify an agent configuration going through the "Directories" or "Agent" tabs on the Stormpath Admin Console. For more information on administering Mirrored Directory agents, refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!UpdateAgent).
 
 <a class="anchor" name="directory-delete"></a>
 ### Delete a Directory
 
-Deleting a directory completely erases the directory and all group and account data from Stormpath.
+{% docs warning %}
+Deleting a directory completely erases the directory and all of its accounts and groups from Stormpath.
+{% enddocs %}
 
-We recommend that you disable a directory rather than delete it, in case an associated application contains historical data associated with accounts in the directory.
-
-The Stormpath Administrators directory cannot be deleted.
+We recommend that you disable a directory instead of deleting it if you anticipate that you might use the directory again or if you want to retain its data for historical reference.
 
 To delete a directory:
 
@@ -1935,53 +1972,23 @@ To delete a directory:
 
     directory.delete()
 
-{% docs warning %}
-You cannot delete a directory that is still associated with an application and thus you cannot delete a directory that is marked as the "Default Account Store" or contains a "Default Group" doing so will result in a 400 Bad Request error
+{% docs info %}
+The `Stormpath Administrators` directory cannot be deleted.
 {% enddocs %}
-
-**Example Error Response**
-
-    {
-      status: 400
-      code: 400
-      message: "Directory is referenced by 1 Application(s) and may not be deleted until those applications are disassociated"
-      developerMessage: "Directory is referenced by 1 Application(s) and may not be deleted until those applications are disassociated"
-      moreInfo: "mailto:support@stormpath.com"
-    }
 
 <a class="anchor" name="directory-list"></a>
 ### List Directories
 
-To list directories:
-
-**Example Request**
-
-    directories = tenant.directories
-    for directory in directories:
-        print(directory.name)
+You may list your tenant's directories as described in [List Tenant Directories](#tenant-directories-list).
 
 <a class="anchor" name="directory-search"></a>
 ### Search Directories
 
-Directory attributes supported for search include:
-
-* name
-* description
-* status
-
-**Searchable Directory Collection Resources**
-
-Directory Collection Resource | Search Functionality
-:----- | :-----
-tenant.directories | A search across directories owned by the specified tenant.
+You may search for directories as described in [Search Tenant directories](#tenant-directories-search).
 
 <a class="anchor" name="work-with-directories"></a>
-### Work With Directories
-
-From a directory you can do things like enforce account password restrictions, register new accounts and groups, configure the account email verification workflow, configure the account password reset workflow, among other functionalities. Read below to find more information about these features.
-
-<a class="anchor" name="directories-password-restrictions"></a>
-### Enforce Account Password Restrictions
+<a class="anchor" name="directories-account-password-policy"></a><a class="anchor" name="directories-password-restrictions"></a>
+### Account Password Policy
 
 Directories can be configured to enforce specific restrictions on passwords for accounts associated with, such as requiring at least one or more non-alphanumeric characters.
 
@@ -1998,49 +2005,54 @@ With Stormpath's Cloud directories, you can configure custom restrictions for th
 
 By default, passwords must be of mixed case, include at least one number, and be between 8 and 100 characters in length.
 
-More information about configuring a cloud directory's password restrictions can be found in the [Stormpath Admin Console product guide](http://stormpath.com/docs/console/product-guide#!CreateDir).
-
 {% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
+It is not currently possible to configure a Directory's account password policy via the REST API.  You must use the [Stormpath Admin Console](https://api.stormpath.com) (Directories --> &lt;choose your directory&gt; --> Details tab).
 {% enddocs %}
 
-<a class="anchor" name="directories-account-reg"></a>
+{% docs note %}
+Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API.
+
+Additionally, the `Stormpath Administrator` directory's automated workflows cannot be altered.
+{% enddocs %}
+
+<a class="anchor" name="directories-reg"></a>
 ### Register A New Account
 
-This workflow allows you to create an account at a directory level.
+This workflow allows you to create an account at an application level rather than at a directory level. The application will populate the directory set as the default account store.
 
-This workflow relies on the `account` resource as a starting point. For more information refer to the [Create an Account](#account-create) section of this guide.
+This workflow relies on the `account` resource as a starting point. For more information on working with these workflows via REST after they have already been configured, refer to the [Working With Applications](#application-account-register) section of this guide.
+This workflow is disabled by default for accounts, but you can enable it easily in the Stormpath Admin Console UI. Refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation) for complete instructions.
 
-<a class="anchor" name="directories-group-reg"></a>
-### Register A New Group
+{% docs note %}
+Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
+{% enddocs %}
 
-This workflow allows you to create an group at a directory level.
+<a class="anchor" name="accounts-workflow"></a>
+### Work With Accounts
 
-This workflow relies on the `group` resource as a starting point. For more information refer to the [Create a Group](#group-create) section of this guide.
+If you want to learn about other account functionalities, such as [verify an email address](#account-verify-email), [log in (authenticate) an account](#accounts-authenticate) and [reset an account password](#accounts-reset), read the instructions below.
 
 <a class="anchor" name="directories-verify-email"></a>
 ### Verify An Account's Email Address
 
 This workflow allows you to send a welcome email to a newly registered account and optionally verify that they own the email addressed used during registration.
 
-The email verification workflow involves changes to an account at an application level, and as such, this workflow relies on the `account` resource as a starting point. For more information on working with these workflows via the Python SDK after they have already been configured, refer to the [Working With Accounts](#account-verify-email) section of this guide.
+The email verification workflow involves changes to an account at an application level, and as such, this workflow relies on the `account` resource as a starting point. For more information on working with these workflows via REST after they have already been configured, refer to the [Working With Accounts](#account-verify-email) section of this guide.
 This workflow is disabled by default for accounts, but you can enable it easily in the Stormpath Admin Console UI. Refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation) for complete instructions.
 
 {% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the Python SDK. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
+Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
 {% enddocs %}
 
 <a class="anchor" name="directories-password-reset"></a>
-### Resetting An Account's Password
-
 This is a self-service password reset workflow.  The account is sent an email with a secure link.  The person owning the account can click on the link and be shown a password reset form to reset their password.  This is strongly recommended to reduce support requests to your application team as well as to reduce your exposure to account passwords for added security.
 
-The password reset workflow involves changes to an account at an application level, and as such, this workflow relies on the `application` resource as a starting point. For more information on working with this workflow via the Python SDK after they have already been configured, refer to the [Working With Applications](#application-password-reset) section of this guide.
+The password reset workflow involves changes to an account at an application level, and as such, this workflow relies on the `application` resource as a starting point. For more information on working with this workflow via REST after they have already been configured, refer to the [Working With Applications](#application-password-reset) section of this guide.
 
 This workflow is disabled by default for accounts, but you can enable it easily in the Stormpath Admin Console UI. Refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation) for complete instructions.
 
 {% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the Python SDK. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
+Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
 {% enddocs %}
 
 <a class="anchor" name="directory-groups"></a>
@@ -2054,7 +2066,7 @@ The `Groups` Collections for a `Directory` Resource Collection Resource represen
 
 #### List Directory Groups
 
-You can list your directory's groups by sending a request to your directory's `groups` Collection Resource.  The response is a [paginated](#pagination) list of directory groups.
+You can list your directory's groups by sending a `GET` request to your directory's `groups` Collection Resource `href` URL.  The response is a [paginated](#pagination) list of directory groups.
 
 You may also use collection [pagination](#pagination) and [sort ordering](#sorting) query parameters to customize the paginated response.
 
@@ -2131,10 +2143,12 @@ In addition to the [search query parameters](#search), you may also use [paginat
 
 Account resources support the full suite of CRUD commands and other interactions. Please see the [Accounts section](#accounts) for more information.
 
+***
+
 <a class="anchor" name="groups"></a>
 ## Groups
 
-Groups are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with [role](#role).
+A `Group` is a collection of `Accounts` within a `Directory` that are often used for authorization and access control to the `Application`. In Stormpath, the term `Group` is synonymous with [role](#role).
 
 You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:
 
@@ -2145,9 +2159,9 @@ You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts
 <a class="anchor" name="group"></a>
 ### Group Resource
 
-**Resource URI**
+**Resource Class**
 
-    /v1/groups/:groupId
+    \stormpath\resources\group
 
 **Resource Attributes**
 
@@ -2225,12 +2239,24 @@ To create a new `group` resource instance in a specified directory which is acce
         'status': 'enabled'
     })
 
-This creates a new group in the directory.
+This creates a new group in the application group creation acceptable designated directory.
+
+If there is no acceptable designated directory account store, the REST API error code [5102](/errors#5102) is returned:
+
+    {
+      "status": 409,
+      "code": 5102,
+      "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
+      "developerMessage": "No account store assigned to this application has been configured as the default storage location for newly created groups.  To fix this problem: in the application's 'account stores' configuration, specify the account store that will be used to store newly created groups."
+      "moreInfo": "http://docs.stormpath.com/errors/5102"
+    }
 
 <a class="anchor" name="group-retrieve"></a>
 ### Retrieve a Group
 
 A request to the `get` method of the Client, returns a representation of a `group` resource that includes the resource attributes.
+
+**Example Request**
 
     href = 'https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ'
     group = client.groups.get(href)
@@ -2265,6 +2291,14 @@ Use the `save` method when you want to change one or more specific attributes of
 * [description](#group-resource-description)
 * [status](#group-resource-status)
 
+Here are some account update examples:
+
+* [Simple Update Group Example](#account-update-simple)
+* [Enable a Group](#group-enable)
+* [Disable a Group](#group-disable)
+* [Update a Group and its Custom Data simultaneously](#update-custom-data-embedded)
+
+<a class="anchor" name="group-update-simple"></a>
 **Example Request**
 
     group.description = "Sea Voyagers"
@@ -2324,11 +2358,13 @@ Please see the [custom data section](#custom-data) for more information and requ
 
 #### Application Groups
 
-The application groups is a [Collection Resource](#collections) representing all application-accessible groups. A group is accessible to an application if it, or its directory, is assigned to the application as an account store.
+The application groups endpoint is a [Collection Resource](#collections) representing all application-accessible groups. A group is accessible to an application if it, or its directory, is assigned to the application as an account store.
+
+**Application Groups Collection Resource**
 
     application.groups
 
-HTTP GET returns a paginated list of groups accessible to an application.
+The request returns a paginated list of groups accessible to an application.
 
 **Example request:**
 
@@ -2339,6 +2375,8 @@ HTTP GET returns a paginated list of groups accessible to an application.
 ##### Account Groups
 
 The account `groups` resource is a [Collection Resource](#collections) representing all account-associated groups. A group is associated with an account when an account has been assigned to that group as a member.
+
+**Accounts Groups Collection Resource**
 
     account.groups
 
@@ -2353,6 +2391,8 @@ The request returns a paginated list of groups for which an account is a member.
 ##### Directory Groups
 
 The directory `groups` resource is a [Collection Resource](#collections) representing all directory-associated groups. Groups are defined as a subset of members in a directory.
+
+**Directory Groups Collection Resource**
 
     directory.groups
 
@@ -2455,14 +2495,14 @@ A request returns a Collection Resource containing the group memberships to whic
 <a class="anchor" name="group-memberships"></a>
 ## Group Memberships
 
-A Group Membership resource represents the link between an [account](#accounts) and a [group](#groups). When an account is associated with a group or a group is associated with an account, a group membership is created.
+A `Group Membership` resource represents the link between an [account](#accounts) and a [group](#groups). When an `Account` is associated with a `Group` or a `Group` is associated with an `Account`, a group membership is created.
 
 <a class="anchor" name="group-membership-resource"></a>
 ### Group Membership Resource
 
-**Resource URI**
+**Resource Class**
 
-    v1/groupMemberships/:groupMembershipId
+    \stormpath\resources\group_membership
 
 <a class="anchor" name="group-membership-resource-attributes"></a>
 **Resource Attributes**
@@ -2486,12 +2526,12 @@ For group memberships, you can:
 
 When communicating with the Stormpath REST API, you might need to reference a group membership using the REST URL or `href`.
 
-There are multiple ways to find a group membership, depending on what information you have available:
+There are multiple ways to find a group membership's `href` depending on what information you have available:
 
 * Retrieve a full list of group memberships for an account
 * Retrieve a full list of group members (as group membership pairings) for a group
 
-In all cases, the process is fundamentally the same. Consider the first case as example. If you want to find a specific group mapping on a specific account, you'll need to search the group memberships for the associated `account` resource:
+In all cases, the process is fundamentally the same. Consider the first case as example. If you want to find a specific group mapping on a specific account,  you'll need to search the group memberships for the associated `account` resource:
 
 **Example Request**
 
@@ -2501,6 +2541,8 @@ In all cases, the process is fundamentally the same. Consider the first case as 
         if gms.group.name = 'Group Name':
             group_membership = gms
             break
+
+If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., "name=") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "My*") to narrow down the selection.
 
 <a class="anchor" name="group-membership-create"></a>
 ### Create a Group Membership
@@ -2559,6 +2601,8 @@ You can list group memberships by [account](#group-membership-by-account) or [gr
 
 The account `groupMemberships` resource is a [Collection Resource](#collections) representing all group memberships where the account is involved.
 
+**Account Group Memberships Resource**
+
     account.group_memberships
 
 A request returns a paginated list of the group memberships where the account is involved.
@@ -2574,6 +2618,8 @@ A request returns a paginated list of the group memberships where the account is
 #### List Account Memberships For A Group
 
 The group `accountMemberships` resource is a collections representing all group memberships where the group is involved.
+
+**Group Account Collection Resource**
 
     group.account_memberships
 
@@ -2593,18 +2639,18 @@ A request returns a paginated list of the group memberships where the group is i
 <a class="anchor" name="accounts"></a>
 ## Accounts
 
-An Account is a unique identity within a Directory, with a unique username and/or email address. An account can log in to applications using either the email address or username associated with it. Accounts can represent your end users (people), but they can also be used to represent services, daemons, processes, or any "entity" that needs to login to a Stormpath-enabled application.  Additionally, an account may only exist in a single directory and may be in multiple groups owned by that directory.  Accounts may not be assigned to groups within other directories.
+An `Account` is a unique identity within a `Directory`, with a unique username and/or email address. An `Account` can log in to an `Application` using either the email address or username associated with it. Accounts can represent your end users (people), but they can also be used to represent services, daemons, processes, or any "entity" that needs to login to a Stormpath-enabled application.  Additionally, an account may only exist in a single directory and may be in multiple groups owned by that directory.  Accounts may not be assigned to groups within other directories.
 
 It should be noted that the words 'User' and 'Account' usually mean the same thing, but there is a subtle difference that can be important at times:
 
-- An Account is a unique identity within a Directory.
+- An Account is a unique identity within a Directory. An account can exist in only a single directory but can be a part of multiple groups owned by that directory.
 - When an account is granted access to an application (by [mapping a Directory or Group](#account-store-mappings) that contains the account to the application), it becomes a 'User' of that application.
 
 Therefore an Account can be called a 'User' of an application if/when it can login to the application.
 
 #### LDAP/AD Accounts
 
-It should be noted that Accounts that originate in LDAP or Active Directory (AD) are mirrored in Stormpath, and they are special: you cannot create, update or delete Accounts that originate in an LDAP mirrored directory - you can only read them or use them for login.  This is because LDAP is the source of 'truth' and Stormpath does not (currently) have write-access to LDAP installations.
+It should be noted that Accounts that originate in LDAP or Active Directory (AD) are mirrored in Stormpath. You cannot create, update or delete Accounts that originate in an LDAP mirrored directory - you can only read them or use them for login.  This is because LDAP is the source of 'truth' and Stormpath does not (currently) have write-access to LDAP installations.
 
 You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:
 
@@ -2612,14 +2658,12 @@ You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accoun
 * The backing LDAP/AD object information no longer matches the account filter criteria configured for the agent.
 * The LDAP/AD directory is deleted.
 
-An account is a unique identity within a directory. An account can exist in only a single directory but can be a part of multiple groups owned by that directory.
-
 <a class="anchor" name="account"></a>
 ### Account Resource
 
-**Resource URI**
+**Resource Class**
 
-    /v1/accounts/:accountId
+    \stormpath\resources\account
 
 **Resource Attributes**
 
@@ -2678,10 +2722,20 @@ For example, if you want to find an account with the username "test" across an a
     for acc in accounts:
         account = acc
 
+If you know the username exactly, you can use an [attribute search](#search-attribute) (e.g., "username=") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "test*") to narrow down the selection.
+
 <a class="anchor" name="account-create"></a>
 ### Create an Account
 
-Through Stormpath's API and Admin Console, you can only create accounts for cloud, or Stormpath-managed, directories. For LDAP, the accounts must be created on the LDAP server and they will be mirrored to the Stormpath agent.
+Because Accounts are 'owned' by Directories, you create new accounts by adding them to a Directory.  You can add an account to a directory directly or you can indirectly add an account to a Directory by [registering an Account with an Application](#application-account-register)
+
+{% docs note %}
+You may only create accounts for Stormpath-manageed 'Cloud' directories.  Mirrored accounts from LDAP or Active Directory must be created in the LDAP/AD server and they will be reflected in Stormpath accordingly.  You cannot manually create accounts in a Mirrored directory.
+{% enddocs %}
+
+**Directory Accounts Resource**
+
+    directory.accounts
 
 **Required Attributes**
 
@@ -2707,6 +2761,31 @@ Most importantly, Stormpath does not persist nor relay plaintext passwords in an
 On the client side, then, you do not need to worry about salting or storing passwords at any point; you need only pass them to Stormpath for hashing, salting, and persisting with the appropriate SDK API call (e.g., [Create An Account](#account-create) or [Update An Account](#account-update)).
 {% enddocs %}
 
+Here are some account creation examples:
+
+* [Simple Create Account Example](#account-create-simple)
+* [Create an Account with Custom Data](#account-create-with-custom-data)
+* [Create an Account and suppress registration emails](#account-create-no-email)
+
+<a class="anchor" name="account-create-simple"></a>
+Simple creation request:
+
+**Example Request**
+
+    account = directory.accounts.create({
+        'given_name': 'John',
+        'surname': 'Smith',
+        'username': 'johnsmith',
+        'email': 'john.smith@example.com',
+        'password': '4P@$$w0rd!',
+    })
+
+<a class="anchor" name="account-create-with-custom-data"></a>
+#### Create Directory Account with Custom Data
+In addition to the Stormpath account attributes, you may also specify [your own custom data](#account-custom-data) by including a 'customData' JSON object.
+
+**Example Request**
+
     account = directory.accounts.create({
         'given_name': 'John',
         'surname': 'Smith',
@@ -2721,7 +2800,12 @@ On the client side, then, you do not need to worry about salting or storing pass
         }
     })
 
-**Example request suppressing the email messages:**
+Once created, you can further modify the custom data resource: delete it, add and remove attributes, etc as necessary.  See the [account custom data](#account-custom-data) section for more information on custom data and custom data restrictions.
+
+<a class="anchor" name="account-create-no-email"></a>
+#### Create Directory Account and Suppress Registration Email
+
+If you want to create a directory account and you want to override the directory's account registration workflow email settings, you can specify a `registration_workflow_enabled=False` option:
 
     account = directory.accounts.create({
         'given_name': 'John',
@@ -2734,7 +2818,7 @@ On the client side, then, you do not need to worry about salting or storing pass
 <a class="anchor" name="account-retrieve"></a>
 ### Retrieve an Account
 
-A request to the `get` method of the `Accounts` collections resource class, returns a representation of an `account` resource that includes the attributes.
+A call to the `get` method of the `accounts` collections resource class returns a representation of an `account` resource that includes the attributes.
 
     href = 'https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA'
     account = client.accounts.get(href)
@@ -2746,13 +2830,13 @@ When retrieving an account, you can also retrieve one or more of its referenced 
 
 The following `Account` attributes are expandable:
 
+* `custom_data`
 * `tenant`
 * `directory`
 * `groups`
 * `group_memberships`
-* `custom_data`
 
-Also, because some of these are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
+Also, because `groups` and `groupMemberships` are [Collection Resources](#collections) themselves, you can additionally control [pagination](#pagination) for either expanded collection.  For example:
 
     expansion = Expansion()
     expansion.add_property('tenant').add_property('directory')
@@ -2781,7 +2865,7 @@ Changes made to an account are immediately reflected in any application that has
 * [middle_name](#middleName)
 * [surname](#surname)
 * [status](#status)
-* [custom_data](#custom-data)
+* [custom_data](#account-resource-custom-data)
 
 {% docs note %}
 The password in the request is being sent to Stormpath as plain text. This is one of the reasons why Stormpath only allows requests via HTTPS. Stormpath implements the latest password hashing and cryptographic best-practices that are automatically upgraded over time so the developer does not have to worry about this. Stormpath can only do this for the developer if Stormpath receives the plaintext password so we can hash it using these techniques.
@@ -2793,25 +2877,27 @@ Most importantly, Stormpath does not persist nor relay plaintext passwords in an
 On the client side, then, you do not need to worry about salting or storing passwords at any point; you need only pass them to Stormpath for hashing, salting, and persisting with the appropriate HTTPS API call (e.g., [Create An Account](#account-create) or [Update An Account](#account-update)).
 {% enddocs %}
 
-<a class="anchor" name="UpdateAccountName"></a>
-**Example Update Request**
+Here are some account update examples:
+
+* [Simple Update Account Example](#account-update-simple)
+* [Create an Account and suppress registration emails](#account-create-no-email)
+* [Update an Account's password directly](#ChangeAccountPassword)
+* [Update an Account and its Custom Data simultaneously](#update-custom-data-embedded)
+
+<a class="anchor" name="UpdateAccountName"></a><a class="anchor" name="account-update-simple"></a>
+**Example Request to Update the Name**
 
     account.username = "jlpicard"
     account.given_name = "Jean-Luc"
     account.surname = "Picard"
     account.save()
 
-If the account is part of a directory containing groups, you can associate the account with a group.
-
-<a class="anchor" name="AddAccountGroup"></a>
-**Example Request to Add an Account to a Group**
-
-    account.add_group(group)
-
 <a class="anchor" name="ChangeAccountPassword"></a>
+#### Update an Account's Password Directly
+
 **Example Request to Change an Account Password**
 
-    account.password = "L9%hw4c5q"
+    account.password = "ooS3ohr8"
     account.save()
 
 <a class="anchor" name="account-add-group"></a>
@@ -2821,11 +2907,7 @@ If the account is part of a directory containing groups, you can associate the a
 
 To assign an account to a group:
 
-**Example Request**
-
     account.add_group(group)
-
-Both the account and the group must exist and contain a valid `href` property.
 
 <a class="anchor" name="account-remove-group"></a>
 #### Remove an Account from a Group
@@ -2839,7 +2921,7 @@ If the account is the member of a group within a directory, you can remove the a
 <a class="anchor" name="account-enable"></a>
 #### Enable or Disable an Account
 
-Accounts have a "status" which defines its state in the systems: enabled and disabled. An enabled account can be successfully authenticated if it is assigned to an active account store in an application while a disabled account cannot.
+Accounts have an "status" which defines its state in the systems: enabled and disabled. An enabled account can be successfully authenticated if it is assigned to an active account store in an application while a disabled account cannot.
 
 {% docs note %}
 Enabling and disabling accounts for mirrored (LDAP) directories is not available in Stormpath. You manage mirrored (LDAP) accounts on the primary server installation.
@@ -2876,40 +2958,11 @@ Please see the [custom data section](#custom-data) for more information and requ
 <a class="anchor" name="accounts-list"></a>
 ### List Accounts
 
-Using the API, you can view [all accounts of an application](#accounts-application-accounts-list), [all members of a group](#accounts-application-group-members), or [all accounts/members of a directory](#accounts-application-directory-accounts).
+The `accounts` resource is a [Collection Resource](#collections) that represents all accounts associated with their parent.  There are different endpoints that can list their associated accounts. Using the API, you can access:
 
-An application's `accounts` is a [Collection Resource](#collections) that represents all accounts that can log in to the application.
-
-    application.accounts
-
-<a class="anchor" name="accounts-application-accounts-list"></a>
-#### List Application Accounts
-
-A request returns a paginated list of accounts within a specified application.
-
-Example request:
-
-    accounts = application.accounts
-    for acc in accounts:
-        print(acc.given_name + acc.surname)
-
-<a class="anchor" name="accounts-application-group-members"></a>
-#### List Group Members
-
-**Example Request**
-
-    accounts = group.accounts
-    for acc in accounts:
-        print(acc.given_name + acc.surname)
-
-<a class="anchor" name="accounts-application-directory-accounts"></a>
-#### List Directory Accounts
-
-**Example Request From a Directory**
-
-    accounts = directory.accounts
-    for acc in accounts:
-        print(acc.given_name + acc.surname)
+ + [All accounts of an application](#application-accounts-list)
+ + [All members of a group](#group-accounts)
+ + [All accounts/members of a directory](#directory-accounts)
 
 ### Search Accounts
 
@@ -2929,11 +2982,6 @@ Account Collection Resource | Search Functionality
 directory.accounts | A search across accounts in the specified directory.
 application.accounts | A search across accounts that are users of the specified application.
 group.accounts | A search across accounts in the specified group.
-
-<a class="anchor" name="accounts-workflow"></a>
-### Work With Accounts
-
-If you want to learn about other account functionalities, such as [verify an email address](#account-verify-email), [log in (authenticate) an account](#accounts-authenticate) and [reset an account password](#accounts-reset), read the instructions below.
 
 <a class="anchor" name="account-verify-email"></a>
 ### Verify An Email Address
@@ -3045,12 +3093,12 @@ For more information on working with applications and authentication, refer to t
 
 This is a self-service password reset workflow.  The account is sent an email with a secure link.  The person owning the account can click on the link and be shown a password reset form to reset their password.  This is strongly recommended to reduce support requests to your application team as well as to reduce your exposure to account passwords for added security.
 
-The password reset workflow involves changes to an account at an application level, and as such, this workflow relies on the `application` resource as a starting point. For more information on working with this workflow via the Python SDK after they have already been configured, refer to the [Working With Applications](#application-password-reset) section of this guide.
+The password reset workflow involves changes to an account at an application level, and as such, this workflow relies on the `application` resource as a starting point. For more information on working with this workflow via REST after they have already been configured, refer to the [Working With Applications](#application-password-reset) section of this guide.
 
 This workflow is disabled by default for accounts, but you can enable it easily in the Stormpath Admin Console UI. Refer to the [Stormpath Admin Console product guide](https://stormpath.com/docs/console/product-guide#!ManageWorkflowAutomation) for complete instructions.
 
 {% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the Python SDK. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
+Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
 {% enddocs %}
 
 <a class="anchor" name="account-groups"></a>
@@ -3058,7 +3106,7 @@ Workflows are only available on cloud directories and only configurable using th
 
 The account's `groups` resource is a [Collection Resource](#collections) which represents all groups where a specific account is a member.
 
-**Resource URI**
+**Resource**
 
     account.groups
 
@@ -3186,6 +3234,8 @@ Retrieving an account or group’s custom data is managed by accessing the `cust
 
         print(account.custom_data["rank"])
 
+A common way to retrieve an account or group's custom data is to use [link expansion](#links-expansion) and retrieve the custom data at the same time as when you retrieve an account or group.
+
 ### Update Custom Data
 
 You may update an account or group's custom data, in one of two ways:
@@ -3245,6 +3295,7 @@ You may also delete an individual custom data field by calling the `del` method 
 The `custom_data` field isn't actually deleted on Stormpath until the `save` method is called. You should consider that in situations where you rely that your local resource object is in sync with Stormpath.
 {% enddocs %}
 
+<a class="anchor" name="administration"></a>
 ## Administering Stormpath
 
 For more information about administering Stormpath using the Admin Console, please refer to the [Admin Console Product Guide](http://stormpath.com/docs/console/product-guide).
