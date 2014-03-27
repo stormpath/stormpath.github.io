@@ -1152,8 +1152,7 @@ At the time you create the request, it is likely that you may know the account s
 **Example Request**
 	
 	AccountStore accountStore = anAccountStoreMapping.getAccountStore();
-	UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("usernameOrEmail", "password");
-	authenticationRequest.setAccountStore(accountStore);
+	UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("usernameOrEmail", "password", accountStore);
     AuthenticationResult result = application.authenticateAccount(authenticationRequest);
 
 <a class="anchor" name="application-password-reset"></a>
