@@ -1460,7 +1460,7 @@ Let's look at an example to illustrate this behavior. Assume that two account st
 
 The following flow chart shows what happens when an account attempts to login to the Foo application:
 
-<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Account Stores Diagram" title="Account Stores Diagram" width="650" height="500">
+<img src="/images/docs/LoginAttemptFlow.png" alt="Account Stores Diagram" title="Account Stores Diagram" width="650" height="500">
 
 As you can see, Stormpath tries to find the account in the 'Customers' directory first because it has a higher _priority_ than the 'Employees' directory.  If not found, the 'Employees' directory is tried next as it has a lower priority.
 

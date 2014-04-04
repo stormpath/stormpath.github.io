@@ -5125,6 +5125,408 @@ This request would remove the `favoriteColor` field entirely from the customData
 
 ***
 
+<a class="anchor" name="integration-google"></a>
+## Integrating with Google
+
+Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codea (or access tokens) to return an `Account` for a given code. 
+
+The steps to enable this functionality into your application include:
+
++ [Create a Google Directory](#creating-a-google-directory)
++ Create an `Account Store Mapping` between a Google Directory and your `Application`
++ [Accessing Accounts with Google Authorization Codes or an Access Tokens](#accessing-accounts-with-google-authorization-codes-or-an-access-tokens)
+
+Google Directories follow behavior similar to [mirror directories](#directory-mirror), but have a `Provider` resource that contains information regarding the Google application that the directory is configured for.
+
+### Google Provider Resource
+
+A `provider` resource holds specific information needed for working with a Google Directory.  It is important to understand the format of the provider resource when creating and updating a Google Directory.
+
+A provider resource can be obtained by accessing the directory's provider with an HTTP `GET` as follows:
+
+Example Request
+
+    GET https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider
+
+Example Response
+
+    {
+        "clientId": "501417", 
+        "clientSecret": "4913953281ec6bb109", 
+        "redirectUri": "https://myapp.com/google/authentication"
+        "createdAt": "2014-03-31T21:01:34.631Z", 
+        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", 
+        "modifiedAt": "2014-03-31T21:01:34.643Z", 
+        "providerId": "google"
+    }
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`clientId` | The App ID for your Google application | String | --
+`clientSecret` | The App Secret for your Google application | String | --
+`redirectUri` | The redirection Uri for your Google application | String | -- 
+`providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'google'
+
+In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
+
++ `href` : The fully qualified location of the custom data resource
++ `createdAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
++ `modifiedAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
+
+### Creating a Google Directory
+
+Creating a Google Directory requires that you gather some information beforehand from Google's Developer Console regarding your application.  
+
++ Client ID
++ Client Secret
++ Redirect URI
+
+Creating a Google Directory is very similar to [creating a directory](#create-a-directory) within Stormpath by making a HTTP `POST` request to the `/v1/directories` endpoint.  For a Google Directory to be configured correctly, you must specify the correct `Provider` information. 
+
+**Example Request**
+
+    POST https://api.stormpath.com/v1/directories?expand=provider
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "name" : "my-google-directory",
+      "description" : "A Google directory",
+      "provider": {
+        "providerId": "google"
+        "clientId":"857385-m8vk0fn2r7jmjo.apps.googleusercontent.com",
+        "clientSecret":"ehs7_-bA7OWQSQ4",
+        "redirectUri":"https://myapplication.com/authenticate"
+      }
+    }
+
+**Example Response**
+
+    HTTP/1.1 201 Created
+    Location: https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+        "accounts": {
+            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/accounts"
+        }, 
+        "description": "A Google directory", 
+        "groups": {
+            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/groups"
+        }, 
+        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q", 
+        "name": "my-google-directory", 
+        "provider": {
+            "clientId": "857385-m8vk0fn2r7jmjo.apps.googleusercontent.com", 
+            "clientSecret": "ehs7_-bA7OWQSQ4", 
+            "createdAt": "2014-03-31T23:47:05.576Z", 
+            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", 
+            "modifiedAt": "2014-03-31T23:47:05.592Z", 
+            "providerId": "google", 
+            "redirectUri": "https://myapplication.com/authenticate"
+        }, 
+        "status": "ENABLED", 
+        "tenant": {
+            "href": "https://api.stormpath.com/v1/tenants/bckhcGMXQDujIXpbCDRb2Q"
+        }
+    }
+
+After the Google Directory has been created, it needs to be [mapped with an application as an account store](#application-account-store-mappings). The Google Directory cannot be a default account store or a default group store.  Once the directory is mapped as an account store for an application, you are ready to access `Accounts` with Google Authorization Codes.
+
+### Accessing Accounts with Google Authorization Codes or an Access Tokens
+
+To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google's OAuth 2.0 protocol and the user's consent for your application's permissions.
+
+Once the Authorization Code is gathered, you can get or create the `Account` by HTTP `POST`ing to the `Application` accounts collection and specifying the `providerData` JSON object.  The `providerData` JSON object specifies the type of provider and the authorization code as follows:
+
+    {
+      "providerId": "google",
+      "code": "%ACCESS_CODE_FROM_GOOGLE%"
+    }
+
+The following is how you use `providerData` to get an `Account` for a given authorization code:
+
+**Example Request**
+
+    POST https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu/accounts
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "providerId": "google",
+      "code": "4/2Dz0r7r9oNBE9dFD-_JUb.suCu7uj8TEnp6UAPm0"
+    }
+
+**Example Response**
+
+    HTTP/1.1 201 Created
+    Location: https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+        "customData": {
+            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/customData"
+        },
+        "directory": {
+            "href": "https://api.stormpath.com/v1/directories/U0HJ7YcCeMpRfMcRT8ph"
+        },
+        "email": "testuser@gmail.com",
+        "emailVerificationToken": null,
+        "fullName": "Test User",
+        "givenName": "Test",
+        "groupMemberships": {
+            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/groupMemberships"
+        },
+        "groups": {
+            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/groups"
+        },
+        "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9",
+        "middleName": null,
+        "providerData": {
+            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData"
+        },
+        "status": "ENABLED",
+        "surname": "User",
+        "tenant": {
+            "href": "https://api.stormpath.com/v1/tenants/GPpLzIzYkOO68I9i4dx"
+        },
+        "username": "testuser"
+    }
+
+{% docs note %}
+The HTTP Status code when accessing an account based on a Google Authorization Code will denote if the account was created (201) or if it already existed in the Google Directory (200)
+{% enddocs %}
+
+{% docs note %}
+To [expand](#link-expansion) the `providerData` to get the Access Token for the Account in one HTTP request, add `expand=providerData` to the URL query parameters.
+{% enddocs %}
+
+Once an `Account` is retreived, Stormpath maps common fields for the Google User to the  Account.  The access token and the refresh token for any additional calls in the `providerData` resource and can be retreived by:
+
+    GET https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData
+
+The returned `providerData` will include:
+
+    {
+      "accessToken": "y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4", 
+      "createdAt": "2014-04-01T17:00:09.154Z", 
+      "href": "https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData", 
+      "modifiedAt": "2014-04-01T17:00:09.189Z", 
+      "providerId": "google", 
+      "refreshToken": "1/qQTS638g3ArE4U02FoiXL1yIh-OiPmhc"
+    }
+
+{% docs note %}
+The `accessToken` can also be passed as a field for the `providerData` to access the account once it is retrieved
+    POST https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu/accounts
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "providerId": "google",
+      "accessToken":"y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4"
+    }
+
+{% enddocs %}
+
+{% docs note %}
+The `refreshToken` will only be present if your application asked for offline access.  Review Google's documentation for more information regarding OAuth offline access.
+{% enddocs %}
+
+***
+
+<a class="anchor" name="integration-facebook"></a>
+## Integrating with Facebook
+
+Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code. 
+
+The steps to enable this functionality into your application include:
+
++ [Create a Facebook Directory](#creating-a-facebook-directory)
++ Create an `Account Store Mapping` between a Google Directory and your `Application`
++ [Accessing Accounts with Facebook User Access Tokens](#accessing-accounts-with-facebook-user-access-tokens)
+
+Facebook Directories follow behavior similar to [mirror directories](#directory-mirror), but have a `Provider` resource that contains information regarding the Google application that the directory is configured for.
+
+### Facebook Provider Resource
+
+A `provider` resource holds specific information needed for working with a Facebook Directory.  It is important to understand the format of the provider resource when creating and updating a Facebook Directory.
+
+A provider resource can be obtained by accessing the directory's provider with an HTTP `GET` as follows:
+
+Example Request
+
+    GET https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider
+
+Example Response
+
+    {
+        "clientId": "501417", 
+        "clientSecret": "4913953281ec6bb109", 
+        "redirectUri": "https://myapp.com/google/authentication"
+        "createdAt": "2014-03-31T21:01:34.631Z", 
+        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", 
+        "modifiedAt": "2014-03-31T21:01:34.643Z", 
+        "providerId": "facebook"
+    }
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`clientId` | The App ID for your Google application | String | --
+`clientSecret` | The App Secret for your Google application | String | -- 
+`providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'facebook'
+
+In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
+
++ `href` : The fully qualified location of the custom data resource
++ `createdAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
++ `modifiedAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
+
+### Creating a Facebook Directory
+
+Creating a Facebook Directory requires that you gather some information beforehand from Facebook's Developer Console regarding your application.  
+
++ Client ID
++ Client Secret
+
+Creating a Facebook Directory is very similar to [creating a directory](#create-a-directory) within Stormpath by making a HTTP `POST` request to the `/v1/directories` endpoint.  For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information. 
+
+**Example Request**
+
+    POST https://api.stormpath.com/v1/directories
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "name" : "my-facebook-directory",
+      "description" : "A Facebook directory",
+      "provider": {
+        "providerId": "facebook"
+        "clientId":"857385m8vk0fn2r7jmjo",
+        "clientSecret":"ehs7bA7OWQSQ4"
+      }
+    }
+
+**Example Response**
+
+    HTTP/1.1 201 Created
+    Location: https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+        "accounts": {
+            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/accounts"
+        }, 
+        "description": "A Facebook directory", 
+        "groups": {
+            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/groups"
+        }, 
+        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q", 
+        "name": "my-google-directory", 
+        "provider": {
+            "clientId": "857385m8vk0fn2r7jmjo", 
+            "clientSecret": "ehs7bA7OWQSQ4", 
+            "createdAt": "2014-03-31T23:47:05.576Z", 
+            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", 
+            "modifiedAt": "2014-03-31T23:47:05.592Z", 
+            "providerId": "facebook"
+        }, 
+        "status": "ENABLED", 
+        "tenant": {
+            "href": "https://api.stormpath.com/v1/tenants/bckhcGMXQDujIXpbCDRb2Q"
+        }
+    }
+
+After the Facebook Directory has been created, it needs to be [mapped with an application as an account store](#application-account-store-mappings). The Facebook Directory cannot be a default account store or a default group store.  Once the directory is mapped to an account store for an application, you are ready to access `Accounts` with Facebook User Access Tokens.
+
+### Accessing Accounts with Facebook User Access Tokens
+
+To access or create an account in an already created Facebook Directory, it is required to gather the `User Access Token` on behalf of the user.  This usually requires leveraging Facebook's javascript library and the user's consent for your application's permissions.
+
+{% docs note %}
+It is required that your Facebook application request for the `email` permission from Facebook. If the access token does not grant `email` permissions, you will not be able to get an `Account` with an access token.
+{% enddocs %}
+
+Once the `User Access Token` is gathered, you can get or create the `Account` HTTP `POST`ing to the `Application` accounts collection and specifying the `providerData` JSON object.  The `providerData` JSON object specifies the type of provider and the authorization code as follows:
+
+    {
+      "providerId": "facebook",
+      "accessToken": "%ACCESS_TOKEN_FROM_FACEBOOK%"
+    }
+
+The following is how you use `providerData` to get an `Account` for a given `User Access Token`:
+
+**Example Request**
+
+    POST https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu/accounts
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "providerId": "facebook",
+      "accessToken": "CAAHUbqIB55EH1MmLxJJLGRPXVknFt0aA36spMcFQXIzTdsHUZD"
+    }
+
+**Example Response**
+
+    HTTP/1.1 201 Created
+    Location: https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+        "customData": {
+            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/customData"
+        },
+        "directory": {
+            "href": "https://api.stormpath.com/v1/directories/U0HJ7YcCeMpRfMcRT8ph"
+        },
+        "email": "testuser@gmail.com",
+        "emailVerificationToken": null,
+        "fullName": "Test User",
+        "givenName": "Test",
+        "groupMemberships": {
+            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/groupMemberships"
+        },
+        "groups": {
+            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/groups"
+        },
+        "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9",
+        "middleName": null,
+        "providerData": {
+            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData"
+        },
+        "status": "ENABLED",
+        "surname": "User",
+        "tenant": {
+            "href": "https://api.stormpath.com/v1/tenants/GPpLzIzYkOO68I9i4dx"
+        },
+        "username": "testuser"
+    }
+
+{% docs note %}
+The HTTP Status code when accessing an account based on a Facebook User Access Token will denote if the account was created (201) or if it already existed in Stormpath (200)
+{% enddocs %}
+
+{% docs note %}
+To [expand](#link-expansion) the `providerData` to get the Access Token for the Account in one HTTP request, add `expand=providerData` to the URL query parameters.
+{% enddocs %}
+
+Once an `Account` is retreived, Stormpath maps common fields for the Facebook User to the  Account.  The access token for any additional calls in the `providerData` resource and can be retreived by:
+
+    GET https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData
+
+The returned `providerData` will include:
+
+    {
+      "accessToken": "y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4", 
+      "createdAt": "2014-04-01T17:00:09.154Z", 
+      "href": "https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData", 
+      "modifiedAt": "2014-04-01T17:00:09.189Z", 
+      "providerId": "facebook"
+    }
+
+
+***
+
 <a class="anchor" name="administration"></a>
 ## Administering Stormpath
 
