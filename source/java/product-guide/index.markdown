@@ -135,7 +135,7 @@ There are different ways to create a client instance to interact with your resou
 	...
 
 	String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
-	ApiKey apiKey = ApiKeys.builder().setApiKeyFileLocation(path).build();
+	ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
 	Client client = Clients.builder().setApiKey(apiKey).build();
 
 This is heavily recommended if you have access to the file system.
@@ -151,9 +151,9 @@ You can even identify the names of the properties to use as the API key id and s
 You could configure the Client by creating a client instance using the following `ApiKeyBuilder` and `ClientBuilder` instances:
 
 	ApiKey apiKey = ApiKeys.builder()
-			.setApiKeyFileLocation(apiKeyFileLocation)
-            .setApiKeyIdPropertyName(foo)
-            .setApiKeySecretPropertyName(bar)
+			.setFileLocation(apiKeyFileLocation)
+            .setIdPropertyName(foo)
+            .setSecretPropertyName(bar)
             .build();
     
     Client client = Clients.builder()
@@ -169,7 +169,7 @@ The client can be configured by setting a `Properties` instance using `ClientBui
     properties.setProperty("apiKey.id", "APIKEYID");
     properties.setProperty("apiKey.secret", "APIKEYSECRET");
 
-	ApiKey apiKey = ApiKeys.builder().setApiKeyProperties(properties).build();
+	ApiKey apiKey = ApiKeys.builder().setProperties(properties).build();
     Client client = Clients.builder().setApiKey(apiKey).build();
 
 Working with different property names (explained in the previous config instructions) also work with this scenario.
@@ -179,7 +179,7 @@ Working with different property names (explained in the previous config instruct
 
 Another way to create a client is by creating the `ApiKey` instance with the API credentials and passing this instance to create the client instance:
 
-	ApiKey apiKey = ApiKeys.builder().setApiKey("apiKeyId", "apiKeySecret");
+	ApiKey apiKey = ApiKeys.builder().setId("apiKeyId").setSecret("apiKeySecret").build();
 	Client client = Clients.builder().setApiKey(apiKey).build();
 
 {% docs warning %}
@@ -209,10 +209,10 @@ If you must change to basic authentication for these special environments, set t
 
     String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
     Client client = Clients.builder()
-    	.setApiKey(
-    		ApiKeys.builder()
-	    	.setApiKeyFileLocation(path)
-    	    .build())
+    	.setApiKey(ApiKeys.builder()
+	    	.setFileLocation(path)
+    	    .build()
+    	)
         .setAuthenticationScheme(AuthenticationScheme.BASIC) //Basic Authentication
         .build();
 
