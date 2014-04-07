@@ -5253,8 +5253,10 @@ The following is how you use `providerData` to get an `Account` for a given auth
     Content-Type: application/json;charset=UTF-8
 
     {
-      "providerId": "google",
-      "code": "4/2Dz0r7r9oNBE9dFD-_JUb.suCu7uj8TEnp6UAPm0"
+      providerData: { 
+        "providerId": "google",
+        "code": "4/2Dz0r7r9oNBE9dFD-_JUb.suCu7uj8TEnp6UAPm0"
+      }
     }
 
 **Example Response**
@@ -5322,8 +5324,10 @@ The `accessToken` can also be passed as a field for the `providerData` to access
     Content-Type: application/json;charset=UTF-8
 
     {
-      "providerId": "google",
-      "accessToken":"y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4"
+      providerData: {
+        "providerId": "google",
+        "accessToken":"y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4"
+      }
     }
 
 {% enddocs %}
@@ -5462,8 +5466,10 @@ The following is how you use `providerData` to get an `Account` for a given `Use
     Content-Type: application/json;charset=UTF-8
 
     {
-      "providerId": "facebook",
-      "accessToken": "CAAHUbqIB55EH1MmLxJJLGRPXVknFt0aA36spMcFQXIzTdsHUZD"
+      providerData: {
+        "providerId": "facebook",
+        "accessToken": "CAAHUbqIB55EH1MmLxJJLGRPXVknFt0aA36spMcFQXIzTdsHUZD"
+      }
     }
 
 **Example Response**
