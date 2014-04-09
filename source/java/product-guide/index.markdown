@@ -129,13 +129,13 @@ The client can also have static properties configured if the user prefers to use
 <a class="anchor" name="preferred-config"></a>
 #### Preferred Configuration
 
-There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure `apiKey.properties` file, where the ClientBuilder implementation is being used:
+There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure `apiKey.properties` file, where a ClientBuilder instance is being used:
 
 	import com.stormpath.sdk.client.*;
 	...
 
 	String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
-	Client client = new ClientBuilder().setApiKeyFileLocation(path).build();
+	Client client = Clients.builder().setApiKeyFileLocation(path).build();
 
 
 This is heavily recommended if you have access to the file system.
@@ -148,9 +148,9 @@ You can even identify the names of the properties to use as the API key id and s
     String foo = "APIKEYID";
     String bar = "APIKEYSECRET";
 
-You could configure the Client by creating a client instance using the `ClientBuilder` implementation:
+You could configure the Client by creating a client instance using a `ClientBuilder` instance:
 
-    ClientBuilder builder = new ClientBuilder();
+    ClientBuilder builder = Clients.builder();
     Client client = builder.setApiKeyFileLocation(apiKeyFileLocation).
                 setApiKeyIdPropertyName(foo).
                 setApiKeySecretPropertyName(bar).
@@ -159,13 +159,13 @@ You could configure the Client by creating a client instance using the `ClientBu
 <a class="anchor" name="api-key-properties-string"></a>
 #### API Key Properties
 
-The client can be configured by setting a `Properties` instance using the `ClientBuilder` implementation:
+The client can be configured by setting a `Properties` instance using a `ClientBuilder` instance:
 
     Properties properties = new Properties();
     properties.setProperty("apiKey.id", "APIKEYID");
     properties.setProperty("apiKey.secret", "APIKEYSECRET");
 
-    Client client = new ClientBuilder().setApiKeyProperties(properties).build();
+    Client client = Clients.builder().setApiKeyProperties(properties).build();
 
 Working with different property names (explained in the previous config instructions) also work with this scenario.
 
@@ -175,7 +175,7 @@ Working with different property names (explained in the previous config instruct
 Another way to create a client is by creating an `ApiKey` instance with the API credentials and passing this instance to create the client instance:
 
 	ApiKey apiKey = new DefaultApiKey("apiKeyId", "apiKeySecret");
-	Client client = new Client(apiKey);
+	Client client = Clients.builder().setApiKey(apiKey).build();
 
 {% docs warning %}
 DO NOT specify your actual `apiKey.id` and `apiKey.secret` values in source code! They are secure values associated with a specific person. You should never expose these values to other people, not even other co-workers.
