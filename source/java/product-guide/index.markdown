@@ -3030,6 +3030,16 @@ In addition to the [search query parameters](#search), you may also use [paginat
     	System.out.println(group.getName());
     }
 
+
+<a class="anchor" name="check-account-member-of-group"></a>
+#### Check if an Account is Member of a Group
+
+The account resource provides the `isMemberOfGroup` operation. This operation returns `true` if the account belongs to a group whose name or href is (case insensitive) equal to the specified `String` value. For example:
+
+	String groupName = "Foo Group";
+	account.isMemberOfGroup(groupName);
+	
+
 <a class="anchor" name="working-with-account-groups"></a>
 #### Working With Account Groups
 
