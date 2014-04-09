@@ -129,14 +129,14 @@ The client can also have static properties configured if the user prefers to use
 <a class="anchor" name="preferred-config"></a>
 #### Preferred Configuration
 
-There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure `apiKey.properties` file, where a ClientBuilder instance is being used:
+There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure `apiKey.properties` file, where a `ClientBuilder` instance receives the ApiKey built using the `ApiKeyBuilder`:
 
 	import com.stormpath.sdk.client.*;
 	...
 
 	String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
-	Client client = Clients.builder().setApiKeyFileLocation(path).build();
-
+	ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
+	Client client = Clients.builder().setApiKey(apiKey).build();
 
 This is heavily recommended if you have access to the file system.
 
@@ -148,33 +148,38 @@ You can even identify the names of the properties to use as the API key id and s
     String foo = "APIKEYID";
     String bar = "APIKEYSECRET";
 
-You could configure the Client by creating a client instance using a `ClientBuilder` instance:
+You could configure the Client by creating a client instance using the following `ApiKeyBuilder` and `ClientBuilder` instances:
 
-    ClientBuilder builder = Clients.builder();
-    Client client = builder.setApiKeyFileLocation(apiKeyFileLocation).
-                setApiKeyIdPropertyName(foo).
-                setApiKeySecretPropertyName(bar).
-                build();               
+	ApiKey apiKey = ApiKeys.builder()
+			.setFileLocation(apiKeyFileLocation)
+            .setIdPropertyName(foo)
+            .setSecretPropertyName(bar)
+            .build();
+    
+    Client client = Clients.builder()
+    		.setApiKey(apiKey)
+            .build();               
 
 <a class="anchor" name="api-key-properties-string"></a>
 #### API Key Properties
 
-The client can be configured by setting a `Properties` instance using a `ClientBuilder` instance:
+The client can be configured by setting a `Properties` instance using `ClientBuilder` and an `ApiKeyBuilder` instance:
 
     Properties properties = new Properties();
     properties.setProperty("apiKey.id", "APIKEYID");
     properties.setProperty("apiKey.secret", "APIKEYSECRET");
 
-    Client client = Clients.builder().setApiKeyProperties(properties).build();
+	ApiKey apiKey = ApiKeys.builder().setProperties(properties).build();
+    Client client = Clients.builder().setApiKey(apiKey).build();
 
 Working with different property names (explained in the previous config instructions) also work with this scenario.
 
 <a class="anchor" name="api-key-configuration"></a>
 #### API Key Configuration
 
-Another way to create a client is by creating an `ApiKey` instance with the API credentials and passing this instance to create the client instance:
+Another way to create a client is by creating the `ApiKey` instance with the API credentials and passing this instance to create the client instance:
 
-	ApiKey apiKey = new DefaultApiKey("apiKeyId", "apiKeySecret");
+	ApiKey apiKey = ApiKeys.builder().setId("apiKeyId").setSecret("apiKeySecret").build();
 	Client client = Clients.builder().setApiKey(apiKey).build();
 
 {% docs warning %}
@@ -202,11 +207,14 @@ When no authentication scheme is explicitly configured, `Sauthc1` is used by def
 
 If you must change to basic authentication for these special environments, set the `authenticationScheme` property:
 
-	String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
-	Client client = new ClientBuilder()
-						.setApiKeyFileLocation(path)
-						.setAuthenticationScheme(AuthenticationScheme.BASIC) //Basic Authentication
-						.build();
+    String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
+    Client client = Clients.builder()
+    	.setApiKey(ApiKeys.builder()
+	    	.setFileLocation(path)
+    	    .build()
+    	)
+        .setAuthenticationScheme(AuthenticationScheme.BASIC) //Basic Authentication
+        .build();
 
 <a class="anchor" name="high-level-overview"></a>
 ### High-level Overview
