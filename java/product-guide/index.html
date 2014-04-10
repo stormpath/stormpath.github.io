@@ -496,13 +496,14 @@
 
 <h4>Preferred Configuration</h4>
 
-<p>There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure <code>apiKey.properties</code> file, where the ClientBuilder implementation is being used:</p>
+<p>There are different ways to create a client instance to interact with your resources. The preferred mechanism is by reading a secure <code>apiKey.properties</code> file, where a <code>ClientBuilder</code> instance receives the ApiKey built using the <code>ApiKeyBuilder</code>:</p>
 
 <pre><code>import com.stormpath.sdk.client.*;
 ...
 
 String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
-Client client = new ClientBuilder().setApiKeyFileLocation(path).build();
+ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
+Client client = Clients.builder().setApiKey(apiKey).build();
 </code></pre>
 
 <p>This is heavily recommended if you have access to the file system.</p>
@@ -517,26 +518,31 @@ Client client = new ClientBuilder().setApiKeyFileLocation(path).build();
 String bar = "APIKEYSECRET";
 </code></pre>
 
-<p>You could configure the Client by creating a client instance using the <code>ClientBuilder</code> implementation:</p>
+<p>You could configure the Client by creating a client instance using the following <code>ApiKeyBuilder</code> and <code>ClientBuilder</code> instances:</p>
 
-<pre><code>ClientBuilder builder = new ClientBuilder();
-Client client = builder.setApiKeyFileLocation(apiKeyFileLocation).
-            setApiKeyIdPropertyName(foo).
-            setApiKeySecretPropertyName(bar).
-            build();               
+<pre><code>ApiKey apiKey = ApiKeys.builder()
+        .setFileLocation(apiKeyFileLocation)
+        .setIdPropertyName(foo)
+        .setSecretPropertyName(bar)
+        .build();
+
+Client client = Clients.builder()
+        .setApiKey(apiKey)
+        .build();               
 </code></pre>
 
 <p><a class="anchor" name="api-key-properties-string"></a></p>
 
 <h4>API Key Properties</h4>
 
-<p>The client can be configured by setting a <code>Properties</code> instance using the <code>ClientBuilder</code> implementation:</p>
+<p>The client can be configured by setting a <code>Properties</code> instance using <code>ClientBuilder</code> and an <code>ApiKeyBuilder</code> instance:</p>
 
 <pre><code>Properties properties = new Properties();
 properties.setProperty("apiKey.id", "APIKEYID");
 properties.setProperty("apiKey.secret", "APIKEYSECRET");
 
-Client client = new ClientBuilder().setApiKeyProperties(properties).build();
+ApiKey apiKey = ApiKeys.builder().setProperties(properties).build();
+Client client = Clients.builder().setApiKey(apiKey).build();
 </code></pre>
 
 <p>Working with different property names (explained in the previous config instructions) also work with this scenario.</p>
@@ -545,10 +551,10 @@ Client client = new ClientBuilder().setApiKeyProperties(properties).build();
 
 <h4>API Key Configuration</h4>
 
-<p>Another way to create a client is by creating an <code>ApiKey</code> instance with the API credentials and passing this instance to create the client instance:</p>
+<p>Another way to create a client is by creating the <code>ApiKey</code> instance with the API credentials and passing this instance to create the client instance:</p>
 
-<pre><code>ApiKey apiKey = new DefaultApiKey("apiKeyId", "apiKeySecret");
-Client client = new Client(apiKey);
+<pre><code>ApiKey apiKey = ApiKeys.builder().setId("apiKeyId").setSecret("apiKeySecret").build();
+Client client = Clients.builder().setApiKey(apiKey).build();
 </code></pre>
 
 <div class='docs-warning'><p>DO NOT specify your actual <code>apiKey.id</code> and <code>apiKey.secret</code> values in source code! They are secure values associated with a specific person. You should never expose these values to other people, not even other co-workers.</p>
@@ -580,10 +586,13 @@ Client client = new Client(apiKey);
 <p>If you must change to basic authentication for these special environments, set the <code>authenticationScheme</code> property:</p>
 
 <pre><code>String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
-Client client = new ClientBuilder()
-                    .setApiKeyFileLocation(path)
-                    .setAuthenticationScheme(AuthenticationScheme.BASIC) //Basic Authentication
-                    .build();
+Client client = Clients.builder()
+    .setApiKey(ApiKeys.builder()
+        .setFileLocation(path)
+        .build()
+    )
+    .setAuthenticationScheme(AuthenticationScheme.BASIC) //Basic Authentication
+    .build();
 </code></pre>
 
 <p><a class="anchor" name="high-level-overview"></a></p>
@@ -1018,7 +1027,7 @@ AccountList accounts = application.getAccounts(criteria);
 
 <p>For example, it would not be possible to return an account with its directory expanded and also the directory&rsquo;s groups expanded as well. Link expansion is currently only possible one level &lsquo;deep&rsquo;.</p>
 
-<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#x73;&#117;&#112;&#112;&#111;&#x72;&#116;&#x40;&#x73;&#x74;&#111;&#x72;&#109;&#x70;&#x61;&#x74;&#x68;&#46;&#x63;&#111;&#x6d;">&#x73;&#x75;&#112;&#x70;&#111;&#x72;&#x74;&#x40;&#115;&#x74;&#111;&#114;&#109;&#112;&#97;&#x74;&#104;&#46;&#99;&#111;&#109;</a> and submit a feature request.</p>
+<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#115;&#117;&#x70;&#x70;&#x6f;&#x72;&#116;&#x40;&#x73;&#x74;&#x6f;&#114;&#x6d;&#x70;&#97;&#x74;&#104;&#x2e;&#99;&#111;&#x6d;">&#x73;&#117;&#x70;&#x70;&#x6f;&#x72;&#x74;&#64;&#x73;&#x74;&#111;&#114;&#109;&#112;&#x61;&#116;&#104;&#x2e;&#x63;&#111;&#109;</a> and submit a feature request.</p>
 
 <h4>Expanding Collection Resources</h4>
 
@@ -1137,7 +1146,7 @@ AccountList accounts = application.getAccounts(criteria);
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
 
-<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#109;&#97;&#x69;&#x6c;&#116;&#x6f;&#x3a;&#x73;&#x75;&#112;&#112;&#111;&#114;&#x74;&#x40;&#x73;&#116;&#111;&#x72;&#x6d;&#112;&#x61;&#x74;&#104;&#46;&#99;&#x6f;&#109;">&#x73;&#x75;&#112;&#x70;&#x6f;&#x72;&#116;&#x40;&#115;&#x74;&#111;&#x72;&#x6d;&#112;&#97;&#116;&#x68;&#x2e;&#x63;&#x6f;&#x6d;</a> and request it.</p>
+<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#x6f;&#58;&#x73;&#117;&#112;&#112;&#111;&#x72;&#116;&#x40;&#x73;&#x74;&#x6f;&#114;&#109;&#112;&#97;&#116;&#104;&#46;&#99;&#111;&#x6d;">&#x73;&#117;&#x70;&#112;&#x6f;&#114;&#x74;&#64;&#115;&#116;&#x6f;&#114;&#109;&#x70;&#97;&#x74;&#x68;&#x2e;&#99;&#111;&#109;</a> and request it.</p>
 
 <p><a class="anchor" name="tenant-retrieve"></a></p>
 
@@ -1810,12 +1819,11 @@ This workflow is disabled by default for accounts, but you can enable it easily 
 
 <h4>Log In (Authenticate) an Account</h4>
 
-<p>You may authenticate an account by calling the <code>authenticate</code> method of an application instance:</p>
+<p>You may authenticate an account by calling the <code>authenticateAccount</code> method of an application instance:</p>
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>UsernamePasswordRequest authenticationRequest = 
-                            new UsernamePasswordRequest("usernameOrEmail", "password");
+<pre><code>UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("usernameOrEmail", "password");
 AuthenticationResult result = application.authenticateAccount(authenticationRequest);
 </code></pre>
 
@@ -1829,8 +1837,7 @@ AuthenticationResult result = application.authenticateAccount(authenticationRequ
 <p><strong>Example Login Attempt Failure Handling</strong></p>
 
 <pre><code>try {
-    UsernamePasswordRequest authenticationRequest = 
-                            new UsernamePasswordRequest("johnsmith", "badPassword");
+    UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("johnsmith", "badPassword");
     application.authenticateAccount(authenticationRequest);
 } catch (ResourceException ex) {
     System.out.println(ex.getStatus()); // Will output: 400
@@ -1839,6 +1846,19 @@ AuthenticationResult result = application.authenticateAccount(authenticationRequ
     System.out.println(ex.getDeveloperMessage()); // Will output: "Invalid username or password."
     System.out.println(ex.getMoreInfo()); // Will output: "mailto:support@stormpath.com"
 }
+</code></pre>
+
+<h4>Log In (Authenticate) an Account with Specific AccountStore</h4>
+
+<p>When you submit an authentication request to Stormpath, instead of executing the default login logic that cycles through account stores to find an account match, you can specify the <code>AccountStore</code> where the login attempt will be issued to.</p>
+
+<p>At the time you create the request, it is likely that you may know the account store where the account resides, therefore you can target it directly. This will speed up the authentication attempt (especially if you have a very large number of account stores).</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>AccountStore accountStore = anAccountStoreMapping.getAccountStore();
+UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("usernameOrEmail", "password", accountStore);
+AuthenticationResult result = application.authenticateAccount(authenticationRequest);
 </code></pre>
 
 <p><a class="anchor" name="application-password-reset"></a></p>
@@ -4322,6 +4342,16 @@ GroupList groups = account.getGroups(criteria);
 for(Group group : groups) {
     System.out.println(group.getName());
 }
+</code></pre>
+
+<p><a class="anchor" name="check-account-member-of-group"></a></p>
+
+<h4>Check if an Account is Member of a Group</h4>
+
+<p>The account resource provides the <code>isMemberOfGroup</code> operation. This operation returns <code>true</code> if the account belongs to a group whose name or href is (case insensitive) equal to the specified <code>String</code> value. For example:</p>
+
+<pre><code>String groupName = "Foo Group";
+account.isMemberOfGroup(groupName);
 </code></pre>
 
 <p><a class="anchor" name="working-with-account-groups"></a></p>
