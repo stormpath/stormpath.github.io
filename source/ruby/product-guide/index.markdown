@@ -195,7 +195,7 @@ The HTTPS request allows you to program your application code to use regular Rub
 
 Here is how the communication works:<br />
 
-![](/images/docs/SDKCommunicationFlow_Ruby.png =700x "SDK Communication Flow")
+![](/images/docs/SDKCommunicationFlow_Python.png =700x "SDK Communication Flow")
 
 In this example scenario, we have an existing SDK `account` resource instance, and we want its `directory`.
 
@@ -225,7 +225,7 @@ Ruby instances representing REST resources use the [Proxy software design patter
 
 The core component concepts of the SDK are as follows:<br />
 
-![](/images/docs/ComponentArchitecture_Ruby.png =700x430 "Stormpath SDK Component Architecture")
+![](/images/docs/ComponentArchitecture_Python.png =700x430 "Stormpath SDK Component Architecture")
 
 * **Client** is the root entry point for SDK functionality and accessing other SDK components, such as the `DataStore`. A client is constructed with a Stormpath API key which is required to communicate with the Stormpath API server. After it is constructed, the client delegates to an internal DataStore to do most of its work.
 * **DataStore** is central to the Stormpath SDK. It is responsible for managing all Ruby `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on Ruby `resource` objects into REST requests to the Stormpath API server as necessary. It works between your application and the Stormpath API server.
