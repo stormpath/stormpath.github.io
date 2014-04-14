@@ -9,6 +9,7 @@ In this guide, we discuss what a multi-tenant application is and how to partitio
 ## What is Stormpath?
 
 Stormpath is a user management API that makes it easy for developers to launch applications with secure, scalable user infrastructure. It automates:
+
 * User Account registration and login
 * Authentication and authorization
 * Flexible, secure user profile data
@@ -142,7 +143,9 @@ This approach requires your name identifiers to be compliant with the [subdomain
     And customer subdomains for that app would be accessible via:
 
     `http://customerA.myapp.mycompany.com`
+
     `http://customerB.myapp.mycompany.com`
+
     etc.
 
     It is our opinion that the separate top-level domain, e.g. `http://mycompany.io` is the nicer alternative: it is shorter, easier to remember and type, and looks better.
@@ -155,13 +158,14 @@ This approach requires your name identifiers to be compliant with the [subdomain
 
     This means the application's tenant records _should_ have a globally unique immutable tenant _primary key_ that is not necessarily human-friendly, like a `long` number or `UUID`, for the application's own needs.  This type of key is called a [_surrogate_](http://en.wikipedia.org/wiki/Surrogate_key) key.
 
-    In addition , a tenant should _also_ have globally unique, _mutable_, and human-readable subdomain name (like `customerA`) that people use when executing requests to your application. This is known a [_natural_](http://en.wikipedia.org/wiki/Natural_key) key.
+    In addition, a tenant should _also_ have globally unique, _mutable_, and human-readable subdomain name (like `customerA`) that people use when executing requests to your application. This is known a [_natural_](http://en.wikipedia.org/wiki/Natural_key) key.
 
     After a request enters the application, the surrogate primary key identifier is used for all further data queries.  For example:
 
     1. Request is received referencing a human-readable tenant name - the natural key.
     2. The human readable tenant name (natural key) is used to look up a tenant record, with that tenant's immutable `long` or `UUID` surrogate primary key.
     3. The surrogate key `long` or `UUID` is used for all subsequent data queries.  **This surrogate primary key is used for all data partitioning schemes and queries**, _not_ the human-friendly natural key.
+    
 
     Why would you do this?
 
