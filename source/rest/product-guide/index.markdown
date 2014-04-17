@@ -5458,15 +5458,16 @@ The following is how you use `providerData` to get an `Account` for a given `Use
 
 **Example Request**
 
-    POST https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu/accounts
-    Content-Type: application/json;charset=UTF-8
-
-    {
-      providerData: {
-        "providerId": "facebook",
-        "accessToken": "CAAHUbqIB55EH1MmLxJJLGRPXVknFt0aA36spMcFQXIzTdsHUZD"
-      }
-    }
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json" \
+         -d '{
+                "providerData": {
+                  "providerId": "facebook",
+                  "accessToken": "CABTmZxAZBxBADbr1l7ZCwHpjivBt9T0GZBqjQdTmgyO0OkUq37HYaBi4F23f49f5"
+                }
+              }' \
+     "https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu/accounts"
 
 **Example Response**
 
