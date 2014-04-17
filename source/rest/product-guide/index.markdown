@@ -5187,19 +5187,20 @@ Creating a Google Directory is very similar to [creating a directory](#create-a-
 
 **Example Request**
 
-    POST https://api.stormpath.com/v1/directories?expand=provider
-    Content-Type: application/json;charset=UTF-8
-
-    {
-      "name" : "my-google-directory",
-      "description" : "A Google directory",
-      "provider": {
-        "providerId": "google"
-        "clientId":"857385-m8vk0fn2r7jmjo.apps.googleusercontent.com",
-        "clientSecret":"ehs7_-bA7OWQSQ4",
-        "redirectUri":"https://myapplication.com/authenticate"
-      }
-    }
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json" \
+         -d '{
+              "name" : "my-google-directory",
+              "description" : "A Google directory",
+              "provider": {
+                "providerId": "google",
+                "clientId":"857385-m8vk0fn2r7jmjo.apps.googleusercontent.com",
+                "clientSecret":"ehs7_-bA7OWQSQ4",
+                "redirectUri":"https://myapplication.com/authenticate"
+              }
+            }' \
+     "https://api.stormpath.com/v1/directories?expand=provider"
 
 **Example Response**
 
@@ -5249,15 +5250,16 @@ The following is how you use `providerData` to get an `Account` for a given auth
 
 **Example Request**
 
-    POST https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu/accounts
-    Content-Type: application/json;charset=UTF-8
-
-    {
-      providerData: { 
-        "providerId": "google",
-        "code": "4/2Dz0r7r9oNBE9dFD-_JUb.suCu7uj8TEnp6UAPm0"
-      }
-    }
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+         -H "Accept: application/json" \
+         -H "Content-Type: application/json" \
+         -d '{
+                "providerData": {
+                  "providerId": "google",
+                  "code": "4/2Dz0r7r9oNBE9dFD-_JUb.suCu7uj8TEnp6UAPm0"
+                }
+              }' \
+     "https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu/accounts"
 
 **Example Response**
 
