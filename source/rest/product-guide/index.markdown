@@ -5398,18 +5398,19 @@ Creating a Facebook Directory is very similar to [creating a directory](#create-
 
 **Example Request**
 
-    POST https://api.stormpath.com/v1/directories
-    Content-Type: application/json;charset=UTF-8
-
-    {
-      "name" : "my-facebook-directory",
-      "description" : "A Facebook directory",
-      "provider": {
-        "providerId": "facebook"
-        "clientId":"857385m8vk0fn2r7jmjo",
-        "clientSecret":"ehs7bA7OWQSQ4"
-      }
-    }
+curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d '{
+            "name" : "my-facebook-directory",
+            "description" : "A Facebook directory",
+            "provider": {
+              "providerId": "facebook",
+              "clientId":"857385m8vk0fn2r7jmjo",
+              "clientSecret":"ehs7bA7OWQSQ4"
+            }
+          }' \
+ "https://api.stormpath.com/v1/directories"
 
 **Example Response**
 
@@ -5418,26 +5419,21 @@ Creating a Facebook Directory is very similar to [creating a directory](#create-
     Content-Type: application/json;charset=UTF-8;
 
     {
+        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q",
+        "name": "my-facebook-directory",
+        "description": "A Facebook directory",
+        "status": "ENABLED",
+        "tenant": {
+            "href": "https://api.stormpath.com/v1/tenants/60bD37asZX6JoFhyKFHiOk"
+        },
+        "provider": {
+            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider"
+        },
         "accounts": {
             "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/accounts"
-        }, 
-        "description": "A Facebook directory", 
+        },
         "groups": {
             "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/groups"
-        }, 
-        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q", 
-        "name": "my-google-directory", 
-        "provider": {
-            "clientId": "857385m8vk0fn2r7jmjo", 
-            "clientSecret": "ehs7bA7OWQSQ4", 
-            "createdAt": "2014-03-31T23:47:05.576Z", 
-            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", 
-            "modifiedAt": "2014-03-31T23:47:05.592Z", 
-            "providerId": "facebook"
-        }, 
-        "status": "ENABLED", 
-        "tenant": {
-            "href": "https://api.stormpath.com/v1/tenants/bckhcGMXQDujIXpbCDRb2Q"
         }
     }
 
