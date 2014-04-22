@@ -24,6 +24,8 @@ alias: [/index.html]
             <ul class="menu">
               <li class="first leaf"><a href="/rest/quickstart" title="">Quickstart Guide</a></li>
               <li class="leaf"><a href="/rest/product-guide" title="">Product Guide</a></li>
+              <li class="leaf"><a href="/guides/multi-tenant" title="">Multitenancy Guide</a></li>
+              <hr>
               <li class="leaf"><a href="/how-do-i" title="">How do I...</a></li>
               <li class="last leaf"><a href="/errors" title="">Error Codes</a></li>
             </ul>
@@ -95,7 +97,8 @@ alias: [/index.html]
           <div class="pane-content">
             <ul class="menu">
               <li class="first leaf"><a href="/nodejs/api" title="">Quickstart and API Docs</a></li>
-              <li class="last leaf"><a href="https://github.com/stormpath/stormpath-sdk-node" title="">SDK on GitHub</a></li>
+              <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-node" title="">SDK on GitHub</a></li>
+              <li class="leaf"><a href="https://github.com/stormpath/passport-stormpath" title="">PassportJS Strategy</a></li>
               <li class="last leaf"><a href="https://www.npmjs.org/package/stormpath" title="">npm Package Info</a></li>
               <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-node/archive/master.zip">Download SDK</a></li>
             </ul>  
