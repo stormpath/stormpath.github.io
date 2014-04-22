@@ -92,6 +92,23 @@ body_id: [sample-apps-page]
         </div>
       </div>
     </div>
+    <div class="panel-container">
+      <div class="panel-title">Flask Sample</div>
+      <div class="panel-inner">
+        <div class="panel-text">
+          Check out the Stormpath Flask Sample.
+          <ul>
+            <li>A sample Flask app that shows how to sign-up and login a user</li>
+            <li>Includes a bootstrap script to help you get set up!</li>
+            <li>Requires Flask 0.10.1</li>
+          </ul>
+        </div>
+        <div class="panel-buttons">
+          <a class="btn-download" href="https://github.com/stormpath/stormpath-flask-sample/archive/master.zip">Download ZIP</a>
+          <a class="btn-github" href="https://github.com/stormpath/stormpath-flask-sample">View on GitHub</a>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="sample-apps-ruby-container">
