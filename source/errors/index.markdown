@@ -111,8 +111,19 @@ Only use this code if a more accurate status code is not available. For example,
 
 <a id="6100"></a>[**6100**](/errors/6100): The directory does not allow creation of new accounts or groups.
 
-***
+<a id="6201"></a>[**6201**](/errors/6201): This directory cannot be converted to an external provider directory.
 
+<a id="6202"></a>[**6202**](/errors/6202): The directory cannot be updated to reflect a different identity provider. Please create a new directory instead.
+***
+##<a id="Agent"></a>7XXX: Account
+
+<a id="7200"></a>[**7200**](/errors/7200): Stormpath was not able to complete the request to Facebook or Google: this can be caused by either a bad Facebook or Google directory configuration, or the provided account credentials are not valid.
+
+<a id="7201"></a>[**7201**](/errors/7201): Stormpath is unable to create or update the account because the Facebook or Google response did not contain the required property.
+
+<a id="7202"></a>[**7202**](/errors/7202): This property is a read-only property on a externally managed directory account, it cannot be modified.
+
+***
 ##<a id="Agent"></a>9XXX: Agent
 
 <a id="9000"></a>[**9000**](/errors/9000): Stormpath, while acting as a gateway/proxy to your directory service, was not able to reach the Stormpath Directory Agent that communicates with your Directory Server. Please ensure that your directory's Stormpath Agent is online and successfully communicating with Stormpath.
