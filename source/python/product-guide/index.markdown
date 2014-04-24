@@ -3193,7 +3193,7 @@ You can store an unlimited number of additional name/value pairs in the `customD
 * Field names must:
     * be 1 or more characters long, but less than or equal to 255 characters long (1 <= N <= 255).
     * contain only alphanumeric characters `0-9A-Za-z`, underscores `_` or dashes `-` but cannot start with a dash `-`.
-    * may not equal any of the following reserved names: `href`, `createdAt`, `modifiedAt`, `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta`.
+    * may not equal any of the following reserved names: `href`, `createdAt`, `modifiedAt`, `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta`, `sp_http_status`.
 
 For Custom Data, you can:
 
