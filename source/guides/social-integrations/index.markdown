@@ -4,7 +4,7 @@ lang: guides
 title: Integrating Stormpath with Facebook and Google
 ---
 
-In this guide, we discuss how to set up Stormpath to be able to communicate to Google and Facebook to be able to retrieve user profiles from the social networks and convert them into usable Stormpath accounts.  
+In this guide, we discuss how to set up Stormpath to communicate to Google and Facebook to retrieve user profiles from the social networks and convert them into Stormpath accounts.  
 
 {% docs note %}
 
@@ -24,16 +24,17 @@ Stormpath is a user management API that makes it easy for developers to launch a
 
 You access Stormpath via a [beautiful](http://stormpath.com/blog/designing-rest-json-apis) REST+JSON API or our [language-specific SDKs](http://docs.stormpath.com).
 
-##  What does Stormpath do to help me Integrate with Facebook and Google?
+##  Why Should I Use Stormpath to Integrate Login with Facebook and Google?
 
 Stormpath makes it easy to connect to Google and Facebook in one simple API call. It's a simple and secure way to retrieve user profiles and convert them into to Stormpath accounts so that no matter the service you're using. 
 
+From an end-user perspective, it allows the them to log into your application by collecting information from these social networks.
+
 As soon as you have an OAuth token from Google or Facebook, you can pass it to Stormpath.  Stormpath will handle validating the token, importing the user profile into a `Directory`, syncing user profile, and can enable you to handle use cases such as:
 
-+ Storing an optional password for an imported Facebook or Google account
-+ Storing custom fields in a schema-less data store associated with the account
-
-Using the same API, you can read / write information regardless of what social provider they authenticated with.
++ Storing an optional password for an imported Facebook / Google account to support email / password authentication
++ Robust and schema-less user profiles
++ Using the same API, you can read / write information regardless of what social provider they authenticated with.
 
 ## How to do Integrate Stormpath with Facebook?
 
