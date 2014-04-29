@@ -25,6 +25,7 @@ alias: [/index.html]
               <li class="first leaf"><a href="/rest/quickstart" title="">Quickstart Guide</a></li>
               <li class="leaf"><a href="/rest/product-guide" title="">Product Guide</a></li>
               <li class="leaf"><a href="/guides/multi-tenant" title="">Multitenancy Guide</a></li>
+              <li class="leaf"><a href="/guides/social-integrations" title="">Social Integration Guide</a></li>
               <hr>
               <li class="leaf"><a href="/how-do-i" title="">How do I...</a></li>
               <li class="last leaf"><a href="/errors" title="">Error Codes</a></li>
