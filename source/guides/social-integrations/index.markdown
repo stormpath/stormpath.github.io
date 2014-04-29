@@ -36,7 +36,7 @@ As soon as you have an OAuth token from Google or Facebook, you can pass it to S
 + Robust and schema-less user profiles
 + Using the same API, you can read / write information regardless of what social provider they authenticated with.
 
-## How to do Integrate Stormpath with Facebook?
+## How to Integrate Stormpath with Facebook?
 
 After you familiarize yourself with Stormpath with one of the [Quickstart](docs.stormpath.com) Guides, integrating Stormpath with Facebook and Google requires the following steps:
 
@@ -233,7 +233,7 @@ The returned `providerData` will include:
       "providerId": "facebook"
     }
 
-## How to do Integrate Stormpath with Google?
+## How to Integrate Stormpath with Google?
 
 After you familiarize yourself with Stormpath with one of the [Quickstart](docs.stormpath.com) Guides, integrating Stormpath with Google requires the following steps:
 
