@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Stormpath PHP Quickstart - Stormpath</title>
+  <title>Stormpath Node.js Five Minute API Quickstart - Stormpath</title>
   <meta name="author" content="Stormpath, Inc.">
 
   
-  <meta name="description" content="The PHP SDK can be found on Github. To quickly get started using Stormpath to secure your online applications, please complete the following steps: &hellip;">
+  <meta name="description" content="This quickstart will get you up and running with Stormpath in about 5 minutes and give you a good initial feel for the Stormpath Node.js SDK. During &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://stormpath.github.io/php/quickstart/old.">
+  <link rel="canonical" href="http://stormpath.github.io/nodejs/quickstart">
   <link href="/favicon.ico" rel="icon">
 
   <style>
@@ -367,243 +367,161 @@
           <div id="content" class="column" role="main">
             <a id="main-content"></a>
             
-              <h1 class="title" id="page-title">Stormpath PHP Quickstart</h1>
+              <h1 class="title" id="page-title">Stormpath Node.js Five Minute API Quickstart</h1>
             
-          	<p>The PHP SDK can be found on <a href="https://github.com/stormpath/stormpath-sdk-php">Github</a>.</p>
-
-<p>To quickly get started using Stormpath to secure your online applications, please complete the following steps:</p>
-
-<ol>
-<li><p><a href="https://api.stormpath.com/register">Sign up for service</a>.</p>
-
-<ol>
-<li>Provide your first and last name, email address, company, and a password.</li>
-<li>When all fields are complete, click <strong>Start</strong>.<br>You will receive a registration success email.</li>
-<li>In the confirmation email, click the link.</li>
-<li>Follow the onscreen instructions.<br>After completing this process, you are ready to use Stormpath for free!</li>
-</ol>
-</li>
-<li><p>Download the PHP SDK:</p>
-
-<p> <a href="https://github.com/stormpath/stormpath-sdk-php">stormpath-sdk-php</a> &ndash; Official PHP SDK for the Stormpath REST+JSON API</p></p></li>
-<li><p>Follow the installation/configuration directions located on the <a href="https://github.com/stormpath/stormpath-sdk-php/blob/master/README.md">README.md file</a>.</p></li>
-<li><p>Create your API key.</p>
-
-<p> All requests to the Stormpath <a href="/php/product-guide#RESTAPIdef">REST API</a> must be authenticated with an <a href="/php/product-guide#APIKey">API key</a>. To get an API key:</p>
-
-<ol>
-<li>Log in to the Stormpath Admin Console using the email address and password provided during sign-up.</li>
-<li>After logging in, navigate to your account page by clicking <strong>Settings</strong>, <strong>My Account</strong> in the top-right corner of the screen.</li>
-<li><p>On the Account Details page, under Security Credentials, click <strong>Create API Key</strong>.</p>
+          	<p>This quickstart will get you up and running with Stormpath in about 5 minutes and give you a good initial feel for the Stormpath Node.js SDK. During this quickstart, you will do the following:</p>
 
 <ul>
-<li>This will generate your API key and download it to your computer as an <code>apiKey.properties</code> file.</li>
-<li><p>If you open the file in a text editor, you will see something similar to the following:</p>
+<li>Register for a free Stormpath account</li>
+<li>Create an API Key that allows you to make REST API calls with Stormpath</li>
+<li>Code some basic stuff using Stormpath such as:
 
-<pre><code>  apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
-
-  apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
-</code></pre></li>
+<ul>
+<li>Account Creation</li>
+<li>Account Searching</li>
+<li>Authentication</li>
+<li>Storing Robust Custom Data</li>
 </ul>
 </li>
-<li><p>Store your API key file somewhere secure (readable only by you), for example:</p>
+</ul>
 
-<pre><code> /home/myhomedir/.stormpath/apiKey.properties
-</code></pre>
 
-<p>The file contents should contain the following name/value pairs (using your own values of course):</p>
+<p>Let&rsquo;s get started!</p>
 
-<pre><code> $ cat /home/myhomedir/.stormpath/apiKey.properties
+<hr />
 
- apiKey.id = YOURAPIKEYIDHEREREPLACEME
- apiKey.secret = YoUrReAlLyLongSecretValueHereReplaceMeWithYourValue
-</code></pre>
-
-<p>Because Stormpath generates an <code>apiKey.properties</code> file and PHP tends to work better with YAML files, you&rsquo;ll want to create an <code>apiKey.yml</code> file.</p></li>
-<li><p>Copy your existing <code>apiKey.properties</code> file to a new file and make sure it is readable only by you:</p>
-
-<pre><code> &gt; cd $HOME/.stormpath
- &gt; cp apiKey.properties apiKey.yml
- &gt; chmod go-rwx apiKey.yml
-</code></pre></li>
-<li><p>Then open and edit <code>apiKey.yml</code> to change its contents to use a colon : delimiter for key/value pairs instead of the equals = delimiter to make sure it is YAML compliant:</p>
-
-<pre><code> apiKey.id: 144JVZINOF5EBNCMG9EXAMPLE
- apiKey.secret: lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
-</code></pre>
-
-<p>More information on different ways to configure and retrieve information from this file can be found in the <a href="https://github.com/stormpath/stormpath-sdk-php/blob/master/Services/Stormpath/Client/ClientBuilder.php">Client Builder</a> API documentation.</p></li>
-</ol>
-</li>
-<li><p>Configure your application to create a Stormpath SDK <a href="/php/product-guide#Client">client</a> instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:</p>
-
-<pre><code> $path = '/home/myhomedir/.stormpath/apiKey.yml';
- $builder = new Services_Stormpath_Client_ClientBuilder;
- $client = $builder-&gt;setApiKeyFileLocation($path)-&gt;build(); 
-</code></pre></li>
-<li><p>Use the client instance to interact with your tenant data, such as applications, directories, and accounts:</p>
-
-<pre><code> $tenant = $client-&gt;getCurrentTenant();
-
- $applications = $tenant-&gt;getApplications();
-
- foreach ($applications as $application) {
-    echo 'Application ' . $application-&gt;getName() .PHP_EOL;
- }
-
- $directories = $tenant-&gt;getDirectories();
-
- foreach ($directories as $directory) {
-
-     echo 'Directory ' . $directory-&gt;getName() .PHP_EOL;
-
-     $accounts = $directory-&gt;getAccounts();
-
-     foreach ($accounts as $account) {
-        echo '  Account ' . $account-&gt;getGivenName() .PHP_EOL;
-     }
- }
-</code></pre></li>
-<li><p>Create the necessary directories:</p>
-
-<p> To create a directory, you must log in to the Stormpath Admin Console.</p>
+<h2><a id="sign-up-for-stormpath"></a>Sign Up for Stormpath</h2>
 
 <ol>
-<li>Click the <strong>Directories</strong> tab.</li>
-<li>Click <strong>Create Directory</strong>.</li>
-<li><p>Click <strong>Cloud</strong>.</p>
-
-<p> <img src="http://www.stormpath.com/sites/default/files/docs/CreateCloudDirectory.png" alt="Create Cloud Directory" title="Create Cloud Directory" width="650" height="440"></p></li>
-<li><p>Complete the field values as follows: <br></p>
-
-<table>
-<thead>
-<tr>
-<th align="left"> Attribute </th>
-<th align="left"> Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">Name </td>
-<td align="left"> The name used to identify the directory within Stormpath. This value must be unique. |</td>
-</tr>
-<tr>
-<td align="left">Description </td>
-<td align="left"> Details about this specific directory.|</td>
-</tr>
-<tr>
-<td align="left">Status </td>
-<td align="left"> By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application. |</td>
-</tr>
-<tr>
-<td align="left">Min characters </td>
-<td align="left"> The minimum number of acceptable characters for the account password. |</td>
-</tr>
-<tr>
-<td align="left">Max characters </td>
-<td align="left"> The maximum number of acceptable characters for the account password. |</td>
-</tr>
-<tr>
-<td align="left">Mandatory characters </td>
-<td align="left"> The required character patterns which new passwords will be validated against. For example, for an alphanumeric password of at least 8 characters with at least one lowercase and one uppercase character, select the abc, ABC, and 012 options. The more patterns selected, the more secure the passwords but the more complicated for a user.|</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li>Click <strong>Create</strong>. </p></li>
+<li>Fill out and submit the <a href="https://api.stormpath.com/register">Stormpath registration form</a>.  This will send a confirmation email.</li>
+<li>Click the link in the confirmation email.</li>
 </ol>
-</li>
-<li><p>Register applications.</p>
 
-<p> To authenticate a user account in your <a href="/php/product-guide#Application">application</a>, you must first register the application with Stormpath.</p>
 
-<p> To register an application, you must:</p>
+<hr />
+
+<h2><a id="get-an-api-key"></a>Get an API Key</h2>
+
+<p>All requests to the Stormpath must be authenticated with an API Key. To get an API key:</p>
 
 <ol>
-<li>. Retrieve your current tenant from the client instance.</li>
-<li>. Instantiate an application object.</li>
-<li>. Set the application properties.</li>
-<li>. Create the application from your current tenant.</li>
+<li>Log in to the <a href="https://api.stormpath.com">Stormpath Admin Console</a> using the email address and password you used to register with Stormpath.</li>
+<li>In the top-right corner of the resulting page, visit <strong>Settings</strong> > <strong>My Account</strong>.</li>
+<li>On the Account Details page, under <strong>Security Credentials</strong>, click <strong>Create API Key</strong>.</li>
 </ol>
 
 
-<p> </br>
- To create applications, use the <code>_setters_</code> of a new application instance to set the values and then create the application from the tenant, as follows:</p>
+<p> This will generate your API Key and download it to your computer as an <code>apiKey.properties</code> file. If you open the file in a text editor, you will see something similar to the following:</p>
 
-<pre><code> $tenant = $client-&gt;getCurrentTenant();
-
- $application = $client-&gt;getDataStore()-&gt;instantiate(Services_Stormpath::APPLICATION); //the Services_Stormpath class provides the resources' classes' names
- $application-&gt;setName('Application Name');
- $application-&gt;setDescription('Application Description');
-
- $application = $tenant-&gt;createApplication($application);
-</code></pre></li>
-<li><p>Create accounts.</p>
-
-<p> To create a user account, you must:</p>
-
-<ol>
-<li>. Get the datastore instance from the client.</li>
-<li>. Get the directory where you want to create the account from the datastore with the directory href.</li>
-<li>. Set the account properties.</li>
-<li>. Create the account from the directory.</li>
-</ol>
-
-
-<p> </br>
- To create accounts, use the <code>_setters_</code> of a new account instance to set the values and create the account in a directory as follows:</p>
-
-<pre><code> $href = 'https://api.stormpath.com/v1/directories/DIR_UID_HERE';
- $directory = $client-&gt;getDataStore()-&gt;getResource($href, Services_Stormpath::DIRECTORY);
-
- $account = $client-&gt;getDataStore()-&gt;instantiate(Services_Stormpath::ACCOUNT);
- $account-&gt;setEmail('my@email.com');
- $account-&gt;setGivenName('Given Name');
- $account-&gt;setPassword('Password');
- $account-&gt;setSurname('Surname');
- $account-&gt;setUsername('Username');
-
- $account = $directory-&gt;createAccount($account);
+<pre><code>    apiKey.id = 144JVZINOFEBNCMG9EXAMPLE
+    apiKey.secret = lWxOiKqKNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 </code></pre>
 
-<p> If you want to override the registration workflow and have the account created with ENABLED status right away, pass false as second argument, for example:</p>
+<hr />
 
-<pre><code>  $account = $directory-&gt;createAccount($account, false);
+<h2><a id="install-the-stormpath-npm-module"></a>Install the Stormpath <code>npm</code> Module</h2>
+
+<p>Once you have an API Key, navigate to a folder that will include the node app and run</p>
+
+<pre><code>npm install stormpath --save
 </code></pre>
 
-<p> If you want to associate the account to a group, add the following:</p>
+<p>This will install the official Stormpath npm module and store the dependency in <code>package.json</code>.</p>
 
-<pre><code> $account-&gt;addGroup($group);
-</code></pre></li>
-<li><p>Authenticate accounts.</p>
+<h2><a id="coding-time"></a>Coding Time!</h2>
 
-<p>To authenticate an account you must have the application the account authenticates against. With the application, the account is authenticated by providing the username and password as follows:</p>
+<p>Now that set up is complete, you can start building something.  One of the first things that you need to do is include <code>stormpath</code> module in your javascript, like so:</p>
 
-<pre><code>$path = '/home/myhomedir/.stormpath/apiKey.yml';
-$builder = new Services_Stormpath_Client_ClientBuilder;
-$client = $builder-&gt;setApiKeyFileLocation($path)-&gt;build();
+<pre><code>var stormpath = require('stormpath');
+</code></pre>
 
-$href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE';
-$application = $client-&gt;getDataStore()-&gt;getResource($href, Services_Stormpath::APPLICATION);
+<p>Once this is done, you can initialize a Stormpath <code>client</code> based on an API Key ID and Secret.</p>
 
-// when the account is authenticated, it produces an AuthenticationResult
-$un = 'usernameOrEmail';
-$pw = 'rawPassword';
-$req = new Services_Stormpath_Authc_UsernamePasswordRequest($un,$pw);
-$authResult = $application-&gt;authenticateAccount($req);
+<pre><code>//Generate a Stormpath client based on your API Key and Secret
+var apiKey = new stormpath.ApiKey('YOUR_API_KEY_ID', 'YOUR_API_KEY_SECRET');
+var client = new stormpath.Client({apiKey: apiKey});
+</code></pre>
 
-// from the result, we obtain the authenticated Account
-$account = $authResult-&gt;getAccount();
-</code></pre></li>
-</ol>
+<p>A <code>client</code> instance is your starting point for all interactions with the Stormpath API &ndash; once you have a Client instance, you can do everything else.</p>
 
+<p>To be able to start to create accounts, you need to have an <code>Application</code> and <code>Directory</code> in Stormpath.  If you just signed up for the quickstart you can add (and retrieve, update, or delete) an application and directory from the API like so:</p>
 
-<h2><a id="next-steps"></a>Next Steps</h2>
+<pre><code>//Some application properties
+var app = {
+  name: 'My Awesome Application!',
+  description: 'No, Srsly. It\'s Awesome.'
+};
 
-<p>We hope you have found this Quickstart helpful!</p>
+//Create the App
+client.createApplication(app, {createDirectory: true} ,function onAppCreated(err, createdApp){
+      if (err) throw err;
+      app = createdApp;
+});
+</code></pre>
 
-<p>For full coverage of Stormpath&rsquo;s PHP SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our <a href="/php/product-guide">PHP Product Guide</a></p>
+<p>Once the application is created, it will automatically create a <code>Directory</code> resource based on the name of application and set it as the default account store for any new accounts for the application.</p>
+
+<p>To create an account, you define the account as a JSON object and use the application to create it:</p>
+
+<pre><code>var account = {
+    givenName: 'Tom',
+    surname: 'Abbott',
+    email:'stormtrooper@stormpath.com',
+    password:'AwesomeSecurePassword1',
+    customData: {
+        favoriteAnimal: 'Miley Cyrus',
+    }
+}
+
+//Create the account
+app.createAccount(account, function(err, account){
+    if (err) throw err;
+    accountSuccessfullyCreated(account);
+});
+</code></pre>
+
+<p>Stormpath has a standard account format (givenName, surname, email, etc&hellip;), but you can also store application specific custom fields in a schema-less customData object.</p>
+
+<p>Getting accounts from an application is easy too.  You can ask the application to retrieve accounts based on standard fields by doing:</p>
+
+<pre><code>app.getAccounts({email:'stormtropper@stormpath.com'}, function(err, accounts){
+    if (err) throw err;
+
+    accounts.each(function (err, account, index){
+        console.log(account);
+    });
+});
+</code></pre>
+
+<p>You could also use wild cards such as <code>{email: *@stormpath.com}</code> to return all accounts with an email from the stormpath.com domain.</p>
+
+<p>You can also do more advance options and method chaining like:</p>
+
+<pre><code>app.getAccounts().search({surname:'Abbott'})
+    .orderBy({givenName:1})
+    .exec(function (err, accounts){
+        accounts.each(hanndleAccount);
+    });
+</code></pre>
+
+<p>Once you have accounts in directories that are associated with an application, you can authenticate a user like so:</p>
+
+<pre><code>app.authenticateAccount({
+    username:'stormtropper@stormpath.com',
+    password:'AwesomeSecurePassword1'
+}, function(err, result){
+    if (err) throw err;
+    result.getAccount(function(err, account){
+        console.log(account);
+    });
+});
+</code></pre>
+
+<p>That will output the authenticated account.  From here, you could update account fields, get the groups or roles associated with the account, or even trigger a password reset workflow.</p>
+
+<h2><a id="wrapping-up"></a>Wrapping Up</h2>
+
+<p>That is how you use Stormpath in Node.js in five minutes.  If you want to dig into the SDK further, check out the <a href="http://docs.stormpath.com/nodejs/api/home">Node.js API Guide</a>.  If you are using Express or Passport.js, check out <a href="https://github.com/stormpath/passport-stormpath">passport-stormpath</a>!</p>
 
             <div id="bottom-wrapper">
                      <div class="region region-bottom">
@@ -645,7 +563,7 @@ $account = $authResult-&gt;getAccount();
  	
     <option value="python">Python</option>
  	
-    <option value="php" selected>PHP</option>
+    <option value="php">PHP</option>
  	
     <option value="guides">Guides</option>
  	
@@ -879,35 +797,6 @@ $account = $authResult-&gt;getAccount();
   
         
   	
-                
-                
-		<ul class="menu">
-		
-			<li class="leaf active-trail">
-			
-				<a href="/php/quickstart">PHP Quickstart Guide</a>
-			
-			
-				<ul class="menu"><li class="leaf"><a href="#next-steps" data-level="0" class="fragment">Next Steps</a><ul class="menu"></ul></li></ul>
-			
-			</li>
-		
-			<li class="leaf">
-			
-				<a href="/php/product-guide">PHP Product Guide</a>
-			
-			
-			</li>
-		
-			<li class="leaf">
-			
-				<a href="https://github.com/stormpath/stormpath-sdk-php" target="_blank"><span>PHP SDK on GitHub</span></a>
-			
-			
-			</li>
-		
-		</ul>
-  	
   
         
   	
@@ -923,8 +812,6 @@ $account = $authResult-&gt;getAccount();
   
         
   	
-                
-                       <div class="menu-divider"></div> 
                 
                 
 		<ul class="menu">
