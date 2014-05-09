@@ -1,26 +1,24 @@
 ---
-layout: doc
+layout: default
+classes_array: [quickstart]
 lang: nodejs
-title: Stormpath Node.js Five Minute API Quickstart
+description: "10-minute Tutorial to Stormpath in Node.js"
+image: https://stormpath.com/images/blog/og-node-stormpath.png
+title: Stormpath Node.js Quickstart
 ---
-This quickstart will get you up and running with Stormpath in about 5 minutes and give you a good initial feel for the Stormpath Node.js SDK. During this quickstart, you will do the following:
-
-* Register for a free Stormpath account
-* Create an API Key that allows you to make REST API calls with Stormpath
-* Code some basic stuff using Stormpath such as:
-    - Account Creation
-    - Account Searching
-    - Authentication
-    - Storing Robust Custom Data
+This quickstart will get you up and running with Stormpath in about 10 minutes and give you a good initial feel for the Stormpath Node.js SDK. 
 
 Let's get started!
 
 ***
 
-## Sign Up for Stormpath
+##  Install the Stormpath <b>npm</b> Module
 
-1. Fill out and submit the [Stormpath registration form](https://api.stormpath.com/register).  This will send a confirmation email.
-2. Click the link in the confirmation email.
+Once you have an API Key, navigate to a folder that will include the node app and run
+
+    npm install stormpath --save
+
+This will install the official Stormpath npm module and store the dependency in `package.json`.
 
 ***
 
@@ -28,7 +26,9 @@ Let's get started!
 
 All requests to the Stormpath must be authenticated with an API Key. To get an API key:
 
-1. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using the email address and password you used to register with Stormpath.
+1. [Sign up for Stormpath here](https://api.stormpath.com/register).  You'll be sent a verification email.
+1. Click the link in the verification email. 
+1. Log in to the [Stormpath Admin Console](https://api.stormpath.com).
 1. In the top-right corner of the resulting page, visit **Settings** > **My Account**.
 1. On the Account Details page, under **Security Credentials**, click **Create API Key**.
 
@@ -38,15 +38,6 @@ All requests to the Stormpath must be authenticated with an API Key. To get an A
         apiKey.secret = lWxOiKqKNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 
 ***
-
-##  Install the Stormpath `npm` Module
-
-Once you have an API Key, navigate to a folder that will include the node app and run
-
-    npm install stormpath --save
-
-This will install the official Stormpath npm module and store the dependency in `package.json`.
-
 ## Coding Time!
 
 Now that set up is complete, you can start building something.  One of the first things that you need to do is include `stormpath` module in your javascript, like so:
@@ -61,6 +52,7 @@ Once this is done, you can initialize a Stormpath `client` based on an API Key I
 
 A `client` instance is your starting point for all interactions with the Stormpath API - once you have a Client instance, you can do everything else. 
 
+### Create an Application
 To be able to start to create accounts, you need to have an `Application` and `Directory` in Stormpath.  If you just signed up for the quickstart you can add (and retrieve, update, or delete) an application and directory from the API like so:
 
     //Some application properties
@@ -77,6 +69,7 @@ To be able to start to create accounts, you need to have an `Application` and `D
 
 Once the application is created, it will automatically create a `Directory` resource based on the name of application and set it as the default account store for any new accounts for the application.
 
+### Create a User Account
 To create an account, you define the account as a JSON object and use the application to create it:
 
     var account = {
@@ -97,6 +90,7 @@ To create an account, you define the account as a JSON object and use the applic
 
 Stormpath has a standard account format (givenName, surname, email, etc...), but you can also store application specific custom fields in a schema-less customData object.
 
+### Search for a User Account
 Getting accounts from an application is easy too.  You can ask the application to retrieve accounts based on standard fields by doing:
 
     app.getAccounts({email:'stormtropper@stormpath.com'}, function(err, accounts){
@@ -117,6 +111,7 @@ You can also do more advance options and method chaining like:
             accounts.each(hanndleAccount);
         });
 
+### Authenticate a User Account
 Once you have accounts in directories that are associated with an application, you can authenticate a user like so:
 
     app.authenticateAccount({
@@ -131,6 +126,20 @@ Once you have accounts in directories that are associated with an application, y
 
 That will output the authenticated account.  From here, you could update account fields, get the groups or roles associated with the account, or even trigger a password reset workflow.
 
-## Wrapping Up
+***
+## Please help us out by telling your friends
 
-That is how you use Stormpath in Node.js in five minutes.  If you want to dig into the SDK further, check out the [Node.js API Guide](http://docs.stormpath.com/nodejs/api/home).  If you are using Express or Passport.js, check out [passport-stormpath](https://github.com/stormpath/passport-stormpath)!
+If you found this tutorial helpful and think our product is cool, please help us out with a quick tweet.
+
+Look! We even make it easy for you with a nice button :)
+
+
+***
+## What's Next
+
+You've just scratched the surface of what you can do in Stormpath.  Want to learn more?  Here are a few other easy guides you can jump into.
+
+* [Build an Express.js + Passport.js App with Stormpath](https://github.com/stormpath/passport-stormpath)
+* [Complete Node.js API Reference Guide]((http://docs.stormpath.com/nodejs/api/home))
+* [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/)
+* [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/)
