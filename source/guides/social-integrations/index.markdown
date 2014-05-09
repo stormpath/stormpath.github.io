@@ -147,7 +147,32 @@ Response:
 
 Once a Facebook Directory is mapped to an application, it is now possible to get an `Account` from Stormpath based on Facebook User Access Tokens.
 
-You need to gather an User Access Token from Facebook before submitting it to Stormpath.  This is possible either by using a [Facebook SDK Library](https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens), or [Facebook's Graph Explorer](https://developers.facebook.com/tools/explorer).
+You need to gather an User Access Token from Facebook before submitting it to Stormpath.  This is possible either by using a [Facebook SDK Library](https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens), or [Facebook's Graph Explorer](https://developers.facebook.com/tools/explorer) for testing.
+
+Below is sample code using Facebook's Javascript library to get the access token.  
+
+    window.checkFacebookStatus = function () {
+        FB.getLoginStatus(function (response) {
+            //  {
+            //     status: 'connected',
+            //     authResponse: {
+            //        accessToken: '...',
+            //        expiresIn:'...',
+            //        signedRequest:'...',
+            //        userID:'...'
+            //     }
+            //  }
+
+            if (response.status === 'connected') {
+                alert('Access Token: ' + response.authResponse.accessToken);
+            } else {
+                alert('Log in first...');
+            }
+
+        });
+    };
+
+There are also other means of getting the access token from cookies on the server using 3rd party libraries in different languages.
 
 {% docs note %}
 It is required that your Facebook application request for the `email` permission from Facebook. If the access token does not grant `email` permissions, you will not be able to get an `Account` with an access token.
