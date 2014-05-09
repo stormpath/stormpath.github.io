@@ -524,7 +524,33 @@ Content-Type: application/json;charset=UTF-8;
 
 <p>Once a Facebook Directory is mapped to an application, it is now possible to get an <code>Account</code> from Stormpath based on Facebook User Access Tokens.</p>
 
-<p>You need to gather an User Access Token from Facebook before submitting it to Stormpath.  This is possible either by using a <a href="https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens">Facebook SDK Library</a>, or <a href="https://developers.facebook.com/tools/explorer">Facebook&rsquo;s Graph Explorer</a>.</p>
+<p>You need to gather an User Access Token from Facebook before submitting it to Stormpath.  This is possible either by using a <a href="https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens">Facebook SDK Library</a>, or <a href="https://developers.facebook.com/tools/explorer">Facebook&rsquo;s Graph Explorer</a> for testing.</p>
+
+<p>Below is sample code using Facebook&rsquo;s Javascript library to get the access token.</p>
+
+<pre><code>window.checkFacebookStatus = function () {
+    FB.getLoginStatus(function (response) {
+        //  {
+        //     status: 'connected',
+        //     authResponse: {
+        //        accessToken: '...',
+        //        expiresIn:'...',
+        //        signedRequest:'...',
+        //        userID:'...'
+        //     }
+        //  }
+
+        if (response.status === 'connected') {
+            alert('Access Token: ' + response.authResponse.accessToken);
+        } else {
+            alert('Log in first...');
+        }
+
+    });
+};
+</code></pre>
+
+<p>There are also other means of getting the access token from cookies on the server using 3rd party libraries in different languages.</p>
 
 <div class='docs-note'><p>It is required that your Facebook application request for the <code>email</code> permission from Facebook. If the access token does not grant <code>email</code> permissions, you will not be able to get an <code>Account</code> with an access token.</p>
 </div>
@@ -735,7 +761,9 @@ Content-Type: application/json;charset=UTF-8;
 
 <h3><a id="accessing-an-account-with-google-tokens"></a>Accessing an Account with Google Tokens</h3>
 
-<p>To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google&rsquo;s <a href="https://developers.google.com/accounts/docs/OAuth2">OAuth 2.0 protocol</a> and the user&rsquo;s consent for your application&rsquo;s permissions.</p>
+<p>To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google&rsquo;s <a href="https://developers.google.com/accounts/docs/OAuth2Login">OAuth 2.0 protocol</a> and the user&rsquo;s consent for your application&rsquo;s permissions.</p>
+
+<p>Generically, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the Authorization Code.  This is documented in detail <a href="https://developers.google.com/accounts/docs/OAuth2Login#authenticatingtheuser">here</a>.</p>
 
 <p>Once the Authorization Code is gathered, you can get or create the <code>Account</code> by HTTP <code>POST</code>ing to the <code>Application</code> accounts collection and specifying the <code>providerData</code>.  The <code>providerData</code> JSON object specifies the type of provider and the authorization code as follows:</p>
 
