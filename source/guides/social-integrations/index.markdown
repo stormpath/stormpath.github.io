@@ -366,7 +366,9 @@ Response:
 
 ### Accessing an Account with Google Tokens
 
-To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google's [OAuth 2.0 protocol](https://developers.google.com/accounts/docs/OAuth2) and the user's consent for your application's permissions.
+To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google's [OAuth 2.0 protocol](https://developers.google.com/accounts/docs/OAuth2Login) and the user's consent for your application's permissions.
+
+Generically, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the Authorization Code.  This is documented in detail [here](https://developers.google.com/accounts/docs/OAuth2Login#authenticatingtheuser).
 
 Once the Authorization Code is gathered, you can get or create the `Account` by HTTP `POST`ing to the `Application` accounts collection and specifying the `providerData`.  The `providerData` JSON object specifies the type of provider and the authorization code as follows:
 
