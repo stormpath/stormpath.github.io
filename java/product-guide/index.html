@@ -1041,7 +1041,7 @@ AccountList accounts = application.getAccounts(criteria);
 
 <p>For example, it would not be possible to return an account with its directory expanded and also the directory&rsquo;s groups expanded as well. Link expansion is currently only possible one level &lsquo;deep&rsquo;.</p>
 
-<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#x73;&#x75;&#x70;&#x70;&#111;&#x72;&#x74;&#64;&#x73;&#116;&#x6f;&#x72;&#x6d;&#x70;&#97;&#x74;&#x68;&#x2e;&#x63;&#111;&#x6d;">&#115;&#117;&#x70;&#x70;&#x6f;&#x72;&#116;&#64;&#x73;&#116;&#111;&#114;&#109;&#x70;&#97;&#x74;&#104;&#x2e;&#99;&#111;&#109;</a> and submit a feature request.</p>
+<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x73;&#117;&#112;&#112;&#111;&#x72;&#x74;&#x40;&#115;&#x74;&#x6f;&#x72;&#x6d;&#112;&#x61;&#x74;&#x68;&#x2e;&#99;&#x6f;&#x6d;">&#x73;&#x75;&#112;&#112;&#x6f;&#114;&#x74;&#x40;&#x73;&#x74;&#111;&#x72;&#x6d;&#112;&#x61;&#116;&#x68;&#46;&#99;&#111;&#x6d;</a> and submit a feature request.</p>
 
 <h4>Expanding Collection Resources</h4>
 
@@ -1160,7 +1160,7 @@ AccountList accounts = application.getAccounts(criteria);
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
 
-<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#115;&#x75;&#x70;&#112;&#x6f;&#114;&#x74;&#x40;&#115;&#x74;&#x6f;&#x72;&#109;&#x70;&#x61;&#116;&#x68;&#x2e;&#x63;&#x6f;&#109;">&#115;&#117;&#x70;&#x70;&#x6f;&#x72;&#x74;&#64;&#115;&#x74;&#111;&#114;&#109;&#x70;&#x61;&#116;&#104;&#46;&#99;&#111;&#109;</a> and request it.</p>
+<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x73;&#x75;&#112;&#112;&#111;&#114;&#x74;&#64;&#115;&#116;&#x6f;&#x72;&#x6d;&#x70;&#97;&#116;&#104;&#46;&#x63;&#x6f;&#109;">&#x73;&#117;&#112;&#x70;&#x6f;&#114;&#x74;&#64;&#x73;&#116;&#111;&#114;&#109;&#112;&#x61;&#116;&#x68;&#x2e;&#x63;&#111;&#109;</a> and request it.</p>
 
 <p><a class="anchor" name="tenant-retrieve"></a></p>
 
@@ -1491,10 +1491,10 @@ tenant.getApplications(criteria);
 
 <p><strong>Example Request Using the Tenant Instance</strong></p>
 
-<pre><code>Application application = client.instantiate(Application.class);
-application.setName("My Application");
-application.setDescription("My Application Description");
-application.setStatus(ApplicationStatus.ENABLED);
+<pre><code>Application application = client.instantiate(Application.class)
+        .setName("My Application")
+        .setDescription("My Application Description")
+        .setStatus(ApplicationStatus.ENABLED);
 
 tenant.createApplication(application);
 </code></pre>
@@ -1523,10 +1523,10 @@ tenant.createApplication(application);
 
 <p>When sending the creation request, you can append the <code>createDirectory()</code> method:</p>
 
-<pre><code>Application application = client.instantiate(Application.class);
-application.setName("My Application");
-application.setDescription("My Application Description");
-application.setStatus(ApplicationStatus.ENABLED);
+<pre><code>Application application = client.instantiate(Application.class)
+        .setName("My Application")
+        .setDescription("My Application Description")
+        .setStatus(ApplicationStatus.ENABLED);
 
 tenant.createApplication(
         Applications.newCreateRequestFor(application)
@@ -1552,8 +1552,7 @@ tenant.createApplication(
 
 <p>If you want to automatically create a Directory for your application, and you also want to manually specify the new Directory&rsquo;s name, instead of using a <code>true</code> value as the query parameter value, you can specify a String name instead:</p>
 
-<pre><code>Application application = client.instantiate(Application.class);
-application.setName("My Application");
+<pre><code>Application application = client.instantiate(Application.class).setName("My Application");
 
 tenant.createApplication(
     Applications.newCreateRequestFor(application)
@@ -1609,8 +1608,7 @@ tenant.createApplication(
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>application.setDescription("A new description.");
-application.save();
+<pre><code>application.setDescription("A new description.").save();
 </code></pre>
 
 <p><a class="anchor" name="application-enable"></a></p>
@@ -1623,8 +1621,7 @@ application.save();
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>application.setStatus(ApplicationStatus.ENABLED);
-application.save();
+<pre><code>application.setStatus(ApplicationStatus.ENABLED).save();
 </code></pre>
 
 <p><a class="anchor" name="application-disable"></a></p>
@@ -1639,8 +1636,7 @@ application.save();
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>application.setStatus(ApplicationStatus.DISABLED);
-application.save();
+<pre><code>application.setStatus(ApplicationStatus.DISABLED).save();
 </code></pre>
 
 <p><a class="anchor" name="application-delete"></a></p>
@@ -1734,12 +1730,12 @@ application.save();
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>Account account = client.instantiate(Account.class);
-account.setGivenName("Jean-Luc");
-account.setUsername("jlpicard");
-account.setSurname("Picard");
-account.setEmail("capt@enterprise.com");
-account.setPassword("4P@$$w0rd!");
+<pre><code>Account account = client.instantiate(Account.class)
+    .setGivenName("Jean-Luc")
+    .setUsername("jlpicard")
+    .setSurname("Picard")
+    .setEmail("capt@enterprise.com")
+    .setPassword("4P@$$w0rd!");
 
 application.createAccount(account);
 </code></pre>
@@ -1762,18 +1758,18 @@ application.createAccount(account);
 
 <p>When you create an application account, in addition to Stormpath&rsquo;s account attributes, you may also specify <a href="#custom-data">your own custom data</a> by including a <code>CustomData</code> object:</p>
 
-<pre><code>Account account = client.instantiate(Account.class);
-account.setUsername("jlpicard");
-account.setEmail("capt@enterprise.com");
-account.setGivenName("Jean-Luc");
-account.setMiddleName("");
-account.setSurname("Picard");
-account.setPassword("uGhd%a8Kl!");
-account.setStatus(AccountStatus.ENABLED);
+<pre><code>Account account = client.instantiate(Account.class)
+    .setUsername("jlpicard")
+    .setEmail("capt@enterprise.com")
+    .setGivenName("Jean-Luc")
+    .setMiddleName("")
+    .setSurname("Picard")
+    .setPassword("uGhd%a8Kl!")
+    .setStatus(AccountStatus.ENABLED);
 CustomData customData = account.getCustomData();
 customData.put("rank", "Captain");
-customData.put("birthDate", "2305-07-13");
-customData.put("birthPlace", "La Barre, France");
+customData.put("birthDate", "2305-07-13")
+customData.put("birthPlace", "La Barre, France")
 customData.put("favoriteDrink", "Earl Grey tea");
 application.createAccount(account);
 </code></pre>
@@ -1798,12 +1794,12 @@ application.createAccount(account);
 
 <p>The execution of the registration workflow can be explicitly overwritten on a per-request basis using the  <code>createAccount(CreateAccountRequest)</code> method:</p>
 
-<pre><code>Account account = client.instantiate(Account.class);
-account.setGivenName("Jean-Luc");
-account.setUsername("jlpicard");
-account.setSurname("Picard");
-account.setEmail("capt@enterprise.com");
-account.setPassword("4P@$$w0rd!");
+<pre><code>Account account = client.instantiate(Account.class)
+    .setGivenName("Jean-Luc")
+    .setUsername("jlpicard")
+    .setSurname("Picard")
+    .setEmail("capt@enterprise.com")
+    .setPassword("4P@$$w0rd!");
 
 application.createAccount(
     Accounts.newCreateRequestFor(account)
@@ -2050,8 +2046,7 @@ for(Account account: accounts) {
 
 <pre><code>Group group = client.instantiate(Group.class);
 
-group.setName("My Group");
-group.setDescription("My Group Description");
+group.setName("My Group").setDescription("My Group Description");
 
 application.createGroup(group);
 </code></pre>
@@ -2074,10 +2069,10 @@ application.createGroup(group);
 
 <pre><code>Group group = client.instantiate(Group.class);
 
-group.setName("My Group");
-group.setDescription("My Group Description");
-group.getCustomData().put("Headquarters", Arrays.asList("High Council Chamber", "High Council Tower", "Jedi Temple", "Coruscant"));
-group.getCustomData().put("Affiliation", "Jedi Order");
+group.setName("My Group").setDescription("My Group Description");
+CustomData customData = group.getCustomData();
+customData.put("Headquarters", Arrays.asList("High Council Chamber", "High Council Tower", "Jedi Temple", "Coruscant"));
+customData.put("Affiliation", "Jedi Order");
 
 application.createGroup(group);
 </code></pre>
@@ -2308,12 +2303,13 @@ stores to an application.  All of the accounts across all of an application&rsqu
 
 <p>Creating it from an application instance:</p>
 
-<pre><code>AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class);
-accountStoreMapping.setAccountStore(accountStore); // this could be an existing group or a directory
-accountStoreMapping.setApplication(application);
-accountStoreMapping.setDefaultAccountStore(Boolean.TRUE);
-accountStoreMapping.setDefaultGroupStore(Boolean.FALSE);
-accountStoreMapping.setListIndex(0);
+<pre><code>AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class)
+        .setAccountStore(accountStore) // this could be an existing group or a directory
+        .setApplication(application)
+        .setDefaultAccountStore(Boolean.TRUE)
+        .setDefaultGroupStore(Boolean.FALSE)
+        .setListIndex(0);
+
 application.createAccountStoreMapping(accountStoreMapping);
 </code></pre>
 
@@ -2364,8 +2360,7 @@ AccountStoreMapping accountStoreMapping = client.getResource(href, AccountStoreM
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>accountStoreMapping.setDefaultAccountStore(Boolean.FALSE);
-accountStoreMapping.save();
+<pre><code>accountStoreMapping.setDefaultAccountStore(Boolean.FALSE).save();
 </code></pre>
 
 <p><a class="anchor" name="account-store-mapping-update-priority"></a></p>
@@ -2386,8 +2381,7 @@ accountStoreMapping.save();
 
 <p>For example, assume that an account store represented by mapping <code>$accountStoreMapping</code> has a list index of <code>0</code> (first in the list), and we wanted to lower its priority to <code>1</code> (second in the list):</p>
 
-<pre><code>accountStoreMapping.setListIndex(1);
-accountStoreMapping.save();
+<pre><code>accountStoreMapping.setListIndex(1).save();
 </code></pre>
 
 <p><a class="anchor" name="account-store-mapping-default-account-store"></a></p>
@@ -2406,8 +2400,7 @@ accountStoreMapping.save();
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>accountStoreMapping.setDefaultAccountStore(Boolean.TRUE);
-accountStoreMapping.save();
+<pre><code>accountStoreMapping.setDefaultAccountStore(Boolean.TRUE).save();
 </code></pre>
 
 <p>Now, any time a new account is created from an application&rsquo;s <code>createAccount</code> method, the account will actually be created in the designated default account store.</p>
@@ -2456,8 +2449,7 @@ accountStoreMapping.save();
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>accountStoreMapping.setDefaultGroupStore(Boolean.TRUE);
-accountStoreMapping.save();
+<pre><code>accountStoreMapping.setDefaultGroupStore(Boolean.TRUE).save();
 </code></pre>
 
 <p>Now, any time a new group is created from an application&rsquo;s <code>createGroup</code> method, the group will actually be created in the designated default group store.</p>
@@ -2782,10 +2774,9 @@ You create a new directory by invoking the <code>createDirectory</code> method o
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>Directory directory = client.instantiate(Directory.class);
-
-directory.setName("Captains");
-directory.setDescription("Captains from a variety of stories");
+<pre><code>Directory directory = client.instantiate(Directory.class)
+    .setName("Captains")
+    .setDescription("Captains from a variety of stories");
 
 tenant.createDirectory(directory);
 </code></pre>
@@ -3251,10 +3242,10 @@ if(iterator.hasNext()) {
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>Group group = client.instantiate(Group.class);
-group.setName("Aquanauts");
-group.setDescription("Aquanauts");
-group.setStatus(GroupStatus.ENABLED);
+<pre><code>Group group = client.instantiate(Group.class)
+    .setName("Aquanauts")
+    .setDescription("Aquanauts")
+    .setStatus(GroupStatus.ENABLED);
 
 directory.createGroup(group);
 </code></pre>
@@ -3315,8 +3306,7 @@ group.save();
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>group.setStatus(GroupStatus.ENABLED);
-group.save();
+<pre><code>group.setStatus(GroupStatus.ENABLED).save();
 </code></pre>
 
 <p><a class="anchor" name="group-disable"></a></p>
@@ -3331,8 +3321,7 @@ group.save();
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>group.setStatus(GroupStatus.DISABLED);
-group.save();
+<pre><code>group.setStatus(GroupStatus.DISABLED).save();
 </code></pre>
 
 <p><a class="anchor" name="group-delete"></a></p>
@@ -3959,12 +3948,12 @@ for(Account acc : accounts) {
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>Account account = client.instantiate(Account.class);
-account.setEmail("john.smith@example.com");
-account.setGivenName("John");
-account.setPassword("4P@$$w0rd!");
-account.setSurname("Smith");
-account.setUsername("johnsmith");
+<pre><code>Account account = client.instantiate(Account.class)
+    .setEmail("john.smith@example.com")
+    .setGivenName("John")
+    .setPassword("4P@$$w0rd!")
+    .setSurname("Smith")
+    .setUsername("johnsmith");
 
 directory.createAccount(account);
 </code></pre>
@@ -4024,10 +4013,10 @@ Account account = client.getResource(href, Account.class);
 <p><a class="anchor" name="UpdateAccountName"></a><a class="anchor" name="account-update-simple"></a>
 <strong>Example Update Request</strong></p>
 
-<pre><code>account.setSurname("jlpicard");
-account.setGivenName("Jean-Luc");
-account.setSurname("Picard");
-account.save();
+<pre><code>account.setSurname("jlpicard")
+    .setGivenName("Jean-Luc")
+    .setSurname("Picard")
+    .save();
 </code></pre>
 
 <p>If the account is part of a directory containing groups, you can associate the account with a group.</p>
@@ -4041,8 +4030,7 @@ account.save();
 <p><a class="anchor" name="ChangeAccountPassword"></a>
 <strong>Example Request to Change an Account Password</strong></p>
 
-<pre><code>account.setPassword("L9%hw4c5q");
-account.save();
+<pre><code>account.setPassword("L9%hw4c5q").save();
 </code></pre>
 
 <p><a class="anchor" name="account-add-group"></a></p>
@@ -4085,8 +4073,7 @@ account.save();
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>account.setStatus(AccountStatus.ENABLED);
-account.save();
+<pre><code>account.setStatus(AccountStatus.ENABLED).save();
 </code></pre>
 
 <p><a class="anchor" name="account-delete"></a></p>
@@ -4479,14 +4466,14 @@ for(GroupMembership gms : groupMemberships) {
 
 <p><strong>Example Create Account with Custom Data</strong></p>
 
-<pre><code>Account account = client.instantiate(Account.class);
-account.setUsername("jlpicard");
-account.setEmail("capt@enterprise.com");
-account.setGivenName("Jean-Luc");
-account.setMiddleName("");
-account.setSurname("Picard");
-account.setPassword("uGhd%a8Kl!");
-account.setStatus(AccountStatus.ENABLED);
+<pre><code>Account account = client.instantiate(Account.class)
+        .setUsername("jlpicard")
+        .setEmail("capt@enterprise.com")
+        .setGivenName("Jean-Luc")
+        .setMiddleName("")
+        .setSurname("Picard")
+        .setPassword("uGhd%a8Kl!")
+        .setStatus(AccountStatus.ENABLED);
 CustomData customData = account.getCustomData();
 customData.put("rank", "Captain");
 customData.put("birthDate", "2305-07-13");
@@ -4496,8 +4483,7 @@ directory.createAccount(account);
 
 <p><strong>Example Create Group with Custom Data</strong></p>
 
-<pre><code>Group group = client.instantiate(Group.class);
-group.setName("Starfleet Officers");
+<pre><code>Group group = client.instantiate(Group.class).setName("Starfleet Officers");
 CustomData customData = group.getCustomData();
 customData.put("headquarters", "San Francisco, CA");
 directory.createGroup(group);
@@ -4622,6 +4608,327 @@ customData.save();
 </code></pre>
 
 <p>This request would remove the <code>favoriteColor</code> field entirely from the customData resource.  The next time the resource is <a href="#retrieve-custom-data">retrieved</a>, the field will be missing entirely.</p>
+
+<hr />
+
+<p><a class="anchor" name="integration-google"></a></p>
+
+<h2><a id="integrating-with-google"></a>Integrating with Google</h2>
+
+<p>Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codea (or access tokens) to return an <code>Account</code> for a given code.</p>
+
+<p>The steps to enable this functionality into your application include:</p>
+
+<ul>
+<li><a href="#creating-a-google-directory">Create a Google Directory</a></li>
+<li>Create an <code>Account Store Mapping</code> between a Google Directory and your <code>Application</code></li>
+<li><a href="#accessing-accounts-with-google-authorization-codes-or-access-tokens">Accessing Accounts with Google Authorization Codes or Access Tokens</a></li>
+</ul>
+
+
+<p>Google Directories follow behavior similar to <a href="#directory-mirror">mirror directories</a>, but have a <code>Provider</code> resource that contains information regarding the Google application that the directory is configured for.</p>
+
+<h3><a id="google-provider-resource"></a>Google Provider Resource</h3>
+
+<p>A <code>GoogleProvider</code> resource holds specific information needed for working with a Google Directory.  It is important to understand the format of the provider resource when creating and updating a Google Directory.</p>
+
+<p>A provider resource can be obtained by accessing the directory&rsquo;s provider as follows:</p>
+
+<p>Example Request</p>
+
+<pre><code>GoogleProvider provider = client.getResource("https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", GoogleProvider.class);
+</code></pre>
+
+<p>or, by means of the directory Resource:</p>
+
+<pre><code>GoogleProvider provider = (GoogleProvider) directory.getProvider();
+</code></pre>
+
+<p><strong>Resource Attributes</strong></p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description </th>
+<th align="left"> Type </th>
+<th align="left"> Valid Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>clientId</code> </td>
+<td align="left"> The App ID for your Google application </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>clientSecret</code> </td>
+<td align="left"> The App Secret for your Google application </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>redirectUri</code> </td>
+<td align="left"> The redirection Uri for your Google application </td>
+<td align="left"> String </td>
+<td align="left"> &mdash; </td>
+</tr>
+<tr>
+<td align="left"><code>providerId</code> </td>
+<td align="left"> The provider ID is the Stormpath ID for the Directory&rsquo;s account provider </td>
+<td align="left"> String </td>
+<td align="left"> &lsquo;google&rsquo;</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>In addition to your application specific attributes, a <code>Provider</code> resource will always contain 3 reserved read-only fields:</p>
+
+<ul>
+<li><code>href</code> : The fully qualified location of the custom data resource</li>
+<li><code>createdAt</code> : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> formatted string</li>
+<li><code>modifiedAt</code> : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> formatted string</li>
+</ul>
+
+
+<h3><a id="creating-a-google-directory"></a>Creating a Google Directory</h3>
+
+<p>Creating a Google Directory requires that you gather some information beforehand from Google&rsquo;s Developer Console regarding your application.</p>
+
+<ul>
+<li>Client ID</li>
+<li>Client Secret</li>
+<li>Redirect URI</li>
+</ul>
+
+
+<p>Creating a Google Directory is very similar to <a href="#create-a-directory">creating a directory</a> within Stormpath.  For a Google Directory to be configured correctly, you must specify the correct <code>Provider</code> information.</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>Directory directory = client.instantiate(Directory.class);
+directory.setName("my-google-directory");
+directory.setDescription("A Google directory");
+
+CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
+            forProvider(Providers.GOOGLE.builder()
+                    .setClientId("857385-m8vk0fn2r7jmjo.apps.googleusercontent.com")
+                    .setClientSecret("ehs7_-bA7OWQSQ4")
+                    .setRedirectUri("https://myapplication.com/authenticate")
+                    .build()
+            ).build();
+
+Tenant tenant = client.getCurrentTenant();
+directory = tenant.createDirectory(request);
+</code></pre>
+
+<p>After the Google Directory has been created, it needs to be <a href="#application-account-store-mappings">mapped with an application as an account store</a>. The Google Directory cannot be a default account store or a default group store.  Once the directory is mapped as an account store for an application, you are ready to access <code>Accounts</code> with Google Authorization Codes.</p>
+
+<h3><a id="accessing-accounts-with-google-authorization-codes-or-access-tokens"></a>Accessing Accounts with Google Authorization Codes or Access Tokens</h3>
+
+<p>To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google&rsquo;s OAuth 2.0 protocol and the user&rsquo;s consent for your application&rsquo;s permissions.</p>
+
+<p>Once the Authorization Code is gathered, you can get or create the <code>Account</code> by means of the <code>Application</code> and specifying its <code>ProviderData</code>. The following example shows how you use <code>ProviderData</code> to get an <code>Account</code> for a given authorization code:</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>String applicationHref = "https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu";
+Application application = client.getResource(applicationHref, Application.class);
+ProviderAccountRequest request = Providers.GOOGLE.account()
+            .setCode("4/a3p_fn0sMDQlyFVTYwfl5GAj0Obd.oiruVLbQZSwU3oEBd8DOtNApQzTCiwI")
+            .build();
+
+ProviderAccountResult result = application.getAccount(request);
+Account account = result.getAccount();
+</code></pre>
+
+<div class='docs-note'><p>In order to know if the account was created or if it already existed in the Stormpath&#8217;s Google Directory you can do: <code>result.isNewAccount();</code>. It will return <code>true</code> if it is a newly created account; <code>false</code> otherwise.</p>
+</div>
+
+
+<p>Once an <code>Account</code> is retreived, Stormpath maps common fields for the Google User to the  Account.  The access token and the refresh token for any additional calls in the <code>GoogleProviderData</code> resource and can be retrieved by:</p>
+
+<pre><code>GoogleProviderData providerData = (GoogleProviderData) account.getProviderData();
+</code></pre>
+
+<p>The returned <code>GoogleProviderData</code> includes:</p>
+
+<pre><code>providerData.getAccessToken(); //-&gt; y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4
+providerData.getCreatedAt(); //-&gt; 2014-04-01T17:00:09.154Z 
+providerData.getHref(); //-&gt; https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData 
+providerData.getModifiedAt(); //-&gt; 2014-04-01T17:00:09.189Z 
+providerData.getProviderId(); //-&gt; google 
+providerData.getRefreshToken(); //-&gt; 1/qQTS638g3ArE4U02FoiXL1yIh-OiPmhc
+</code></pre>
+
+<div class='docs-note'><p>The <code>accessToken</code> can also be passed as a field for the <code>ProviderData</code> to access the account once it is retrieved:</p>
+
+<pre><code>ProviderAccountRequest request = Providers.GOOGLE.account()
+            .setAccessToken("y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4")
+            .build();
+
+ProviderAccountResult result = application.getAccount(request);
+Account account = result.getAccount();
+</code></pre>
+</div>
+
+
+
+
+<div class='docs-note'><p>The <code>refreshToken</code> will only be present if your application asked for offline access.  Review Google&#8217;s documentation for more information regarding OAuth offline access.</p>
+</div>
+
+
+<hr />
+
+<p><a class="anchor" name="integration-facebook"></a></p>
+
+<h2><a id="integrating-with-facebook"></a>Integrating with Facebook</h2>
+
+<p>Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an <code>Account</code> for a given code.</p>
+
+<p>The steps to enable this functionality into your application include:</p>
+
+<ul>
+<li><a href="#creating-a-facebook-directory">Create a Facebook Directory</a></li>
+<li>Create an <code>Account Store Mapping</code> between a Facebook Directory and your <code>Application</code></li>
+<li><a href="#accessing-accounts-with-facebook-user-access-tokens">Accessing Accounts with Facebook User Access Tokens</a></li>
+</ul>
+
+
+<p>Facebook Directories follow behavior similar to <a href="#directory-mirror">mirror directories</a>, but have a <code>Provider</code> resource that contains information regarding the Facebook application that the directory is configured for.</p>
+
+<h3><a id="facebook-provider-resource"></a>Facebook Provider Resource</h3>
+
+<p>A <code>FacebookProvider</code> resource holds specific information needed for working with a Facebook Directory.  It is important to understand the format of the provider resource when creating and updating a Facebook Directory.</p>
+
+<p>A provider resource can be obtained by accessing the directory&rsquo;s provider as follows:</p>
+
+<p>Example Request</p>
+
+<pre><code>FacebookProvider provider = client.getResource("https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", FacebookProvider.class);
+</code></pre>
+
+<p>or, by means of the directory Resource:</p>
+
+<pre><code>FacebookProvider provider = (FacebookProvider) directory.getProvider();
+</code></pre>
+
+<p><strong>Resource Attributes</strong></p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description </th>
+<th align="left"> Type </th>
+<th align="left"> Valid Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>clientId</code> </td>
+<td align="left"> The App ID for your Facebook application </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>clientSecret</code> </td>
+<td align="left"> The App Secret for your Facebook application </td>
+<td align="left"> String </td>
+<td align="left"> &mdash; </td>
+</tr>
+<tr>
+<td align="left"><code>providerId</code> </td>
+<td align="left"> The provider ID is the Stormpath ID for the Directory&rsquo;s account provider </td>
+<td align="left"> String </td>
+<td align="left"> &lsquo;facebook&rsquo;</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>In addition to your application specific attributes, a <code>Provider</code> resource will always contain 3 reserved read-only fields:</p>
+
+<ul>
+<li><code>href</code> : The fully qualified location of the custom data resource</li>
+<li><code>createdAt</code> : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> formatted string</li>
+<li><code>modifiedAt</code> : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> formatted string</li>
+</ul>
+
+
+<h3><a id="creating-a-facebook-directory"></a>Creating a Facebook Directory</h3>
+
+<p>Creating a Facebook Directory requires that you gather some information beforehand from Facebook&rsquo;s Developer Console regarding your application.</p>
+
+<ul>
+<li>Client ID</li>
+<li>Client Secret</li>
+</ul>
+
+
+<p>Creating a Facebook Directory is very similar to <a href="#create-a-directory">creating a directory</a> within Stormpath.  For a Facebook Directory to be configured correctly, you must specify the correct <code>Provider</code> information.</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>Directory directory = client.instantiate(Directory.class);
+directory.setName("my-facebook-directory");
+directory.setDescription("A Facebook directory");
+
+CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
+            forProvider(Providers.FACEBOOK.builder()
+                    .setClientId("857385m8vk0fn2r7jmjo")
+                    .setClientSecret("ehs7bA7OWQSQ4")
+                    .build()
+            ).build();
+
+Tenant tenant = client.getCurrentTenant();
+directory = tenant.createDirectory(request);
+</code></pre>
+
+<p>After the Facebook Directory has been created, it needs to be <a href="#application-account-store-mappings">mapped with an application as an account store</a>. The Facebook Directory cannot be a default account store or a default group store.  Once the directory is mapped to an account store for an application, you are ready to access <code>Accounts</code> with Facebook User Access Tokens.</p>
+
+<h3><a id="accessing-accounts-with-facebook-user-access-tokens"></a>Accessing Accounts with Facebook User Access Tokens</h3>
+
+<p>To access or create an account in an already created Facebook Directory, it is required to gather the <code>User Access Token</code> on behalf of the user. This usually requires leveraging Facebook&rsquo;s javascript library and the user&rsquo;s consent for your application&rsquo;s permissions.</p>
+
+<div class='docs-note'><p>It is required that your Facebook application request for the <code>email</code> permission from Facebook. If the access token does not grant <code>email</code> permissions, you will not be able to get an <code>Account</code> with an access token.</p>
+</div>
+
+
+<p>Once the Authorization Code is gathered, you can get or create the <code>Account</code> by means of the <code>Application</code> and specifying its <code>ProviderData</code>. The following example shows how you use <code>ProviderData</code> to get an <code>Account</code> for a given authorization code:</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>String applicationHref = "https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu";
+Application application = client.getResource(applicationHref, Application.class);
+ProviderAccountRequest request = Providers.FACEBOOK.account()
+            .setAccessToken("CABTmZxAZBxBADbr1l7ZCwHpjivBt9T0GZBqjQdTmgyO0OkUq37HYaBi4F23f49f5")
+            .build();
+
+ProviderAccountResult result = application.getAccount(request);
+Account account = result.getAccount();
+</code></pre>
+
+<div class='docs-note'><p>In order to know if the account was created or if it already existed in the Stormpath&#8217;s Facebook Directory you can do: <code>result.isNewAccount();</code>. It will return <code>true</code> if it is a newly created account; <code>false</code> otherwise.</p>
+</div>
+
+
+<p>Once an <code>Account</code> is retreived, Stormpath maps common fields for the Facebook User to the  Account.  The access token for any additional calls in the <code>FacebookProviderData</code> resource and can be retrieved by:</p>
+
+<pre><code>FacebookProviderData providerData = (FacebookProviderData) account.getProviderData();
+</code></pre>
+
+<p>The returned <code>FacebookProviderData</code> will include:</p>
+
+<pre><code>providerData.getAccessToken(); //-&gt; CABTmZxAZBxBADbr1l7ZCwHpjivBt9T0GZBqjQdTmgyO0OkUq37HYaBi4F23f49f5
+providerData.getCreatedAt(); //-&gt; 2014-04-01T17:00:09.154Z
+providerData.getHref(); //-&gt; https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData
+providerData.getModifiedAt(); //-&gt; 2014-04-01T17:00:09.189Z
+providerData.getProviderId(); //-&gt; facebook
+</code></pre>
 
 <hr />
 
@@ -5098,7 +5405,7 @@ $ mvn install
 				<a href="/java/product-guide">Java Product Guide</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#java-sdk" data-level="1" class="fragment">Java SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#error-handling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-applications" data-level="1" class="fragment">Tenant Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-password-policy" data-level="1" class="fragment">Account Password Policy</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#verifying-an-accounts-email-address" data-level="1" class="fragment">Verifying An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#resetting-an-accounts-password" data-level="1" class="fragment">Resetting An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-an-account" data-level="1" class="fragment">Authenticate An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#java-sample-code" data-level="0" class="fragment">Java Sample Code</a><ul class="menu"><li class="leaf"><a href="#spring-mvc-sample-app" data-level="1" class="fragment">Spring MVC Sample App</a><ul class="menu"></ul></li><li class="leaf"><a href="#apache-shiro-sample-web-app" data-level="1" class="fragment">Apache Shiro Sample Web App</a><ul class="menu"></ul></li><li class="leaf"><a href="#spring-security-sample-web-app" data-level="1" class="fragment">Spring Security Sample Web App</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#appendix" data-level="0" class="fragment">Appendix</a><ul class="menu"><li class="leaf"><a href="#how-to-get-the-java-sdk-jar-files-if-you-are-not-using-a-maven-compatible-build-tool" data-level="1" class="fragment">How to get the Java SDK jar files if you are not using a Maven-compatible build tool</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#java-sdk" data-level="1" class="fragment">Java SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#error-handling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-applications" data-level="1" class="fragment">Tenant Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-password-policy" data-level="1" class="fragment">Account Password Policy</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#verifying-an-accounts-email-address" data-level="1" class="fragment">Verifying An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#resetting-an-accounts-password" data-level="1" class="fragment">Resetting An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-an-account" data-level="1" class="fragment">Authenticate An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-google" data-level="0" class="fragment">Integrating with Google</a><ul class="menu"><li class="leaf"><a href="#google-provider-resource" data-level="1" class="fragment">Google Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-google-directory" data-level="1" class="fragment">Creating a Google Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-google-authorization-codes-or-access-tokens" data-level="1" class="fragment">Accessing Accounts with Google Authorization Codes or Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-facebook" data-level="0" class="fragment">Integrating with Facebook</a><ul class="menu"><li class="leaf"><a href="#facebook-provider-resource" data-level="1" class="fragment">Facebook Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-facebook-directory" data-level="1" class="fragment">Creating a Facebook Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-facebook-user-access-tokens" data-level="1" class="fragment">Accessing Accounts with Facebook User Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#java-sample-code" data-level="0" class="fragment">Java Sample Code</a><ul class="menu"><li class="leaf"><a href="#spring-mvc-sample-app" data-level="1" class="fragment">Spring MVC Sample App</a><ul class="menu"></ul></li><li class="leaf"><a href="#apache-shiro-sample-web-app" data-level="1" class="fragment">Apache Shiro Sample Web App</a><ul class="menu"></ul></li><li class="leaf"><a href="#spring-security-sample-web-app" data-level="1" class="fragment">Spring Security Sample Web App</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#appendix" data-level="0" class="fragment">Appendix</a><ul class="menu"><li class="leaf"><a href="#how-to-get-the-java-sdk-jar-files-if-you-are-not-using-a-maven-compatible-build-tool" data-level="1" class="fragment">How to get the Java SDK jar files if you are not using a Maven-compatible build tool</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
