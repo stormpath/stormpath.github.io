@@ -3269,6 +3269,241 @@ This request would remove the `favoriteColor` field entirely from the customData
 
 ***
 
+<a class="anchor" name="integration-google"></a>
+## Integrating with Google
+
+Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codea (or access tokens) to return an `Account` for a given code. 
+
+The steps to enable this functionality into your application include:
+
++ [Create a Google Directory](#creating-a-google-directory)
++ Create an `Account Store Mapping` between a Google Directory and your `Application`
++ [Accessing Accounts with Google Authorization Codes or Access Tokens](#accessing-accounts-with-google-authorization-codes-or-access-tokens)
+
+Google Directories follow behavior similar to [mirror directories](#directory-mirror), but have a `Provider` resource that contains information regarding the Google application that the directory is configured for.
+
+### Google Provider Resource
+
+A `GoogleProvider` resource holds specific information needed for working with a Google Directory.  It is important to understand the format of the provider resource when creating and updating a Google Directory.
+
+A provider resource can be obtained by accessing the directory's provider as follows:
+
+Example Request
+
+    GoogleProvider provider = client.getResource("https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", GoogleProvider.class);
+        
+or, by means of the directory Resource:
+
+    GoogleProvider provider = (GoogleProvider) directory.getProvider();
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`clientId` | The App ID for your Google application | String | --
+`clientSecret` | The App Secret for your Google application | String | --
+`redirectUri` | The redirection Uri for your Google application | String | -- 
+`providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'google'
+
+In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
+
++ `href` : The fully qualified location of the custom data resource
++ `createdAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
++ `modifiedAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
+
+### Creating a Google Directory
+
+Creating a Google Directory requires that you gather some information beforehand from Google's Developer Console regarding your application.  
+
++ Client ID
++ Client Secret
++ Redirect URI
+
+Creating a Google Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a Google Directory to be configured correctly, you must specify the correct `Provider` information.
+
+**Example Request**
+
+    Directory directory = client.instantiate(Directory.class);
+    directory.setName("my-google-directory");
+    directory.setDescription("A Google directory");
+
+    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
+                forProvider(Providers.GOOGLE.builder()
+                        .setClientId("857385-m8vk0fn2r7jmjo.apps.googleusercontent.com")
+                        .setClientSecret("ehs7_-bA7OWQSQ4")
+                        .setRedirectUri("https://myapplication.com/authenticate")
+                        .build()
+                ).build();
+    
+    Tenant tenant = client.getCurrentTenant();
+    directory = tenant.createDirectory(request);
+
+
+After the Google Directory has been created, it needs to be [mapped with an application as an account store](#application-account-store-mappings). The Google Directory cannot be a default account store or a default group store.  Once the directory is mapped as an account store for an application, you are ready to access `Accounts` with Google Authorization Codes.
+
+### Accessing Accounts with Google Authorization Codes or Access Tokens
+
+To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google's OAuth 2.0 protocol and the user's consent for your application's permissions.
+
+Once the Authorization Code is gathered, you can get or create the `Account` by means of the `Application` and specifying its `ProviderData`. The following example shows how you use `ProviderData` to get an `Account` for a given authorization code:
+
+**Example Request**
+
+    String applicationHref = "https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu";
+    Application application = client.getResource(applicationHref, Application.class);
+    ProviderAccountRequest request = Providers.GOOGLE.account()
+                .setCode("4/a3p_fn0sMDQlyFVTYwfl5GAj0Obd.oiruVLbQZSwU3oEBd8DOtNApQzTCiwI")
+                .build();
+
+    ProviderAccountResult result = application.getAccount(request);
+    Account account = result.getAccount();
+
+{% docs note %}
+In order to know if the account was created or if it already existed in the Stormpath's Google Directory you can do: `result.isNewAccount();`. It will return `true` if it is a newly created account; `false` otherwise.
+{% enddocs %}
+
+Once an `Account` is retreived, Stormpath maps common fields for the Google User to the  Account.  The access token and the refresh token for any additional calls in the `GoogleProviderData` resource and can be retrieved by:
+
+    GoogleProviderData providerData = (GoogleProviderData) account.getProviderData();
+    
+The returned `GoogleProviderData` includes:
+
+    providerData.getAccessToken(); //-> y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4
+    providerData.getCreatedAt(); //-> 2014-04-01T17:00:09.154Z 
+    providerData.getHref(); //-> https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData 
+    providerData.getModifiedAt(); //-> 2014-04-01T17:00:09.189Z 
+    providerData.getProviderId(); //-> google 
+    providerData.getRefreshToken(); //-> 1/qQTS638g3ArE4U02FoiXL1yIh-OiPmhc
+
+{% docs note %}
+The `accessToken` can also be passed as a field for the `ProviderData` to access the account once it is retrieved:
+    
+    ProviderAccountRequest request = Providers.GOOGLE.account()
+                .setAccessToken("y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4")
+                .build();
+
+    ProviderAccountResult result = application.getAccount(request);
+    Account account = result.getAccount();
+    
+    
+{% enddocs %}
+
+{% docs note %}
+The `refreshToken` will only be present if your application asked for offline access.  Review Google's documentation for more information regarding OAuth offline access.
+{% enddocs %}
+
+***
+
+<a class="anchor" name="integration-facebook"></a>
+## Integrating with Facebook
+
+Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code. 
+
+The steps to enable this functionality into your application include:
+
++ [Create a Facebook Directory](#creating-a-facebook-directory)
++ Create an `Account Store Mapping` between a Facebook Directory and your `Application`
++ [Accessing Accounts with Facebook User Access Tokens](#accessing-accounts-with-facebook-user-access-tokens)
+
+Facebook Directories follow behavior similar to [mirror directories](#directory-mirror), but have a `Provider` resource that contains information regarding the Facebook application that the directory is configured for.
+
+### Facebook Provider Resource
+
+A `FacebookProvider` resource holds specific information needed for working with a Facebook Directory.  It is important to understand the format of the provider resource when creating and updating a Facebook Directory.
+
+A provider resource can be obtained by accessing the directory's provider as follows:
+
+Example Request
+
+    FacebookProvider provider = client.getResource("https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", FacebookProvider.class);
+        
+or, by means of the directory Resource:
+
+    FacebookProvider provider = (FacebookProvider) directory.getProvider();
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`clientId` | The App ID for your Facebook application | String | --
+`clientSecret` | The App Secret for your Facebook application | String | -- 
+`providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'facebook'
+
+In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
+
++ `href` : The fully qualified location of the custom data resource
++ `createdAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
++ `modifiedAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
+
+### Creating a Facebook Directory
+
+Creating a Facebook Directory requires that you gather some information beforehand from Facebook's Developer Console regarding your application.  
+
++ Client ID
++ Client Secret
+
+Creating a Facebook Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information. 
+
+**Example Request**
+
+    Directory directory = client.instantiate(Directory.class);
+    directory.setName("my-facebook-directory");
+    directory.setDescription("A Facebook directory");
+
+    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
+                forProvider(Providers.FACEBOOK.builder()
+                        .setClientId("857385m8vk0fn2r7jmjo")
+                        .setClientSecret("ehs7bA7OWQSQ4")
+                        .build()
+                ).build();
+
+    Tenant tenant = client.getCurrentTenant();
+    directory = tenant.createDirectory(request);
+
+
+After the Facebook Directory has been created, it needs to be [mapped with an application as an account store](#application-account-store-mappings). The Facebook Directory cannot be a default account store or a default group store.  Once the directory is mapped to an account store for an application, you are ready to access `Accounts` with Facebook User Access Tokens.
+
+### Accessing Accounts with Facebook User Access Tokens
+
+To access or create an account in an already created Facebook Directory, it is required to gather the `User Access Token` on behalf of the user. This usually requires leveraging Facebook's javascript library and the user's consent for your application's permissions.
+
+{% docs note %}
+It is required that your Facebook application request for the `email` permission from Facebook. If the access token does not grant `email` permissions, you will not be able to get an `Account` with an access token.
+{% enddocs %}
+
+Once the Authorization Code is gathered, you can get or create the `Account` by means of the `Application` and specifying its `ProviderData`. The following example shows how you use `ProviderData` to get an `Account` for a given authorization code:
+
+
+**Example Request**
+
+    String applicationHref = "https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu";
+    Application application = client.getResource(applicationHref, Application.class);
+    ProviderAccountRequest request = Providers.FACEBOOK.account()
+                .setAccessToken("CABTmZxAZBxBADbr1l7ZCwHpjivBt9T0GZBqjQdTmgyO0OkUq37HYaBi4F23f49f5")
+                .build();
+
+    ProviderAccountResult result = application.getAccount(request);
+    Account account = result.getAccount();
+
+
+{% docs note %}
+In order to know if the account was created or if it already existed in the Stormpath's Facebook Directory you can do: `result.isNewAccount();`. It will return `true` if it is a newly created account; `false` otherwise.
+{% enddocs %}
+
+Once an `Account` is retreived, Stormpath maps common fields for the Facebook User to the  Account.  The access token for any additional calls in the `FacebookProviderData` resource and can be retrieved by:
+
+    FacebookProviderData providerData = (FacebookProviderData) account.getProviderData();
+
+The returned `FacebookProviderData` will include:
+
+    providerData.getAccessToken(); //-> CABTmZxAZBxBADbr1l7ZCwHpjivBt9T0GZBqjQdTmgyO0OkUq37HYaBi4F23f49f5
+    providerData.getCreatedAt(); //-> 2014-04-01T17:00:09.154Z
+    providerData.getHref(); //-> https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData
+    providerData.getModifiedAt(); //-> 2014-04-01T17:00:09.189Z
+    providerData.getProviderId(); //-> facebook
+
+***
+
 ## Java Sample Code 
 
 ### Spring MVC Sample App 
