@@ -1041,7 +1041,7 @@ AccountList accounts = application.getAccounts(criteria);
 
 <p>For example, it would not be possible to return an account with its directory expanded and also the directory&rsquo;s groups expanded as well. Link expansion is currently only possible one level &lsquo;deep&rsquo;.</p>
 
-<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#x6f;&#x3a;&#x73;&#117;&#112;&#112;&#111;&#x72;&#x74;&#x40;&#115;&#x74;&#x6f;&#x72;&#x6d;&#112;&#x61;&#x74;&#x68;&#x2e;&#99;&#x6f;&#x6d;">&#x73;&#x75;&#112;&#112;&#x6f;&#114;&#x74;&#x40;&#x73;&#x74;&#111;&#x72;&#x6d;&#112;&#x61;&#116;&#x68;&#46;&#99;&#111;&#x6d;</a> and submit a feature request.</p>
+<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#111;&#58;&#115;&#117;&#112;&#x70;&#x6f;&#x72;&#116;&#x40;&#115;&#x74;&#x6f;&#114;&#x6d;&#x70;&#x61;&#116;&#104;&#x2e;&#99;&#x6f;&#109;">&#x73;&#117;&#x70;&#112;&#x6f;&#114;&#116;&#x40;&#x73;&#116;&#x6f;&#x72;&#109;&#112;&#97;&#116;&#x68;&#x2e;&#99;&#111;&#x6d;</a> and submit a feature request.</p>
 
 <h4>Expanding Collection Resources</h4>
 
@@ -1160,7 +1160,7 @@ AccountList accounts = application.getAccounts(criteria);
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
 
-<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x73;&#x75;&#112;&#112;&#111;&#114;&#x74;&#64;&#115;&#116;&#x6f;&#x72;&#x6d;&#x70;&#97;&#116;&#104;&#46;&#x63;&#x6f;&#109;">&#x73;&#117;&#112;&#x70;&#x6f;&#114;&#x74;&#64;&#x73;&#116;&#111;&#114;&#109;&#112;&#x61;&#116;&#x68;&#x2e;&#x63;&#111;&#109;</a> and request it.</p>
+<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#x73;&#117;&#x70;&#112;&#111;&#114;&#116;&#x40;&#x73;&#x74;&#111;&#114;&#x6d;&#x70;&#x61;&#116;&#x68;&#x2e;&#99;&#111;&#109;">&#115;&#117;&#x70;&#x70;&#x6f;&#114;&#x74;&#64;&#x73;&#116;&#111;&#x72;&#109;&#112;&#x61;&#116;&#x68;&#46;&#x63;&#111;&#109;</a> and request it.</p>
 
 <p><a class="anchor" name="tenant-retrieve"></a></p>
 
@@ -1491,10 +1491,10 @@ tenant.getApplications(criteria);
 
 <p><strong>Example Request Using the Tenant Instance</strong></p>
 
-<pre><code>Application application = client.instantiate(Application.class)
-        .setName("My Application")
-        .setDescription("My Application Description")
-        .setStatus(ApplicationStatus.ENABLED);
+<pre><code>Application application = client.instantiate(Application.class);
+application.setName("My Application");
+application.setDescription("My Application Description");
+application.setStatus(ApplicationStatus.ENABLED);
 
 tenant.createApplication(application);
 </code></pre>
@@ -1523,10 +1523,10 @@ tenant.createApplication(application);
 
 <p>When sending the creation request, you can append the <code>createDirectory()</code> method:</p>
 
-<pre><code>Application application = client.instantiate(Application.class)
-        .setName("My Application")
-        .setDescription("My Application Description")
-        .setStatus(ApplicationStatus.ENABLED);
+<pre><code>Application application = client.instantiate(Application.class);
+application.setName("My Application");
+application.setDescription("My Application Description");
+application.setStatus(ApplicationStatus.ENABLED);
 
 tenant.createApplication(
         Applications.newCreateRequestFor(application)
@@ -1552,7 +1552,8 @@ tenant.createApplication(
 
 <p>If you want to automatically create a Directory for your application, and you also want to manually specify the new Directory&rsquo;s name, instead of using a <code>true</code> value as the query parameter value, you can specify a String name instead:</p>
 
-<pre><code>Application application = client.instantiate(Application.class).setName("My Application");
+<pre><code>Application application = client.instantiate(Application.class);
+application.setName("My Application");
 
 tenant.createApplication(
     Applications.newCreateRequestFor(application)
@@ -1608,7 +1609,8 @@ tenant.createApplication(
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>application.setDescription("A new description.").save();
+<pre><code>application.setDescription("A new description.");
+application.save();
 </code></pre>
 
 <p><a class="anchor" name="application-enable"></a></p>
@@ -1621,7 +1623,8 @@ tenant.createApplication(
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>application.setStatus(ApplicationStatus.ENABLED).save();
+<pre><code>application.setStatus(ApplicationStatus.ENABLED);
+application.save();
 </code></pre>
 
 <p><a class="anchor" name="application-disable"></a></p>
@@ -1636,7 +1639,8 @@ tenant.createApplication(
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>application.setStatus(ApplicationStatus.DISABLED).save();
+<pre><code>application.setStatus(ApplicationStatus.DISABLED);
+application.save();
 </code></pre>
 
 <p><a class="anchor" name="application-delete"></a></p>
@@ -1730,12 +1734,12 @@ tenant.createApplication(
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>Account account = client.instantiate(Account.class)
-    .setGivenName("Jean-Luc")
-    .setUsername("jlpicard")
-    .setSurname("Picard")
-    .setEmail("capt@enterprise.com")
-    .setPassword("4P@$$w0rd!");
+<pre><code>Account account = client.instantiate(Account.class);
+account.setGivenName("Jean-Luc");
+account.setUsername("jlpicard");
+account.setSurname("Picard");
+account.setEmail("capt@enterprise.com");
+account.setPassword("4P@$$w0rd!");
 
 application.createAccount(account);
 </code></pre>
@@ -1758,18 +1762,18 @@ application.createAccount(account);
 
 <p>When you create an application account, in addition to Stormpath&rsquo;s account attributes, you may also specify <a href="#custom-data">your own custom data</a> by including a <code>CustomData</code> object:</p>
 
-<pre><code>Account account = client.instantiate(Account.class)
-    .setUsername("jlpicard")
-    .setEmail("capt@enterprise.com")
-    .setGivenName("Jean-Luc")
-    .setMiddleName("")
-    .setSurname("Picard")
-    .setPassword("uGhd%a8Kl!")
-    .setStatus(AccountStatus.ENABLED);
+<pre><code>Account account = client.instantiate(Account.class);
+account.setUsername("jlpicard");
+account.setEmail("capt@enterprise.com");
+account.setGivenName("Jean-Luc");
+account.setMiddleName("");
+account.setSurname("Picard");
+account.setPassword("uGhd%a8Kl!");
+account.setStatus(AccountStatus.ENABLED);
 CustomData customData = account.getCustomData();
 customData.put("rank", "Captain");
-customData.put("birthDate", "2305-07-13")
-customData.put("birthPlace", "La Barre, France")
+customData.put("birthDate", "2305-07-13");
+customData.put("birthPlace", "La Barre, France");
 customData.put("favoriteDrink", "Earl Grey tea");
 application.createAccount(account);
 </code></pre>
@@ -1794,12 +1798,12 @@ application.createAccount(account);
 
 <p>The execution of the registration workflow can be explicitly overwritten on a per-request basis using the  <code>createAccount(CreateAccountRequest)</code> method:</p>
 
-<pre><code>Account account = client.instantiate(Account.class)
-    .setGivenName("Jean-Luc")
-    .setUsername("jlpicard")
-    .setSurname("Picard")
-    .setEmail("capt@enterprise.com")
-    .setPassword("4P@$$w0rd!");
+<pre><code>Account account = client.instantiate(Account.class);
+account.setGivenName("Jean-Luc");
+account.setUsername("jlpicard");
+account.setSurname("Picard");
+account.setEmail("capt@enterprise.com");
+account.setPassword("4P@$$w0rd!");
 
 application.createAccount(
     Accounts.newCreateRequestFor(account)
@@ -2046,7 +2050,8 @@ for(Account account: accounts) {
 
 <pre><code>Group group = client.instantiate(Group.class);
 
-group.setName("My Group").setDescription("My Group Description");
+group.setName("My Group");
+group.setDescription("My Group Description");
 
 application.createGroup(group);
 </code></pre>
@@ -2069,10 +2074,10 @@ application.createGroup(group);
 
 <pre><code>Group group = client.instantiate(Group.class);
 
-group.setName("My Group").setDescription("My Group Description");
-CustomData customData = group.getCustomData();
-customData.put("Headquarters", Arrays.asList("High Council Chamber", "High Council Tower", "Jedi Temple", "Coruscant"));
-customData.put("Affiliation", "Jedi Order");
+group.setName("My Group");
+group.setDescription("My Group Description");
+group.getCustomData().put("Headquarters", Arrays.asList("High Council Chamber", "High Council Tower", "Jedi Temple", "Coruscant"));
+group.getCustomData().put("Affiliation", "Jedi Order");
 
 application.createGroup(group);
 </code></pre>
@@ -2303,13 +2308,12 @@ stores to an application.  All of the accounts across all of an application&rsqu
 
 <p>Creating it from an application instance:</p>
 
-<pre><code>AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class)
-        .setAccountStore(accountStore) // this could be an existing group or a directory
-        .setApplication(application)
-        .setDefaultAccountStore(Boolean.TRUE)
-        .setDefaultGroupStore(Boolean.FALSE)
-        .setListIndex(0);
-
+<pre><code>AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class);
+accountStoreMapping.setAccountStore(accountStore); // this could be an existing group or a directory
+accountStoreMapping.setApplication(application);
+accountStoreMapping.setDefaultAccountStore(Boolean.TRUE);
+accountStoreMapping.setDefaultGroupStore(Boolean.FALSE);
+accountStoreMapping.setListIndex(0);
 application.createAccountStoreMapping(accountStoreMapping);
 </code></pre>
 
@@ -2360,7 +2364,8 @@ AccountStoreMapping accountStoreMapping = client.getResource(href, AccountStoreM
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>accountStoreMapping.setDefaultAccountStore(Boolean.FALSE).save();
+<pre><code>accountStoreMapping.setDefaultAccountStore(Boolean.FALSE);
+accountStoreMapping.save();
 </code></pre>
 
 <p><a class="anchor" name="account-store-mapping-update-priority"></a></p>
@@ -2381,7 +2386,8 @@ AccountStoreMapping accountStoreMapping = client.getResource(href, AccountStoreM
 
 <p>For example, assume that an account store represented by mapping <code>$accountStoreMapping</code> has a list index of <code>0</code> (first in the list), and we wanted to lower its priority to <code>1</code> (second in the list):</p>
 
-<pre><code>accountStoreMapping.setListIndex(1).save();
+<pre><code>accountStoreMapping.setListIndex(1);
+accountStoreMapping.save();
 </code></pre>
 
 <p><a class="anchor" name="account-store-mapping-default-account-store"></a></p>
@@ -2400,7 +2406,8 @@ AccountStoreMapping accountStoreMapping = client.getResource(href, AccountStoreM
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>accountStoreMapping.setDefaultAccountStore(Boolean.TRUE).save();
+<pre><code>accountStoreMapping.setDefaultAccountStore(Boolean.TRUE);
+accountStoreMapping.save();
 </code></pre>
 
 <p>Now, any time a new account is created from an application&rsquo;s <code>createAccount</code> method, the account will actually be created in the designated default account store.</p>
@@ -2449,7 +2456,8 @@ AccountStoreMapping accountStoreMapping = client.getResource(href, AccountStoreM
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>accountStoreMapping.setDefaultGroupStore(Boolean.TRUE).save();
+<pre><code>accountStoreMapping.setDefaultGroupStore(Boolean.TRUE);
+accountStoreMapping.save();
 </code></pre>
 
 <p>Now, any time a new group is created from an application&rsquo;s <code>createGroup</code> method, the group will actually be created in the designated default group store.</p>
@@ -2774,9 +2782,10 @@ You create a new directory by invoking the <code>createDirectory</code> method o
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>Directory directory = client.instantiate(Directory.class)
-    .setName("Captains")
-    .setDescription("Captains from a variety of stories");
+<pre><code>Directory directory = client.instantiate(Directory.class);
+
+directory.setName("Captains");
+directory.setDescription("Captains from a variety of stories");
 
 tenant.createDirectory(directory);
 </code></pre>
@@ -3242,10 +3251,10 @@ if(iterator.hasNext()) {
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>Group group = client.instantiate(Group.class)
-    .setName("Aquanauts")
-    .setDescription("Aquanauts")
-    .setStatus(GroupStatus.ENABLED);
+<pre><code>Group group = client.instantiate(Group.class);
+group.setName("Aquanauts");
+group.setDescription("Aquanauts");
+group.setStatus(GroupStatus.ENABLED);
 
 directory.createGroup(group);
 </code></pre>
@@ -3306,7 +3315,8 @@ group.save();
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>group.setStatus(GroupStatus.ENABLED).save();
+<pre><code>group.setStatus(GroupStatus.ENABLED);
+group.save();
 </code></pre>
 
 <p><a class="anchor" name="group-disable"></a></p>
@@ -3321,7 +3331,8 @@ group.save();
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>group.setStatus(GroupStatus.DISABLED).save();
+<pre><code>group.setStatus(GroupStatus.DISABLED);
+group.save();
 </code></pre>
 
 <p><a class="anchor" name="group-delete"></a></p>
@@ -3948,12 +3959,12 @@ for(Account acc : accounts) {
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>Account account = client.instantiate(Account.class)
-    .setEmail("john.smith@example.com")
-    .setGivenName("John")
-    .setPassword("4P@$$w0rd!")
-    .setSurname("Smith")
-    .setUsername("johnsmith");
+<pre><code>Account account = client.instantiate(Account.class);
+account.setEmail("john.smith@example.com");
+account.setGivenName("John");
+account.setPassword("4P@$$w0rd!");
+account.setSurname("Smith");
+account.setUsername("johnsmith");
 
 directory.createAccount(account);
 </code></pre>
@@ -4013,10 +4024,10 @@ Account account = client.getResource(href, Account.class);
 <p><a class="anchor" name="UpdateAccountName"></a><a class="anchor" name="account-update-simple"></a>
 <strong>Example Update Request</strong></p>
 
-<pre><code>account.setSurname("jlpicard")
-    .setGivenName("Jean-Luc")
-    .setSurname("Picard")
-    .save();
+<pre><code>account.setSurname("jlpicard");
+account.setGivenName("Jean-Luc");
+account.setSurname("Picard");
+account.save();
 </code></pre>
 
 <p>If the account is part of a directory containing groups, you can associate the account with a group.</p>
@@ -4030,7 +4041,8 @@ Account account = client.getResource(href, Account.class);
 <p><a class="anchor" name="ChangeAccountPassword"></a>
 <strong>Example Request to Change an Account Password</strong></p>
 
-<pre><code>account.setPassword("L9%hw4c5q").save();
+<pre><code>account.setPassword("L9%hw4c5q");
+account.save();
 </code></pre>
 
 <p><a class="anchor" name="account-add-group"></a></p>
@@ -4073,7 +4085,8 @@ Account account = client.getResource(href, Account.class);
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>account.setStatus(AccountStatus.ENABLED).save();
+<pre><code>account.setStatus(AccountStatus.ENABLED);
+account.save();
 </code></pre>
 
 <p><a class="anchor" name="account-delete"></a></p>
@@ -4466,14 +4479,14 @@ for(GroupMembership gms : groupMemberships) {
 
 <p><strong>Example Create Account with Custom Data</strong></p>
 
-<pre><code>Account account = client.instantiate(Account.class)
-        .setUsername("jlpicard")
-        .setEmail("capt@enterprise.com")
-        .setGivenName("Jean-Luc")
-        .setMiddleName("")
-        .setSurname("Picard")
-        .setPassword("uGhd%a8Kl!")
-        .setStatus(AccountStatus.ENABLED);
+<pre><code>Account account = client.instantiate(Account.class);
+account.setUsername("jlpicard");
+account.setEmail("capt@enterprise.com");
+account.setGivenName("Jean-Luc");
+account.setMiddleName("");
+account.setSurname("Picard");
+account.setPassword("uGhd%a8Kl!");
+account.setStatus(AccountStatus.ENABLED);
 CustomData customData = account.getCustomData();
 customData.put("rank", "Captain");
 customData.put("birthDate", "2305-07-13");
@@ -4483,7 +4496,8 @@ directory.createAccount(account);
 
 <p><strong>Example Create Group with Custom Data</strong></p>
 
-<pre><code>Group group = client.instantiate(Group.class).setName("Starfleet Officers");
+<pre><code>Group group = client.instantiate(Group.class);
+group.setName("Starfleet Officers");
 CustomData customData = group.getCustomData();
 customData.put("headquarters", "San Francisco, CA");
 directory.createGroup(group);
