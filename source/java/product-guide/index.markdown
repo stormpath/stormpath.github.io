@@ -1096,8 +1096,8 @@ When you create an application account, in addition to Stormpath's account attri
         .setStatus(AccountStatus.ENABLED);
     CustomData customData = account.getCustomData();
     customData.put("rank", "Captain");
-    customData.put("birthDate", "2305-07-13")
-    customData.put("birthPlace", "La Barre, France")
+    customData.put("birthDate", "2305-07-13");
+    customData.put("birthPlace", "La Barre, France");
     customData.put("favoriteDrink", "Earl Grey tea");
     application.createAccount(account);
 
