@@ -14,7 +14,7 @@ Let's get started!
 
 ##  Install the Stormpath <b>npm</b> Module
 
-Once you have an API Key, navigate to a folder that will include the node app and run
+Navigate to a folder that will include the node app and run
 
     npm install stormpath --save
 
