@@ -6,8 +6,17 @@ description: "10-minute Tutorial to Stormpath in Node.js"
 image: https://stormpath.com/images/blog/og-node-stormpath.png
 title: Stormpath Node.js Quickstart
 ---
-This quickstart will get you up and running with Stormpath in about 10 minutes and give you a good initial feel for the Stormpath Node.js SDK. 
+Welcome to the Node.js Quickstart!
 
+This quickstart will get you up and running with Stormpath in about 10 minutes and give you a good initial feel for the Stormpath Node.js SDK.  During this quickstart, you will do the following:
+
+ * Install Stormpath with npm
+ * Create an API Key that allows you to make REST API calls with Stormpath
+ * Register an Application
+ * Create a User Account
+ * Search for a User Account
+ * Authenticate a User Account
+ 
 Let's get started!
 
 ***
