@@ -136,12 +136,13 @@ Once you have accounts in directories that are associated with an application, y
 That will output the authenticated account.  From here, you could update account fields, get the groups or roles associated with the account, or even trigger a password reset workflow.
 
 ***
-## Please help us out by telling your friends
+<!-- >## Help us spread the word
 
 If you found this tutorial helpful and think our product is cool, please help us out with a quick tweet.
 
 Look! We even make it easy for you with a nice button :)
 
+-->
 
 ***
 ## What's Next
