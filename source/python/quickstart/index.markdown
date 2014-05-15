@@ -1,6 +1,8 @@
 ---
 layout: doc
 lang: python
+description: "10-minute Tutorial for Python"
+image: https://stormpath.com/images/tutorial/python.png
 title: Stormpath Python Quickstart
 ---
 
@@ -8,42 +10,57 @@ Welcome to Stormpath's Python SDK Quickstart!
 
 This quickstart will get you up and running with Stormpath in about 10 minutes and give you a good initial feel for the Stormpath Python SDK.  During this quickstart, you will do the following:
 
-* Register for a free Stormpath account
-* Create an API Key that allows you to make REST API calls with Stormpath
-* Register an application with Stormpath so you can automate that application's user management and authentication needs
-* Create an account that can log in to the application
-* Authenticate an account with the application
+ * Install the Stormpath SDK
+ * Create an API Key that allows you to make REST API calls with Stormpath
+ * Register an Application 
+ * Create a User Account
+ * Search for a User Account
+ * Authenticate a User Account
 
-With Stormpath, you can offload repetitive security-sensitive logic to Stormpath and get back to building your application's core functionality.  Never worry about storing passwords again!
+Stormpath also can do a lot more like Groups, Multitenancy, Social Integration, and Security workflows which you can learn more about at the end of this quickstart. 
 
-The Python SDK can be found on [Github](https://github.com/stormpath/stormpath-sdk-python).
+Let's get started!
+
+***
+
+## Install Stormpath SDK
 
 {% docs note %}
 This SDK is compatible with the 2.7 or 3.2 and later versions of Python.
 {% enddocs %}
 
+Add the [Stormpath Python SDK](https://github.com/stormpath/stormpath-sdk-python) using pip:
+
+    $ pip install stormpath
+
+Don't have pip installed? Try installing it, by running this from the command line:
+
+    $ curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
+
+Or, you can [download the source code (ZIP)](https://github.com/stormpath/stormpath-sdk-python/zipball/master "stormpath-sdk
+source code") for `stormpath-sdk`, and then run:
+
+    $ python setup.py install
+
+You may need to run the above commands with `sudo`. 
+
 ***
 
-## Sign Up for Stormpath
-
-1. Fill out and submit the [Stormpath registration form](https://api.stormpath.com/register).  This will send a confirmation email.
-2. Click the link in the confirmation email.
-
-***
-
-## <a name="apiKey"></a> Get an API Key
+## Get an API Key
 
 All requests back to Stormpath using the Stormpath SDK must be authenticated with an API Key. To get an API key:
 
-1. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using the email address and password you used to register with Stormpath.
+1. If you haven't already, [Sign up for Stormpath here](https://api.stormpath.com/register).  You'll be sent a verification email.
+
+1. Click the link in the verification email. 
+
+2. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using the email address and password you used to register with Stormpath.
 
 2. In the top-right corner of the resulting page, visit **Settings** > **My Account**.
 
-    <!-- TODO: SCREENSHOT (arrow calling attention to the 'My Accounts' menu item)   -->
 
 3. On the Account Details page, under **Security Credentials**, click **Create API Key**.
 
-    <!-- TODO: SCREENSHOT (arrow calling attention to the 'Create API Key' button) -->
 
     This will generate your API Key and download it to your computer as an `apiKey.properties` file. If you open the file in a text editor, you will see something similar to the following:
 
@@ -60,28 +77,7 @@ All requests back to Stormpath using the Stormpath SDK must be authenticated wit
 
 ***
 
-## Add the Stormpath Python SDK to your Project
-
-Add the [Stormpath Python SDK](https://github.com/stormpath/stormpath-sdk-python) using pip:
-
-    $ pip install stormpath-sdk --pre
-
-Don't have pip installed? Try installing it, by running this from the command line:
-
-    $ curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
-
-Or, you can [download the source code (ZIP)](https://github.com/stormpath/stormpath-sdk-python/zipball/master "stormpath-sdk
-source code") for `stormpath-sdk`, and then run:
-
-    $ python setup.py install
-
-You may need to run the above commands with `sudo`. 
-
-***
-
-## Working with the Stormpath Python SDK
-
-### Configure your Python application
+## Configure your Python application
 
 Create a Stormpath SDK [`Client`](/python/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
 
@@ -93,55 +89,93 @@ Create a Stormpath SDK [`Client`](/python/product-guide#Client) instance based o
 
 The `Client` instance is intended to be an application singleton. You should reuse this instance throughout your application code. You *should not* create multiple Client instances as it could negatively affect caching.
 
-### Register your application with Stormpath
+***
 
-Registering an application with Stormpath allows that application to use Stormpath for its user management and authentication needs. Use the `client` "applications.create" method to create a new `Application` resource as follows:
+## Register your application with Stormpath
+
+Before we can create accounts you'll need to have an `Application` and `Directory` in Stormpath.  An application is just Stormpath’s term for a project and a directory is a collection of groups an user accounts.  Applications and directories are decoupled so that you can share directories across your applications. 
+
+If you just signed up for the quickstart you can add an application and directory through the API like so:
 
     application = my_client.applications.create({
-            "name": "My Test Python App",
-            "description": "Test app crated via Python application",
+            "name": "My Awesome Application",
+            "description": "No Seriouesly, It\'s Awesome",
         }, create_directory=True)
 
-Once the application is created, it will automatically create a `Directory` resource based on the name of application and set it as the default account store. New accounts will be created in the default account store.
+Once the `Application` is created, the function will also automatically create a `Directory` based on the application's name. All new users accounts and groups you create for this application, will be stored in this new directory.  
 
-### Create an account 
+***
+
+## Create a User Account 
 
 Now that we've created an `Application`, let's create an `Account` so someone can log in to (i.e. authenticate with) the application. To do so, use the `application` "accounts.create" of your existing application instance to set the values and create the account as follows:
 
     account = application.accounts.create({
-                "given_name": "Jean-Luc",
-                "surname": "Picard",
-                "username": "jlpicard",
-                "email": "capt@enterprise.com",
-                "password":"Changeme1"
+                "given_name": "Joe",
+                "surname": "Stormtrooper",
+                "username": "tk455",
+                "email": "stormtrooper@stormpath.com",
+                "password":"Changeme1",
+				"custom_data": {
+				            "favoriteColor": "white"
+				        }
               })
 
-### Authenticate an Account
+Stormpath has a standard account format (`givenName`, `surname`, `email`, etc...), but you can also store application specific custom fields in a schema-less `customData` object.
 
-Now we have an account that can use your application.  But how do you authenticate an account logging in to the application? You use the application instance and an `AuthenticationRequest` as follows:
+***
+
+## Search for a User Account
+Getting accounts from an application is easy, too.  You can ask the application to retrieve accounts based on standard fields by doing:
+
+    application.accounts.search({"email": "stormtrooper@stormpath.com"})
+	
+
+You could also use wild cards such as `{email: *@stormpath.com}` to return all accounts with an email from the stormpath.com domain.
+
+***
+
+## Authenticate a User Account
+
+Once you have accounts in directories that are associated with an application, you can authenticate a user like so:
 
     account = application.authenticate_account("USERNAME", "PASSWORD")
 
 If the authentication request is successful, an `Account` resource will be returned for the authorized account.
 
-### Experiment! 
+***
 
-Use the client instance to interact with your tenant data, such as applications, directories, and accounts:
+##Help Us Spread the Word
 
-    from stormpath.client import Client
+Please help us.  If you found this tutorial helpful and think our product is cool, please help spread the word with a quick tweet.
 
-    my_client = Client(api_key_file_location="$HOME/.stormpath/apiKey.properties")
+Look! We even make it easy for you with nice buttons. :)
 
-    for application in my_client.applications:
-        print("Application: ", application.name)
-
-    for directory in my_client.directories:
-        print("Directory:", directory.name)
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style"
+	addthis:title="Just checked out @goStormpath for a new Python app. It's awesome!"
+	addthis:url="https://stormpath.com">
+<a class="addthis_button_twitter" 
+	addthis:title="Just checked out @goStormpath for a new Python app. It's awesome! #FriendsDontLetFriendBuildAuth"></a>
+<a class="addthis_button_preferred_2"></a>
+<a class="addthis_button_preferred_3"></a>
+<a class="addthis_button_preferred_4"></a>
+<a class="addthis_button_compact"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+<!-- AddThis Button END -->
+<p>
 
 ***
 
 ## Next Steps
-
 We hope you have found this Quickstart helpful!
 
-For full coverage of Stormpath's Python SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [Python Product Guide](/python/product-guide).
+You've just scratched the surface of what you can do in Stormpath.  Want to learn more?  Here are a few other easy guides you can jump into.
+
+* [Flask Documentation](http://flask-stormpath.readthedocs.org/en/latest/)
+* [Build a Flask app in 30 minutes](https://stormpath.com/blog/build-a-flask-app-in-30-minutes/)
+* [Official Python Product Guide](http://docs.stormpath.com/python/product-guide)
+* [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/)
+* [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/)
