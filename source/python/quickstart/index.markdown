@@ -34,22 +34,26 @@ Let's get started!
 Stormpath works with Python 2.7, and 3.2+.
 {% enddocs %}
 
-Add the [Stormpath Python SDK](https://github.com/stormpath/stormpath-sdk-python) using pip:
+Install [Stormpath](https://github.com/stormpath/stormpath-sdk-python) using [pip](http://pip.readthedocs.org/en/latest/):
 
     $ pip install stormpath
 
-Don't have pip installed? Try installing it, by running this from the command line:
+Don't have pip installed?  Try this instead:
 
-    $ curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python
+    $ easy_install stormpath
 
-Or, you can [download the source code (ZIP)](https://github.com/stormpath/stormpath-sdk-python/zipball/master "stormpath-sdk
-source code") for `stormpath-sdk`, and then run:
+Or, you can
+[download the source code (ZIP)](https://github.com/stormpath/stormpath-sdk-python/zipball/master),
+extract it, then run:
 
     $ python setup.py install
 
-You may need to run the above commands with `sudo`.
+You may need to run the above commands with `sudo` depending on your Python
+setup.
+
 
 ***
+
 
 ## Get an API Key
 
