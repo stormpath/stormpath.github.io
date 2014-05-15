@@ -173,7 +173,7 @@ The required fields are: `given_name`, `surname`, `email`, and `password`.
 
 ## Search for a User Account
 
-Finding user Accounts is also simple.  You can search for accounts by field:
+Finding user Accounts is also simple.  You can search for Accounts by field:
 
     application.accounts.search({'email': 'stormtrooper@stormpath.com'})
 
