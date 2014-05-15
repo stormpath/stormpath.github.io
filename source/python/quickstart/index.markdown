@@ -57,8 +57,7 @@ setup.
 
 ## Get an API Key
 
-All requests to Stormpath using the Stormpath library must be authenticated
-with an API Key.
+All requests to Stormpath must be authenticated with an API Key.
 
 1. If you haven't already,
    [Sign up for Stormpath here](https://api.stormpath.com/register).  You'll
