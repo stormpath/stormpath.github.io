@@ -9,7 +9,7 @@ title: Stormpath Python Quickstart
 Welcome to Stormpath's Python Library Quickstart!
 
 This quickstart will get you up and running with Stormpath in about 10 minutes
-and give you a good initial feel for the Stormpath Python SDK.  During this
+and give you a good initial feel for the Stormpath Python library.  During this
 quickstart, you will do the following:
 
  * Install the Stormpath library.
