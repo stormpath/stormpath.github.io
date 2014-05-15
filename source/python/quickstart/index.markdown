@@ -31,7 +31,7 @@ Let's get started!
 ## Install the Stormpath Library
 
 {% docs note %}
-This SDK is compatible with the 2.7 or 3.2 and later versions of Python.
+Stormpath works with Python 2.7, and 3.2+.
 {% enddocs %}
 
 Add the [Stormpath Python SDK](https://github.com/stormpath/stormpath-sdk-python) using pip:
