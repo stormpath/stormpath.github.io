@@ -119,11 +119,12 @@ create multiple `Client` instances as it could negatively affect caching.
 ## Register Your Application with Stormpath
 
 Before you can store user accounts you'll need to have an `Application` and
-`Directory` in Stormpath.  An application is just Stormpath’s term for a
-project and a Directory is a collection of unique user accounts.
+`Directory` in Stormpath.  An Application is just Stormpath’s term for a
+project, and a Directory is a collection of unique user accounts.
 
-Applications and Directories are decoupled so that you can share Directories
-across your Applications.
+Applications and Directories are decoupled, so you can share Directories
+across your Applications.  This is useful for more complex authentication
+scenarios (*like single sign on*).
 
 You can create an Application and Directory at once like so:
 
