@@ -6,13 +6,13 @@ image: https://stormpath.com/images/tutorial/python.png
 title: Stormpath Python Quickstart
 ---
 
-Welcome to Stormpath's Python SDK Quickstart!
+Welcome to Stormpath's Python Library Quickstart!
 
 This quickstart will get you up and running with Stormpath in about 10 minutes
 and give you a good initial feel for the Stormpath Python SDK.  During this
 quickstart, you will do the following:
 
- * Install the Stormpath SDK.
+ * Install the Stormpath library.
  * Create an API Key that allows you to make REST API calls with Stormpath.
  * Register an Application.
  * Create a User Account.
@@ -27,7 +27,8 @@ Let's get started!
 
 ***
 
-## Install Stormpath SDK
+
+## Install the Stormpath Library
 
 {% docs note %}
 This SDK is compatible with the 2.7 or 3.2 and later versions of Python.
