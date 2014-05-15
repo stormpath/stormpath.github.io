@@ -98,7 +98,7 @@ easily authentication with the Stormpath library.
 ***
 
 
-## Configure your Python application
+## Configure your Python Application
 
 Create a Stormpath [Client](/python/product-guide#Client) using your
 `apiKey.properties` file.  The `Client` instance is what communicates with
@@ -117,7 +117,7 @@ create multiple `Client` instances as it could negatively affect caching.
 ***
 
 
-## Register your application with Stormpath
+## Register Your Application with Stormpath
 
 Before you can store user accounts you'll need to have an `Application` and
 `Directory` in Stormpath.  An application is just Stormpath’s term for a
