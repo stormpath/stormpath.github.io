@@ -163,6 +163,10 @@ Client:
 Stormpath Accounts have several basic fields (`given_name`, `surname`, `email`,
 etc...), but also support variable JSON data through the `custom_data` field.
 
+{% docs note %}
+The required fields are: `given_name`, `surname`, `email`, and `password`.
+{% enddocs %}
+
 
 ***
 
