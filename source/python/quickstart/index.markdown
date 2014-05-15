@@ -145,8 +145,8 @@ Directory.
 
 ## Create a User Account
 
-Now that we've created an Application, let's create an Account so someone can
-log in to (*i.e. authenticate with*) the Application.  To do this, use your
+Now that we've created an Application, let's create a user Account so someone
+can log into (*i.e. authenticate with*) the Application.  To do this, use your
 Client:
 
     account = application.accounts.create({
