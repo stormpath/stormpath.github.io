@@ -12,12 +12,12 @@ This quickstart will get you up and running with Stormpath in about 10 minutes a
 
  * Install the Stormpath SDK
  * Create an API Key that allows you to make REST API calls with Stormpath
- * Register an Application 
+ * Register an Application
  * Create a User Account
  * Search for a User Account
  * Authenticate a User Account
 
-Stormpath also can do a lot more like Groups, Multitenancy, Social Integration, and Security workflows which you can learn more about at the end of this quickstart. 
+Stormpath also can do a lot more like Groups, Multitenancy, Social Integration, and Security workflows which you can learn more about at the end of this quickstart.
 
 Let's get started!
 
@@ -42,7 +42,7 @@ source code") for `stormpath-sdk`, and then run:
 
     $ python setup.py install
 
-You may need to run the above commands with `sudo`. 
+You may need to run the above commands with `sudo`.
 
 ***
 
@@ -52,7 +52,7 @@ All requests back to Stormpath using the Stormpath SDK must be authenticated wit
 
 1. If you haven't already, [Sign up for Stormpath here](https://api.stormpath.com/register).  You'll be sent a verification email.
 
-1. Click the link in the verification email. 
+1. Click the link in the verification email.
 
 2. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using the email address and password you used to register with Stormpath.
 
@@ -93,7 +93,7 @@ The `Client` instance is intended to be an application singleton. You should reu
 
 ## Register your application with Stormpath
 
-Before we can create accounts you'll need to have an `Application` and `Directory` in Stormpath.  An application is just Stormpath’s term for a project and a directory is a collection of groups an user accounts.  Applications and directories are decoupled so that you can share directories across your applications. 
+Before we can create accounts you'll need to have an `Application` and `Directory` in Stormpath.  An application is just Stormpath’s term for a project and a directory is a collection of groups an user accounts.  Applications and directories are decoupled so that you can share directories across your applications.
 
 If you just signed up for the quickstart you can add an application and directory through the API like so:
 
@@ -102,11 +102,11 @@ If you just signed up for the quickstart you can add an application and director
             "description": "No Seriouesly, It\'s Awesome",
         }, create_directory=True)
 
-Once the `Application` is created, the function will also automatically create a `Directory` based on the application's name. All new users accounts and groups you create for this application, will be stored in this new directory.  
+Once the `Application` is created, the function will also automatically create a `Directory` based on the application's name. All new users accounts and groups you create for this application, will be stored in this new directory.
 
 ***
 
-## Create a User Account 
+## Create a User Account
 
 Now that we've created an `Application`, let's create an `Account` so someone can log in to (i.e. authenticate with) the application. To do so, use the `application` "accounts.create" of your existing application instance to set the values and create the account as follows:
 
@@ -129,7 +129,7 @@ Stormpath has a standard account format (`givenName`, `surname`, `email`, etc...
 Getting accounts from an application is easy, too.  You can ask the application to retrieve accounts based on standard fields by doing:
 
     application.accounts.search({"email": "stormtrooper@stormpath.com"})
-	
+
 
 You could also use wild cards such as `{email: *@stormpath.com}` to return all accounts with an email from the stormpath.com domain.
 
@@ -155,7 +155,7 @@ Look! We even make it easy for you with nice buttons. :)
 <div class="addthis_toolbox addthis_default_style addthis_32x32_style"
 	addthis:title="Just checked out @goStormpath for a new Python app. It's awesome!"
 	addthis:url="https://stormpath.com">
-<a class="addthis_button_twitter" 
+<a class="addthis_button_twitter"
 	addthis:title="Just checked out @goStormpath for a new Python app. It's awesome! #FriendsDontLetFriendBuildAuth"></a>
 <a class="addthis_button_preferred_2"></a>
 <a class="addthis_button_preferred_3"></a>
