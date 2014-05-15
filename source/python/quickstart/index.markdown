@@ -8,16 +8,20 @@ title: Stormpath Python Quickstart
 
 Welcome to Stormpath's Python SDK Quickstart!
 
-This quickstart will get you up and running with Stormpath in about 10 minutes and give you a good initial feel for the Stormpath Python SDK.  During this quickstart, you will do the following:
+This quickstart will get you up and running with Stormpath in about 10 minutes
+and give you a good initial feel for the Stormpath Python SDK.  During this
+quickstart, you will do the following:
 
- * Install the Stormpath SDK
- * Create an API Key that allows you to make REST API calls with Stormpath
- * Register an Application
- * Create a User Account
- * Search for a User Account
- * Authenticate a User Account
+ * Install the Stormpath SDK.
+ * Create an API Key that allows you to make REST API calls with Stormpath.
+ * Register an Application.
+ * Create a User Account.
+ * Search for a User Account.
+ * Authenticate a User Account.
 
-Stormpath also can do a lot more like Groups, Multitenancy, Social Integration, and Security workflows which you can learn more about at the end of this quickstart.
+Stormpath also can do a lot more (*like Groups, Multitenancy, Social
+Integration, and Security workflows*) which you can learn more about at the end
+of this quickstart.
 
 Let's get started!
 
