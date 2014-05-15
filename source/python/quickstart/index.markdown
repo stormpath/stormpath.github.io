@@ -145,71 +145,81 @@ Directory.
 
 ## Create a User Account
 
-Now that we've created an `Application`, let's create an `Account` so someone can log in to (i.e. authenticate with) the application. To do so, use the `application` "accounts.create" of your existing application instance to set the values and create the account as follows:
+Now that we've created an Application, let's create an Account so someone can
+log in to (*i.e. authenticate with*) the Application.  To do this, use your
+Client:
 
     account = application.accounts.create({
-                "given_name": "Joe",
-                "surname": "Stormtrooper",
-                "username": "tk455",
-                "email": "stormtrooper@stormpath.com",
-                "password":"Changeme1",
-				"custom_data": {
-				            "favoriteColor": "white"
-				        }
-              })
+        'given_name': 'Joe',
+        'surname': 'Stormtrooper',
+        'username': 'tk455',
+        'email': 'stormtrooper@stormpath.com',
+        'password': 'Changeme1',
+        'custom_data': {
+            'favorite_color': 'white'
+        },
+    })
 
-Stormpath has a standard account format (`givenName`, `surname`, `email`, etc...), but you can also store application specific custom fields in a schema-less `customData` object.
+Stormpath Accounts have several basic fields (`given_name`, `surname`, `email`,
+etc...), but also support variable JSON data through the `custom_data` field.
+
 
 ***
+
 
 ## Search for a User Account
-Getting accounts from an application is easy, too.  You can ask the application to retrieve accounts based on standard fields by doing:
 
-    application.accounts.search({"email": "stormtrooper@stormpath.com"})
+Finding user Accounts is also simple.  You can search for accounts by field:
 
+    application.accounts.search({'email': 'stormtrooper@stormpath.com'})
 
-You could also use wild cards such as `{email: *@stormpath.com}` to return all accounts with an email from the stormpath.com domain.
+You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
+all accounts with a stormpath.com domain.
+
 
 ***
+
 
 ## Authenticate a User Account
 
-Once you have accounts in directories that are associated with an application, you can authenticate a user like so:
+Authenticating users is simple:
 
-    account = application.authenticate_account("USERNAME", "PASSWORD")
+    account = application.authenticate_account('username_or_email', 'password')
 
-If the authentication request is successful, an `Account` resource will be returned for the authorized account.
+If the authentication request is successful, an `Account` resource will be
+returned.
+
 
 ***
 
-##Help Us Spread the Word
 
-Please help us.  If you found this tutorial helpful and think our product is cool, please help spread the word with a quick tweet.
+## Help Us Spread the Word
 
-Look! We even make it easy for you with nice buttons. :)
+Like Stormpath?  If you enjoyed playing around with our new Python library,
+please help spread the word with a quick tweet!
 
 <!-- AddThis Button BEGIN -->
-<div class="addthis_toolbox addthis_default_style addthis_32x32_style"
-	addthis:title="Just checked out @goStormpath for a new Python app. It's awesome!"
-	addthis:url="https://stormpath.com">
-<a class="addthis_button_twitter"
-	addthis:title="Just checked out @goStormpath for a new Python app. It's awesome! #FriendsDontLetFriendBuildAuth"></a>
-<a class="addthis_button_preferred_2"></a>
-<a class="addthis_button_preferred_3"></a>
-<a class="addthis_button_preferred_4"></a>
-<a class="addthis_button_compact"></a>
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Just checked out @goStormpath for a new Python app. It's awesome!" addthis:url="https://stormpath.com">
+  <a class="addthis_button_twitter" addthis:title="Just checked out @goStormpath for a new Python app. It's awesome!"></a>
+  <a class="addthis_button_preferred_2"></a>
+  <a class="addthis_button_preferred_3"></a>
+  <a class="addthis_button_preferred_4"></a>
+  <a class="addthis_button_compact"></a>
 </div>
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
 <!-- AddThis Button END -->
-<p>
+
 
 ***
 
+
 ## Next Steps
+
 We hope you have found this Quickstart helpful!
 
-You've just scratched the surface of what you can do in Stormpath.  Want to learn more?  Here are a few other easy guides you can jump into.
+You've just scratched the surface of what you can do with Stormpath.  Want to
+learn more?  Here are a few other helpful resources you can jump into.
 
 * [Flask Documentation](http://flask-stormpath.readthedocs.org/en/latest/)
 * [Build a Flask app in 30 minutes](https://stormpath.com/blog/build-a-flask-app-in-30-minutes/)
