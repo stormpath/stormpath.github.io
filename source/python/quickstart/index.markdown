@@ -57,63 +57,91 @@ setup.
 
 ## Get an API Key
 
-All requests back to Stormpath using the Stormpath SDK must be authenticated with an API Key. To get an API key:
+All requests to Stormpath using the Stormpath library must be authenticated
+with an API Key.
 
-1. If you haven't already, [Sign up for Stormpath here](https://api.stormpath.com/register).  You'll be sent a verification email.
+1. If you haven't already,
+   [Sign up for Stormpath here](https://api.stormpath.com/register).  You'll
+   be sent a verification email.
 
-1. Click the link in the verification email.
+2. Click the link in the verification email.
 
-2. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using the email address and password you used to register with Stormpath.
+3. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using
+   the email address and password you used to register with Stormpath.
 
-2. In the top-right corner of the resulting page, visit **Settings** > **My Account**.
+4. In the top-right corner of the resulting page, visit **Settings** >
+   **My Account**.
 
+5. On the Account Details page, under **Security Credentials**, click
+   **Create API Key**.
 
-3. On the Account Details page, under **Security Credentials**, click **Create API Key**.
-
-
-    This will generate your API Key and download it to your computer as an `apiKey.properties` file. If you open the file in a text editor, you will see something similar to the following:
+   This will generate your API Key and download it to your computer as an
+   `apiKey.properties` file.  If you open the file in a text editor, you will
+   see something similar to the following:
 
         apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
         apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 
-4. Save this file in a secure location, such as your home directory in a hidden `.stormpath` directory. For example:
+6. Save this file in a secure location, such as your home directory, in a
+   hidden `.stormpath` directory. For example:
 
         $HOME/.stormpath/apiKey.properties
 
-5. Also change the file permissions to ensure only you can read this file. For example, on \*nix operating systems:
+5. Change the file permissions to ensure only you can read this file.  For
+   example, on \*nix operating systems:
 
         $ chmod go-rwx $HOME/.stormpath/apiKey.properties
 
+The `apiKey.properties` file holds your API key information, and can be used to
+easily authentication with the Stormpath library.
+
 ***
+
 
 ## Configure your Python application
 
-Create a Stormpath SDK [`Client`](/python/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
+Create a Stormpath [Client](/python/product-guide#Client) using your
+`apiKey.properties` file.  The `Client` instance is what communicates with
+Stormpath.  For example:
 
+    from os.path import expanduser
     from stormpath.client import Client
-    ...
 
-    api_key_file = "/home/myhomedir/.stormpath/apiKey.properties"
-    my_client = Client(api_key_file_location=api_key_file)
+    client = Client(api_key_file_location=expanduser('~/.stormpath/apiKey.properties'))
 
-The `Client` instance is intended to be an application singleton. You should reuse this instance throughout your application code. You *should not* create multiple Client instances as it could negatively affect caching.
+The `client` instance is intended to be an application singleton.  You should
+reuse this instance throughout your application code.  You *should not*
+create multiple `Client` instances as it could negatively affect caching.
+
 
 ***
+
 
 ## Register your application with Stormpath
 
-Before we can create accounts you'll need to have an `Application` and `Directory` in Stormpath.  An application is just Stormpath’s term for a project and a directory is a collection of groups an user accounts.  Applications and directories are decoupled so that you can share directories across your applications.
+Before you can store user accounts you'll need to have an `Application` and
+`Directory` in Stormpath.  An application is just Stormpath’s term for a
+project and a Directory is a collection of unique user accounts.
 
-If you just signed up for the quickstart you can add an application and directory through the API like so:
+Applications and Directories are decoupled so that you can share Directories
+across your Applications.
 
-    application = my_client.applications.create({
-            "name": "My Awesome Application",
-            "description": "No Seriouesly, It\'s Awesome",
-        }, create_directory=True)
+You can create an Application and Directory at once like so:
 
-Once the `Application` is created, the function will also automatically create a `Directory` based on the application's name. All new users accounts and groups you create for this application, will be stored in this new directory.
+    application = client.applications.create({
+        'name': 'My Awesome Application',
+        'description': 'Super awesome!',
+    }, create_directory=True)
+
+The code above will create a new Application, then create a new Directory of the
+sane name (*if your Application is named "test" your Directory will be named
+"test Directory"*).  The new Directory will then be bound to your Application,
+such that all new users created in your Application will be stored in this
+Directory.
+
 
 ***
+
 
 ## Create a User Account
 
