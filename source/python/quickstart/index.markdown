@@ -126,7 +126,7 @@ Applications and Directories are decoupled, so you can share Directories
 across your Applications.  This is useful for more complex authentication
 scenarios (*like single sign on*).
 
-You can create an Application and Directory at once like so:
+You can create an Application and Directory together for convenience:
 
     application = client.applications.create({
         'name': 'My Awesome Application',
