@@ -134,9 +134,9 @@ You can create an Application and Directory together for convenience:
     }, create_directory=True)
 
 The code above will create a new Application, then create a new Directory of the
-sane name (*if your Application is named "test" your Directory will be named
+same name (*if your Application is named "test" your Directory will be named
 "test Directory"*).  The new Directory will then be bound to your Application,
-such that all new users created in your Application will be stored in this
+so that all new users created in your Application will be stored in this
 Directory.
 
 
