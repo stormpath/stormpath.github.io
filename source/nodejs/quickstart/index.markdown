@@ -17,7 +17,9 @@ This quickstart will get you up and running with Stormpath in about 7 minutes an
  * Search for a User Account
  * Authenticate a User Account
  
-Stormpath also can do a lot more like Groups, Multitenancy, Social Integration, and Security workflows which you can learn more about at the end of this quickstart.  
+Stormpath also can do a lot more (*like Groups, Multitenancy, Social
+Integration, and Security workflows*) which you can learn more about at the end
+of this quickstart.
 
 Let's get started!
 
@@ -64,10 +66,17 @@ Once this is done, you can initialize a Stormpath `client` based on an API Key I
 
 A `client` instance is your starting point for all interactions with the Stormpath API - once you have a Client instance, you can do everything else. 
 
-## Create an Application
-Before we can create accounts you'll need to have an `Application` and `Directory` in Stormpath.  An application is just Stormpath’s term for a project and a directory is a collection of groups an user accounts.  Applications and directories are decoupled so that you can share directories across your applications. 
+## Register Your Application with Stormpath
 
-If you just signed up for the quickstart you can add an application and directory through the API like so:
+Before you can store user accounts you'll need to have an `Application` and
+`Directory` in Stormpath.  An Application is just Stormpath’s term for a
+project, and a Directory is a collection of unique user accounts.
+
+Applications and Directories are decoupled, so you can share Directories
+across your Applications.  This is useful for more complex authentication
+scenarios (*like single sign on*).
+
+You can create an Application and Directory together for convenience:
 
     //Some application properties
     var app = {
@@ -82,10 +91,15 @@ If you just signed up for the quickstart you can add an application and director
 		  console.log("Application successfully created");
     });
 
-Once the `Application` is created, the function will also automatically create a `Directory` based on the application's name. All new users accounts and groups you create for this application, will be stored in this new directory.  
+The code above will create a new Application, then create a new Directory of the
+same name (*if your Application is named "test" your Directory will be named
+"test Directory"*).  The new Directory will then be bound to your Application,
+so that all new users created in your Application will be stored in this
+Directory.
 
 ## Create a User Account
-To create an 'Account', you define the account as a JSON object and use the application to create it:
+Now that we've created an Application, let's create a user Account!  To do
+this, you'll need to use your application (*created in the previous step*):
 
     var account = {
         givenName: 'Joe',
@@ -104,23 +118,29 @@ To create an 'Account', you define the account as a JSON object and use the appl
 		console.log("Account successfully created");
     });
 
-Stormpath has a standard account format (`givenName`, `surname`, `email`, etc...), but you can also store application specific custom fields in a schema-less `customData` object.
+Stormpath Accounts have several basic fields (`given_name`, `surname`, `email`,
+etc...), but also support variable JSON data through the `custom_data` field.
 
-## Search for a User 
-Getting accounts from an application is easy, too.  You can ask the application to retrieve accounts based on standard fields by doing:
+{% docs note %}
+The required fields are: `given_name`, `surname`, `email`, and `password`.
+{% enddocs %}
+
+## Search for a User Account
+
+Finding user Accounts is also simple.  You can search for Accounts by field:
 
     app.getAccounts({email:'stormtropper@stormpath.com'}, function(err, accounts){
         if (err) throw err;
-
         accounts.each(function (err, account, index){
             console.log("Found the user!  Here are the details: \n" + account);
         });
     });
 
-You could also use wild cards such as `{email: *@stormpath.com}` to return all accounts with an email from the stormpath.com domain.
+You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
+all accounts with a stormpath.com domain.
 
 ## Authenticate a User 
-Once you have accounts in directories that are associated with an application, you can authenticate a user like so:
+Authenticating users is equally simple:
 
     app.authenticateAccount({
         username:'tk455',
@@ -130,14 +150,14 @@ Once you have accounts in directories that are associated with an application, y
         console.log("User successfully authenticated!");
     });
 
-That will output the authenticated account.  From here, you can update account fields, get the groups or roles associated with the account, or even trigger a password reset workflow.
+If the authentication request is successful, an `Account` resource will be
+returned.
 
 ***
 ##Help Us Spread the Word
 
-Please help us.  If you found this tutorial helpful and think our product is cool, please help spread the word with a quick tweet.
-
-Look! We even make it easy for you with nice buttons. :)
+Like Stormpath?  If you enjoyed playing around with our new Python library,
+please help spread the word with a quick tweet!
 
 <!-- AddThis Button BEGIN -->
 <div class="addthis_toolbox addthis_default_style addthis_32x32_style"
@@ -160,7 +180,8 @@ Look! We even make it easy for you with nice buttons. :)
 ## Next Steps
 We hope you found this Quickstart helpful!
 
-You've only scratched the surface of what you can do with Stormpath.  Want to learn more?  Here are a few other easy guides you can jump into.
+You've just scratched the surface of what you can do with Stormpath.  Want to
+learn more?  Here are a few other helpful resources you can jump into.
 
 * [Build an Express.js + Passport App with Stormpath](https://stormpath.com/blog/build-app-nodejs-express-passport-stormpath/)
 * [Official Node.js API Reference Guide](http://docs.stormpath.com/nodejs/api/home)

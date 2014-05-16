@@ -212,14 +212,14 @@ please help spread the word with a quick tweet!
 <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
 <!-- AddThis Button END -->
-
+<p>
 
 ***
 
 
 ## Next Steps
 
-We hope you have found this Quickstart helpful!
+We hope you found this Quickstart helpful!
 
 You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
