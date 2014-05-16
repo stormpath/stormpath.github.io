@@ -105,7 +105,8 @@ Then, create a new Stormpath client with the following code:
 
     > var stormpath = require('stormpath');
     > var client = null;
-    > var keyfile = process.env['HOME'] + '/.stormpath/apiKey.properties';
+    > var homedir = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
+    > var keyfile = homedir + '/.stormpath/apiKey.properties';
     > stormpath.loadApiKey(keyfile, function apiKeyFileLoaded(err, apiKey) {
     ...   if (err) throw err;
     ...   client = new stormpath.Client({apiKey: apiKey});
