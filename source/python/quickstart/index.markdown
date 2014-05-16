@@ -182,9 +182,9 @@ Once you've created an Account, you can access the Account's data by referencing
 the attribute names, for instance:
 
     >>> account.given_name
-    'Joe'
+    u'Joe'
     >>> account.custom_data['favorite_color']
-    'white'
+    u'white'
 
 
 ***
