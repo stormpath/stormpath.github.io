@@ -72,8 +72,7 @@ All requests to Stormpath must be authenticated with an API Key.
 4. In the middle of your dashboard page, click the **Manage Existing Keys**
    button.
 
-5. On the Account Details page, under **Security Credentials**, click
-   **Create API Key**.
+5. Under **Security Credentials**, click **Create API Key**.
 
    This will generate your API Key and download it to your computer as an
    `apiKey.properties` file.  If you open the file in a text editor, you will
