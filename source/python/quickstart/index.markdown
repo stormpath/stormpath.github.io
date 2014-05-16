@@ -194,7 +194,10 @@ the attribute names, for instance:
 
 Finding user Accounts is also simple.  You can search for Accounts by field:
 
-    >>> accounts = application.accounts.search({'email': 'stormtrooper@stormpath.com'})
+    >>> for account in application.accounts.search({'email': 'stormtrooper@stormpath.com'}):
+    ...     print account.given_name, account.surname
+    ...
+    Joe Stormtrooper
 
 You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
 all accounts with a stormpath.com domain.
