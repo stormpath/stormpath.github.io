@@ -112,9 +112,9 @@ Then, create a new Stormpath client with the following code:
     ...   client = new stormpath.Client({apiKey: apiKey});
     ... });
 
-The `client` instance is intended to be an application singleton.  You should
-reuse this instance throughout your application code.  You *should not*
-create multiple `Client` instances as it could negatively affect caching.
+**NOTE**: Want to skip this interactive tutorial and just see all the code in
+one place?  The code used throughout this quickstart tutorial is available on
+GitHub: https://gist.github.com/rdegges/13ceb8ef0abb7bd7ae60#file-quickstart-js
 
 
 ***
