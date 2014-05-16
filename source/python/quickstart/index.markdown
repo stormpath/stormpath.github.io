@@ -118,6 +118,10 @@ The `client` instance is intended to be an application singleton.  You should
 reuse this instance throughout your application code.  You *should not*
 create multiple `Client` instances as it could negatively affect caching.
 
+**NOTE**: Want to skip this interactive tutorial and just see all the code in
+one place?  The code used throughout this quickstart tutorial is available on
+GitHub: https://gist.github.com/rdegges/1155b9e3fc3432c0f7b2#file-quickstart-py
+
 
 ***
 
@@ -164,7 +168,7 @@ this, you'll need to use your application (*created in the previous step*):
     >>>     'email': 'stormtrooper@stormpath.com',
     >>>     'password': 'Changeme1',
     >>>     'custom_data': {
-    >>>         'favorite_color': 'white'
+    >>>         'favorite_color': 'white',
     >>>     },
     >>> })
 
