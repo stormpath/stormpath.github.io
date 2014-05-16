@@ -26,9 +26,9 @@ You access Stormpath via a [beautiful](http://stormpath.com/blog/designing-rest-
 
 ##  Why Should I Use Stormpath to Integrate Login with Facebook and Google?
 
-Stormpath makes it easy to connect to Google and Facebook in one simple API call. It's a simple and secure way to retrieve user profiles and convert them into to Stormpath accounts so that no matter the service you're using. 
+Stormpath makes it easy to connect to Google and Facebook in one simple API call. It's a simple and secure way to retrieve user profiles and convert them into Stormpath accounts, no matter the service you're using. 
 
-From an end-user perspective, it allows the them to log into your application by collecting information from these social networks.
+From an end-user perspective, it allows them to log into your application by collecting information from these social networks.
 
 As soon as you have an OAuth token from Google or Facebook, you can pass it to Stormpath.  Stormpath will handle validating the token, importing the user profile into a `Directory`, syncing user profile, and can enable you to handle use cases such as:
 
