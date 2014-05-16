@@ -208,9 +208,15 @@ all accounts with a stormpath.com domain.
 
 ## Authenticate a User Account
 
-Authenticating users is equally simple:
+Authenticating users is equally simple -- you can specify either a `username` or
+`email` address, along with a `password`:
 
-    >>> account = application.authenticate_account('username_or_email', 'password').account
+    >>> account = application.authenticate_account('stormtrooper@stormpath.com', 'Changeme1').account
+    >>> account.given_name
+    'Joe'
+    >>> account = application.authenticate_account('tk455', 'Changeme1').account
+    >>> account.given_name
+    'Joe'
 
 If the authentication request is successful, an `Account` resource will be
 returned.
