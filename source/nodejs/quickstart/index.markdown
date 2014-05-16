@@ -62,8 +62,7 @@ All requests to Stormpath must be authenticated with an API Key.
 3. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using
    the email address and password you used to register with Stormpath.
 
-4. In the middle of your dashboard page, click the **Manage Existing Keys**
-   button.
+4. Click the **Manage Existing Keys** button in the middle of the page.
 
 5. Under **Security Credentials**, click **Create API Key**.
 
@@ -83,7 +82,7 @@ All requests to Stormpath must be authenticated with an API Key.
 5. Change the file permissions to ensure only you can read this file.  For
    example:
 
-        $ chmod go-rwx $HOME/.stormpath/apiKey.properties
+        $ chmod go-rwx ~/.stormpath/apiKey.properties
 
 The `apiKey.properties` file holds your API key information, and can be used to
 easily authentication with the Stormpath library.
@@ -106,12 +105,19 @@ Then, create a new Stormpath client with the following code:
 
     > var stormpath = require('stormpath');
     > var client = null;
-    > var keyfile = process.env['HOME'] + '/.stormpath/apiKey.properties';
+    > var homedir = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
+    > var keyfile = homedir + '/.stormpath/apiKey.properties';
     > stormpath.loadApiKey(keyfile, function apiKeyFileLoaded(err, apiKey) {
     ...   if (err) throw err;
     ...   client = new stormpath.Client({apiKey: apiKey});
     ... });
 
+
+**NOTE**: If you want to see all the code from this tutorial in one file, check out this Gist on GitHub: https://gist.github.com/rdegges/13ceb8ef0abb7bd7ae60#file-quickstart-js
+
+{% docs tip %} 
+If you want to see all the code from this tutorial in one file, check out this [Gist on GitHub](https://gist.github.com/rdegges/13ceb8ef0abb7bd7ae60#file-quickstart-js):  [https://gist.github.com/rdegges/13ceb8ef0abb7bd7ae60#file-quickstart-js](https://gist.github.com/rdegges/13ceb8ef0abb7bd7ae60#file-quickstart-js)
+{% enddocs %}
 
 ***
 
@@ -158,8 +164,8 @@ this, you'll need to use your application (*created in the previous step*):
     > var account = {
     ... givenName: 'Joe',
     ... surname: 'Stormtrooper',
-    ... username: 'tk455',
-    ... email: 'stormtrooper@stormpath.com',
+    ... username: 'tk421',
+    ... email: 'tk421@stormpath.com',
     ... password: 'Changeme1',
     ... customData: {
     ..... favoriteColor: 'white',
@@ -194,7 +200,7 @@ the attribute names, for instance:
 
 Finding user Accounts is also simple.  You can search for Accounts by field:
 
-    > app.getAccounts({email: 'stormtrooper@stormpath.com'}, function(err, accounts) {
+    > app.getAccounts({email: 'tk421@stormpath.com'}, function(err, accounts) {
     ... if (err) throw err;
     ... accounts.each(function (err, account, index) {
     ..... console.log(account.givenName + " " + account.surname);
@@ -215,7 +221,7 @@ Authenticating users is equally simple -- you can specify either a `username` or
 `email` address, along with a `password`:
 
     > app.authenticateAccount({
-    ... username: 'tk455',
+    ... username: 'tk421',
     ... password: 'Changeme1',
     ... }, function (err, result) {
     ... if (err) throw err;
@@ -224,7 +230,7 @@ Authenticating users is equally simple -- you can specify either a `username` or
     > account.givenName
     'Joe'
     > app.authenticateAccount({
-    ... email: 'stormtrooper@stormpath.com',
+    ... username: 'tk421@stormpath.com',
     ... password: 'Changeme1',
     ... }, function (err, result) {
     ... if (err) throw err;

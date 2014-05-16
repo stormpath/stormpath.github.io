@@ -69,8 +69,7 @@ All requests to Stormpath must be authenticated with an API Key.
 3. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using
    the email address and password you used to register with Stormpath.
 
-4. In the middle of your dashboard page, click the **Manage Existing Keys**
-   button.
+4. Click the **Manage Existing Keys** button in the middle of the page.
 
 5. Under **Security Credentials**, click **Create API Key**.
 
@@ -90,7 +89,7 @@ All requests to Stormpath must be authenticated with an API Key.
 5. Change the file permissions to ensure only you can read this file.  For
    example:
 
-        $ chmod go-rwx $HOME/.stormpath/apiKey.properties
+        $ chmod go-rwx ~/.stormpath/apiKey.properties
 
 The `apiKey.properties` file holds your API key information, and can be used to
 easily authentication with the Stormpath library.
@@ -118,6 +117,10 @@ Then, create a new Stormpath client with the following code:
 The `client` instance is intended to be an application singleton.  You should
 reuse this instance throughout your application code.  You *should not*
 create multiple `Client` instances as it could negatively affect caching.
+
+{% docs tip %} 
+If you want to see all the code from this tutorial in one file, check out this [Gist on GitHub](https://gist.github.com/rdegges/1155b9e3fc3432c0f7b2#file-quickstart-py):  [https://gist.github.com/rdegges/1155b9e3fc3432c0f7b2#file-quickstart-py](https://gist.github.com/rdegges/1155b9e3fc3432c0f7b2#file-quickstart-py)
+{% enddocs %}
 
 
 ***
@@ -161,11 +164,11 @@ this, you'll need to use your application (*created in the previous step*):
     >>> account = application.accounts.create({
     >>>     'given_name': 'Joe',
     >>>     'surname': 'Stormtrooper',
-    >>>     'username': 'tk455',
-    >>>     'email': 'stormtrooper@stormpath.com',
+    >>>     'username': 'tk421',
+    >>>     'email': 'tk421@stormpath.com',
     >>>     'password': 'Changeme1',
     >>>     'custom_data': {
-    >>>         'favorite_color': 'white'
+    >>>         'favorite_color': 'white',
     >>>     },
     >>> })
 
@@ -194,7 +197,7 @@ the attribute names, for instance:
 
 Finding user Accounts is also simple.  You can search for Accounts by field:
 
-    >>> for account in application.accounts.search({'email': 'stormtrooper@stormpath.com'}):
+    >>> for account in application.accounts.search({'email': 'tk421@stormpath.com'}):
     ...     print account.given_name, account.surname
     ...
     Joe Stormtrooper
@@ -211,10 +214,10 @@ all accounts with a stormpath.com domain.
 Authenticating users is equally simple -- you can specify either a `username` or
 `email` address, along with a `password`:
 
-    >>> account = application.authenticate_account('stormtrooper@stormpath.com', 'Changeme1').account
+    >>> account = application.authenticate_account('tk421@stormpath.com', 'Changeme1').account
     >>> account.given_name
     'Joe'
-    >>> account = application.authenticate_account('tk455', 'Changeme1').account
+    >>> account = application.authenticate_account('tk421', 'Changeme1').account
     >>> account.given_name
     'Joe'
 
