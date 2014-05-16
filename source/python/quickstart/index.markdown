@@ -116,28 +116,26 @@ create multiple `Client` instances as it could negatively affect caching.
 ***
 
 
-## Register Your Application with Stormpath
+## Create an Application
 
-Before you can store user accounts you'll need to have an `Application` and
-`Directory` in Stormpath.  An Application is just Stormpath’s term for a
-project, and a Directory is a collection of unique user accounts.
+Before you can create user Accounts you'll need to create a Stormpath
+Application.  An Application in Stormpath is the same thing as a project.  If
+you're building a website named "Lightsabers Galore", you'd want to name your
+Stormpath Application "Lightsabers Galore" as well.
 
-Applications and Directories are decoupled, so you can share Directories
-across your Applications.  This is useful for more complex authentication
-scenarios (*like single sign on*).
-
-You can create an Application and Directory together for convenience:
+You can create an Application using the client you created in the previous step:
 
     application = client.applications.create({
         'name': 'My Awesome Application',
         'description': 'Super awesome!',
     }, create_directory=True)
 
-The code above will create a new Application, then create a new Directory of the
-same name (*if your Application is named "test" your Directory will be named
-"test Directory"*).  The new Directory will then be bound to your Application,
-so that all new users created in your Application will be stored in this
-Directory.
+The code above will create a new Application, which we can use later to do stuff
+like:
+
+- Create user accounts.
+- Log users into their account.
+- etc.
 
 
 ***
