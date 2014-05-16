@@ -25,6 +25,7 @@ of this quickstart.
 
 Let's get started!
 
+
 ***
 
 
@@ -230,6 +231,40 @@ showing this example to illustrate how it works.
 ***
 
 
+## Other Things You Can Do with Stormpath
+
+In addition to user registration and login, Stormpath can do a lot more!
+
+- Create and manage user groups.
+- Partition multi-tenant account data.
+- Simplify social login with providers like Google and Facebook.
+- Manage developer API keys and access tokens.
+- Verify new users via email.
+- Automatically provide secure password reset functionality.
+- Centralize your user store across multiple applications.
+- Plug into your favorite web framework (*like Flask!*).
+
+
+***
+
+
+## Next Steps
+
+We hope you found this Quickstart helpful!
+
+You've just scratched the surface of what you can do with Stormpath.  Want to
+learn more?  Here are a few other helpful resources you can jump into.
+
+* [Flask Documentation](http://flask-stormpath.readthedocs.org/en/latest/)
+* [Build a Flask app in 30 minutes](https://stormpath.com/blog/build-a-flask-app-in-30-minutes/)
+* [Official Python Product Guide](http://docs.stormpath.com/python/product-guide)
+* [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/)
+* [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/)
+
+
+***
+
+
 ## Help Us Spread the Word
 
 Like Stormpath?  If you enjoyed playing around with our new Python library,
@@ -248,20 +283,3 @@ addthis:url="https://stormpath.com">
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
 <!-- AddThis Button END -->
 <p>
-
-
-***
-
-
-## Next Steps
-
-We hope you found this Quickstart helpful!
-
-You've just scratched the surface of what you can do with Stormpath.  Want to
-learn more?  Here are a few other helpful resources you can jump into.
-
-* [Flask Documentation](http://flask-stormpath.readthedocs.org/en/latest/)
-* [Build a Flask app in 30 minutes](https://stormpath.com/blog/build-a-flask-app-in-30-minutes/)
-* [Official Python Product Guide](http://docs.stormpath.com/python/product-guide)
-* [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/)
-* [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/)
