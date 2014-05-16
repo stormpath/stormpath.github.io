@@ -163,7 +163,8 @@ this, you'll need to use your application (*created in the previous step*):
     })
 
 Stormpath Accounts have several basic fields (`given_name`, `surname`, `email`,
-etc...), but also support variable JSON data through the `custom_data` field.
+etc...), but also support storing custom JSON data through the `custom_data`
+field.
 
 {% docs note %}
 The required fields are: `given_name`, `surname`, `email`, and `password`.
