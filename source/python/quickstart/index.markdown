@@ -217,6 +217,7 @@ This is typically only done when a user logs into a web app -- we're just
 showing this example to illustrate how it works.
 {% enddocs %}
 
+
 ***
 
 
@@ -238,6 +239,7 @@ addthis:url="https://stormpath.com">
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
 <!-- AddThis Button END -->
 <p>
+
 
 ***
 
