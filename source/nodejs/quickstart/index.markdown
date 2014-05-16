@@ -227,7 +227,7 @@ Authenticating users is equally simple -- you can specify either a `username` or
     > account.givenName
     'Joe'
     > app.authenticateAccount({
-    ... email: 'stormtrooper@stormpath.com',
+    ... username: 'stormtrooper@stormpath.com',
     ... password: 'Changeme1',
     ... }, function (err, result) {
     ... if (err) throw err;
