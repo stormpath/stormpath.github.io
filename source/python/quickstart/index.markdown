@@ -1,14 +1,14 @@
 ---
 layout: doc
 lang: python
-description: "10-minute Tutorial for Python"
+description: "7-minute Tutorial for Python"
 image: https://stormpath.com/images/tutorial/python.png
 title: Stormpath Python Quickstart
 ---
 
 Welcome to Stormpath's Python Library Quickstart!
 
-This quickstart will get you up and running with Stormpath in about 10 minutes
+This quickstart will get you up and running with Stormpath in about 7 minutes
 and give you a good initial feel for the Stormpath Python library.  During this
 quickstart, you will do the following:
 
@@ -103,10 +103,15 @@ The first step to working with Stormpath is creating a Stormpath
 [Client](/python/product-guide#Client) using your `apiKey.properties` file.
 The `Client` instance is where all Stormpath interaction happens.
 
-    from os.path import expanduser
-    from stormpath.client import Client
+First, open the Python shell by running:
 
-    client = Client(api_key_file_location=expanduser('~/.stormpath/apiKey.properties'))
+	$ python
+	
+Then, create a new Stormpath client with the following code:
+
+    >>> from os.path import expanduser
+    >>> from stormpath.client import Client
+    >>> client = Client(api_key_file_location=expanduser('~/.stormpath/apiKey.properties'))
 
 The `client` instance is intended to be an application singleton.  You should
 reuse this instance throughout your application code.  You *should not*
@@ -125,10 +130,10 @@ Stormpath Application "Lightsabers Galore" as well.
 
 You can create an Application using the client you created in the previous step:
 
-    application = client.applications.create({
-        'name': 'My Awesome Application',
-        'description': 'Super awesome!',
-    }, create_directory=True)
+    >>> application = client.applications.create({
+    >>>    'name': 'My Awesome Application',
+    >>>    'description': 'Super awesome!',
+    >>> }, create_directory=True)
 
 The code above will create a new Application, which we can use later to do stuff
 like:
@@ -151,16 +156,16 @@ are optional!
 Now that we've created an Application, let's create a user Account!  To do
 this, you'll need to use your application (*created in the previous step*):
 
-    account = application.accounts.create({
-        'given_name': 'Joe',
-        'surname': 'Stormtrooper',
-        'username': 'tk455',
-        'email': 'stormtrooper@stormpath.com',
-        'password': 'Changeme1',
-        'custom_data': {
-            'favorite_color': 'white'
-        },
-    })
+    >>> account = application.accounts.create({
+    >>>     'given_name': 'Joe',
+    >>>     'surname': 'Stormtrooper',
+    >>>     'username': 'tk455',
+    >>>     'email': 'stormtrooper@stormpath.com',
+    >>>     'password': 'Changeme1',
+    >>>     'custom_data': {
+    >>>         'favorite_color': 'white'
+    >>>     },
+    >>> })
 
 Stormpath Accounts have several basic fields (`given_name`, `surname`, `email`,
 etc...), but also support storing schema-less JSON data through the `custom_data`
@@ -186,7 +191,7 @@ the attribute names, for instance:
 
 Finding user Accounts is also simple.  You can search for Accounts by field:
 
-    accounts = application.accounts.search({'email': 'stormtrooper@stormpath.com'})
+    >>> accounts = application.accounts.search({'email': 'stormtrooper@stormpath.com'})
 
 You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
 all accounts with a stormpath.com domain.
@@ -199,7 +204,7 @@ all accounts with a stormpath.com domain.
 
 Authenticating users is equally simple:
 
-    account = application.authenticate_account('username_or_email', 'password').account
+    >>> account = application.authenticate_account('username_or_email', 'password').account
 
 If the authentication request is successful, an `Account` resource will be
 returned.
