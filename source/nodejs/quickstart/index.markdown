@@ -112,10 +112,6 @@ Then, create a new Stormpath client with the following code:
     ...   client = new stormpath.Client({apiKey: apiKey});
     ... });
 
-The `client` instance is intended to be an application singleton.  You should
-reuse this instance throughout your application code.  You *should not*
-create multiple `Client` instances as it could negatively affect caching.
-
 
 ***
 
