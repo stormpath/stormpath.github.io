@@ -97,11 +97,11 @@ easily authentication with the Stormpath library.
 ***
 
 
-## Configure your Python Application
+## Create a Client
 
-Create a Stormpath [Client](/python/product-guide#Client) using your
-`apiKey.properties` file.  The `Client` instance is what communicates with
-Stormpath.  For example:
+The first step to working with Stormpath is creating a Stormpath
+[Client](/python/product-guide#Client) using your `apiKey.properties` file.
+The `Client` instance is where all Stormpath interaction happens.
 
     from os.path import expanduser
     from stormpath.client import Client
