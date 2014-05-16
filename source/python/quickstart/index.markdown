@@ -6,7 +6,7 @@ image: https://stormpath.com/images/tutorial/python.png
 title: Stormpath Python Quickstart
 ---
 
-Welcome to Stormpath's Python Library Quickstart!
+Welcome to Stormpath's Python Quickstart!
 
 This quickstart will get you up and running with Stormpath in about 7 minutes
 and give you a good initial feel for the Stormpath Python library.  During this
