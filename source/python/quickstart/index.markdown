@@ -169,6 +169,14 @@ etc...), but also support variable JSON data through the `custom_data` field.
 The required fields are: `given_name`, `surname`, `email`, and `password`.
 {% enddocs %}
 
+Once you've created an Account, you can access the Account's data by referencing
+the attribute names, for instance:
+
+    >>> account.given_name
+    'Joe'
+    >>> account.custom_data['favorite_color']
+    'white'
+
 
 ***
 
