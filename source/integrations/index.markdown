@@ -59,22 +59,6 @@ body_id: [integrations-page]
     <a id="sample-apps-python-container-jump"></a>
     <div class="python-title">Python</div>
     <div class="panel-container">
-      <div class="panel-title">Django Integration</div>
-      <div class="panel-inner">
-        <div class="panel-text">
-          The stormpath-django integration allows Django web apps to Stormpath User Management & Authentication service.
-          <ul>
-            <li>Seamless Django integration simplifies user authentication and access control</li>
-            <li>Works with Python 2.7 and 3.3</li>
-          </ul>
-        </div>
-        <div class="panel-buttons">
-          <a class="btn-download" href="https://github.com/stormpath/stormpath-django/archive/master.zip">Download ZIP</a>
-          <a class="btn-github" href="https://github.com/stormpath/stormpath-django">View on GitHub</a>
-        </div>
-      </div>
-    </div>
-    <div class="panel-container">
       <div class="panel-title">Flask Integration</div>
       <div class="panel-inner">
         <div class="panel-text">

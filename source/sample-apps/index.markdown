@@ -76,23 +76,6 @@ body_id: [sample-apps-page]
     <a id="sample-apps-python-container-jump"></a>
     <div class="python-title">Python</div>
     <div class="panel-container">
-      <div class="panel-title">Chirper – Django Sample</div>
-      <div class="panel-inner">
-        <div class="panel-text">
-          Check out the Stormpath Django plugin.
-          <ul>
-            <li>Seamless Django integration simplifies user authentication and access control</li>
-            <li>Works with Python 2.7 and 3.3</li>
-            <li>Sample app emulates Twitter</li>
-          </ul>
-        </div>
-        <div class="panel-buttons">
-          <a class="btn-download" href="https://github.com/stormpath/stormpath-python-samples/archive/master.zip">Download ZIP</a>
-          <a class="btn-github" href="https://github.com/stormpath/stormpath-python-samples">View on GitHub</a>
-        </div>
-      </div>
-    </div>
-    <div class="panel-container">
       <div class="panel-title">Flask Sample</div>
       <div class="panel-inner">
         <div class="panel-text">
@@ -106,6 +89,23 @@ body_id: [sample-apps-page]
         <div class="panel-buttons">
           <a class="btn-download" href="https://github.com/stormpath/stormpath-flask-sample/archive/master.zip">Download ZIP</a>
           <a class="btn-github" href="https://github.com/stormpath/stormpath-flask-sample">View on GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel-container">
+      <div class="panel-title">Chirper – Django Sample</div>
+      <div class="panel-inner">
+        <div class="panel-text">
+          Check out the Stormpath Django plugin.
+          <ul>
+            <li>Seamless Django integration simplifies user authentication and access control</li>
+            <li>Works with Python 2.7 and 3.3</li>
+            <li>Sample app emulates Twitter</li>
+          </ul>
+        </div>
+        <div class="panel-buttons">
+          <a class="btn-download" href="https://github.com/stormpath/stormpath-python-samples/archive/master.zip">Download ZIP</a>
+          <a class="btn-github" href="https://github.com/stormpath/stormpath-python-samples">View on GitHub</a>
         </div>
       </div>
     </div>
