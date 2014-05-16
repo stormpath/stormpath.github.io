@@ -204,12 +204,6 @@ Authenticating users is equally simple:
 If the authentication request is successful, an `Account` resource will be
 returned.
 
-{% docs note %}
-This is typically only done when a user logs into a website -- we're just
-showing this example to illustrate how it works.
-{% enddocs %}
-
-
 ***
 
 
