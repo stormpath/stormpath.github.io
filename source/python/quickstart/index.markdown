@@ -163,7 +163,7 @@ this, you'll need to use your application (*created in the previous step*):
     })
 
 Stormpath Accounts have several basic fields (`given_name`, `surname`, `email`,
-etc...), but also support storing custom JSON data through the `custom_data`
+etc...), but also support storing schema-less JSON data through the `custom_data`
 field.
 
 {% docs note %}
