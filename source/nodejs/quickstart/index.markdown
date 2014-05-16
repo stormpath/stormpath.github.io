@@ -12,11 +12,11 @@ This quickstart will get you up and running with Stormpath in about 7 minutes an
 
  * Install the Stormpath SDK
  * Create an API Key that allows you to make REST API calls with Stormpath
- * Register an Application 
+ * Register an Application
  * Create a User Account
  * Search for a User Account
  * Authenticate a User Account
- 
+
 Stormpath also can do a lot more (*like Groups, Multitenancy, Social
 Integration, and Security workflows*) which you can learn more about at the end
 of this quickstart.
@@ -40,7 +40,7 @@ This will install the official Stormpath npm module and store the dependency in 
 All requests to the Stormpath must be authenticated with an API Key. To get an API key:
 
 1. If you haven't already, [Sign up for Stormpath here](https://api.stormpath.com/register).  You'll be sent a verification email.
-1. Click the link in the verification email. 
+1. Click the link in the verification email.
 1. Log in to the [Stormpath Admin Console](https://api.stormpath.com).
 1. In the top-right corner of the resulting page, visit **Settings** > **My Account**.
 1. On the Account Details page, under **Security Credentials**, click **Create API Key**.
@@ -58,13 +58,13 @@ Now that set up is complete, you can start building something.  One of the first
 
     var stormpath = require('stormpath');
 
-Once this is done, you can initialize a Stormpath `client` based on an API Key ID and Secret.  
+Once this is done, you can initialize a Stormpath `client` based on an API Key ID and Secret.
 
     //Generate a Stormpath client based on your API Key and Secret
     var apiKey = new stormpath.ApiKey('YOUR_API_KEY_ID', 'YOUR_API_KEY_SECRET');
     var client = new stormpath.Client({apiKey: apiKey});
 
-A `client` instance is your starting point for all interactions with the Stormpath API - once you have a Client instance, you can do everything else. 
+A `client` instance is your starting point for all interactions with the Stormpath API - once you have a Client instance, you can do everything else.
 
 ## Register Your Application with Stormpath
 
@@ -139,7 +139,7 @@ Finding user Accounts is also simple.  You can search for Accounts by field:
 You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
 all accounts with a stormpath.com domain.
 
-## Authenticate a User 
+## Authenticate a User
 Authenticating users is equally simple:
 
     app.authenticateAccount({
@@ -172,7 +172,7 @@ addthis:url="https://stormpath.com">
 <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
 <!-- AddThis Button END -->
 <p>
-	
+
 ***
 
 ## Next Steps
