@@ -185,7 +185,7 @@ the attribute names, for instance:
 
 Finding user Accounts is also simple.  You can search for Accounts by field:
 
-    application.accounts.search({'email': 'stormtrooper@stormpath.com'})
+    accounts = application.accounts.search({'email': 'stormtrooper@stormpath.com'})
 
 You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
 all accounts with a stormpath.com domain.
@@ -202,6 +202,11 @@ Authenticating users is equally simple:
 
 If the authentication request is successful, an `Account` resource will be
 returned.
+
+{% docs note %}
+This is typically only done when a user logs into a website -- we're just
+showing this example to illustrate how it works.
+{% enddocs %}
 
 
 ***
