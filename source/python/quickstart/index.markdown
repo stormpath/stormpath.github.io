@@ -147,7 +147,7 @@ Directory.
 
 Now that we've created an Application, let's create a user Account so someone
 can log into (*i.e. authenticate with*) the Application.  To do this, use your
-Client:
+Account:
 
     account = application.accounts.create({
         'given_name': 'Joe',
