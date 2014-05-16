@@ -34,7 +34,7 @@ Let's get started!
 Stormpath works with Python 2.7, and 3.2+.
 {% enddocs %}
 
-Install [Stormpath](https://github.com/stormpath/stormpath-sdk-python) using [pip](http://pip.readthedocs.org/en/latest/):
+You can install [Stormpath](https://github.com/stormpath/stormpath-sdk-python) using [pip](http://pip.readthedocs.org/en/latest/):
 
     $ pip install stormpath
 
@@ -84,10 +84,10 @@ All requests to Stormpath must be authenticated with an API Key.
 6. Save this file in a secure location, such as your home directory, in a
    hidden `.stormpath` directory. For example:
 
-        $HOME/.stormpath/apiKey.properties
+        ~/.stormpath/apiKey.properties
 
 5. Change the file permissions to ensure only you can read this file.  For
-   example, on \*nix operating systems:
+   example:
 
         $ chmod go-rwx $HOME/.stormpath/apiKey.properties
 
@@ -97,11 +97,11 @@ easily authentication with the Stormpath library.
 ***
 
 
-## Configure your Python Application
+## Create a Client
 
-Create a Stormpath [Client](/python/product-guide#Client) using your
-`apiKey.properties` file.  The `Client` instance is what communicates with
-Stormpath.  For example:
+The first step to working with Stormpath is creating a Stormpath
+[Client](/python/product-guide#Client) using your `apiKey.properties` file.
+The `Client` instance is where all Stormpath interaction happens.
 
     from os.path import expanduser
     from stormpath.client import Client
@@ -116,28 +116,31 @@ create multiple `Client` instances as it could negatively affect caching.
 ***
 
 
-## Register Your Application with Stormpath
+## Create an Application
 
-Before you can store user accounts you'll need to have an `Application` and
-`Directory` in Stormpath.  An Application is just Stormpath’s term for a
-project, and a Directory is a collection of unique user accounts.
+Before you can create user Accounts you'll need to create a Stormpath
+Application.  An Application in Stormpath is the same thing as a project.  If
+you're building a website named "Lightsabers Galore", you'd want to name your
+Stormpath Application "Lightsabers Galore" as well.
 
-Applications and Directories are decoupled, so you can share Directories
-across your Applications.  This is useful for more complex authentication
-scenarios (*like single sign on*).
-
-You can create an Application and Directory together for convenience:
+You can create an Application using the client you created in the previous step:
 
     application = client.applications.create({
         'name': 'My Awesome Application',
         'description': 'Super awesome!',
     }, create_directory=True)
 
-The code above will create a new Application, then create a new Directory of the
-same name (*if your Application is named "test" your Directory will be named
-"test Directory"*).  The new Directory will then be bound to your Application,
-so that all new users created in your Application will be stored in this
-Directory.
+The code above will create a new Application, which we can use later to do stuff
+like:
+
+- Create user accounts.
+- Log users into their account.
+- etc.
+
+{% docs note %}
+The only required field when creating an Application is `name`.  Descriptions
+are optional!
+{% enddocs %}
 
 
 ***
@@ -166,6 +169,14 @@ etc...), but also support variable JSON data through the `custom_data` field.
 The required fields are: `given_name`, `surname`, `email`, and `password`.
 {% enddocs %}
 
+Once you've created an Account, you can access the Account's data by referencing
+the attribute names, for instance:
+
+    >>> account.given_name
+    'Joe'
+    >>> account.custom_data['favorite_color']
+    'white'
+
 
 ***
 
@@ -174,7 +185,7 @@ The required fields are: `given_name`, `surname`, `email`, and `password`.
 
 Finding user Accounts is also simple.  You can search for Accounts by field:
 
-    application.accounts.search({'email': 'stormtrooper@stormpath.com'})
+    accounts = application.accounts.search({'email': 'stormtrooper@stormpath.com'})
 
 You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
 all accounts with a stormpath.com domain.
@@ -191,6 +202,11 @@ Authenticating users is equally simple:
 
 If the authentication request is successful, an `Account` resource will be
 returned.
+
+{% docs note %}
+This is typically only done when a user logs into a website -- we're just
+showing this example to illustrate how it works.
+{% enddocs %}
 
 
 ***
