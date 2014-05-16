@@ -120,7 +120,7 @@ create multiple `Client` instances as it could negatively affect caching.
 
 Before you can create user Accounts you'll need to create a Stormpath
 Application.  An Application in Stormpath is the same thing as a project.  If
-you're building a website named "Lightsabers Galore", you'd want to name your
+you're building a web app named "Lightsabers Galore", you'd want to name your
 Stormpath Application "Lightsabers Galore" as well.
 
 You can create an Application using the client you created in the previous step:
@@ -203,6 +203,11 @@ Authenticating users is equally simple:
 
 If the authentication request is successful, an `Account` resource will be
 returned.
+
+{% docs note %}
+This is typically only done when a user logs into a web app -- we're just
+showing this example to illustrate how it works.
+{% enddocs %}
 
 ***
 
