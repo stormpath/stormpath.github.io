@@ -107,7 +107,7 @@ The `Client` object is what allows you to communicate with Stormpath.
 
 First, open the Python shell by running:
 
-	$ python
+    $ python
 
 Then, create a new Stormpath client with the following code:
 
