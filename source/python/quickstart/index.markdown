@@ -38,7 +38,7 @@ You can install [Stormpath](https://github.com/stormpath/stormpath-sdk-python) u
 
     $ pip install stormpath
 
-Don't have pip installed?  Try this instead:
+If that doesn't work, try this instead:
 
     $ easy_install stormpath
 
