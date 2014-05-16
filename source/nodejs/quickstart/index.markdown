@@ -82,7 +82,7 @@ All requests to Stormpath must be authenticated with an API Key.
 5. Change the file permissions to ensure only you can read this file.  For
    example:
 
-        $ chmod go-rwx $HOME/.stormpath/apiKey.properties
+        $ chmod go-rwx ~/.stormpath/apiKey.properties
 
 The `apiKey.properties` file holds your API key information, and can be used to
 easily authentication with the Stormpath library.
