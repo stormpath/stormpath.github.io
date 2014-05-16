@@ -218,8 +218,9 @@ Like Stormpath?  If you enjoyed playing around with our new Python library,
 please help spread the word with a quick tweet!
 
 <!-- AddThis Button BEGIN -->
-<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Just checked out @goStormpath for a new Python app. It's awesome!" addthis:url="https://stormpath.com">
-  <a class="addthis_button_twitter" addthis:title="Just checked out @goStormpath for a new Python app. It's awesome!"></a>
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout @goStormpath, it let's you set up complete user management in your Python app in minutes." 
+addthis:url="https://stormpath.com">
+  <a class="addthis_button_twitter"></a>
   <a class="addthis_button_preferred_2"></a>
   <a class="addthis_button_preferred_3"></a>
   <a class="addthis_button_preferred_4"></a>
