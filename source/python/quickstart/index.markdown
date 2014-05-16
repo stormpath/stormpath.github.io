@@ -255,11 +255,11 @@ We hope you found this Quickstart helpful!
 You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
-* [Flask Documentation](http://flask-stormpath.readthedocs.org/en/latest/)
-* [Build a Flask app in 30 minutes](https://stormpath.com/blog/build-a-flask-app-in-30-minutes/)
-* [Official Python Product Guide](http://docs.stormpath.com/python/product-guide)
-* [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/)
-* [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/)
+* Dig in deeper with the [Official Python Product Guide](http://docs.stormpath.com/python/product-guide).
+* Use Stormpath and Flask to build an awesome web app with the [Flask Documentation](http://flask-stormpath.readthedocs.org/en/latest/).
+* [Build a Flask app in 30 minutes](https://stormpath.com/blog/build-a-flask-app-in-30-minutes/).
+* Learn to easily partition user data with our [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/).
+* Easily support Google and Facebook Login with our new [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/).
 
 
 ***
