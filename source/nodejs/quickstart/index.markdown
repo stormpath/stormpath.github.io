@@ -160,7 +160,7 @@ Like Stormpath?  If you enjoyed playing around with our new Python library,
 please help spread the word with a quick tweet!
 
 <!-- AddThis Button BEGIN -->
-<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout @goStormpath, it let's you setup complete user management in your Node.js app in minutes."
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout @goStormpath, it let's you set up complete user management in your Node.js app in minutes."
 addthis:url="https://stormpath.com">
   <a class="addthis_button_twitter"></a>
   <a class="addthis_button_preferred_2"></a>

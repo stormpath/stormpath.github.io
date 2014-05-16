@@ -172,7 +172,7 @@ this, you'll need to use your application (*created in the previous step*):
 
 Stormpath Accounts have several basic fields (`given_name`, `surname`, `email`,
 etc...), but also support storing schema-less JSON data through the `custom_data`
-field.  `custom_data` allows you to store any user profile inforation (*up to
+field.  `custom_data` allows you to store any user profile information (*up to
 10MB per user!*).
 
 {% docs note %}
