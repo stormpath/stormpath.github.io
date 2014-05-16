@@ -84,7 +84,7 @@ All requests to Stormpath must be authenticated with an API Key.
 6. Save this file in a secure location, such as your home directory, in a
    hidden `.stormpath` directory. For example:
 
-        $HOME/.stormpath/apiKey.properties
+        ~/.stormpath/apiKey.properties
 
 5. Change the file permissions to ensure only you can read this file.  For
    example, on \*nix operating systems:
