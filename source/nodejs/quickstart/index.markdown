@@ -112,11 +112,8 @@ Then, create a new Stormpath client with the following code:
     ...   client = new stormpath.Client({apiKey: apiKey});
     ... });
 
-
-**NOTE**: If you want to see all the code from this tutorial in one file, check out this Gist on GitHub: https://gist.github.com/rdegges/13ceb8ef0abb7bd7ae60#file-quickstart-js
-
 {% docs tip %} 
-If you want to see all the code from this tutorial in one file, check out this [Gist on GitHub](https://gist.github.com/rdegges/13ceb8ef0abb7bd7ae60#file-quickstart-js):  [https://gist.github.com/rdegges/13ceb8ef0abb7bd7ae60#file-quickstart-js](https://gist.github.com/rdegges/13ceb8ef0abb7bd7ae60#file-quickstart-js)
+If you want to see all the code from this tutorial in one file, check out this [Gist](https://gist.github.com/rdegges/13ceb8ef0abb7bd7ae60#file-quickstart-js).
 {% enddocs %}
 
 ***
@@ -124,12 +121,10 @@ If you want to see all the code from this tutorial in one file, check out this [
 
 ## Create an Application
 
-Before you can create user Accounts you'll need to create a Stormpath
-Application.  An Application in Stormpath is the same thing as a project.  If
-you're building a web app named "Lightsabers Galore", you'd want to name your
-Stormpath Application "Lightsabers Galore" as well.
+Before you can create user accounts you'll need to create a Stormpath
+`Application`.  An `Application` in Stormpath is the same thing as a project.  If you're building a web app named "Lightsabers Galore", you'd want to name your Stormpath Application "Lightsabers Galore" as well.
 
-You can create an Application using the client you created in the previous step:
+You can create an `Application` using the client you created in the previous step:
 
     > var app = {
     ... name: 'My Awesome Application',
@@ -140,8 +135,7 @@ You can create an Application using the client you created in the previous step:
     ... app = createdApp;
     ... });
 
-The code above will create a new Application, which we can use later to do stuff
-like:
+The code above will create a new `Application`, which we can use later to do stuff like:
 
 - Create user accounts.
 - Log users into their account.
@@ -158,7 +152,7 @@ are optional!
 
 ## Create a User Account
 
-Now that we've created an Application, let's create a user Account!  To do
+Now that we've created an `Application`, let's create a user `Account`!  To do
 this, you'll need to use your application (*created in the previous step*):
 
     > var account = {
@@ -175,17 +169,15 @@ this, you'll need to use your application (*created in the previous step*):
     ... if (err) throw err;
     ... });
 
-Stormpath Accounts have several basic fields (`givenName`, `surname`, `email`,
-etc...), but also support storing schema-less JSON data through the `customData`
-field.  `customData` allows you to store any user profile information (*up to
+Stormpath accounts have several basic fields (`givenName`, `surname`, `email`,
+etc...), but also support storing schema-less JSON data through the `customData` field.  `customData` allows you to store any user profile information (*up to
 10MB per user!*).
 
 {% docs note %}
 The required fields are: `givenName`, `surname`, `email`, and `password`.
 {% enddocs %}
 
-Once you've created an Account, you can access the Account's data by referencing
-the attribute names, for instance:
+Once you've created an `Account`, you can access the account's data by referencing the attribute names, for instance:
 
     > account['givenName']
     'Joe'
@@ -198,7 +190,7 @@ the attribute names, for instance:
 
 ## Search for a User Account
 
-Finding user Accounts is also simple.  You can search for Accounts by field:
+Finding user accounts is also simple.  You can search for accounts by field:
 
     > app.getAccounts({email: 'tk421@stormpath.com'}, function(err, accounts) {
     ... if (err) throw err;
