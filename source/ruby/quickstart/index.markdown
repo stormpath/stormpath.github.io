@@ -176,20 +176,6 @@ referencing the attribute names, for instance:
 ***
 
 
-## Search for a User Account
-
-Finding user accounts is also simple.  You can search for accounts by field:
-
-    for account in application.accounts.search email:'tk421@stormpath.com'
-        print account.given_name, account.surname
-
-
-You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
-all accounts with a stormpath.com domain.
-
-
-***
-
 ## Authenticate a User Account
 
 Authenticating users is equally simple -- you can specify either a `username` or
