@@ -103,16 +103,16 @@ First, open the node shell by running:
 
 Then, create a new Stormpath client with the following code:
 
-    > var stormpath = require('stormpath');
-    > var client = null;
-    > var homedir = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
-    > var keyfile = homedir + '/.stormpath/apiKey.properties';
-    > stormpath.loadApiKey(keyfile, function apiKeyFileLoaded(err, apiKey) {
-    ...   if (err) throw err;
-    ...   client = new stormpath.Client({apiKey: apiKey});
-    ... });
+    var stormpath = require('stormpath');
+    var client = null;
+    var homedir = (process.platform === 'win32') ? process.env.HOMEPATH : process.env.HOME;
+    var keyfile = homedir + '/.stormpath/apiKey.properties';
+    stormpath.loadApiKey(keyfile, function apiKeyFileLoaded(err, apiKey) {
+      if (err) throw err;
+      client = new stormpath.Client({apiKey: apiKey});
+    });
 
-{% docs tip %} 
+{% docs tip %}
 If you want to see all the code from this tutorial in one file, check out this [Gist](https://gist.github.com/rdegges/13ceb8ef0abb7bd7ae60#file-quickstart-js).
 {% enddocs %}
 
@@ -126,14 +126,14 @@ Before you can create user accounts you'll need to create a Stormpath
 
 You can create an `Application` using the client you created in the previous step:
 
-    > var app = {
-    ... name: 'My Awesome Application',
-    ... description: 'Super awesome!',
-    ... };
-    > client.createApplication(app, {createDirectory: true}, function(err, createdApp) {
-    ... if (err) throw err;
-    ... app = createdApp;
-    ... });
+    var app = {
+      name: 'My Awesome Application',
+      description: 'Super awesome!',
+    };
+    client.createApplication(app, {createDirectory: true}, function(err, createdApp) {
+      if (err) throw err;
+      app = createdApp;
+    });
 
 The code above will create a new `Application`, which we can use later to do stuff like:
 
@@ -155,19 +155,19 @@ are optional!
 Now that we've created an `Application`, let's create a user `Account`!  To do
 this, you'll need to use your application (*created in the previous step*):
 
-    > var account = {
-    ... givenName: 'Joe',
-    ... surname: 'Stormtrooper',
-    ... username: 'tk421',
-    ... email: 'tk421@stormpath.com',
-    ... password: 'Changeme1',
-    ... customData: {
-    ..... favoriteColor: 'white',
-    ..... },
-    ... };
-    > app.createAccount(account, function(err, account) {
-    ... if (err) throw err;
-    ... });
+    var account = {
+      givenName: 'Joe',
+      surname: 'Stormtrooper',
+      username: 'tk421',
+      email: 'tk421@stormpath.com',
+      password: 'Changeme1',
+      customData: {
+        favoriteColor: 'white',
+      },
+    };
+    app.createAccount(account, function(err, account) {
+      if (err) throw err;
+    });
 
 Stormpath accounts have several basic fields (`givenName`, `surname`, `email`,
 etc...), but also support storing schema-less JSON data through the `customData` field.  `customData` allows you to store any user profile information (*up to
@@ -179,10 +179,8 @@ The required fields are: `givenName`, `surname`, `email`, and `password`.
 
 Once you've created an `Account`, you can access the account's data by referencing the attribute names, for instance:
 
-    > account['givenName']
-    'Joe'
-    > account['customData']['favoriteColor']
-    'white'
+    account['givenName']
+    account['customData']['favoriteColor']
 
 
 ***
@@ -192,13 +190,12 @@ Once you've created an `Account`, you can access the account's data by referenci
 
 Finding user accounts is also simple.  You can search for accounts by field:
 
-    > app.getAccounts({email: 'tk421@stormpath.com'}, function(err, accounts) {
-    ... if (err) throw err;
-    ... accounts.each(function (err, account, index) {
-    ..... console.log(account.givenName + " " + account.surname);
-    ..... });
-    ... });
-    Joe Stormtrooper
+    app.getAccounts({email: 'tk421@stormpath.com'}, function(err, accounts) {
+      if (err) throw err;
+      accounts.each(function (err, account, index) {
+        console.log(account.givenName + " " + account.surname);
+      });
+    });
 
 You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
 all accounts with a stormpath.com domain.
@@ -212,24 +209,22 @@ all accounts with a stormpath.com domain.
 Authenticating users is equally simple -- you can specify either a `username` or
 `email` address, along with a `password`:
 
-    > app.authenticateAccount({
-    ... username: 'tk421',
-    ... password: 'Changeme1',
-    ... }, function (err, result) {
-    ... if (err) throw err;
-    ... account = result.account;
-    ... });
-    > account.givenName
-    'Joe'
-    > app.authenticateAccount({
-    ... username: 'tk421@stormpath.com',
-    ... password: 'Changeme1',
-    ... }, function (err, result) {
-    ... if (err) throw err;
-    ... account = result.account;
-    ... });
-    > account.givenName
-    'Joe'
+    app.authenticateAccount({
+      username: 'tk421',
+      password: 'Changeme1',
+    }, function (err, result) {
+      if (err) throw err;
+      account = result.account;
+    });
+    account.givenName
+    app.authenticateAccount({
+      username: 'tk421@stormpath.com',
+      password: 'Changeme1',
+    }, function (err, result) {
+      if (err) throw err;
+      account = result.account;
+    });
+    account.givenName
 
 If the authentication request is successful, an `Account` resource will be
 returned.
