@@ -122,7 +122,7 @@ Now that we have an account we can use, we can log in to the application. But ho
 
 If the authentication request is successful, the `$authResult` will return the account instance for the authorized account.
 
-### Experiment! 
+### Experiment!
 
 Use the client configuration to interact with tenant data, such as applications, directories, and accounts:
 
