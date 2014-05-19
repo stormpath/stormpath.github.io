@@ -107,7 +107,7 @@ The `client` instance is intended to be an application singleton.  You should
 reuse this instance throughout your application code.  You *should not*
 create multiple `Client` instances as it could negatively affect caching.
 
-{% docs tip %} 
+{% docs tip %}
 If you want to see all the code from this tutorial in one file, check out this [Gist on GitHub](#):  [#](#)
 {% enddocs %}
 
@@ -185,7 +185,7 @@ Finding user Accounts is also simple.  You can search for Accounts by field:
     ...     print account.given_name, account.surname
     ...
     Joe Stormtrooper
-	
+
 	NEED HELP HERE
 
 
@@ -204,7 +204,7 @@ Authenticating users is equally simple -- you can specify either a `username` or
     > auth_result = application.authenticate_account auth_request
     > auth_result.account.given_name
 	=> "Joe"
-	
+
     > auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421', 'Changeme1'
     > auth_result = application.authenticate_account auth_request
     > auth_result.account.given_name
