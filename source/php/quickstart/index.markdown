@@ -101,29 +101,56 @@ easily authentication with the Stormpath library.
 ***
 
 
-## Working with the Stormpath PHP SDK
+## Create a Client
 
-### Configure your PHP application
+The first step to working with Stormpath is creating a Stormpath
+`Client` using your `apiKey.properties` file.  The `Client` object is what
+allows you to communicate with Stormpath.
 
-Configure a Stormpath SDK [`Client`](http://www.stormpath.com/docs/php/product-guide#Client) based on your API key. The `Client` is your starting point for all operations with the Stormpath service. For example:
+First, open the PHP shell by running:
+
+    $ php -a
+
+Then, create a new Stormpath `Client` with the following code:
 
     require 'vendor/autoload.php';
-    ...
+    \Stormpath\Client::$apiKeyFileLocation = $_SERVER['HOME'] .  '/.stormpath/apiKey.properties';
 
-    \Stormpath\Client::$apiKeyFileLocation = $_SERVER['HOME'] . '/.stormpath/apiKey.properties';
+The `Client` instance is an application singleton.  You should reuse this
+instance throughout your application code.
 
-The `Client` instance that will be generated from here is a singleton that will be used to interact with Stormpath.
 
-### Register your application with Stormpath
+***
 
-Registering an application with Stormpath allows that application to use Stormpath for its user management and authentication needs. Use the `create` method of the `Application` resource class as follows:
+
+## Create an Application
+
+Before you can create user Accounts you'll need to create a Stormpath
+Application.  An Application in Stormpath is the same thing as a project.  If
+you're building a web app named "Lightsabers Galore", you'd want to name your
+Stormpath Application "Lightsabers Galore" as well.
+
+You can create an Application using the client you created in the previous step:
 
     $application = \Stormpath\Resource\Application::create(
-      array('name' => 'My Application',
-            'description' => 'My Application Description'),
-      array('createDirectory' => true));
+        array(
+            'name' => 'My Awesome Application',
+            'description' => 'Super awesome!',
+        ),
+        array('createDirectory' => true)
+    );
 
-Once the application is created, it will automatically create a `Directory` resource based on the name of the application and set it as the default account store. New accounts will be created in the default account store.
+The code above will create a new Application, which we can use later to do stuff
+like:
+
+- Create user accounts.
+- Log users into their account.
+- etc.
+
+{% docs note %}
+The only required field when creating an Application is `name`.  Descriptions
+are optional!
+
 
 ### Create an account
 
