@@ -101,24 +101,6 @@ easily authentication with the Stormpath library.
 ***
 
 
-## Add the Stormpath PHP SDK to your Project
-
-Configure the stormpath/sdk dependency in your `composer.json` file:
-
-    "require": {
-        "stormpath/sdk": "1.0.*@beta"
-    }
-
-If you still haven't, install composer:
-
-    curl -s http://getcomposer.org/installer
-
-Install the [Stormpath PHP SDK](https://github.com/stormpath/stormpath-sdk-php) on your application root using:
-
-    php composer.phar install
-
-***
-
 ## Working with the Stormpath PHP SDK
 
 ### Configure your PHP application
