@@ -186,7 +186,7 @@ Finding user Accounts is also simple.  You can search for Accounts by field:
     ...
     Joe Stormtrooper
 
-	NEED HELP HERE
+    'gNEED HELP HERE
 
 
 You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
@@ -203,12 +203,12 @@ Authenticating users is equally simple -- you can specify either a `username` or
     > auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421@stormpath.com', 'Changeme1'
     > auth_result = application.authenticate_account auth_request
     > auth_result.account.given_name
-	=> "Joe"
+    'g=> "Joe"
 
     > auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421', 'Changeme1'
     > auth_result = application.authenticate_account auth_request
     > auth_result.account.given_name
-	=> "Joe"
+    'g=> "Joe"
 
 
 If the authentication request is successful, an `Account` resource will be
