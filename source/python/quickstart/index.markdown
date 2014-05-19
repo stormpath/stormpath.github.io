@@ -102,7 +102,7 @@ easily authentication with the Stormpath library.
 ## Create a Client
 
 The first step to working with Stormpath is creating a Stormpath
-[Client](/python/product-guide#Client) using your `apiKey.properties` file.
+[Client](/python/product-guide#client) using your `apiKey.properties` file.
 The `Client` object is what allows you to communicate with Stormpath.
 
 First, open the Python shell by running:
