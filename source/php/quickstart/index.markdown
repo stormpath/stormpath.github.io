@@ -25,48 +25,81 @@ of this quickstart.
 
 Let's get started!
 
-{% docs note %}
-Our PHP library is compatible with PHP version *5.3* and higher.  All sample
-code below is based on version *1.0.0.beta* of our PHP library.
-{% enddocs %}
 
 
 ***
 
 
-## Sign Up for Stormpath
+## Install the Stormpath Library
 
-1. Fill out and submit the [Stormpath registration form](https://api.stormpath.com/register).  This will send a confirmation email.
-2. Click the link in the confirmation email.
+{% docs note %}
+Stormpath works with PHP *5.3* and higher.  This documentation covers version
+*1.0.0.beta* of our PHP library.
+{% enddocs %}
 
-## <a name="apiKey"></a> Get an API Key
+You can install [Stormpath](https://github.com/stormpath/stormpath-sdk-php) using [composer](https://getcomposer.org/).
 
-All requests back to Stormpath using the Stormpath SDK must be authenticated with an API Key. To get an API key:
+1. Create a directory for testing Stormpath:
 
-1. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using the email address and password you used to register with Stormpath.
+    $ mkdir ~/test
+    $ cd ~/test
 
-2. In the top-right corner of the resulting page, visit **Settings** > **My Account**.
+2. Create a `composer.json` file to specify the correct Stormpath library
+   version required:
 
-    <!-- TODO: SCREENSHOT (arrow calling attention to the 'My Accounts' menu item)   -->
+    {
+      "require": {
+        "stormpath/sdk": "1.0.*@beta"
+      }
+    }
 
-3. On the Account Details page, under **Security Credentials**, click **Create API Key**.
+3. Run `composer install` to fetch the Stormpath library.
 
-    <!-- TODO: SCREENSHOT (arrow calling attention to the 'Create API Key' button) -->
 
-    This will generate your API Key and download it to your computer as an `apiKey.properties` file. If you open the file in a text editor, you will see something similar to the following:
+***
+
+
+## Get an API Key
+
+All requests to Stormpath must be authenticated with an API Key.
+
+1. If you haven't already,
+   [Sign up for Stormpath here](https://api.stormpath.com/register).  You'll
+   be sent a verification email.
+
+2. Click the link in the verification email.
+
+3. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using
+   the email address and password you used to register with Stormpath.
+
+4. Click the **Manage Existing Keys** button in the middle of the page.
+
+5. Under **Security Credentials**, click **Create API Key**.
+
+   This will generate your API Key and download it to your computer as an
+   `apiKey.properties` file.  If you open the file in a text editor, you will
+   see something similar to the following:
 
         apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
         apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 
-4. Save this file in a secure location, such as your home directory in a hidden `.stormpath` directory. For example:
+6. Save this file in a secure location, such as your home directory, in a
+   hidden `.stormpath` directory. For example:
 
-        $HOME/.stormpath/apiKey.properties
+        $ mkdir ~/.stormpath
+        $ mv ~/Downloads/apiKey.properties ~/.stormpath/
 
-5. Also change the file permissions to ensure only you can read this file. For example, on \*nix operating systems:
+5. Change the file permissions to ensure only you can read this file.  For
+   example:
 
-        $ chmod go-rwx $HOME/.stormpath/apiKey.properties
+        $ chmod go-rwx ~/.stormpath/apiKey.properties
+
+The `apiKey.properties` file holds your API key information, and can be used to
+easily authentication with the Stormpath library.
+
 
 ***
+
 
 ## Add the Stormpath PHP SDK to your Project
 
