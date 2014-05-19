@@ -9,7 +9,7 @@ title: Stormpath PHP Quickstart
 Welcome to Stormpath's PHP Quickstart!
 
 This quickstart will get you up and running with Stormpath in about 7 minutes
-and give you a good initial feel for the Stormpath Python library.  During this
+and give you a good initial feel for the Stormpath PHP library.  During this
 quickstart, you will do the following:
 
  * Install the Stormpath library.
