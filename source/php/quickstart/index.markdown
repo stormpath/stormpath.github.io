@@ -125,12 +125,13 @@ instance throughout your application code.
 
 ## Create an Application
 
-Before you can create user Accounts you'll need to create a Stormpath
-Application.  An Application in Stormpath is the same thing as a project.  If
-you're building a web app named "Lightsabers Galore", you'd want to name your
-Stormpath Application "Lightsabers Galore" as well.
+Before you can create user accounts you'll need to create a Stormpath
+`Application`.  An `Application` in Stormpath is the same thing as a project.
+If you're building a web app named "Lightsabers Galore", you'd want to name
+your Stormpath `Application` "Lightsabers Galore" as well.
 
-You can create an Application using the client you created in the previous step:
+You can create an `Application` using the client you created in the previous
+step:
 
     $application = \Stormpath\Resource\Application::create(
         array(
@@ -140,8 +141,8 @@ You can create an Application using the client you created in the previous step:
         array('createDirectory' => true)
     );
 
-The code above will create a new Application, which we can use later to do stuff
-like:
+The code above will create a new `Application`, which we can use later to do
+stuff like:
 
 - Create user accounts.
 - Log users into their account.
@@ -152,18 +153,45 @@ The only required field when creating an Application is `name`.  Descriptions
 are optional!
 
 
-### Create an account
+***
 
-Now that we've created an `Application`, let's create an `Account` so someone can log in to (i.e. authenticate with) the application. To do so,
+
+## Create a User Account
+
+Now that we've created an Application, let's create a user `Account`!  To do
+this, you'll need to use your `Application` (*created in the previous step*):
 
     $account = \Stormpath\Resource\Account::instantiate(
-        array('givenName' => 'John',
-              'surname' => 'Smith',
-              'username' => 'johnsmith',
-              'email' => 'john.smith@example.com',
-              'password' => '4P@$$w0rd!'));
-
+        array(
+            'givenName' => 'Joe',
+            'surname' => 'Stormtrooper',
+            'username' => 'tk421',
+            'email' => 'tk421@stormpath.com',
+            'password' => 'Changeme1',
+        )
+    );
     $application->createAccount($account);
+
+Stormpath Accounts have several basic fields (`given_name`, `surname`, `email`,
+etc...).
+
+{% docs note %}
+The required fields are: `given_name`, `surname`, `email`, and `password`.
+{% enddocs %}
+
+Once you've created an Account, you can access the Account's data by referencing
+the attribute names, for instance:
+
+    echo $account->givenName;
+    echo $account->surname;
+
+
+***
+
+
+
+
+
 
 ### Authenticate an Account
 
