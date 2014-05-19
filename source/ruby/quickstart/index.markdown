@@ -26,26 +26,24 @@ of this quickstart.
 
 Let's get started!
 
-{% docs note %}
-The Ruby SDK is compatible with Ruby version *1.9.3* and higher.
-{% enddocs %}
+
+***
+
 
 ## Install the Stormpath Gem
 
-You can install the [Stormpath](https://github.com/stormpath/stormpath-sdk-ruby) gem to your application using `gem install`:
+{% docs note %}
+The Ruby SDK is compatible with Ruby *1.9.3* and higher.
+{% enddocs %}
+
+You can install [Stormpath](https://github.com/stormpath/stormpath-sdk-ruby)
+using [RubyGems](https://rubygems.org/):
 
     $ gem install stormpath-sdk --pre
 
-Once the gem is installed, add the Stormpath Ruby SDK .gem to your application using Rake, Bundler, or whatever gem-compatible tool you prefer:
-
-    Gem::Specification.new do |s|
-        ...
-        s.add_dependency('stormpath-sdk', '>= 1.0.0.beta.2')
-        ...
-    end
-
 
 ***
+
 
 ## Get an API Key
 
@@ -88,77 +86,78 @@ easily authentication with the Stormpath library.
 
 ***
 
+
 ## Create a Client
 
 The first step to working with Stormpath is creating a Stormpath
 [Client](/ruby/product-guide#client) using your `apiKey.properties` file.
 The `Client` object is what allows you to communicate with Stormpath.
 
-First, open the Interactive Ruby Shell by running:
+First, open the Ruby shell by running:
 
     $ irb
 
-Then, create a new Stormpath client with the following code:
+Then, create a new Stormpath `Client` with the following code:
 
-    > require "stormpath-sdk"
-    > client = Stormpath::Client.new api_key_file_location: File.join(ENV['HOME'], '.stormpath', 'apiKey.properties')
+    require "stormpath-sdk"
+    client = Stormpath::Client.new api_key_file_location: File.join(ENV['HOME'], '.stormpath', 'apiKey.properties')
 
-The `client` instance is intended to be an application singleton.  You should
+The `Client` instance is intended to be an application singleton.  You should
 reuse this instance throughout your application code.  You *should not*
 create multiple `Client` instances as it could negatively affect caching.
 
-{% docs tip %}
-If you want to see all the code from this tutorial in one file, check out this [Gist on GitHub](#):  [#](#)
-{% enddocs %}
 
 ***
+
 
 ## Create an Application
 
 Before you can create user Accounts you'll need to create a Stormpath
-Application.  An Application in Stormpath is the same thing as a project.  If
-you're building a web app named "Lightsabers Galore", you'd want to name your
-Stormpath Application "Lightsabers Galore" as well.
+`Application`.  An `Application` in Stormpath is the same thing as a project.
+If you're building a web app named "Lightsabers Galore", you'd want to name
+your Stormpath `Application` "Lightsabers Galore" as well.
 
-You can create an Application using the client you created in the previous step:
+You can create an `Application` using the `Client` you created in the previous
+step:
 
-    > application = client.applications.create({
-    >      name: 'My Awesome Application',
-    >      description: 'Super awesome!'
-    >    }, {createDirectory: true})
+    application = client.applications.create({
+        name: 'My Awesome Application',
+        description: 'Super awesome!',
+    }, {createDirectory: true})
 
-The code above will create a new Application, which we can use later to do stuff
-like:
+The code above will create a new `Application`, which we can use later to do
+stuff like:
 
 - Create user accounts.
 - Log users into their account.
 - etc.
 
 {% docs note %}
-The only required field when creating an Application is `name`.  Descriptions
+The only required field when creating an `Application` is `name`.  Descriptions
 are optional!
 {% enddocs %}
 
 
 ***
 
+
 ## Create a User Account
 
-Now that we've created an Application, let's create a user Account!  To do
-this, you'll need to use your application (*created in the previous step*):
+Now that we've created an `Application`, let's create a user `Account`!  To do
+this, you'll need to use your `Application` (*created in the previous step*):
 
-    > account = application.accounts.create({
-    >     given_name: 'Joe',
-    >     surname: 'Stormtrooper',
-    >     username: 'tk421',
-    >     email: 'tk421@stormpath.com',
-    >     password: 'Changeme1',
-    >     custom_data: {
-    >         favorite_color: 'white',
-    >     },
-    > })
+    account = application.accounts.create({
+        given_name: 'Joe',
+        surname: 'Stormtrooper',
+        username: 'tk421',
+        email: 'tk421@stormpath.com',
+        password: 'Changeme1',
+        custom_data: {
+            favorite_color: 'white',
+        },
+    })
 
-Stormpath Accounts have several basic fields (`given_name`, `surname`, `email`,
+Stormpath accounts have several basic fields (`given_name`, `surname`, `email`,
 etc...), but also support storing schema-less JSON data through the `custom_data`
 field.  `custom_data` allows you to store any user profile information (*up to
 10MB per user!*).
@@ -167,26 +166,22 @@ field.  `custom_data` allows you to store any user profile information (*up to
 The required fields are: `given_name`, `surname`, `email`, and `password`.
 {% enddocs %}
 
-Once you've created an Account, you can access the Account's data by referencing
-the attribute names, for instance:
+Once you've created an `Account`, you can access the account's data by
+referencing the attribute names, for instance:
 
-    > account.given_name
-    => "Joe"
-    >>> account.custom_data['favorite_color']
-    => "white"
+    account.given_name
+    account.custom_data['favorite_color']
+
 
 ***
 
+
 ## Search for a User Account
 
-Finding user Accounts is also simple.  You can search for Accounts by field:
+Finding user accounts is also simple.  You can search for accounts by field:
 
-    > for account in application.accounts.search email:'tk421@stormpath.com'
-    ...     print account.given_name, account.surname
-    ...
-    Joe Stormtrooper
-
-    'gNEED HELP HERE
+    for account in application.accounts.search email:'tk421@stormpath.com'
+        print account.given_name, account.surname
 
 
 You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
@@ -200,16 +195,15 @@ all accounts with a stormpath.com domain.
 Authenticating users is equally simple -- you can specify either a `username` or
 `email` address, along with a `password`:
 
-    > auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421@stormpath.com', 'Changeme1'
-    > auth_result = application.authenticate_account auth_request
-    > auth_result.account.given_name
-    'g=> "Joe"
+    auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421@stormpath.com', 'Changeme1'
+    auth_result = application.authenticate_account auth_request
+    account = auth_result.account
+    account.given_name
 
-    > auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421', 'Changeme1'
-    > auth_result = application.authenticate_account auth_request
-    > auth_result.account.given_name
-    'g=> "Joe"
-
+    auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421', 'Changeme1'
+    auth_result = application.authenticate_account auth_request
+    account = auth_result.account
+    account.given_name
 
 If the authentication request is successful, an `Account` resource will be
 returned.
@@ -221,6 +215,7 @@ showing this example to illustrate how it works.
 
 
 ***
+
 
 ## Other Things You Can Do with Stormpath
 
