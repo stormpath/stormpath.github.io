@@ -5,25 +5,34 @@ description: "7-minute Tutorial for PHP"
 title: Stormpath PHP Quickstart
 ---
 
-Welcome to Stormpath's PHP SDK Quickstart!
 
-This quickstart will get you up and running with Stormpath in about 10 minutes and give you a good initial feel for the Stormpath PHP SDK.  During this quickstart, you will do the following:
+Welcome to Stormpath's PHP Quickstart!
 
-* Register for a free Stormpath account
-* Create an API Key that allows you to make REST API calls with Stormpath
-* Register an application with Stormpath so you can automate that application's user management and authentication needs
-* Create an account that can log in to the application
-* Authenticate an account with the application
+This quickstart will get you up and running with Stormpath in about 7 minutes
+and give you a good initial feel for the Stormpath Python library.  During this
+quickstart, you will do the following:
 
-With Stormpath, you can offload repetitive security-sensitive logic to Stormpath and get back to building your application's core functionality.  Never worry about storing passwords again!
+ * Install the Stormpath library.
+ * Create an API Key that allows you to make REST API calls with Stormpath.
+ * Register an Application.
+ * Create a User Account.
+ * Search for a User Account.
+ * Authenticate a User Account.
 
-The Stormpath PHP SDK can be found on [Github](https://github.com/stormpath/stormpath-sdk-php).
+Stormpath also can do a lot more (*like Groups, Multitenancy, Social
+Integration, and Security workflows*) which you can learn more about at the end
+of this quickstart.
+
+Let's get started!
 
 {% docs note %}
-The PHP SDK is compatible with PHP version *5.3* and higher. The sample codes of this documentation are based on version *1.0.0.beta* of the PHP SDK.
+Our PHP library is compatible with PHP version *5.3* and higher.  All sample
+code below is based on version *1.0.0.beta* of our PHP library.
 {% enddocs %}
 
+
 ***
+
 
 ## Sign Up for Stormpath
 
