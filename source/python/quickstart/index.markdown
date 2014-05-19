@@ -6,6 +6,7 @@ image: https://stormpath.com/images/tutorial/python.png
 title: Stormpath Python Quickstart
 ---
 
+
 Welcome to Stormpath's Python Quickstart!
 
 This quickstart will get you up and running with Stormpath in about 7 minutes

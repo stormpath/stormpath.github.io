@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: php
+description: "7-minute Tutorial for PHP"
 title: Stormpath PHP Quickstart
 ---
 
