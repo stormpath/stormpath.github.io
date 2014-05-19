@@ -189,19 +189,6 @@ the attribute names, for instance:
 ***
 
 
-## Search for a User Account
-
-Finding user Accounts is also simple.  You can search for Accounts by field:
-
-TODO
-
-You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
-all accounts with a stormpath.com domain.
-
-
-***
-
-
 ## Authenticate a User Account
 
 Authenticating users is equally simple -- you can specify either a `username` or
