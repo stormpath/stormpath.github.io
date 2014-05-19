@@ -189,48 +189,89 @@ the attribute names, for instance:
 ***
 
 
+## Search for a User Account
 
+Finding user Accounts is also simple.  You can search for Accounts by field:
 
+TODO
 
+You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
+all accounts with a stormpath.com domain.
 
-### Authenticate an Account
-
-Now that we have an account we can use, we can log in to the application. But how do we authenticate an account logging in to the application? We use the previously-created application instance as follows:
-
-    $authResult = $application->authenticate('johnsmith', '4P@$$w0rd!');
-    $account = $authResult->account;
-
-If the authentication request is successful, the `$authResult` will return the account instance for the authorized account.
-
-### Experiment!
-
-Use the client configuration to interact with tenant data, such as applications, directories, and accounts:
-
-    $tenant = \Stormpath\Resource\Tenant::get();
-    foreach($tenant->applications as $app)
-    {
-        print $app->name;
-
-        foreach($dir->accounts as $acc)
-        {
-            print $acc->givenName;
-        }
-    }
-
-    foreach($tenant->directories as $dir)
-    {
-        print $dir->name;
-
-        foreach($dir->accounts as $acc)
-        {
-            print $acc->givenName;
-        }
-    }
 
 ***
 
+
+## Authenticate a User Account
+
+Authenticating users is equally simple -- you can specify either a `username` or
+`email` address, along with a `password`:
+
+    $authResult = $application->authenticate('tk421', 'Changeme1');
+    $account = $authResult->account;
+
+    $authResult = $application->authenticate('tk421@stormpath.com', 'Changeme1');
+    $account = $authResult->account;
+
+If the authentication request is successful, an `Account` resource will be
+returned.
+
+{% docs note %}
+This is typically only done when a user logs into a web app -- we're just
+showing this example to illustrate how it works.
+{% enddocs %}
+
+
+***
+
+
+## Other Things You Can Do with Stormpath
+
+In addition to user registration and login, Stormpath can do a lot more!
+
+- Create and manage user groups.
+- Partition multi-tenant account data.
+- Simplify social login with providers like Google and Facebook.
+- Manage developer API keys and access tokens.
+- Verify new users via email.
+- Automatically provide secure password reset functionality.
+- Centralize your user store across multiple applications.
+- Plug into your favorite web framework (*like Symfony!*).
+
+
+***
+
+
 ## Next Steps
 
-We hope you have found this Quickstart helpful!
+We hope you found this Quickstart helpful!
 
-For full coverage of Stormpath's PHP SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our [PHP Product Guide](http://www.stormpath.com/docs/php/product-guide).
+You've just scratched the surface of what you can do with Stormpath.  Want to
+learn more?  Here are a few other helpful resources you can jump into.
+
+* Dig in deeper with the [Official PHP Product Guide](http://docs.stormpath.com/php/product-guide).
+* Learn to easily partition user data with our [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/).
+* Easily support Google and Facebook Login with our new [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/).
+
+
+***
+
+
+## Help Us Spread the Word
+
+Like Stormpath?  If you enjoyed playing around with our new PHP library,
+please help spread the word with a quick tweet!
+
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout @goStormpath, it let's you set up complete user management in your PHP app in minutes."
+addthis:url="https://stormpath.com">
+  <a class="addthis_button_twitter"></a>
+  <a class="addthis_button_preferred_2"></a>
+  <a class="addthis_button_preferred_3"></a>
+  <a class="addthis_button_preferred_4"></a>
+  <a class="addthis_button_compact"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+<!-- AddThis Button END -->
+<p>
