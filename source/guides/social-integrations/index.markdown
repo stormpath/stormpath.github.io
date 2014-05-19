@@ -26,9 +26,9 @@ You access Stormpath via a [beautiful](http://stormpath.com/blog/designing-rest-
 
 ##  Why Should I Use Stormpath to Integrate Login with Facebook and Google?
 
-Stormpath makes it easy to connect to Google and Facebook in one simple API call. It's a simple and secure way to retrieve user profiles and convert them into to Stormpath accounts so that no matter the service you're using. 
+Stormpath makes it easy to connect to Google and Facebook in one simple API call. It's a simple and secure way to retrieve user profiles and convert them into Stormpath accounts, no matter the service you're using. 
 
-From an end-user perspective, it allows the them to log into your application by collecting information from these social networks.
+From an end-user perspective, it allows them to log into your application by collecting information from these social networks.
 
 As soon as you have an OAuth token from Google or Facebook, you can pass it to Stormpath.  Stormpath will handle validating the token, importing the user profile into a `Directory`, syncing user profile, and can enable you to handle use cases such as:
 
@@ -147,7 +147,32 @@ Response:
 
 Once a Facebook Directory is mapped to an application, it is now possible to get an `Account` from Stormpath based on Facebook User Access Tokens.
 
-You need to gather an User Access Token from Facebook before submitting it to Stormpath.  This is possible either by using a [Facebook SDK Library](https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens), or [Facebook's Graph Explorer](https://developers.facebook.com/tools/explorer).
+You need to gather an User Access Token from Facebook before submitting it to Stormpath.  This is possible either by using a [Facebook SDK Library](https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens), or [Facebook's Graph Explorer](https://developers.facebook.com/tools/explorer) for testing.
+
+Below is sample code using Facebook's Javascript library to get the access token.  
+
+    window.checkFacebookStatus = function () {
+        FB.getLoginStatus(function (response) {
+            //  {
+            //     status: 'connected',
+            //     authResponse: {
+            //        accessToken: '...',
+            //        expiresIn:'...',
+            //        signedRequest:'...',
+            //        userID:'...'
+            //     }
+            //  }
+
+            if (response.status === 'connected') {
+                alert('Access Token: ' + response.authResponse.accessToken);
+            } else {
+                alert('Log in first...');
+            }
+
+        });
+    };
+
+There are also other means of getting the access token from cookies on the server using 3rd party libraries in different languages.
 
 {% docs note %}
 It is required that your Facebook application request for the `email` permission from Facebook. If the access token does not grant `email` permissions, you will not be able to get an `Account` with an access token.
@@ -341,7 +366,9 @@ Response:
 
 ### Accessing an Account with Google Tokens
 
-To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google's [OAuth 2.0 protocol](https://developers.google.com/accounts/docs/OAuth2) and the user's consent for your application's permissions.
+To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google's [OAuth 2.0 protocol](https://developers.google.com/accounts/docs/OAuth2Login) and the user's consent for your application's permissions.
+
+Generically, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the Authorization Code.  This is documented in detail [here](https://developers.google.com/accounts/docs/OAuth2Login#authenticatingtheuser).
 
 Once the Authorization Code is gathered, you can get or create the `Account` by HTTP `POST`ing to the `Application` accounts collection and specifying the `providerData`.  The `providerData` JSON object specifies the type of provider and the authorization code as follows:
 
