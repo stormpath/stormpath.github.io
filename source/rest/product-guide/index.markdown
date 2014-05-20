@@ -1872,7 +1872,7 @@ At no point is the user shown, or does Stormpath have access to, the original pa
 <a class="anchor" name="password-reset-base-URL"></a>
 ###### The Password Reset Base URL
 
-It is also expected that the directory's Password Reset workflow's `Password Reset Base URL` has been set to a URL that will be processed by your own application web server. This URL should be free of any query parameters, as the Stormpath back-end will append on to the URL a parameter used to verify the email. If this URL is not set, a default Stormpath-branded page will appear which allows the user to complete the workflow.
+It is expected that the directory's Password Reset workflow's `Password Reset Base URL` has been set to a URL that will be processed by your own application web server. This URL should be free of any query parameters, as the Stormpath back-end will append on to the URL a parameter used to verify the email. If this URL is not set, a default Stormpath-branded page will appear which allows the user to complete the workflow.
 
 {% docs note %}
 The `Account Verification Base URL` defaults to a Stormpath API Sever URL which, while it is functional, is a Stormpath API server web page.  Because it will likely confuse your application end-users if they see a Stormpath web page, we strongly recommended that you specify a URL that points to your web application. Moreover, when specifying the Base URL, ensure it is a Base URL without query parameters
@@ -1900,8 +1900,6 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="password-reset-acount"></a>`account` | A link to the account for which the password reset will occur. | Link | Cannot set in a request. Returned in a response only.
 
 The application password reset tokens endpoint supports the password reset workflow for an account in the application assigned [account stores](#account-store-mappings).
-
-Creating a new password reset token automatically sends a password reset email to the destination email address if that address corresponds to an account listed in the application [account stores](#account-store-mappings).
 
 A successful HTTP `POST` sends a password reset email to the first discovered account associated with the corresponding application. The email recipient can then click a password reset URL in the email to reset their password in a web form.
 
@@ -1939,10 +1937,10 @@ If the password reset token creation fails, a `400 Bad Request` is returned with
     Content-Type: application/json;charset=UTF-8;
 
     {
-      status: 404
-      code: 404
-      message: "The requested resource does not exist."
-      developerMessage: "The requested resource does not exist."
+      status: 404,
+      code: 404,
+      message: "The requested resource does not exist.",
+      developerMessage: "The requested resource does not exist.",
       moreInfo: "mailto:support@stormpath.com"
     }
 
@@ -1993,7 +1991,27 @@ If the password reset token is invalid - it never existed or has expired - a `40
          "moreInfo": "mailto:support@stormpath.com"
       }
 
-After a successfully `GET` with the query string token, you'll receive back an Account `href`. Use this `href` to target the specific account resouce for which you want to set a new password. You do this just like any other [account update](#account-update), by specifying the attribute to update and calling the update request.
+After a successfully `GET` with the query string token, you can return a page to the end user to collect the password to update for the account.  Once you have the password, you can update it by a `POST` to the password reset token's endpoint.  This is the same endpoint that you used to validate the token above.
+
+** Example POST Request **
+
+    POST https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA/passwordResetTokens/j6HqguWPSBSXM2xmcOUShw
+
+    {
+      "password": "$PASSWORD_FROM_USER"
+    }
+
+** Example Success Response** 
+
+    HTTP/1.1 200 OK
+
+    {
+        "account": {
+            "href": "https://api.stormpath.com/v1/accounts/5F63i6mzwRsyymEsfUl7ql"
+        }
+    }
+
+On success, the response will include a link to the account that the password was reset on.  This call on success will send the password change confirmation email that was configured in the Administrator Console to the email account associated with the account.
 
 <a class="anchor" name="application-accounts-list"></a>
 #### List Application Accounts
