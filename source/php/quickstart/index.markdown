@@ -2,6 +2,7 @@
 layout: doc
 lang: php
 description: "7-minute Tutorial for PHP"
+image: https://stormpath.com/images/tutorial/php.png
 title: Stormpath PHP Quickstart
 ---
 
@@ -40,20 +41,28 @@ Stormpath works with PHP *5.3* and higher.  This documentation covers version
 You can install [Stormpath](https://github.com/stormpath/stormpath-sdk-php) using [composer](https://getcomposer.org/).
 
 1. Create a directory for testing Stormpath:
+ 
 
-    $ mkdir ~/test
-    $ cd ~/test
+        $ mkdir ~/test
+        $ cd ~/test
 
-2. Create a `composer.json` file to specify the correct Stormpath library
-   version required:
+2. Create a `composer.json` file to specify the correct Stormpath library version required:
 
-    {
-      "require": {
-        "stormpath/sdk": "1.0.*@beta"
-      }
-    }
+        {
+          "require": {
+            "stormpath/sdk": "1.0.*@beta"
+          }
+        }
+	
 
-3. Run `composer install` to fetch the Stormpath library.
+3. If you still haven’t, install composer:
+  
+	    curl -sS https://getcomposer.org/installer | php	
+
+
+4. Install the Stormpath PHP SDK on your application root using:
+
+	    php composer.phar install
 
 
 ***
@@ -135,7 +144,7 @@ step:
 
     $application = \Stormpath\Resource\Application::create(
         array(
-            'name' => 'My Awesome Application',
+            'name' => 'My Awesome Application-PHP',
             'description' => 'Super awesome!',
         ),
         array('createDirectory' => true)
@@ -151,6 +160,7 @@ stuff like:
 {% docs note %}
 The only required field when creating an Application is `name`.  Descriptions
 are optional!
+{% enddocs %}
 
 
 ***
@@ -182,8 +192,7 @@ The required fields are: `given_name`, `surname`, `email`, and `password`.
 Once you've created an Account, you can access the Account's data by referencing
 the attribute names, for instance:
 
-    echo $account->givenName;
-    echo $account->surname;
+    echo "Hi, " . $account->givenName . " " . $account->surname . "\n";
 
 
 ***
@@ -196,9 +205,11 @@ Authenticating users is equally simple -- you can specify either a `username` or
 
     $authResult = $application->authenticate('tk421', 'Changeme1');
     $account = $authResult->account;
+	echo $account->givenName . " " . $account->surname . "Successfully Authenticated \n";
 
     $authResult = $application->authenticate('tk421@stormpath.com', 'Changeme1');
     $account = $authResult->account;
+	echo $account->givenName . " " . $account->surname . "Successfully Authenticated \n";
 
 If the authentication request is successful, an `Account` resource will be
 returned.
@@ -238,7 +249,6 @@ learn more?  Here are a few other helpful resources you can jump into.
 
 * Dig in deeper with the [Official PHP Product Guide](http://docs.stormpath.com/php/product-guide).
 * Learn to easily partition user data with our [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/).
-* Easily support Google and Facebook Login with our new [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/).
 
 
 ***
