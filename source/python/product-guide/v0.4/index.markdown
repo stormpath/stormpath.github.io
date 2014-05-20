@@ -1348,7 +1348,7 @@ Body | The value for the body of the message. Variable substitution is supported
 :----- | :-----
 Message Format | The message format for the body of the Password Reset Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
 "From" Name | The value to display in the "From" field of the Password Reset Success message.
-"From" Email Address | The email address from which the Password Reset Success message is sent. 
+"From" Email Address | The email address from which the Password Reset Success message is sent.
 Subject | The value for the subject field of the Password Reset Success message.
 Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
 
@@ -1392,6 +1392,16 @@ The password is changed as follows:
 	account = application.verify_password_reset_token('PASS_RESET_TOKEN')
 	account.password = 'New Password'
 	account.save()
+
+#### Reset Account Password in one request
+
+If you already have the password reset token and the new password for the user account Stormpath provides a handy helper function for resetting the password
+in one request.
+
+    application.reset_account_password(token, 'NewPassword123')
+
+**Note:** This will return and error if the given token or password are invalid or if the given account doesn't belong to the specified application.
+
 
 ***
 
