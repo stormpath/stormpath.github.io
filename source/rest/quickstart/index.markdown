@@ -80,7 +80,7 @@ You can create an Application  by `POST`ing a new Application resource to the `a
          -H "Accept: application/json" \
          -H "Content-Type: application/json" \
          -d '{
-               "name" : "My first application!"
+               "name" : "My Awesome Application"
              }' \
          'https://api.stormpath.com/v1/applications?createDirectory=true'
 
@@ -93,7 +93,7 @@ Here's an example response to the above REST request:
 
     {
       "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe",
-      "name": "My first application!",
+      "name": "My Awesome Application",
       "description": null,
       "status": "ENABLED",
       "tenant": {
@@ -288,7 +288,7 @@ You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
 * Dig in deeper with the [Official REST API Product Guide](http://docs.stormpath.com/rest/product-guide).
-* Use try out Stormpath in your favorite programming language with out [7-Minute Tutorial](https://stormpath.com/tutorial). 
+* Try out Stormpath in your favorite programming language with our [7-Minute Tutorial](https://stormpath.com/tutorial). 
 * Learn to easily partition user data with our [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/).
 * Easily support Google and Facebook Login with our new [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/).
 
