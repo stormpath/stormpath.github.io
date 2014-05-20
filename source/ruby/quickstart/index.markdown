@@ -184,12 +184,12 @@ Authenticating users is equally simple -- you can specify either a `username` or
     auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421@stormpath.com', 'Changeme1'
     auth_result = application.authenticate_account auth_request
     account = auth_result.account
-    account.given_name
+    puts account.given_name + " successfully authenticated!"
 
     auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421', 'Changeme1'
     auth_result = application.authenticate_account auth_request
     account = auth_result.account
-    account.given_name
+    puts account.given_name + " successfully authenticated!"
 
 If the authentication request is successful, an `Account` resource will be
 returned.
