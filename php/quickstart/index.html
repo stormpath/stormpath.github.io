@@ -9,7 +9,7 @@
   <meta name="author" content="Stormpath, Inc.">
 
   
-  <meta name="description" content="Welcome to Stormpath&rsquo;s PHP SDK Quickstart! This quickstart will get you up and running with Stormpath in about 10 minutes and give you a good &hellip;">
+  <meta name="description" content="7-minute Tutorial for PHP">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -369,172 +369,281 @@
             
               <h1 class="title" id="page-title">Stormpath PHP Quickstart</h1>
             
-          	<p>Welcome to Stormpath&rsquo;s PHP SDK Quickstart!</p>
+          	<p>Welcome to Stormpath&rsquo;s PHP Quickstart!</p>
 
-<p>This quickstart will get you up and running with Stormpath in about 10 minutes and give you a good initial feel for the Stormpath PHP SDK.  During this quickstart, you will do the following:</p>
+<p>This quickstart will get you up and running with Stormpath in about 7 minutes
+and give you a good initial feel for the Stormpath PHP library.  During this
+quickstart, you will do the following:</p>
 
 <ul>
-<li>Register for a free Stormpath account</li>
-<li>Create an API Key that allows you to make REST API calls with Stormpath</li>
-<li>Register an application with Stormpath so you can automate that application&rsquo;s user management and authentication needs</li>
-<li>Create an account that can log in to the application</li>
-<li>Authenticate an account with the application</li>
+<li>Install the Stormpath library.</li>
+<li>Create an API Key that allows you to make REST API calls with Stormpath.</li>
+<li>Register an Application.</li>
+<li>Create a User Account.</li>
+<li>Search for a User Account.</li>
+<li>Authenticate a User Account.</li>
 </ul>
 
 
-<p>With Stormpath, you can offload repetitive security-sensitive logic to Stormpath and get back to building your application&rsquo;s core functionality.  Never worry about storing passwords again!</p>
+<p>Stormpath also can do a lot more (<em>like Groups, Multitenancy, Social
+Integration, and Security workflows</em>) which you can learn more about at the end
+of this quickstart.</p>
 
-<p>The Stormpath PHP SDK can be found on <a href="https://github.com/stormpath/stormpath-sdk-php">Github</a>.</p>
+<p>Let&rsquo;s get started!</p>
 
-<div class='docs-note'><p>The PHP SDK is compatible with PHP version <em>5.3</em> and higher. The sample codes of this documentation are based on version <em>1.0.0.beta</em> of the PHP SDK.</p>
+<hr />
+
+<h2><a id="install-the-stormpath-library"></a>Install the Stormpath Library</h2>
+
+<div class='docs-note'><p>Stormpath works with PHP <em>5.3</em> and higher.  This documentation covers version
+<em>1.0.0.beta</em> of our PHP library.</p>
+</div>
+
+
+<p>You can install <a href="https://github.com/stormpath/stormpath-sdk-php">Stormpath</a> using <a href="https://getcomposer.org/">composer</a>.</p>
+
+<ol>
+<li><p>Create a directory for testing Stormpath:</p>
+
+<pre><code> $ mkdir ~/test
+ $ cd ~/test
+</code></pre></li>
+<li><p>Create a <code>composer.json</code> file to specify the correct Stormpath library version required:</p>
+
+<pre><code> {
+   "require": {
+     "stormpath/sdk": "1.0.*@beta"
+   }
+ }
+</code></pre></li>
+<li><p>If you still haven’t, install composer:</p>
+
+<pre><code> curl -sS https://getcomposer.org/installer | php    
+</code></pre></li>
+<li><p>Install the Stormpath PHP SDK on your application root using:</p>
+
+<pre><code> php composer.phar install
+</code></pre></li>
+</ol>
+
+
+<hr />
+
+<h2><a id="get-an-api-key"></a>Get an API Key</h2>
+
+<p>All requests to Stormpath must be authenticated with an API Key.</p>
+
+<ol>
+<li><p>If you haven&rsquo;t already,
+<a href="https://api.stormpath.com/register">Sign up for Stormpath here</a>.  You&rsquo;ll
+be sent a verification email.</p></li>
+<li><p>Click the link in the verification email.</p></li>
+<li><p>Log in to the <a href="https://api.stormpath.com">Stormpath Admin Console</a> using
+the email address and password you used to register with Stormpath.</p></li>
+<li><p>Click the <strong>Manage Existing Keys</strong> button in the middle of the page.</p></li>
+<li><p>Under <strong>Security Credentials</strong>, click <strong>Create API Key</strong>.</p>
+
+<p>This will generate your API Key and download it to your computer as an
+<code>apiKey.properties</code> file.  If you open the file in a text editor, you will
+see something similar to the following:</p>
+
+<pre><code> apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
+ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
+</code></pre></li>
+<li><p>Save this file in a secure location, such as your home directory, in a
+hidden <code>.stormpath</code> directory. For example:</p>
+
+<pre><code> $ mkdir ~/.stormpath
+ $ mv ~/Downloads/apiKey.properties ~/.stormpath/
+</code></pre></li>
+<li><p>Change the file permissions to ensure only you can read this file.  For
+example:</p>
+
+<pre><code> $ chmod go-rwx ~/.stormpath/apiKey.properties
+</code></pre></li>
+</ol>
+
+
+<p>The <code>apiKey.properties</code> file holds your API key information, and can be used to
+easily authentication with the Stormpath library.</p>
+
+<hr />
+
+<h2><a id="create-a-client"></a>Create a Client</h2>
+
+<p>The first step to working with Stormpath is creating a Stormpath
+<code>Client</code> using your <code>apiKey.properties</code> file.  The <code>Client</code> object is what
+allows you to communicate with Stormpath.</p>
+
+<p>First, open the PHP shell by running:</p>
+
+<pre><code>$ php -a
+</code></pre>
+
+<p>Then, create a new Stormpath <code>Client</code> with the following code:</p>
+
+<pre><code>require 'vendor/autoload.php';
+\Stormpath\Client::$apiKeyFileLocation = $_SERVER['HOME'] .  '/.stormpath/apiKey.properties';
+</code></pre>
+
+<p>The <code>Client</code> instance is an application singleton.  You should reuse this
+instance throughout your application code.</p>
+
+<hr />
+
+<h2><a id="create-an-application"></a>Create an Application</h2>
+
+<p>Before you can create user accounts you&rsquo;ll need to create a Stormpath
+<code>Application</code>.  An <code>Application</code> in Stormpath is the same thing as a project.
+If you&rsquo;re building a web app named &ldquo;Lightsabers Galore&rdquo;, you&rsquo;d want to name
+your Stormpath <code>Application</code> &ldquo;Lightsabers Galore&rdquo; as well.</p>
+
+<p>You can create an <code>Application</code> using the client you created in the previous
+step:</p>
+
+<pre><code>$application = \Stormpath\Resource\Application::create(
+    array(
+        'name' =&gt; 'My Awesome Application-PHP',
+        'description' =&gt; 'Super awesome!',
+    ),
+    array('createDirectory' =&gt; true)
+);
+</code></pre>
+
+<p>The code above will create a new <code>Application</code>, which we can use later to do
+stuff like:</p>
+
+<ul>
+<li>Create user accounts.</li>
+<li>Log users into their account.</li>
+<li>etc.</li>
+</ul>
+
+
+<div class='docs-note'><p>The only required field when creating an Application is <code>name</code>.  Descriptions
+are optional!</p>
 </div>
 
 
 <hr />
 
-<h2><a id="sign-up-for-stormpath"></a>Sign Up for Stormpath</h2>
+<h2><a id="create-a-user-account"></a>Create a User Account</h2>
 
-<ol>
-<li>Fill out and submit the <a href="https://api.stormpath.com/register">Stormpath registration form</a>.  This will send a confirmation email.</li>
-<li>Click the link in the confirmation email.</li>
-</ol>
-
-
-<h2><a id="-get-an-api-key"></a><a name="apiKey"></a> Get an API Key</h2>
-
-<p>All requests back to Stormpath using the Stormpath SDK must be authenticated with an API Key. To get an API key:</p>
-
-<ol>
-<li><p>Log in to the <a href="https://api.stormpath.com">Stormpath Admin Console</a> using the email address and password you used to register with Stormpath.</p></li>
-<li><p>In the top-right corner of the resulting page, visit <strong>Settings</strong> > <strong>My Account</strong>.</p>
-
-<p> <!-- TODO: SCREENSHOT (arrow calling attention to the 'My Accounts' menu item)   --></p></li>
-<li><p>On the Account Details page, under <strong>Security Credentials</strong>, click <strong>Create API Key</strong>.</p>
-
-<p> <!-- TODO: SCREENSHOT (arrow calling attention to the 'Create API Key' button) --></p>
-
-<p> This will generate your API Key and download it to your computer as an <code>apiKey.properties</code> file. If you open the file in a text editor, you will see something similar to the following:</p>
-
-<pre><code> apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
- apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
-</code></pre></li>
-<li><p>Save this file in a secure location, such as your home directory in a hidden <code>.stormpath</code> directory. For example:</p>
-
-<pre><code> $HOME/.stormpath/apiKey.properties
-</code></pre></li>
-<li><p>Also change the file permissions to ensure only you can read this file. For example, on *nix operating systems:</p>
-
-<pre><code> $ chmod go-rwx $HOME/.stormpath/apiKey.properties
-</code></pre></li>
-</ol>
-
-
-<hr />
-
-<h2><a id="add-the-stormpath-php-sdk-to-your-project"></a>Add the Stormpath PHP SDK to your Project</h2>
-
-<p>Configure the stormpath/sdk dependency in your <code>composer.json</code> file:</p>
-
-<pre><code>"require": {
-    "stormpath/sdk": "1.0.*@beta"
-}
-</code></pre>
-
-<p>If you still haven&rsquo;t, install composer:</p>
-
-<pre><code>curl -s http://getcomposer.org/installer
-</code></pre>
-
-<p>Install the <a href="https://github.com/stormpath/stormpath-sdk-php">Stormpath PHP SDK</a> on your application root using:</p>
-
-<pre><code>php composer.phar install
-</code></pre>
-
-<hr />
-
-<h2><a id="working-with-the-stormpath-php-sdk"></a>Working with the Stormpath PHP SDK</h2>
-
-<h3><a id="configure-your-php-application"></a>Configure your PHP application</h3>
-
-<p>Configure a Stormpath SDK <a href="http://www.stormpath.com/docs/php/product-guide#Client"><code>Client</code></a> based on your API key. The <code>Client</code> is your starting point for all operations with the Stormpath service. For example:</p>
-
-<pre><code>require 'vendor/autoload.php';
-...
-
-\Stormpath\Client::$apiKeyFileLocation = $_SERVER['HOME'] . '/.stormpath/apiKey.properties';
-</code></pre>
-
-<p>The <code>Client</code> instance that will be generated from here is a singleton that will be used to interact with Stormpath.</p>
-
-<h3><a id="register-your-application-with-stormpath"></a>Register your application with Stormpath</h3>
-
-<p>Registering an application with Stormpath allows that application to use Stormpath for its user management and authentication needs. Use the <code>create</code> method of the <code>Application</code> resource class as follows:</p>
-
-<pre><code>$application = \Stormpath\Resource\Application::create(
-  array('name' =&gt; 'My Application',
-        'description' =&gt; 'My Application Description'),
-  array('createDirectory' =&gt; true));
-</code></pre>
-
-<p>Once the application is created, it will automatically create a <code>Directory</code> resource based on the name of the application and set it as the default account store. New accounts will be created in the default account store.</p>
-
-<h3><a id="create-an-account"></a>Create an account</h3>
-
-<p>Now that we&rsquo;ve created an <code>Application</code>, let&rsquo;s create an <code>Account</code> so someone can log in to (i.e. authenticate with) the application. To do so,</p>
+<p>Now that we&rsquo;ve created an Application, let&rsquo;s create a user <code>Account</code>!  To do
+this, you&rsquo;ll need to use your <code>Application</code> (<em>created in the previous step</em>):</p>
 
 <pre><code>$account = \Stormpath\Resource\Account::instantiate(
-    array('givenName' =&gt; 'John',
-          'surname' =&gt; 'Smith',
-          'username' =&gt; 'johnsmith',
-          'email' =&gt; 'john.smith@example.com',
-          'password' =&gt; '4P@$$w0rd!'));
-
+    array(
+        'givenName' =&gt; 'Joe',
+        'surname' =&gt; 'Stormtrooper',
+        'username' =&gt; 'tk421',
+        'email' =&gt; 'tk421@stormpath.com',
+        'password' =&gt; 'Changeme1',
+    )
+);
 $application-&gt;createAccount($account);
 </code></pre>
 
-<h3><a id="authenticate-an-account"></a>Authenticate an Account</h3>
+<p>Stormpath Accounts have several basic fields (<code>given_name</code>, <code>surname</code>, <code>email</code>,
+etc&hellip;).</p>
 
-<p>Now that we have an account we can use, we can log in to the application. But how do we authenticate an account logging in to the application? We use the previously-created application instance as follows:</p>
+<div class='docs-note'><p>The required fields are: <code>given_name</code>, <code>surname</code>, <code>email</code>, and <code>password</code>.</p>
+</div>
 
-<pre><code>$authResult = $application-&gt;authenticate('johnsmith', '4P@$$w0rd!');
+
+<p>Once you&rsquo;ve created an Account, you can access the Account&rsquo;s data by referencing
+the attribute names, for instance:</p>
+
+<pre><code>echo "Hi, " . $account-&gt;givenName . " " . $account-&gt;surname . "\n";
+</code></pre>
+
+<hr />
+
+<h2><a id="authenticate-a-user-account"></a>Authenticate a User Account</h2>
+
+<p>Authenticating users is equally simple &mdash; you can specify either a <code>username</code> or
+<code>email</code> address, along with a <code>password</code>:</p>
+
+<pre><code>$authResult = $application-&gt;authenticate('tk421', 'Changeme1');
 $account = $authResult-&gt;account;
+echo $account-&gt;givenName . " " . $account-&gt;surname . "Successfully Authenticated \n";
+
+$authResult = $application-&gt;authenticate('tk421@stormpath.com', 'Changeme1');
+$account = $authResult-&gt;account;
+echo $account-&gt;givenName . " " . $account-&gt;surname . "Successfully Authenticated \n";
 </code></pre>
 
-<p>If the authentication request is successful, the <code>$authResult</code> will return the account instance for the authorized account.</p>
+<p>If the authentication request is successful, an <code>Account</code> resource will be
+returned.</p>
 
-<h3><a id="experiment"></a>Experiment!</h3>
+<div class='docs-note'><p>This is typically only done when a user logs into a web app &#8211; we&#8217;re just
+showing this example to illustrate how it works.</p>
+</div>
 
-<p>Use the client configuration to interact with tenant data, such as applications, directories, and accounts:</p>
 
-<pre><code>$tenant = \Stormpath\Resource\Tenant::get();
-foreach($tenant-&gt;applications as $app)
-{
-    print $app-&gt;name;
+<hr />
 
-    foreach($dir-&gt;accounts as $acc)
-    {
-        print $acc-&gt;givenName;
-    }
-}
+<h2><a id="other-things-you-can-do-with-stormpath"></a>Other Things You Can Do with Stormpath</h2>
 
-foreach($tenant-&gt;directories as $dir)
-{
-    print $dir-&gt;name;
+<p>In addition to user registration and login, Stormpath can do a lot more!</p>
 
-    foreach($dir-&gt;accounts as $acc)
-    {
-        print $acc-&gt;givenName;
-    }
-}
-</code></pre>
+<ul>
+<li>Create and manage user groups.</li>
+<li>Partition multi-tenant account data.</li>
+<li>Simplify social login with providers like Google and Facebook.</li>
+<li>Manage developer API keys and access tokens.</li>
+<li>Verify new users via email.</li>
+<li>Automatically provide secure password reset functionality.</li>
+<li>Centralize your user store across multiple applications.</li>
+<li>Plug into your favorite web framework (<em>like Symfony!</em>).</li>
+</ul>
+
 
 <hr />
 
 <h2><a id="next-steps"></a>Next Steps</h2>
 
-<p>We hope you have found this Quickstart helpful!</p>
+<p>We hope you found this Quickstart helpful!</p>
 
-<p>For full coverage of Stormpath&rsquo;s PHP SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, resetting passwords via password reset emails, and more, please see our <a href="http://www.stormpath.com/docs/php/product-guide">PHP Product Guide</a>.</p>
+<p>You&rsquo;ve just scratched the surface of what you can do with Stormpath.  Want to
+learn more?  Here are a few other helpful resources you can jump into.</p>
+
+<ul>
+<li>Dig in deeper with the <a href="http://docs.stormpath.com/php/product-guide">Official PHP Product Guide</a>.</li>
+<li>Learn to easily partition user data with our <a href="http://docs.stormpath.com/guides/multi-tenant/">Guide to Building Multitenant Applications</a>.</li>
+</ul>
+
+
+<hr />
+
+<h2><a id="help-us-spread-the-word"></a>Help Us Spread the Word</h2>
+
+<p>Like Stormpath?  If you enjoyed playing around with our new PHP library,
+please help spread the word with a quick tweet!</p>
+
+<!-- AddThis Button BEGIN -->
+
+
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout @goStormpath, it let's you set up complete user management in your PHP app in minutes."
+addthis:url="https://stormpath.com">
+  <a class="addthis_button_twitter"></a>
+  <a class="addthis_button_preferred_2"></a>
+  <a class="addthis_button_preferred_3"></a>
+  <a class="addthis_button_preferred_4"></a>
+  <a class="addthis_button_compact"></a>
+</div>
+
+
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+
+
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+
+
+<!-- AddThis Button END -->
+
+
+<p><p></p>
 
             <div id="bottom-wrapper">
                      <div class="region region-bottom">
@@ -821,7 +930,7 @@ foreach($tenant-&gt;directories as $dir)
 				<a href="/php/quickstart">Quickstart</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#sign-up-for-stormpath" data-level="0" class="fragment">Sign Up for Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#-get-an-api-key" data-level="0" class="fragment"> Get an API Key</a><ul class="menu"></ul></li><li class="leaf"><a href="#add-the-stormpath-php-sdk-to-your-project" data-level="0" class="fragment">Add the Stormpath PHP SDK to your Project</a><ul class="menu"></ul></li><li class="leaf"><a href="#working-with-the-stormpath-php-sdk" data-level="0" class="fragment">Working with the Stormpath PHP SDK</a><ul class="menu"><li class="leaf"><a href="#configure-your-php-application" data-level="1" class="fragment">Configure your PHP application</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-your-application-with-stormpath" data-level="1" class="fragment">Register your application with Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an account</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-an-account" data-level="1" class="fragment">Authenticate an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#experiment" data-level="1" class="fragment">Experiment!</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#next-steps" data-level="0" class="fragment">Next Steps</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#install-the-stormpath-library" data-level="0" class="fragment">Install the Stormpath Library</a><ul class="menu"></ul></li><li class="leaf"><a href="#get-an-api-key" data-level="0" class="fragment">Get an API Key</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-client" data-level="0" class="fragment">Create a Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application" data-level="0" class="fragment">Create an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-user-account" data-level="0" class="fragment">Create a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-a-user-account" data-level="0" class="fragment">Authenticate a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#other-things-you-can-do-with-stormpath" data-level="0" class="fragment">Other Things You Can Do with Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#next-steps" data-level="0" class="fragment">Next Steps</a><ul class="menu"></ul></li><li class="leaf"><a href="#help-us-spread-the-word" data-level="0" class="fragment">Help Us Spread the Word</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
