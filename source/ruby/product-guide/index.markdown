@@ -3367,7 +3367,7 @@ It is required that your Google application request for the `email` permission (
 If the access token does not grant `email` permissions, you will not be able to get an `Account` with an access token.
 {% enddocs %}
 
-Once an `Account` is retreived, Stormpath maps common fields for the Google User to the Account. The access token and the refresh token for any additional calls in the `provider_data` resource and can be retreived by:
+Once an `Account` is retreived, Stormpath maps common fields for the Google User to the Account. The access token and the refresh token for any additional calls are in the `provider_data` resource and can be retreived by:
 
     account.provider_data.access_token
     account.provider_data.refresh_token
@@ -3482,7 +3482,7 @@ When accessing an account based on a Facebook Access Token the `account.is_new_a
 To [expand](#links-expansion) the `provider_data` to get the Access Token for the Account in one HTTP request, use an Expansion `expansion.add_property 'provider_data'`.
 {% enddocs %}
 
-Once an `Account` is retreived, Stormpath maps common fields for the Facebook User to the  Account.  The access token for any additional calls in the `provider_data` resource and can be retreived by:
+Once an `Account` is retreived, Stormpath maps common fields for the Facebook User to the  Account.  The access token for any additional calls is in the `provider_data` resource and can be retreived by:
 
     puts account.provider_data
     puts account.provider_data.access_token
