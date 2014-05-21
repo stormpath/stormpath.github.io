@@ -209,7 +209,7 @@ Add the following line of code below your app config:
 This will initialize the Flask-Stormpath extension.
 
 
-**
+***
 
 
 ## Register a New User
