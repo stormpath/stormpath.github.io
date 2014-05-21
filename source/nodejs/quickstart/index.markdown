@@ -85,7 +85,7 @@ All requests to Stormpath must be authenticated with an API Key.
         $ chmod go-rwx ~/.stormpath/apiKey.properties
 
 The `apiKey.properties` file holds your API key information, and can be used to
-easily authentication with the Stormpath library.
+easily authenticate with the Stormpath library.
 
 
 ***
@@ -197,7 +197,7 @@ Finding user accounts is also simple.  You can search for accounts by field:
       });
     });
 
-You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
+You can also use wild cards such as `{email: '*@stormpath.com'}` to return
 all accounts with a stormpath.com domain.
 
 
@@ -217,6 +217,7 @@ Authenticating users is equally simple -- you can specify either a `username` or
       account = result.account;
     });
     account.givenName
+
     app.authenticateAccount({
       username: 'tk421@stormpath.com',
       password: 'Changeme1',

@@ -52,7 +52,7 @@ alias: [/index.html]
         <div class="panel-pane pane-block pane-menu-menu-docs-admin-console">
           <h2 class="pane-title">Admin Console Docs</h2>
           <div class="pane-content">
-            <ul class="menu"><li class="first leaf"><a href="/console/quickstart" title="">Quickstart Guide</a></li>
+            <ul class="menu"><li class="first leaf"><a href="/console/quickstart" title="">Quickstart</a></li>
               <li class="last leaf"><a href="/console/product-guide" title="">Console Guide</a></li>
             </ul>  
           </div>

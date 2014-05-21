@@ -10,7 +10,7 @@ title: Stormpath REST Quickstart
 Welcome to Stormpath's REST Quickstart!
 
 This quickstart will get you up and running with Stormpath in about 7 minutes
-and give you a good initial feel for the Stormpath Python library.  During this
+and give you a good initial feel for the Stormpath REST API.  During this
 quickstart, you will do the following:
 
  * Create an API Key that allows you to make REST API calls with Stormpath.
@@ -63,7 +63,7 @@ All requests to Stormpath must be authenticated with an API Key.
         $ chmod go-rwx ~/.stormpath/apiKey.properties
 
 The `apiKey.properties` file holds your API key information, and can be used to
-easily authentication with the Stormpath library.
+easily authenticate with the Stormpath library.
 
 
 ***
@@ -298,7 +298,7 @@ learn more?  Here are a few other helpful resources you can jump into.
 
 ## Help Us Spread the Word
 
-Like Stormpath?  If you enjoyed playing around with our new Python library,
+Like Stormpath?  If you enjoyed playing around with our REST API,
 please help spread the word with a quick tweet!
 
 <!-- AddThis Button BEGIN -->
