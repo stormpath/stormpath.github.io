@@ -247,8 +247,8 @@ We hope you found this Quickstart helpful!
 You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
-* Dig in deeper with the [Official PHP Product Guide](http://docs.stormpath.com/php/product-guide).
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/).
+* Dig in deeper with the [Official PHP Product Guide](/php/product-guide).
+* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
 
 
 ***

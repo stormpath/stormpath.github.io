@@ -258,7 +258,7 @@ In addition to user registration and login, Stormpath can do a lot more!
 - Verify new users via email.
 - Automatically provide secure password reset functionality.
 - Centralize your user store across multiple applications.
-- Plug into your favorite security framework (*like [Apache Shiro](http://localhost:4000/integrations/#sample-apps-java-container-jump) or [Spring Security](http://localhost:4000/integrations/#sample-apps-java-container-jump)*).
+- Plug into your favorite security framework (*like [Apache Shiro](/integrations/#sample-apps-java-container-jump) or [Spring Security](/integrations/#sample-apps-java-container-jump)*).
 
 
 ***

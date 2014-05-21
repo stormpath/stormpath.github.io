@@ -226,9 +226,8 @@ We hope you found this Quickstart helpful!
 You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
-* Dig in deeper with the [Official Ruby Product Guide](http://docs.stormpath.com/ruby/product-guide).
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/).
-* Easily support Google and Facebook Login with our new [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/).
+* Dig in deeper with the [Official Ruby Product Guide](/ruby/product-guide).
+* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
 
 
 ***

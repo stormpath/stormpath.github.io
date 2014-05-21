@@ -262,10 +262,10 @@ We hope you found this Quickstart helpful!
 You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
-* Dig in deeper with the [Official Node.js Guide](http://docs.stormpath.com/nodejs/api/home).
+* Dig in deeper with the [Official Node.js Guide](/nodejs/api/home).
 * Use Stormpath and Express to build an awesome web app with the [Express.js + Passport App Guide](https://stormpath.com/blog/build-app-nodejs-express-passport-stormpath/).
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/).
-* Easily support Google and Facebook Login with our new [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/).
+* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
+* Easily support Google and Facebook Login with our new [Social Login & Integration Guide](/guides/social-integrations/).
 
 
 ## Help Us Spread the Word

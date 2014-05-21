@@ -217,7 +217,7 @@ The `type` attribute must equal `basic`.  The `value` attribute must equal the r
     byte[] bytes = concatenated.to_byte_array();
     String value = base64_encode( bytes );
 
-For example, if you used the the `jlpicard` username and `Changeme1` password above when creating your first account, you might compute the `value` using [OpenSSL](http://www.openssl.org/) this way:
+For example, if you used the the `tk421` username and `Changeme1` password above when creating your first account, you might compute the `value` using [OpenSSL](http://www.openssl.org/) this way:
 
     echo -n "tk421:Changeme1" | openssl base64
 
@@ -287,10 +287,10 @@ We hope you found this Quickstart helpful!
 You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
-* Dig in deeper with the [Official REST API Product Guide](http://docs.stormpath.com/rest/product-guide).
+* Dig in deeper with the [Official REST API Product Guide](/rest/product-guide).
 * Try out Stormpath in your favorite programming language with our [7-Minute Tutorial](https://stormpath.com/tutorial). 
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/).
-* Easily support Google and Facebook Login with our new [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/).
+* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
+* Easily support Google and Facebook Login with our new [Social Login & Integration Guide](/guides/social-integrations/).
 
 
 ***
