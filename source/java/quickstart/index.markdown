@@ -271,11 +271,11 @@ We hope you found this Quickstart helpful!
 You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
-* Dig in deeper with the [Official Java Product Guide](http://docs.stormpath.com/java/product-guide).
+* Dig in deeper with the [Official Java Product Guide](/java/product-guide).
 * [Build an Apache Shiro + Stormpath Web App in 30 minutes](http://shiro.apache.org/webapp-tutorial.html).
-* Checkout our integrations to [Apache Shiro](http://localhost:4000/integrations/#sample-apps-java-container-jump) or [Spring Security](http://localhost:4000/integrations/#sample-apps-java-container-jump).
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/).
-* Easily support Google and Facebook Login with our new [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/).
+* Checkout our integrations to [Apache Shiro](/integrations/#sample-apps-java-container-jump) or [Spring Security](/integrations/#sample-apps-java-container-jump).
+* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
+* Easily support Social Login with [Google](/java/product-guide/#integrating-with-google) and [Facebook](/java/product-guide#integrating-with-facebook) integrations in Java.
 
 
 ***
