@@ -163,7 +163,7 @@ The client can be configured by passing the `id` and `secret` parameters to crea
 Another way to create a client is by creating an `api_key` hash with the API credentials and passing this hash to create the client instance:
 
     client = Stormpath::Client.new({
-              api_key: { id: foo, secret: bar }
+                 api_key: { id: foo, secret: bar }
               })
 
 {% docs warning %}
@@ -175,16 +175,7 @@ Only use this technique if the values are obtained at runtime using a configurat
 <a class="anchor" name="authentication-scheme-configuration"></a>
 #### Authentication Scheme Configuration
 
-You can choose one of two authentication schemes to authenticate with Stormpath:
-
-1. **Stormpath SAuthc1 Authentication**:  This is the recommended approach, and the default setting.  This approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath SAuthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.
-2. **Basic Authentication**: This is _only_ recommended when your application runs in an environment outside of your control, and that environment manipulates your application's request headers when requests are made.  Google App Engine is one known such environment.  However, Basic Authentication is not as secure as Stormpath's `SAuthc` algorithm, so only use this if you are forced to do so by your application runtime environement.
-
-When no authentication scheme is explicitly configured, `Sauthc1` is used by default.
-
-If you must change to basic authentication for these special environments, set the `scheme` property:
-
-    client = Client(id: 'foo', secret: 'bar', scheme: 'basic')
+**Stormpath SAuthc1 Authentication**:  This is the default setting.  This approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath SAuthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.
 
 <a class="anchor" name="high-level-overview"></a>
 ### High-level Overview
@@ -374,9 +365,6 @@ There are two optional query parameters that may be specified to control paginat
 
     Collections can be paginated using chainable Arel-like methods:
 
-    for app in client.applications[1:5]:
-        print(app.name)
-
     client.applications.offset(10).limit(100).each do |application|
         puts application.name
     end
@@ -435,6 +423,7 @@ Now you can loop through the collection resource and get the results according t
 
     accounts.each do |account|
         puts account.username
+    end
 
 **Matching Logic**
 
@@ -474,6 +463,7 @@ Now you can loop through the collection resource and get the results according t
 
     accounts.each do |account|
         puts account.username
+    end
 
 Attribute-based queries use standard URI query parameters and function as follows:
 
@@ -486,7 +476,7 @@ Attribute-based queries use standard URI query parameters and function as follow
 
 For example, consider the following search:
 
-    accounts = application.accounts.search. 'given_name': 'Joe',
+    accounts = application.accounts.search  'given_name': 'Joe',
                                             'middle_name': '*aul',
                                             'surname': '*mit*',
                                             'email': 'joePaul*',
@@ -733,6 +723,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
 
     applications.each do |application|
         puts application.name
+    end
 
 <a class="anchor" name="tenant-applications-search"></a>
 #### Search Tenant Applications
@@ -753,6 +744,7 @@ In addition to the the [search query parameters](#search), you may also use [pag
 
     applications.each do |application|
         puts application.name
+    end
 
 
 #### Working With Tenant Applications
@@ -785,6 +777,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
 
     directories.each do |directory|
         puts directory.name
+    end
 
 
 <a class="anchor" name="tenant-directories-search"></a>
@@ -1287,6 +1280,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
     accounts = application.accounts
     accounts.each do |account|
         puts account.username
+    end
 
 <a class="anchor" name="application-accounts-search"></a>
 #### Search Application Accounts
@@ -1308,6 +1302,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
     accounts = application.accounts.search('foo').limit(50)order('given_name')
     accounts.each do |account|
         puts "#{account.given_name} #{acc.surname}"
+    end
 
 #### More Account Functionality
 
@@ -1408,6 +1403,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
     groups = application.groups.search('foo').limit(50).order('name')
     groups.each do |group|
         puts group.name
+    end
 
 #### More Group Functionality
 
@@ -1441,6 +1437,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
     account_store_mappings = application.account_store_mappings
     account_store_mappings.each do |account_store_mapping|
         puts account_store_mapping.account_store.name
+    end
 
 ***
 
@@ -1707,6 +1704,7 @@ The response is a paginated list of `accountStoreMapping` resources.  You may us
     account_store_mappings = application.account_store_mappings
     account_store_mappings.each do |account_store_mapping|
         puts account_store_mapping.account_store.name
+    end
 
 ***
 
@@ -1818,11 +1816,7 @@ In all cases, the process is fundamentally the same. Consider the first case as 
 **Example Request**
 
     directories = tenant.directories
-    directory = false
-    for dire in directories:
-        if directory.name == "My Directory":
-            directory = dire
-            break
+    directories.find {|directory| directory.name == "My Directory" }
 
 If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., `directory.search({'name', 'My Directory'})`) or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., `directory.search('*My*')`) to narrow down the selection.
 
@@ -2047,6 +2041,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
     groups = directory.groups
     groups.each do |group|
         puts group.name
+    end
 
 #### Search Directory Groups
 
@@ -2064,6 +2059,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
     groups = directory.groups.search('foo').limit(50).order('name')
     groups.each do |group|
         puts group.name
+    end
 
 
 #### Working With Directory Groups
@@ -2090,6 +2086,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
     accounts = directory.accounts
     accounts.each do |account|
         puts account.given_name
+    end
 
 #### Search Directory Accounts
 
@@ -2110,6 +2107,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
     accounts = directory.accounts.search('foo').order('name')[0:50]
     accounts.each do |account|
         puts account.given_name
+    end
 
 #### Working With Directory Accounts
 
@@ -2183,9 +2181,6 @@ For example, if you want to find a group with the name "My Group", you'll need t
 **Example Request**
 
     groups = directory.groups.search({'name': 'My Group'})
-    group = false
-    for grp in groups:
-        group = grp
 
 If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., `groups.search({'name': 'My Group'})`) or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., `groups.search('*My*')`) to narrow down the selection.
 
@@ -2339,6 +2334,7 @@ The request returns a paginated list of groups accessible to an application.
     groups = application.groups
     groups.each do |group|
         puts group.name
+    end
 
 ##### Account Groups
 
@@ -2355,6 +2351,7 @@ The request returns a paginated list of groups for which an account is a member.
     groups = account.groups
     groups.each do |group|
         puts group.name
+    end
 
 ##### Directory Groups
 
@@ -2371,6 +2368,7 @@ The request returns a paginated list of groups that belong to this directory.
     groups = directory.groups
     groups.each do |group|
         puts group.name
+    end
 
 <a class="anchor" name="groups-search"></a>
 ### Search Groups
@@ -2405,6 +2403,7 @@ The request returns a paginated list of accounts that are members of a specific 
     accounts = group.accounts
     accounts.each do |account|
         puts account.given_name
+    end
 
 <a class="anchor" name="group-accounts-search"></a>
 #### Search Group Accounts
@@ -2427,6 +2426,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
 
     accounts.each do |account|
         puts account.given_name
+    end
 
 <a class="anchor" name="working-with-group-accounts"></a>
 #### Working With Group Accounts
@@ -2452,6 +2452,7 @@ A request returns a Collection Resource containing the group memberships to whic
     account_membersips.each do |account_membership|
         puts account_membership.group.name
         puts account_membership.account.given_name)
+    end
 
 <a class="anchor" name="working-with-group-account-memberships"></a>
 #### Working With Account Memberships
@@ -2503,14 +2504,13 @@ In all cases, the process is fundamentally the same. Consider the first case as 
 
 **Example Request**
 
-    group_memberships = account.group_memberships
-    group_membership = false
-    for gms in group_membership:
-        if gms.group.name = 'Group Name':
-            group_membership = gms
-            break
+    account.group_memberships.each do |group_membership|
+        group = group_membership.group
+        return group if group_membership.group.name = 'Group Name':
+    end
 
-If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., "name=") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "My*") to narrow down the selection.
+
+If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., "name") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "My*") to narrow down the selection.
 
 <a class="anchor" name="group-membership-create"></a>
 ### Create a Group Membership
@@ -2578,6 +2578,7 @@ A request returns a paginated list of the group memberships where the account is
     group_memberships.each do |group_membership|
         puts group_membership.account.given_name
         puts group_membership.group.name
+    end
 
 <a class="anchor" name="account-membership-by-group"></a>
 #### List Account Memberships For A Group
@@ -2598,6 +2599,7 @@ A request returns a paginated list of the group memberships where the group is i
     account_memberships.each do |account_membership|
         puts account_membership.account.given_name
         puts account_membership.group.name
+    end
 
 ***
 
@@ -2683,11 +2685,12 @@ For example, if you want to find an account with the username "test" across an a
 **Example Request**
 
     accounts = application.accounts.search({'username': 'test'})
-    account = false
-    for acc in accounts:
-        account = acc
 
-If you know the username exactly, you can use an [attribute search](#search-attribute) (e.g., "username=") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "test*") to narrow down the selection.
+If you know the username exactly, you can use an [attribute search](#search-attribute) (e.g., "username: ") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "test*") to narrow down the selection.
+
+**Example Request**
+
+    accounts = application.accounts.search({'username': 'test*'})
 
 <a class="anchor" name="account-create"></a>
 ### Create an Account
@@ -2995,21 +2998,21 @@ For example, if you were to request the account object for a user who has not ye
       middleName: "test"
       surname: "test"
       status: "UNVERIFIED"
-     -groups: {
+      groups: {
         href: "https://api.stormpath.com/v1/accounts/6XLbNaUsKm3E0kXMTTr10V/groups"
       }
-     -groupMemberships: {
+      groupMemberships: {
         href: "https://api.stormpath.com/v1/accounts/6XLbNaUsKm3E0kXMTTr10V/groupMemberships"
       }
-     -directory: {
+      directory: {
         href: "https://api.stormpath.com/v1/directories/5D1bvO5To6KQBaGFh793Zz"
-      }-
-     -tenant: {
+      }
+      tenant: {
         href: "https://api.stormpath.com/v1/tenants/23mq7BPIxNgPUPZDwj04SZ"
       }
-     -emailVerificationToken: {
+      emailVerificationToken: {
         href: "https://api.stormpath.com/v1/accounts/emailVerificationTokens/6YJv9XBH1dZGP5A8rq7Zyl"
-      }-
+      }
     }
 
 {% docs tip %}
@@ -3085,6 +3088,7 @@ A request returns a Collection Resource containing all [groups](#groups) where a
     groups = account.groups
     groups.each do |group|
         puts group.name
+    end
 
 <a class="anchor" name="search-account-groups"></a>
 #### Search Account Groups
@@ -3104,6 +3108,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
     groups = account.groups.search('foo').limit(50).order('name')
     groups.each do |group|
         puts group.name
+    end
 
 <a class="anchor" name="working-with-account-groups"></a>
 #### Working With Account Groups
@@ -3130,6 +3135,7 @@ A request returns a Collection Resource containing the group memberships to whic
     group_memberships.each do |group_membership|
         puts group_membership.account.given_name
         puts group_membership.group.name
+    end
 
 <a class="anchor" name="working-with-account-group-memberships"></a>
 #### Working With Account Group Memberships
@@ -3175,29 +3181,29 @@ Whenever you create an account or a group, an empty `customData` resource is cre
 
 However, it is often useful to populate custom data at the same time you create an account or group.  You can do this by embedding the `customData` directly in the account or group resource. For example:
 
-        account = directory.accounts.create({
-            username: "jlpicardp",
-            email: "capt@enterprise.cpm",
-            given_name: "Jean-Luc",
-            middle_name: "",
-            surname: "Picard",
-            password: "uGhd%a8Kl!",
-            status: "ENABLED",
-            custom_data: {
-                rank: "Captain",
-                birthDate: "2305-07-13",
-                birthPlace: "La Barre, France",
-                favoriteDrink: "Earl Grey tea"
-                favoriteColor: "red",
-            }
-        })
+    account = directory.accounts.create({
+        username: "jlpicardp",
+        email: "capt@enterprise.cpm",
+        given_name: "Jean-Luc",
+        middle_name: "",
+        surname: "Picard",
+        password: "uGhd%a8Kl!",
+        status: "ENABLED",
+        custom_data: {
+            rank: "Captain",
+            birthDate: "2305-07-13",
+            birthPlace: "La Barre, France",
+            favoriteDrink: "Earl Grey tea"
+            favoriteColor: "red",
+        }
+    })
 
 <a class="anchor" name="retrieve-custom-data"></a>
 ### Retrieve Custom Data
 
 Retrieving an account or group’s custom data is managed by accessing the `custom_data` attribute on those resources, and fetching each individual field like you would when fetching a Ruby dictionary field:
 
-        puts account.custom_data["rank"]
+    puts account.custom_data["rank"]
 
 A common way to retrieve an account or group's custom data is to use [link expansion](#links-expansion) and retrieve the custom data at the same time as when you retrieve an account or group.
 
@@ -3213,8 +3219,8 @@ You may update an account or group's custom data, in one of two ways:
 
 Updating custom_data is managed in the same manner as saving resources, by using the `save` method:
 
-        account.custom_data["favoriteColor"] = "blue"
-        account.custom_data.save
+    account.custom_data["favoriteColor"] = "blue"
+    account.custom_data.save
 
 {% docs note %}
 `Custom_data` keys can be either symbols or strings. The same value can be retrieved using either a symbol or a string, but any nested data will be saved using a string. Since JSON format cannot recognize the difference between symbols and strings, when nested `custom_data` hashes are saved on the server, keys will always be sent and retrieved as strings. The recommended approach would be to save everything with keys that are strings.
@@ -3225,10 +3231,10 @@ Updating custom_data is managed in the same manner as saving resources, by using
 
 Sometimes it is helpful to update an account or group's `custom_data` as part of an update request for the account or group.  In this case, just submit customData changes in an embedded `custom_data` field embedded in the account or group request resource.  For example:
 
-        account.status = "ENABLED"
-        account.custom_data["favoriteColor"] = "blue"
-        account.custom_data["hobby"] = "Kendo"
-        account.save
+    account.status = "ENABLED"
+    account.custom_data["favoriteColor"] = "blue"
+    account.custom_data["hobby"] = "Kendo"
+    account.save
 
 In the above example, we're performing 3 modifications in one request:
 
@@ -3245,20 +3251,18 @@ The same simultaneous update behavior may be performed for Group updates as well
 
 You may delete all of an account or group’s custom data by calling `delete` method on the account or group’s custom_data:
 
-        account.custom_data.delete
-
-        group.custom_data.delete
+    account.custom_data.delete
+    group.custom_data.delete
 
 This will delete all of the respective account or group's custom data fields, but it leaves the `custom_data` placeholder in the account or group resource.  You cannot delete the `custom_data` resource entirely - it will be automatically permanently deleted when the account or group is deleted.
 
 <a class="anchor" name="delete-account-custom-data-field"></a>
 ### Delete Custom Data Field
 
-You may also delete an individual custom data field by calling the `del` method on the account or group's custom_data while stating the custom data field as a parameter:
+You may also delete an individual custom data field by calling the `delete` method on the account or group's custom_data while stating the custom data field as a parameter:
 
-        del account.custom_data["vehicle"]
-
-        account.custom_data.save
+    account.custom_data.delete("vehicle")
+    account.custom_data.save
 
 {% docs note %}
 The `custom_data` field isn't actually deleted on Stormpath until the `save` method is called. You should consider that in situations where you rely that your local resource object is in sync with Stormpath.
