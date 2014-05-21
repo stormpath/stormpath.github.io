@@ -17,7 +17,6 @@ quickstart, you will do the following:
  * Create an API Key that allows you to make REST API calls with Stormpath.
  * Register an Application.
  * Create a User Account.
- * Search for a User Account.
  * Authenticate a User Account.
 
 Stormpath also can do a lot more (*like Groups, Multitenancy, Social
@@ -55,7 +54,7 @@ You can install [Stormpath](https://github.com/stormpath/stormpath-sdk-php) usin
         }
 	
 
-3. If you haven't installed composer yet, do so now:
+3. If you still haven’t, install composer:
   
 	    curl -sS https://getcomposer.org/installer | php	
 
@@ -104,7 +103,7 @@ All requests to Stormpath must be authenticated with an API Key.
         $ chmod go-rwx ~/.stormpath/apiKey.properties
 
 The `apiKey.properties` file holds your API key information, and can be used to
-easily authenticate with the Stormpath library.
+easily authentication with the Stormpath library.
 
 
 ***
@@ -205,11 +204,11 @@ Authenticating users is equally simple -- you can specify either a `username` or
 
     $authResult = $application->authenticate('tk421', 'Changeme1');
     $account = $authResult->account;
-	echo $account->givenName . " " . $account->surname . "Successfully Authenticated \n";
+	echo $account->givenName . " " . $account->surname . " Successfully Authenticated \n";
 
     $authResult = $application->authenticate('tk421@stormpath.com', 'Changeme1');
     $account = $authResult->account;
-	echo $account->givenName . " " . $account->surname . "Successfully Authenticated \n";
+	echo $account->givenName . " " . $account->surname . " Successfully Authenticated \n";
 
 If the authentication request is successful, an `Account` resource will be
 returned.

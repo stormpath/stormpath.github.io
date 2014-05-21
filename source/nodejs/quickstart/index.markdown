@@ -209,6 +209,7 @@ all accounts with a stormpath.com domain.
 Authenticating users is equally simple -- you can specify either a `username` or
 `email` address, along with a `password`:
 
+    //using username and password
     app.authenticateAccount({
       username: 'tk421',
       password: 'Changeme1',
@@ -218,6 +219,7 @@ Authenticating users is equally simple -- you can specify either a `username` or
     });
     account.givenName
 
+    //using email and password
     app.authenticateAccount({
       username: 'tk421@stormpath.com',
       password: 'Changeme1',
