@@ -17,7 +17,6 @@ quickstart, you will do the following:
  * Create an API Key that allows you to make REST API calls with Stormpath.
  * Register an Application.
  * Create a User Account.
- * Search for a User Account.
  * Authenticate a User Account.
 
 Stormpath also can do a lot more (*like Groups, Multitenancy, Social

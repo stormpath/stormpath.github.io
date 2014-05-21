@@ -198,7 +198,7 @@ Finding user Accounts is also simple.  You can search for Accounts by field:
     "https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/accounts?email=tk421@stormpath.com"
 
 
-You can also use wild cards such as `{'email': '*@stormpath.com'}` to return
+You can also use wild cards such as `?email=*@stormpath.com` to return
 all accounts with a stormpath.com domain.
 
 
@@ -223,7 +223,7 @@ For example, if you used the the `tk421` username and `Changeme1` password above
 
 This would produce the following Base64 result:
 
-    amxwaWNhcmQ6Q2hhbmdlbWUx
+    dGs0MjE6Q2hhbmdlbWUx
 
 Use the Base64 result to `POST` a `Login Attempt` to your application's `loginAttempts` `href` (the JSON `value` attribute is the Base64 result):
 
@@ -232,7 +232,7 @@ Use the Base64 result to `POST` a `Login Attempt` to your application's `loginAt
         -H "Content-Type: application/json" \
         -d '{
             "type": "basic",
-            "value": "amxwaWNhcmQ6Q2hhbmdlbWUx"
+            "value": "dGs0MjE6Q2hhbmdlbWUx"
         }' \
     "https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/loginAttempts"
 
