@@ -3264,6 +3264,231 @@ You may also delete an individual custom data field by calling the `del` method 
 The `custom_data` field isn't actually deleted on Stormpath until the `save` method is called. You should consider that in situations where you rely that your local resource object is in sync with Stormpath.
 {% enddocs %}
 
+***
+
+<a class="anchor" name="integration-google"></a>
+## Integrating with Google
+
+Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codes (or access tokens) to return an `Account` for a given code.
+
+The steps to enable this functionality into your application include:
+
++ [Create a Google Directory](#creating-a-google-directory)
++ Create an `Account Store Mapping` between a Google Directory and your `Application`
++ [Accessing Accounts with Google Authorization Codes or an Access Tokens](#accessing-accounts-with-google-authorization-codes-or-an-access-tokens)
+
+Google Directories follow behavior similar to [mirror directories](#directories-mirrored), but have a `Provider` resource that contains information regarding the Google application that the directory is configured for.
+
+### Google Provider Resource
+
+A `Provider` resource holds specific information needed for working with a Google Directory.  It is important to understand the format of the provider resource when creating and updating a Google Directory.
+
+A provider resource can be obtained by accessing the directory's provider attribute:
+
+Example:
+
+    directory = client.directories.first
+    puts directory.provider.href
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`client_id` | The App ID for your Google application | String | --
+`client_secret` | The App Secret for your Google application | String | --
+`redirect_uri` | The redirection Uri for your Google application | String | --
+`provider_id` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'google'
+
+In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
+
++ `href` : The fully qualified location of the custom data resource
++ `created_at` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
++ `modified_at` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
+
+### Creating a Google Directory
+
+Creating a Google Directory requires that you gather some information beforehand from Google's Developer Console regarding your application.
+
++ Client ID
++ Client Secret
++ Redirect URI
+
+Creating a Google Directory is very similar to [creating a directory](#directory-create) within Stormpath.
+For a Google Directory to be configured correctly, you must specify the correct `Provider` information.
+
+**Example**
+
+    # create a directory with google auth provider
+    directory = client.directories.create({
+                                    name: 'MyGoogleDirectory',
+                                    description: 'My First Google Dir.',
+                                    provider: {
+                                        client_id: '857385-m8vk0fn2r7jmjo.apps.googleusercontent.com',
+                                        client_secret: 'ehs7_-bA7OWQSQ4',
+                                        redirect_uri: 'https://myapplication.com/auth/google_oauth2/callback',
+                                        provider_id: :google }})
+
+
+After the Google Directory has been created, it needs to be [mapped with an application as an account store](#account-store-mappings). The Google Directory cannot be a default account store or a default group store.  Once the directory is mapped as an account store for an application, you are ready to access `Accounts` with Google Authorization Codes.
+
+    # create a new application
+    application = client.applications.create({ name: 'MyGoogleApp', description: 'Google Test App' })
+
+    # make the app use the directory
+    account_store_mapping = application.account_store_mappings.create({
+        application: application,
+        account_store: directory
+    })
+
+### Accessing Accounts with Google Authorization Codes or an Access Tokens
+
+To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google's OAuth 2.0 protocol and the user's consent for your application's permissions.
+
+Once the Authorization Code is gathered, you can get or create the `Account` by using the `app.get_provider_account` method.
+
+    request = Stormpath::Provider::AccountRequest.new(:google, :code, 'my-authorization-code')
+    result = application.get_provider_account(request)
+    puts result.is_new_account?
+    account = result.account
+    puts account.email
+
+The following is how you use `provider_data` to get an `account` for a given authorization code:
+
+{% docs note %}
+When accessing the result based on a Google Authorization Code the `result.is_new_account?` method tells us if the account was created or if it already existed in the Google Directory.
+{% enddocs %}
+
+{% docs note %}
+To [expand](#links-expansion) the `provider_data` to get the Access Token for the Account in one HTTP request, use an Expansion `expansion.add_property 'provider_data' `.
+{% enddocs %}
+
+{% docs note %}
+It is required that your Google application request for the `email` permission (not just the `profile` permission) from Google.
+If the access token does not grant `email` permissions, you will not be able to get an `Account` with an access token.
+{% enddocs %}
+
+Once an `Account` is retreived, Stormpath maps common fields for the Google User to the Account. The access token and the refresh token for any additional calls in the `provider_data` resource and can be retreived by:
+
+    account.provider_data.access_token
+    account.provider_data.refresh_token
+
+{% docs note %}
+The `access_token` can also be passed as a field for the `provider_data` to access the account once it is retrieved
+
+    request = Stormpath::Provider::AccountRequest.new(:google, :access_token, 'my-access-token')
+    acc = app.get_provider_account(request)
+
+{% enddocs %}
+
+{% docs note %}
+The `refresh_token` will only be present if your application asked for offline access.  Review Google's documentation for more information regarding OAuth offline access.
+{% enddocs %}
+
+***
+
+<a class="anchor" name="integration-facebook"></a>
+## Integrating with Facebook
+
+Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an `Account`.
+
+The steps to enable this functionality into your application include:
+
++ [Create a Facebook Directory](#creating-a-facebook-directory)
++ Create an `Account Store Mapping` between a Facebook Directory and your `Application`
++ [Accessing Accounts with Facebook User Access Tokens](#accessing-accounts-with-facebook-user-access-tokens)
+
+Facebook Directories follow behavior similar to [mirror directories](#directories-mirrored), but have a `Provider` resource that contains information regarding the Google application that the directory is configured for.
+
+### Facebook Provider Resource
+
+A `Provider` resource holds specific information needed for working with a Facebook Directory.  It is important to understand the format of the provider resource when creating and updating a Facebook Directory.
+
+A provider resource can be obtained by accessing the directory's provider attribute as follows:
+
+Example
+
+    directory = client.directories.first
+    puts directory.provider.href
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`client_id` | The App ID for your Google application | String | --
+`client_secret` | The App Secret for your Google application | String | --
+`provider_id` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'facebook'
+
+In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
+
++ `href` : The fully qualified location of the custom data resource
++ `created_at` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
++ `modified_at` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
+
+### Creating a Facebook Directory
+
+Creating a Facebook Directory requires that you gather some information beforehand from Facebook's Developer Console regarding your application.
+
++ Client ID
++ Client Secret
+
+Creating a Facebook Directory is very similar to [creating a directory](#directory-create) within Stormpath.
+For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information.
+
+**Example**
+    # create a directory with facebook auth provider
+    directory = client.directories.create({
+                                    name: 'MyFacebookDirectory',
+                                    description: 'My First FB Dir.',
+                                    provider: {
+                                        client_id: '85733424235s',
+                                        client_secret: 'Wda934msiaQ',
+                                        redirect_uri: 'https://myapplication.com/auth/facebook/callback',
+                                        provider_id: :facebook }})
+
+
+After the Facebook Directory has been created, it needs to be [mapped with an application as an account store](#account-store-mappings). The Facebook Directory cannot be a default account store or a default group store.  Once the directory is mapped to an account store for an application, you are ready to access `Accounts` with Facebook User Access Tokens.
+
+    # create a new application
+    application = client.applications.create({ name: 'MyFacebookApp', description: 'Facebook Test App' })
+
+    # make the app use the directory
+    account_store_mapping = application.account_store_mappings.create({
+        application: application,
+        account_store: directory
+    })
+
+### Accessing Accounts with Facebook User Access Tokens
+
+To access or create an account in an already created Facebook Directory, it is required to gather the `User Access Token` on behalf of the user.  This usually requires leveraging Facebook's javascript library and the user's consent for your application's permissions.
+
+{% docs note %}
+It is required that your Facebook application request for the `email` permission from Facebook. If the access token does not grant `email` permissions, you will not be able to get an `Account` with an access token.
+{% enddocs %}
+
+Once the `User Access Token` is gathered, you can get or create the `Account` using the `app.get_provider_account` method.
+
+    request = Stormpath::Provider::AccountRequest.new(:facebook, :access_token, 'my-access-token')
+    result = application.get_provider_account(request)
+    puts result.is_new_account?
+    account = result.account
+    puts account.email
+
+
+{% docs note %}
+When accessing an account based on a Facebook Access Token the `account.is_new_account?` method tells us if the account was created or if it already existed in the Facebook Directory.
+{% enddocs %}
+
+{% docs note %}
+To [expand](#links-expansion) the `provider_data` to get the Access Token for the Account in one HTTP request, use an Expansion `expansion.add_property 'provider_data'`.
+{% enddocs %}
+
+Once an `Account` is retreived, Stormpath maps common fields for the Facebook User to the  Account.  The access token for any additional calls in the `provider_data` resource and can be retreived by:
+
+    puts account.provider_data
+    puts account.provider_data.access_token
+
+***
+
 <a class="anchor" name="administration"></a>
 ## Administering Stormpath
 
