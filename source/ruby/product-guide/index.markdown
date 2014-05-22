@@ -3186,6 +3186,19 @@ You can store an unlimited number of additional name/value pairs in the `customD
     * contain only alphanumeric characters `0-9A-Za-z`, underscores `_` or dashes `-` but cannot start with a dash `-`.
     * may not equal any of the following reserved names: `href`, `createdAt`, `modifiedAt`, `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta`.
 
+<a class="anchor" name="custom-data-resource-methods"></a>
+**Resource Methods**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`href` | The custom data resource's fully qualified location URI. It is the href of it's Account or Group + "/customData" | String | <span>--</span>
+`has_key?(key)` | Inspects whether the custom data resource has a key or not. | boolean | `true`,`false`
+`include?(key)` | Alias method for has_key?. | boolean | `true`,`false`
+`has_value?(value)` | Inspects whether the custom data resource has a value or not. | boolean | `true`,`false`
+`store(key, value)` | Maps a key and a value together. This is an alias for `custom_data[key] = value` | value | <span>--</span>
+`keys` | Returns an array containing all key names. | Array | <span>--</span>
+`values` | Returns an array containing all values. | Array | <span>--</span>
+
 For Custom Data, you can:
 
 * [Create Custom Data](#create-custom-data)
