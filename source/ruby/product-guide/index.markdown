@@ -233,7 +233,7 @@ When applications interact with a Stormpath SDK `resource` instance, they are re
 For example, using the SDK Communication Flow diagram in the [high-level overview](#high-level-overview) section, assuming you have a reference to an `account` object - perhaps you have queried for it or you already have the account `href` and you want to load the `account` resource from the server:
 
     account_href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
-    account = client.accounts.get(account_href)
+    account = client.accounts.get account_href
 
 This retrieves the account at the specified `href` location using an HTTP `GET` request.
 
@@ -476,17 +476,18 @@ Attribute-based queries use standard URI query parameters and function as follow
 
 For example, consider the following search:
 
-    accounts = application.accounts.search  'given_name': 'Joe',
-                                            'middle_name': '*aul',
-                                            'surname': '*mit*',
-                                            'email': 'joePaul*',
-                                            'status': 'DISABLED'
+    accounts = application.accounts.search  given_name: 'Joe',
+                                            middle_name: '*aul',
+                                            surname: '*mit*',
+                                            email: 'joePaul*',
+                                            status: 'DISABLED'
 
 
 Now you can loop through the collection resource and get the results according to the specified search:
 
     accounts.each do |account|
         puts account.username
+    end
 
 This returns all accounts where:
 
@@ -799,6 +800,7 @@ In addition to the the [search query parameters](#search), you may also use [pag
 
     directories.each do |directory|
         puts directory.name
+    end
 
 #### Working With Tenant Directories
 
@@ -1097,7 +1099,6 @@ Set the required [account resource attributes](#account-resource) and any additi
         password: '4P@$$w0rd!'
     })
 
-
 **How does this work?**
 
 As we [said previously](#application-accounts), an Application does not 'own' accounts of its own - it has access to accounts in one or more directories or groups and the directories actually own the accounts.  So how are we able to create a new account based on only the application?
@@ -1166,7 +1167,10 @@ You may authenticate an account by calling the `authenticate_account` method of 
 
 **Example Request**
 
-    result = application.authenticate_account('usernameOrEmail', 'password')
+    auth_request =
+      Stormpath::Authentication::UsernamePasswordRequest.new 'usernameOrEmail', 'password'
+
+    result = application.authenticate_account(auth_request)
 
 If the login attempt is successful, a `LoginAttempt` object is returned with a reference to the successfully authenticated account:
 
@@ -1262,7 +1266,7 @@ Retrieving a token resource successfully using a call to the `verify_password_re
 
 **Example Request**
 
-    account = client.accounts.verify_password_reset_token('TOKEN')
+    account = application.verify_password_reset_token('TOKEN')
 
 If the password reset token is invalid - it never existed or has expired - a `404 Not Found` response is returned.
 
@@ -1385,6 +1389,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
     groups = application.groups
     groups.each do |group|
         puts group.name
+    end
 
 <a class="anchor" name="application-groups-search"></a>
 #### Search Application Groups
@@ -1639,6 +1644,10 @@ If none of the application's AccountStoreMappings are designated as the default 
 Also note that Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application's default account store.  Attempting to set `isDefaultAccountStore` to `true` on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.
 {% enddocs %}
 
+{% docs warning %}
+Google and Facebook Directories `can't` be a default account stores.
+{% enddocs %}
+
 <a class="anchor" name="account-store-mapping-default-group-store"></a>
 #### Set The Default Group Store for new Application Groups
 
@@ -1669,6 +1678,10 @@ If no `AccountStoreMapping` is designated as the default group store, the applic
 Also, note that Stormpath does not currently support storing groups within groups.  Therefore `is_default_group_store` can only be set to `true` when the AccountStoreMapping's `accountStore` is a Directory.  Attempting to set `is_default_group_store` to `true` on an AccountStoreMapping that reflects a group will result in an error response.
 
 Lastly, note that mirrored directories are read-only; they cannot be set as an application's default group store. Attempting to set `is_default_group_store` to `true` on an AccountStoreMapping that reflects a mirrored directory will result in an error response.
+{% enddocs %}
+
+{% docs warning %}
+Google and Facebook Directories `can't` be a default group stores.
 {% enddocs %}
 
 <a class="anchor" name="account-store-mapping-delete"></a>
