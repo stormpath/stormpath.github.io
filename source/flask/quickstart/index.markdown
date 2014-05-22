@@ -299,6 +299,39 @@ to many things (including social login).
 ***
 
 
+## Final Code
+
+In the end, your Flask app should look like this:
+
+    from os.path import expanduser
+
+    from flask import Flask
+    from flask.ext.stormpath import StormpathManager, login_required
+
+
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'xxx'
+    app.config['STORMPATH_API_KEY_FILE'] = expanduser('~/.stormpath/apiKey.properties')
+    app.config['STORMPATH_APPLICATION'] = 'Flask Test'
+
+    stormpath_manager = StormpathManager(app)
+
+
+    @app.route('/')
+    def home():
+        return 'home page!'
+
+
+    @app.route('/secret')
+    @login_required
+    def secret():
+        return 'secret page!'
+
+
+    if __name__ == '__main__':
+        app.run()
+
+
 ## Other Things You Can Do with Stormpath
 
 In addition to user registration and login, Stormpath can do a lot more!
