@@ -361,7 +361,7 @@ learn more?  Here are a few other helpful resources you can jump into.
 * Dig in deeper with the [Flask-Stormpath Docs](http://flask-stormpath.readthedocs.org/en/latest/).
 * [Build a Flask app in 30 minutes](https://stormpath.com/blog/build-a-flask-app-in-30-minutes/).
 * Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
-* Easily support Social Login with [Google](/python/product-guide/#integrating-with-google) and [Facebook](/python/product-guide#integrating-with-facebook) integrations in Python.
+* Easily support Social Login with [Google](https://flask-stormpath.readthedocs.org/en/latest/product.html#use-google-login) and [Facebook](https://flask-stormpath.readthedocs.org/en/latest/product.html#use-facebook-login).
 
 
 ***
