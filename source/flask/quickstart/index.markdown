@@ -217,7 +217,9 @@ This will initialize the Flask-Stormpath extension.
 Now that Flask-Stormpath is setup, let's register a new user!
 
 To do this, visit http://localhost:5000/register -- you should see a
-registration page.
+registration page that looks like this:
+
+<img class="center-block" src="../../images/flask-registration-page.png" title="Flask Registration Page" alt="Flask Registration Page"/>
 
 Once you're at the registration page, enter your user information and create a
 new user account!
@@ -278,7 +280,11 @@ last decorator specified.
 
 
 To test this out, restart your Flask web server then visit
-http://localhost:5000/secret -- you should get redirected to a login page!
+http://localhost:5000/secret -- you should get redirected to a login page that
+looks like this:
+
+
+<img class="center-block" src="../../images/flask-login-page.png" title="Flask Login Page" alt="Flask Login Page"/>
 
 
 ## Log a User Into Their Account
