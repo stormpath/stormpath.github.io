@@ -22,7 +22,7 @@ alias: [/index.html]
           <h2 class="pane-title">Rest API Docs</h2>
           <div class="pane-content">
             <ul class="menu">
-              <li class="first leaf"><a href="/rest/quickstart" title="">Quickstart Guide</a></li>
+              <li class="first leaf"><a href="/rest/quickstart" title="">Quickstart</a></li>
               <li class="leaf"><a href="/rest/product-guide" title="">Product Guide</a></li>
               <li class="leaf"><a href="/guides/multi-tenant" title="">Multitenancy Guide</a></li>
               <li class="leaf"><a href="/guides/social-integrations" title="">Social Integration Guide</a></li>
@@ -52,7 +52,7 @@ alias: [/index.html]
         <div class="panel-pane pane-block pane-menu-menu-docs-admin-console">
           <h2 class="pane-title">Admin Console Docs</h2>
           <div class="pane-content">
-            <ul class="menu"><li class="first leaf"><a href="/console/quickstart" title="">Quickstart Guide</a></li>
+            <ul class="menu"><li class="first leaf"><a href="/console/quickstart" title="">Quickstart</a></li>
               <li class="last leaf"><a href="/console/product-guide" title="">Console Guide</a></li>
             </ul>  
           </div>

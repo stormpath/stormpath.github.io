@@ -17,7 +17,6 @@ quickstart, you will do the following:
  * Create an API Key that allows you to make REST API calls with Stormpath.
  * Register an Application.
  * Create a User Account.
- * Search for a User Account.
  * Authenticate a User Account.
 
 Stormpath also can do a lot more (*like Groups, Multitenancy, Social
@@ -205,11 +204,11 @@ Authenticating users is equally simple -- you can specify either a `username` or
 
     $authResult = $application->authenticate('tk421', 'Changeme1');
     $account = $authResult->account;
-	echo $account->givenName . " " . $account->surname . "Successfully Authenticated \n";
+	echo $account->givenName . " " . $account->surname . " Successfully Authenticated \n";
 
     $authResult = $application->authenticate('tk421@stormpath.com', 'Changeme1');
     $account = $authResult->account;
-	echo $account->givenName . " " . $account->surname . "Successfully Authenticated \n";
+	echo $account->givenName . " " . $account->surname . " Successfully Authenticated \n";
 
 If the authentication request is successful, an `Account` resource will be
 returned.
@@ -247,8 +246,8 @@ We hope you found this Quickstart helpful!
 You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
-* Dig in deeper with the [Official PHP Product Guide](http://docs.stormpath.com/php/product-guide).
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/).
+* Dig in deeper with the [Official PHP Product Guide](/php/product-guide).
+* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
 
 
 ***
