@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Stormpath Admin Quickstart Guide - Stormpath</title>
+  <title>Stormpath Flask Quickstart - Stormpath</title>
   <meta name="author" content="Stormpath, Inc.">
 
   
-  <meta name="description" content="Welcome to Stormpath&rsquo;s Admin Console Quickstart! This quickstart will get you up and running with Stormpath in about 10 minutes and give you a &hellip;">
+  <meta name="description" content="10-minute Tutorial for Flask">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://stormpath.github.io/console/quickstart">
+  <link rel="canonical" href="http://stormpath.github.io/flask/quickstart">
   <link href="/favicon.ico" rel="icon">
 
   <style>
@@ -372,244 +372,393 @@
           <div id="content" class="column" role="main">
             <a id="main-content"></a>
             
-              <h1 class="title" id="page-title">Stormpath Admin Quickstart Guide</h1>
+              <h1 class="title" id="page-title">Stormpath Flask Quickstart</h1>
             
-          	<p>Welcome to Stormpath&rsquo;s Admin Console Quickstart!</p>
+          	<p>Welcome to Stormpath&rsquo;s Flask Quickstart!</p>
 
-<p>This quickstart will get you up and running with Stormpath in about 10 minutes and give you a good initial feel for the Stormpath Admin Console.  During this quickstart, you will do the following:</p>
+<p>This quickstart will get you up and running with Stormpath in about 10 minutes
+and give you a good initial feel for the Stormpath Flask library.  During this
+quickstart, you will do the following:</p>
 
 <ul>
-<li>Register for a free Stormpath account</li>
-<li>Log in to the admin console</li>
-<li>Register an application with Stormpath so you can manage your directories and accounts</li>
-<li>Create a directory that can store accounts</li>
-<li>Create an account that can log in to the application</li>
+<li>Install the Flask-Stormpath library.</li>
+<li>Create an API Key that allows you to make REST API calls with Stormpath.</li>
+<li>Create a Stormpath Application.</li>
+<li>Initialize the Flask-Stormpath library.</li>
+<li>Register a new User Account.</li>
+<li>Logout a user.</li>
+<li>Force a user to be logged in to view content.</li>
+<li>Log into your new User account.</li>
 </ul>
 
 
-<p>With Stormpath, you can offload repetitive security-sensitive logic to Stormpath and get back to building your application&rsquo;s core functionality.  Never worry about storing passwords again!</p>
+<p>Stormpath also can do a lot more (<em>like Groups, Multitenancy, Social
+Integration, and Security workflows</em>) which you can learn more about at the end
+of this quickstart.</p>
+
+<p>Let&rsquo;s get started!</p>
 
 <hr />
 
-<h2><a id="sign-up-for-stormpath"></a>Sign Up for Stormpath</h2>
+<h2><a id="install-the-flask-stormpath-library"></a>Install the Flask-Stormpath Library</h2>
+
+<div class='docs-note'><p>Flask-Stormpath only works with Python 2.7 currently.  Python 3.x support is in
+progress.</p>
+</div>
+
+
+<p>You can install <a href="https://github.com/stormpath/stormpath-flask">Flask-Stormpath</a> using <a href="http://pip.readthedocs.org/en/latest/">pip</a>:</p>
+
+<pre><code>$ pip install -U flask-stormpath
+</code></pre>
+
+<p>If that doesn&rsquo;t work, try this instead:</p>
+
+<pre><code>$ easy_install -U flask-stormpath
+</code></pre>
+
+<p>Or, you can
+<a href="https://github.com/stormpath/stormpath-flask/zipball/master">download the source code (ZIP)</a>,
+extract it, then run:</p>
+
+<pre><code>$ python setup.py install
+</code></pre>
+
+<p>You may need to run the above commands with <code>sudo</code> depending on your Python
+setup.</p>
+
+<hr />
+
+<h2><a id="get-an-api-key"></a>Get an API Key</h2>
+
+<p>All requests to Stormpath must be authenticated with an API Key.</p>
 
 <ol>
-<li>Fill out and submit the <a href="https://api.stormpath.com/register">Stormpath registration form</a>.  This will send a confirmation email.</li>
-<li>Click the link in the confirmation email.</li>
+<li><p>If you haven&rsquo;t already,
+<a href="https://api.stormpath.com/register">Sign up for Stormpath here</a>.  You&rsquo;ll
+be sent a verification email.</p></li>
+<li><p>Click the link in the verification email.</p></li>
+<li><p>Log in to the <a href="https://api.stormpath.com">Stormpath Admin Console</a> using
+the email address and password you used to register with Stormpath.</p></li>
+<li><p>Click the <strong>Manage Existing Keys</strong> button in the middle of the page.</p></li>
+<li><p>Under <strong>Security Credentials</strong>, click <strong>Create API Key</strong>.</p>
+
+<p>This will generate your API Key and download it to your computer as an
+<code>apiKey.properties</code> file.  If you open the file in a text editor, you will
+see something similar to the following:</p>
+
+<pre><code> apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
+ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
+</code></pre></li>
+<li><p>Save this file in a secure location, such as your home directory, in a
+hidden <code>.stormpath</code> directory. For example:</p>
+
+<pre><code> $ mkdir ~/.stormpath
+ $ mv ~/Downloads/apiKey.properties ~/.stormpath/
+</code></pre></li>
+<li><p>Change the file permissions to ensure only you can read this file.  For
+example:</p>
+
+<pre><code> $ chmod go-rwx ~/.stormpath/apiKey.properties
+</code></pre></li>
 </ol>
+
+
+<p>The <code>apiKey.properties</code> file holds your API key information, and can be used to
+easily authenticate with the Stormpath library.</p>
+
+<hr />
+
+<h2><a id="create-a-stormpath-application"></a>Create a Stormpath Application</h2>
+
+<p>When working with Stormpath, you&rsquo;ll need to create an <code>Application</code>.  An
+<code>Application</code> is Stormpath&rsquo;s name for a project.  If you&rsquo;re building a website
+named &ldquo;dronewars.com&rdquo;, you&rsquo;d probably want to create a Stormpath <code>Application</code>
+named &ldquo;dronewars&rdquo;.</p>
+
+<p>To create an <code>Application</code>, visit your <a href="https://api.stormpath.com/ui/dashboard">Stormpath
+Dashboard</a> then click the &ldquo;Applications&rdquo;
+tab at the top of the screen.</p>
+
+<p>Next, click the &ldquo;Register Application&rdquo; button.</p>
+
+<p>In the name field, enter the value &ldquo;Flask Test&rdquo;.  You can leave the description
+field blank.</p>
+
+<p>Lastly, click the &ldquo;Save&rdquo; button to create your new <code>Application</code>.  This
+<code>Application</code> will be used through the rest of this quickstart.</p>
+
+<hr />
+
+<h2><a id="create-a-flask-app"></a>Create a Flask App</h2>
+
+<p>The first step to working with Flask-Stormpath is creating a basic Flask app.</p>
+
+<p>Place the code below into a file named <code>app.py</code> anywhere on your system:</p>
+
+<pre><code>from flask import Flask
+
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'xxx'
+
+
+@app.route('/')
+def home():
+    return 'home page!'
+
+
+@app.route('/secret')
+def secret():
+    return 'secret page!'
+
+
+if __name__ == '__main__':
+    app.run()
+</code></pre>
+
+<p>To start your new Flask app, open the terminal and run:</p>
+
+<pre><code>$ python app.py
+</code></pre>
+
+<p>You can then test your two predefined views by visiting both:</p>
+
+<ul>
+<li><a href="http://localhost:5000">http://localhost:5000</a> and</li>
+<li><a href="http://localhost:5000/secret">http://localhost:5000/secret</a></li>
+</ul>
+
+
+<div class='docs-note'><p>The <code>SECRET_KEY</code> variable is required by Flask to properly secure sessions.
+Since Flask-Stormpath will handle user sessions for you, this variable needs to
+be set to a long, random string.  <strong>Make sure you keep this information safe!</strong></p>
+</div>
+
+
+
+
+<div class='docs-tip'><p>If you want to see all the code from this tutorial in one file, check out this <a href="https://gist.github.com/rdegges/4e5bcc75417fbae3b274#file-app-py">Gist on GitHub</a>:  <a href="https://gist.github.com/rdegges/4e5bcc75417fbae3b274#file-app-py">https://gist.github.com/rdegges/4e5bcc75417fbae3b274#file-app-py</a></p>
+</div>
 
 
 <hr />
 
-<h2><a id="working-with-the-stormpath-admin-console"></a>Working with the Stormpath Admin Console</h2>
+<h2><a id="specify-your-credentials"></a>Specify Your Credentials</h2>
 
-<p><a href="https://api.stormpath.com/login">Log in to Stormpath</a> as the tenant administrator using the credentials you specified during registration.</p>
+<p>The next step is to add your Stormpath credentials to your Flask app.  You can
+do this by adding the following code to your <code>app.py</code> file below the
+<code>SECRET_KEY</code> definition above:</p>
 
-<p>You&rsquo;ll need to enter three values to log in:</p>
+<pre><code>app.config['STORMPATH_API_KEY_FILE'] = expanduser('~/.stormpath/apiKey.properties')
+app.config['STORMPATH_APPLICATION'] = 'Flask Test'
+</code></pre>
 
-<ul>
-<li>Your <code>tenant</code></li>
-<li>Your <code>username</code></li>
-<li>Your <code>password</code></li>
-</ul>
+<p>You&rsquo;ll also need to add the following import to the top of your <code>app.py</code> file:</p>
 
+<pre><code>from os.path import expanduser
+</code></pre>
 
-<p>Your <code>tenant</code> is a unique name for all of your personal data in our systems; different accounts may be granted access to your application or the Admin Console itself, but all of the accounts you exist are created on your tenant.</p>
+<p>The two config variables above tell Flask-Stormpath how to communicate with
+Stormpath.</p>
 
-<p>Once you&rsquo;re logged into the Admin Console, you can start to manipulate applications, directories, and accounts.</p>
+<hr />
 
-<h3><a id="creating-an-application"></a>Creating an application</h3>
+<h2><a id="initialize-flask-stormpath"></a>Initialize Flask-Stormpath</h2>
 
-<p>An <code>application</code> represents your software application which will be connected to Stormpath. All accounts and directories you want to make accessible through your software application must be connected to a Stormpath <code>application</code>.</p>
+<p>To initialize Flask-Stormpath, you need to do two things:</p>
 
-<p>To create an application, do the following:</p>
+<p>Add the following import to the top of your <code>app.py</code> file:</p>
 
-<ol>
-<li>Click the <strong>Applications</strong> tab along the top of the page.
+<pre><code>from flask.ext.stormpath import StormpathManager
+</code></pre>
 
-<ol>
-<li><p>Click the <strong>Register Application</strong> button.</p>
+<p>Add the following line of code below your app config:</p>
 
-<p> ![Register Application Wizard]/images/docs/ApplicationRegistrationWizard.png =700x &ldquo;Register Application Wizard&rdquo;)</p></li>
-<li><p>Complete the fields as follows:</p>
+<pre><code>stormpath_manager = StormpathManager(app)
+</code></pre>
 
-<table>
-<thead>
-<tr>
-<th align="left"> Attribute </th>
-<th align="left"> Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">Name </td>
-<td align="left"> The name used to identify the application within Stormpath. This value must be unique.</td>
-</tr>
-<tr>
-<td align="left">Description </td>
-<td align="left"> A short description of the application.</td>
-</tr>
-<tr>
-<td align="left">Status </td>
-<td align="left"> By default, this value is set to Enabled. Change the value to Disabled if you want to prevent accounts from logging in to the application.</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li><p> For the associated directory, you can:</p>
+<p>This will initialize the Flask-Stormpath extension.</p>
 
-<ul>
-<li>Create a new directory, which can be named to match the application or have a distinct name.</li>
-<li>Add users from other directories or groups.</li>
-<li>After specifying the directory parameters, you can specify the login priority order.</li>
-</ul>
-</li>
-<li><p> When all information is complete, click <strong>Save</strong>.</p></li>
-</ol>
-</li>
-</ol>
+<hr />
 
+<h2><a id="register-a-new-user"></a>Register a New User</h2>
 
-<div class='docs-tip'><p>A URL for the application is often helpful.</p>
+<p>Now that Flask-Stormpath is setup, let&rsquo;s register a new user!</p>
+
+<p>To do this, visit <a href="http://localhost:5000/register">http://localhost:5000/register</a> &mdash; you should see a
+registration page that looks like this:</p>
+
+<p><img class="center-block" src="../../images/flask-registration-page.png" title="Flask Registration Page" alt="Flask Registration Page"/></p>
+
+<p>Once you&rsquo;re at the registration page, enter your user information and create a
+new user account!</p>
+
+<p>By default, Flask-Stormpath ships with a registration and login page, with
+sensible defaults.  This behavior is fully customizable.</p>
+
+<p>Once you&rsquo;ve created an account, you&rsquo;ll be automatically redirected back to the
+home page of your site.</p>
+
+<div class='docs-note'><p>You probably noticed that you couldn’t register a user account without
+specifying a sufficiently strong password.  This is because, by default,
+Stormpath enforces certain password strength rules on your Stormpath
+Directories.</p>
+
+<p>If you’d like to change these password strength rules (or disable them), you can
+do so easily by visiting the Stormpath dashboard, navigating to your user
+Directory, then changing the &#8220;Password Strength Policy&#8221;.</p>
 </div>
 
 
-<p>At this point, you&rsquo;ll see that your application was successfully created. You can also edit the application, or any of your applications, by clicking on its name in the list of applications.</p>
+<hr />
 
-<h3><a id="creating-a-directory"></a>Creating a directory</h3>
+<h2><a id="log-out-a-user"></a>Log out a User</h2>
 
-<p>A <code>directory</code> contains <code>accounts</code>. Directories enforce specific restrictions on the accounts that can exist within it, such as the min and max characters for passwords of accounts in that directory.</p>
+<p>Now that we&rsquo;ve created a user, let&rsquo;s log our new user out.  To do this, visit
+<a href="http://localhost:5000/logout">http://localhost:5000/logout</a> &mdash; you will then be logged out of your account and
+returned to them home page once again.</p>
 
-<p>To create a directory, do the following:</p>
+<p>Flask-Stormpath provides a built-in logout view which makes it easy to log users
+out.</p>
 
-<ol>
-<li>Click the <strong>Directories</strong> tab.</li>
-<li>Click <strong>Create Directory</strong>.</li>
-<li><p>Click <strong>Cloud</strong>.</p>
+<hr />
 
-<p> <img src="/images/docs/CreateCloudDirectory.png" height="440" width="650" title="Create Cloud Directory" alt="Create Cloud Directory" /></p></li>
-<li><p>Complete the field values as follows: <br></p>
+<h2><a id="create-a-restricted-view"></a>Create a Restricted View</h2>
 
-<table>
-<thead>
-<tr>
-<th align="left"> Attribute </th>
-<th align="left"> Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">Name </td>
-<td align="left"> The name used to identify the directory within Stormpath. This value must be unique.</td>
-</tr>
-<tr>
-<td align="left">Description </td>
-<td align="left"> Details about this specific directory.</td>
-</tr>
-<tr>
-<td align="left">Status </td>
-<td align="left"> By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.</td>
-</tr>
-<tr>
-<td align="left">Min characters </td>
-<td align="left"> The minimum number of acceptable characters for the account password.</td>
-</tr>
-<tr>
-<td align="left">Max characters </td>
-<td align="left"> The maximum number of acceptable characters for the account password.</td>
-</tr>
-<tr>
-<td align="left">Mandatory characters </td>
-<td align="left"> The required character patterns which new passwords will be validated against. For example, for an alphanumeric password of at least 8 characters with at least one lowercase and one uppercase character, select the abc, ABC, and 012 options. The more patterns selected, the more secure the passwords but the more complicated for a user.</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li><p>Click <strong>Create</strong>. </p></p></li>
-</ol>
+<p>Next, we&rsquo;ll add authentication enforcement to one of our views.  In your
+<code>app.py</code> file, add the following import to the top of your file:</p>
 
+<pre><code>from flask.ext.stormpath import login_required
+</code></pre>
 
-<p>At this point, you&rsquo;ll see that your directory was successfully created. You can also edit the directory, or any of your directory, by clicking on its name in the list of directories.</p>
+<p>Then, directly above your <code>secret</code> view, add the <code>login_required</code> decorator &mdash;
+this view should now look like:</p>
 
-<h3><a id="creating-an-account"></a>Creating an account</h3>
+<pre><code>@app.route('/secret')
+@login_required
+def secret():
+    return 'secret page!'
+</code></pre>
 
-<p>A <code>account</code> represents an entity that can authenticate with your application. This could be an end-user, an administrator, another software application, or any other entity that needs to authenticate with your application. Accounts have a basic set of attributes.</p>
-
-<ol>
-<li>Click the <strong>Accounts</strong> tab.</li>
-<li><p>Click <strong>Create an Account</strong>.</p>
-
-<p> <img src="/images/docs/CreateAccount.png" height="380" width="640" title="Create Account" alt="Create Account" /></p></li>
-<li><p>Complete the fields as follows: <br></p>
-
-<table>
-<thead>
-<tr>
-<th align="left"> Attribute </th>
-<th align="left"> Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="left">Directory </td>
-<td align="left"> The directory to which the account will be added.</td>
-</tr>
-<tr>
-<td align="left">Username </td>
-<td align="left"> The login name of the account for applications using username instead of email. The value must be unique within its parent directory.</td>
-</tr>
-<tr>
-<td align="left">First Name </td>
-<td align="left"> The account owner first name.</td>
-</tr>
-<tr>
-<td align="left">Middle Name </td>
-<td align="left"> The account owner middle name.</td>
-</tr>
-<tr>
-<td align="left">Last Name </td>
-<td align="left"> The account owner last name.</td>
-</tr>
-<tr>
-<td align="left">First Name </td>
-<td align="left"> The account owner first name.</td>
-</tr>
-<tr>
-<td align="left">Email </td>
-<td align="left"> The account owner email address. This is can be used by applications, such as the Stormpath Admin Console, that use an email address for logging in. The value must be unique within its parent directory.</td>
-</tr>
-<tr>
-<td align="left">Status </td>
-<td align="left"> The status is set to Enabled by default. It is only set to Disabled if you want to deny access to the account to Stormpath-connected applications.</td>
-</tr>
-<tr>
-<td align="left">Password </td>
-<td align="left"> The credentials used by an account during a login attempt. The specified value must adhere to the password policies set for the parent directory.</td>
-</tr>
-<tr>
-<td align="left">Confirm Password </td>
-<td align="left"> Confirmation of the account credentials. This value must match the value of the Password attribute.</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li><p>Click <strong>Create Account</strong>.</p></li>
-</ol>
-
-
-<p>At this point, you&rsquo;ll see that your account was successfully created. You can also edit the account, or any of your accounts, by clicking on its name in the list of accounts.</p>
-
-<div class='docs-note'><p>The account cannot be moved to a different directory after it has been created.</p>
+<div class='docs-note'><p>Python decorators execute in-order.  The <code>login_required</code> decorator MUST be the
+last decorator specified.</p>
 </div>
+
+
+<p>To test this out, restart your Flask web server then visit
+<a href="http://localhost:5000/secret">http://localhost:5000/secret</a> &mdash; you should get redirected to a login page that
+looks like this:</p>
+
+<p><img class="center-block" src="../../images/flask-login-page.png" title="Flask Login Page" alt="Flask Login Page"/></p>
+
+<h2><a id="log-a-user-into-their-account"></a>Log a User Into Their Account</h2>
+
+<p>Now that we&rsquo;re at the login page, enter your user credentials, then log in.  You
+should now be able to see the <code>secret</code> view!</p>
+
+<p>Flask-Stormpath provides a very flexible login view by default, which allows you
+to many things (including social login).</p>
+
+<hr />
+
+<h2><a id="final-code"></a>Final Code</h2>
+
+<p>In the end, your Flask app should look like this:</p>
+
+<pre><code>from os.path import expanduser
+
+from flask import Flask
+from flask.ext.stormpath import StormpathManager, login_required
+
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'xxx'
+app.config['STORMPATH_API_KEY_FILE'] = expanduser('~/.stormpath/apiKey.properties')
+app.config['STORMPATH_APPLICATION'] = 'Flask Test'
+
+stormpath_manager = StormpathManager(app)
+
+
+@app.route('/')
+def home():
+    return 'home page!'
+
+
+@app.route('/secret')
+@login_required
+def secret():
+    return 'secret page!'
+
+
+if __name__ == '__main__':
+    app.run()
+</code></pre>
+
+<hr />
+
+<h2><a id="other-things-you-can-do-with-stormpath"></a>Other Things You Can Do with Stormpath</h2>
+
+<p>In addition to user registration and login, Stormpath can do a lot more!</p>
+
+<ul>
+<li>Create and manage user groups.</li>
+<li>Partition multi-tenant account data.</li>
+<li>Simplify social login with providers like Google and Facebook.</li>
+<li>Manage developer API keys and access tokens.</li>
+<li>Verify new users via email.</li>
+<li>Automatically provide secure password reset functionality.</li>
+<li>Centralize your user store across multiple applications.</li>
+</ul>
 
 
 <hr />
 
 <h2><a id="next-steps"></a>Next Steps</h2>
 
-<p>We hope you have found this Quickstart helpful!</p>
+<p>We hope you found this Quickstart helpful!</p>
 
-<p>For full coverage of Stormpath&rsquo;s Admin Console, including how to edit application details, edit accounts, create groups and assign accounts to groups, reset passwords via password reset emails, and more, please see our <a href="/console/product-guide">Admin Console</a>.</p>
+<p>You&rsquo;ve just scratched the surface of what you can do with Stormpath.  Want to
+learn more?  Here are a few other helpful resources you can jump into.</p>
+
+<ul>
+<li>Dig in deeper with the <a href="http://flask-stormpath.readthedocs.org/en/latest/">Flask-Stormpath Docs</a>.</li>
+<li><a href="https://stormpath.com/blog/build-a-flask-app-in-30-minutes/">Build a Flask app in 30 minutes</a>.</li>
+<li>Learn to easily partition user data with our <a href="/guides/multi-tenant/">Guide to Building Multitenant Applications</a>.</li>
+<li>Easily support Social Login with <a href="/python/product-guide/#integrating-with-google">Google</a> and <a href="/python/product-guide#integrating-with-facebook">Facebook</a> integrations in Python.</li>
+</ul>
+
+
+<hr />
+
+<h2><a id="help-us-spread-the-word"></a>Help Us Spread the Word</h2>
+
+<p>Like Stormpath?  If you enjoyed playing around with our new Flask library,
+please help spread the word with a quick tweet!</p>
+
+<!-- AddThis Button BEGIN -->
+
+
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout @goStormpath, it let's you set up complete user management in your Flask app in minutes."
+addthis:url="https://stormpath.com">
+  <a class="addthis_button_twitter"></a>
+  <a class="addthis_button_preferred_2"></a>
+  <a class="addthis_button_preferred_3"></a>
+  <a class="addthis_button_preferred_4"></a>
+  <a class="addthis_button_compact"></a>
+</div>
+
+
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+
+
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+
+
+<!-- AddThis Button END -->
+
+
+<p><p></p>
 
             <div id="bottom-wrapper">
                      <div class="region region-bottom">
@@ -649,7 +798,7 @@
  	
     <option value="nodejs">Node.js</option>
  	
-    <option value="python">Python</option>
+    <option value="python" selected>Python</option>
  	
     <option value="ruby">Ruby</option>
  	
@@ -657,7 +806,7 @@
  	
     <option value="guides">Guides</option>
  	
-    <option value="console" selected>Admin Console</option>
+    <option value="console">Admin Console</option>
  	
  </select>
 </div>
@@ -898,33 +1047,59 @@
   
         
   	
-  
-        
-  	
-  
-        
-  	
                 
                 
 		<ul class="menu">
 		
-			<li class="leaf active-trail">
+			<li class="leaf">
 			
-				<a href="/console/quickstart">Quickstart</a>
+				<a href="/python/quickstart">Quickstart</a>
 			
-			
-				<ul class="menu"><li class="leaf"><a href="#sign-up-for-stormpath" data-level="0" class="fragment">Sign Up for Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#working-with-the-stormpath-admin-console" data-level="0" class="fragment">Working with the Stormpath Admin Console</a><ul class="menu"><li class="leaf"><a href="#creating-an-application" data-level="1" class="fragment">Creating an application</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-directory" data-level="1" class="fragment">Creating a directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-an-account" data-level="1" class="fragment">Creating an account</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#next-steps" data-level="0" class="fragment">Next Steps</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
 			<li class="leaf">
 			
-				<a href="/console/product-guide">Admin Console Guide</a>
+				<a href="/python/product-guide">Product Guide</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/python/apidocs/">API Docs (Sphinx)</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="http://flask-stormpath.readthedocs.org/en/latest/" target="_blank"><span>Flask Integration</span></a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="https://github.com/stormpath/stormpath-sdk-python" target="_blank"><span>SDK on GitHub</span></a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="https://github.com/stormpath/stormpath-flask-sample" target="_blank"><span>Sample Applications</span></a>
 			
 			
 			</li>
 		
 		</ul>
+  	
+  
+        
+  	
+  
+        
   	
   
         
