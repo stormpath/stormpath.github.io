@@ -24,7 +24,9 @@ Many organizations use Active Directory (AD) or LDAP for identity services. But 
 
 ![](https://stormpath.com/images/landingpage/ldap/ldap2.png)
 
-It’s an elegant solution for organizations transitioning to the cloud, and the simplest tool for developers wrestling with Active Directory/LDAP.  If you are building a [multi-tenant](/guides/multi-tenant) application, you can use the Stormpath AD/LDAP Agent to sync data from your customers AD/LDAP servers.
+It’s an elegant solution for organizations transitioning to the cloud, and the simplest tool for developers wrestling with Active Directory/LDAP.  If you are building a [multi-tenant](/guides/multi-tenant) application, you can use the Stormpath AD/LDAP Agent to sync data from your customers AD/LDAP servers into the cloud.
+
+Stormpath is fully configurable to import objects and map attributes for both `Accounts` and `Groups`.  Stormpath will also delegate authentication requests to Active Directory / LDAP servers, this means that password policies around strength / expiration are managed externally, but a developer does not need to understand the complexity of these systems.
 
 In the following sections, we will outline considerations and best practices with using this functionality.
 
@@ -57,13 +59,7 @@ This will start the directory creation wizard for AD / LDAP.  After configuring 
 
 Once the creation wizard is completed, you will be able to download the agent to deploy on the network with the AD / LDAP server.
 
-After the agent is deployed and started, you can monitor its status directly from the Stormpath Administrator Console in the Agents tab.
-
-***
-Any troubleshooting information we can put here?  
-How long does this usually take to sync?
-Any firewall considerations?
-***
+After the agent is deployed and started, the agent will reports its status and it can be monitored directly from the Stormpath Administrator Console in the Agents tab.
 
 ##  Authentication Considerations for Multiple Active Directory / LDAP Configurations
 
@@ -88,14 +84,49 @@ To illustrate this further take the following example:
 The application during the login attempt will be able to route each login attempt to the correct `Account Store` (or Mirrored Directory) based on the sub-domain.  The Stormpath REST API and SDKs allow you to search/iterate account store mapping and associate a login attempt with an account store.
 
 {% docs note %}
- Collecting tenant through sub-domain is one way of 
+ Collecting tenant through sub-domain is one way of understanding the tenant, their are also other mechanisms for handling multi-tenancy within Stormpath. Please check out our [multi-tenancy guide](/guides/multi-tenant) for more info
 {% enddocs %}
 
 ## Supplementing Mirrored Active Directory / LDAP with Account Linking
 
-Since Mirrored Directories are read-only, your application may require the ability to set additional groups / roles, store additional details, or even associate an account with an additional Facebook or Google account within Stormpath. This is using and storing account hrefs in the account `Custom Data`.  
+Since Mirrored Directories are read-only, your application may require the ability to set additional groups / roles, store additional details, or even associate an account with an additional Facebook or Google account within Stormpath. 
 
-The `customData` resource is a schema-less JSON object (aka ‘map’, ‘associative array’, or ‘dictionary’) that allows you to specify whatever name/value pairs you wish.  This is perfect for this use-case.
+This is accomplished using a separate master `Directory` and storing account hrefs in the account `Custom Data`.  
 
-In this more advanced scenario, accounts will still authenticate against the `Mirrored Directories`, but after a successful login attempt, the account will be duplicated into another directory and linked with custom data to provide the association between accounts.
+{% docs notes %}
+The master directory is not an `Account Store` for the application.  Users will not be able to login to the master directory, they will authenticate against the Active Directory or LDAP `Mirrored Directory`
+{% enddocs %}
+
+The `customData` resource is a schema-less JSON object (aka ‘map’, ‘associative array’, or ‘dictionary’) that allows you to specify whatever name/value pairs you wish.
+
+A common strategy is to store an array of account links (account's `href` property) on an account so they can be accessed easily.
+
+### Provisioning Accounts
+
+When provisioning accounts in the master directory, their are some best practices
+Provisioned accounts for account linking usually follows this work flow:
+
+1.  A user authenticates with an application.
+1.  Once authenticate:
+    1. Search for the account in the master directory (this can be done by username or email)
+    2. If user does not exist in the master directory, create it.
+    3. Store a link to the account in the mirrored directory as custom data on the created account in the master directory
+
+Since Stormpath enforces specific required fields (`email`, `password`, `giveName`, `surname`) some of these may fields may require dummy data to get around the enforcement.  Since
+
+This created duplicated account in the master directory will act as a holder for additional account links and other metadata that you need to store for the account.
+
+### Synchronizing the Accounts
+
+Accounts data that is stored in the master directory may need to sync with modification of data in the Active Directory or LDAP server.  There are a couple possibilities that are common to accomplish this:
+
+1. Sync on authentication
+2. Use a script to sync at regular time intervals 
+
+Syncing on authentication means that when a use authenticates successfully, any changes in the mirror directory needs to be applied to the master directory.   This is a simpler solution, but will not keep a fully synced master directory.  If your application requires that this information is kept in sync then a script needs to be run at a regular interval that will read the information from a the mirrored directory and update accounts as they exist in the master directory.
+
+### Managing Passwords 
+
+Since the Stormpath uses delegates authentication to AD / LDAP servers for authentication, it does not store the passwords for the accounts.  Managing passwords for AD / LDAP are handled outside of Stormpath.
+
 
