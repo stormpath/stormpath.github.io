@@ -332,6 +332,9 @@ In the end, your Flask app should look like this:
         app.run()
 
 
+***
+
+
 ## Other Things You Can Do with Stormpath
 
 In addition to user registration and login, Stormpath can do a lot more!
