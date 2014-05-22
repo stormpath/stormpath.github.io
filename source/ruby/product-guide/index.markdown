@@ -1491,8 +1491,15 @@ Attribute | Description | Type | Valid Value
 <a id="account-store-accountStore"></a>`account_store` | The mapping's account store (either a Group or Directory) containing accounts that may login to the `application`.  Required. | resource | <span>--</span>
 <a id="list-index"></a>`list_index` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `list_index` of `0` will be consulted first (has the highest priority), followed the account store at `list_index` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `list_index` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size
 <a id="account-store-mapping-resource-is-default-account-store"></a>`is_default_account_store` | A `true` value indicates that new accounts [created by the application](#application-account-register) will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
-<a id="account-store-mapping-resource-is-default-group-store"></a>`is_default_group_store` | A `true` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `true` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `true`,`false`
-
+<a id="account-store-mapping-resource-is-default-group-store"></a>`is_default_group_store` | A `true` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
+`is_default_account_store=` | A setter method for defining whether the account store will be an default account store for the application. | boolean | `true`,`false`
+`is_default_groupt_store=` | A setter method for defining whether the account store will be an default group store for the application. **This may only be set to `true` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `true`,`false`
+`default_account_store` | Alias for `is_default_account_store`. | boolean | `true`,`false`
+`default_account_store?` | Alias for `is_default_account_store`. | boolean | `true`,`false`
+`default_account_store=` | Alias for `is_default_account_store=`. | boolean | `true`,`false`
+`default_group_store` | Alias for `is_default_group_store`. | boolean | `true`,`false`
+`default_group_store?` | Alias for `is_default_group_store`. | boolean | `true`,`false`
+`default_group_store=` | Alias for `is_default_group_store=`. | boolean | `true`,`false`
 For Account Store Mappings, you may:
 
 * [Locate an account store mapping's REST URL](#account-store-mapping-url)
