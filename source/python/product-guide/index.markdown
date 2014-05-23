@@ -1227,7 +1227,7 @@ When you create an application account, in addition to Stormpath's account attri
 
 **Example Request**
 
-    result = application.authenticate_account('jsmith@mailinator.com', 'Ephai9ti', account_store)
+    result = application.authenticate_account('jsmith@mailinator.com', 'Ephai9ti', account_store=account_store)
 
 <a class="anchor" name="application-password-reset"></a>
 #### Reset An Account's Password
