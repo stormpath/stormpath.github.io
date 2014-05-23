@@ -4,42 +4,6 @@ lang: guides
 title: Using Stormpath to Secure Your API Services
 ---
 
-{% codetab id:code-for-login langs:rest java python%}
-  ------
-  //Sup Homies
-  curl -u $API_KEY_ID:$API_KEY_SECRET \
-     -H "Accept: application/json" \
-     "https://api.stormpath.com/v1/tenants/23mq7BPIxNgPUPZDwj04SZ/applications?name=My%20Application"
-  ------
-  //Good Morning
-  System.out.println("Hello World");
-  ------
-  //Python is for pimps
-  for app in client.applications[1:5]:
-    print(app.name)
-  ------
-{% endcodetab %}
-
-{% codetab id:code-for-login langs:rest java python%}
-  ------
-  //
-  rest code
-  ------
-  //Good Morning
-  System.out.println("Hello World");
-  ------
-  for app in client.applications[1:5]:
-    print(app.name)
-  ------
-{% endcodetab %}
-
-{% codetab id:code-for-login langs:python%}
-  ------
-  for app in client.applications[1:5]:
-    print(app.name)
-  ------
-{% endcodetab %}
-
 In this guide, we discuss how to set up Stormpath to manage and authenticate API Keys and Secrets for developers that are using your API Services.  Stormpath provides not only the user management piece around API Keys, but also allows you to associate permissions and custom data with the accounts for advanced use-cases.  
 
 {% docs note %}
