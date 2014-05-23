@@ -26,6 +26,7 @@ alias: [/index.html]
               <li class="leaf"><a href="/rest/product-guide" title="">Product Guide</a></li>
               <li class="leaf"><a href="/guides/multi-tenant" title="">Multitenancy Guide</a></li>
               <li class="leaf"><a href="/guides/social-integrations" title="">Social Integration Guide</a></li>
+              <li class="leaf"><a href="/guides/ad-ldap" title="">Active Directory / LDAP Guide</a></li>
               <hr>
               <li class="leaf"><a href="/how-do-i" title="">How do I...</a></li>
               <li class="last leaf"><a href="/errors" title="">Error Codes</a></li>
@@ -103,8 +104,6 @@ alias: [/index.html]
 			  <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-node" title="">SDK on GitHub</a></li>
               <li class="leaf"><a href="https://www.npmjs.org/package/stormpath" title="">npm Package Info</a></li>
 			  <li class="last leaf"><a href="https://stormpath.com/blog/build-app-nodejs-express-passport-stormpath/" title="">Sample App</a></li>
-			  
-			  
               <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-node/archive/master.zip">Download SDK</a></li>
             </ul>  
           </div>
