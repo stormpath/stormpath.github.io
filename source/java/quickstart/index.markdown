@@ -1,141 +1,221 @@
 ---
 layout: doc
 lang: java
-title: Stormpath Java Quickstart Guide
+description: "7-minute Tutorial for Java"
+image: https://stormpath.com/images/tutorial/java-icon.png
+title: Stormpath Java Quickstart
 ---
 
-Welcome to Stormpath's Java SDK Quickstart!
 
-This quickstart will get you up and running with Stormpath in about 10 minutes and give you a good initial feel for the Stormpath Java SDK.  During this quickstart, you will do the following:
+Welcome to Stormpath's Java Quickstart!
 
-* Register for a free Stormpath account
-* Create an API Key that allows you to make REST API calls with Stormpath
-* Register an application with Stormpath so you can automate that application's user management and authentication needs
-* Create an account that can log in to the application
-* Authenticate an account with the application
+This quickstart will get you up and running with Stormpath in about 7 minutes
+and give you a good initial feel for the Stormpath Java SDK.  During this
+quickstart, you will do the following:
 
-With Stormpath, you can offload repetitive security-sensitive logic to Stormpath and get back to building your application's core functionality.  Never worry about storing passwords again!
+ * Add the Stormpath SDK to your project.
+ * Create an API Key that allows you to make REST API calls with Stormpath.
+ * Register an Application.
+ * Create a User Account.
+ * Search for a User Account.
+ * Authenticate a User Account.
 
-The Java SDK can be found on [Github](https://github.com/stormpath/stormpath-sdk-java).
+Stormpath also can do a lot more (*like Groups, Multitenancy, Social
+Integration, and Security workflows*) which you can learn more about at the end
+of this quickstart.
 
-***
+Let's get started!
 
-## Sign Up for Stormpath
-
-1. Fill out and submit the [Stormpath registration form](https://api.stormpath.com/register).  This will send a confirmation email.
-2. Click the link in the confirmation email.
-
-## <a name="apiKey"></a> Get an API Key
-
-All requests back to Stormpath using the Stormpath SDK must be authenticated with an API Key. To get an API key:
-
-1. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using the email address and password you used to register with Stormpath.
-
-2. In the top-right corner of the resulting page, visit **Settings** > **My Account**.
-
-    <!-- TODO: SCREENSHOT (arrow calling attention to the 'My Accounts' menu item)   -->
-
-3. On the Account Details page, under **Security Credentials**, click **Create API Key**.
-
-    <!-- TODO: SCREENSHOT (arrow calling attention to the 'Create API Key' button) -->
-
-    This will generate your API Key and download it to your computer as an `apiKey.properties` file. If you open the file in a text editor, you will see something similar to the following:
-
-        apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
-        apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
-
-4. Save this file in a secure location, such as your home directory in a hidden `.stormpath` directory. For example:
-
-        $HOME/.stormpath/apiKey.properties
-5. Also change the file permissions to ensure only you can read this file. For example, on \*nix operating systems:
-
-        $ chmod go-rwx $HOME/.stormpath/apiKey.properties
 
 ***
 
-## Add the Stormpath Java SDK to your Project
+
+## Add the Stormpath SDK
 
 Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .jars to your application using Maven, Ant+Ivy, Grails, SBT, or whichever Maven Repository-compatible tool you prefer:
 
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-api</artifactId>
-        <version>0.9.3</version>
+        <version>1.0.beta</version>
     </dependency>
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-httpclient</artifactId>
-        <version>0.9.3</version>
+        <version>1.0.beta</version>
         <scope>runtime</scope>
     </dependency>
 
-If you are not using a Maven Repository-compatable tool, follow these [instructions](/java/product-guide#Appendix).
+If you are not using a Maven Repository-compatable tool, follow these [instructions](/java/product-guide#appendix).
 
 More information on different ways to configure and retrieve information from this file can be found in the [Client Builder](https://github.com/stormpath/stormpath-sdk-java/blob/master/api/src/main/java/com/stormpath/sdk/client/ClientBuilder.java) API documentation.
 
+
 ***
 
-## Working with the Stormpath Java SDK
 
-### Configure your Java application
+## Get an API Key
 
-Create a Stormpath SDK [`Client`](/java/product-guide#Client) instance based on your API key. The client instance is your starting point for all operations with the Stormpath service. For example:
+All requests to Stormpath must be authenticated with an API Key.
+
+1. If you haven't already,
+   [Sign up for Stormpath here](https://api.stormpath.com/register).  You'll
+   be sent a verification email.
+
+2. Click the link in the verification email.
+
+3. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using
+   the email address and password you used to register with Stormpath.
+
+4. Click the **Manage Existing Keys** button in the middle of the page.
+
+5. Under **Security Credentials**, click **Create API Key**.
+
+   This will generate your API Key and download it to your computer as an
+   `apiKey.properties` file.  If you open the file in a text editor, you will
+   see something similar to the following:
+
+        apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
+        apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
+
+6. Save this file in a secure location, such as your home directory, in a
+   hidden `.stormpath` directory. For example:
+
+        $ mkdir ~/.stormpath
+        $ mv ~/Downloads/apiKey.properties ~/.stormpath/
+
+5. Change the file permissions to ensure only you can read this file.  For
+   example:
+
+        $ chmod go-rwx ~/.stormpath/apiKey.properties
+
+The `apiKey.properties` file holds your API key information, and can be used to
+easily authenticate with the Stormpath SDK.
+
+
+***
+
+
+## Create a Client
+
+The first step to working with Stormpath is creating a Stormpath
+[Client](/java/product-guide#client) using your `apiKey.properties` file.
+The `Client` object is what allows you to communicate with Stormpath.
 
     import com.stormpath.sdk.client.*;
-    ...
+	
+	ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
+	Client client = Clients.builder().setApiKey(apiKey).build();
+	
+	//If using Google App Engine, you must use Basic authentication:
+    //Client client = Clients.builder().setApiKey(apiKey)
+	//    .setAuthenticationScheme(AuthenticationScheme.BASIC)
+	//    .build();
 
-    String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
-    Client client = new ClientBuilder().setApiKeyFileLocation(path).build();
-    
-    //If using Google App Engine, you must use Basic authentication:
-    //Client client = new ClientBuilder().setApiKeyFileLocation(path)
-    //    .setAuthenticationScheme(AuthenticationScheme.BASIC)
-    //    .build();
-    	
+The `client` instance is intended to be an application singleton.  You should
+reuse this instance throughout your application code.  You *should not*
+create multiple `Client` instances as it could negatively affect caching.
 
-The `Client` instance is intended to be an application singleton. You should reuse this instance throughout your application code. You *should not* create multiple Client instances as it could negatively affect caching.
 
-### Register your application with Stormpath
+***
 
-Registering an application with Stormpath allows that application to use Stormpath for its user management and authentication needs.
-In this example, we'll create a Star Trek 'Captain's Log' application:
+
+## Create an Application
+
+Before you can create user Accounts you'll need to create a Stormpath
+Application.  An Application in Stormpath is the same thing as a project.  If
+you're building a web app named "Lightsabers Galore", you'd want to name your
+Stormpath Application "Lightsabers Galore" as well.
+
+You can create an Application using the Client you created in the previous step:
 
     import com.stormpath.sdk.tenant.*;
     import com.stormpath.sdk.application.*;
-
+	
     Application application = client.instantiate(Application.class);
-    application.setName("Captain's Log"); //must be unique among your other apps
-
+    application.setName("My Awesome Application"); //must be unique among your other apps
     application = client.getCurrentTenant()
         .createApplication(Applications.newCreateRequestFor(application).createDirectory().build());
 
-Once the application is created, it will automatically create a `Directory` resource based on the name of application and set it as the default account store. New accounts will be created in this default account store.
+The code above will create a new Application, which we can use later to do stuff
+like:
 
-### Create an account 
+- Create user accounts.
+- Log users into their account.
+- etc.
 
-Now that we've created an `Application`, let's create an `Account` so someone can log in to (i.e. authenticate with) the application.
+{% docs note %}
+The only required field when creating an Application is `name`.  Descriptions
+are optional!
+{% enddocs %}
+
+
+***
+
+
+## Create a User Account
+
+Now that we've created an Application, let's create a user Account!  To do
+this, you'll need to use your application (*created in the previous step*):
 
     import com.stormpath.sdk.account.*;
     import com.stormpath.sdk.application.*;
     import com.stormpath.sdk.directory.*;
-    ...
-
+	
     //Create the account object
     Account account = client.instantiate(Account.class);
-
+	
     //Set the account properties
-    account.setGivenName("Jean-Luc");
-    account.setSurname("Picard");
-    account.setUsername("jlpicard"); //optional, defaults to email if unset
-    account.setEmail("jlpicard@starfleet.com");
-    account.setPassword("Changeme1!");
-
+    account.setGivenName("Joe");
+    account.setSurname("Stormtrooper");
+    account.setUsername("tk421"); //optional, defaults to email if unset
+    account.setEmail("tk421@stormpath.com");
+    account.setPassword("Changeme1");
+    CustomData customData = account.getCustomData();
+    customData.put("favoriteColor", "white");
+	
     //Create the account using the existing Application object
     application.createAccount(account);
 
-### Authenticate an Account
+Stormpath Accounts have several basic fields (`givenName`, `surname`, `email`,
+etc...), but also support storing schema-less JSON data through the `customData`
+field.  `customData` allows you to store any user profile information (*up to
+10MB per user!*).
 
-Now we have an account that can use your application.  But how do you authenticate an account logging in to the application? You use the application instance and an `AuthenticationRequest` as follows:
+{% docs note %}
+The required fields are: `givenName`, `surname`, `email`, and `password`.
+{% enddocs %}
+
+Once you've created an Account, you can access the Account's data by referencing
+the attribute names, for instance:
+
+    account.getGivenName();
+    
+	account.getCustomData().get("favoriteColor");
+
+
+***
+
+
+## Search for a User Account
+
+Finding user Accounts is also simple.  You can search for Accounts by field:
+
+	Map<String, Object> queryParams = new HashMap<String, Object>();
+	queryParams.put("email", "tk421@stormpath.com");
+	AccountList accounts = application.getAccounts(queryParams);
+
+
+You can also use wild cards such as `("email", "*@stormpath.com")` to return
+all accounts with a stormpath.com domain.
+
+***
+
+
+## Authenticate a User Account
+
+Authenticating users is equally simple -- you can specify either a `username` or
+`email` address, along with a `password`:
 
     import com.stormpath.sdk.application.*;
     import com.stormpath.sdk.account.*;
@@ -145,8 +225,8 @@ Now we have an account that can use your application.  But how do you authentica
 
     //Capture the username and password, such as via an SSL-encrypted web HTML form.
     //We'll just simulate a form lookup and use the values we used above:
-    String usernameOrEmail = "jlpicard@starfleet.com"; //todo: get from form
-    String rawPassword = "Changeme1!"; //todo: get from form
+    String usernameOrEmail = "tk421@stormpath.com"; 
+    String rawPassword = "Changeme1"; 
 
     //Create an authentication request using the credentials
     AuthenticationRequest request = new UsernamePasswordRequest(usernameOrEmail, rawPassword);
@@ -155,7 +235,7 @@ Now we have an account that can use your application.  But how do you authentica
     try {
         return application.authenticateAccount(request).getAccount();
     } catch (ResourceException name) {
-        //...catch the error and print it to the syslog if it wasn't.
+        //...catch the error and print it to the syslog
         log.error("Auth error: " + name.getDeveloperMessage());
         return null;
     } finally {
@@ -163,35 +243,59 @@ Now we have an account that can use your application.  But how do you authentica
         request.clear();
     }
 
-If the authentication attempt fails, you will receive a `ResourceException` which contains details of the error.
-
-### Experiment! 
-
-Use the client instance to interact with your tenant data, such as applications, directories, and accounts:
-
-    import com.stormpath.sdk.tenant.Tenant;
-    import com.stormpath.sdk.application.*;
-    import com.stormpath.sdk.directory.*;
-    ...
-
-    Tenant tenant = client.getCurrentTenant();
-
-    //Print application name
-    ApplicationList applications = tenant.getApplications();
-    for (Application application : applications) {
-        log.error("Application " + application.getName());
-    }
-
-    //Print directory names
-    DirectoryList directories = tenant.getDirectories();
-    for (Directory directory : directories) {
-        log.error("Directory " + directory.getName());
-    }
 
 ***
 
+
+## Other Things You Can Do with Stormpath
+
+In addition to user registration and login, Stormpath can do a lot more!
+
+- Create and manage user groups.
+- Partition multi-tenant account data.
+- Simplify social login with providers like Google and Facebook.
+- Manage developer API keys and access tokens.
+- Verify new users via email.
+- Automatically provide secure password reset functionality.
+- Centralize your user store across multiple applications.
+- Plug into your favorite security framework (*like [Apache Shiro](/integrations/#sample-apps-java-container-jump) or [Spring Security](/integrations/#sample-apps-java-container-jump)*).
+
+
+***
+
+
 ## Next Steps
 
-We hope you have found this Quickstart helpful!
+We hope you found this Quickstart helpful!
 
-For full coverage of Stormpath's Java SDK, including how to edit application details, edit accounts, create groups and assign accounts to groups, reset passwords via password reset emails, and more, please see our [Java Product Guide](/java/product-guide).
+You've just scratched the surface of what you can do with Stormpath.  Want to
+learn more?  Here are a few other helpful resources you can jump into.
+
+* Dig in deeper with the [Official Java Product Guide](/java/product-guide).
+* [Build an Apache Shiro + Stormpath Web App in 30 minutes](http://shiro.apache.org/webapp-tutorial.html).
+* Checkout our integrations to [Apache Shiro](/integrations/#sample-apps-java-container-jump) or [Spring Security](/integrations/#sample-apps-java-container-jump).
+* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
+* Easily support Social Login with [Google](/java/product-guide/#integrating-with-google) and [Facebook](/java/product-guide#integrating-with-facebook) integrations in Java.
+
+
+***
+
+
+## Help Us Spread the Word
+
+Like Stormpath?  If you enjoyed playing around with our new Java SDK,
+please help spread the word with a quick tweet!
+
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout @goStormpath, it let's you set up complete user management in your Java app in minutes."
+addthis:url="https://stormpath.com">
+  <a class="addthis_button_twitter"></a>
+  <a class="addthis_button_preferred_2"></a>
+  <a class="addthis_button_preferred_3"></a>
+  <a class="addthis_button_preferred_4"></a>
+  <a class="addthis_button_compact"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+<!-- AddThis Button END -->
+<p>
