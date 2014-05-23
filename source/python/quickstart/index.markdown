@@ -70,7 +70,7 @@ All requests to Stormpath must be authenticated with an API Key.
 3. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using
    the email address and password you used to register with Stormpath.
 
-4. Click the **Manage Existing Keys** button in the middle of the page.
+4. Click the **Create API Key** or **Manage Existing Keys** button in the middle of the page.
 
 5. Under **Security Credentials**, click **Create API Key**.
 
