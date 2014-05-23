@@ -70,7 +70,7 @@ Once the creation wizard is completed, you can download the `Agent` to deploy on
 The Stormpath `Agent` requires Java 1.6 or higher.
 {% enddocs %}
 
-After the agent is deployed and started, the agent will reports its status, pull down its configuration data, and then begin syncrhonization.  The agent can be monitored directly from the Stormpath Administrator Console in the Agents tab _(visible for Premium subscribers and above)_.
+After the agent is deployed and started, the agent will reports its status, pull down its configuration data, and then begin synchronization.  The agent can be monitored directly from the Stormpath Administrator Console in the Agents tab _(visible for Premium subscribers and above)_.
 
 ##Authentication Considerations for Multiple Directories
 
@@ -93,9 +93,9 @@ As you can see, Stormpath tries to find the account in the 'Customers' directory
 
 
 ###Best Practices for Multiple Directories.
-For applications with a small number of mapped directories (aka `AccountStores`), you will need to determine the login priority of your `AccountStores`.  The order will depend on your use case.  If one `Account Store` is considered to be "cleaner" or have "more trusted" user data, you might put them first.  Alterntively, you might put your most important user population, first.  
+For applications with a small number of mapped directories (aka `AccountStores`), you will need to determine the login priority of your `AccountStores`.  The order will depend on your use case.  If one `Account Store` is considered to be "cleaner" or have "more trusted" user data, you might put them first.  Alternatively, you might put your most important user population, first.  
 
-For applications that have a master user `Directory` that is supplmented by AD/LDAP directories for authentication, we recommend all AD/LDAP based `AccountStores` take a higher priority over the master user `Directory`.  Once the user is authenticated, you could follow a link to their master record in your master `Directory`.  More on this scenario in the next section.
+For applications that have a master user `Directory` that is supplemented by AD/LDAP directories for authentication, we recommend all AD/LDAP based `AccountStores` take a higher priority over the master user `Directory`.  Once the user is authenticated, you could follow a link to their master record in your master `Directory`.  More on this scenario in the next section.
 
 For certain applications that have large numbers of `AccountStores`, collision of usernames and email addresses can become a problem.  In these less common scenarios, it is recommended that you specify the target `AccountStore` during the login attempt.
 
@@ -136,16 +136,17 @@ For many applications there will likely be a master `Directory` for all users in
 
 However, when supporting Active Directory or LDAP integration, your application will now need to support multiple directories-- one `Mirror Directory` for each AD/LDAP integration. 
 
-In this scenario, we recommend linking each `Account` in a AD/LDAP `Mirror Directory` with a master `Account` in the master user `Directory`. 
+In this scenario, we recommend linking each `Account` in a AD/LDAP `Mirror Directory` with a master `Account` in the master user `Directory`.  This offers a few benefits.  
 
-This offers a few benefits.  
-1. You can maintain one `Directory` that has _all_ your user accounts-- retaining globally unique canonical identities across your applicaton.
-2. You are able to leverage your own `Groups` in the master user directory. Remember, most data in a `Mirror Directory` is read-only meaning you cannot create your own `Groups` in them, only read the `Groups` synchronized from Active Directory and LDAP.
-3. Keep a user's identity alive even after they've left your customer's organization and been deprovisioned in AD/LDAP.  This is valuable in a SaaS model where the user is loosely coupled to an organization.  Contractors and temporary workers are good examples.
+1. You can maintain one `Directory` that has _all_ your user accounts-- retaining globally unique canonical identities across your application
 
+2. You are able to leverage your own `Groups` in the master user directory. Remember, most data in a `Mirror Directory` is read-only meaning you cannot create your own `Groups` in them, only read the `Groups` synchronized from Active Directory and LDAP
+
+3. Keep a user's identity alive even after they've left your customer's organization and been deprovisioned in AD/LDAP.  This is valuable in a SaaS model where the user is loosely coupled to an organization.  Contractors and temporary workers are good example
 
 ###Provisioning, Linking, and Sync the Account in the Master Directory
-The Stormpath `Agent` is regularly updating its `Mirror Directoy` and sometimes adding new user `Accounts`.  Because this data can be quite fluid, we recommend iniating all provisioning, linking, and synchronization on a successful login attempt of the `Account` in the `Mirror Directory`.  
+
+The Stormpath `Agent` is regularly updating its `Mirror Directory` and sometimes adding new user `Accounts`.  Because this data can be quite fluid, we recommend initiating all provisioning, linking, and synchronization on a successful login attempt of the `Account` in the `Mirror Directory`.  
 
 On a successful login attempt, you would search your master `Directory` for a matching user.  This is often done by searching for a matching email address.  
 
