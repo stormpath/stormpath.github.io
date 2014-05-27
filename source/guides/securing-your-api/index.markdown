@@ -1,10 +1,10 @@
 ---
 layout: doc
 lang: guides
-title: Using Stormpath to Secure Your API Services
+title: Using Stormpath to Secure and Manage API Services
 ---
 
-In this guide, we discuss how to set up Stormpath to manage and authenticate API Keys and Secrets for developers that are using your API Services.  Stormpath provides not only the user management piece around API Keys, but also allows you to associate permissions and custom data with the accounts for advanced use-cases.  
+In this guide, we discuss how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services.  Stormpath provides not only the user management piece around API Keys, but also allows you to associate permissions and custom data with the accounts for advanced use-cases.  
 
 {% docs note %}
 
@@ -31,7 +31,9 @@ Currently supported SDKs for this feature include: Java, REST API
 
 ## Why should I use Stormpath for to Secure my API?
 
-Stormpath makes it easy to secure your REST API by using best practices in the security space. Stormpath provides an end-to-end solution for creating/managing accounts,reseting passwords, creating/managing API keys, and generating OAuth 2.0 bearer tokens to support token authentication.  Using one of the Stormpath SDKs and a few lines of code, you can quickly verify API Key and Secret and access the account associated with the key and secret.
+Stormpath makes it easy to secure your REST API by using best practices in  security. Stormpath provides an end-to-end solution for creating/managing accounts,reseting passwords, creating/managing API keys / tokens, and generating OAuth 2.0 bearer tokens to support token authentication.  Using one of the Stormpath SDKs and a few lines of code, you can quickly verify API Key and Secret and access the account associated with the key and secret.
+
+In the next sections, we will explain how to get set up and use Stormpath for API 
 
 ----
 
@@ -57,6 +59,17 @@ If your application wants to register a new account, you create a new `account` 
 
 **Example Request**
 
+{% codetab id:register-account langs:java rest %}
+------
+    Account account = client.instantiate(Account.class);
+    account.setGivenName("Jean-Luc");
+    account.setUsername("jlpicard");
+    account.setSurname("Picard");
+    account.setEmail("capt@enterprise.com");
+    account.setPassword("4P@$$w0rd!");
+
+    application.createAccount(account);
+------
     curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
          -H "Accept: application/json" \
          -H "Content-Type: application/json" \
@@ -70,47 +83,8 @@ If your application wants to register a new account, you create a new `account` 
              "status" : "ENABLED",
          }' \
      "https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA/accounts"
-
-The response will contain the newly saved resource:
-
-**Example Response**
-
-    HTTP/1.1 200 OK
-    Content-Type: application/json;charset=UTF-8;
-
-    {
-      "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
-      "username" : "jlpicard",
-      "email" : "capt@enterprise.com",
-      "fullName" : "Jean-Luc Picard",
-      "givenName" : "Jean-Luc",
-      "middleName" : "",
-      "surname" : "Picard",
-      "status" : "ENABLED",
-      "apiKeys": {
-        "href": "http://api.jose.com:8080/v1/accounts/PZX1E5DWi7TL0cT5nthXB/apiKeys"
-      },
-      "customData": {
-        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData"
-      },
-      "groups" : {
-        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
-      },
-      "groupMemberships" : {
-        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groupMemberships"
-      },
-      "directory" : {
-        "href" : "https://api.stormpath.com/v1/directories/1FaQ6kZxTL4DVJXWeXtUh7"
-      },
-      "tenant" : {
-        "href" : "https://api.stormpath.com/v1/tenants/Ad8mIcavSty7XzD-xZdP3g"
-      },
-      "emailVerificationToken" : null
-    }
-
-{% docs note %}
-
-{% enddocs %}
+------
+{% endcodetab %}
 
 ## Creating and Managing API Keys / Secret Pairs for Accounts
 
@@ -141,32 +115,27 @@ For example, if the account object is represented as:
 
 You can create an API Key for an account by:
 
+{% codetab id:create-api-keys langs:java rest %}
+------
+    account.createApiKey();
+------
     curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
          -H "Accept: application/json" \
          -H "Content-Type: application/json" \
      "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/apiKeys"
+------
+{% endcodetab %}
 
-Which will return:
-
-    HTTP/1.1 201 OK
-    Content-Type: application/json;charset=UTF-8;
-    {
-        href: "https://api.stormpath.com/v1/apiKeys/31804d9a5f0b5e4f53055467cd258e1c"
-        id: "31804d9a5f0b5e4f53055467cd258e1c"
-        secret: "dd02c7c2232759874e1c205587017bed",
-        status: "ENABLED"
-        account : {
-            href: "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA"
-        }
-        tenant : {
-            href: "https://api.stormpath.com/v1/tenants/cJoiwcorTTmkDDBsf02AbA"
-        }
-    }
+The API Key
 
 ### Getting a List of API Keys for an Account
 
 An `account` will describe it's `apiKeys` with a HTTP `GET` to the accounts apiKeys href
 
-#### Updating an API Key
+### Updating an API Key
 
 Under some circumstances, you may need to update the 
+
+
+
+
