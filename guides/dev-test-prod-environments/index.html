@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Stormpath PHP Quickstart - Stormpath</title>
+  <title>Setting up Development and Production Environments - Stormpath</title>
   <meta name="author" content="Stormpath, Inc.">
 
   
-  <meta name="description" content="7-minute Tutorial for PHP">
+  <meta name="description" content="This guide is designed to quickly walk you through leveraging Stormpath’s data model to support your application&rsquo;s different runtime &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://stormpath.github.io/php/quickstart">
+  <link rel="canonical" href="http://stormpath.github.io/guides/dev-test-prod-environments">
   <link href="/favicon.ico" rel="icon">
 
   <style>
@@ -376,282 +376,74 @@
           <div id="content" class="column" role="main">
             <a id="main-content"></a>
             
-              <h1 class="title" id="page-title">Stormpath PHP Quickstart</h1>
+              <h1 class="title" id="page-title">Setting up Development and Production Environments</h1>
             
-          	<p>Welcome to Stormpath&rsquo;s PHP Quickstart!</p>
+          	<p>This guide is designed to quickly walk you through leveraging Stormpath’s data model to support your application&rsquo;s different runtime environments. We will also take a look at common questions new users run into.</p>
 
-<p>This quickstart will get you up and running with Stormpath in about 7 minutes
-and give you a good initial feel for the Stormpath PHP library.  During this
-quickstart, you will do the following:</p>
+<h2><a id="why-isolate-production-data"></a>Why Isolate Production Data?</h2>
+
+<p>When building your application, you might wish to isolate user management data among different runtime/deployment environments.  For example, you might wish to keep your development user accounts completely separate from your production user accounts.  Most Stormpath customers seem to have three environments they need to support: 1.  Production— where live user data is being processed 2. Staging/Test— Where a newer version of the application is being tested is an environment similar to Production 3. Active Development– Where developers are working on the newest, ever-changing, and untested version of the software.  Every organization is unique so your environments may be different.</p>
+
+<p>We strongly recommend separating production user data from all other stages of the software development cycle like staging and active development. The goal is to ensure your production user accounts are protected from any changes or errors you might make during software development.</p>
+
+<p>Luckily, partitioning your data is easy to do in Stormpath in one of two ways.  The first and recommended strategy is to use Stormpath’s Application and Directory objects to create the separation.  The second and more complex option is to create separate Stormpath tenants for your environments (that is, sign up for Stormpath multiple times).  While this is the strategy Stormpath uses for its own production data isolation, we only recommend it for larger teams with more stringent development processes.</p>
+
+<h2><a id="strategy-1-using-stormpath-application-and-directory-resources"></a>Strategy 1: Using Stormpath Application and Directory Resources</h2>
+
+<p>The easiest way to isolate your production data in Stormpath is to leverage Stormpath Application and Directory resources.  They were designed for isolation of data for a variety of use cases and work well here, too.</p>
+
+<p>A Stormpath Application resource is typically a representation of a real world application.  For this example, we will call our application MyWebApp.</p>
+
+<p>In order to separate Production from Staging and other environments, we will create one new Application to represent each stage of your development cycle. For example:</p>
 
 <ul>
-<li>Install the Stormpath library.</li>
-<li>Create an API Key that allows you to make REST API calls with Stormpath.</li>
-<li>Register an Application.</li>
-<li>Create a User Account.</li>
-<li>Authenticate a User Account.</li>
+<li>MyWebApp–Prod</li>
+<li>MyWebApp–Staging</li>
+<li>MyWebApp–Dev</li>
 </ul>
 
 
-<p>Stormpath also can do a lot more (<em>like Groups, Multitenancy, Social
-Integration, and Security workflows</em>) which you can learn more about at the end
-of this quickstart.</p>
+<p><img src="/images/dev-test-prod-apps.png" alt="Development, Test, and Production Applications" /></p>
 
-<p>Let&rsquo;s get started!</p>
-
-<hr />
-
-<h2><a id="install-the-stormpath-library"></a>Install the Stormpath Library</h2>
-
-<div class='docs-note'><p>Stormpath works with PHP <em>5.3</em> and higher.  This documentation covers version
-<em>1.0.0.beta</em> of our PHP library.</p>
-</div>
-
-
-<p>You can install <a href="https://github.com/stormpath/stormpath-sdk-php">Stormpath</a> using <a href="https://getcomposer.org/">composer</a>.</p>
-
-<ol>
-<li><p>Create a directory for testing Stormpath:</p>
-
-<pre><code> $ mkdir ~/test
- $ cd ~/test
-</code></pre></li>
-<li><p>Create a <code>composer.json</code> file to specify the correct Stormpath library version required:</p>
-
-<pre><code> {
-   "require": {
-     "stormpath/sdk": "1.0.*@beta"
-   }
- }
-</code></pre></li>
-<li><p>If you still haven’t, install composer:</p>
-
-<pre><code> curl -sS https://getcomposer.org/installer | php    
-</code></pre></li>
-<li><p>Install the Stormpath PHP SDK on your application root using:</p>
-
-<pre><code> php composer.phar install
-</code></pre></li>
-</ol>
-
-
-<hr />
-
-<h2><a id="get-an-api-key"></a>Get an API Key</h2>
-
-<p>All requests to Stormpath must be authenticated with an API Key.</p>
-
-<ol>
-<li><p>If you haven&rsquo;t already,
-<a href="https://api.stormpath.com/register">Sign up for Stormpath here</a>.  You&rsquo;ll
-be sent a verification email.</p></li>
-<li><p>Click the link in the verification email.</p></li>
-<li><p>Log in to the <a href="https://api.stormpath.com">Stormpath Admin Console</a> using
-the email address and password you used to register with Stormpath.</p></li>
-<li><p>Click the <strong>Create API Key</strong> or <strong>Manage Existing Keys</strong> button in the middle of the page.</p></li>
-<li><p>Under <strong>Security Credentials</strong>, click <strong>Create API Key</strong>.</p>
-
-<p>This will generate your API Key and download it to your computer as an
-<code>apiKey.properties</code> file.  If you open the file in a text editor, you will
-see something similar to the following:</p>
-
-<pre><code> apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
- apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
-</code></pre></li>
-<li><p>Save this file in a secure location, such as your home directory, in a
-hidden <code>.stormpath</code> directory. For example:</p>
-
-<pre><code> $ mkdir ~/.stormpath
- $ mv ~/Downloads/apiKey.properties ~/.stormpath/
-</code></pre></li>
-<li><p>Change the file permissions to ensure only you can read this file.  For
-example:</p>
-
-<pre><code> $ chmod go-rwx ~/.stormpath/apiKey.properties
-</code></pre></li>
-</ol>
-
-
-<p>The <code>apiKey.properties</code> file holds your API key information, and can be used to
-easily authentication with the Stormpath library.</p>
-
-<hr />
-
-<h2><a id="create-a-client"></a>Create a Client</h2>
-
-<p>The first step to working with Stormpath is creating a Stormpath
-<code>Client</code> using your <code>apiKey.properties</code> file.  The <code>Client</code> object is what
-allows you to communicate with Stormpath.</p>
-
-<p>First, open the PHP shell by running:</p>
-
-<pre><code>$ php -a
-</code></pre>
-
-<p>Then, create a new Stormpath <code>Client</code> with the following code:</p>
-
-<pre><code>require 'vendor/autoload.php';
-\Stormpath\Client::$apiKeyFileLocation = $_SERVER['HOME'] .  '/.stormpath/apiKey.properties';
-</code></pre>
-
-<p>The <code>Client</code> instance is an application singleton.  You should reuse this
-instance throughout your application code.</p>
-
-<hr />
-
-<h2><a id="create-an-application"></a>Create an Application</h2>
-
-<p>Before you can create user accounts you&rsquo;ll need to create a Stormpath
-<code>Application</code>.  An <code>Application</code> in Stormpath is the same thing as a project.
-If you&rsquo;re building a web app named &ldquo;Lightsabers Galore&rdquo;, you&rsquo;d want to name
-your Stormpath <code>Application</code> &ldquo;Lightsabers Galore&rdquo; as well.</p>
-
-<p>You can create an <code>Application</code> using the client you created in the previous
-step:</p>
-
-<pre><code>$application = \Stormpath\Resource\Application::create(
-    array(
-        'name' =&gt; 'My Awesome Application-PHP',
-        'description' =&gt; 'Super awesome!',
-    ),
-    array('createDirectory' =&gt; true)
-);
-</code></pre>
-
-<p>The code above will create a new <code>Application</code>, which we can use later to do
-stuff like:</p>
+<p>By default, each application you create will also create and map a corresponding Directory.  In this case the default settings will get you the following directories:</p>
 
 <ul>
-<li>Create user accounts.</li>
-<li>Log users into their account.</li>
-<li>etc.</li>
+<li>MyWebApp–Prod’s Directory</li>
+<li>MyWebApp–Staging’s Directory</li>
+<li>MyWebApp–Dev’s Directory</li>
 </ul>
 
 
-<div class='docs-note'><p>The only required field when creating an Application is <code>name</code>.  Descriptions
-are optional!</p>
-</div>
-
-
-<hr />
-
-<h2><a id="create-a-user-account"></a>Create a User Account</h2>
-
-<p>Now that we&rsquo;ve created an Application, let&rsquo;s create a user <code>Account</code>!  To do
-this, you&rsquo;ll need to use your <code>Application</code> (<em>created in the previous step</em>):</p>
-
-<pre><code>$account = \Stormpath\Resource\Account::instantiate(
-    array(
-        'givenName' =&gt; 'Joe',
-        'surname' =&gt; 'Stormtrooper',
-        'username' =&gt; 'tk421',
-        'email' =&gt; 'tk421@stormpath.com',
-        'password' =&gt; 'Changeme1',
-    )
-);
-$application-&gt;createAccount($account);
-</code></pre>
-
-<p>Stormpath Accounts have several basic fields (<code>given_name</code>, <code>surname</code>, <code>email</code>,
-etc&hellip;).</p>
-
-<div class='docs-note'><p>The required fields are: <code>given_name</code>, <code>surname</code>, <code>email</code>, and <code>password</code>.</p>
-</div>
-
-
-<p>Once you&rsquo;ve created an Account, you can access the Account&rsquo;s data by referencing
-the attribute names, for instance:</p>
-
-<pre><code>echo "Hi, " . $account-&gt;givenName . " " . $account-&gt;surname . "\n";
-</code></pre>
-
-<hr />
-
-<h2><a id="authenticate-a-user-account"></a>Authenticate a User Account</h2>
-
-<p>Authenticating users is equally simple &mdash; you can specify either a <code>username</code> or
-<code>email</code> address, along with a <code>password</code>:</p>
-
-<pre><code>$authResult = $application-&gt;authenticate('tk421', 'Changeme1');
-$account = $authResult-&gt;account;
-echo $account-&gt;givenName . " " . $account-&gt;surname . " Successfully Authenticated \n";
-
-$authResult = $application-&gt;authenticate('tk421@stormpath.com', 'Changeme1');
-$account = $authResult-&gt;account;
-echo $account-&gt;givenName . " " . $account-&gt;surname . " Successfully Authenticated \n";
-</code></pre>
-
-<p>If the authentication request is successful, an <code>Account</code> resource will be
-returned.</p>
-
-<div class='docs-note'><p>This is typically only done when a user logs into a web app &#8211; we&#8217;re just
-showing this example to illustrate how it works.</p>
-</div>
-
-
-<hr />
-
-<h2><a id="other-things-you-can-do-with-stormpath"></a>Other Things You Can Do with Stormpath</h2>
-
-<p>In addition to user registration and login, Stormpath can do a lot more!</p>
+<p>For this guide, we renamed them so they would look nicer :)</p>
 
 <ul>
-<li>Create and manage user groups.</li>
-<li>Partition multi-tenant account data.</li>
-<li>Simplify social login with providers like Google and Facebook.</li>
-<li>Manage developer API keys and access tokens.</li>
-<li>Verify new users via email.</li>
-<li>Automatically provide secure password reset functionality.</li>
-<li>Centralize your user store across multiple applications.</li>
-<li>Plug into your favorite web framework (<em>like Symfony!</em>).</li>
+<li>MyWebApp–Prod-Users</li>
+<li>MyWebApp–Staging-Users</li>
+<li>MyWebApp–Dev-Users</li>
 </ul>
 
 
-<hr />
+<p>A Stormpath Directory is a top-level collection of groups and user accounts.  Directories are completely isolated from each other.  In addition, the collection of Directories and/or Groups associated with an Application make up that Application’s unique user base.</p>
 
-<h2><a id="next-steps"></a>Next Steps</h2>
+<p><img src="/images/dev-test-prod-dir.png" alt="Development, Test, and Production User Directoriess" /></p>
 
-<p>We hope you found this Quickstart helpful!</p>
-
-<p>You&rsquo;ve just scratched the surface of what you can do with Stormpath.  Want to
-learn more?  Here are a few other helpful resources you can jump into.</p>
-
-<ul>
-<li>Dig in deeper with the <a href="/php/product-guide">Official PHP Product Guide</a>.</li>
-<li>Learn to easily partition user data with our <a href="/guides/multi-tenant/">Guide to Building Multitenant Applications</a>.</li>
-</ul>
-
-
-<hr />
-
-<h2><a id="help-us-spread-the-word"></a>Help Us Spread the Word</h2>
-
-<p>Like Stormpath?  If you enjoyed playing around with our new PHP library,
-please help spread the word with a quick tweet!</p>
-
-<!-- AddThis Button BEGIN -->
-
-
-<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout @goStormpath, it let's you set up complete user management in your PHP app in minutes."
-addthis:url="https://stormpath.com">
-  <a class="addthis_button_twitter"></a>
-  <a class="addthis_button_preferred_2"></a>
-  <a class="addthis_button_preferred_3"></a>
-  <a class="addthis_button_preferred_4"></a>
-  <a class="addthis_button_compact"></a>
+<div class='docs-tip'><p> Directories and Groups mapped to an Application are also referred to as AccountStores.  You can map any directories to any applications by changing your Application’s Account Store configuration in the Console or via API.</p>
 </div>
 
 
-<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+<h2><a id="strategy-2-separate-production-into-its-own-stormpath-tenant"></a>Strategy 2: Separate Production into its own Stormpath Tenant</h2>
+
+<p>In some scenarios, you may want to isolate your production environment even further.  You can do that by creating a separate Stormpath tenant to just manage Production.</p>
+
+<p>The primary value of this approach is limited access by your own development staff.  All the API keys that work in your other tenants will not work in this tenant and vice versa&mdash; thereby further limiting your developers&#8217; ability to accidentally affect production.</p>
+
+<p>To set up a second Stormpath tenant you will need to sign up for Stormpath a second time.</p>
+
+<div class='docs-note'><p> You can only <em>create</em> one Stormpath tenant per email address.  So if you create a production tenant separate from your other tenant, you will need to use a different email to create it.  This does not prevent you from having the same email addresses for administrators on each tenant.</p>
+</div>
 
 
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
-
-
-<!-- AddThis Button END -->
-
-
-<p><p></p>
+<p>Once the new Stormpath tenant has been created, you would configure your production applications and corresponding directories as usual.  And then invite only those people who <em>must</em> have access to your production environment.</p>
 
             <div id="bottom-wrapper">
                      <div class="region region-bottom">
@@ -695,9 +487,9 @@ addthis:url="https://stormpath.com">
  	
     <option value="ruby">Ruby</option>
  	
-    <option value="php" selected>PHP</option>
+    <option value="php">PHP</option>
  	
-    <option value="guides">Guides</option>
+    <option value="guides" selected>Guides</option>
  	
     <option value="console">Admin Console</option>
  	
@@ -938,49 +730,56 @@ addthis:url="https://stormpath.com">
   
         
   	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
                 
                 
 		<ul class="menu">
 		
+			<li class="leaf">
+			
+				<a href="/guides/multi-tenant">Multi-Tenant Applications with Stormpath</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/social-integrations">Integrating Stormpath with Facebook and Google</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/ad-ldap">Integrating Stormpath with Active Directory and LDAP</a>
+			
+			
+			</li>
+		
 			<li class="leaf active-trail">
 			
-				<a href="/php/quickstart">Quickstart</a>
+				<a href="/guides/dev-test-prod-environment">Setting up Development and Production Environments</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#install-the-stormpath-library" data-level="0" class="fragment">Install the Stormpath Library</a><ul class="menu"></ul></li><li class="leaf"><a href="#get-an-api-key" data-level="0" class="fragment">Get an API Key</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-client" data-level="0" class="fragment">Create a Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application" data-level="0" class="fragment">Create an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-user-account" data-level="0" class="fragment">Create a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-a-user-account" data-level="0" class="fragment">Authenticate a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#other-things-you-can-do-with-stormpath" data-level="0" class="fragment">Other Things You Can Do with Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#next-steps" data-level="0" class="fragment">Next Steps</a><ul class="menu"></ul></li><li class="leaf"><a href="#help-us-spread-the-word" data-level="0" class="fragment">Help Us Spread the Word</a><ul class="menu"></ul></li></ul>
-			
-			</li>
-		
-			<li class="leaf">
-			
-				<a href="/php/product-guide">Product Guide</a>
-			
-			
-			</li>
-		
-			<li class="leaf">
-			
-				<a href="https://github.com/stormpath/stormpath-sdk-php" target="_blank"><span>SDK on GitHub</span></a>
-			
+				<ul class="menu"><li class="leaf"><a href="#why-isolate-production-data" data-level="0" class="fragment">Why Isolate Production Data?</a><ul class="menu"></ul></li><li class="leaf"><a href="#strategy-1-using-stormpath-application-and-directory-resources" data-level="0" class="fragment">Strategy 1: Using Stormpath Application and Directory Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#strategy-2-separate-production-into-its-own-stormpath-tenant" data-level="0" class="fragment">Strategy 2: Separate Production into its own Stormpath Tenant</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
 		</ul>
-  	
-  
-        
-  	
-  
-        
-  	
-  
-        
-  	
-  
-        
-  	
-  
-        
   	
   
         
