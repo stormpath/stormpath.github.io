@@ -24,10 +24,12 @@ alias: [/index.html]
             <ul class="menu">
               <li class="first leaf"><a href="/rest/quickstart" title="">Quickstart</a></li>
               <li class="leaf"><a href="/rest/product-guide" title="">Product Guide</a></li>
+              <hr />
               <li class="leaf"><a href="/guides/multi-tenant" title="">Multitenancy Guide</a></li>
               <li class="leaf"><a href="/guides/social-integrations" title="">Social Integration Guide</a></li>
               <li class="leaf"><a href="/guides/ad-ldap" title="">Active Directory / LDAP Guide</a></li>
-              <hr>
+              <li class="leaf"><a href="/guides/dev-test-prod-environments" title="">Development and Production Environments Guide</a></li>
+              <hr />
               <li class="leaf"><a href="/how-do-i" title="">How do I...</a></li>
               <li class="last leaf"><a href="/errors" title="">Error Codes</a></li>
             </ul>
