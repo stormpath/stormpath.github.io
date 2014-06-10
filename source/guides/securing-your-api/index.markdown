@@ -135,13 +135,16 @@ The `Application` object in Java has an `authenticate` method that takes an `Htt
 
 To demonstrate how the SDK works, we'll use an example.  We are building a Stormtrooper API for managing Stormtrooper equipment-- like awesome helmets and blasters.  In order to secure our API, a developer must base64 encode their API Key and Secret and then pass the encoded data in the authorization header. 
 
-The developer request would look something like this (using HTTP Basic authentication):
+The developer request would look something like this (using HTTPS Basic authentication):
 
     GET /troopers/tk421/equipment 
     Accept: application/json
     Authorization: Basic MzRVU1BWVUFURThLWDE4MElDTFVUMDNDTzpQSHozZitnMzNiNFpHc1R3dEtOQ2h0NzhBejNpSjdwWTIwREo5N0R2L1g4
     Host: api.trooperapp.com
 
+{% docs warning %}
+The Basic Authentication mechanism provides no confidentiality protection for the transmitted credentials. They are merely encoded with Base64 in transit, but not encrypted or hashed in any way. Stormpath recommends that when a developer calls your API, and if you use Basic Authentication, the call needs to be communicated over HTTPS protocol to provide additional security. 
+{% enddocs %}
 
 Alternatively, the developer could have sent the same request using an OAuth 2.0 Access Token using the Bearer authorization scheme.  [More on this later](). 
 
@@ -188,7 +191,7 @@ Stormpath SDK has all the tools needed to enable your API to support OAuth 2.0 B
 
 Stormpath in this case is acting as the Authorization Server and will authenticate the client based on the API Key ID and Secret.  This allows you to generate an Access Token for a successful authentication result. 
 
-Going back to the Stormtrooper Equipment API example.  The app would require that a developer call a REST endpoint to exchange a valid API Key and Secret for an Access Token.  The REST endpoint could be something like `/oauth/token`. The API Key and Secret would need to be base64 encoded in the request. An example of the REST call: 
+Going back to the Stormtrooper Equipment API example.  The app would require that a developer call a REST endpoint to exchange a valid API Key and Secret for an Access Token.  The REST endpoint would canonically be `/oauth/token`. The API Key and Secret would need to be base64 encoded in the request. An example of the REST call: 
 
     POST /oauth/token
     Accept: application/json
@@ -196,9 +199,8 @@ Going back to the Stormtrooper Equipment API example.  The app would require tha
     Content-Type: application/x-www-form-urlencoded
     Host: api.trooperapp.com
 
-    {
-      "grant_type": "client_credentials"
-    }
+      grant_type=client_credentials
+
 
 The request will need to explicitly state the grant type for the OAuth Access Token Request.  Stormpath only supports client credential grant type for exchanging API Keys for Access Tokens.
 
@@ -306,10 +308,8 @@ Using the Stormpath SDK will give you the tools to make the final decision if th
     Content-Type: application/x-www-form-urlencoded
     Host: api.trooperapp.com
 
-    {
-      "grant_type": "client_credentials",
-      "scope": "view_others_equipment admin"
-    }
+    grant_type=client_credentials&scope=view_others_equipment+admin
+    
 
 We know that this is a request for an Access Token, because the client included a grant_type parameter.  They also requested that the Access Token be granted the scopes of `view_others_equipment` and `admin`.  Note that scope is space-delimited.
 
@@ -328,7 +328,8 @@ For example:
                 HashSet<String> returnedScopes = new HashSet<String>();
                 Account account = result.getAccount();
 
-                //For each requested scope, figure out if we the account can 
+                //For each requested scope, figure out if we the account can is allowed the scope.  This is up to the API to return the correct scopes
+
                 for(String scope: requestedScopes){
                   if(allowScopeForAccount(account, scope)){
                     returnedScopes.add(scope);
