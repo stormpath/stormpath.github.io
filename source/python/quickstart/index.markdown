@@ -70,7 +70,7 @@ All requests to Stormpath must be authenticated with an API Key.
 3. Log in to the [Stormpath Admin Console](https://api.stormpath.com) using
    the email address and password you used to register with Stormpath.
 
-4. Click the **Manage Existing Keys** button in the middle of the page.
+4. Click the **Create API Key** or **Manage Existing Keys** button in the middle of the page.
 
 5. Under **Security Credentials**, click **Create API Key**.
 
@@ -93,7 +93,7 @@ All requests to Stormpath must be authenticated with an API Key.
         $ chmod go-rwx ~/.stormpath/apiKey.properties
 
 The `apiKey.properties` file holds your API key information, and can be used to
-easily authentication with the Stormpath library.
+easily authenticate with the Stormpath library.
 
 
 ***
@@ -258,11 +258,11 @@ We hope you found this Quickstart helpful!
 You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
-* Dig in deeper with the [Official Python Product Guide](http://docs.stormpath.com/python/product-guide).
+* Dig in deeper with the [Official Python Product Guide](/python/product-guide).
 * Use Stormpath and Flask to build an awesome web app with the [Flask Documentation](http://flask-stormpath.readthedocs.org/en/latest/).
 * [Build a Flask app in 30 minutes](https://stormpath.com/blog/build-a-flask-app-in-30-minutes/).
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](http://docs.stormpath.com/guides/multi-tenant/).
-* Easily support Google and Facebook Login with our new [Social Login & Integration Guide](http://docs.stormpath.com/guides/social-integrations/).
+* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
+* Easily support Social Login with [Google](/python/product-guide/#integrating-with-google) and [Facebook](/python/product-guide#integrating-with-facebook) integrations in Python.
 
 
 ***

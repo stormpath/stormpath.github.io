@@ -22,11 +22,14 @@ alias: [/index.html]
           <h2 class="pane-title">Rest API Docs</h2>
           <div class="pane-content">
             <ul class="menu">
-              <li class="first leaf"><a href="/rest/quickstart" title="">Quickstart Guide</a></li>
+              <li class="first leaf"><a href="/rest/quickstart" title="">Quickstart</a></li>
               <li class="leaf"><a href="/rest/product-guide" title="">Product Guide</a></li>
+              <hr />
               <li class="leaf"><a href="/guides/multi-tenant" title="">Multitenancy Guide</a></li>
               <li class="leaf"><a href="/guides/social-integrations" title="">Social Integration Guide</a></li>
-              <hr>
+              <li class="leaf"><a href="/guides/ad-ldap" title="">Active Directory / LDAP Guide</a></li>
+              <li class="leaf"><a href="/guides/dev-test-prod-environments" title="">Development and Production Environments Guide</a></li>
+              <hr />
               <li class="leaf"><a href="/how-do-i" title="">How do I...</a></li>
               <li class="last leaf"><a href="/errors" title="">Error Codes</a></li>
             </ul>
@@ -52,7 +55,7 @@ alias: [/index.html]
         <div class="panel-pane pane-block pane-menu-menu-docs-admin-console">
           <h2 class="pane-title">Admin Console Docs</h2>
           <div class="pane-content">
-            <ul class="menu"><li class="first leaf"><a href="/console/quickstart" title="">Quickstart Guide</a></li>
+            <ul class="menu"><li class="first leaf"><a href="/console/quickstart" title="">Quickstart</a></li>
               <li class="last leaf"><a href="/console/product-guide" title="">Console Guide</a></li>
             </ul>  
           </div>
@@ -103,8 +106,6 @@ alias: [/index.html]
 			  <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-node" title="">SDK on GitHub</a></li>
               <li class="leaf"><a href="https://www.npmjs.org/package/stormpath" title="">npm Package Info</a></li>
 			  <li class="last leaf"><a href="https://stormpath.com/blog/build-app-nodejs-express-passport-stormpath/" title="">Sample App</a></li>
-			  
-			  
               <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-node/archive/master.zip">Download SDK</a></li>
             </ul>  
           </div>
