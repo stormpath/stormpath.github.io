@@ -20,27 +20,23 @@ With few lines of code, you can quickly and easily lock down your own APIs with 
 
 Stormpath offers a complete solution that securely and easily helps you manage developer accounts, create and manage API Keys, and generate OAuth 2.0 bearer tokens to support Access Token authentication.   
 
-Stormpath features include:
-<!--TODO-->
-
 In the next sections, we will explain how to get set up and use Stormpath for API Key Management and Authentication. 
 
 ----
 
 ## First, some terminology
+
 Throughout this document we will use the following words with very specific meanings.  
 
 **Admin** or **Administrator** - Someone on your team who has access to the Stormpath API and/or Adminstration Console.  In turn, they will typically have the ability to create and manage user accounts, applications, API keys, etc.
 
-**Developer** - A consumer of your API.  When you are generating and distributing API keys for your API, they are going to your customers' developers.
+**Developer** - A consumer of your API.  When you are generating and distributing API keys for your API, they are going to developers that are using your API.
 
-**Bearer Token**
+**OAuth 2.0 Access Token**  - An access token is a string representation of  authorization issued to a client.  This access token is issued by an authority and grants access to a protected or gated resource.  This tokens are opaque to the client. 
 
-**OAuth 2.0 Access Token**
+**Bearer Token** - A Bearer token is a specific token type for an Access Token. A Bearer token is used with the Bearer Authorization Scheme in HTTP.  A client wanting to access a protected service is required to locate a trusted entity to generate a Bearer Token.  In this document, a Bearer Token represent an Access Token.
 
-**API Keys**
-
-**API**
+**API Keys** - Represents an API Key Id and Secret pair which is generated for a developer integrating with your API. 
 
 ## How do I use Stormpath for API Key Management?
 
@@ -87,11 +83,11 @@ After you create an account for a developer, you will need to generate an API Ke
 The `apiKeys` collection can be used to easily display the API Keys back to the Developer in your application's UI in addition to general purpose API key management.
 {% enddocs %}
 
-Let's start with creating APIs keys for an Account
+Let's start with creating APIs keys for an Account.
 
 ### Creating API Keys for an Account
 
-Creating an API Key is a simple method call on the `Account`.  The method will create a new API Key (id and secret) associated with that `Account` and later accessible via the account's `apiKeys` property.
+Creating an API Key is a simple method call on the `Account`.  The method will create a new API Key (Id and Secret) associated with that `Account` and later accessible via the account's `apiKeys` property.
 
     APIKey apiKey = account.createApiKey();
 
@@ -111,7 +107,20 @@ Attribute | Description | Type | Valid Value
 After the API Key is created, you will need to deliver the API Key ID and Secret to the developer so they can start using them to access your API securely.  In most cases, this is done by displaying the API keys on a web page.   
 
 ### Manage API Keys for an Account
-<!-- TODO -->
+
+In some cases, you may need to delete or disable (revoke) an API Key.  This is important for management of an API Keys.  For example, a developer may delete an API Key because it has been compromised, or the administrator may disable all API Keys for a developer that is past due on payments for the service.  API Keys can be retrieved either from the 'Application' or 'Account'.  Once it is retrieved, it can be deleted or disabled.
+
+#### Deleting an API Key
+
+    APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
+    apiKey.delete()
+
+#### Disable an API Key
+
+    APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
+    apiKey.setStatus(ApiKeyStatus.DISABLED)
+    apiKey.save()
+
 
 ## Using the Stormpath SDK to Authenticate and Generate Tokens for your API
 
@@ -128,19 +137,20 @@ To demonstrate how the SDK works, we'll use an example.  We are building a Storm
 
 The developer request would look something like this (using HTTP Basic authentication):
 
-    GET /stormtroopers/tk421/equipment 
+    GET /troopers/tk421/equipment 
     Accept: application/json
     Authorization: Basic MzRVU1BWVUFURThLWDE4MElDTFVUMDNDTzpQSHozZitnMzNiNFpHc1R3dEtOQ2h0NzhBejNpSjdwWTIwREo5N0R2L1g4
     Host: api.trooperapp.com
 
-Alternatively, the developer could have sent the same request using an OAuth 2.0 Access Token (aka Bearer Token).  More on this later. <!-- link to appropriate place -->   
+
+Alternatively, the developer could have sent the same request using an OAuth 2.0 Access Token using the Bearer authorization scheme.  [More on this later](). 
 
 In the simplest form, the Stormpath Java SDK would authenticate the above request (Basic or Bearer) as follows:
 
     public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
         Application application = client.getResource(applicationRestUrl, Application.class);
 
-        ApiAuthenticationResult result = (ApiAuthenticationResult) application.authenticate(request).execute();
+        ApiAuthenticationResult result = (ApiAuthenticationResult) application.authenticateApiRequest(request).execute();
 
         //Get any account properties as needed
         String email = result.getAccount().getEmail();
@@ -160,7 +170,9 @@ The SDK provides a caching layer to ensure fast response times in your API by re
 
 ### Exchanging API Keys for OAuth 2.0 Tokens
 
-Stormpath SDK will enable your API to support OAuth 2.0 Bearer Tokens as a means of authentication. Stormpath explicitly supports OAuth 2.0 client credential grant type.  This workflow is represented as:
+In the section above, we show how to perform Basic authentication on a request.  Basic authentication is common in the market, but there are more secure methods for securing your API. This is one of benefit of OAuth. Instead of passing base64 encoded API keys over the wire, you can exchange an API Key Id and Secret for an Access Token, and use the Access Token as a Bearer Token to authentication for a protected API or resource.
+
+Stormpath SDK has all the tools needed to enable your API to support OAuth 2.0 Bearer Tokens as a means of authentication. Stormpath explicitly supports OAuth 2.0 client credential grant type.  This workflow is represented as:
 
      +---------+                                  +---------------+
      |         |                                  |               |
@@ -196,7 +208,7 @@ Below is sample code to show how you would handle the request with the Stormpath
         Application application = client.getResource(applicationRestUrl, Application.class);
 
         //Getting the authentication result
-        BasicOAuthAuthenticationResult result = (BasicOAuthAuthenticationResult) application.authenticate(request).execute();
+        TokenOauthAuthenticationResult result = (TokenOauthAuthenticationResult) application.authenticateApiRequest(request).execute();
 
         //Get the token response from the result which includes 
         //information about the Access Token
@@ -222,9 +234,9 @@ The response back to the requesting client:
        "expires_in":3600
     }
 
-Important classes for exchanging an API Key and Secret for an Access Token are `BasicOAuthAuthenticationResult` and `TokenResponse`.
+Important classes for exchanging an API Key and Secret for an Access Token are `TokenOauthAuthenticationResult` and `TokenResponse`.
 
-`BasicOAuthAuthenticationResult` is a subclass of `ApiAuthenticationResult` that has an additional getter for the `TokenResponse`.
+`TokenOauthAuthenticationResult` is a subclass of `ApiAuthenticationResult` that has an additional getter for the `TokenResponse`.
 
 The `TokenResponse` contains properties associated with the generated token for an authenticated request.  This includes the Access Token, expiration, and token type.  This allows the client to decide if they can use the token. `TokenRepsonse` has a utility method `toJson()` which will return the JSON representation of the token that conforms to OAuth 2.0 specification.
 
@@ -238,7 +250,7 @@ Again, the Stormtrooper Equipment API example.  We will require that a developer
 
 The developer request would look something like this:
 
-    GET /stormtroopers/tk421/equipment 
+    GET /troopers/tk421/equipment 
     Accept: application/json
     Authorization: Bearer 7FRhtCNRapj9zsYI8MqPiS8hzx3wJH4qT29JUOpU64T
     Host: api.trooperapp.com
@@ -275,10 +287,6 @@ When an API Key is exchanged for a Access Token, the Access Token has a time-to-
 Customizing the TTL is easy.  Just specify the TTL when exchanging the API keys for an OAuth token.
 
     result = application.authenticateOauth(request).withTtl(7200).execute();
-
-{% docs note %}
-When modifying the TTL, it is important that you understand the TTL in relation to Stormpath's SDK caching TTL.  Since the cache TTL is configured during the Stormpath SDK client initialization, it is important that it is greater than the TTL that you set for the Access Token.  This will ensure that the Access Token is not invalidated by the cache TTL.
-{% enddocs %}
 
 #### Scope
 
@@ -320,9 +328,9 @@ For example:
                 HashSet<String> returnedScopes = new HashSet<String>();
                 Account account = result.getAccount();
 
-                //For each request scope, we want to compare it to see if the account has a group in Stormpath of the same name
+                //For each requested scope, figure out if we the account can 
                 for(String scope: requestedScopes){
-                  if(account.isMemberOfGroup(scope)){
+                  if(allowScopeForAccount(account, scope)){
                     returnedScopes.add(scope);
                   }
                 }
@@ -332,8 +340,8 @@ For example:
             };
 
         //Authenticate the request with ScopeFactory
-        BasicOAuthAuthenticationResult result;
-        result = (BasicOAuthAuthenticationResult) application.authenticateOauth(request).using(scopeFactory)execute();
+        TokenOauthAuthenticationResult result;
+        result = (TokenOauthAuthenticationResult) application.authenticateOauth(request).using(scopeFactory).execute();
 
         //Get the token response for an authenticated request
         TokenResponse token = result.getTokenResponse();
@@ -366,7 +374,7 @@ The default `ScopeFactory` used does not include any scope, so if you need to in
 
 When this token is used in a resulting request, such as:
 
-    GET /stormtroopers/tk329/equipment 
+    GET /troopers/tk329/equipment 
     Accept: application/json
     Authorization: Bearer 7FRhtCNRapj9zsYI8MqPiS8hzx3wJH4qT29JUOpU64T
     Content-Type: application/json
@@ -397,7 +405,7 @@ You can retrieve the granted scopes from the token when having the SDK authentic
 When asking the `Application` to authenticate an API authentication request, the return type of a successful authentication request will vary based on the request headers.  This includes:
 
 1. `ApiAuthenticationResult` - Authorization header is present, with the `Basic` method and the base64 encoded API_KEY_ID:API_KEY_SECRET.
-2. `BasicOauthAuthenticationResult` - HTTP Method is `POST`. Authorization header is present, with the `Basic` method and the base64 encoded API_KEY_ID:API_KEY_SECRET.  Content-type is set to `x-www-form-urlencoded`.
+2. `TokenOauthAuthenticationResult` - HTTP Method is `POST`. Authorization header is present, with the `Basic` method and the base64 encoded API_KEY_ID:API_KEY_SECRET. As part of the query or body of the request, the 'grant_type' is specified as 'client_credentials'.  Content-type is set to `x-www-form-urlencoded`.
 3. `OauthAuthenticationResult` - Authorization header is present, with the `Bearer` method and the OAuth 2.0 Access Token retrieved from the Stormpath SDK in a previous request.
 
 <!-- add grant type to #2 -->
@@ -410,6 +418,7 @@ When asking an `Application` to authenticate a result, a successful request will
 
     AuthenticationResult authResult = application.authenticate(request).execute();
 
+    //Accept a visitor. The method called will be based on the return type, which is passed as a parameter to the method (ApiAuthenticationResult, OauthAuthenticationResult, TokenOauthAuthenticationResult) 
     authResult.accept(new AuthenticationResultVisitorAdapter() {
 
       public void visit(ApiAuthenticationResult result) {
@@ -423,10 +432,14 @@ When asking an `Application` to authenticate a result, a successful request will
           
       }
 
-      public void visit(BasicOauthAuthenticationResult result) {
+      public void visit(TokenOauthAuthenticationResult result) {
           TokenResponse tokenResponse = result.getTokenResponse();
       }
     });
+
+##  Wrapping up
+
+In this guide, we discussed how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email support@stormpath.com.
 
 <!-- wrap it up -->
 <!-- include the support shit -->
