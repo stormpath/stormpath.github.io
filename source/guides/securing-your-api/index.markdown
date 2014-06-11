@@ -44,9 +44,9 @@ If you haven't already, you should first familiarize your self with Stormpath ba
 
 In order to implement API Key management with Stormpath you'll need to do the following:
 
-+ Create an User Account for your Developers 
-+ Create and Manage API Keys for the Developers' Accounts
-+ Using the Stormpath SDK to Authenticate and Generate Tokens for your API
++ Create a User Account for each of your Developers 
++ Create / Manage API Keys for the Developers' Accounts
++ Use the Stormpath SDK to Authenticate and Generate Tokens for your API
 
 ## Create an Account in Stormpath for your Developers
 
@@ -77,7 +77,7 @@ You will mostly likely create a Stormpath Account when a Developer signs up for 
 {% enddocs %}
 
 ## Create and Manage API Keys for an Account
-After you create an account for a developer, you will need to generate an API Key (or multiple) to be used when accessing your API.  Each account will have an `apiKeys` property that will contains a collection of their API Keys and there will also be a list of API keys on a account's profile in the Stormpath Admin Console.  You will be able to both create and manage keys in both.
+After you create an account for a developer, you will need to generate an API Key (or multiple) to be used when accessing your API.  Each account will have an `apiKeys` property that contains a collection of their API Keys.  There will also be a list of API keys on a account's profile in the Stormpath Admin Console.  You will be able to both create and manage keys in both.
 
 {% docs tip %}
 The `apiKeys` collection can be used to easily display the API Keys back to the Developer in your application's UI in addition to general purpose API key management.
@@ -100,15 +100,15 @@ Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `id` | The unique identifier for the API Key | String | <span>--</span>
 `secret` | The name of the tenant. Unique across all tenants. | String | --
-`status` | Human readable tenant key. Unique across all tenants. | ApiKeyStatus | ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED, 
+`status` | A property that represent the status of the key.  Keys with a disabled status will not be able to authenticate. | ApiKeyStatus | ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED, 
 `account` | A link to the ApiKey's applications. | Account | <span>--</span>
-`tenant` | A link to the ApiKey's directories. | Tenant | <span>--</span>
+`tenant` | A link to the ApiKey's tenant. | Tenant | <span>--</span>
 
 After the API Key is created, you will need to deliver the API Key ID and Secret to the developer so they can start using them to access your API securely.  In most cases, this is done by displaying the API keys on a web page.   
 
 ### Manage API Keys for an Account
 
-In some cases, you may need to delete or disable (revoke) an API Key.  This is important for management of an API Keys.  For example, a developer may delete an API Key because it has been compromised, or the administrator may disable all API Keys for a developer that is past due on payments for the service.  API Keys can be retrieved either from the 'Application' or 'Account'.  Once it is retrieved, it can be deleted or disabled.
+In some cases, you may need to delete or disable (revoke) an API Key.  This is important for management of API Keys.  For example, a developer may delete an API Key because it has been compromised, or the administrator may disable all API Keys for a developer that is past due on payments for the service.  API Keys can be retrieved either from the 'Application' or 'Account'.  Once it is retrieved, it can be deleted or disabled.
 
 #### Deleting an API Key
 
