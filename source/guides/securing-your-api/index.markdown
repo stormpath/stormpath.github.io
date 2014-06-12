@@ -108,7 +108,7 @@ After the API Key is created, you will need to deliver the API Key ID and Secret
 
 ### Manage API Keys for an Account
 
-In some cases, you may need to delete or disable (revoke) an API Key.  This is important for management of API Keys.  For example, a developer may delete an API Key because it has been compromised, or the administrator may disable all API Keys for a developer that is past due on payments for the service.  API Keys can be retrieved either from the 'Application' or 'Account'.  Once it is retrieved, it can be deleted or disabled.
+In some cases, you may need to delete or disable (revoke) an API Key.  This is important for management of API Keys.  For example, a developer may delete an API Key because it has been compromised, or the administrator may disable all API Keys for a developer that is past due on payments for the service.  API Keys can be retrieved from either the 'Application' or 'Account'.  Once it is retrieved, it can be deleted or disabled.
 
 #### Deleting an API Key
 
