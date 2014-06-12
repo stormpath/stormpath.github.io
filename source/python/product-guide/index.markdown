@@ -3528,6 +3528,239 @@ Once an `Account` is retreived, Stormpath maps common fields for the Facebook Us
     print acc.provider_data
     print acc.provider_data.access_token
 
+### Using Stormpath to Secure and Manage API Services
+
+**This Feature is currently in beta**. If you have any questions, bug reports, or enhancement requests please email support@stormpath.com.
+
+With a few lines of code, you can quickly and easily lock down your own APIs with OAuth-based authentication and secure API key management.
+Stormpath offers a complete solution that securely and easily helps you manage developer accounts, create and manage API Keys, and generate OAuth 2.0 bearer tokens to support Access Token authentication.
+
+#### First, some terminology
+
+Throughout this document we will use the following words with very specific meanings.
+
+**Admin** or **Administrator** - Someone on your team who has access to the Stormpath API and/or Adminstration Console.  In turn, they will typically have the ability to create and manage user accounts, applications, API keys, etc.
+
+**Developer** - A consumer of your API.  When you are generating and distributing API keys for your API, they are going to developers that are using your API.
+
+**OAuth 2.0 Access Token**  - An access token is a string representation of authorization issued to a client. This access token is issued by an authority and grants access to a protected or gated resource. These tokens are opaque to the client.
+
+**Bearer Token** - A Bearer token is a specific token type for an Access Token. A Bearer token is used with the Bearer Authorization Scheme in HTTP.  A client wanting to access a protected service is required to locate a trusted entity to generate a Bearer Token.  In this document, a Bearer Token represent an Access Token.
+
+**API Keys** - Represents an API Key Id and Secret pair which is generated for a developer integrating with your API.
+
+#### How do I use Stormpath for API Key Management?
+
+If you haven't already, you should first familiarize your self with Stormpath basics in one of our [7-Minute Tutorials](https://stormpath.com/tutorial/).
+
+In order to implement API Key management with Stormpath you'll need to do the following:
+
+  * Create a User Account for each of your Developers
+  * Create / Manage API Keys for the Developers' Accounts
+  * Use the Stormpath SDK to Authenticate and Generate Tokens for your API
+
+#### Create an Account in Stormpath for your Developers
+
+First, you will need user accounts in Stormpath to represent the people that are developing against your API.
+Accounts can not only represent Developers, but also can be used to represent services, daemons, processes,
+or any “entity” that needs to login to a Stormpath-secured API. To see how to create an account refer to the
+section [here](#account-create).
+
+By assigning API keys directly to a User Account, as opposed to a general organization-wide set of keys, you get full traceability and accountability back to the specific individual in the event of an accident or breach on their end.
+
+
+
+#### Create / Manage API Keys for the Developers' Accounts
+
+After you create an account for a developer, you will need to generate an API Key (or multiple) to be used when accessing your API.  Each account will have an `api_keys` property that contains a collection of their API Keys. There will also be a list of API keys on a account's profile in the Stormpath Admin Console.  You will be able to both create and manage keys in both.
+
+The `api_keys` collection can be used to easily display the API Keys back to the Developer in your application's UI in addition to general purpose API key management.
+
+    john = app.accounts[0]
+    api_keys = john.api_keys
+    print api_keys
+    <ApiKeyList href=https://api.stormpath.com/v1/accounts/AC49tF50TeZdVpZSbi9FQK/apiKeys>
+    api_key = api_keys[0]
+
+    # Create a new api key
+    new_api_key = john.api_keys.create()
+
+    # Disable old api_key
+    api_key.status = 'DISABLED'
+    api_key.save()
+
+    # Access id and secret
+    print new_api_key.id
+    print new_api_key.secret
+
+    # Delete an api key
+    api_key.delete()
+
+The `ApiKey` returned will have the following properties:
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`id` | The unique identifier for the API Key | String | <span>--</span>
+`secret` | A secret identifier. Unique across all tenants. | String | --
+`status` | A property that represent the status of the key.  Keys with a disabled status will not be able to authenticate. | ApiKeyStatus | ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED, 
+`account` | A link to the ApiKey's applications. | Account | <span>--</span>
+`tenant` | A link to the ApiKey's tenant. | Tenant | <span>--</span>
+
+After the API Key is created, you will need to deliver the API Key ID and Secret to the developer so they can start using them to access your API securely.  In most cases, this is done by displaying the API keys on a web page. 
+
+#### Using the Stormpath SDK to Authenticate and Generate Tokens for your API
+
+The Stormpath SDK does all the heavy lifting for you in your application.  It automatically processes authentications via HTTP Basic or OAuth 2.0. In addition, the SDK will handle more advance OAuth 2.0 features like _scope_ and _time-to-live_.  
+
+Specifically, Stormpath supports two HTTP `Authorization` methods, Basic and Bearer (OAuth 2.0 client-credentials grant type). In this section we will discuss the strategies and best practices using these authorization methods.
+
+All authentication attempts in Stormpath start with the `Application` object in the SDK.  You will likely have initialized the `Application` during startup.
+
+To demonstrate how the SDK works, we'll use an example.  We are building a Stormtrooper API for managing Stormtrooper equipment -- like awesome helmets and blasters.  In order to secure our API, a developer must base64 encode their API Key and Secret and then pass the encoded data in the authorization header. 
+
+    base64.b64encode(id + ":" + secret)
+
+
+##### Basic Auth
+
+The developer request would look something like this (using HTTPS Basic authentication):
+
+    GET /troopers/tk421/equipment 
+        Accept: application/json
+        Authorization: Basic MzRVU1BWVUFURThLWDE4MElDTFVUMDNDTzpQSHozZitnMzNiNFpHc1R3dEtOQ2h0NzhBejNpSjdwWTIwREo5N0R2L1g4
+        Host: api.trooperapp.com
+
+The Basic Authentication mechanism provides no confidentiality protection for the transmitted credentials. They are merely encoded with Base64 in transit, but not encrypted or hashed in any way. Stormpath recommends that when a developer calls your API, and if you use Basic Authentication, the call needs to be communicated over HTTPS protocol to provide additional security. 
+
+In the simplest form, the Stormpath Python SDK would authenticate the above request (Basic or Bearer) as follows:
+
+    uri = 'https://api.trooperapp.com'
+    http_method = 'GET'
+    body = {}
+    headers = {
+        'Authorization': 'Basic BASE64ENCODEDAPIKEYANDSECRET'
+    }
+    # Used only for Bearer auth
+    allowed_scopes = []
+
+    result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+    if result:
+        print result.api_key
+        print result.account
+    else:
+        print "Invalid or not authenticated request."
+
+The SDK provides a caching layer to ensure fast response times in your API by reducing network traffic to the Stormpath service. The caching layer will cache the API Key securely. Stormpath will use the cache entry for API Key and Secret authentication when possible.
+
+**Note** When doing Basic auth the result returned will have no token attached to it, ie. `result.token` will be `None`.
+
+##### Exchanging API Keys for OAuth 2.0 Bearer Tokens
+
+In the section above, we show how to perform Basic authentication on a request.  Basic authentication is common in the market, but there are more secure methods for securing your API. This is one of benefit of OAuth. Instead of passing base64 encoded API keys over the wire, you can exchange an API Key Id and Secret for an Access Token, and use the Access Token as a Bearer Token to authentication for a protected API or resource.
+
+Stormpath SDK has all the tools needed to enable your API to support OAuth 2.0 Bearer Tokens as a means of authentication. Stormpath explicitly supports OAuth 2.0 client credential grant type.  This workflow is represented as:
+
+
+     +---------+                                  +---------------+
+     |         |                                  |               |
+     |         |>--- 1. Client Authentication --->| Authorization |
+     | Client  |                                  |     Server    |
+     |         |<--- 2. -- Access Token ---------<|               |
+     |         |                                  |               |
+     +---------+                                  +---------------+
+  
+  1.  The client authenticates with the authorization server and requests an access token from the token endpoint.
+  2.  The authorization server authenticates the client, and if valid issues an access token.
+ 
+Stormpath in this case is acting as the Authorization Server and will authenticate the client based on the API Key ID and Secret.  This allows you to generate an Access Token for a successful authentication result. 
+
+Going back to the Stormtrooper Equipment API example. The app would require that a developer call a REST endpoint to exchange a valid API Key and Secret for an Access Token. The REST endpoint would canonically be `/oauth/token`. The API Key and Secret would need to be base64 encoded in the request. An example of the REST call: 
+
+    POST /oauth/token
+    Accept: application/json
+    Authorization: Basic MzRVU1BWVUFURThLWDE4MElDTFVUMDNDTzpQSHozZitnMzNiNFpHc1
+    Content-Type: application/x-www-form-urlencoded
+    Host: api.trooperapp.com
+
+      grant_type=client_credentials&scope=somescope
+
+The request will need to explicitly state the grant type for the OAuth Access Token Request. Stormpath only supports client credential grant type for exchanging API Keys for Access Tokens.
+
+Below is sample code to show how you would handle the request with the Stormpath PythonSDK and return an access token to the client:
+
+    result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+    if result:
+        print result.token
+        print result.token.to_json()
+
+When returning the token to the client you can use the convenience method `token.to_json()` to get a JSON
+representation of the token. The response should then be look something like this:
+
+    HTTP 200 OK
+    Content-Type: application/json
+    {
+       "access_token":"7FRhtCNRapj9zs.YI8MqPiS8hzx3wJH4.qT29JUOpU64T",
+       "token_type":"bearer",
+       "expires_in":3600
+    }
+
+Notice that we used the same `app.authenticate` method for Basic auth and for getting the Bearer token. This works because the SDK will
+check the body of the request while doing Basic auth and if it finds the correct `grant_type` it will authenticate the request and
+attach the `token` to the result in one go.
+
+The `allowed_scopes` parameter has a twofold meaning here, for token generation it represents all the scopes that the developer can request, ie.
+all the valid scopes for that particular Stormpath Application. The second use-case is documented below.
+
+
+##### Using OAuth as Authentication for your REST API
+
+After you return an OAuth Access Token to a developer using your API service, they can start using the OAuth Access Token to validate authentication to your service.
+
+Stormpath requires that the developer send the Access Token in the Authorization header of the request. 
+
+Again, the Stormtrooper Equipment API example. We will require that a developer exchange his API Key and Secret for an Access Token and then pass the Access Token in future requests to gain access to your API. 
+
+The developer request would look something like this:
+
+    GET /troopers/tk421/equipment 
+    Accept: application/json
+    Authorization: Bearer 7FRhtCNRapj9zs.YI8MqPiS8hzx3wJH4.qT29JUOpU64T
+    Host: api.trooperapp.com
+
+The Access Token needs to be passed to your API in the Authorization header, using the Bearer method.
+We can then proceed to authenticate the request with the same method as we did before:
+
+    result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+    if result:
+        print result.account
+    else:
+        "Invalid or expired Token"
+
+Notice the `allowed_scopes` parameter has a different meaning here than it did above. We can use it to specify allowed scopes
+for the specific endpoint the user is accessing (in this case /troopers/tk421/equipment). If the Access Token was not generated 
+with all the scopes that this endpoint requires, the authentication will fail and the `result` variable will be empty.
+
+You can easily check the scope of a token with:
+
+    print result.token.scopes
+
+This allows you to do more fine grained access control after the request has been authenticated. For instance you can check if a user
+is in a specific Stormpath group before returning a response:
+
+    if result.account.has_group('admin'):
+        # return result
+    else:
+        print "Unsufficient permissions."
+
+**Note** While requesting an Access Token if the developer does not request any scopes the Access Token will be 
+generated without them. This implies that if any subsequent request is done with that access token but tries to access
+an endpoint that requires any scopes, the request will fail to authenticate.
+
+**Note** When doing Bearer auth the `result.token` is the same token the developer used for authenticating, it is
+just attached for convenience, ie. to check `result.token.scopes` and such.
+
+**Note** Token validity/ttl is in seconds and the default is 3600 (1 hour). If you wish to change this while generating tokens:
+use the optional `ttl` parameter with the  `authenticate` method.
+
 ***
 
 
