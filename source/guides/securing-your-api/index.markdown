@@ -143,7 +143,7 @@ The developer request would look something like this (using HTTPS Basic authenti
     Host: api.trooperapp.com
 
 {% docs warning %}
-The Basic Authentication mechanism provides no confidentiality protection for the transmitted credentials. They are merely encoded with Base64 in transit, but not encrypted or hashed in any way. Stormpath recommends that when a developer calls your API, and if you use Basic Authentication, the call needs to be communicated over HTTPS protocol to provide additional security. 
+Basic Authentication provides no protection for the transmitted credentials. They are merely encoded with Base64 in transit, but not encrypted or hashed in any way. Basic Authentication is not secure and Stormpath strongly recommends that when a developer calls your API, it is transmitted over HTTPS protocol to provide adequate security. 
 {% enddocs %}
 
 Alternatively, the developer could have sent the same request using an OAuth 2.0 Access Token using the Bearer authorization scheme.  [More on this later](). 
@@ -264,7 +264,7 @@ In the simplest form, the Stormpath SDK would authenticate a request as follows:
     public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
         Application application = client.getResource(applicationRestUrl, Application.class);
 
-        OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauth(request).execute();
+        OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauthRequest(request).execute();
 
         ApiKey apiKey = result.getApiKey();
         Account account = result.getAccount();
@@ -288,7 +288,7 @@ When an API Key is exchanged for a Access Token, the Access Token has a time-to-
 
 Customizing the TTL is easy.  Just specify the TTL when exchanging the API keys for an OAuth token.
 
-    result = application.authenticateOauth(request).withTtl(7200).execute();
+    result = application.authenticateOauthRequest(request).withTtl(7200).execute();
 
 #### Scope
 
@@ -342,7 +342,7 @@ For example:
 
         //Authenticate the request with ScopeFactory
         TokenOauthAuthenticationResult result;
-        result = (TokenOauthAuthenticationResult) application.authenticateOauth(request).using(scopeFactory).execute();
+        result = (TokenOauthAuthenticationResult) application.authenticateOauthRequest(request).withScopeFactory(scopeFactory).execute();
 
         //Get the token response for an authenticated request
         TokenResponse token = result.getTokenResponse();
@@ -388,7 +388,7 @@ You can retrieve the granted scopes from the token when having the SDK authentic
         Application application = client.getResource(applicationRestUrl, Application.class);
 
         //
-        OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauth(request).execute();
+        OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauthRequest(request).execute();
 
         //Checking if the Access Token includes the 'admin' scope
         if(result.getScopes().contains("admin")){
@@ -415,9 +415,7 @@ As a result, Stormpath has the ability to use a [visitor pattern](http://en.wiki
 
 When asking an `Application` to authenticate a result, a successful request will return a `AuthenticationResult`.  In the code samples in this guide, we have casted the `AuthenticationResult` directly, but the `AuthenticationResult` has the ability to accept a visitor.  Stormpath provides an `AuthenticationResultVisitorAdapter` which will throw exceptions for any method not overridden.
 
-<!--comment this shit! -->
-
-    AuthenticationResult authResult = application.authenticate(request).execute();
+    ApiAuthenticationResult authResult = application.authenticateApiRequest(request).execute();
 
     //Accept a visitor. The method called will be based on the return type, which is passed as a parameter to the method (ApiAuthenticationResult, OauthAuthenticationResult, TokenOauthAuthenticationResult) 
     authResult.accept(new AuthenticationResultVisitorAdapter() {
