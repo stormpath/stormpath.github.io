@@ -18,11 +18,13 @@ With a few lines of code, you can quickly and easily leverage Stormpath in your 
 
 An ID Site by default consists of set of web pages that allow your end-users to register, login, and reset their passwords.  Hosted on Stormpath infrastructure gives your ID Site, a reliable, fast and inexpensive way to provide this functionality to your applications.
 
-The ID Site uses best practices in security when communicating between Stormpath REST API and communicating with your application
+The ID Site uses best practices in security when communicating between Stormpath REST API and communicating with your application.
+
+Below is the default look and feel for the ID Site:
 
 ![](/images/guides/Login.png =700x)
 
-By default, Stormpath provides a default ID Site that can be white-labeled for your applications with the source available on [github]().  
+By default, Stormpath provides a default ID Site that can be white-labeled for your applications with the source available on [github]().  This ID Site is dynamic, it can detect if your application is configured for Google or Facebook login and display the buttons
 
 An ID Site can host the login, registration, and password reset pages for one or multiple applications.  Making it possible to provide the same login / registration page for multiple applications
 
