@@ -1,7 +1,8 @@
 ---
 layout: doc
 lang: guides
-title: Using Stormpath to Secure and Manage API Services
+title: Using Stormpath for API Key Management 
+alias: [/guides/securing-your-api]
 ---
 
 <!-- this should be an Octopress include -->
@@ -15,7 +16,7 @@ Currently supported Stormpath SDKs for this feature include: **Java**
 
 In this guide, we discuss how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services.  Stormpath provides not only the user management piece around API Keys, but also allows you to associate permissions and custom data with the accounts for advanced use-cases.  
 
-## Why should I use Stormpath to Secure my API?
+## Why should I use Stormpath for API Key Management?
 With few lines of code, you can quickly and easily lock down your own APIs with OAuth-based authentication and secure API key management.   
 
 Stormpath offers a complete solution that securely and easily helps you manage developer accounts, create and manage API Keys, and generate OAuth 2.0 bearer tokens to support Access Token authentication.   
@@ -122,11 +123,11 @@ In some cases, you may need to delete or disable (revoke) an API Key.  This is i
     apiKey.save()
 
 
-## Using the Stormpath SDK to Authenticate and Generate Tokens for your API
+## Using the Stormpath SDK to Authenticate and Generate Tokens for your API Keys
 
 The Stormpath SDK does all the heavy lifting for you in your application.  It automatically processes authentications via HTTP Basic or OAuth 2.0.  In addition, the SDK will handle more advance OAuth 2.0 features like _scope_ and _time-to-live_.  
 
-Specifically, Stormpath supports two HTTP `Authorization` methods, Basic and Bearer (OAuth 2.0 client-credentials grant type).  In this section we will discuss the strategies and best practices using these authorization methods.
+Stormpath supports two HTTP `Authorization` methods when authenticating API Keys, Basic and Bearer (OAuth 2.0 client-credentials grant type).  In this section we will discuss the strategies and best practices using these authorization methods.
 
 ### How API Key and Token Authentication Works
 All authentication attempts in Stormpath start with the `Application` object in the SDK.  You will likely have initialized the `Application` during startup.
@@ -146,7 +147,7 @@ The developer request would look something like this (using HTTPS Basic authenti
 Basic Authentication provides no protection for the transmitted credentials. They are merely encoded with Base64 in transit, but not encrypted or hashed in any way. Basic Authentication is not secure and Stormpath strongly recommends that when a developer calls your API, it is transmitted over HTTPS protocol to provide adequate security. 
 {% enddocs %}
 
-Alternatively, the developer could have sent the same request using an OAuth 2.0 Access Token using the Bearer authorization scheme.  [More on this later](). 
+Alternatively, the developer could have sent the same request using an OAuth 2.0 Access Token using the Bearer authorization scheme.  [More on this later](#exchanging-api-keys-for-oauth-20-tokens). 
 
 In the simplest form, the Stormpath Java SDK would authenticate the above request (Basic or Bearer) as follows:
 
@@ -441,7 +442,7 @@ When asking an `Application` to authenticate a result, a successful request will
 In this guide, we discussed how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email support@stormpath.com.
 
 <!-- wrap it up -->
-<!-- include the support shit -->
+<!-- include the support -->
 
 
 
