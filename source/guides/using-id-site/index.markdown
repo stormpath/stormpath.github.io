@@ -12,13 +12,13 @@ title: Using Stormpath's ID Site to Host your User Management UI
 Currently supported Stormpath SDKs for this feature include: **Java**
 {% enddocs %}
 
-In this guide, we discuss how to set up Stormpath to host a set of web pages that will allow your applications to leverage Stormpath infrastructure for login, registration, and password reset pages.
+In this guide, we discuss how to set up Stormpath to host a set of web pages that will allow your applications to leverage Stormpath infrastructure for login, registration, and password reset.
 
 ## Why should I use Stormpath to host my UI
 
-With a few lines of code in your application, you can quickly and easily leverage Stormpath in your Application to host identity management pages.  These pages can include login, user registration, and password reset.  In Stormpath terms, these pages together are an ID Site.  
+With a few lines of code in your application, you can quickly and easily leverage Stormpath to host identity management pages.  These pages can include login, user registration, and password reset.  In Stormpath terms, these pages together are an ID Site.  
 
-Stormpath's vision for this feature is to allow you to be able to quickly wire up your applications to use Stormpath without a development effort around login, registration, forgot password, input validation, and security. Since Stormpath is hosting and managing these ID sites, their is little to no development that needs to occur on UI's related to user sign up and login work flows.
+Stormpath's vision for this feature is to allow you to be able to quickly wire up your applications to use Stormpath without a development effort around login, registration, forgot password, input validation, and security. Since Stormpath is hosting and managing your ID site, their is little to no development that needs to occur on UI's related to user sign up and login work flows.
 
 <!--Over time, ID Sites will be enhanced for Single-Sign-On and handle delegated authentication for additional applications.-->
 
@@ -30,9 +30,9 @@ Below is the default look and feel for the ID Site:
 
 ![](/images/guides/Login.png =700x)
 
-This provides a default ID Site that can be white-labeled for your applications with the source available on [github]().  This ID Site is dynamic, it can detect if your application is configured for Google or Facebook login and display the buttons.  An ID Site can be used for multiple applications, making it possible to provide the same login / registration page for multiple applications.  
+Your default ID Site that can be white-labeled for your applications with the source available on [github](https://github.com/stormpath/idsite-src).  This ID Site is dynamic, it can detect if your application is configured for Google or Facebook login and display the buttons.  The ID site will also detect if workflows (such as email verification) are enabled and will provide basic messaging. An ID Site can be used for multiple applications, making it possible to provide the same login / registration page for multiple applications.  
 
-To work with an ID Site, you must use a Stormpath SDK to delegate to communicate and redirect the user to the ID Site when needed.  ID Sites enable the following workflow.
+To work with an ID Site, you must use a Stormpath SDK to delegate to communicate and redirect the user to the ID Site when needed.  ID Sites enable the following workflow:
 
 1. The user visits your application for the first time, and clicks the login/sign up button
 2. The user is redirected to the ID Site using the Stormpath SDK
