@@ -857,10 +857,10 @@ When you submit creation request, at least the `name` attribute must be specifie
 
 **Example Request Using the Tenant Instance**
 
-	Application application = client.instantiate(Application.class);
-    application.setName("My Application");
-    application.setDescription("My Application Description");
-    application.setStatus(ApplicationStatus.ENABLED);
+	Application application = client.instantiate(Application.class)
+            .setName("My Application")
+            .setDescription("My Application Description")
+            .setStatus(ApplicationStatus.ENABLED);
 
     tenant.createApplication(application);
 
@@ -887,10 +887,10 @@ If you delete an application, you must manually delete any auto-created director
 
 When sending the creation request, you can append the `createDirectory()` method:
 
-	Application application = client.instantiate(Application.class);
-    application.setName("My Application");
-    application.setDescription("My Application Description");
-    application.setStatus(ApplicationStatus.ENABLED);
+	Application application = client.instantiate(Application.class)
+            .setName("My Application")
+            .setDescription("My Application Description")
+            .setStatus(ApplicationStatus.ENABLED);
     
     tenant.createApplication(
     		Applications.newCreateRequestFor(application)
@@ -912,8 +912,7 @@ This allows you to create accounts and groups directly via the application insta
 
 If you want to automatically create a Directory for your application, and you also want to manually specify the new Directory's name, instead of using a `true` value as the query parameter value, you can specify a String name instead:
 
-    Application application = client.instantiate(Application.class);
-    application.setName("My Application");
+    Application application = client.instantiate(Application.class).setName("My Application");
 
     tenant.createApplication(
     	Applications.newCreateRequestFor(application)
@@ -960,8 +959,7 @@ Set the properties to be updated on an `Application` instance that has an `href`
 
 **Example Request**
 
-	application.setDescription("A new description.");
-    application.save();
+	application.setDescription("A new description.").save();
 
 <a class="anchor" name="application-enable"></a>
 #### Enable an Application
@@ -972,8 +970,7 @@ You can enable an application (and thereby allow associated accounts to login) b
 
 **Example Request**
 
-    application.setStatus(ApplicationStatus.ENABLED);
-    application.save();
+    application.setStatus(ApplicationStatus.ENABLED).save();
 
 <a class="anchor" name="application-disable"></a>
 #### Disable an Application
@@ -986,8 +983,7 @@ You can disable an application (and thereby prevent associated accounts from log
 
 **Example Request**
 
-    application.setStatus(ApplicationStatus.DISABLED);
-    application.save();
+    application.setStatus(ApplicationStatus.DISABLED).save();
 
 <a class="anchor" name="application-delete"></a>
 ### Delete an Application
@@ -1063,12 +1059,12 @@ Set the [account resource attributes](#account-resource) required and any additi
 
 **Example Request**
 
-    Account account = client.instantiate(Account.class);
-    account.setGivenName("Jean-Luc");
-    account.setUsername("jlpicard");
-    account.setSurname("Picard");
-    account.setEmail("capt@enterprise.com");
-    account.setPassword("4P@$$w0rd!");
+    Account account = client.instantiate(Account.class)
+        .setGivenName("Jean-Luc")
+        .setUsername("jlpicard")
+        .setSurname("Picard")
+        .setEmail("capt@enterprise.com")
+        .setPassword("4P@$$w0rd!");
 
     application.createAccount(account);
 
@@ -1090,14 +1086,14 @@ However, applications that map more than one account store to define their accou
 
 When you create an application account, in addition to Stormpath's account attributes, you may also specify [your own custom data](#custom-data) by including a `CustomData` object:
 
-	Account account = client.instantiate(Account.class);
-    account.setUsername("jlpicard");
-    account.setEmail("capt@enterprise.com");
-    account.setGivenName("Jean-Luc");
-    account.setMiddleName("");
-    account.setSurname("Picard");
-    account.setPassword("uGhd%a8Kl!");
-    account.setStatus(AccountStatus.ENABLED);
+	Account account = client.instantiate(Account.class)
+        .setUsername("jlpicard")
+        .setEmail("capt@enterprise.com")
+        .setGivenName("Jean-Luc")
+        .setMiddleName("")
+        .setSurname("Picard")
+        .setPassword("uGhd%a8Kl!")
+        .setStatus(AccountStatus.ENABLED);
     CustomData customData = account.getCustomData();
     customData.put("rank", "Captain");
     customData.put("birthDate", "2305-07-13");
@@ -1124,12 +1120,12 @@ This workflow is disabled by default on Directories, but you can enable it easil
 
 The execution of the registration workflow can be explicitly overwritten on a per-request basis using the  `createAccount(CreateAccountRequest)` method:
 
-	Account account = client.instantiate(Account.class);
-    account.setGivenName("Jean-Luc");
-    account.setUsername("jlpicard");
-    account.setSurname("Picard");
-    account.setEmail("capt@enterprise.com");
-    account.setPassword("4P@$$w0rd!");
+	Account account = client.instantiate(Account.class)
+        .setGivenName("Jean-Luc")
+        .setUsername("jlpicard")
+        .setSurname("Picard")
+        .setEmail("capt@enterprise.com")
+        .setPassword("4P@$$w0rd!");
 	
 	application.createAccount(
 		Accounts.newCreateRequestFor(account)
@@ -1347,8 +1343,7 @@ Set the [group resource attributes](#group) required and any additional ones you
 
     Group group = client.instantiate(Group.class);
 
-    group.setName("My Group");
-    group.setDescription("My Group Description");
+    group.setName("My Group").setDescription("My Group Description");
 
     application.createGroup(group);
 
@@ -1369,10 +1364,10 @@ When you create an application group, in addition to Stormpath's group attribute
 
 	Group group = client.instantiate(Group.class);
 
-    group.setName("My Group");
-    group.setDescription("My Group Description");
-    group.getCustomData().put("Headquarters", Arrays.asList("High Council Chamber", "High Council Tower", "Jedi Temple", "Coruscant"));
-    group.getCustomData().put("Affiliation", "Jedi Order");
+    group.setName("My Group").setDescription("My Group Description");
+    CustomData customData = group.getCustomData();
+    customData.put("Headquarters", Arrays.asList("High Council Chamber", "High Council Tower", "Jedi Temple", "Coruscant"));
+    customData.put("Affiliation", "Jedi Order");
 
     application.createGroup(group);
 
@@ -1534,12 +1529,13 @@ You do this by calling the `create` method on the `AccountStoreMapping` resource
 
 Creating it from an application instance:
 
-    AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class);
-    accountStoreMapping.setAccountStore(accountStore); // this could be an existing group or a directory
-    accountStoreMapping.setApplication(application);
-    accountStoreMapping.setDefaultAccountStore(Boolean.TRUE);
-    accountStoreMapping.setDefaultGroupStore(Boolean.FALSE);
-    accountStoreMapping.setListIndex(0);
+    AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class)
+            .setAccountStore(accountStore) // this could be an existing group or a directory
+            .setApplication(application)
+            .setDefaultAccountStore(Boolean.TRUE)
+            .setDefaultGroupStore(Boolean.FALSE)
+            .setListIndex(0);
+        
     application.createAccountStoreMapping(accountStoreMapping);
 
 
@@ -1581,8 +1577,7 @@ Call the `save` method on an accountStoreMapping when you want to change one or 
 
 **Example Request**
 
-    accountStoreMapping.setDefaultAccountStore(Boolean.FALSE);
-    accountStoreMapping.save();
+    accountStoreMapping.setDefaultAccountStore(Boolean.FALSE).save();
 
 <a class="anchor" name="account-store-mapping-update-priority"></a>
 #### Set the Login Priority of an Assigned Account Store
@@ -1598,8 +1593,7 @@ If you wish to change an account store's login priority for an application, you 
 
 For example, assume that an account store represented by mapping `$accountStoreMapping` has a list index of `0` (first in the list), and we wanted to lower its priority to `1` (second in the list):
 
-    accountStoreMapping.setListIndex(1);
-    accountStoreMapping.save();
+    accountStoreMapping.setListIndex(1).save();
 
 <a class="anchor" name="account-store-mapping-default-account-store"></a>
 #### Set The Default Account Store for new Application Accounts
@@ -1613,8 +1607,7 @@ You specify an application's default account store by setting the AccountStoreMa
 
 **Example Request**
 
-    accountStoreMapping.setDefaultAccountStore(Boolean.TRUE);
-	accountStoreMapping.save();
+    accountStoreMapping.setDefaultAccountStore(Boolean.TRUE).save();
 
 Now, any time a new account is created from an application's `createAccount` method, the account will actually be created in the designated default account store.
 
@@ -1651,8 +1644,7 @@ You specify an application's default group store by setting the `AccountStoreMap
 
 **Example Request**
 
-    accountStoreMapping.setDefaultGroupStore(Boolean.TRUE);
-    accountStoreMapping.save();
+    accountStoreMapping.setDefaultGroupStore(Boolean.TRUE).save();
 
 Now, any time a new group is created from an application's `createGroup` method, the group will actually be created in the designated default group store.
 
@@ -1878,10 +1870,9 @@ When you invoke this method, at least the `name` attribute must be specified, an
 
 **Example Request**
 
-	Directory directory = client.instantiate(Directory.class);
-
-    directory.setName("Captains");
-    directory.setDescription("Captains from a variety of stories");
+	Directory directory = client.instantiate(Directory.class)
+	    .setName("Captains")
+        .setDescription("Captains from a variety of stories");
 
     tenant.createDirectory(directory);
     
@@ -2231,10 +2222,10 @@ To create a new `group` resource instance in a specified directory which is acce
 
 **Example Request**
 
-    Group group = client.instantiate(Group.class);
-    group.setName("Aquanauts");
-    group.setDescription("Aquanauts");
-    group.setStatus(GroupStatus.ENABLED);
+    Group group = client.instantiate(Group.class)
+        .setName("Aquanauts")
+        .setDescription("Aquanauts")
+        .setStatus(GroupStatus.ENABLED);
 
     directory.createGroup(group);
 
@@ -2284,8 +2275,7 @@ To enable a group:
 
 **Example Request**
 
-    group.setStatus(GroupStatus.ENABLED);
-    group.save();
+    group.setStatus(GroupStatus.ENABLED).save();
 
 <a class="anchor" name="group-disable"></a>
 #### Disable a Group
@@ -2298,8 +2288,7 @@ To disable a group:
 
 **Example Request**
 
-    group.setStatus(GroupStatus.DISABLED);
-    group.save();
+    group.setStatus(GroupStatus.DISABLED).save();
 
 <a class="anchor" name="group-delete"></a>
 ### Delete a Group
@@ -2713,12 +2702,12 @@ On the client side, then, you do not need to worry about salting or storing pass
 
 **Example Request**
 
-	Account account = client.instantiate(Account.class);
-    account.setEmail("john.smith@example.com");
-    account.setGivenName("John");
-    account.setPassword("4P@$$w0rd!");
-    account.setSurname("Smith");
-    account.setUsername("johnsmith");
+	Account account = client.instantiate(Account.class)
+        .setEmail("john.smith@example.com")
+        .setGivenName("John")
+        .setPassword("4P@$$w0rd!")
+        .setSurname("Smith")
+        .setUsername("johnsmith");
 
     directory.createAccount(account);
 
@@ -2771,10 +2760,10 @@ On the client side, then, you do not need to worry about salting or storing pass
 <a class="anchor" name="UpdateAccountName"></a><a class="anchor" name="account-update-simple"></a>
 **Example Update Request**
 
-	account.setSurname("jlpicard");
-	account.setGivenName("Jean-Luc");
-    account.setSurname("Picard");
-    account.save();
+	account.setSurname("jlpicard")
+	    .setGivenName("Jean-Luc")
+        .setSurname("Picard")
+        .save();
 
 If the account is part of a directory containing groups, you can associate the account with a group.
 
@@ -2786,8 +2775,7 @@ If the account is part of a directory containing groups, you can associate the a
 <a class="anchor" name="ChangeAccountPassword"></a>
 **Example Request to Change an Account Password**
 
-    account.setPassword("L9%hw4c5q");
-    account.save();
+    account.setPassword("L9%hw4c5q").save();
 
 
 <a class="anchor" name="account-add-group"></a>
@@ -2825,8 +2813,7 @@ For example, to enable an account:
 
 **Example Request**
 
-	account.setStatus(AccountStatus.ENABLED);
-    account.save();
+	account.setStatus(AccountStatus.ENABLED).save();
 
 <a class="anchor" name="account-delete"></a>
 ### Delete an Account
@@ -3146,14 +3133,14 @@ However, it is often useful to populate custom data at the same time you create 
 
 **Example Create Account with Custom Data**
 
-	Account account = client.instantiate(Account.class);
-    account.setUsername("jlpicard");
-    account.setEmail("capt@enterprise.com");
-    account.setGivenName("Jean-Luc");
-    account.setMiddleName("");
-    account.setSurname("Picard");
-    account.setPassword("uGhd%a8Kl!");
-    account.setStatus(AccountStatus.ENABLED);
+	Account account = client.instantiate(Account.class)
+            .setUsername("jlpicard")
+            .setEmail("capt@enterprise.com")
+            .setGivenName("Jean-Luc")
+            .setMiddleName("")
+            .setSurname("Picard")
+            .setPassword("uGhd%a8Kl!")
+            .setStatus(AccountStatus.ENABLED);
     CustomData customData = account.getCustomData();
     customData.put("rank", "Captain");
     customData.put("birthDate", "2305-07-13");
@@ -3162,8 +3149,7 @@ However, it is often useful to populate custom data at the same time you create 
 
 **Example Create Group with Custom Data**
 
-	Group group = client.instantiate(Group.class);
-    group.setName("Starfleet Officers");
+	Group group = client.instantiate(Group.class).setName("Starfleet Officers");
     CustomData customData = group.getCustomData();
     customData.put("headquarters", "San Francisco, CA");
     directory.createGroup(group);
