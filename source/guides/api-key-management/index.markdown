@@ -211,7 +211,7 @@ Below is sample code to show how you would handle the request with the Stormpath
         Application application = client.getResource(applicationRestUrl, Application.class);
 
         //Getting the authentication result
-        TokenOauthAuthenticationResult result = (TokenOauthAuthenticationResult) application.authenticateApiRequest(request).execute();
+        AccessTokenResult result = (AccessTokenResult) application.authenticateApiRequest(request).execute();
 
         //Get the token response from the result which includes 
         //information about the Access Token
@@ -237,9 +237,9 @@ The response back to the requesting client:
        "expires_in":3600
     }
 
-Important classes for exchanging an API Key and Secret for an Access Token are `TokenOauthAuthenticationResult` and `TokenResponse`.
+Important classes for exchanging an API Key and Secret for an Access Token are `AccessTokenResult` and `TokenResponse`.
 
-`TokenOauthAuthenticationResult` is a subclass of `ApiAuthenticationResult` that has an additional getter for the `TokenResponse`.
+`AccessTokenResult` is a subclass of `ApiAuthenticationResult` that has an additional getter for the `TokenResponse`.
 
 The `TokenResponse` contains properties associated with the generated token for an authenticated request.  This includes the Access Token, expiration, and token type.  This allows the client to decide if they can use the token. `TokenRepsonse` has a utility method `toJson()` which will return the JSON representation of the token that conforms to OAuth 2.0 specification.
 
@@ -342,8 +342,8 @@ For example:
             };
 
         //Authenticate the request with ScopeFactory
-        TokenOauthAuthenticationResult result;
-        result = (TokenOauthAuthenticationResult) application.authenticateOauthRequest(request).withScopeFactory(scopeFactory).execute();
+        AccessTokenResult result;
+        result = (AccessTokenResult) application.authenticateOauthRequest(request).withScopeFactory(scopeFactory).execute();
 
         //Get the token response for an authenticated request
         TokenResponse token = result.getTokenResponse();
@@ -407,7 +407,7 @@ You can retrieve the granted scopes from the token when having the SDK authentic
 When asking the `Application` to authenticate an API authentication request, the return type of a successful authentication request will vary based on the request headers.  This includes:
 
 1. `ApiAuthenticationResult` - Authorization header is present, with the `Basic` method and the base64 encoded API_KEY_ID:API_KEY_SECRET.
-2. `TokenOauthAuthenticationResult` - HTTP Method is `POST`. Authorization header is present, with the `Basic` method and the base64 encoded API_KEY_ID:API_KEY_SECRET. As part of the query or body of the request, the 'grant_type' is specified as 'client_credentials'.  Content-type is set to `x-www-form-urlencoded`.
+2. `AccessTokenResult` - HTTP Method is `POST`. Authorization header is present, with the `Basic` method and the base64 encoded API_KEY_ID:API_KEY_SECRET. As part of the query or body of the request, the 'grant_type' is specified as 'client_credentials'.  Content-type is set to `x-www-form-urlencoded`.
 3. `OauthAuthenticationResult` - Authorization header is present, with the `Bearer` method and the OAuth 2.0 Access Token retrieved from the Stormpath SDK in a previous request.
 
 <!-- add grant type to #2 -->
@@ -418,7 +418,7 @@ When asking an `Application` to authenticate a result, a successful request will
 
     ApiAuthenticationResult authResult = application.authenticateApiRequest(request).execute();
 
-    //Accept a visitor. The method called will be based on the return type, which is passed as a parameter to the method (ApiAuthenticationResult, OauthAuthenticationResult, TokenOauthAuthenticationResult) 
+    //Accept a visitor. The method called will be based on the return type, which is passed as a parameter to the method (ApiAuthenticationResult, OauthAuthenticationResult, AccessTokenResult) 
     authResult.accept(new AuthenticationResultVisitorAdapter() {
 
       public void visit(ApiAuthenticationResult result) {
@@ -432,7 +432,7 @@ When asking an `Application` to authenticate a result, a successful request will
           
       }
 
-      public void visit(TokenOauthAuthenticationResult result) {
+      public void visit(AccessTokenResult result) {
           TokenResponse tokenResponse = result.getTokenResponse();
       }
     });
