@@ -154,7 +154,7 @@ In the simplest form, the Stormpath Java SDK would authenticate the above reques
     public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
         Application application = client.getResource(applicationRestUrl, Application.class);
 
-        ApiAuthenticationResult result = (ApiAuthenticationResult) application.authenticateApiRequest(request).execute();
+        ApiAuthenticationResult result = application.authenticateApiRequest(request);
 
         //Get any account properties as needed
         String email = result.getAccount().getEmail();
@@ -416,7 +416,7 @@ As a result, Stormpath has the ability to use a [visitor pattern](http://en.wiki
 
 When asking an `Application` to authenticate a result, a successful request will return a `AuthenticationResult`.  In the code samples in this guide, we have casted the `AuthenticationResult` directly, but the `AuthenticationResult` has the ability to accept a visitor.  Stormpath provides an `AuthenticationResultVisitorAdapter` which will throw exceptions for any method not overridden.
 
-    ApiAuthenticationResult authResult = application.authenticateApiRequest(request).execute();
+    ApiAuthenticationResult authResult = application.authenticateApiRequest(request);
 
     //Accept a visitor. The method called will be based on the return type, which is passed as a parameter to the method (ApiAuthenticationResult, OauthAuthenticationResult, AccessTokenResult) 
     authResult.accept(new AuthenticationResultVisitorAdapter() {
