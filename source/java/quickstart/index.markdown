@@ -37,20 +37,20 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-api</artifactId>
-        <version>1.0.RC</version>
+        <version>1.0.RC2</version>
     </dependency>
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-httpclient</artifactId>
         <version>1.0.RC</version>
-        <scope>runtime</scope>
+        <scope>runtime2</scope>
     </dependency>
     <!-- This next runtime dependency is only necessary if you have
          a REST API and you want to secure it with OAuth: -->
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-oauth</artifactId>
-        <version>1.0.RC</version>
+        <version>1.0.RC2</version>
         <scope>runtime</scope>
     </dependency>
 
