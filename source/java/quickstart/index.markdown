@@ -142,8 +142,8 @@ You can create an Application using the Client you created in the previous step:
 	
     Application application = client.instantiate(Application.class);
     application.setName("My Awesome Application"); //must be unique among your other apps
-    application = client.getCurrentTenant()
-        .createApplication(Applications.newCreateRequestFor(application).createDirectory().build());
+    application = client.createApplication(
+        Applications.newCreateRequestFor(application).createDirectory().build());
 
 The code above will create a new Application, which we can use later to do stuff
 like:
