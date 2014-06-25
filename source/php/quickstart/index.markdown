@@ -64,6 +64,11 @@ You can install [Stormpath](https://github.com/stormpath/stormpath-sdk-php) usin
 	    php composer.phar install
 
 
+{% docs tip %}
+If you are unable to use Composer, please refer to the [Library's Readme](https://github.com/stormpath/stormpath-sdk-php#download-the-source-code) for instructions on downloading the source code.
+{% enddocs %}
+
+
 ***
 
 
