@@ -38,7 +38,7 @@ As soon as you have an OAuth token from Google or Facebook, you can pass it to S
 
 ## How to Integrate Stormpath with Facebook?
 
-After you familiarize yourself with Stormpath with one of the [Quickstart](docs.stormpath.com) Guides, integrating Stormpath with Facebook and Google requires the following steps:
+After you familiarize yourself with Stormpath with one of the [Quickstart](https://stormpath.com/tutorial/) Guides, integrating Stormpath with Facebook and Google requires the following steps:
 
 + Creating a Social Directory for Facebook 
 + Mapping the Directory as an Account Store to an Application
@@ -241,7 +241,7 @@ The HTTP Status code when accessing an account based on a Facebook User Access T
 {% enddocs %}
 
 {% docs note %}
-To [expand](#link-expansion) the `providerData` to get the Access Token for the Account in one HTTP request, add `expand=providerData` to the URL query parameters.
+To expand the `providerData` to get the Access Token for the Account in one HTTP request, add `expand=providerData` to the URL query parameters.
 {% enddocs %}
 
 Once an `Account` is retrieved, Stormpath maps common fields for the Facebook User to the  Account.  The access token for any additional calls in the `providerData` resource and can be retrieved by:

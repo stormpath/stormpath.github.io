@@ -9,7 +9,7 @@ title: Integrating Stormpath with Active Directory and LDAP
 {% enddocs %}
 
 {% docs note %}
-AD/LDAP integration is only available to customers with a [Premium subscription plan or higher](www.stormpath.com/pricing)
+AD/LDAP integration is only available to customers with a [Premium subscription plan or higher](https://stormpath.com/pricing)
 {% enddocs %}
 
 
@@ -41,7 +41,7 @@ In the following sections, we will outline considerations and best practices for
 
 ## Setting up the Stormpath Active Directory / LDAP Agent
 {% docs note %}
-  Configuration of AD/LDAP directories is currently only available through the [Administrator Console](api.stormpath.com).  It's not _yet_ available via API and SDK.
+  Configuration of AD/LDAP directories is currently only available through the [Administrator Console](https://api.stormpath.com).  It's not _yet_ available via API and SDK.
 {% enddocs %}
 
 In order to synchronize Stormpath with an Active Directory or LDAP server, you create a `Directory` in Stormpath, specifically a `Mirror Directory`
