@@ -41,6 +41,17 @@ client.getApplication(appHref, function(err, app) {
   if (err) throw err;
 
   console.log(app);
+});</code></pre><h3 id="update-a-specific-resource">Update a Specific Resource</h3><p>Once you have retrieved a resource, you can update it&#39;s properties and then call it&#39;s <code>save()</code> method. This will persist the changes to Stormpath by making the necessary call to the REST API. For example, if you need to update the surname of an Account:</p><pre><code class="lang-javascript">// Update an account resource
+client.getAccount(accountHref,function(err,account){
+  account.surname = &#39;my new last name&#39;;
+  account.save(function(err, updatedAccount) {
+    console.log(updatedAccount);
+  });
+});</code></pre><h3 id="delete-a-specific-resource">Delete a Specific Resource</h3><p>All resources have a <code>delete()</code> method which will send an <code>DELETE</code> request to the REST API. <strong>This operation cannot be undone.</strong></p><pre><code class="lang-javascript">// Delete an account resource
+client.getAccount(accountHref,function(err,account){
+  account.delete(function(err) {
+    // handle error, if exists
+  });
 });</code></pre><h3 id="create-an-application">Create an Application</h3><p>Creating a Stormpath Application is simple:</p><pre><code class="lang-javascript">var app = {
   name: &#39;My Awesome Application!&#39;,
   description: &quot;No, Srsly. It&#39;s Awesome.&quot;
@@ -69,7 +80,7 @@ createdApp.createAccount(account, function onAccountCreated(err, createdAccount)
 createdAccount.save(function onSave(err, savedAccount) {
   console.log(savedAccount);
 });</code></pre><h3 id="authenticate-an-account">Authenticate an Account</h3><p>You can authenticate an Account (<em>retrieve an Account object given a username (or email address) and password</em>) using the <code>authenticateAccount</code> method of and Application or Directory:</p><pre><code class="lang-javascript">// NOTE: The username field could also be an email address.
-var credentials = {
+var authcRequest = {
   username: &#39;jlpicard&#39;,
   password: &#39;Changeme1!&#39;
 };
