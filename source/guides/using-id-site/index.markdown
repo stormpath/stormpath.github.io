@@ -14,11 +14,11 @@ Currently supported Stormpath SDKs for this feature include: **Java**
 
 In this guide, we discuss how to set up Stormpath to host a set of web pages that enable your applications to quickly and securely offer common identity management functions like login, registration, and password reset.
 
-{% doc tip %}
+{% docs tip %}
 ID site page are a convenience feature in Stormpath.  If you prefer to build and host your own pages, you can recreate much of the functionality using Stormpath's Core API.
 {% enddocs %}
 
-##What is IDSite
+##What is an ID Site
 Stormpath ID Site is a set of hosted and pre-built user interface screens that take care of common identity functions for your applications-- login, registration, password reset.  ID Site can be access via your own custom domain like id.mydomain.com and shared across multiple applications to create centralized authentication if needed.  
 
 The screens, and even the functionality, of ID site are completely customizable.  You have full access to the source code of the ID Site screens so you can make simple changes like adding your logo and changing CSS or more complex changes like adding fields, adding javascript code, adding screens, removing screens, and even changing how the screens behave.  
