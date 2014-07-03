@@ -11,7 +11,7 @@ alias: [/guides/securing-your-api]
 {% enddocs %}
 
 {% docs info %}
-Currently supported Stormpath SDKs for this feature include: **Java**
+Currently supported Stormpath SDKs for this feature include: **Java**, **Node JS**, and **Python**
 {% enddocs %}
 
 In this guide, we discuss how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services.  Stormpath provides not only the user management piece around API Keys, but also allows you to associate permissions and custom data with the accounts for advanced use-cases.  
@@ -59,19 +59,27 @@ Stormpath `Accounts` can be used to keep a variety of Developer information incl
 
 You will mostly likely create a Stormpath Account when a Developer signs up for access to your API.  Below is an example of how to create a user account in code:
 
-    //Create the account object
-    Account account = client.instantiate(Account.class);
+{% codetab id:create-account langs:java node python %}
+------
+//Create the account object
+Account account = client.instantiate(Account.class);
 
-    //Set the account properties
-    account.setGivenName("Joe");
-    account.setSurname("Stormtrooper");
-    account.setEmail("tk421@stormpath.com");
-    account.setPassword("Changeme1");
-    CustomData customData = account.getCustomData();
-    customData.put("favoriteColor", "white");
+//Set the account properties
+account.setGivenName("Joe");
+account.setSurname("Stormtrooper");
+account.setEmail("tk421@stormpath.com");
+account.setPassword("Changeme1");
+CustomData customData = account.getCustomData();
+customData.put("favoriteColor", "white");
 
-    //Create the account using the existing Application object.
-    application.createAccount(account);
+//Create the account using the existing Application object.
+application.createAccount(account);
+------
+
+------
+ 
+------
+{% endcodetab %}
 
 {% docs info %}
 **Reminder** - An `Application` is a representation of your real world application.  In this case, it will be your application that is exposing an API.  For more info check out our [Tutorial](https://stormpath.com/tutorial/) or [Product Guide](/java/product-guide/).
@@ -90,10 +98,18 @@ Let's start with creating APIs keys for an Account.
 
 Creating an API Key is a simple method call on the `Account`.  The method will create a new API Key (Id and Secret) associated with that `Account` and later accessible via the account's `apiKeys` property.
 
-    APIKey apiKey = account.createApiKey();
+{% codetab id:create-api-key langs:java node python %}
+------
+APIKey apiKey = account.createApiKey();
 
-    String apiKeyId = apikey.getId();
-    String apiKeySecret = apikey.getSecret();
+String apiKeyId = apikey.getId();
+String apiKeySecret = apikey.getSecret();
+------
+
+------
+
+------
+{% endcodetab s%}
 
 The `ApiKey` returned will have the following properties:
 
@@ -112,15 +128,29 @@ After the API Key is created, you will need to deliver the API Key ID and Secret
 In some cases, you may need to delete or disable (revoke) an API Key.  This is important for management of API Keys.  For example, a developer may delete an API Key because it has been compromised, or the administrator may disable all API Keys for a developer that is past due on payments for the service.  API Keys can be retrieved from either the 'Application' or 'Account'.  Once it is retrieved, it can be deleted or disabled.
 
 #### Deleting an API Key
+{% codetab id:delete-api-key langs:java node python %}
+------
+APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
+apiKey.delete()
+------
 
-    APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
-    apiKey.delete()
+------
+
+------
+{% endcodetab %}
 
 #### Disable an API Key
+{% codetab id:disable-api-key langs:java node python %}
+------
+APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
+apiKey.setStatus(ApiKeyStatus.DISABLED)
+apiKey.save()
+------
 
-    APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
-    apiKey.setStatus(ApiKeyStatus.DISABLED)
-    apiKey.save()
+------
+
+------
+{% endcodetab %}
 
 
 ## Using the Stormpath SDK to Authenticate and Generate Tokens for your API Keys
@@ -151,21 +181,30 @@ Alternatively, the developer could have sent the same request using an OAuth 2.0
 
 In the simplest form, the Stormpath Java SDK would authenticate the above request (Basic or Bearer) as follows:
 
-    public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
-        Application application = client.getResource(applicationRestUrl, Application.class);
+{% codetab id:generic-id-auth langs:java node python %}
+------
+public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
+    Application application = client.getResource(applicationRestUrl, Application.class);
 
-        ApiAuthenticationResult result = application.authenticateApiRequest(request);
+    ApiAuthenticationResult result = application.authenticateApiRequest(request);
 
-        //Get any account properties as needed
-        String email = result.getAccount().getEmail();
+    //Get any account properties as needed
+    String email = result.getAccount().getEmail();
 
-        //Get any api key properties as needed
-        String apiKeyId = result.getApiKey().getId();
+    //Get any api key properties as needed
+    String apiKeyId = result.getApiKey().getId();
 
-        //Return what you need to return in the response
-        handleEquipmentRequest(response);
-    }
+    //Return what you need to return in the response
+    handleEquipmentRequest(response);
+}
 
+------
+
+------
+
+------
+
+{% endcodetab %}
 The above code has some classes we want to highlight-- `ApiAuthenticationResult` and `ApiKey`.
 
 `ApiAuthenticationResult` is a subclass of `AuthenticationResult` and will provide properties and methods for retrieving the authenticated `Account` and `ApiKey` for a successful authentication request.  Your API will use this information to provide context associated with who is calling your API.  This becomes important when your API has generic endpoints that return different information based on the caller.  In our Stormtrooper Equipment API, a call to `/my-equipment` would return the equipment for the authenticated account.
@@ -206,25 +245,32 @@ Going back to the Stormtrooper Equipment API example.  The app would require tha
 The request will need to explicitly state the grant type for the OAuth Access Token Request.  Stormpath only supports client credential grant type for exchanging API Keys for Access Tokens.
 
 Below is sample code to show how you would handle the request with the Stormpath SDK and return an access token to the client:
+{% codetab id:generic-id-auth langs:java node python %}
+------
+public void postOAuthToken(HttpServletRequest request, HttpServletResponse response) {
+    Application application = client.getResource(applicationRestUrl, Application.class);
 
-    public void postOAuthToken(HttpServletRequest request, HttpServletResponse response) {
-        Application application = client.getResource(applicationRestUrl, Application.class);
+    //Getting the authentication result
+    AccessTokenResult result = (AccessTokenResult) application.authenticateApiRequest(request).execute();
 
-        //Getting the authentication result
-        AccessTokenResult result = (AccessTokenResult) application.authenticateApiRequest(request).execute();
+    //Get the token response from the result which includes 
+    //information about the Access Token
+    TokenResponse token = result.getTokenResponse();
 
-        //Get the token response from the result which includes 
-        //information about the Access Token
-        TokenResponse token = result.getTokenResponse();
+    //Prepares the response back to the caller
+    response.setStatus(HttpServletResponse.SC_OK);
+    response.setContentType("application/json");
 
-        //Prepares the response back to the caller
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType("application/json");
+    //Output the json of the Access Token
+    response.getWriter().print(token.toJson());
+    response.getWriter().flush();
+}
+------
 
-        //Output the json of the Access Token
-        response.getWriter().print(token.toJson());
-        response.getWriter().flush();
-    }
+------
+
+------
+{% endcodetab %}
 
 The response back to the requesting client:
 

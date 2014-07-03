@@ -4,6 +4,27 @@
 <script>
 $(function() {
    hljs.initHighlightingOnLoad();
+
+   /* javascript for codetab to stop the pagae from shifting when changing tabs (tab sync) */
+   var currentEventTab;
+   var initialOffsetObject;
+   var initialPageYOffset;
+
+   $('.tabs').tabs({
+		activate: function(event ,ui){
+			if(event.cancelable){
+				currentEventTab = event.target;
+				initialOffsetObject = $(currentEventTab).offset().top;
+				initialPageYOffset = window.pageYOffset;
+			}
+
+			$('.tabs').tabs('option', 'active', ui.newTab.index());
+			var afterChangeOffset = $(currentEventTab).offset().top;
+			var afterPageYOffset = window.pageYOffset;
+
+			$('body').scrollTop(initialPageYOffset - (initialOffsetObject - afterChangeOffset));
+		}
+	});
 });
 </script>
 
