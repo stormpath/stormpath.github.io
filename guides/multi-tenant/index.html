@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Multi-Tenant Applications with Stormpath - Stormpath</title>
+  <title>Multi-Tenant SaaS Applications with Stormpath - Stormpath</title>
   <meta name="author" content="Stormpath, Inc.">
 
   
-  <meta name="description" content="In this guide, we discuss what a multi-tenant application is and how to partition and model user data for multi-tenancy. We will also show how to &hellip;">
+  <meta name="description" content="In this guide, we discuss what a multi-tenant SaaS application is and how to model user data for SaaS apps serving many organizations. We will also &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -375,9 +375,9 @@
           <div id="content" class="column" role="main">
             <a id="main-content"></a>
             
-              <h1 class="title" id="page-title">Multi-Tenant Applications with Stormpath</h1>
+              <h1 class="title" id="page-title">Multi-Tenant SaaS Applications with Stormpath</h1>
             
-          	<p>In this guide, we discuss what a multi-tenant application is and how to partition and model user data for multi-tenancy. We will also show how to build a multi-tenant application faster and more securely with Stormpath, a cloud-hosted user management service, that easily supports multi-tenant user models.</p>
+          	<p>In this guide, we discuss what a multi-tenant SaaS application is and how to model user data for SaaS apps serving many organizations. We will also show how to build a multi-tenant SaaS application faster and more securely with Stormpath, a cloud-hosted user management service, that easily supports multi-tenant user models.</p>
 
 <h2><a id="what-is-stormpath"></a>What is Stormpath?</h2>
 
@@ -397,9 +397,9 @@
 
 <p>While Stormpath is a great choice for any application, it excels for multi-tenant use cases.</p>
 
-<h2><a id="what-is-a-multi-tenant-application"></a>What is a Multi-Tenant application?</h2>
+<h2><a id="what-is-a-multi-tenant-saas-application"></a>What is a Multi-Tenant SaaS Application?</h2>
 
-<p>Most web applications are designed to support only one user base or &lsquo;organization&rsquo;: typically the organization that installs and maintains the application. This traditional software architecture usually has an application codebase that uses a primary database.  For example:</p>
+<p>Most web applications are designed to support only one user base or &lsquo;organization&rsquo;: typically the organization installs and maintains the application. This traditional software architecture usually has an application codebase that uses a primary database.  For example:</p>
 
 <pre><code>  Application
        |
@@ -410,11 +410,11 @@
  --------------
 </code></pre>
 
-<p>A multi-tenant application by contrast is a single application that can service <em>multiple</em> organizations <em>simultaneously</em>.  In these applications, each organization is referred to as a <strong>tenant</strong>.</p>
+<p>A multi-tenant SaaS application by contrast is a single application that can service <em>multiple</em> organizations <em>simultaneously</em>.  In these applications, each organization is referred to as a <strong>tenant</strong>.</p>
 
-<p>Just like in an apartment building, although there is a single building, there may be multiple <em>tenants</em>, each with their own apartment in the building. Similarly, a multi-tenant software application needs to ensure that each Tenant has its own private space that cannot be seen or interfered with by other Tenants: when Tenant A&rsquo;s users use the application, they cannot see Tenant B&rsquo;s data, and vice versa.</p>
+<p>Just like in an apartment building, although there is a single building, there may be multiple <em>tenants</em>, each with their own apartment in the building. Similarly, a multi-tenant SaaS application needs to ensure that each Tenant or customer organization has its own private space that cannot be seen or interfered with by other Tenants/Organizations: when Organization A&rsquo;s users access the application, they cannot see Organization B&rsquo;s data, and vice versa. In this guide &ndash; and elsewhere in Stormpath documentation &ndash; &ldquo;tenant&rdquo; refers to the data partition specific to a customer organization.</p>
 
-<p>To ensure data separation, a multi-tenant application typically partitions each tenant&rsquo;s data virtually, so that the data is cleanly segmented in the data store.  This means a multi-tenant application architecture looks something like this:</p>
+<p>To ensure data separation, a multi-tenant SaaS application typically partitions each tenant&rsquo;s data virtually, so that the data is cleanly segmented in the data store.  This means a multi-tenant SaaS application architecture looks something like this:</p>
 
 <pre><code>        Application
              |
@@ -429,32 +429,32 @@
 
 <p>This poses a challenge: very few modern databases natively support tenant data partitioning. The application developer must figure out how to do this in application code. We&rsquo;ll talk about techniques for doing this this a little later.</p>
 
-<h2><a id="why-build-a-multi-tenant-application"></a>Why Build a Multi-Tenant Application?</h2>
+<h2><a id="why-build-a-multi-tenant-saas-application"></a>Why Build a Multi-Tenant SaaS Application?</h2>
 
-<p>Given the extra &lsquo;data partitioning&rsquo; burden when building a multi-tenant application, why would you want to go through the effort?</p>
+<p>Given the extra &lsquo;data partitioning&rsquo; burden when building a multi-tenant SaaS application, why would you want to go through the effort?</p>
 
-<p>The reality of today&rsquo;s technology landscape is that more and more customers use web applications and no longer want to install, host, and maintain those applications themselves. Maintaining these applications can be difficult, time consuming and frustrating, and requires additional in-house reseources.</p>
+<p>The reality of today&rsquo;s technology landscape is that more and more organizations use web applications and no longer want to install, host, and maintain applications on their own servers. Maintaining local applications can be difficult, time consuming and frustrating, and requires additional in-house reseources.</p>
 
-<p>Increasingly, companies that build web applications will install, host and maintain their applications themselves, and offer their applications to customers as a Software-as-a-Service, or SaaS. This has great appeal to customers: they can sign up for a service and start using it right away.</p>
+<p>Increasingly, companies that build web applications offer their applications as a Software-as-a-Service, or SaaS &ndash; they host and maintain their applications themselves, giving customer organizations access to the software over the internet. This has great appeal to customers: they can sign up for a service and start using it right away, and the maintenance burden goes away.</p>
 
 <h2><a id="multi-tenant-design"></a>Multi-Tenant Design</h2>
 
-<p>There are a lot of ways to build multi-tenant applications. For the purpose of this article, we&rsquo;re going to focus on approaches to support the significant majority of multi-tenant applications:</p>
+<p>There are a lot of ways to build multi-tenant SaaS applications. For the purpose of this article, we&rsquo;re going to focus on approaches to support the significant majority of multi-tenant SaaS apps:</p>
 
-<p>A public (Internet-facing) multi-tenant web application with per-organization data partitioning, for example:</p>
+<p>A public (Internet-facing) multi-tenant web application with per-organization data partitioning. For example:</p>
 
 <pre><code>https://myapplication.io
 </code></pre>
 
-<p>When a customer registers with <code>myapplication.io</code> a new <code>tenant</code> (partitioned data space) is created for them.  When they login to the application, they will access and see only their own tenant data, and the application must know which tenant the customer is attempting to access. This is almost always done by the customer specifying a tenant identifier when accessing the application.</p>
+<p>When an organization registers with <code>myapplication.io</code> a new <code>tenant</code> (partitioned data space) is created for them.  When users from that organization log in to the application, they will access and see only their own tenant/organization data, and the application must know which tenant/organization the user is attempting to access. This is almost always done by the user specifying a tenant identifier when accessing the application.</p>
 
 <h3><a id="tenant-identifier"></a>Tenant Identifier</h3>
 
-<p>When a new tenant is created, a globally-unique name identifier is almost always assigned to that tenant/customer. This identifier (unique across all tenants) is typically represented in some way on every request to the application.</p>
+<p>When a new organization signs up and their tenant is created, a globally-unique name identifier is almost always assigned to that tenant/organization. This identifier (unique across all tenants) is typically represented in some way on every request to the application.</p>
 
 <p>The application then uses this identifier to restrict which (virtual) data partition is accessed during a request.</p>
 
-<p>For example, let&rsquo;s say we have a multi-tenant e-commerce application that shows purchase history. If a tenant user requests the <code>/purchases</code> view, they should only be able to see the purchases specific to their tenant.  This means that instead of executing a query like this to a database:</p>
+<p>For example, let&rsquo;s say we have a multi-tenant e-commerce SaaS application that shows purchase history. If a user requests the <code>/purchases</code> view, they should only be able to see the purchases specific to their tenant/organization.  This means that instead of executing a query like this to a database:</p>
 
 <pre><code>SELECT * from purchases;
 </code></pre>
@@ -479,11 +479,9 @@
 
 <h4>1. Subdomain Name <a name="subdomainName"></a></h4>
 
-<p>When generating or assigning the tenant&rsquo;s name identifier, ensure it is a valid unique subdomain name.  This could allow a customer to access your application via a unique subdomain URL for all of their needs, for example:</p>
+<p>When generating or assigning the tenant&rsquo;s name identifier, ensure it is a valid unique subdomain name.  This could allow users from an organization to access your application via a unique subdomain URL for all of their needs, for example:</p>
 
-<p>When assigning the tenant&rsquo;s name identifier, one approach is to use a unique subdomain name.  This could allow a customer to access your application via a unique subdomain URL for all of their needs, for example:</p>
-
-<p><a href="https://customerA.myapplication.io">https://customerA.myapplication.io</a></p>
+<p><a href="https://organizationA.myapplication.io">https://organizationA.myapplication.io</a></p>
 
 <p>This approach is really nice: the application never needs to ask the user for the tenant identifier, because it is inherently part of every request in the <code>HOST</code> header.</p>
 
@@ -506,16 +504,16 @@
 <h5>Subdomain Tips</h5>
 
 <ul>
-<li><p>Keep your customer subdomain space <em>completely separate</em> from your company&rsquo;s subdomain space by using a different top-level (aka &lsquo;apex&rsquo;) domain name for the hosted application.</p>
+<li><p>Keep your customer organization subdomains space <em>completely separate</em> from your company&rsquo;s subdomain space by using a different top-level (aka &lsquo;apex&rsquo;) domain name for your SaaS application.</p>
 
-<p>  Let&rsquo;s say your company&rsquo;s url is <code>http://mycompany.com</code>.</p>
+<p>  Let&rsquo;s say your company&rsquo;s website url is <code>http://mycompany.com</code>.</p>
 
 <p>  <em>We do NOT recommend</em> supporting customer subdomains like this:</p>
 
 <p>  <code>http://customerA.mycompany.com</code>
   <code>http://customerB.mycompany.com</code></p>
 
-<p>  In this scenario, it is possible that a customer&rsquo;s chosen subdomain can conflict with a subdomain your company might need, either now or in the future. For example, what if a customer chose the subdomain name of <code>docs</code>? This would mean that your own company couldn&rsquo;t use <code>http://docs.mycompany.com</code> later, because it is &lsquo;taken&rsquo; by your customer.  It is also a difficult and unnecessarily time-consuming exercise to try to determine which domains you might use for your company in the future and block them off in your application, and even then, you may still have conflicts later.</p>
+<p>  In this scenario, it is possible that a customer&rsquo;s chosen subdomain can conflict with a subdomain your company might need, either now or in the future. For example, what if a customer chose the subdomain name of <code>docs</code>? This would mean that your own company couldn&rsquo;t use <code>http://docs.mycompany.com</code> later, because it is &lsquo;taken&rsquo; by one of your customers.  It is also a difficult and unnecessarily time-consuming exercise to try to determine which domains you might use for your company in the future and block them off in your application. Even then, you may still have conflicts later.</p>
 
 <p>  Instead, we believe it is better to have a separate top-level domain for the product.  For example:</p>
 
@@ -527,7 +525,7 @@
 
 <p>  <code>http://myapp.mycompany.com</code></p>
 
-<p>  And customer subdomains for that app would be accessible via:</p>
+<p>  And customer organization subdomains for that app would be accessible via:</p>
 
 <p>  <code>http://customerA.myapp.mycompany.com</code></p>
 
@@ -536,19 +534,19 @@
 <p>  etc.</p>
 
 <p>  It is our opinion that the separate top-level domain, e.g. <code>http://mycompany.io</code> is the nicer alternative: it is shorter, easier to remember and type, and looks better.</p></li>
-<li><p>If your customer ever accesses your app directly (<code>https://mycompany.io</code>) instead of using their subdomain (<code>https://customerA.mycompany.io</code>), you still might need to provide a tenant-aware login form (described below).  After login, you can redirect them to their tenant-specific url for all subsequent requests.</p></li>
-<li><p>Subdomain names that you expose to customers should be easy to read and remember. <code>customerA</code> is <em>much</em> easier for your customer to remember than a UUID like <code>19C2C28D-0CC6-4FD1-B5BC-84F8E7A8E92D</code>.  You can (and should) still use UUIDs or <code>long</code> primary keys in your code, but your users shouldn&rsquo;t have to remember them.</p></li>
-<li><p>Ensure that you (or your customer) can change a tenant&rsquo;s subdomain identifier at any time.  It should not be permanent, and no part of the system should rely on it beyond initial request-to-tenant association logic.</p>
+<li><p>If a user from a customer organization ever accesses your app directly (<code>https://mycompany.io</code>) instead of using their subdomain (<code>https://customerA.mycompany.io</code>), you still might need to provide a tenant-aware login form (described below).  After login, you can redirect them to their tenant-specific url for all subsequent requests.</p></li>
+<li><p>Subdomain names that you expose to users should be easy to read and remember. <code>customerA</code> is <em>much</em> easier for a user to remember than a UUID like <code>19C2C28D-0CC6-4FD1-B5BC-84F8E7A8E92D</code>.  You can (and should) still use UUIDs or <code>long</code> primary keys in your code, but your users shouldn&rsquo;t have to remember them.</p></li>
+<li><p>Ensure that you (or your customers) can change a tenant&rsquo;s subdomain identifier at any time.  It should not be permanent, and no part of the system should rely on it beyond initial request-to-tenant association logic.</p>
 
 <p>  This means the application&rsquo;s tenant records <em>should</em> have a globally unique immutable tenant <em>primary key</em> that is not necessarily human-friendly, like a <code>long</code> number or <code>UUID</code>, for the application&rsquo;s own needs.  This type of key is called a <a href="http://en.wikipedia.org/wiki/Surrogate_key"><em>surrogate</em></a> key.</p>
 
-<p>  In addition, a tenant should <em>also</em> have globally unique, <em>mutable</em>, and human-readable subdomain name (like <code>customerA</code>) that people use when executing requests to your application. This is known a <a href="http://en.wikipedia.org/wiki/Natural_key"><em>natural</em></a> key.</p>
+<p>  In addition, a tenant should <em>also</em> have globally unique, <em>mutable</em>, and human-readable subdomain name (like <code>customerA</code>) that gets used when executing requests to your application. This is known a <a href="http://en.wikipedia.org/wiki/Natural_key"><em>natural</em></a> key.</p>
 
 <p>  After a request enters the application, the surrogate primary key identifier is used for all further data queries.  For example:</p>
 
 <ol>
 <li> Request is received referencing a human-readable tenant name &ndash; the natural key.</li>
-<li> The human readable tenant name (natural key) is used to look up a tenant record, with that tenant&rsquo;s immutable <code>long</code> or <code>UUID</code> surrogate primary key.</li>
+<li> The human-readable tenant name (natural key) is used to look up a tenant record, with that tenant&rsquo;s immutable <code>long</code> or <code>UUID</code> surrogate primary key.</li>
 <li> The surrogate key <code>long</code> or <code>UUID</code> is used for all subsequent data queries.  <strong>This surrogate primary key is used for all data partitioning schemes and queries</strong>, <em>not</em> the human-friendly natural key.</li>
 </ol>
 
@@ -563,7 +561,7 @@
 
 <h4>2. Selection After Login <a name="selectionAfterLogin"></a></h4>
 
-<p>If a customer visits your web application directly without specifying a subdomain tenant name, and you have globally unique user identities across all tenants, you can simplify tenant association after login.</p>
+<p>If a user visits your web application directly without specifying a subdomain tenant name, and you have globally unique user identities across all tenants, you can simplify tenant association after login.</p>
 
 <p>For example, let&rsquo;s assume a user visits your application&rsquo;s top-level (<em>apex</em>) domain directly, without specifying a subdomain:</p>
 
@@ -586,9 +584,9 @@ Password: ________________________
 
 <pre><code>  Please choose your organization for this session:
 
-  * https://customerA.myapplication.io
+  * https://organizationA.myapplication.io
 
-  * https://customerB.myapplication.io
+  * https://organizationB.myapplication.io
 </code></pre>
 
 <p>  The user selects the tenant (s)he wants to use, and all subsequent requests are handled based on the subdomain name as explained above.</p></li>
@@ -634,7 +632,7 @@ Password    : ________________________
 
 <ul>
 <li><p>We <strong>STRONGLY</strong> advise that, even if you do not support subdomains today, that your human-readable tenant identifiers <em>still</em> adhere to the domain name specification.  This allows you to support subdomains at any point in the future, as soon as you&rsquo;re able to setup network infrastructure to do so.  Do this in the beginning and you will likely eliminate many problems later.</p></li>
-<li><p>We advise that you auto-remember the login form tenant id value in a cookie so that field is pre-populated whenever your customer returns to login.  Customers don&rsquo;t like having to remember and type that value in every time they login.</p></li>
+<li><p>We advise that you auto-remember the login form tenant id value in a cookie so that field is pre-populated whenever a user returns to log in.  Users don&rsquo;t like having to remember and type that value in every time they log in.</p></li>
 </ul>
 
 
@@ -642,24 +640,24 @@ Password    : ________________________
 
 <h2><a id="multi-tenant-user-management"></a>Multi-Tenant User Management</h2>
 
-<p>Once you decide on a tenant id mechanism, probably the <strong>first thing</strong> you need to support in your application will be user management, so you can at least login.  Once you can login to the application, everything else can be associated with a user and customized from there.</p>
+<p>Once you decide on a tenant id mechanism, probably the <strong>first thing</strong> you need to support in your application will be user management, so you can at least log in.  Once you can log in to the application, everything else can be associated with a user and customized from there.</p>
 
 <p>Multi-tenant applications come with special user management considerations:</p>
 
 <ul>
 <li>How will tenants be represented?</li>
 <li>How will users be created?</li>
-<li>How will tenant users be kept secure and separate from other tenants?</li>
+<li>How will user data in one tenant be kept secure and separate from other tenant partitions?</li>
 </ul>
 
 
-<p>As you might have guessed, you can plug in Stormpath and have immediate user support in your application.  Our data model <em>natively</em> supports multi-tenant user management out-of-the-box.  You don&rsquo;t have to worry about building or managing this yourself, and you can move on to building your app&rsquo;s <em>real</em> features.</p>
+<p>As you might have guessed, you can plug in Stormpath and have immediate user support in your SaaS application.  Our data model <em>natively</em> supports multi-tenant user management out-of-the-box.  You don&rsquo;t have to worry about building or managing this yourself, and you can move on to building your app&rsquo;s <em>real</em> features.</p>
 
-<h2><a id="why-use-stormpath-for-multi-tenant-applications"></a>Why use Stormpath for Multi-Tenant Applications?</h2>
+<h2><a id="why-use-stormpath-for-multi-tenant-saas-applications"></a>Why use Stormpath for Multi-Tenant SaaS Applications?</h2>
 
-<p>As we mentioned, database partitioning can be quite challenging, especially <em>user data</em> partitioning and all the security issues that implies. Large-scale security breaches in hosted web services <a href="http://www.bankinfosecurity.com/interviews/data-breach-i-1953/op-1">costing</a> millions of <a href="http://www.bloomberg.com/news/2011-03-08/security-breach-costs-climb-7-to-7-2-million-per-incident.html">dollars</a> are a risk that development teams shouldn&rsquo;t have to worry about.</p>
+<p>As we mentioned, database partitioning for can be quite challenging, especially <em>user data</em> partitioning and all the security issues that implies. Large-scale security breaches in hosted web services <a href="http://www.bankinfosecurity.com/interviews/data-breach-i-1953/op-1">costing</a> millions of <a href="http://www.bloomberg.com/news/2011-03-08/security-breach-costs-climb-7-to-7-2-million-per-incident.html">dollars</a> are a risk that development teams shouldn&rsquo;t have to worry about.</p>
 
-<p>Aside from security, setting up partitioning schemes and data models any application <em>takes time</em>. Very few, if any, development frameworks support multi-tenant use cases, so developer teams have to to build out multi-tenant user management themselves. That&rsquo;s custom code they need to secure, support and maintain &ndash; that isn&rsquo;t a core part of your product.</p>
+<p>Aside from security, setting up partitioning schemes and data models any application <em>takes time</em>. Very few, if any, development frameworks support multi-tenant use cases, so developer teams have to to build out multi-tenant user management themselves. That&rsquo;s custom code you need to secure, support and maintain &ndash; that isn&rsquo;t a core part of your product.</p>
 
 <p>Stormpath&rsquo;s data model supports two different approaches for multi-tenant user partitioning, and we&rsquo;ll explain both approaches in just a second.  But first, let&rsquo;s quickly review Stormpath&rsquo;s data model.</p>
 
@@ -712,7 +710,7 @@ Password    : ________________________
 </ul>
 
 
-<p>And, most important, you can configure changes to <em>all</em> of this without changing your application code!</p>
+<p>And, most importantly, you can configure changes to <em>all</em> of this without changing your application code!</p>
 
 <p>This model gives us two approaches to easily support multi-tenant applications:</p>
 
@@ -729,12 +727,12 @@ Password    : ________________________
 <p>This design approach uses a single <code>Directory</code>, which guarantees Account and Group uniqueness:</p>
 
 <ul>
-<li><p>An <code>Account</code> is guaranteed to have a unique email address (and username) compared to any other Account within the same Directory.</p></li>
+<li><p>A user <code>Account</code> is guaranteed to have a unique email address (and username) compared to any other Account within the same Directory.</p></li>
 <li><p>A <code>Group</code> is guaranteed to have a unique name compared to any other Group within the same Directory.</p></li>
 </ul>
 
 
-<p>Knowing this, we can model multi-tenant applications where a Tenant is represented as a <code>Group</code> within a Directory, so you would have (at least) a Group per Tenant.</p>
+<p>Knowing this, we can model multi-tenant SaaS applications so a Tenant is represented as a <code>Group</code> within a Directory, and you would have (at least) a Group per Tenant.</p>
 
 <p>For example, let&rsquo;s assume <code>jsmith@customerA.com</code> signs up for your application by filling out a signup form.  Upon submit you would:</p>
 
@@ -749,19 +747,19 @@ Password    : ________________________
 
 <ul>
 <li><p>All Accounts are guaranteed to be unique across all tenants, and there is no possibility of Account duplication.</p></li>
-<li><p>Unique Accounts ensure a single unified user identity no matter how many applications or services you bring online &ndash; this is a <em>huge</em> benefit to your customers if/when you have multiple applications and/or systems and you want to support Single Sign On (SSO) for your customers.  SSO is outside the scope of this guide, but  will be available in the future.</p></li>
-<li><p>Using a Group to represent a Tenant guarantees subdomain uniqueness across all customers/tenants because group names must be unique within a Directory.</p></li>
+<li><p>Unique Accounts ensure a single unified user identity no matter how many applications or services you bring online &ndash; this is a <em>huge</em> benefit to your users if/when you have multiple applications and you want to support Single Sign On (SSO) across your applications.  SSO is outside the scope of this guide, but will be available in the future.</p></li>
+<li><p>Using a Group to represent a Tenant/Organization guarantees subdomain uniqueness across all tenants/organizations because group names must be unique within a Directory.</p></li>
 <li><p>Using a Group to represent a Tenant allows you to associate multiple Accounts to a single tenant easily: just add them to the tenant Group.  You can find all users in a tenant just by requesting the Group, or, you can search across all users in a tenant just by searching in that Group only.</p></li>
 <li><p>You can store Tenant-specific data without having to roll your own database/tables, by assigning any ad-hoc data you want to a Stormpath Group as <a href="http://docs.stormpath.com/rest/product-guide/#custom-data">custom data</a>.</p></li>
-<li><p>Group <a href="http://docs.stormpath.com/rest/product-guide/#custom-data">custom data</a> can be used to store tenant-specific <a href="https://stormpath.com/blog/fine-grained-permissions-with-customData">permisions or Access Control Lists</a>, so you can control what each tenant is allowed to do in your application by simply assigning or removing specific values from the Tenant Group&rsquo;s <code>customData</code>.</p></li>
+<li><p>Group <a href="http://docs.stormpath.com/rest/product-guide/#custom-data">custom data</a> can be used to store tenant-specific <a href="https://stormpath.com/blog/fine-grained-permissions-with-customData">permisions or Access Control Lists</a>, so you can control what each users of each tenant are allowed to do in your application by simply assigning or removing specific values from their Tenant Group&rsquo;s <code>customData</code>.</p></li>
 <li><p>You could share Accounts across Tenants by adding an Account to more than one Tenant Group. This can be highly beneficial in certain use cases, where you might want to temporarily grant a user access to a tenant, but then revoke the access later, all the while not impacting their own tenant.</p></li>
-<li><p>Because all Accounts and groups are in a single Directory, you can do a global search across all Accounts by querying the Directory&rsquo;s Accounts or all Tenants by querying the Directory&rsquo;s groups.</p></li>
+<li><p>Because all Accounts and Groups are in a single Directory, you can do a global search across all Accounts by querying the Directory&rsquo;s Accounts or all Tenants by querying the Directory&rsquo;s groups.</p></li>
 <li><p>You can create additional Directory groups that contain Accounts from multiple tenants.  This can be used for modeling hierarchical tenants or for more powerful permission schemes.</p></li>
 <li><p>Because Stormpath does not distinguish between a Group and a Role (they are the same thing to Stormpath), you can reference any tenant Group as a &lsquo;Role&rsquo; for Role Based Access Control checks.</p></li>
 </ul>
 
 
-<p>In summary, the Single Directory, Group-per-Tenant approach is the simplest model, easiest to understand, and provides many desirable features suitable for most multi-tenant applications.</p>
+<p>In summary, the Single Directory, Group-per-Tenant approach is the simplest model, easiest to understand, and provides many desirable features suitable for most multi-tenant SaaS applications.</p>
 
 <p>Next, let&rsquo;s discuss how actual groups and roles are handled in this model.</p>
 
@@ -774,7 +772,7 @@ Password    : ________________________
 <p>What we&rsquo;ve seen work well in practice is to use a group naming convention to guarantee uniqueness. Here is how it works:</p>
 
 <ol>
-<li><p>When creating a Directory Group to represent the Tenant, the created group will have a <em>surrogate</em> key &ndash; permanent, immutable, and globally-unique identifier  &ndash; embedded in its <code>href</code>.  For example, assume the following REST JSON representation of the Tenant group:</p>
+<li><p>When creating a Group to represent the Tenant within your Directory, that Group will have a <em>surrogate</em> key &ndash; permanent, immutable, and globally-unique identifier  &ndash; embedded in its <code>href</code>.  For example, in this REST JSON representation of the Tenant Group&hellip;</p>
 
 <pre><code> {
    "href": "https://api.stormpath.com/v1/groups/2gdhVFEQMXpaUMAPzLXen4"
@@ -783,10 +781,10 @@ Password    : ________________________
  }
 </code></pre>
 
-<p> The immutable globally-unique identifier in this example above is <strong><code>2gdhVFEQMXpaUMAPzLXen4</code></strong>.</p></li>
-<li><p>Using this surrogate key, create any tenant-specific &lsquo;sub&rsquo; group by prefixing the group name with the tenant group surrogate ID.</p>
+<p> &hellip;the immutable globally-unique identifier is <strong><code>2gdhVFEQMXpaUMAPzLXen4</code></strong>.</p></li>
+<li><p>Using this surrogate key, create any tenant-specific subgroup by prefixing the new Group name with the Tenant Group UID.</p>
 
-<p> For example, if a tenant end-user creates an <code>administrators</code> group, before saving to Stormpath, you would prefix that name with the Tenant group surrogate ID and a delimiter, and create a group within the Stormpath Directory with that new name:</p>
+<p> For example, if a tenant end-user creates an <code>administrators</code> group, before saving to Stormpath, you would prefix that name with the Tenant Group UID and a delimiter, and create a group within the Stormpath Directory with that new name:</p>
 
 <pre><code> POST https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups
 
@@ -797,12 +795,12 @@ Password    : ________________________
 
 <p> As you can see, the new tenant &lsquo;sub&rsquo; group is concatenated:</p>
 
-<p> <code>tenant UID</code> + <code>_</code> + <code>administrators</code></p>
+<p> <code>tenant group UID</code> + <code>_</code> + <code>administrators</code></p>
 
 <p> This guarantees that tenant subgroups never collide with other tenants.</p>
 
 <p> In this example, we used the underscore character <code>_</code> as the delimiter, but you can  also use a perod <code>.</code> or dash <code>-</code>.  To keep querying simple we recommend you use URL safe characters.</p></li>
-<li><p>When retrieving a tenant sub group, you just strip off the tenant group id and delimiter prefix and display just the remaining name to the application end-users (pseudo-code example):</p>
+<li><p>When retrieving a tenant subgroup, you just strip off the tenant group id and delimiter prefix and display just the remaining name to the application end-users (pseudo-code example):</p>
 
 <pre><code>underscore_index = stormpath_group.name.last_index_of('_')
 display_name = stormpath_group.name.substring(underscore_index)
@@ -813,20 +811,20 @@ print("You are a member of the " + display_name + "group")
 
 <h5>Why Use the Surrogate Key for Names?</h5>
 
-<p>By using the tenant group&rsquo;s surrogate key (ID), you guarantee that no matter what the tenant name is or if it is ever changed, all of the tenant&rsquo;s &lsquo;sub&rsquo; groups will all still be relevant.</p>
+<p>By using the Tenant Group&rsquo;s UID, you guarantee that no matter what the tenant name is or if it ever changes, all of the tenant&rsquo;s subgroups will all still be relevant.</p>
 
 <p><strong>Note:</strong> You can use the tenant group&rsquo;s human-friendly name as the prefix if you like, but if you ever change the tenant name, you must ensure that all groups that are prefixed with the old name are renamed at the same time.</p>
 
 <h5>Querying</h5>
 
-<p>A nice side effect of this naming scheme is that it becomes very easy to find all sub groups &lsquo;owned&rsquo; by a particular tenant.  Just query all for all groups in the Directory that start with the tenant group&rsquo;s ID.  For example:</p>
+<p>A nice side effect of this naming scheme is that it becomes very easy to find all subgroups &lsquo;owned&rsquo; by a particular tenant.  Just query all for all groups in the Directory that start with the Tenant Group&rsquo;s UID.  For example:</p>
 
 <pre><code>    GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=2gdhVFEQMXpaUMAPzLXen4_*
 </code></pre>
 
 <p>Notice the asterisk at the end of the query? Stormpath&rsquo;s <a href="http://docs.stormpath.com/rest/product-guide/#Directory-groups">query support</a> supports starts-with matching, so the above query will return all groups that start with our ID + underscore prefix.</p>
 
-<p>If you wanted to retrieve the tenant group and all of its sub groups, make the query a little less restrictive by removing the underscore:</p>
+<p>If you wanted to retrieve the tenant group and all of its subgroups, make the query a little less restrictive by removing the underscore:</p>
 
 <pre><code>    GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=2gdhVFEQMXpaUMAPzLXen4*
 </code></pre>
@@ -839,13 +837,13 @@ print("You are a member of the " + display_name + "group")
 </div>
 
 
-<p>As a result, you could create a Directory in Stormpath for each of your tenants, and your user Account identities will be 100% separate. With this Directory-per-Tenant approach, your application&rsquo;s user Accounts are only guaranteed to be unique within a tenant (Directory).</p>
+<p>As a result, you could create a Directory in Stormpath for each of your tenants, and your user Account identities will be 100% separate. With this Directory-per-Tenant approach, your application&rsquo;s user Accounts are guaranteed to be unique within a tenant (Directory) &ndash; but can exist independently in multiple directories.</p>
 
 <p>Directory-per-Tenant is an advanced data model that offers more flexibility, but at the expense of complexity. It is the model that Stormpath itself uses and it is only recommended for more advanced applications or those with special requirements. As a result, we don&rsquo;t cover the approach in further detail here. If you feel the Directory-per-Tenant approach might be appropriate for your project, and you&rsquo;d like some advice, please contact <a href="mailto:support@stormpath.com">support@stormpath.com</a>. We are happy to help you model out your user data, whether or not Stormpath is the right option for your application.</p>
 
 <h2><a id="were-always-here-to-help"></a>We&rsquo;re Always Here to Help</h2>
 
-<p>Whether you&rsquo;re trying to figure out multi-tenant approaches for your application or have questions about a specific Stormpath API, we&rsquo;re always here to help. Please feel free to contact us at <a href="mailto:support@stormpath.com">support@stormpath.com</a>.</p>
+<p>Whether you&rsquo;re trying to figure out multi-tenant approaches for your SaaS application or have questions about how to use     Stormpath, we&rsquo;re always here to help. Please feel free to contact us at <a href="mailto:support@stormpath.com">support@stormpath.com</a>.</p>
 
             <div id="bottom-wrapper">
                      <div class="region region-bottom">
@@ -1160,7 +1158,7 @@ print("You are a member of the " + display_name + "group")
 				<a href="/guides/multi-tenant">Multi-Tenant Applications with Stormpath</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"></ul></li><li class="leaf"><a href="#what-is-a-multi-tenant-application" data-level="0" class="fragment">What is a Multi-Tenant application?</a><ul class="menu"></ul></li><li class="leaf"><a href="#why-build-a-multi-tenant-application" data-level="0" class="fragment">Why Build a Multi-Tenant Application?</a><ul class="menu"></ul></li><li class="leaf"><a href="#multi-tenant-design" data-level="0" class="fragment">Multi-Tenant Design</a><ul class="menu"><li class="leaf"><a href="#tenant-identifier" data-level="1" class="fragment">Tenant Identifier</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#multi-tenant-user-management" data-level="0" class="fragment">Multi-Tenant User Management</a><ul class="menu"></ul></li><li class="leaf"><a href="#why-use-stormpath-for-multi-tenant-applications" data-level="0" class="fragment">Why use Stormpath for Multi-Tenant Applications?</a><ul class="menu"><li class="leaf"><a href="#stormpath-data-model-overview" data-level="1" class="fragment">Stormpath Data Model Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#approach-1-single-directory-with-a-group-per-tenant" data-level="1" class="fragment">Approach 1: Single Directory with a Group-per-Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#approach-2-directory-per-tenant" data-level="1" class="fragment">Approach 2: Directory-per-Tenant</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#were-always-here-to-help" data-level="0" class="fragment">We’re Always Here to Help</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"></ul></li><li class="leaf"><a href="#what-is-a-multi-tenant-saas-application" data-level="0" class="fragment">What is a Multi-Tenant SaaS Application?</a><ul class="menu"></ul></li><li class="leaf"><a href="#why-build-a-multi-tenant-saas-application" data-level="0" class="fragment">Why Build a Multi-Tenant SaaS Application?</a><ul class="menu"></ul></li><li class="leaf"><a href="#multi-tenant-design" data-level="0" class="fragment">Multi-Tenant Design</a><ul class="menu"><li class="leaf"><a href="#tenant-identifier" data-level="1" class="fragment">Tenant Identifier</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#multi-tenant-user-management" data-level="0" class="fragment">Multi-Tenant User Management</a><ul class="menu"></ul></li><li class="leaf"><a href="#why-use-stormpath-for-multi-tenant-saas-applications" data-level="0" class="fragment">Why use Stormpath for Multi-Tenant SaaS Applications?</a><ul class="menu"><li class="leaf"><a href="#stormpath-data-model-overview" data-level="1" class="fragment">Stormpath Data Model Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#approach-1-single-directory-with-a-group-per-tenant" data-level="1" class="fragment">Approach 1: Single Directory with a Group-per-Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#approach-2-directory-per-tenant" data-level="1" class="fragment">Approach 2: Directory-per-Tenant</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#were-always-here-to-help" data-level="0" class="fragment">We’re Always Here to Help</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
