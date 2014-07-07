@@ -76,6 +76,19 @@ customData.put("favoriteColor", "white");
 application.createAccount(account);
 ------
 
+//Create a JSON object that represents the account
+var account = {
+  givenName: Joe',
+  surname: 'Stormtrooper',
+  email: 'tk421@stormpath.com',
+  password: 'Changeme1!'
+};
+
+//Have the application create the account
+application.createAccount(account, function onAccountCreated(err, createdAccount) {
+  console.log(createdAccount);
+});
+
 ------
  
 ------
@@ -106,6 +119,10 @@ String apiKeyId = apikey.getId();
 String apiKeySecret = apikey.getSecret();
 ------
 
+account.createApiKey(function(err,apiKey){
+  console.log('API Key:', apiKey.id);
+  console.log('API Secret:', apiKey.secret);
+})
 ------
 
 ------
@@ -308,18 +325,27 @@ The Access Token needs to be passed to your API in the Authorization header, usi
 
 In the simplest form, the Stormpath SDK would authenticate a request as follows:
 
-    public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
-        Application application = client.getResource(applicationRestUrl, Application.class);
+{% codetab id:generic-id-auth langs:java node python %}
 
-        OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauthRequest(request).execute();
+------
+public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
+    Application application = client.getResource(applicationRestUrl, Application.class);
 
-        ApiKey apiKey = result.getApiKey();
-        Account account = result.getAccount();
+    OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauthRequest(request).execute();
 
-        //Return what you need to return in the response
-        handleEquipmentRequest(response);
-    }
+    ApiKey apiKey = result.getApiKey();
+    Account account = result.getAccount();
 
+    //Return what you need to return in the response
+    handleEquipmentRequest(response);
+}
+------
+
+------
+
+------
+
+{% endcodetab %}
 
 `OauthAuthenticationResult` is a subclass of `ApiAuthenticationResult` that will give you access to methods to get the `Account`, `ApiKey` and the scope (if set).
 
