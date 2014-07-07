@@ -264,25 +264,3 @@ learn more?  Here are a few other helpful resources you can jump into.
 * Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
 * Easily support Social Login with [Google](/python/product-guide/#integrating-with-google) and [Facebook](/python/product-guide#integrating-with-facebook) integrations in Python.
 
-
-***
-
-
-## Help Us Spread the Word
-
-Like Stormpath?  If you enjoyed playing around with our new Python library,
-please help spread the word with a quick tweet!
-
-<!-- AddThis Button BEGIN -->
-<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout @goStormpath, it let's you set up complete user management in your Python app in minutes."
-addthis:url="https://stormpath.com">
-  <a class="addthis_button_twitter"></a>
-  <a class="addthis_button_preferred_2"></a>
-  <a class="addthis_button_preferred_3"></a>
-  <a class="addthis_button_preferred_4"></a>
-  <a class="addthis_button_compact"></a>
-</div>
-<script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
-<!-- AddThis Button END -->
-<p>
