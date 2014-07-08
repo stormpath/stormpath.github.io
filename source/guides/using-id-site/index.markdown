@@ -30,11 +30,19 @@ Building, securing, and maintaining identity screens for your users is time cons
 Stormpath ID Sites fully decouples your identity screens from your applications, making it incredibly easy to provide the same login / registration pages for multiple applications -- achieving centralized user management and authentication with a clean and easy user experience.
 
 ## How does ID Site Work
-When a user wants to login to or register for your application, your application will redirect them to your ID Site.  On your ID Site, the user will see will enter their data and complete the appropriate action, like Login.  ID Site will automatically detect any Workflow or Social Login configurations you have set in Stormpath and show the appropriate buttons, messaging, and behavior.
+To demonstrate how the SDK works, we’ll use an example. Imagine you are building a Stormtrooper application for managing Stormtrooper equipment— like awesome helmets and blasters. The application is trooperapp.com and is using Stormpath's ID Site for Login and Registration.  
+
+Once trooperapp.com is rendered by the browser, login and registration buttons are available for the unauthenticated user.  Clicking on these buttons will call your server-side application at specific endpoints.  For illustration, the login button will invoke `/login` and registration will invoke `/register`. Your application using the Stormpath SDK will securely redirect the user to the ID Site along with a cryptographically signed JSON Web Token (JWT) that includes information like the `Callback URI`, `Path` to a specific ID Site page, and any `State` you think is important for your application.
+
+On the ID Site, the user will enter their data and complete the appropriate action, like Login.  ID Site will automatically detect any Workflow or Social Login configurations set in Stormpath and show the appropriate buttons, messaging, and behavior.
+
+After the user has logged in successfully, they will be redirected back to your application's `Callback URI`.  For illustration purposes, this could be `http://trooperapp.com/handle-id-site-redirect`.  When the ID Site redirects back to your application, it will pass a secure JWT that represents the account in Stormpath.  Using the Stormpath SDK, your application will handle the request to `/handle-id-site-redirect`, validate that the JWT is correct, and return an `Account Result`. The `Account Result` will include the Stormpath `Account` object and additional information, such as any state that was passed by your application or if the account returned is newly created.
+
+<!-- When a user wants to login to or register for your application, your application will redirect them to your ID Site.  On your ID Site, the user will see will enter their data and complete the appropriate action, like Login.  ID Site will automatically detect any Workflow or Social Login configurations you have set in Stormpath and show the appropriate buttons, messaging, and behavior.
 
 On a Login, your ID Site will validate the user's credentials and create a security assertion that will be sent back to your application-- letting your application know that the current user is authenticated and should be trusted.  That security assertion is cryptographically signed by Stormpath using a shared secret known by your application.  This means that only Stormpath and your application can understand the assertion, thwarting certain attack vectors including [man-in-the-middle attacks](http://en.wikipedia.org/wiki/Man-in-the-middle_attack). 
 
-Once your application receives the security assertion, your application will use the Stormpath SDK to process and unpack the user data.
+Once your application receives the security assertion, your application will use the Stormpath SDK to verify and unpack the user data.  --> 
 
 <!-- sequence diagram -->
 
@@ -68,6 +76,7 @@ For more advanced configurations, there are additional properties in the ID Site
 ### Setting your own custom domain name and SSL certificate
 
 <!-- needs content -->
+<!-- screenshot -->
 
 ### Customizing ID Site look, feel, and behavior
 Your ID Site can be customized to have your own look and feel. Simple customization, like adding a logo, can be doing via Stormpath's Admin Console.
@@ -77,6 +86,8 @@ Below is the default look and feel for your ID Site:
 ![](/images/guides/Login.png =700x) 
 
 More advanced customization can be achieved by forking the [default ID Site source code found on GitHub](https://github.com/stormpath/idsite-src) and then pointing ID Site to your new GitHub repository.  Stormpath infrastructure can detect any changes to a specific branch in your GitHub repository and automatically sync your file to the Stormpath infrastructure.
+
+<!-- screenshot? -->
 
 <!-- anything we want to add here? Angular SPA? Stormpath.js? Fluffy kittens, rainbows, and unicorns? -->
 
@@ -144,9 +155,7 @@ To demonstrate how the SDK works, we’ll use an example. Imagine you are  build
 
 ### Consuming responses from the ID Site to your Application
 
-Once the user has logged in, created an account, or verified an account, the ID Site will redirect the user back to your application using the `Callback URI` you included when you first redirected the user to ID Site.  The Stormpath SDK will verify the signature on the callback message and unpacks the user information. 
-
-The `Callback URI` that was set when configuring the `ID Site URL Builder` is `http://trooperapp.com/authenticate`.  The `/authenticate` endpoint is wired to call a method in your servlet.  The app can use the Stormpath Java SDK and the `Application` object to create an `ID Site Callback Handler`.  The callback handler will allow you to get access to the account and other important properties.
+Once the user has logged in, created an account, or verified an account, the ID Site will redirect the user along with a security assertion back to your application.  ID Site will use the `Callback URI` you included when you first redirected the user to ID Site.  The Stormpath SDK will verify the cryptographic signature on the assertion and and unpacks the user information. 
 
 For example:
 
@@ -158,17 +167,19 @@ For example:
          Account account = accountResult.getAccount();
     }   
 
-The `AccountResult` will be able to give your app the ability to understand:
+The `AccountResult` will be able to give your application the ability to understand:
 
 + The `Account` for the successful account result
 + A `boolean` that will return true for a newly created account
 + A `String` of the state that was set when using the `ID Site URL Builder`
 
-Once the account is retrieved, you can get access to additional account properties that are important to your app, such as `Groups` or `CustomData`
+Once the account is retrieved, you can get access to additional account properties that are important to your application, such as `Groups` or `CustomData`
 
 <!-- 
 ## Notes on security
-Authentication is handled on a Stormpath hosted ID Site to Stormpath directly.  So they're no additional hops to secure
+A major feature of ID Site is security.  With ID Site:
+
+All user authentication is handled on a Stormpath hosted ID Site to Stormpath directly.  So they're no additional hops to secure
 
 Communication between ID site and Stormpath is using one time use tokens.  So no replay attacks.  
 
