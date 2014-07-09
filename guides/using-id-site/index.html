@@ -386,13 +386,13 @@
 
 
 
-<div class='docs-info'><p>Currently supported Stormpath SDKs for this feature include: <strong>Java</strong></p>
+<div class='docs-info'><p>Currently supported Stormpath SDKs for this feature include: <strong>Java</strong>.  Other language platforms are on their way soon.</p>
 </div>
 
 
 <p>In this guide, we discuss how to set up Stormpath to host a set of web pages that enable your applications to quickly and securely offer common identity management functions like login, registration, and password reset.</p>
 
-<div class='docs-tip'><p>ID site page are a convenience feature in Stormpath.  If you prefer to build and host your own pages, you can recreate much of the functionality using Stormpath&#8217;s Core API.</p>
+<div class='docs-tip'><p>ID site page are a convenience feature in Stormpath.  If you prefer to build and host your own pages, you can recreate much of the functionality using Stormpath&#8217;s SDKs and Core API.</p>
 </div>
 
 
@@ -400,97 +400,203 @@
 
 <p>Stormpath ID Site is a set of hosted and pre-built user interface screens that take care of common identity functions for your applications&mdash; login, registration, password reset.  ID Site can be access via your own custom domain like id.mydomain.com and shared across multiple applications to create centralized authentication if needed.</p>
 
-<p>The screens, and even the functionality, of ID site are completely customizable.  You have full access to the source code of the ID Site screens so you can make simple changes like adding your logo and changing CSS or more complex changes like adding fields, adding javascript code, adding screens, removing screens, and even changing how the screens behave.</p>
+<p>The screens, and even the functionality, of ID site are completely customizable.  You have full access to the source code of the ID Site screens so you can make simple changes like adding your own logo and changing CSS or more complex changes like adding fields, adding javascript code, adding screens, removing screens, and even changing how the screens behave.</p>
 
-<h2><a id="why-should-i-use-stormpath-to-host-my-ui"></a>Why should I use Stormpath to host my UI?</h2>
+<h2><a id="why-should-i-use-stormpath-id-site"></a>Why should I use Stormpath ID Site?</h2>
 
 <p>Building, securing, and maintaining identity screens for your users is time consuming, full of security concerns, and often more complex than many developers estimate.  Stormpath ID Site gives you and your development team peace of mind that you will have best in class user security quickly and easily, with very little code&mdash; minimizing risk to your project timeline.</p>
 
-<p>In addition, ID Site will automatically detect any Workflow or Social Login configurations you&rsquo;ve set in Stormpath and show the appropriate buttons, messaging, and behavior.</p>
+<p>Stormpath ID Sites fully decouples your identity screens from your applications, making it incredibly easy to provide the same login / registration pages for multiple applications &mdash; achieving centralized user management and authentication with a clean and easy user experience.</p>
 
-<p>Stormpath ID Sites fully decouples your identity screens from your application, making it incredibly easy to provide the same login / registration pages for multiple applications achieve centralized user management and authentication with a clean and easy user experience.</p>
+<h2><a id="how-does-id-site-work"></a>How does ID Site Work</h2>
 
-<!--Over time, ID Sites will be enhanced for Single-Sign-On and handle delegated authentication for additional applications.-->
+<p>To demonstrate how the SDK works, we’ll use an example. Imagine you are building a Stormtrooper application for managing Stormtrooper equipment— like awesome helmets and blasters. The application is trooperapp.com and is using Stormpath&rsquo;s ID Site for Login and Registration.</p>
+
+<p>Once trooperapp.com is rendered by the browser, login and registration buttons are available for the unauthenticated user.  Clicking on these buttons will call your server-side application at specific endpoints.  For illustration, the login button will invoke <code>/login</code> and registration will invoke <code>/register</code>. Your application using the Stormpath SDK will securely redirect the user to the ID Site along with a cryptographically signed JSON Web Token (JWT) that includes information like the <code>Callback URI</code>, <code>Path</code> to a specific ID Site page, and any <code>State</code> you think is important for your application.</p>
+
+<p>On the ID Site, the user will enter their data and complete the appropriate action, like Login.  ID Site will automatically detect any Workflow or Social Login configurations set in Stormpath and show the appropriate buttons, messaging, and behavior.</p>
+
+<p>After the user has logged in successfully, they will be redirected back to your application&rsquo;s <code>Callback URI</code>.  For illustration purposes, this could be <code>http://trooperapp.com/handle-id-site-redirect</code>.  When the ID Site redirects back to your application, it will pass a secure JWT that represents the account in Stormpath.  Using the Stormpath SDK, your application will handle the request to <code>/handle-id-site-redirect</code>, validate that the JWT is correct, and return an <code>Account Result</code>. The <code>Account Result</code> will include the Stormpath <code>Account</code> object and additional information, such as any state that was passed by your application or if the account returned is newly created.</p>
+
+<!-- When a user wants to login to or register for your application, your application will redirect them to your ID Site.  On your ID Site, the user will see will enter their data and complete the appropriate action, like Login.  ID Site will automatically detect any Workflow or Social Login configurations you have set in Stormpath and show the appropriate buttons, messaging, and behavior.
+
+On a Login, your ID Site will validate the user's credentials and create a security assertion that will be sent back to your application letting your application know that the current user is authenticated and should be trusted.  That security assertion is cryptographically signed by Stormpath using a shared secret known by your application.  This means that only Stormpath and your application can understand the assertion, thwarting certain attack vectors including [man-in-the-middle attacks](http://en.wikipedia.org/wiki/Man-in-the-middle_attack). 
+
+Once your application receives the security assertion, your application will use the Stormpath SDK to verify and unpack the user data.  -->
 
 
-<p>Sold?  Let&rsquo;s get started.</p>
+<p></p>
+
+<p><img src="/images/docs/ID-Diagram.png" alt="" /></p>
+
+<!-- sequence diagram -->
+
 
 <h2><a id="setting-up-your-id-site"></a>Setting up your ID Site</h2>
+
+<p>Your ID Site uses a default configuration for testing purposes, but can be fully configured to host customized code or to use your own custom domain.</p>
+
+<p>To set up your ID Site, log into the <a href="https://api.stormpath.com">Administrator Console</a> and:</p>
+
+<ol>
+<li>Click on the <code>ID Site</code> Tab</li>
+<li>Add your application URLs that will be allowed process the callbacks from the ID Site to the <code>Authorized Redirect URIs</code> property.  These URLs will be hosted by your application and will use the Stormpath SDK to process the security assertions about the user that ID Site send back.</li>
+<li>Click the <code>Update</code> button at the bottom of the page</li>
+</ol>
+
+
+<!-- I feel like we really need to better explain Authorized Redirect URIs.  With an example perhaps. -->
+
+
+
+
+<!-- screen shot -->
+
+
+<p>Once you configure your ID site, a default subdomain will be created on <code>stormpath.io</code>.  The default ID Site URL follows the format of <code>tenant-name.id.stormpath.io</code> where tenant-name is the name of your Stormpath <code>Tenant</code>.</p>
+
+<div class='docs-warning'><p>Your ID Site URL can only be accessed via a redirect from a Stormpath enabled application because ID Site expects a cryptographically signed token with specific data in it.  Simply visiting your ID Site URL in a browser will give you an error.</p>
+</div>
+
+
+<p>For more advanced configurations, there are additional properties in the ID Site configuration that can help:</p>
+
+<ul>
+<li>Set a Logo to appear at the top of the default ID Site</li>
+<li>Set a custom domain name (like id.mydomain.com) and SSL certificate to host your ID Site from your domain, securely</li>
+<li>Set a custom github repo to host your ID Site (to host custom code)</li>
+</ul>
+
+
+<!-- I feel like we need to talk about this more -->
+
+
+<h3><a id="setting-your-own-custom-domain-name-and-ssl-certificate"></a>Setting your own custom domain name and SSL certificate</h3>
+
+<p>By default, the address of your ID Site is tenant-name.id.stormpath.io. However, you can change the address to a subdomain of your own website, such as id.mysite.com. This is called setting up a custom domain name.</p>
+
+<p>For example, going back to our Stormpath Equipment Application trooperapp.com and the URL of your main website is trooperapp.com. After signing up to Stormpath, the initial address of your ID Site might be something like happy-rebel.id.stormpath.io. You can change the ID Site&rsquo;s address to a subdomain of your company&rsquo;s website like id.trooperapp.com.</p>
+
+<p>The workflow for changing the address consists of the following steps:</p>
+
+<ul>
+<li>Get a domain name and a subdomain (if not already done)</li>
+<li>Make the subdomain an alias of your ID Site on Stormpath</li>
+<li>Enable the custom domain in Stormpath&rsquo;s ID Site configuration</li>
+<li>Input SSL information for Stormpath to host</li>
+</ul>
+
+
+<h4>Getting a domain name and a subdomain</h4>
+
+<p>If not already done, you must register a domain name and add an ID subdomain to it.</p>
+
+<div class='docs-note'><p>Working with domain names and subdomains can be confusing because it&#8217;s something most of us rarely do. Consult your system administrator, if you have one, before proceeding.</p>
+</div>
+
+
+<ul>
+<li><p><em>Purchase and register a domain name with a domain registrar.</em> You can purchase and register a domain name from any domain registrar, including GoDaddy, Yahoo! Domains, 1&amp;1, Netregistry, or Register.com. For instructions, see the Help on the registrar&rsquo;s website.</p></li>
+<li><p><em>Create a subdomain for your domain for your ID Site.</em> See the Help on the registrar&rsquo;s website for instructions on adding a subdomain. You can call the subdomain &ldquo;id&rdquo;, &ldquo;login&rdquo; or something similar. Example: id.trooperapp.com.</p></li>
+</ul>
+
+
+<h4>Making the subdomain an alias of your ID Site on Stormpath</h4>
+
+<p>The next step is to make your subdomain an alias of your ID Site on Stormpath. An alias is simply an alternate address for a website. For example, you can make the addresses &ldquo;id.trooperapp.com&rdquo; and &ldquo;happy-rebel.id.stormpath.io&rdquo; interchangeable as far as web browsers are concerned.</p>
+
+<div class='docs-note'><p>Consult your system administrator, if you have one, before proceeding.</p>
+</div>
+
+
+<p>To make your subdomain an alias of your ID Site website on Stormpath, you must use your domain registrar&rsquo;s tools and UI.  These steps will generally include:</p>
+
+<ul>
+<li>Log in to your domain registrar&rsquo;s control panel.</li>
+<li>Look for the option to change DNS records.</li>
+<li>Locate or create the CNAME records for your domain.</li>
+<li>Point the CNAME record from your subdomain (ex. &ldquo;id&rdquo; or &ldquo;login&rdquo;) to your ID Site subdomain (ex. happy-rebel.id.stormpath.io)</li>
+</ul>
+
+
+<div class='docs-note'><p>It takes time for changes to the DNS system to be implemented. Typically, it can take anywhere from a few hours to a day, depending on your Time To Live (TTL) settings in the registrar&#8217;s control panel. In the example above, the TTL is 14,400 seconds, or 4 hours.</p>
+</div>
+
+
+<h4>Enabling the custom domain in Stormpath&rsquo;s ID Site configuration</h4>
+
+<p>After making your subdomain an alias of your support ID Site on Stormpath, you must enable a custom domain in the Stormpath. If you omit this step, your subdomain will point to a error page rather than your ID Site.</p>
+
+<p>To set up a custom domain on ID Site, log into the <a href="https://api.stormpath.com">Administrator Console</a> and:</p>
+
+<ol>
+<li>Click on the <code>ID Site</code> Tab</li>
+<li>Click the <code>Custom</code> option under <code>Domain Name</code></li>
+<li>Type in the subdomain for your ID Site (ex: id.trooperapp.com)</li>
+<li>Click the <code>Update</code> button at the bottom of the page</li>
+</ol>
+
+
+<h4>Setting up SSL on your ID Site</h4>
+
+<p>Since Stormpath is hosting the ID Site under your custom subdomain, to secure it using SSL you must provide the SSL certificate information to Stormpath.Creating SSL certificates is an involved task which requires working with a certificate authority such as Verisign and includes:</p>
+
+<ol>
+<li>Generating a certificate request (CSR) with a Distinguished Name (DN) that matches your subdomain (ex. id.trooperapp.com)</li>
+<li>Provide the CSR file to a certificate authority such as Verisign. The certificate authority generates a SSL certificate and gives it to you so that it can be installed on Stormpath&rsquo;s servers.</li>
+</ol>
+
+
+<p>Once the SSL certificate is retrieved from the certificate authority, you can log into the <a href="https://api.stormpath.com">Administrator Console</a> and configure SSL by:</p>
+
+<ol>
+<li>Click on the <code>ID Site</code> Tab</li>
+<li>Open the zip to retrieve your .pem file if needed.</li>
+<li>Copy the text for the SSL certificate and Private Key to the appropriate text boxes on the <code>ID Site</code> Tab</li>
+<li>Click the <code>Update</code> button at the bottom of the page</li>
+</ol>
+
+
+<p>When the ID Site is updated, the SSL information is uploaded to Stormpath and will be update your ID Site automatically.</p>
+
+<h3><a id="customizing-id-site-look-feel-and-behavior"></a>Customizing ID Site look, feel, and behavior</h3>
+
+<p>Your ID Site can be customized to have your own look and feel. Simple customization, like adding a logo, can be doing via Stormpath&rsquo;s Admin Console.</p>
 
 <p>Below is the default look and feel for your ID Site:</p>
 
 <p><img src="/images/guides/Login.png" width="700" alt="" /></p>
 
-<p>To use your application with an ID Site, you must use the Stormpath Java SDK to enable the integration.  ID Sites enable the following workflow:</p>
+<p>More advanced customization can be achieved by forking the <a href="https://github.com/stormpath/idsite-src">default ID Site source code found on GitHub</a> and then pointing ID Site to your new GitHub repository.  Stormpath infrastructure can detect any changes to a specific branch in your GitHub repository and automatically sync your file to the Stormpath infrastructure.</p>
 
-<ol>
-<li>The user visits your application for the first time and clicks the login/sign up button</li>
-<li>The user is redirected to the ID Site using the Stormpath Java SDK</li>
-<li>The user either signs up or logs into the ID Site</li>
-<li>If successful, the ID Site will redirect the user back to your application with the assertion about the user&rsquo;s identity</li>
-</ol>
+<!-- anything we want to add here? Angular SPA? Stormpath.js? Fluffy kittens, rainbows, and unicorns? -->
 
 
-<p>In other words, your ID Site allows for application-initiated workflows and is used to supplement your application with the functionality that ID Site provides.</p>
+<h2><a id="setting-up-your-application-to-use-id-site"></a>Setting up your Application to use ID Site</h2>
 
-<p>Setting up your ID Site consists of using the Stormpath Admin Console to configure your ID Site.  Your ID Site uses a default configuration for testing purposes, but can be fully configured to host customized code or hosted through your own domain.</p>
-
-<p>To set up your ID Site, log into the Administrator Console and:</p>
-
-<ol>
-<li>Click on the <code>ID Site</code> Tab</li>
-<li>Add your application URL that will process the callback from the ID Site to the <code>Authorized Redirect URIs</code> property</li>
-<li>Click the <code>Update</code> button at the bottom of the page</li>
-</ol>
-
-
-<p>Once an ID Site is configured, a subdomain that will host your ID Site is set up on <code>stormpath.io</code>.  This follows the format of <code>tenant-name.id.stormpath.io</code> where tenant-name is the name of your Stormpath <code>Tenant</code>.</p>
-
-<p>For more advanced configurations, there are additional properties in the ID Site configuration that can help:</p>
+<p>In order to set up your application to use ID Site, you will need to install the Stormpath SDK and register the application in Stormpath.  The Stormpath SDK and hosted ID Site will do most of the work for your application, including signing and unpacking secure communication between themselves.  With the SDK installed, you will need to implement two steps:</p>
 
 <ul>
-<li>Set a Logo to appear at the top of the default ID Site UI</li>
-<li>Set a custom domain name and SSL certificate (to host your ID Site from your domain, securely)</li>
-<li>Set a custom github repo to host your ID Site (to host custom code)</li>
-</ul>
-
-
-<h2><a id="using-the-stormpath-sdk-to-enable-your-app-to-use-your-id-site"></a>Using the Stormpath SDK to Enable your App to use your ID Site</h2>
-
-<p>When a user visits your application and needs to login, sign up, or reset their password, you need to use the Stormpath Java SDK to integrate your application with your ID Site.  The Stormpath Java SDK will allow you to:</p>
-
-<ul>
-<li>Communicate securely and redirect the user to your ID Site</li>
-<li>Take a valid authentication request from the ID Site and return an <code>Account</code> object for the user</li>
-</ul>
-
-
-<p>When integrating an ID Site to your application, you can break down the integration into two steps:</p>
-
-<ul>
-<li>Sending a User to the ID Site to Authenticate / Sign up</li>
-<li>Consuming responses from the ID Site to your Application</li>
+<li>Send a User to the ID Site to Login, Register, etc.</li>
+<li>Consume responses from the ID Site to your Application</li>
 </ul>
 
 
 <h3><a id="sending-a-user-to-the-id-site-to-authenticate--sign-up"></a>Sending a User to the ID Site to Authenticate / Sign up</h3>
 
-<p>When a user wants to login to or register for your site, it is required to use the Stormpath SDK to redirect the user to the ID Site. For example, let&rsquo;s look at a login scenario:</p>
+<p>When a user wants to login to or register for your application, you will need to redirect them to your ID Site. The Stormpath SDK will generate a secure URL for the HTTP redirect on your application&rsquo;s behalf and include data needed by ID Site.</p>
+
+<p>A typical set of steps in your application are as follows:</p>
 
 <ol>
 <li>You render your application with a login button</li>
-<li>User clicks the login button which links to <code>/login</code></li>
-<li>Your application on the <code>/login</code> request:
-
-<ol>
-<li>Uses the Stormpath SDK to get the redirection URL got the ID Site</li>
-<li>Redirects the user to the ID Site URL</li>
-</ol>
-</li>
+<li>The user clicks the login button which will send a request to you server</li>
+<li>Your server will use the Stormpath SDK to get the redirection URL for the ID Site</li>
+<li>Your server responds with an HTTP 302 which redirects the user to the ID Site URL</li>
 </ol>
 
 
-<p>To build an ID Site URL for redirection, you must ask the application for an <code>ID Site URL Builder</code>.  From the builder, you can set important properties to pass information and make sure the ID Site can call back to your application.</p>
+<p>To build an ID Site URL for redirection, you must ask the Stormpath <code>Application</code> object for an <code>ID Site URL Builder</code>.  From the builder, you can set important properties to pass information and make sure the ID Site can call back to your application.</p>
 
 <p>To get an <code>ID Site URL Builder</code>:</p>
 
@@ -499,26 +605,26 @@
     IdSiteUrlBuilder idSiteBuilder = application.newIdSiteUrlBuilder();
 </code></pre>
 
-<div class='docs-info'><p><strong>Reminder</strong> - An <code>Application</code> is a representation of your real world application.  For more info check out our <a href="https://stormpath.com/tutorial/">Tutorial</a> or <a href="/java/product-guide/">Product Guide</a>.</p>
+<div class='docs-info'><p><strong>Reminder</strong> - An <code>Application</code> in Stormpath is a representation of your real world application.  For more info check out our <a href="https://stormpath.com/tutorial/">Tutorial</a> or <a href="/java/product-guide/">Product Guide</a>.</p>
 </div>
 
 
 <p>The <code>ID Site URL Builder</code> will allow you to configure the URL to include:</p>
 
 <ul>
-<li><code>Callback URI</code> &ndash; The callback URI will be called when a successful login or registration event occurs. The Callback URI is <strong>required</strong> for the builder and it must match an <code>Authorized Redirect URI</code> in the Admin Console&rsquo;s ID Site settings.</li>
-<li><code>Path</code> &ndash; an optional path for the ID Site.  The default ID Site does not require a path and will default to the login page.  There are additional pages that you can use the <code>Path</code> to get to. This is important if you would like to separate the login button from the sign up button:
+<li><code>Callback URI</code> (required)&ndash; The callback URI will be called by ID Site when a successful login or registration event occurs. The Callback URI is <strong>required</strong> for the builder and it must match an <code>Authorized Redirect URI</code> in the Admin Console&rsquo;s ID Site settings.  See the <a href="#setting-up-your-id-site">Setting up your ID Site</a> section in this guide.</li>
+<li><code>Path</code> (optional)&ndash; a relative link to a page in your ID Site.  The default ID Site does not require a path and will default to the login page.  If you would like to send the user to a specific page in ID site, like the registration page or the forgot password page, you would set that in the <code>Path</code>.  If you are using the default ID Site, the URLs are:
 
 <ul>
-<li><code>/#/register</code> &ndash; the path that will get the user to the registration page</li>
-<li><code>/#/forgot</code> &ndash; the path that will get the user to the forgot password page</li>
+<li>Registration &ndash; <code>/#/register</code></li>
+<li>Forgot Password &ndash; <code>/#/forgot</code></li>
 </ul>
 </li>
-<li><code>State</code> &ndash; an optional string that stores information that your application needs after the user is redirected back to your application.  You may need to store information about what page the user was on, or any variables that are important for your application.</li>
+<li><code>State</code> (optional) &ndash; a string that stores information that your application needs <em>after</em> the user is redirected back to your application.  You may need to store information about what page the user was on, or any variables that are important for your application.</li>
 </ul>
 
 
-<p>Once the parameters are configured on your <code>ID Site URL Builder</code>, you can call the <code>build</code> method to get a string representation of the URL to which to redirect the user.</p>
+<p>Once the parameters are configured on your <code>ID Site URL Builder</code>, you can call the <code>build</code> method to get a string representation of the URL.</p>
 
 <p>The HTTP response to the user should resemble:</p>
 
@@ -532,19 +638,24 @@
 
 <p>Creating the redirection with an <code>HTTPServletResponse</code> would follow:</p>
 
-<pre><code>HttpServletResponse response; // You'll need to initialize this properly
-
+<pre><code>response.setStatus(HTTPServletResponse.SC_FOUND);
 response.setHeader("Cache-control", "no-cache, no-store");
 response.setHeader("Pragma", "no-cache");
 response.setHeader("Expires", "-1");
 response.setHeader("Location", idSiteBuilder.build());
 </code></pre>
 
+<!-- do we want to include the example? -->
+
+
+<!-- 
+To demonstrate how the SDK works, we’ll use an example. Imagine you are  building a Stormtrooper application for managing Stormtrooper equipment— like awesome helmets and blasters. The application is using Stormpath's ID Site for authentication.
+-->
+
+
 <h3><a id="consuming-responses-from-the-id-site-to-your-application"></a>Consuming responses from the ID Site to your Application</h3>
 
-<p>Once the user has logged in, created an account, or verified an account, the ID Site will redirect the user back to your application using the <code>Callback URI</code> set on the <code>ID Site URL Builder</code>.  Your application needs to have logic to handle the callback and get the information about the user&rsquo;s account.  The Stormpath SDK has APIs to help your application get this information.</p>
-
-<p>To demonstrate how the SDK works, we’ll use an example. Imagine you are  building a Stormtrooper app for managing Stormtrooper equipment— like awesome helmets and blasters. The app is using Stormpath&rsquo;s ID Site for authentication.  The <code>Callback URI</code> that was set when configuring the <code>ID Site URL Builder</code> is <code>http://trooperapp.com/authenticate</code>.  The <code>/authenticate</code> endpoint is wired to call a method in your servlet.  The app can use the Stormpath Java SDK and the <code>Application</code> object to create an <code>ID Site Callback Handler</code>.  The callback handler will allow you to get access to the account and other important properties.</p>
+<p>Once the user has logged in, created an account, or verified an account, the ID Site will redirect the user along with a security assertion back to your application.  ID Site will use the <code>Callback URI</code> you included when you first redirected the user to ID Site.  The Stormpath SDK will verify the cryptographic signature on the assertion and and unpacks the user information.</p>
 
 <p>For example:</p>
 
@@ -557,7 +668,7 @@ response.setHeader("Location", idSiteBuilder.build());
 }   
 </code></pre>
 
-<p>The <code>AccountResult</code> will be able to give your app the ability to understand:</p>
+<p>The <code>AccountResult</code> will be able to give your application the ability to understand:</p>
 
 <ul>
 <li>The <code>Account</code> for the successful account result</li>
@@ -566,11 +677,24 @@ response.setHeader("Location", idSiteBuilder.build());
 </ul>
 
 
-<p>Once the account is retrieved, you can get access to additional account properties that are important to your app, such as <code>Groups</code> or <code>CustomData</code></p>
+<p>Once the account is retrieved, you can get access to additional account properties that are important to your application, such as <code>Groups</code> or <code>CustomData</code></p>
+
+<!-- 
+## Notes on security
+A major feature of ID Site is security.  With ID Site:
+
+All user authentication is handled on a Stormpath hosted ID Site to Stormpath directly.  So they're no additional hops to secure
+
+Communication between ID site and Stormpath is using one time use tokens.  So no replay attacks.  
+
+Info being sent from ID site back to your app is being signed that only your app and id site have shared secret.  All of this is transparent to the developer its all handled by the sdk.
+
+ALl comm is over SSL.  Host their SSL -->
+
 
 <h2><a id="wrapping-up"></a>Wrapping up</h2>
 
-<p>In this guide, we discussed how to set up a Stormpath ID Site as well as how your application can leverage your ID Site to provide common application work flows around user login and registration. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#115;&#x75;&#112;&#112;&#111;&#x72;&#116;&#64;&#115;&#x74;&#x6f;&#x72;&#x6d;&#x70;&#97;&#116;&#104;&#x2e;&#99;&#111;&#109;&#x2e;">&#x73;&#x75;&#112;&#112;&#111;&#x72;&#x74;&#64;&#115;&#116;&#x6f;&#x72;&#109;&#112;&#97;&#116;&#104;&#46;&#x63;&#x6f;&#x6d;&#46;</a></p>
+<p>In this guide, we discussed how to set up a Stormpath ID Site as well as how your application can leverage your ID Site to provide common application work flows around user login and registration. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#115;&#117;&#x70;&#112;&#x6f;&#114;&#x74;&#64;&#115;&#116;&#111;&#114;&#109;&#x70;&#x61;&#116;&#104;&#46;&#99;&#x6f;&#x6d;&#x2e;">&#115;&#x75;&#112;&#112;&#x6f;&#114;&#x74;&#64;&#x73;&#x74;&#x6f;&#x72;&#x6d;&#112;&#x61;&#116;&#104;&#x2e;&#x63;&#111;&#x6d;&#x2e;</a></p>
 
             <div id="spread-word">
 <hr>
@@ -905,6 +1029,15 @@ addthis:url="https://stormpath.com" >
 			
 				<a href="/guides/multi-tenant">Multi-Tenant Applications with Stormpath</a>
 			
+			
+			</li>
+		
+			<li class="leaf active-trail">
+			
+				<a href="/guides/using-id-site">Using ID Site</a>
+			
+			
+				<ul class="menu"><li class="leaf"><a href="#what-is-an-id-site" data-level="0" class="fragment">What is an ID Site</a><ul class="menu"></ul></li><li class="leaf"><a href="#why-should-i-use-stormpath-id-site" data-level="0" class="fragment">Why should I use Stormpath ID Site?</a><ul class="menu"></ul></li><li class="leaf"><a href="#how-does-id-site-work" data-level="0" class="fragment">How does ID Site Work</a><ul class="menu"></ul></li><li class="leaf"><a href="#setting-up-your-id-site" data-level="0" class="fragment">Setting up your ID Site</a><ul class="menu"><li class="leaf"><a href="#setting-your-own-custom-domain-name-and-ssl-certificate" data-level="1" class="fragment">Setting your own custom domain name and SSL certificate</a><ul class="menu"></ul></li><li class="leaf"><a href="#customizing-id-site-look-feel-and-behavior" data-level="1" class="fragment">Customizing ID Site look, feel, and behavior</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#setting-up-your-application-to-use-id-site" data-level="0" class="fragment">Setting up your Application to use ID Site</a><ul class="menu"><li class="leaf"><a href="#sending-a-user-to-the-id-site-to-authenticate--sign-up" data-level="1" class="fragment">Sending a User to the ID Site to Authenticate / Sign up</a><ul class="menu"></ul></li><li class="leaf"><a href="#consuming-responses-from-the-id-site-to-your-application" data-level="1" class="fragment">Consuming responses from the ID Site to your Application</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#wrapping-up" data-level="0" class="fragment">Wrapping up</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
