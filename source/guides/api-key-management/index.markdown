@@ -133,9 +133,9 @@ The `ApiKey` returned will have the following properties:
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `id` | The unique identifier for the API Key | String | <span>--</span>
-`secret` | The name of the tenant. Unique across all tenants. | String | --
+`secret` | The secret for the API key. | String | --
 `status` | A property that represent the status of the key.  Keys with a disabled status will not be able to authenticate. | ApiKeyStatus | ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED, 
-`account` | A link to the ApiKey's applications. | Account | <span>--</span>
+`account` | A link to the ApiKey's account. | Account | <span>--</span>
 `tenant` | A link to the ApiKey's tenant. | Tenant | <span>--</span>
 
 After the API Key is created, you will need to deliver the API Key ID and Secret to the developer so they can start using them to access your API securely.  In most cases, this is done by displaying the API keys on a web page.   
