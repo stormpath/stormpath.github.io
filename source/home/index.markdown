@@ -22,7 +22,7 @@ alias: [/index.html]
           <h2 class="pane-title">Stormpath Guides</h2>
           <div class="pane-content">
             <ul class="menu">
-              <li class="first leaf"><a href="/guides/multi-tenant" title="">Multitenancy Guide</a></li>
+              <li class="first leaf"><a href="/guides/multi-tenant" title="">Multi-Tenant SaaS Guide</a></li>
               <li class="leaf"><a href="/guides/using-id-site" title="">ID Site Guide</a></li>
               <li class="leaf"><a href="/guides/social-integrations" title="">Social Integration Guide</a></li>
               <li class="leaf"><a href="/guides/api-key-management" title="">API Key Management Guide</a></li>

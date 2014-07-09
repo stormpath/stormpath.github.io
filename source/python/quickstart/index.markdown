@@ -239,7 +239,7 @@ showing this example to illustrate how it works.
 In addition to user registration and login, Stormpath can do a lot more!
 
 - Create and manage user groups.
-- Partition multi-tenant account data.
+- Partition multi-tenant SaaS account data.
 - Simplify social login with providers like Google and Facebook.
 - Manage developer API keys and access tokens.
 - Verify new users via email.
@@ -261,6 +261,6 @@ learn more?  Here are a few other helpful resources you can jump into.
 * Dig in deeper with the [Official Python Product Guide](/python/product-guide).
 * Use Stormpath and Flask to build an awesome web app with the [Flask Documentation](http://flask-stormpath.readthedocs.org/en/latest/).
 * [Build a Flask app in 30 minutes](https://stormpath.com/blog/build-a-flask-app-in-30-minutes/).
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
+* Learn to easily partition user data with our [Guide to Building Multitenant SaaS Applications](/guides/multi-tenant/).
 * Easily support Social Login with [Google](/python/product-guide/#integrating-with-google) and [Facebook](/python/product-guide#integrating-with-facebook) integrations in Python.
 

@@ -268,7 +268,7 @@ If the authentication attempt fails, you will see an [error response](/rest/prod
 In addition to user registration and login, Stormpath can do a lot more!
 
 - Create and manage user groups.
-- Partition multi-tenant account data.
+- Partition multi-tenant SaaS account data.
 - Simplify social login with providers like Google and Facebook.
 - Manage developer API keys and access tokens.
 - Verify new users via email.
@@ -289,6 +289,6 @@ learn more?  Here are a few other helpful resources you can jump into.
 
 * Dig in deeper with the [Official REST API Product Guide](/rest/product-guide).
 * Try out Stormpath in your favorite programming language with our [7-Minute Tutorial](https://stormpath.com/tutorial). 
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
+* Learn to easily partition user data with our [Guide to Building Multitenant SaaS Applications](/guides/multi-tenant/).
 * Easily support Google and Facebook Login with our new [Social Login & Integration Guide](/guides/social-integrations/).
 

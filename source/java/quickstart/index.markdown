@@ -259,7 +259,7 @@ Authenticating users is equally simple -- you can specify either a `username` or
 In addition to user registration and login, Stormpath can do a lot more!
 
 - Create and manage user groups.
-- Partition multi-tenant account data.
+- Partition multi-tenant SaaS account data.
 - Simplify social login with providers like Google and Facebook.
 - Manage developer API keys and access tokens.
 - Verify new users via email.
@@ -281,6 +281,6 @@ learn more?  Here are a few other helpful resources you can jump into.
 * Dig in deeper with the [Official Java Product Guide](/java/product-guide).
 * [Build an Apache Shiro + Stormpath Web App in 30 minutes](http://shiro.apache.org/webapp-tutorial.html).
 * Checkout our integrations to [Apache Shiro](/integrations/#sample-apps-java-container-jump) or [Spring Security](/integrations/#sample-apps-java-container-jump).
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
+* Learn to easily partition user data with our [Guide to Building Multitenant SaaS Applications](/guides/multi-tenant/).
 * Easily support Social Login with [Google](/java/product-guide/#integrating-with-google) and [Facebook](/java/product-guide#integrating-with-facebook) integrations in Java.
 
