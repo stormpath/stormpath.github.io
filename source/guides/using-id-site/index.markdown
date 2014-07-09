@@ -44,7 +44,7 @@ On a Login, your ID Site will validate the user's credentials and create a secur
 
 Once your application receives the security assertion, your application will use the Stormpath SDK to verify and unpack the user data.  --> 
 
-![](/images/docs/ID-Diagram.png)
+![](/images/docs/ID-diagram.png)
 
 <!-- sequence diagram -->
 
