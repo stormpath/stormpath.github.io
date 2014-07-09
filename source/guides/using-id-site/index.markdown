@@ -40,9 +40,11 @@ After the user has logged in successfully, they will be redirected back to your 
 
 <!-- When a user wants to login to or register for your application, your application will redirect them to your ID Site.  On your ID Site, the user will see will enter their data and complete the appropriate action, like Login.  ID Site will automatically detect any Workflow or Social Login configurations you have set in Stormpath and show the appropriate buttons, messaging, and behavior.
 
-On a Login, your ID Site will validate the user's credentials and create a security assertion that will be sent back to your application-- letting your application know that the current user is authenticated and should be trusted.  That security assertion is cryptographically signed by Stormpath using a shared secret known by your application.  This means that only Stormpath and your application can understand the assertion, thwarting certain attack vectors including [man-in-the-middle attacks](http://en.wikipedia.org/wiki/Man-in-the-middle_attack). 
+On a Login, your ID Site will validate the user's credentials and create a security assertion that will be sent back to your application letting your application know that the current user is authenticated and should be trusted.  That security assertion is cryptographically signed by Stormpath using a shared secret known by your application.  This means that only Stormpath and your application can understand the assertion, thwarting certain attack vectors including [man-in-the-middle attacks](http://en.wikipedia.org/wiki/Man-in-the-middle_attack). 
 
 Once your application receives the security assertion, your application will use the Stormpath SDK to verify and unpack the user data.  --> 
+
+![](/images/docs/ID-Diagram.png)
 
 <!-- sequence diagram -->
 
@@ -75,8 +77,74 @@ For more advanced configurations, there are additional properties in the ID Site
 
 ### Setting your own custom domain name and SSL certificate
 
-<!-- needs content -->
-<!-- screenshot -->
+By default, the address of your ID Site is tenant-name.id.stormpath.io. However, you can change the address to a subdomain of your own website, such as id.mysite.com. This is called setting up a custom domain name.
+
+For example, going back to our Stormpath Equipment Application trooperapp.com and the URL of your main website is trooperapp.com. After signing up to Stormpath, the initial address of your ID Site might be something like happy-rebel.id.stormpath.io. You can change the ID Site's address to a subdomain of your company's website like id.trooperapp.com.
+
+The workflow for changing the address consists of the following steps:
+
++ Get a domain name and a subdomain (if not already done)
++ Make the subdomain an alias of your ID Site on Stormpath
++ Enable the custom domain in Stormpath's ID Site configuration
++ Input SSL information for Stormpath to host
+
+#### Getting a domain name and a subdomain
+
+If not already done, you must register a domain name and add an ID subdomain to it.
+
+{% docs note %}
+Working with domain names and subdomains can be confusing because it's something most of us rarely do. Consult your system administrator, if you have one, before proceeding.
+{% enddocs %}
+
++ _Purchase and register a domain name with a domain registrar._ You can purchase and register a domain name from any domain registrar, including GoDaddy, Yahoo! Domains, 1&1, Netregistry, or Register.com. For instructions, see the Help on the registrar's website. 
+
++ _Create a subdomain for your domain for your ID Site._ See the Help on the registrar's website for instructions on adding a subdomain. You can call the subdomain "id", "login" or something similar. Example: id.trooperapp.com.
+
+#### Making the subdomain an alias of your ID Site on Stormpath
+
+The next step is to make your subdomain an alias of your ID Site on Stormpath. An alias is simply an alternate address for a website. For example, you can make the addresses "id.trooperapp.com" and "happy-rebel.id.stormpath.io" interchangeable as far as web browsers are concerned.
+
+{% docs note%}
+Consult your system administrator, if you have one, before proceeding.
+{% enddocs %}
+
+To make your subdomain an alias of your ID Site website on Stormpath, you must use your domain registrar's tools and UI.  These steps will generally include:
+
++ Log in to your domain registrar's control panel.
++ Look for the option to change DNS records.
++ Locate or create the CNAME records for your domain.
++ Point the CNAME record from your subdomain (ex. "id" or "login") to your ID Site subdomain (ex. happy-rebel.id.stormpath.io)
+
+{% docs note %}
+It takes time for changes to the DNS system to be implemented. Typically, it can take anywhere from a few hours to a day, depending on your Time To Live (TTL) settings in the registrar's control panel. In the example above, the TTL is 14,400 seconds, or 4 hours.
+{% enddocs%}
+
+#### Enabling the custom domain in Stormpath's ID Site configuration
+
+After making your subdomain an alias of your support ID Site on Stormpath, you must enable a custom domain in the Stormpath. If you omit this step, your subdomain will point to a error page rather than your ID Site.
+
+To set up a custom domain on ID Site, log into the [Administrator Console](https://api.stormpath.com) and:
+
+1. Click on the `ID Site` Tab
+2. Click the `Custom` option under `Domain Name`
+3. Type in the subdomain for your ID Site (ex: id.trooperapp.com)
+4. Click the `Update` button at the bottom of the page
+
+#### Setting up SSL on your ID Site 
+
+Since Stormpath is hosting the ID Site under your custom subdomain, to secure it using SSL you must provide the SSL certificate information to Stormpath.Creating SSL certificates is an involved task which requires working with a certificate authority such as Verisign and includes:
+
+1. Generating a certificate request (CSR) with a Distinguished Name (DN) that matches your subdomain (ex. id.trooperapp.com)
+2. Provide the CSR file to a certificate authority such as Verisign. The certificate authority generates a SSL certificate and gives it to you so that it can be installed on Stormpath's servers. 
+
+Once the SSL certificate is retrieved from the certificate authority, you can log into the [Administrator Console](https://api.stormpath.com) and configure SSL by:
+
+1. Click on the `ID Site` Tab
+2. Open the zip to retrieve your .pem file if needed.
+3. Copy the text for the SSL certificate and Private Key to the appropriate text boxes on the `ID Site` Tab
+4. Click the `Update` button at the bottom of the page
+
+When the ID Site is updated, the SSL information is uploaded to Stormpath and will be update your ID Site automatically.
 
 ### Customizing ID Site look, feel, and behavior
 Your ID Site can be customized to have your own look and feel. Simple customization, like adding a logo, can be doing via Stormpath's Admin Console.
@@ -86,8 +154,6 @@ Below is the default look and feel for your ID Site:
 ![](/images/guides/Login.png =700x) 
 
 More advanced customization can be achieved by forking the [default ID Site source code found on GitHub](https://github.com/stormpath/idsite-src) and then pointing ID Site to your new GitHub repository.  Stormpath infrastructure can detect any changes to a specific branch in your GitHub repository and automatically sync your file to the Stormpath infrastructure.
-
-<!-- screenshot? -->
 
 <!-- anything we want to add here? Angular SPA? Stormpath.js? Fluffy kittens, rainbows, and unicorns? -->
 
@@ -142,7 +208,7 @@ The HTTP response to the user should resemble:
 
 Creating the redirection with an `HTTPServletResponse` would follow:
 
-    response.setStatus(302, "Found");
+    response.setStatus(HTTPServletResponse.SC_FOUND);
     response.setHeader("Cache-control", "no-cache, no-store");
     response.setHeader("Pragma", "no-cache");
     response.setHeader("Expires", "-1");
@@ -183,7 +249,7 @@ All user authentication is handled on a Stormpath hosted ID Site to Stormpath di
 
 Communication between ID site and Stormpath is using one time use tokens.  So no replay attacks.  
 
-Info being sent from ID site back to your app is being signed that only your app and id site have shared secret.  All of this is transparent to the developer-- its all handled by the sdk.
+Info being sent from ID site back to your app is being signed that only your app and id site have shared secret.  All of this is transparent to the developer its all handled by the sdk.
 
 ALl comm is over SSL.  Host their SSL -->
 
