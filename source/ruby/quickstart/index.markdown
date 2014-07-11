@@ -207,7 +207,7 @@ showing this example to illustrate how it works.
 In addition to user registration and login, Stormpath can do a lot more!
 
 - Create and manage user groups.
-- Partition multi-tenant account data.
+- Partition multi-tenant SaaS account data.
 - Simplify social login with providers like Google and Facebook.
 - Manage developer API keys and access tokens.
 - Verify new users via email.
@@ -226,5 +226,5 @@ You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
 * Dig in deeper with the [Official Ruby Product Guide](/ruby/product-guide).
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
+* Learn to easily partition user data with our [Guide to Building Multitenant SaaS Applications](/guides/multi-tenant/).
 

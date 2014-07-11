@@ -246,7 +246,7 @@ showing this example to illustrate how it works.
 In addition to user registration and login, Stormpath can do a lot more!
 
 - Create and manage user groups.
-- Partition multi-tenant account data.
+- Partition multi-tenant SaaS account data.
 - Simplify social login with providers like Google and Facebook.
 - Manage developer API keys and access tokens.
 - Verify new users via email.
@@ -267,6 +267,6 @@ learn more?  Here are a few other helpful resources you can jump into.
 
 * Dig in deeper with the [Official Node.js Guide](/nodejs/api/home).
 * Use Stormpath and Express to build an awesome web app with the [Express.js + Passport App Guide](https://stormpath.com/blog/build-app-nodejs-express-passport-stormpath/).
-* Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).
+* Learn to easily partition user data with our [Guide to Building Multitenant SaaS Applications](/guides/multi-tenant/).
 * Easily support Google and Facebook Login with our new [Social Login & Integration Guide](/guides/social-integrations/).
 
