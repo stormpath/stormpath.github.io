@@ -3529,6 +3529,12 @@ A request returns a Collection Resource containing the group memberships to whic
 
 Groups Membership resources support the full suite of CRUD commands and other interactions. Please see the [Group Memberships section](#group-memberships) for more information.
 
+## Custom Data
+
+{% docs note %}
+Custom Data is not available in the Stormpath PHP SDK and is currently under development.  For early access, please contact support@stormpath.com. 
+{% enddocs %}
+
 ***
 
 <a class="anchor" name="administration"></a>
