@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Stormpath PHP Quickstart - Stormpath</title>
+  <title>Stormpath Express Quickstart - Stormpath</title>
   <meta name="author" content="Stormpath, Inc.">
 
   
-  <meta name="description" content="7-minute Tutorial for PHP">
+  <meta name="description" content="10-minute Tutorial for Express">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://stormpath.github.io/php/quickstart">
+  <link rel="canonical" href="http://stormpath.github.io/express/quickstart">
   <link href="/favicon.ico" rel="icon">
 
   <style>
@@ -380,23 +380,27 @@
           <div id="content" class="column" role="main">
             <a id="main-content"></a>
             
-              <h1 class="title" id="page-title">Stormpath PHP Quickstart</h1>
+              <h1 class="title" id="page-title">Stormpath Express Quickstart</h1>
             
             <div class="sharing">
     <div class="addthis_sharing_toolbox"></div>
 </div>
-          	<p>Welcome to Stormpath&rsquo;s PHP Quickstart!</p>
+          	<p>Welcome to Stormpath&rsquo;s Express Quickstart!</p>
 
-<p>This quickstart will get you up and running with Stormpath in about 7 minutes
-and give you a good initial feel for the Stormpath PHP library.  During this
+<p>This quickstart will get you up and running with Stormpath in about 10 minutes
+and give you a good initial feel for the Stormpath Express library.  During this
 quickstart, you will do the following:</p>
 
 <ul>
-<li>Install the Stormpath library.</li>
+<li>Install the express-stormpath library.</li>
 <li>Create an API Key that allows you to make REST API calls with Stormpath.</li>
-<li>Register an Application.</li>
-<li>Create a User Account.</li>
-<li>Authenticate a User Account.</li>
+<li>Create a Stormpath Application.</li>
+<li>Create an Express application.</li>
+<li>Initialize the Stormpath middleware.</li>
+<li>Register a new User Account.</li>
+<li>Logout a user.</li>
+<li>Force a user to be logged in to view content.</li>
+<li>Log into your new User account.</li>
 </ul>
 
 
@@ -408,43 +412,19 @@ of this quickstart.</p>
 
 <hr />
 
-<h2><a id="install-the-stormpath-library"></a>Install the Stormpath Library</h2>
+<h2><a id="install-the-express-stormpath-library"></a>Install the express-stormpath Library</h2>
 
-<div class='docs-note'><p>Stormpath works with PHP <em>5.3</em> and higher.  This documentation covers version
-<em>1.0.0.beta</em> of our PHP library.</p>
+<div class='docs-note'><p>express-stormpath only works with Express 4.x currently.</p>
 </div>
 
 
-<p>You can install <a href="https://github.com/stormpath/stormpath-sdk-php">Stormpath</a> using <a href="https://getcomposer.org/">composer</a>.</p>
+<p>You can install <a href="https://github.com/stormpath/stormpath-express">express-stormpath</a> using <a href="https://www.npmjs.org/">npm</a>:</p>
 
-<ol>
-<li><p>Create a directory for testing Stormpath:</p>
+<pre><code>$ npm install express
+$ npm install express-stormpath
+</code></pre>
 
-<pre><code> $ mkdir ~/test
- $ cd ~/test
-</code></pre></li>
-<li><p>Create a <code>composer.json</code> file to specify the correct Stormpath library version required:</p>
-
-<pre><code> {
-   "require": {
-     "stormpath/sdk": "1.0.*@beta"
-   }
- }
-</code></pre></li>
-<li><p>If you still haven’t, install composer:</p>
-
-<pre><code> curl -sS https://getcomposer.org/installer | php    
-</code></pre></li>
-<li><p>Install the Stormpath PHP SDK on your application root using:</p>
-
-<pre><code> php composer.phar install
-</code></pre></li>
-</ol>
-
-
-<div class='docs-tip'><p>If you are unable to use Composer, please refer to the <a href="https://github.com/stormpath/stormpath-sdk-php#download-the-source-code">Library&#8217;s Readme</a> for instructions on downloading the source code.</p>
-</div>
-
+<p>You may need to run the above commands with <code>sudo</code> depending on your npm setup.</p>
 
 <hr />
 
@@ -484,121 +464,206 @@ example:</p>
 
 
 <p>The <code>apiKey.properties</code> file holds your API key information, and can be used to
-easily authentication with the Stormpath library.</p>
+easily authenticate with the Stormpath library.</p>
 
 <hr />
 
-<h2><a id="create-a-client"></a>Create a Client</h2>
+<h2><a id="create-a-stormpath-application"></a>Create a Stormpath Application</h2>
 
-<p>The first step to working with Stormpath is creating a Stormpath
-<code>Client</code> using your <code>apiKey.properties</code> file.  The <code>Client</code> object is what
-allows you to communicate with Stormpath.</p>
+<p>When working with Stormpath, you&rsquo;ll need to create an <code>Application</code>.  An
+<code>Application</code> is Stormpath&rsquo;s name for a project.  If you&rsquo;re building a website
+named &ldquo;dronewars.com&rdquo;, you&rsquo;d probably want to create a Stormpath <code>Application</code>
+named &ldquo;dronewars&rdquo;.</p>
 
-<p>First, open the PHP shell by running:</p>
+<p>To create an <code>Application</code>, visit your <a href="https://api.stormpath.com/ui/dashboard">Stormpath
+Dashboard</a> then click the &ldquo;Applications&rdquo;
+tab at the top of the screen.</p>
 
-<pre><code>$ php -a
-</code></pre>
+<p>Next, click the &ldquo;Register Application&rdquo; button.</p>
 
-<p>Then, create a new Stormpath <code>Client</code> with the following code:</p>
+<p>In the name field, enter the value &ldquo;Express Test&rdquo;.  You can leave the description
+field blank.</p>
 
-<pre><code>require 'vendor/autoload.php';
-\Stormpath\Client::$apiKeyFileLocation = $_SERVER['HOME'] .  '/.stormpath/apiKey.properties';
-</code></pre>
+<p>Click the &ldquo;Save&rdquo; button to create your new <code>Application</code>.  This
+<code>Application</code> will be used through the rest of this quickstart.</p>
 
-<p>The <code>Client</code> instance is an application singleton.  You should reuse this
-instance throughout your application code.</p>
+<p>Lastly, in your new Application, copy the &ldquo;REST URL&rdquo;, you will need this later
+on.</p>
 
 <hr />
 
-<h2><a id="create-an-application"></a>Create an Application</h2>
+<h2><a id="create-an-express-application"></a>Create an Express Application</h2>
 
-<p>Before you can create user accounts you&rsquo;ll need to create a Stormpath
-<code>Application</code>.  An <code>Application</code> in Stormpath is the same thing as a project.
-If you&rsquo;re building a web app named &ldquo;Lightsabers Galore&rdquo;, you&rsquo;d want to name
-your Stormpath <code>Application</code> &ldquo;Lightsabers Galore&rdquo; as well.</p>
+<p>The first step to working with express-stormpath is creating a basic Express app.</p>
 
-<p>You can create an <code>Application</code> using the client you created in the previous
-step:</p>
+<p>Place the code below into a file named <code>app.js</code>:</p>
 
-<pre><code>$application = \Stormpath\Resource\Application::create(
-    array(
-        'name' =&gt; 'My Awesome Application-PHP',
-        'description' =&gt; 'Super awesome!',
-    ),
-    array('createDirectory' =&gt; true)
-);
+<pre><code>var express = require('express');
+
+var app = express();
+app.get('/', function(req, res) {
+  res.send('home page!');
+});
+
+app.get('/secret', function(req, res) {
+  res.send('secret page!');
+});
+
+app.listen(3000);
 </code></pre>
 
-<p>The code above will create a new <code>Application</code>, which we can use later to do
-stuff like:</p>
+<p>To start your new Express app, open the terminal and run:</p>
+
+<pre><code>$ node app.js
+</code></pre>
+
+<p>You can then test your two predefined routes by visiting both:</p>
 
 <ul>
-<li>Create user accounts.</li>
-<li>Log users into their account.</li>
-<li>etc.</li>
+<li><a href="http://localhost:3000">http://localhost:3000</a> and</li>
+<li><a href="http://localhost:3000/secret">http://localhost:3000/secret</a></li>
 </ul>
 
 
-<div class='docs-note'><p>The only required field when creating an Application is <code>name</code>.  Descriptions
-are optional!</p>
+<div class='docs-tip'><p>If you want to see all the code from this tutorial in one file, check out this
+<a href="https://gist.github.com/rdegges/d5567652a8a43db80563">Gist on GitHub</a>:  <a href="https://gist.github.com/rdegges/d5567652a8a43db80563">https://gist.github.com/rdegges/d5567652a8a43db80563</a></p>
 </div>
 
 
 <hr />
 
-<h2><a id="create-a-user-account"></a>Create a User Account</h2>
+<h2><a id="initialize-the-stormpath-middleware"></a>Initialize the Stormpath Middleware</h2>
 
-<p>Now that we&rsquo;ve created an Application, let&rsquo;s create a user <code>Account</code>!  To do
-this, you&rsquo;ll need to use your <code>Application</code> (<em>created in the previous step</em>):</p>
+<p>The next step is to initialize the Stormpath middleware.  Modify your <code>app.js</code>
+file to look like the following:</p>
 
-<pre><code>$account = \Stormpath\Resource\Account::instantiate(
-    array(
-        'givenName' =&gt; 'Joe',
-        'surname' =&gt; 'Stormtrooper',
-        'username' =&gt; 'tk421',
-        'email' =&gt; 'tk421@stormpath.com',
-        'password' =&gt; 'Changeme1',
-    )
-);
-$application-&gt;createAccount($account);
+<pre><code>var express = require('express');
+var stormpath = require('express-stormpath');
+
+var app = express();
+app.use(stormpath.init(app, {
+  apiKeyFile: process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + '/.stormpath/apiKey.properties',
+  secretKey: 'some_random_long_string_here',
+  application: 'https://api.stormpath.com/v1/applications/xxx',
+}));
+
+app.get('/', function(req, res) {
+  res.send('home page!');
+});
+
+app.get('/secret', function(req, res) {
+  res.send('secret page!');
+});
+
+app.listen(3000);
 </code></pre>
 
-<p>Stormpath Accounts have several basic fields (<code>given_name</code>, <code>surname</code>, <code>email</code>,
-etc&hellip;).</p>
+<p>The variables passed into <code>stormpath.init</code> tell Stormpath what your credentials
+are, as well as which Stormpath Application to use.</p>
 
-<div class='docs-note'><p>The required fields are: <code>given_name</code>, <code>surname</code>, <code>email</code>, and <code>password</code>.</p>
+<p>Be sure to set <code>application</code> to your Stormpath REST URL that you copied down
+previously after creating your Stormpath Application.</p>
+
+<div class='docs-note'><p>The <code>secretKey</code> variable should be set to a long, random string that is hard to
+guess.  This variable is used internally to encrypt user sessions &#8211; it is
+<strong>critically important</strong> that this value never be made public.</p>
 </div>
 
-
-<p>Once you&rsquo;ve created an Account, you can access the Account&rsquo;s data by referencing
-the attribute names, for instance:</p>
-
-<pre><code>echo "Hi, " . $account-&gt;givenName . " " . $account-&gt;surname . "\n";
-</code></pre>
 
 <hr />
 
-<h2><a id="authenticate-a-user-account"></a>Authenticate a User Account</h2>
+<h2><a id="register-a-new-user"></a>Register a New User</h2>
 
-<p>Authenticating users is equally simple &mdash; you can specify either a <code>username</code> or
-<code>email</code> address, along with a <code>password</code>:</p>
+<p>Now that express-stormpath is setup, let&rsquo;s register a new user!</p>
 
-<pre><code>$authResult = $application-&gt;authenticate('tk421', 'Changeme1');
-$account = $authResult-&gt;account;
-echo $account-&gt;givenName . " " . $account-&gt;surname . " Successfully Authenticated \n";
+<p>To do this, visit <a href="http://localhost:3000/register">http://localhost:3000/register</a> &mdash; you should see a
+registration page that looks like this:</p>
 
-$authResult = $application-&gt;authenticate('tk421@stormpath.com', 'Changeme1');
-$account = $authResult-&gt;account;
-echo $account-&gt;givenName . " " . $account-&gt;surname . " Successfully Authenticated \n";
-</code></pre>
+<p><img class="center-block" src="../../images/flask-registration-page.png" title="Flask Registration Page" alt="Flask Registration Page"/></p>
 
-<p>If the authentication request is successful, an <code>Account</code> resource will be
-returned.</p>
+<p>Once you&rsquo;re at the registration page, enter your user information and create a
+new user account!</p>
 
-<div class='docs-note'><p>This is typically only done when a user logs into a web app &#8211; we&#8217;re just
-showing this example to illustrate how it works.</p>
+<p>By default, express-stormpath ships with a registration and login page, with
+sensible defaults.  This behavior is fully customizable.</p>
+
+<p>Once you&rsquo;ve created an account, you&rsquo;ll be automatically redirected back to the
+home page of your site.</p>
+
+<div class='docs-note'><p>You probably noticed that you couldn’t register a user account without
+specifying a sufficiently strong password.  This is because, by default,
+Stormpath enforces certain password strength rules on your Stormpath
+Directories.</p>
+
+<p>If you’d like to change these password strength rules (or disable them), you can
+do so easily by visiting the Stormpath dashboard, navigating to your user
+Directory, then changing the &#8220;Password Strength Policy&#8221;.</p>
 </div>
 
+
+<hr />
+
+<h2><a id="log-out-a-user"></a>Log out a User</h2>
+
+<p>Now that we&rsquo;ve created a user, let&rsquo;s log our new user out.  To do this, visit
+<a href="http://localhost:3000/logout">http://localhost:3000/logout</a> &mdash; you will then be logged out of your account and
+returned to them home page once again.</p>
+
+<p>express-stormpath provides a built-in logout view which makes it easy to log users
+out.</p>
+
+<hr />
+
+<h2><a id="create-a-restricted-view"></a>Create a Restricted View</h2>
+
+<p>Next, we&rsquo;ll add authentication enforcement to one of our views.  In your
+<code>app.js</code> file, modify your <code>secret</code> route to look like:</p>
+
+<pre><code>app.get('/secret', stormpath.loginRequired, function(req, res) {
+  res.send('secret page!');
+});
+</code></pre>
+
+<p>To test this out, restart your express web server then visit
+<a href="http://localhost:3000/secret">http://localhost:3000/secret</a> &mdash; you should get redirected to a login page that
+looks like this:</p>
+
+<p><img class="center-block" src="../../images/flask-login-page.png" title="Flask Login Page" alt="Flask Login Page"/></p>
+
+<h2><a id="log-a-user-into-their-account"></a>Log a User Into Their Account</h2>
+
+<p>Now that we&rsquo;re at the login page, enter your user credentials, then log in.  You
+should now be able to see the <code>secret</code> route!</p>
+
+<p>express-stormpath provides a very flexible login view by default, which allows you
+to do many things (including social login).</p>
+
+<hr />
+
+<h2><a id="final-code"></a>Final Code</h2>
+
+<p>In the end, your Flask app should look like this:</p>
+
+<pre><code>var express = require('express');
+var stormpath = require('express-stormpath');
+
+var app = express();
+app.use(stormpath.init(app, {
+  apiKeyFile: process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'] + '/.stormpath/apiKey.properties',
+  secretKey: 'some_random_long_string_here',
+  application: 'https://api.stormpath.com/v1/applications/xxx',
+}));
+
+app.get('/', function(req, res) {
+  res.send('home page!');
+});
+
+app.get('/secret', stormpath.loginRequired, function(req, res) {
+  res.send('secret page!');
+});
+
+app.listen(3000);
+</code></pre>
 
 <hr />
 
@@ -608,13 +673,12 @@ showing this example to illustrate how it works.</p>
 
 <ul>
 <li>Create and manage user groups.</li>
-<li>Partition multi-tenant SaaS account data.</li>
+<li>Partition multi-tenant account data.</li>
 <li>Simplify social login with providers like Google and Facebook.</li>
 <li>Manage developer API keys and access tokens.</li>
 <li>Verify new users via email.</li>
 <li>Automatically provide secure password reset functionality.</li>
 <li>Centralize your user store across multiple applications.</li>
-<li>Plug into your favorite web framework (<em>like Symfony!</em>).</li>
 </ul>
 
 
@@ -628,8 +692,9 @@ showing this example to illustrate how it works.</p>
 learn more?  Here are a few other helpful resources you can jump into.</p>
 
 <ul>
-<li>Dig in deeper with the <a href="/php/product-guide">Official PHP Product Guide</a>.</li>
-<li>Learn to easily partition user data with our <a href="/guides/multi-tenant/">Guide to Building Multitenant SaaS Applications</a>.</li>
+<li>Dig in deeper with the <a href="http://docs.stormpath.com/nodejs/express/">express-stormpath Docs</a>.</li>
+<li>Learn how to use our raw <a href="http://docs.stormpath.com/nodejs/api/home">Node API</a>.</li>
+<li>Learn to easily partition user data with our <a href="/guides/multi-tenant/">Guide to Building Multitenant Applications</a>.</li>
 </ul>
 
 
@@ -696,7 +761,7 @@ addthis:url="https://stormpath.com" >
  	
     <option value="ruby">Ruby</option>
  	
-    <option value="php" selected>PHP</option>
+    <option value="php">PHP</option>
  	
     <option value="guides">Guides</option>
  	
@@ -948,35 +1013,6 @@ addthis:url="https://stormpath.com" >
   
         
   	
-                
-                
-		<ul class="menu">
-		
-			<li class="leaf active-trail">
-			
-				<a href="/php/quickstart">Quickstart</a>
-			
-			
-				<ul class="menu"><li class="leaf"><a href="#install-the-stormpath-library" data-level="0" class="fragment">Install the Stormpath Library</a><ul class="menu"></ul></li><li class="leaf"><a href="#get-an-api-key" data-level="0" class="fragment">Get an API Key</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-client" data-level="0" class="fragment">Create a Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application" data-level="0" class="fragment">Create an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-user-account" data-level="0" class="fragment">Create a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-a-user-account" data-level="0" class="fragment">Authenticate a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#other-things-you-can-do-with-stormpath" data-level="0" class="fragment">Other Things You Can Do with Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#next-steps" data-level="0" class="fragment">Next Steps</a><ul class="menu"></ul></li></ul>
-			
-			</li>
-		
-			<li class="leaf">
-			
-				<a href="/php/product-guide">Product Guide</a>
-			
-			
-			</li>
-		
-			<li class="leaf">
-			
-				<a href="https://github.com/stormpath/stormpath-sdk-php" target="_blank"><span>SDK on GitHub</span></a>
-			
-			
-			</li>
-		
-		</ul>
-  	
   
         
   	
@@ -995,8 +1031,6 @@ addthis:url="https://stormpath.com" >
   
         
   	
-                
-                       <div class="menu-divider"></div> 
                 
                 
 		<ul class="menu">
