@@ -11,7 +11,7 @@ alias: [/guides/securing-your-api]
 {% enddocs %}
 
 {% docs info %}
-Currently supported Stormpath SDKs for this feature include: **Java**, **Node JS**, and **Python**
+Currently supported Stormpath SDKs for this feature include: **Java**, **Node JS**
 {% enddocs %}
 
 In this guide, we discuss how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services.  Stormpath provides not only the user management piece around API Keys, but also allows you to associate permissions and custom data with the accounts for advanced use-cases.  
@@ -59,7 +59,7 @@ Stormpath `Accounts` can be used to keep a variety of Developer information incl
 
 You will mostly likely create a Stormpath Account when a Developer signs up for access to your API.  Below is an example of how to create a user account in code:
 
-{% codetab id:create-account langs:java node python %}
+{% codetab id:create-account langs:java node %}
 ------
 //Create the account object
 Account account = client.instantiate(Account.class);
@@ -117,7 +117,7 @@ Let's start with creating APIs keys for an Account.
 
 Creating an API Key is a simple method call on the `Account`.  The method will create a new API Key (Id and Secret) associated with that `Account` and later accessible via the account's `apiKeys`.
 
-{% codetab id:create-api-key langs:java node python %}
+{% codetab id:create-api-key langs:java node %}
 ------
 APIKey apiKey = account.createApiKey();
 
@@ -152,7 +152,7 @@ After the API Key is created, you will need to deliver the API Key ID and Secret
 In some cases, you may need to delete or disable (revoke) an API Key.  This is important for management of API Keys.  For example, a developer may delete an API Key because it has been compromised, or the administrator may disable all API Keys for a developer that is past due on payments for the service.  API Keys can be retrieved from either the `Application` or `Account`.  Once it is retrieved, it can be deleted or disabled.
 
 #### Deleting an API Key
-{% codetab id:delete-api-key langs:java node python %}
+{% codetab id:delete-api-key langs:java node %}
 ------
 APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
 apiKey.delete();
@@ -169,7 +169,7 @@ api_key.delete()
 {% endcodetab %}
 
 #### Disable an API Key
-{% codetab id:disable-api-key langs:java node python %}
+{% codetab id:disable-api-key langs:java node %}
 ------
 APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
 apiKey.setStatus(ApiKeyStatus.DISABLED)
@@ -217,7 +217,7 @@ Alternatively, the developer could have sent the same request using an OAuth 2.0
 
 In the simplest form, the Stormpath Java SDK would authenticate the above request (Basic or Bearer) as follows:
 
-{% codetab id:generic-id-auth langs:java node python %}
+{% codetab id:generic-id-auth langs:java node %}
 ------
 public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
     Application application = client.getResource(applicationRestUrl, Application.class);
@@ -303,7 +303,7 @@ The request will need to explicitly state the grant type for the OAuth Access To
 
 Below is sample code to show how you would handle the request with the Stormpath SDK and return an access token to the client:
 
-{% codetab id:exchange-keys-tokens langs:java node python %}
+{% codetab id:exchange-keys-tokens langs:java node %}
 ------
 public void postOAuthToken(HttpServletRequest request, HttpServletResponse response) {
     Application application = client.getResource(applicationRestUrl, Application.class);
@@ -375,7 +375,7 @@ The Access Token needs to be passed to your API in the Authorization header, usi
 
 In the simplest form, the Stormpath SDK would authenticate a request as follows:
 
-{% codetab id:generic-o-auth langs:java node python %}
+{% codetab id:generic-o-auth langs:java node %}
 
 ------
 public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
@@ -425,7 +425,7 @@ Using Stormpath will automatically set a TTL of one hour (3600 seconds) and does
 When an API Key is exchanged for a Access Token, the Access Token has a time-to-live in relation to when the it was created.
 
 Customizing the TTL is easy.  Just specify the TTL when exchanging the API keys for an OAuth token.
-{% codetab id:ttl langs:java node python %}
+{% codetab id:ttl langs:java node %}
 ------
 result = application.authenticateOauthRequest(request).withTtl(7200).execute();
 ------
@@ -465,7 +465,7 @@ We know that this is a request for an Access Token, because the client included 
 When the API exchanges the API Key for an Access Token, you can specify a `ScopeFactory` that will help you create an Access Token with the correct scopes.
 
 For example:
-{% codetab id:scope-factory langs:java node python %}
+{% codetab id:scope-factory langs:java node %}
 ------
 public void processOAuthTokenRequest(HttpServletRequest request, HttpServletResponse response) {
     Application application = client.getResource(applicationRestUrl, Application.class);
@@ -561,7 +561,7 @@ When this token is used in a resulting request, such as:
 
 You can retrieve the granted scopes from the token when having the SDK authenticate the request:
 
-{% codetab id:get-scopes langs:java node python %}
+{% codetab id:get-scopes langs:java node %}
 ------
 public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
     
@@ -603,9 +603,9 @@ app.get('/troopers',function (req, res){
 {% endcodetab %}
 
 
-### Stormpath Authentication Result Visitor 
+### Java's Stormpath Authentication Result Visitor 
 
-When asking the `Application` to authenticate an API authentication request, the return type of a successful authentication request will vary based on the request headers.  This includes:
+In Java, when asking the `Application` to authenticate an API authentication request, the return type of a successful authentication request will vary based on the request headers.  This includes:
 
 1. `ApiAuthenticationResult` - Authorization header is present, with the `Basic` method and the base64 encoded API_KEY_ID:API_KEY_SECRET.
 2. `AccessTokenResult` - HTTP Method is `POST`. Authorization header is present, with the `Basic` method and the base64 encoded API_KEY_ID:API_KEY_SECRET. As part of the query or body of the request, the 'grant_type' is specified as 'client_credentials'.  Content-type is set to `x-www-form-urlencoded`.
