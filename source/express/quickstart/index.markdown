@@ -1,6 +1,6 @@
 ---
 layout: doc
-lang: express
+lang: nodejs
 description: "10-minute Tutorial for Express"
 image: https://stormpath.com/images/tutorial/express.png
 title: Stormpath Express Quickstart
