@@ -75,7 +75,6 @@ customData.put("favoriteColor", "white");
 //Create the account using the existing Application object.
 application.createAccount(account);
 ------
-
 //Create a JSON object that represents the account
 var account = {
   givenName: Joe',
@@ -88,9 +87,16 @@ var account = {
 application.createAccount(account, function onAccountCreated(err, createdAccount) {
   console.log(createdAccount);
 });
-
 ------
- 
+account = application.accounts.create({
+    'given_name': 'Joe',
+    'surname': 'Stormtrooper',
+    'email': 'tk421@stormpath.com',
+    'password': 'Changeme1!',
+    'custom_data': {
+        "faction": "empire"
+    }
+}) 
 ------
 {% endcodetab %}
 
@@ -109,7 +115,7 @@ Let's start with creating APIs keys for an Account.
 
 ### Creating API Keys for an Account
 
-Creating an API Key is a simple method call on the `Account`.  The method will create a new API Key (Id and Secret) associated with that `Account` and later accessible via the account's `apiKeys` property.
+Creating an API Key is a simple method call on the `Account`.  The method will create a new API Key (Id and Secret) associated with that `Account` and later accessible via the account's `apiKeys`.
 
 {% codetab id:create-api-key langs:java node python %}
 ------
@@ -118,12 +124,13 @@ APIKey apiKey = account.createApiKey();
 String apiKeyId = apikey.getId();
 String apiKeySecret = apikey.getSecret();
 ------
-
-account.createApiKey(function(err,apiKey){
+account.createApiKey(function(err, apiKey){
   console.log('API Key:', apiKey.id);
   console.log('API Secret:', apiKey.secret);
 })
 ------
+# Create a new api key
+new_api_key = john.api_keys.create()
 
 ------
 {% endcodetab s%}
@@ -142,17 +149,22 @@ After the API Key is created, you will need to deliver the API Key ID and Secret
 
 ### Manage API Keys for an Account
 
-In some cases, you may need to delete or disable (revoke) an API Key.  This is important for management of API Keys.  For example, a developer may delete an API Key because it has been compromised, or the administrator may disable all API Keys for a developer that is past due on payments for the service.  API Keys can be retrieved from either the 'Application' or 'Account'.  Once it is retrieved, it can be deleted or disabled.
+In some cases, you may need to delete or disable (revoke) an API Key.  This is important for management of API Keys.  For example, a developer may delete an API Key because it has been compromised, or the administrator may disable all API Keys for a developer that is past due on payments for the service.  API Keys can be retrieved from either the `Application` or `Account`.  Once it is retrieved, it can be deleted or disabled.
 
 #### Deleting an API Key
 {% codetab id:delete-api-key langs:java node python %}
 ------
 APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
-apiKey.delete()
+apiKey.delete();
 ------
-
+application.getApiKey('FURThLWDE4MElDTFVUMDNDTzpQSHozZ', function(err, apiKey){
+    apiKey.delete(function(){
+        console.log('API Key Deleted');
+    });
+});
 ------
-
+# Delete an api key
+api_key.delete()
 ------
 {% endcodetab %}
 
@@ -163,9 +175,16 @@ APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
 apiKey.setStatus(ApiKeyStatus.DISABLED)
 apiKey.save()
 ------
-
+application.getApiKey('FURThLWDE4MElDTFVUMDNDTzpQSHozZ', function(err, apiKey){
+    apiKey.status = 'DISABLED';
+    apiKey.save(function(){
+        console.log('API Key Disabled');
+    });
+});
 ------
-
+# Disable an API Key
+api_key.status = 'DISABLED'
+api_key.save()
 ------
 {% endcodetab %}
 
@@ -179,7 +198,7 @@ Stormpath supports two HTTP `Authorization` methods when authenticating API Keys
 ### How API Key and Token Authentication Works
 All authentication attempts in Stormpath start with the `Application` object in the SDK.  You will likely have initialized the `Application` during startup.
 
-The `Application` object in Java has an `authenticate` method that takes an `HttpServletRequest` as a parameter.  Using  HTTP authorization headers, Stormpath can understand what type of authentication is occurring (Basic vs Bearer) and can quickly decide if the authentication request is successful or not.  For example, if your API supports both Basic and OAuth 2.0, the Stormpath SDK will take the full request, read the authorization header data and provide the right type of authentication.
+The `Application` object in Java has an `authenticateApiRequest` method that takes an HTTP request as a parameter.  Using  HTTP authorization headers, Stormpath can understand what type of authentication is occurring (Basic vs Bearer) and can quickly decide if the authentication request is successful or not.  For example, if your API supports both Basic and OAuth 2.0, the Stormpath SDK will take the full request, read the authorization header data and provide the right type of authentication.
 
 To demonstrate how the SDK works, we'll use an example.  We are building a Stormtrooper API for managing Stormtrooper equipment-- like awesome helmets and blasters.  In order to secure our API, a developer must base64 encode their API Key and Secret and then pass the encoded data in the authorization header. 
 
@@ -214,17 +233,39 @@ public void getEquipment(HttpServletRequest request, HttpServletResponse respons
     //Return what you need to return in the response
     handleEquipmentRequest(response);
 }
-
 ------
+// Express.js example - accept Basic for a given resource
 
+app.get('/troopers',function (req, res){
+
+    application.authenticateApiRequest({request: req}, function(err, authResult){
+        if(!err){
+            authResult.getAccount(function(err,account){
+                console.log('The account making this api call is ', account.email);
+            });
+            handleEquipmentRequest(req, res);
+        }
+    });
+});
 ------
+uri = 'https://api.trooperapp.com'
+http_method = 'GET'
+body = {}
+headers = {
+    'Authorization': 'Basic BASE64ENCODEDAPIKEYANDSECRET'
+}
 
+result = application.authenticate(allowed_scopes, http_method, uri, body, headers)
+if result:
+    print result.api_key
+    print result.account
+else:
+    print "Invalid or not authenticated request."
 ------
-
 {% endcodetab %}
-The above code has some classes we want to highlight-- `ApiAuthenticationResult` and `ApiKey`.
 
-`ApiAuthenticationResult` is a subclass of `AuthenticationResult` and will provide properties and methods for retrieving the authenticated `Account` and `ApiKey` for a successful authentication request.  Your API will use this information to provide context associated with who is calling your API.  This becomes important when your API has generic endpoints that return different information based on the caller.  In our Stormtrooper Equipment API, a call to `/my-equipment` would return the equipment for the authenticated account.
+
+The returned `Authentication Result` will provide properties and methods for retrieving the authenticated `Account` and `ApiKey` for a successful authentication request.  Your API will use this information to provide context associated with who is calling your API.  This becomes important when your API has generic endpoints that return different information based on the caller.  In our Stormtrooper Equipment API, a call to `/my-equipment` would return the equipment for the authenticated account.
 
 The SDK provides a caching layer to ensure fast response times in your API by reducing network traffic to the Stormpath service. The caching layer will cache the API Key securely with the Secret encrypted. Stormpath will use the cache entry for API Key and Secret authentication when possible.
 
@@ -236,8 +277,8 @@ Stormpath SDK has all the tools needed to enable your API to support OAuth 2.0 B
 
      +---------+                                  +---------------+
      |         |                                  |               |
-     |         |>--- 1. Client Authentication --->| Authorization |
-     | Client  |                                  |     Server    |
+     |         |>--- 1. Client Authentication --->| API backed by |
+     | Client  |                                  | Stormpath SDK |
      |         |<--- 2. -- Access Token ---------<|               |
      |         |                                  |               |
      +---------+                                  +---------------+
@@ -258,11 +299,11 @@ Going back to the Stormtrooper Equipment API example.  The app would require tha
 
       grant_type=client_credentials
 
-
 The request will need to explicitly state the grant type for the OAuth Access Token Request.  Stormpath only supports client credential grant type for exchanging API Keys for Access Tokens.
 
 Below is sample code to show how you would handle the request with the Stormpath SDK and return an access token to the client:
-{% codetab id:generic-id-auth langs:java node python %}
+
+{% codetab id:exchange-keys-tokens langs:java node python %}
 ------
 public void postOAuthToken(HttpServletRequest request, HttpServletResponse response) {
     Application application = client.getResource(applicationRestUrl, Application.class);
@@ -283,13 +324,28 @@ public void postOAuthToken(HttpServletRequest request, HttpServletResponse respo
     response.getWriter().flush();
 }
 ------
+// Express.js example - accept Basic for a given resource
 
+app.post('/oauth/token',function (req,res){
+    application.authenticateApiRequest({
+        request: req
+    }, function(err,authResult){
+        if(!err){
+            res.json(authResult.tokenResponse);
+        }
+    });
+});
 ------
+
+result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+if result:
+    print result.token
+    print result.token.to_json()
 
 ------
 {% endcodetab %}
 
-The response back to the requesting client:
+When exchanging API keys for OAuth tokens, the `Authenticate Result` will contain a `Token Response` that has properties associated with the generated token for an authenticated request.  This includes the Access Token, expiration, and token type.  This allows the client to decide if they can use the token. The `Token Repsonse` can easily be used to return the JSON representation that conforms to OAuth 2.0 specification.  The response back to requesting client from the code above:
 
     HTTP 200 OK
     Content-Type: application/json
@@ -299,12 +355,6 @@ The response back to the requesting client:
        "token_type":"bearer",
        "expires_in":3600
     }
-
-Important classes for exchanging an API Key and Secret for an Access Token are `AccessTokenResult` and `TokenResponse`.
-
-`AccessTokenResult` is a subclass of `ApiAuthenticationResult` that has an additional getter for the `TokenResponse`.
-
-The `TokenResponse` contains properties associated with the generated token for an authenticated request.  This includes the Access Token, expiration, and token type.  This allows the client to decide if they can use the token. `TokenRepsonse` has a utility method `toJson()` which will return the JSON representation of the token that conforms to OAuth 2.0 specification.
 
 ### Using OAuth as Authentication for your REST API
 
@@ -318,14 +368,14 @@ The developer request would look something like this:
 
     GET /troopers/tk421/equipment 
     Accept: application/json
-    Authorization: Bearer 7FRhtCNRapj9zsYI8MqPiS8hzx3wJH4qT29JUOpU64T
+    Authorization: Bearer 7FRhtCNRapj9zs.YI8MqPiS8hzx3wJH4.qT29JUOpU64T
     Host: api.trooperapp.com
 
 The Access Token needs to be passed to your API in the Authorization header, using the Bearer method.
 
 In the simplest form, the Stormpath SDK would authenticate a request as follows:
 
-{% codetab id:generic-id-auth langs:java node python %}
+{% codetab id:generic-o-auth langs:java node python %}
 
 ------
 public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
@@ -333,21 +383,36 @@ public void getEquipment(HttpServletRequest request, HttpServletResponse respons
 
     OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauthRequest(request).execute();
 
-    ApiKey apiKey = result.getApiKey();
-    Account account = result.getAccount();
+    System.out.println(result.getApiKey());
+    System.out.println(result.getAccount());
 
     //Return what you need to return in the response
     handleEquipmentRequest(response);
 }
 ------
+// Express.js example - accept OAuth Bearer Token for a given resource
 
+app.get('/troopers',function (req, res){
+
+    application.authenticateApiRequest({request: req}, function(err, authResult){
+        if(!err){
+            authResult.getAccount(function(err,account){
+                console.log('The account making this api call is ', account.email);
+            });
+            handleEquipmentRequest(req, res);
+        }
+    });
+});
 ------
-
+result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+if result:
+    print result.account
+else:
+    "Invalid or expired Token"
 ------
-
 {% endcodetab %}
 
-`OauthAuthenticationResult` is a subclass of `ApiAuthenticationResult` that will give you access to methods to get the `Account`, `ApiKey` and the scope (if set).
+The returned `Authentication Result` will give you access to methods to get the `Account`, `ApiKey` and the scope (if set).
 
 ### Customizing Time-to-live and Scope for OAuth API Authentication 
 
@@ -360,8 +425,19 @@ Using Stormpath will automatically set a TTL of one hour (3600 seconds) and does
 When an API Key is exchanged for a Access Token, the Access Token has a time-to-live in relation to when the it was created.
 
 Customizing the TTL is easy.  Just specify the TTL when exchanging the API keys for an OAuth token.
+{% codetab id:ttl langs:java node python %}
+------
+result = application.authenticateOauthRequest(request).withTtl(7200).execute();
+------
+application.authenticateApiRequest({request: req, ttl: 7200}, function(err, authResult){
+    if(!err){
+        res.json(authResult.tokenResponse);
+    }
+});
+------
 
-    result = application.authenticateOauthRequest(request).withTtl(7200).execute();
+------
+{% endcodetab %}
 
 #### Scope
 
@@ -389,50 +465,79 @@ We know that this is a request for an Access Token, because the client included 
 When the API exchanges the API Key for an Access Token, you can specify a `ScopeFactory` that will help you create an Access Token with the correct scopes.
 
 For example:
+{% codetab id:scope-factory langs:java node python %}
+------
+public void processOAuthTokenRequest(HttpServletRequest request, HttpServletResponse response) {
+    Application application = client.getResource(applicationRestUrl, Application.class);
 
-    public void processOAuthTokenRequest(HttpServletRequest request, HttpServletResponse response) {
-        Application application = client.getResource(applicationRestUrl, Application.class);
+    //Build a scope factory
+    ScopeFactory scopeFactory = new ScopeFactory(){
+          public Set<String> createScope(AuthenticationResult result, Set<String> requestedScopes) {
 
-        //Build a scope factory
-        ScopeFactory scopeFactory = new ScopeFactory(){
-              public Set<String> createScope(AuthenticationResult result, Set<String> requestedScopes) {
+            //Initialize an empty set, and get the account
+            HashSet<String> returnedScopes = new HashSet<String>();
+            Account account = result.getAccount();
 
-                //Initialize an empty set, and get the account
-                HashSet<String> returnedScopes = new HashSet<String>();
-                Account account = result.getAccount();
+            //For each requested scope, figure out if we the account can is allowed the scope.  
+            //This is up to the API to return the correct scopes
 
-                //For each requested scope, figure out if we the account can is allowed the scope.  This is up to the API to return the correct scopes
-
-                for(String scope: requestedScopes){
-                  if(allowScopeForAccount(account, scope)){
-                    returnedScopes.add(scope);
-                  }
-                }
-
-                return returnedScopes;
+            for(String scope: requestedScopes){
+              if(allowScopeForAccount(account, scope)){
+                returnedScopes.add(scope);
               }
-            };
+            }
 
-        //Authenticate the request with ScopeFactory
-        AccessTokenResult result;
-        result = (AccessTokenResult) application.authenticateOauthRequest(request).withScopeFactory(scopeFactory).execute();
+            return returnedScopes;
+          }
+        };
 
-        //Get the token response for an authenticated request
-        TokenResponse token = result.getTokenResponse();
+    //Authenticate the request with ScopeFactory
+    AccessTokenResult result;
+    result = (AccessTokenResult) application.authenticateOauthRequest(request).withScopeFactory(scopeFactory).execute();
 
-        //Build the response
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setContentType("application/json");
+    //Get the token response for an authenticated request
+    TokenResponse token = result.getTokenResponse();
 
-        //Include the access token and respond to caller
-        response.getWriter().print(token.toJson());
-        response.getWriter().flush();
+    //Build the response
+    response.setStatus(HttpServletResponse.SC_OK);
+    response.setContentType("application/json");
+
+    //Include the access token and respond to caller
+    response.getWriter().print(token.toJson());
+    response.getWriter().flush();
+}
+------
+//Create a scope factory function
+var scopeFactory = function (account, requestedScopes){
+    var allowedScopes = [];
+
+    for(var scope in requestedScopes){
+        if(allowScopeForAccount(account, scope)){
+            allowedScopes.push(scope);
+        } 
     }
+    return allowedScopes;
+}
 
+app.post('/oauth/token',function (req,res){
+    //use the scope factory function as during authentication
+    application.authenticateApiRequest({
+        request: req,
+        scopeFactory: scopeFactory
+    }, function(err,authResult){
+        if(!err){
+            res.json(authResult.tokenResponse);
+        }
+    });
+});
+------
 
-In the code above, we validate that the account is included in a `Group` with the same name as the scope.  This is one way you can verify the scope requested, but your application may have another means to verify the requested scope.
+------
+{% endcodetab %}
 
-If the `Account` is a member of a `Group` named `admin` and `view_others_equipment`, the response for the above code would return the granted scopes to the client:
+In the code above, we use an arbitrary function to validate that an account is allowed a scope. You could use customData or the account's groups to validate scopes within Stormpath.  This is one way you can verify the scope requested, but your application may have another means to verify the requested scope.
+
+If the returned scopes are `admin` and `view_others_equipment`, the response for the above code would return the granted scopes to the client:
 
     HTTP 200 OK
     Content-Type: application/json
@@ -456,23 +561,47 @@ When this token is used in a resulting request, such as:
 
 You can retrieve the granted scopes from the token when having the SDK authenticate the request:
 
-    public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
-        //
-        Application application = client.getResource(applicationRestUrl, Application.class);
+{% codetab id:get-scopes langs:java node python %}
+------
+public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
+    
+    Application application = client.getResource(applicationRestUrl, Application.class);
 
-        //
-        OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauthRequest(request).execute();
+    OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauthRequest(request).execute();
 
-        //Checking if the Access Token includes the 'admin' scope
-        if(result.getScopes().contains("admin")){
-          //This authentication result includes the scope for admin, let's do something special...
-          handleEquipmentRequestForAdmin(response);
-        } else{
+    //Checking if the Access Token includes the 'admin' scope
+    if(result.getScopes().contains("admin")){
+      //This authentication result includes the scope for admin, let's do something special...
+      handleEquipmentRequestForAdmin(response);
+    } else{
 
-          //Return what you need to return in the response
-          handleEquipmentRequest(response);
-        }
+      //Return what you need to return in the response
+      handleEquipmentRequest(response);
     }
+}
+------
+// Express.js example - accept OAuth Bearer Token for a given resource
+
+app.get('/troopers',function (req, res){
+
+    application.authenticateApiRequest({request: req}, function(err, authResult){
+        if(!err){
+            authResult.getAccount(function(err,account){
+                console.log('The account making this api call is ', account.email);
+            });
+
+            //Get the scopes from the grantedScopes property
+            console.log('Granted Scopes in Bearer Token', authResult.grantedScopes);
+
+            handleEquipmentRequest(req, res);
+        }
+    });
+});
+------
+
+------
+{% endcodetab %}
+
 
 ### Stormpath Authentication Result Visitor 
 

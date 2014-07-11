@@ -5,24 +5,29 @@
 $(function() {
    hljs.initHighlightingOnLoad();
 
-   /* javascript for codetab to stop the pagae from shifting when changing tabs (tab sync) */
+   /* javascript for codetab to stop the page from shifting when changing tabs (tab sync) */
    var currentEventTab;
-   var initialOffsetObject;
+   var initialObjectTopOffset;
    var initialPageYOffset;
 
    $('.tabs').tabs({
 		activate: function(event ,ui){
+
+			//if the dom event, grab the hotness 
 			if(event.cancelable){
 				currentEventTab = event.target;
-				initialOffsetObject = $(currentEventTab).offset().top;
+				initialObjectTopOffset = $(currentEventTab).offset().top;
 				initialPageYOffset = window.pageYOffset;
 			}
-
+			//change ze tab
 			$('.tabs').tabs('option', 'active', ui.newTab.index());
+
+			//grab the new offsets
 			var afterChangeOffset = $(currentEventTab).offset().top;
 			var afterPageYOffset = window.pageYOffset;
 
-			$('body').scrollTop(initialPageYOffset - (initialOffsetObject - afterChangeOffset));
+			//do ze scroll
+			$('body').scrollTop(initialPageYOffset - (initialObjectTopOffset - afterChangeOffset));
 		}
 	});
 });
