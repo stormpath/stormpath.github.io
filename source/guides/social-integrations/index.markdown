@@ -52,7 +52,7 @@ A `Directory` is a top-level storage containers of `Accounts` in Stormpath. A `D
 Before you can create a Directory for Facebook, it is important that you gather information regarding your application from Facebook.  This information includes Client ID / Client Secret and can be acquired from the developer consoles for [Facebook](https://developers.facebook.com/).
 {% enddocs %}
 
-Creating a directory for Facebook require that you provide information from Facebook as a `Provider` [resource](http://docs.stormpath.com/rest/product-guide/#facebook-provider-resource).  This information can be use to create the directories from the [Console](https://api.stormpath.com/ui/directories/create) or the following curl requests:
+Creating a directory for Facebook require that you provide information from Facebook as a `Provider` [resource](http://docs.stormpath.com/rest/product-guide/#facebook-provider-resource).  This information can be use to create the directories from the [Console](https://api.stormpath.com/ui/directories/create) or the following code:
 
 {% codetab id:facebook-create-directory langs:java python node curl%}
 ------
@@ -81,7 +81,17 @@ directory = client.directories.create({
         'redirect_uri': 'https://myapplication.com/authenticate',
         'provider_id': Provider.FACEBOOK}})
 ------
-
+client.createDirectory({
+  name : 'my-facebook-directory',
+  description : 'A Facebook directory',
+  provider: {
+    providerId: 'facebook',
+    clientId: '857385m8vk0fn2r7jmjo',
+    clientSecret: 'ehs7bA7OWQSQ4'
+  }
+}, function(err, directory){
+  console.log(directory);
+});
 ------
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
      -H "Accept: application/json" \
@@ -98,33 +108,6 @@ curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
  "https://api.stormpath.com/v1/directories"
 ------
 {% endcodetab %}
-
-
-Response:
-
-    HTTP/1.1 201 Created
-    Location: https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q
-    Content-Type: application/json;charset=UTF-8;
-
-    {
-      "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q",
-      "name" : "my-facebook-directory",
-      "description" : "A Facebook directory",
-      "status" : "ENABLED",
-      "tenant" : {
-        "href" : "https://api.stormpath.com/v1/tenants/Gh9238fksJlsieJkPkQuW"
-      },
-      "accounts" : {
-        "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/accounts"
-      },
-      "groups" : {
-        "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/groups"
-      },
-      "provider" : {
-        "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider"
-      }
-    }
-
 
 ### Mapping the Directory as an Account Store to an Application
 
@@ -143,9 +126,7 @@ To manage Account Stores in the Console:
 5. Select the Facebook Directory that was created
 6. Click *Add Account Store*
 
-#### REST API
-
-Request:
+#### SDKs and REST API
 
 {% codetab id:facebook-map-application langs:java python node curl %}
 ------
@@ -160,7 +141,11 @@ account_store_mapping = client.account_store_mappings.create({
     'account_store': YOUR_FACEBOOK_DIRECTORY
 })
 ------
-
+application.createAccountStoreMapping({
+    accountStore: YOUR_FACEBOOK_DIRECTORY
+}, function(err, accountStoreMapping){
+  console.log(accountStoreMapping);
+});
 ------
 curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
      -H "Content-Type: application/json;charset=UTF-8" \
@@ -175,22 +160,6 @@ curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
      'https://api.stormpath.com/v1/accountStoreMappings'
 ------
 {% endcodetab %}
-
-
-Response:
-
-    {
-        "href": "https://api.stormpath.com/v1/accountStoreMappings/7Ui2gpn9tV75y3TExAmPLe",
-        "accountStore": {
-            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpExAmPLe"
-        },
-        "application": {
-            "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
-        },
-        "listIndex": 0,
-        "isDefaultAccountStore": false,
-        "isDefaultGroupStore": false
-    }
 
 ### Accessing an Account with Facebook Tokens
 
@@ -224,19 +193,13 @@ Below is sample code using Facebook's Javascript library to get the access token
 There are also other means of getting the access token from cookies on the server using 3rd party libraries in different languages.
 
 {% docs note %}
-It is required that your Facebook application request for the `email` permission from Facebook. If the access token does not grant `email` permissions, you will not be able to get an `Account` with an access token.
+It is required that your Facebook application requests for the `email` permission from Facebook. If the access token does not grant `email` permissions, you will not be able to get an `Account` with an access token.
 {% enddocs %}
 
-Once the `User Access Token` is gathered, you can get or create the `Account` HTTP `POST`ing to the `Application` accounts collection and specifying `providerData`.  The `providerData` JSON object specifies the type of provider and the authorization code as follows:
-
-    {
-      "providerId": "facebook",
-      "accessToken": "%ACCESS_TOKEN_FROM_FACEBOOK%"
-    }
-
+Once the `User Access Token` is gathered, you can ask the `Application` object to get or create the `Account` by passing `providerData`.  The `providerData` object specifies the type of provider and the access token.
+  
 The following is how you use `providerData` to get an `Account` for a given `User Access Token`:
 
-**Example Request**
 {% codetab id:facebook-auth langs:java python node curl %}
 ------
 ProviderAccountRequest request = Providers.FACEBOOK.account()
@@ -248,6 +211,15 @@ Account account = result.getAccount();
 ------
 application.get_provider_account(provider=Provider.FACEBOOK, access_token="%ACCESS_TOKEN_FROM_FACEBOOK%")
 ------
+application.getAccount({
+  providerData: {
+    providerId: 'facebook',
+    code: ACCESS_TOKEN_FROM_FACEBOOK
+  }
+}, function(err, result){
+  console.log(result.created);
+  console.log(result.account);
+});
 ------
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
      -H "Accept: application/json" \
@@ -262,64 +234,40 @@ curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 ------
 {% endcodetab %}
 
-
-**Example Response**
-
-    HTTP/1.1 201 Created
-    Location: https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9
-    Content-Type: application/json;charset=UTF-8;
-
-    {
-        "customData": {
-            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/customData"
-        },
-        "directory": {
-            "href": "https://api.stormpath.com/v1/directories/U0HJ7YcCeMpRfMcRT8ph"
-        },
-        "email": "testuser@gmail.com",
-        "emailVerificationToken": null,
-        "fullName": "Test User",
-        "givenName": "Test",
-        "groupMemberships": {
-            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/groupMemberships"
-        },
-        "groups": {
-            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/groups"
-        },
-        "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9",
-        "middleName": null,
-        "providerData": {
-            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData"
-        },
-        "status": "ENABLED",
-        "surname": "User",
-        "tenant": {
-            "href": "https://api.stormpath.com/v1/tenants/GPpLzIzYkOO68I9i4dx"
-        },
-        "username": "testuser"
-    }
-
 {% docs note %}
-The HTTP Status code when accessing an account based on a Facebook User Access Token will denote if the account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200)
+The `Authentication Result` or HTTP Status code (using REST) when accessing an account based on a Facebook User Access Token will denote if the account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200)
 {% enddocs %}
 
 {% docs note %}
-To expand the `providerData` to get the Access Token for the Account in one HTTP request, add `expand=providerData` to the URL query parameters.
+To access the `providerData` to get the Access Token for the Account in one request, you can use [link expansion](/rest/product-guide/#link-expansion) to expand the `providerData`.
 {% enddocs %}
 
 Once an `Account` is retrieved, Stormpath maps common fields for the Facebook User to the  Account.  The access token for any additional calls in the `providerData` resource and can be retrieved by:
 
-    GET https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData
+{% codetab id:facebook-get-provider-data langs:java python node curl %}
+------
+FacebookProviderData providerData = (FacebookProviderData) account.getProviderData();
+------
+print acc.provider_data
+print acc.provider_data.access_token
+------
+application.getAccount(providerData, {expand: 'providerData' }, function(err, account){
+  console.log(account.providerData);
+});
+------
+GET https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData
+------
+{% endcodetab %}
 
-The returned `providerData` will include:
+The returned `providerData` will include the following properties:
 
-    {
+    
       "accessToken": "y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4", 
       "createdAt": "2014-04-01T17:00:09.154Z", 
       "href": "https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData", 
       "modifiedAt": "2014-04-01T17:00:09.189Z", 
       "providerId": "facebook"
-    }
+    
 
 ## How to Integrate Stormpath with Google?
 
@@ -337,12 +285,47 @@ A `Directory` is a top-level storage containers of `Accounts` in Stormpath. A `D
 Before you can create a Directory for Google, it is important that you gather information regarding your application from Google.  This information includes Client ID, Client Secret, Redirect URL and can be acquired from the developer consoles for [Google](https://console.developers.google.com/).
 {% enddocs %}
 
-Creating a directory for Google require that you provide information from Google as a `Provider` [resource](http://docs.stormpath.com/rest/product-guide/#google-provider-resource).  This information can be use to create the directories from the [Console](https://api.stormpath.com/ui/directories/create) or the following curl requests:
+Creating a directory for Google require that you provide information from Google as a `Provider` [resource](http://docs.stormpath.com/rest/product-guide/#google-provider-resource).  This information can be use to create the directories from the [Console](https://api.stormpath.com/ui/directories/create) or the following code:
 
 {% codetab id:create-google-directory langs:java python node curl %}
 ------
+Directory directory = client.instantiate(Directory.class);
+directory.setName("my-google-directory");
+directory.setDescription("A Google directory");
+
+CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
+            forProvider(Providers.GOOGLE.builder()
+                    .setClientId("857385-m8vk0fn2r7jmjo.apps.googleusercontent.com")
+                    .setClientSecret("ehs7_-bA7OWQSQ4")
+                    .setRedirectUri("https://myapplication.com/authenticate")
+                    .build()
+            ).build();
+
+Tenant tenant = client.getCurrentTenant();
+directory = tenant.createDirectory(request);
 ------
+from stormpath.resources import Provider
+directory = client.directories.create({
+    'name': 'my-google-directory',
+    'description': 'A Google directory',
+    'provider': {
+        'client_id': '857385-m8vk0fn2r7jmjo.apps.googleusercontent.com',
+        'client_secret': 'ehs7_-bA7OWQSQ4',
+        'redirect_uri': 'https://myapplication.com/authenticate',
+        'provider_id': Provider.GOOGLE}})
 ------
+client.createDirectory({
+  name : 'my-google-directory',
+  description : 'A Google directory',
+  provider: {
+    providerId: 'google',
+    clientId: '857385-m8vk0fn2r7jmjo.apps.googleusercontent.com',
+    clientSecret: 'ehs7_-bA7OWQSQ4',
+    redirectUri: 'https://myapplication.com/authenticate'
+  }
+}, function(err, directory){
+  console.log(directory);
+});
 ------
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
      -H "Accept: application/json" \
@@ -361,31 +344,6 @@ curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 ------
 {% endcodetab %}
 
-Response:
-
-    HTTP/1.1 201 Created
-    Location: https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q
-    Content-Type: application/json;charset=UTF-8;
-
-    {
-      "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q",
-      "name" : "my-google-directory",
-      "description" : "A Google directory",
-      "status" : "ENABLED",
-      "tenant" : {
-        "href" : "https://api.stormpath.com/v1/tenants/Gh9238fksJlsieJkPkQuW"
-      },
-      "accounts" : {
-        "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/accounts"
-      },
-      "groups" : {
-        "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/groups"
-      },
-      "provider" : {
-        "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider"
-      }
-    }
-
 ### Mapping the Directory as an Account Store to an Application
 
 Once a Google `Directory` has been created, it must be mapped to an application as an `Account Store`.  When an Account Store (which can be a `Directory` or `Group`) is mapped to an `Application`, the accounts in the account store are considered the application’s users and they can login to the application. 
@@ -403,14 +361,26 @@ To manage Account Stores in the Console:
 5. Select the Google Directory that was created
 6. Click *Add Account Store*
 
-#### REST API
+#### SDKs and REST API
 
-Request:
+{% codetab id:google-map-application langs:java python node curl %}
+------
+AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class)
+        .setAccountStore(YOUR_GOOGLE_DIRECTORY)
+        .setApplication(application);
 
-{% codetab id:google-map-directory langs:java python node curl %}
+application.createAccountStoreMapping(accountStoreMapping);
 ------
+account_store_mapping = client.account_store_mappings.create({
+    'application': YOUR_APPLICATION,
+    'account_store': YOUR_GOOGLE_DIRECTORY
+})
 ------
-------
+application.createAccountStoreMapping({
+    accountStore: YOUR_GOOGLE_DIRECTORY
+}, function(err, accountStoreMapping){
+  console.log(accountStoreMapping);
+});
 ------
 curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
      -H "Content-Type: application/json;charset=UTF-8" \
@@ -426,45 +396,38 @@ curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
 ------
 {% endcodetab %}
 
-
-
-
-Response:
-
-    {
-        "href": "https://api.stormpath.com/v1/accountStoreMappings/7Ui2gpn9tV75y3TExAmPLe",
-        "accountStore": {
-            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpExAmPLe"
-        },
-        "application": {
-            "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
-        },
-        "listIndex": 0,
-        "isDefaultAccountStore": false,
-        "isDefaultGroupStore": false
-    }
-
 ### Accessing an Account with Google Tokens
 
 To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google's [OAuth 2.0 protocol](https://developers.google.com/accounts/docs/OAuth2Login) and the user's consent for your application's permissions.
 
 Generically, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the Authorization Code.  This is documented in detail [here](https://developers.google.com/accounts/docs/OAuth2Login#authenticatingtheuser).
 
-Once the Authorization Code is gathered, you can get or create the `Account` by HTTP `POST`ing to the `Application` accounts collection and specifying the `providerData`.  The `providerData` JSON object specifies the type of provider and the authorization code as follows:
-
-    {
+Once the Authorization Code is gathered, you can ask the `Application` object to get or create the `Account` by passing `providerData`.  The `providerData` object specifies the type of provider and the authorization code.
+    
       "providerId": "google",
       "code": "%ACCESS_CODE_FROM_GOOGLE%"
-    }
+  
 
 The following is how you use `providerData` to get an `Account` for a given authorization code:
 
-**Example Request**
-
 {% codetab id:google-auth langs:java python node curl %}
 ------
+ProviderAccountRequest request = Providers.GOOGLE.account()
+            .setCode("4/a3p_fn0sMDQlyFVTYwfl5GAj0Obd.oiruVLbQZSwU3oEBd8DOtNApQzTCiwI")
+            .build();
+
+ProviderAccountResult result = application.getAccount(request);
+Account account = result.getAccount();
 ------
+account = application.get_provider_account(provider=Provider.GOOGLE, code=YOUR_GOOGLE_AUTH_CODE)
+print acc.email
 ------
+application.getAccount({
+  providerData: {
+    providerId: 'google',
+    code: YOUR_GOOGLE_AUTH_CODE
+  }
+}, callback);
 ------
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
      -H "Accept: application/json" \
@@ -479,44 +442,8 @@ curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 ------
 {% endcodetab %}
 
-**Example Response**
-
-    HTTP/1.1 201 Created
-    Location: https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9
-    Content-Type: application/json;charset=UTF-8;
-
-    {
-        "customData": {
-            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/customData"
-        },
-        "directory": {
-            "href": "https://api.stormpath.com/v1/directories/U0HJ7YcCeMpRfMcRT8ph"
-        },
-        "email": "testuser@gmail.com",
-        "emailVerificationToken": null,
-        "fullName": "Test User",
-        "givenName": "Test",
-        "groupMemberships": {
-            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/groupMemberships"
-        },
-        "groups": {
-            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/groups"
-        },
-        "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9",
-        "middleName": null,
-        "providerData": {
-            "href": "https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData"
-        },
-        "status": "ENABLED",
-        "surname": "User",
-        "tenant": {
-            "href": "https://api.stormpath.com/v1/tenants/GPpLzIzYkOO68I9i4dx"
-        },
-        "username": "testuser"
-    }
-
 {% docs note %}
-The HTTP Status code when accessing an account based on a Google Authorization Code will denote if the account was created (201) or if it already existed in the Google Directory (200)
+The `Authentication Result` or HTTP Status code (using REST) when accessing an account based on a Google Authorization Code will denote if the account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200)
 {% enddocs %}
 
 {% docs note %}
@@ -525,33 +452,34 @@ To [expand](#link-expansion) the `providerData` to get the Access Token for the 
 
 Once an `Account` is retrieved, Stormpath maps common fields for the Google User to the  Account.  The access token and the refresh token for any additional calls in the `providerData` resource and can be retrieved by:
 
-    GET https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData
+{% codetab id:google-get-provider-data langs:java python node curl %}
+------
+FacebookProviderData providerData = (FacebookProviderData) account.getProviderData();
+------
+print acc.provider_data
+print acc.provider_data.access_token
+------
+application.getAccount(providerData, {expand: 'providerData' }, function(err, account){
+  console.log(account.providerData);
+});
+------
+GET https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData
+------
+{% endcodetab %}
 
 The returned `providerData` will include:
-
-    {
+    
       "accessToken": "y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4", 
       "createdAt": "2014-04-01T17:00:09.154Z", 
       "href": "https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData", 
       "modifiedAt": "2014-04-01T17:00:09.189Z", 
       "providerId": "google", 
-      "refreshToken": "1/qQTS638g3ArE4U02FoiXL1yIh-OiPmhc"
-    }
-
-{% docs note %}
-The `accessToken` can also be passed as a field for the `providerData` to access the account once it is retrieved
-    POST https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu/accounts
-    Content-Type: application/json;charset=UTF-8
-
-    {
-      providerData: {
-        "providerId": "google",
-        "accessToken":"y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4"
-      }
-    }
-
-{% enddocs %}
+      "refreshToken": "1/qQTS638g3ArE4U02FoiXL1yIh-OiPmhc" 
 
 {% docs note %}
 The `refreshToken` will only be present if your application asked for offline access.  Review Google's documentation for more information regarding OAuth offline access.
 {% enddocs %}
+
+##  Wrapping up
+
+In this guide, we discussed how to set up a Stormpath to enable your users to log in with Facebook and Google. If you have any questions, bug reports, or enhancement requests please email support@stormpath.com.

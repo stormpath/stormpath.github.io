@@ -1,4 +1,4 @@
-# Title: Code Tab Block Generate
+# Title: Code Tab Block Generator
 # Author: Tom Abbott
 # Description: 
 #
