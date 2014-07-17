@@ -309,7 +309,7 @@ public void postOAuthToken(HttpServletRequest request, HttpServletResponse respo
     Application application = client.getResource(applicationRestUrl, Application.class);
 
     //Getting the authentication result
-    AccessTokenResult result = (AccessTokenResult) application.authenticateApiRequest(request).execute();
+    AccessTokenResult result = (AccessTokenResult) application.authenticateApiRequest(request);
 
     //Get the token response from the result which includes 
     //information about the Access Token
@@ -381,7 +381,7 @@ In the simplest form, the Stormpath SDK would authenticate a request as follows:
 public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
     Application application = client.getResource(applicationRestUrl, Application.class);
 
-    OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauthRequest(request).execute();
+    OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauthRequest(request);
 
     System.out.println(result.getApiKey());
     System.out.println(result.getAccount());

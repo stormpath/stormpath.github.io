@@ -1,16 +1,18 @@
-# Title: Code Tab Block Generate
+# Title: Code Tab Block Generator
 # Author: Tom Abbott
 # Description: 
 #
 # Syntax 
 #
 # {% codetab id:uid langs:rest java python %}
+# ------
 # REST Code
 # ------
 # Java Code
 # ------
 # Python Code
-# {% endcodeblock %}
+# ------
+# {% endcodetab %}
 #
 # Example:
 #
@@ -28,7 +30,7 @@ module Jekyll
     def initialize(tag_name, markup, tokens)
       @tag_name = tag_name
       id = /(?<=id:)\S*/i
-      langs = /(?<=langs:)*(java|rest|python|node|ruby)/i
+      langs = /(?<=langs:)*(java|rest|python|node|ruby|curl)/i
       if markup =~ /(?<=id:)\S*/i
       	@id = $~
       end
