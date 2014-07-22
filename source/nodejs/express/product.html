@@ -83,6 +83,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#enforce-user-authentication">Enforce User Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#enforce-user-authorization">Enforce User Authorization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#restrict-session-duration-expiration">Restrict Session Duration / Expiration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enable-caching">Enable Caching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#access-user-data">Access User Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#working-with-custom-user-data">Working With Custom User Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-redirect-logic">Customize Redirect Logic</a></li>
@@ -97,10 +98,18 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-5">Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-4">Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-3">Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-2">Version 0.1.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-0">Version 0.1.0</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-4-version-0-1-5">Version 0.1.4 -&gt; Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-3-version-0-1-4">Version 0.1.3 -&gt; Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-2-version-0-1-3">Version 0.1.2 -&gt; Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-0-version-0-1-2">Version 0.1.0 -&gt; Version 0.1.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-0-0-version-0-1-0">Version 0.0.0 -&gt; Version 0.1.0</a></li>
 </ul>
 </li>
@@ -274,6 +283,60 @@ logged in without activity before being forced to log into their account again.<
 <p class="last">The <tt class="docutils literal"><span class="pre">sessionDuration</span></tt> setting expects an integer, which must be the number
 of <strong>milliseconds</strong> before the session will expire &#8211; if you miscalculate
 this number, your sessions will expire very quickly!</p>
+</div>
+</div>
+<div class="section" id="enable-caching">
+<h2>Enable Caching<a class="headerlink" href="#enable-caching" title="Permalink to this headline">¶</a></h2>
+<p>The best kind of websites are fast websites.  As of version <strong>0.1.5</strong>,
+Express-Stormpath includes built-in support for caching.  You can currently use
+either:</p>
+<ul class="simple">
+<li>A local memory cache (<em>default</em>).</li>
+<li>A <a class="reference external" href="http://memcached.org/">memcached</a> cache.</li>
+<li>A <a class="reference external" href="http://redis.io/">redis</a> cache.</li>
+</ul>
+<p>All can be easily configured using configuration variables.</p>
+<p>There are several configuration settings you can specify when initializing the
+Stormpath middleware:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cache</span></tt> - The type of cache to use: <tt class="docutils literal"><span class="pre">'memory'</span></tt>, <tt class="docutils literal"><span class="pre">'memcached'</span></tt>, or
+<tt class="docutils literal"><span class="pre">'redis'</span></tt>).  Defaults to <tt class="docutils literal"><span class="pre">'memory'</span></tt>.  If you want to use local memory as a
+cache, just set memory here and leave all other fields blank!</li>
+<li><tt class="docutils literal"><span class="pre">cacheHost</span></tt> - The hostname of the cache (<em>ex: &#8216;127.0.0.1&#8217;</em>).</li>
+<li><tt class="docutils literal"><span class="pre">cachePort</span></tt> - The port of the cache (<em>ex: 11211</em>).</li>
+<li><tt class="docutils literal"><span class="pre">cacheTTL</span></tt> - The amount of time (<em>in seconds</em>) to cache resources before
+expiring them.  Defaults to <tt class="docutils literal"><span class="pre">300</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">cacheTTI</span></tt> - If this amount of time has passed (<em>in seconds</em>) since a
+resource was last accessed, it will be expired.  Defaults to <tt class="docutils literal"><span class="pre">300</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">cacheOptions</span></tt> - An object which holds additional configuration options for
+the cache (<em>like username, password, etc.</em>).</li>
+</ul>
+<p>Here&#8217;s an example showing how to enable caching for a memcached server that is
+running locally with no username / password:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">cache</span><span class="o">:</span> <span class="s1">&#39;memcached&#39;</span><span class="p">,</span>
+  <span class="nx">cacheHost</span><span class="o">:</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span>
+  <span class="nx">cachePort</span><span class="o">:</span> <span class="mi">11211</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>Here&#8217;s an example which shows how to enable caching for a redis server that is
+running locally with a required password:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">cache</span><span class="o">:</span> <span class="s1">&#39;redis&#39;</span><span class="p">,</span>
+  <span class="nx">cacheHost</span><span class="o">:</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span>
+  <span class="nx">cachePort</span><span class="o">:</span> <span class="mi">6379</span><span class="p">,</span>
+  <span class="nx">cacheOptions</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">auth_pass</span><span class="o">:</span> <span class="s1">&#39;xxx&#39;</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">}));</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="access-user-data">
