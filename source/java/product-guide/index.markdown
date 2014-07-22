@@ -1257,7 +1257,13 @@ Retrieving a token resource successfully using a call to the `verifyPasswordRese
 
 If the password reset token is invalid - it never existed or has expired - a `404 Not Found` response is returned.
 
-After a successfully request with the query string token, you'll receive back an Account instance. Use this instance to set a new password. You do this just like any other [account update](#account-update), by specifying the attribute to update and calling the `save` method.
+##### Resetting the Password for a Token
+
+After a successfully call with the query string token, you can return a page to the end user to collect the password to update for the account. Once you have the password, you can update it by a using the `Application`'s reset password method. 
+
+    Account account = application.resetPassword("$TOKEN", "newPassword");
+
+On success, you will have access to the account that the password was reset on. This call on success will send the password change confirmation email that was configured in the Administrator Console to the email account associated with the account.
 
 <a class="anchor" name="application-accounts-list"></a>
 #### List Application Accounts
