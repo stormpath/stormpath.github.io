@@ -454,7 +454,7 @@ Once an `Account` is retrieved, Stormpath maps common fields for the Google User
 
 {% codetab id:google-get-provider-data langs:java python node curl %}
 ------
-FacebookProviderData providerData = (FacebookProviderData) account.getProviderData();
+GoogleProviderData providerData = (GoogleProviderData) account.getProviderData();
 ------
 print acc.provider_data
 print acc.provider_data.access_token
