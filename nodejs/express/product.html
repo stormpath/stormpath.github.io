@@ -92,6 +92,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#customize-user-registration-login-and-logout-routes">Customize User Registration, Login, and Logout Routes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-the-views">Customize the Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#disable-the-built-in-views">Disable the Built-in Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-account-verification">Use Account Verification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-password-reset">Use Password Reset</a></li>
 </ul>
 </li>
@@ -99,6 +100,7 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-7">Version 0.1.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-6">Version 0.1.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-5">Version 0.1.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-4">Version 0.1.4</a></li>
@@ -108,6 +110,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-6-version-0-1-7">Version 0.1.6 -&gt; Version 0.1.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-5-version-0-1-6">Version 0.1.5 -&gt; Version 0.1.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-4-version-0-1-5">Version 0.1.4 -&gt; Version 0.1.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-3-version-0-1-4">Version 0.1.3 -&gt; Version 0.1.4</a></li>
@@ -646,14 +649,97 @@ following:</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="use-account-verification">
+<h2>Use Account Verification<a class="headerlink" href="#use-account-verification" title="Permalink to this headline">¶</a></h2>
+<p>As of Express-Stormpath <strong>0.1.8</strong>, it is now possible to easily enable an
+&#8220;Account Verification Workflow&#8221;, which makes newly registered users click a link
+in in their email inbox before completing user the user registration process.</p>
+<p>If you&#8217;d like to ensure your users are registering with legitimate email
+addresses, this feature makes the process as painless as possible =)</p>
+<div class="section" id="configure-the-workflow">
+<h3>Configure the Workflow<a class="headerlink" href="#configure-the-workflow" title="Permalink to this headline">¶</a></h3>
+<p>The first thing you need to do to enable &#8220;Account Verification&#8221; functionality
+in your Express app is visit the <a class="reference external" href="https://api.stormpath.com/v#!directories">Directory Dashboard</a> and select your default
+user directory.</p>
+<p>Next, you should see several options in a tab.  You will want to click the
+&#8220;Workflows&#8221; button.  Once you&#8217;ve landed on this page, you&#8217;ll then want to click
+the &#8220;show&#8221; link to the right of the &#8220;Account Registration and Verification&#8221;
+header.  This section allows you to configure your &#8220;Account Verification&#8221;
+settings.</p>
+<p>On this page, the only thing you <strong>need</strong> to change is the &#8220;Account Verification
+Base URL&#8221; setting at the top.  You need to set this to be:
+<tt class="docutils literal"><span class="pre">https://mysite.com/verified</span></tt>, substituting in your own website address.</p>
+<p>For instance, if your site lives at <tt class="docutils literal"><span class="pre">https://www.mysite.com</span></tt>, you&#8217;ll want to
+set &#8220;Account Verification Base URL&#8221; to <tt class="docutils literal"><span class="pre">https://www.mysite.com/verified</span></tt>.</p>
+<p>This URL determines where a user will be redirected after clicking the
+verification link in the email we send them.  If you&#8217;re testing things out
+locally, you can also set this to a local URL (eg:
+<tt class="docutils literal"><span class="pre">http://localhost:3000/verified</span></tt>).</p>
+<p>After setting &#8220;Account Verification Base URL&#8221;, you can also adjust any of the
+other settings below &#8211; you can customize the email templates that are used to
+email the user, and a variety of other options.</p>
+<p>When you&#8217;re finished customizing the &#8220;Account Verification Workflow&#8221;, be sure
+to hit the &#8220;Update&#8221; button at the bottom of the page.</p>
+</div>
+<div class="section" id="enable-account-verification-in-your-app">
+<h3>Enable Account Verification in Your App<a class="headerlink" href="#enable-account-verification-in-your-app" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve configured the &#8220;Account Verification&#8221; settings on Stormpath&#8217;s
+side, you need to configure your Express application to enable account
+verification.</p>
+<p>You can do this easily by modifying your application config like so:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">enableAccountVerification</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>And...  That&#8217;s all you have to do!</p>
+</div>
+<div class="section" id="test-it-out">
+<h3>Test it Out<a class="headerlink" href="#test-it-out" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve fully enabled account verification functionality in your app,
+open up the registration page in your Express app and check it out!  After
+creating a new user account, you&#8217;ll be greeted by a message informing you that
+before you can continue you need to click the verification link in your inbox.
+This page looks like this:</p>
+<img alt="_images/verification.png" src="_images/verification.png" />
+<p>Then, depending on your &#8220;Account Verification Workflow&#8221; configuration, the user
+will see an email that looks like the following:</p>
+<img alt="_images/verification-email.png" src="_images/verification-email.png" />
+<p>When a user clicks the link in their email, they&#8217;ll reach a success page that
+looks like this:</p>
+<img alt="_images/verification-complete.png" src="_images/verification-complete.png" />
+<p>And lastly, once a user clicks the verification link, they&#8217;ll be automatically
+logged into their account, then redirected to the main page of your site
+(whatever URL is set as <tt class="docutils literal"><span class="pre">redirectUrl</span></tt> in your configuration).  They&#8217;ll also
+be shown this page for a few seconds to let them know the change was successful.</p>
+<p>Not bad, right?</p>
+</div>
+<div class="section" id="customization">
+<h3>Customization<a class="headerlink" href="#customization" title="Permalink to this headline">¶</a></h3>
+<p>Much like all other Express-Stormpath features, the account verification feature is
+completely customizable.</p>
+<p>You can easily change the account verification templates by modifying the following
+configuration variables, respectively:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">stormpathAccountVerificationEmailSentView</span></tt> - The view which is shown after
+a new user creates an account.</li>
+<li><tt class="docutils literal"><span class="pre">stormpathAccountVerificationCompleteView</span></tt> - The view which is shown after
+a user clicks the verification link in their email.</li>
+</ul>
+<p>If you&#8217;d like to override the default views, you should take a look at the
+ones included with Express-Stormpath here:
+<a class="reference external" href="https://github.com/stormpath/stormpath-express/tree/master/lib/views">https://github.com/stormpath/stormpath-express/tree/master/lib/views</a>
+and use these as a base for your own views.</p>
+</div>
+</div>
 <div class="section" id="use-password-reset">
 <h2>Use Password Reset<a class="headerlink" href="#use-password-reset" title="Permalink to this headline">¶</a></h2>
 <p>As of Express-Stormpath <strong>0.1.6</strong>, it is now possible to easily enable a &#8220;Password
 Reset Workflow&#8221;, which allows your users to reset their passwords automatically.</p>
 <p>We highly encourage you to use this feature, as it provides a simple and secure
 way to allow your users to reset their passwords without hassle.</p>
-<div class="section" id="configure-the-workflow">
-<h3>Configure the Workflow<a class="headerlink" href="#configure-the-workflow" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h3>Configure the Workflow<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>The first thing you need to do to enable &#8220;Password Reset&#8221; functionality in your
 Express app is visit the <a class="reference external" href="https://api.stormpath.com/v#!directories">Directory Dashboard</a> and select your default user
 directory.</p>
@@ -687,8 +773,8 @@ you need to configure your Express application to enable password reset.</p>
 </div>
 <p>And...  That&#8217;s all you have to do!</p>
 </div>
-<div class="section" id="test-it-out">
-<h3>Test it Out<a class="headerlink" href="#test-it-out" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h3>Test it Out<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>Now that you&#8217;ve fully enabled password reset functionality in your app, open up
 the login page in your Express app and check it out!  You should see a &#8220;Forgot
 Password?&#8221; link below the login form which looks like this:</p>
@@ -712,8 +798,8 @@ was successful:</p>
 <img alt="_images/forgot-complete.png" src="_images/forgot-complete.png" />
 <p>Not bad, right?</p>
 </div>
-<div class="section" id="customization">
-<h3>Customization<a class="headerlink" href="#customization" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id3">
+<h3>Customization<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
 <p>Much like all other Express-Stormpath features, the password reset feature is
 completely customizable.</p>
 <p>You can easily change the password reset templates by modifying the following
