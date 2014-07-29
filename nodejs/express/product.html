@@ -86,6 +86,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#enable-caching">Enable Caching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#access-user-data">Access User Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#working-with-custom-user-data">Working With Custom User Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api-authentication">API Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-redirect-logic">Customize Redirect Logic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-user-registration-fields">Customize User Registration Fields</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-user-login-fields">Customize User Login Fields</a></li>
@@ -100,6 +101,9 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-0">Version 0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-9">Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-8">Version 0.1.8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-7">Version 0.1.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-6">Version 0.1.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-5">Version 0.1.5</a></li>
@@ -110,6 +114,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-9-version-0-2-0">Version 0.1.9 -&gt; Version 0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-8-version-0-1-9">Version 0.1.8 -&gt; Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-7-version-0-1-8">Version 0.1.7 -&gt; Version 0.1.8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-6-version-0-1-7">Version 0.1.6 -&gt; Version 0.1.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-5-version-0-1-6">Version 0.1.5 -&gt; Version 0.1.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-4-version-0-1-5">Version 0.1.4 -&gt; Version 0.1.5</a></li>
@@ -230,7 +237,7 @@ to groups.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you&#8217;d like to learn how to create groups pragmatically, you can look at
-our Node library&#8217;s <a class="reference external" href="http://docs.stormpath.com/nodejs/api/application#createGroup">createGroup</a> documentation.</p>
+our Node library&#8217;s <a class="reference external" href="https://docs.stormpath.com/nodejs/api/application#createGroup">createGroup</a> documentation.</p>
 </div>
 <p>Now that we&#8217;ve created our groups, and also added our user to the &#8220;free users&#8221;
 group &#8211; let&#8217;s see how we can enforce different types of authorization on
@@ -363,7 +370,7 @@ do this:</p>
 <tt class="docutils literal"><span class="pre">user</span></tt> object.  This means you can perform <em>any</em> action on the <tt class="docutils literal"><span class="pre">user</span></tt> object
 directly.</p>
 <p>For more information on what you can do with a <tt class="docutils literal"><span class="pre">user</span></tt> object, please see
-the Node library documentation: <a class="reference external" href="http://docs.stormpath.com/nodejs/api/account">http://docs.stormpath.com/nodejs/api/account</a></p>
+the Node library documentation: <a class="reference external" href="https://docs.stormpath.com/nodejs/api/account">https://docs.stormpath.com/nodejs/api/account</a></p>
 <p>Let&#8217;s say you want to change a user&#8217;s <tt class="docutils literal"><span class="pre">givenName</span></tt> (<em>first name</em>).  You could
 easily accomplish this with the following code:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// assuming we&#39;re inside of a request</span>
@@ -407,6 +414,190 @@ model:</p>
 <p>As you can see above &#8211; storing custom information on a <tt class="docutils literal"><span class="pre">user</span></tt> account is
 extremely simple!</p>
 </div>
+<div class="section" id="api-authentication">
+<h2>API Authentication<a class="headerlink" href="#api-authentication" title="Permalink to this headline">¶</a></h2>
+<p>In addition to handling user login, registration, etc. for web users &#8211; you can
+also use Stormpath to secure your REST API.</p>
+<p>Typically, securing REST APIs is a lot of work:</p>
+<ul class="simple">
+<li>You need to assign users API keys.</li>
+<li>You need to cache the API keys for validation when users make requests
+(<em>nobody likes a slow API!</em>).</li>
+<li>You need to allow users to exchange their API keys for Oauth tokens (<em>if you
+want to support Oauth</em>).</li>
+</ul>
+<p>With Stormpath, however, this process is greatly simplified.  Stormpath can
+create API keys for your users, store them securely, and completely handle API
+authentication / caching.</p>
+<div class="section" id="create-api-keys">
+<h3>Create API Keys<a class="headerlink" href="#create-api-keys" title="Permalink to this headline">¶</a></h3>
+<p>Before you can secure your REST API, you&#8217;ll need to provision an API key pair
+for one of your Stormpath users.</p>
+<p>To do this (<em>assuming you&#8217;re inside of an Express route</em>), you can call the
+<tt class="docutils literal"><span class="pre">createApiKey</span></tt> method on your user object like so:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// Create an API key pair for the current user.</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/create&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">createApiKey</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">apiKey</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="mi">503</span><span class="p">,</span> <span class="p">{</span> <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;Something went wrong. Please try again.&#39;</span> <span class="p">});</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="nx">id</span><span class="o">:</span> <span class="nx">apiKey</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span> <span class="nx">secret</span><span class="o">:</span> <span class="nx">apiKey</span><span class="p">.</span><span class="nx">secret</span> <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The above route will create a new API key for the logged in user, then return it
+as JSON.  Each API key pair has two parts:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">id</span></tt> - An API key ID &#8211; this is similar to a username.</li>
+<li><tt class="docutils literal"><span class="pre">secret</span></tt> - An API key secret &#8211; this is similar to a password.</li>
+</ul>
+<p>Both the id and secret <em>must</em> be given to your user, as both will be needed for
+API authentication.</p>
+<p>Once you&#8217;ve created at least one API key pair for your user, you can then allow
+this user to authenticate using their API keys against your API service.</p>
+</div>
+<div class="section" id="authenticating-via-basic-auth">
+<h3>Authenticating via Basic Auth<a class="headerlink" href="#authenticating-via-basic-auth" title="Permalink to this headline">¶</a></h3>
+<p>If you&#8217;re building a REST API, the simplest way to secure your API is using HTTP
+basic authentication.</p>
+<p>Essentially what this means is that a developer will be able to access your API
+by specifying their API key ID and secret when making requests to your API.</p>
+<p>To allow a user to authenticate via basic authentication, all you need to use is
+the <tt class="docutils literal"><span class="pre">apiAuthenticationRequired</span></tt> middleware in your route:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// This API endpoint is *only* accessible to users with valid API keys.</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/me&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">apiAuthenticationRequired</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span>
+    <span class="nx">givenName</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">givenName</span><span class="p">,</span>
+    <span class="nx">surname</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">surname</span><span class="p">,</span>
+    <span class="nx">email</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">email</span><span class="p">,</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Now, let&#8217;s see how a developer can successfully use this API endpoint defined
+above.</p>
+<p>First, we&#8217;ll use the <a class="reference external" href="http://curl.haxx.se/">curl</a> command to make an API request to this endpoint
+<em>without specifying our API credentials</em>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">curl</span> <span class="o">-</span><span class="nx">v</span> <span class="nx">http</span><span class="o">:</span><span class="c1">//localhost:3000/me</span>
+<span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;Invalid API credentials.&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>As you can see above, by hitting the API endpoint with no credentials, a JSON
+error is returned automatically (<em>along with an HTTP 401 UNAUTHORIZED status
+code</em>).</p>
+<p>Now, let&#8217;s try this again by specifying our user&#8217;s API credentials (<em>that we
+generated in the previous section</em>):</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">curl</span> <span class="o">-</span><span class="nx">v</span> <span class="o">--</span><span class="nx">user</span> <span class="nx">id</span><span class="o">:</span><span class="nx">secret</span> <span class="nx">http</span><span class="o">:</span><span class="c1">//localhost:3000/me</span>
+<span class="p">{</span><span class="s2">&quot;givenName&quot;</span><span class="o">:</span><span class="s2">&quot;Randall&quot;</span><span class="p">,</span><span class="s2">&quot;surname&quot;</span><span class="o">:</span><span class="s2">&quot;Degges&quot;</span><span class="p">,</span><span class="s2">&quot;email&quot;</span><span class="o">:</span><span class="s2">&quot;r@rdegges.com&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>As you can see, by specifying my developer API credentials, I was able to
+successfully authenticate against the REST API!</p>
+<p>Using basic authentication, along with SSL, is an <em>excellent</em> way to secure
+your REST API.</p>
+</div>
+<div class="section" id="authenticating-via-oauth">
+<h3>Authenticating via OAuth<a class="headerlink" href="#authenticating-via-oauth" title="Permalink to this headline">¶</a></h3>
+<p>OAuth is another popular way to secure REST APIs.</p>
+<p>The way OAuth works is as follows:</p>
+<ul class="simple">
+<li>You&#8217;ve built a REST API that you want to secure.</li>
+<li>You&#8217;ve got developer accounts, and each developer account has an API key
+pair.</li>
+<li>A developer makes an HTTP POST request to your API service at the URL
+<tt class="docutils literal"><span class="pre">/oauth</span></tt>, and authenticates via HTTP basic authentication.</li>
+<li>If the request to <tt class="docutils literal"><span class="pre">/oauth</span></tt> was successful, an OAuth token will be returned
+to the developer.  This token is a long string that expires in a given amount
+of time (<em>by default, OAuth tokens expire after one hour</em>).</li>
+<li>After the developer has this OAuth token, they can use this to authenticate
+future API requests instead of using their API key directly.</li>
+</ul>
+<p>OAuth serves to provide additional security over basic authentication if you&#8217;d
+like to give out more advanced / restricted access to your developers.</p>
+<p>Typically, if you&#8217;re building a REST API, and aren&#8217;t sure which form of
+authentication to offer &#8211; it&#8217;s a much better idea to simply use basic
+authentication (<em>covered in the previous section</em>).</p>
+<p>If you&#8217;d still like to use OAuth, continue reading!</p>
+<div class="section" id="configuring-oauth-token-settings">
+<h4>Configuring OAuth Token Settings<a class="headerlink" href="#configuring-oauth-token-settings" title="Permalink to this headline">¶</a></h4>
+<p>This library comes with OAuth support out-of-the box.  There are two
+configuration options you can specify when initializing the Stormpath middleware
+which control your OAuth flow:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">getOauthTokenUrl</span></tt> - The URL at which OAuth tokens can be retrieved.
+Defaults to <tt class="docutils literal"><span class="pre">/oauth</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">oauthTTL</span></tt> - The amount of time (<em>in seconds</em>) that OAuth tokens last.
+Defaults to <tt class="docutils literal"><span class="pre">3600</span></tt> (<em>one hour</em>).</li>
+</ul>
+<p>Here&#8217;s an example of how to set both of these attributes:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">getOauthTokenUrl</span><span class="o">:</span> <span class="s1">&#39;/oauth&#39;</span><span class="p">,</span>
+  <span class="nx">oauthTTL</span><span class="o">:</span> <span class="mi">3600</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-an-oauth-token">
+<h4>Getting an OAuth Token<a class="headerlink" href="#getting-an-oauth-token" title="Permalink to this headline">¶</a></h4>
+<p>Now that you&#8217;ve configured your OAuth settings, developers will be able to
+retrieve OAuth tokens by hitting your OAuth URL (<em>/oauth by default</em>) with
+their API credentials.</p>
+<p>Below is an example request using curl, which demonstrates the proper way to
+request an OAuth token:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">curl</span> <span class="o">-</span><span class="nx">v</span> <span class="o">--</span><span class="nx">user</span> <span class="nx">id</span><span class="o">:</span><span class="nx">secret</span> <span class="nx">http</span><span class="o">:</span><span class="c1">//localhost:3000/oauth?grant_type=client_credentials</span>
+<span class="p">{</span><span class="s2">&quot;access_token&quot;</span><span class="o">:</span><span class="s2">&quot;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJEUExSSTVUTEVNMjFTQzNER0xHUjBJOFpYIiwiaXNzIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvNWpvQVVKdFZONHNkT3dUVVJEc0VDNSIsImlhdCI6MTQwNjY1OTkxMCwiZXhwIjoxNDA2NjYzNTEwLCJzY29wZSI6IiJ9.ypDMDMMCRCtDhWPMMc9l_Q-O-rj5LATalHYa3droYkY&quot;</span><span class="p">,</span><span class="s2">&quot;token_type&quot;</span><span class="o">:</span><span class="s2">&quot;bearer&quot;</span><span class="p">,</span><span class="s2">&quot;expires_in&quot;</span><span class="o">:</span><span class="mi">3600</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you&#8217;re wondering why the <tt class="docutils literal"><span class="pre">?grant_type=client_credentials</span></tt> querystring
+exists &#8211; it&#8217;s part of the OAuth spec: <a class="reference external" href="http://tools.ietf.org/html/rfc6749">http://tools.ietf.org/html/rfc6749</a></p>
+</div>
+<p>The response is a JSON object which contains:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">access_token</span></tt> - Your OAuth access token.  This can be used to authenticate
+via subsequent requests.</li>
+<li><tt class="docutils literal"><span class="pre">token_type</span></tt> - This will always be <tt class="docutils literal"><span class="pre">'bearer'</span></tt>.</li>
+<li><tt class="docutils literal"><span class="pre">expires_in</span></tt> - This is the amount of seconds (<em>as an integer</em>) for which
+this token is valid.</li>
+</ul>
+</div>
+<div class="section" id="making-oauth-requests">
+<h4>Making OAuth Requests<a class="headerlink" href="#making-oauth-requests" title="Permalink to this headline">¶</a></h4>
+<p>Now that you&#8217;ve got an OAuth access token, you can use this to make API requests
+securely to you REST API.</p>
+<p>Let&#8217;s say you&#8217;ve defined the following API endpoint:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// This API endpoint is *only* accessible to users with a valid OAuth token.</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/me&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">apiAuthenticationRequired</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">user</span><span class="p">;</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span>
+    <span class="nx">givenName</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">givenName</span><span class="p">,</span>
+    <span class="nx">surname</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">surname</span><span class="p">,</span>
+    <span class="nx">email</span><span class="o">:</span> <span class="nx">user</span><span class="p">.</span><span class="nx">email</span><span class="p">,</span>
+  <span class="p">});</span>
+</pre></div>
+</div>
+<p>By using the <tt class="docutils literal"><span class="pre">stormpath.apiAuthenticationRequired</span></tt> middleware, users will be
+authenticated automatically on your behalf.</p>
+<p>Here&#8217;s a sample curl request to this endpoint without any credentials:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">curl</span> <span class="o">-</span><span class="nx">v</span> <span class="nx">http</span><span class="o">:</span><span class="c1">//localhost:3000/me</span>
+<span class="p">{</span><span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;Invalid API credentials.&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>And here&#8217;s a sample curl request to this endpoint with the Bearer token
+included:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">curl</span> <span class="o">-</span><span class="nx">v</span> <span class="o">-</span><span class="nx">H</span> <span class="s1">&#39;Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJEUExSSTVUTEVNMjFTQzNER0xHUjBJOFpYIiwiaXNzIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvNWpvQVVKdFZONHNkT3dUVVJEc0VDNSIsImlhdCI6MTQwNjY1OTkxMCwiZXhwIjoxNDA2NjYzNTEwLCJzY29wZSI6IiJ9.ypDMDMMCRCtDhWPMMc9l_Q-O-rj5LATalHYa3droYkY&#39;</span> <span class="nx">http</span><span class="o">:</span><span class="c1">//localhost:3000/me</span>
+<span class="p">{</span><span class="s2">&quot;givenName&quot;</span><span class="o">:</span><span class="s2">&quot;Randall&quot;</span><span class="p">,</span><span class="s2">&quot;surname&quot;</span><span class="o">:</span><span class="s2">&quot;Degges&quot;</span><span class="p">,</span><span class="s2">&quot;email&quot;</span><span class="o">:</span><span class="s2">&quot;r@rdegges.com&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>As you can see, by correctly specifying your OAuth token, you&#8217;re able to
+authenticate against the API endpoint easily!</p>
+</div>
+</div>
+</div>
 <div class="section" id="customize-redirect-logic">
 <h2>Customize Redirect Logic<a class="headerlink" href="#customize-redirect-logic" title="Permalink to this headline">¶</a></h2>
 <p>As you might have already noticed by playing around with the registration and
@@ -433,7 +624,7 @@ overrides the ``redirectUrl`` setting</em>).</p>
 <h2>Customize User Registration Fields<a class="headerlink" href="#customize-user-registration-fields" title="Permalink to this headline">¶</a></h2>
 <p>In many cases you might want to change the fields you collect when a user
 registers.  Let&#8217;s customize the fields we ask for when a user registers!</p>
-<p>Every user you register ends up getting stored in Stormpath as an <a class="reference external" href="http://docs.stormpath.com/rest/product-guide/#accounts">Account</a>
+<p>Every user you register ends up getting stored in Stormpath as an <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/#accounts">Account</a>
 object.  Accounts in Stormpath have several fields you can set:</p>
 <ul class="simple">
 <li>username</li>
