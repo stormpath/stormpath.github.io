@@ -322,6 +322,6 @@ We hope you found this Quickstart helpful!
 You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
-* Dig in deeper with the [express-stormpath Docs](http://docs.stormpath.com/nodejs/express/).
-* Learn how to use our raw [Node API](http://docs.stormpath.com/nodejs/api/home).
+* Dig in deeper with the [express-stormpath Docs](https://docs.stormpath.com/nodejs/express/).
+* Learn how to use our raw [Node API](https://docs.stormpath.com/nodejs/api/home).
 * Learn to easily partition user data with our [Guide to Building Multitenant Applications](/guides/multi-tenant/).

@@ -7,7 +7,7 @@ lang: console
 <p>To quickly get started using Stormpath to secure your online applications, please complete the following steps:</p>
 <ol>
 <li>
-<p><a href="http://www.stormpath.com/">Sign up for service</a>.</p>
+<p><a href="https://stormpath.com/">Sign up for service</a>.</p>
 <ol type="a">
 <li>On the main page, click <strong>Sign Up</strong>.</li>
 <li>Provide your first and last name, email address, company, and a password.</li>
@@ -89,7 +89,7 @@ lang: console
 <li>Click the <strong>Directories</strong> tab.</li>
 <li>Click <strong>Create Directory</strong>.</li>
 <li>Click <strong>Cloud</strong>.
-<p><img src="http://www.stormpath.com/sites/default/files/docs/CreateCloudDirectory.png" alt="Create Cloud Directory" title="Create Cloud Directory" width="650" height="440"></p>
+<p><img src="https://stormpath.com/sites/default/files/docs/CreateCloudDirectory.png" alt="Create Cloud Directory" title="Create Cloud Directory" width="650" height="440"></p>
 </li>
 <li>Complete the field values as follows: <br>
 <table>
@@ -134,7 +134,7 @@ lang: console
 <ol type="a">
 <li>Click the <strong>Applications</strong> tab.</li>
 <li>Click <strong>Register Application</strong>.
-<p><img src="http://www.stormpath.com/sites/default/files/docs/ApplicationRegistrationWizard.png" alt="Register Application Wizard" title="Register Application Wizard" width="700"></p>
+<p><img src="https://stormpath.com/sites/default/files/docs/ApplicationRegistrationWizard.png" alt="Register Application Wizard" title="Register Application Wizard" width="700"></p>
 </li>
 <li>Complete the fields as follows:<br>
 <table>
@@ -174,7 +174,7 @@ lang: console
 <ol type="a">
 <li>Click the <strong>Accounts</strong> tab.</li>
 <li>Click <strong>Create an Account</strong>.
-<p><img src="http://www.stormpath.com/sites/default/files/docs/CreateAccount.png" alt="Create Account" title="Create Account" width="640" height="380"></p>
+<p><img src="https://stormpath.com/sites/default/files/docs/CreateAccount.png" alt="Create Account" title="Create Account" width="640" height="380"></p>
 </li>
 <li>
 <p>Complete the fields as follows:</p>

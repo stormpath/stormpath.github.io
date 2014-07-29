@@ -22,7 +22,7 @@ By offloading user management and authentication to Stormpath, developers can br
 
 ### Architectural Overview
 
-<img src="http://www.stormpath.com/sites/default/files/docs/Architecture.png" alt="High-level Architecture" title="High-level Architecture" width="700" height="430">
+<img src="https://stormpath.com/sites/default/files/docs/Architecture.png" alt="High-level Architecture" title="High-level Architecture" width="700" height="430">
 
 ### Stormpath Admin Console
 
@@ -112,7 +112,7 @@ The Stormpath SDK and the associated components reside and execute within your a
 The HTTPS request allows you to program your application code to use regular Python objects and alleviates you from worrying about the lower-level HTTP REST+JSON details and individual REST resource HTTP endpoints.
 
 Here is how the communication works:<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/SDKCommunicationFlow.png" alt="SDK Communication Flow" title="SDK Communication Flow" width="700">
+<img src="https://stormpath.com/sites/default/files/docs/SDKCommunicationFlow.png" alt="SDK Communication Flow" title="SDK Communication Flow" width="700">
 
 In this example scenario, we have an existing SDK `account` resource instance, and we want its `directory`.
 
@@ -139,7 +139,7 @@ Python instances representing REST resources use the [Proxy software design patt
 #### Architectural Components
 
 The core component concepts of the SDK are as follows:<br>
-<img src="http://www.stormpath.com/sites/default/files/docs/ComponentArchitecture.png" alt="Stormpath SDK Component Architecture" title="Stormpath SDK Component Architecture" width="670">
+<img src="https://stormpath.com/sites/default/files/docs/ComponentArchitecture.png" alt="Stormpath SDK Component Architecture" title="Stormpath SDK Component Architecture" width="670">
 
 * **Client** is the root entry point for SDK functionality and accessing other SDK components, such as the `ResourceList`. A client is constructed with a Stormpath API key which is required to communicate with the Stormpath API server.
 * **ResourceList** is central to the Stormpath SDK. It is responsible for managing all Python `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. It is responsible for translating calls made on Python `resource` objects into REST requests to the Stormpath API server as necessary. Fetching a `resource` doesn't actually generate a HTTP request until one of its properties is read. It works between your application and the Stormpath API server.
@@ -248,7 +248,7 @@ To obtain an application REST URL:
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. In the Applications table, click the application name.<br>
-The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/AppResturl.png" alt="Application Resturl" title="Application Resturl">
+The REST URL appears on the Details tab.<br><img src="https://stormpath.com/sites/default/files/docs/AppResturl.png" alt="Application Resturl" title="Application Resturl">
 
 
 ### List Applications
@@ -319,7 +319,7 @@ Assume an application named Foo has been mapped to two login sources, the Custom
 
 Here is what happens when a user attempts to log in to an application named Foo:
 
-<img src="http://www.stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Login Sources Diagram" width="650" height="500">
+<img src="https://stormpath.com/sites/default/files/docs/LoginAttemptFlow.png" alt="Login Sources Diagram" title="Login Sources Diagram" width="650" height="500">
 
 You can configure multiple login sources, but only one is required for logging in. Multiple login sources allows each application to view multiple directories as a single repository during a login attempt.
 
@@ -337,7 +337,7 @@ To manage application login sources, you must log in to the Stormpath Admin Cons
 3. Click the application name.
 4. Click the **Login Sources** tab.<br>
 The login sources appear in order of priority.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
+	<img src="https://stormpath.com/sites/default/files/docs/LoginSources.png" alt="Login Sources" title="Login Sources" width="650" height="170">
 
 <a name="change-default-account-and-group-locations"></a>
 #### Change Default Account and Group Locations
@@ -363,9 +363,9 @@ Adding a login source to an application provisions a directory or group to that 
 4. Click the **Login Sources** tab.
 5. Click **Add Login Source**.
 6. In the *login source* list, select the appropriate directory.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown1.png" alt="Login Sources" title="Login Sources"><br>
+	<img src="https://stormpath.com/sites/default/files/docs/LSDropdown1.png" alt="Login Sources" title="Login Sources"><br>
 7.  If the directory contains groups, you can select all users or specific group for access.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LSDropdown2.png" alt="Login Sources" title="Login Sources"><br>
+	<img src="https://stormpath.com/sites/default/files/docs/LSDropdown2.png" alt="Login Sources" title="Login Sources"><br>
 8. Click **Add Login Source**.<br>
 The new login source is added to the bottom of the login sources list.
 
@@ -385,7 +385,7 @@ To specify the login source order:
 5. Click the row of the directory to move.
 6. Drag the row to the appropriate order.<br>
 	For example, if you want to move the first login source to the second login source, click anywhere in the first row of the login source table and drop the row on the second row.<br>
-	<img src="http://www.stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
+	<img src="https://stormpath.com/sites/default/files/docs/LoginPriority.png" alt="Login Sources" title="Login Sources" width="650">
 7. Click **Save Priorities**.
 
 <a name="remove-login-sources"></a>
@@ -498,7 +498,7 @@ To obtain a directory REST URL:
 1. Log in to the Stormpath Admin Console.
 2. Click the **Directories** tab.
 3. In the Directories table, click the directory name.<br>
-The REST URL appears on the Details tab.<br><img src="http://www.stormpath.com/sites/default/files/docs/Resturl.png" alt="Application Resturl" title="Application Resturl">
+The REST URL appears on the Details tab.<br><img src="https://stormpath.com/sites/default/files/docs/Resturl.png" alt="Application Resturl" title="Application Resturl">
 
 ### List Directories
 
@@ -557,7 +557,7 @@ Mirrored directories, after initial configuration, are accessible through the Ag
 2. Click **Create Directory**.
 3. Click **Mirror**.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAPDirectory.png" alt="Create LDAP Directory" title="Create Mirrored Directory" width="650">
+	<img src="https://stormpath.com/sites/default/files/docs/CreateLDAPDirectory.png" alt="Create LDAP Directory" title="Create Mirrored Directory" width="650">
 
 4. On the 1. Directory Basics tab, complete the field values as follows:
 
@@ -569,7 +569,7 @@ Directory Status | Whether or not the directory is to be used to authenticate ac
 
 5. Click **Next**.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP2.png" alt="Agent Configuration" title="Agent Configuration" width="640">
+	<img src="https://stormpath.com/sites/default/files/docs/CreateLDAP2.png" alt="Agent Configuration" title="Agent Configuration" width="640">
 
 6. On the 2. Agent Configuration tab, complete the field values as follows::
 
@@ -586,7 +586,7 @@ Directory Services Poll Interval | How often (in minutes) to poll the directory 
 
 7. Click **Next**.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP3.png" alt="Account Configuration" title="Account Configuration" width="640">
+	<img src="https://stormpath.com/sites/default/files/docs/CreateLDAP3.png" alt="Account Configuration" title="Account Configuration" width="640">
 
 
 8. On the 3. Account Configuration tab, complete the field values as follows:
@@ -605,7 +605,7 @@ Account Password Attribute | The attribute field to use when loading the account
 
 9. Click **Next**.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/CreateLDAP4.png" alt="Group Configuration" title="Group Configuration" width="640">
+	<img src="https://stormpath.com/sites/default/files/docs/CreateLDAP4.png" alt="Group Configuration" title="Group Configuration" width="640">
 
 10. On the 4. Group Configuration tab, complete the field values as follows:
 
@@ -622,7 +622,7 @@ Group Members Attribute | The attribute field to use when loading the group memb
 12. On the 5. Confirm tab, review the information and click **Create Directory**.<br>The webpage refreshes with the populated directory information.
 13. Review the Download Agent tab and perform the steps as directed.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/LastLDAPCreate.png" alt="Download Agent" title="Download Agent">
+	<img src="https://stormpath.com/sites/default/files/docs/LastLDAPCreate.png" alt="Download Agent" title="Download Agent">
 
 The `agent.id` and `agent.key` values will be specific to the agent of this directory.
 
@@ -1210,7 +1210,7 @@ Workflows are only available on cloud directories and only configurable using th
 
 On the Workflows tab, you can automate <a href="#AccountRegistration" title="account registration and verification">account registration and verification</a> and <a href="#PasswordReset" title="password reset">password resets</a>.
 
-<img src="http://www.stormpath.com/sites/default/files/docs/ManageWorkflows.png" alt="Workflow Automation" title="Workflow Automation" width="670" height="250">
+<img src="https://stormpath.com/sites/default/files/docs/ManageWorkflows.png" alt="Workflow Automation" title="Workflow Automation" width="670" height="250">
 
 ### Account Registration and Verification
 
@@ -1235,7 +1235,7 @@ To configure account registration and verification:
 	* By default, the Account Registration and Verification workflow automation is disabled. By leaving this workflow off, all accounts created in the directory are enabled, unless otherwise specified, and the user does not receive any registration or verification emails from Stormpath.
 	* By only enabling <strong>Enable Registration and Verification Workflow</strong> and not also enabling <strong>Require newly registered accounts to verify their email address</strong>, new accounts are marked as enabled and the users receive a registration success email. <br>
 
-		<img src="http://www.stormpath.com/sites/default/files/docs/RegistrationVerification.png" alt="Account Registration and Verification" title="Account Registration and Verification" width="650" height="430">
+		<img src="https://stormpath.com/sites/default/files/docs/RegistrationVerification.png" alt="Account Registration and Verification" title="Account Registration and Verification" width="650" height="430">
 
 
 	* You configure the Registration Success Message with the following attributes:
@@ -1252,7 +1252,7 @@ Body | The value for the body of the message. Variable substitution is supported
 		* Newly created accounts are given an *unverified* status and a verification email is sent to the user. The verification email contains a token unique to the user account. When the user clicks the link, they are sent to the verification base URL where the token is submitted to Stormpath for verification. If verified, the account status changes to enabled and a verification success email is sent to the user.
 		* An Account Verification Message section appears.<br>
 
-			<img src="http://www.stormpath.com/sites/default/files/docs/AccountVerificationMessage.png" alt="Account Verification" title="Account Verification" width="700" height="420">
+			<img src="https://stormpath.com/sites/default/files/docs/AccountVerificationMessage.png" alt="Account Verification" title="Account Verification" width="700" height="420">
 
 		* You configure the Account Verification Message with the following attributes: <br>
 
@@ -1266,7 +1266,7 @@ Subject | The value for the subject field of the Account Verification message.
 Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered and the url (containing the token) that the user must click.
 		* A Verification Success Message section appears.<br>
 
-			<img src="http://www.stormpath.com/sites/default/files/docs/VerificationEmailParams.png" alt="Email Verification" title="Email Verification" width="700" height="420">
+			<img src="https://stormpath.com/sites/default/files/docs/VerificationEmailParams.png" alt="Email Verification" title="Email Verification" width="700" height="420">
 
 		* You configure the Verification Success Message with the following attributes: <br>
 
@@ -1324,7 +1324,7 @@ To configure the password reset workflow:
 4. Click **Workflows** tab.
 5. On the Workflows tab, next to Password Reset, click **show**.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/ResetPW1.png" alt="Password Reset" title="Password Reset" width="640" height="430">
+	<img src="https://stormpath.com/sites/default/files/docs/ResetPW1.png" alt="Password Reset" title="Password Reset" width="640" height="430">
 6. Complete the values as follows:<br>
 
 	Attribute | Description
@@ -1352,7 +1352,7 @@ Message Format | The message format for the body of the Password Reset Success e
 Subject | The value for the subject field of the Password Reset Success message.
 Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
 
-	<img src="http://www.stormpath.com/sites/default/files/docs/ResetPW2.png" alt="Password Reset Message" title="Password Reset Message" width="640" height="418">
+	<img src="https://stormpath.com/sites/default/files/docs/ResetPW2.png" alt="Password Reset Message" title="Password Reset Message" width="640" height="418">
 
 9. When all the fields are complete, click **Update**.
 

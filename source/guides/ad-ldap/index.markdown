@@ -25,7 +25,7 @@ Stormpath is a user management API that makes it easy for developers to launch a
 * Group and role management, including pre-built Role-Based Access Control (RBAC)
 * Best-practice password security and data storage
 
-You access Stormpath via a [beautiful](http://stormpath.com/blog/designing-rest-json-apis) REST+JSON API or our [language-specific SDKs](http://docs.stormpath.com).
+You access Stormpath via a [beautiful](http://stormpath.com/blog/designing-rest-json-apis) REST+JSON API or our [language-specific SDKs](https://docs.stormpath.com).
 
 ## Why use Stormpath to integrate with existing Active Directory and LDAP servers?
 

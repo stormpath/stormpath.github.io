@@ -320,7 +320,7 @@ For example, when getting the current tenant from the client you can catch any e
 
 #### Error Code Reference
 
-The [Stormpath Error Code Reference](http://docs.stormpath.com/errors) provides the list of all Stormpath-specific error codes and their meanings.
+The [Stormpath Error Code Reference](https://docs.stormpath.com/errors) provides the list of all Stormpath-specific error codes and their meanings.
 
 ***
 

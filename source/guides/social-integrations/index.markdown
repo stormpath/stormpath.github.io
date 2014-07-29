@@ -8,7 +8,7 @@ In this guide, we discuss how to set up Stormpath to communicate to Google and F
 
 {% docs note %}
 
-Prerequisite:  Complete one of the [Quickstart Guides](http://docs.stormpath.com/home/).  This will get you familiar with Stormpath and will set up an `Application` to use with this guide.
+Prerequisite:  Complete one of the [Quickstart Guides](https://docs.stormpath.com/home/).  This will get you familiar with Stormpath and will set up an `Application` to use with this guide.
 
 {% enddocs %}
 
@@ -22,7 +22,7 @@ Stormpath is a user management API that makes it easy for developers to launch a
 * Group and role management, including pre-built Role-Based Access Control (RBAC)
 * Best-practice password security and data storage
 
-You access Stormpath via a [beautiful](http://stormpath.com/blog/designing-rest-json-apis) REST+JSON API or our [language-specific SDKs](http://docs.stormpath.com).
+You access Stormpath via a [beautiful](http://stormpath.com/blog/designing-rest-json-apis) REST+JSON API or our [language-specific SDKs](https://docs.stormpath.com).
 
 ##  Why Should I Use Stormpath to Integrate Login with Facebook and Google?
 
@@ -52,7 +52,7 @@ A `Directory` is a top-level storage containers of `Accounts` in Stormpath. A `D
 Before you can create a Directory for Facebook, it is important that you gather information regarding your application from Facebook.  This information includes Client ID / Client Secret and can be acquired from the developer consoles for [Facebook](https://developers.facebook.com/).
 {% enddocs %}
 
-Creating a directory for Facebook require that you provide information from Facebook as a `Provider` [resource](http://docs.stormpath.com/rest/product-guide/#facebook-provider-resource).  This information can be use to create the directories from the [Console](https://api.stormpath.com/ui/directories/create) or the following code:
+Creating a directory for Facebook require that you provide information from Facebook as a `Provider` [resource](https://docs.stormpath.com/rest/product-guide/#facebook-provider-resource).  This information can be use to create the directories from the [Console](https://api.stormpath.com/ui/directories/create) or the following code:
 
 {% codetab id:facebook-create-directory langs:java python node curl%}
 ------
@@ -285,7 +285,7 @@ A `Directory` is a top-level storage containers of `Accounts` in Stormpath. A `D
 Before you can create a Directory for Google, it is important that you gather information regarding your application from Google.  This information includes Client ID, Client Secret, Redirect URL and can be acquired from the developer consoles for [Google](https://console.developers.google.com/).
 {% enddocs %}
 
-Creating a directory for Google require that you provide information from Google as a `Provider` [resource](http://docs.stormpath.com/rest/product-guide/#google-provider-resource).  This information can be use to create the directories from the [Console](https://api.stormpath.com/ui/directories/create) or the following code:
+Creating a directory for Google require that you provide information from Google as a `Provider` [resource](https://docs.stormpath.com/rest/product-guide/#google-provider-resource).  This information can be use to create the directories from the [Console](https://api.stormpath.com/ui/directories/create) or the following code:
 
 {% codetab id:create-google-directory langs:java python node curl %}
 ------

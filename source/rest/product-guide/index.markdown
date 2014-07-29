@@ -446,7 +446,7 @@ REST API responses indicating an error or warning are represented by a proper re
 Attribute | Description | Type
 :----- | :----- | :----
 <a class="anchor" name="errors-status"></a>`status` | The corresponding HTTP status code. | Integer
-<a class="anchor" name="errors-code"></a>`code` | A [Stormpath-specific error code](http://docs.stormpath.com/errors) that can be used to obtain more information. | Integer
+<a class="anchor" name="errors-code"></a>`code` | A [Stormpath-specific error code](/errors) that can be used to obtain more information. | Integer
 <a class="anchor" name="errors-message"></a>`message` | A simple, easy to understand message that you can show directly to your application end-user. | String
 <a class="anchor" name="errors-developer-message"></a>`developerMessage` | A clear, plain text explanation with technical details that might assist a developer calling the Stormpath API. | String
 `moreInfo` | A fully qualified URL that may be accessed to obtain more information about the error. | String
@@ -469,13 +469,13 @@ Example response:
       "code": 404,
       "message": "Oops! The application you specified cannot be found.",
       "developerMessage": "The specified Application cannot be found. If you accessed this url via a stale href reference, it might be helpful to acquire the tenant's Application Collection Resource to obtain the current list of applications.",
-      "moreInfo": "http://docs.stormpath.com/errors/404"
+      "moreInfo": "https://docs.stormpath.com/errors/404"
     }
 <!-- {: .http} -->
 
 #### Error Code Reference
 
-The [Stormpath Error Code Reference](http://docs.stormpath.com/errors) provides the list of all Stormpath-specific error codes and their meanings.
+The [Stormpath Error Code Reference](/errors) provides the list of all Stormpath-specific error codes and their meanings.
 
 <a class="anchor" name="collections"></a>
 ### Collection Resources
@@ -3370,7 +3370,7 @@ If there is no acceptable designated directory account store, the REST API error
       "code": 5102,
       "message": "Oops! We encountered an unexpected error.  Please contact support and explain what you were doing at the time this error occurred.",
       "developerMessage": "No account store assigned to this application has been configured as the default storage location for newly created groups.  To fix this problem: in the application's 'account stores' configuration, specify the account store that will be used to store newly created groups."
-      "moreInfo": "http://docs.stormpath.com/errors/5102"
+      "moreInfo": "https://docs.stormpath.com/errors/5102"
     }
 
 <a class="anchor" name="group-retrieve"></a>

@@ -70,7 +70,7 @@ When you initially sign up for Stormpath, your account is established with the d
 
 If you would like to view or take advantage of features provided by higher-level subscriptions, in the top corner of the Stormpath Admin Console, click Settings, Subscription. If you upgrade your subscription level, you will also have to provide billing information by clicking **Settings**, **Billing**.
 
-For additional information on the various service offerings and subscription levels, see the [pricing page](http://www.stormpath.com/monthly-pricing-plans).
+For additional information on the various service offerings and subscription levels, see the [pricing page](https://stormpath.com/monthly-pricing-plans).
 
 ### Default Owner, Application, and Directory
 

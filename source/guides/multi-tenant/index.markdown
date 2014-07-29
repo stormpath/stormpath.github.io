@@ -17,7 +17,7 @@ Stormpath is a user management API that makes it easy for developers to launch a
 * Best-practice password security and data storage
 * Integration with on-premise LDAP and Active Directory servers
 
-You access Stormpath via a [beautiful](http://stormpath.com/blog/designing-rest-json-apis) REST+JSON API or our [language-specific SDKs](http://docs.stormpath.com).
+You access Stormpath via a [beautiful](http://stormpath.com/blog/designing-rest-json-apis) REST+JSON API or our [language-specific SDKs](https://docs.stormpath.com).
 
 While Stormpath is a great choice for any application, it excels for multi-tenant use cases.
 
@@ -305,7 +305,7 @@ This model gives you many benefits:
 * You can disassociate directories or groups from applications, preventing those users from logging in.
 * Security policies for Accounts are configured at the Directory level, giving you tighter control over security requirements.
 * It works perfectly well for single application uses cases too, allowing flexibility for future apps.
-* And [more...](http://docs.stormpath.com).
+* And [more...](https://docs.stormpath.com).
 
 And, most importantly, you can configure changes to *all* of this without changing your application code!  
 
@@ -344,9 +344,9 @@ This approach has the following benefits:
 
 * Using a Group to represent a Tenant allows you to associate multiple Accounts to a single tenant easily: just add them to the tenant Group.  You can find all users in a tenant just by requesting the Group, or, you can search across all users in a tenant just by searching in that Group only.
 
-* You can store Tenant-specific data without having to roll your own database/tables, by assigning any ad-hoc data you want to a Stormpath Group as [custom data](http://docs.stormpath.com/rest/product-guide/#custom-data).
+* You can store Tenant-specific data without having to roll your own database/tables, by assigning any ad-hoc data you want to a Stormpath Group as [custom data](https://docs.stormpath.com/rest/product-guide/#custom-data).
 
-* Group [custom data](http://docs.stormpath.com/rest/product-guide/#custom-data) can be used to store tenant-specific [permisions or Access Control Lists](https://stormpath.com/blog/fine-grained-permissions-with-customData), so you can control what each users of each tenant are allowed to do in your application by simply assigning or removing specific values from their Tenant Group's `customData`.
+* Group [custom data](https://docs.stormpath.com/rest/product-guide/#custom-data) can be used to store tenant-specific [permisions or Access Control Lists](https://stormpath.com/blog/fine-grained-permissions-with-customData), so you can control what each users of each tenant are allowed to do in your application by simply assigning or removing specific values from their Tenant Group's `customData`.
 
 * You could share Accounts across Tenants by adding an Account to more than one Tenant Group. This can be highly beneficial in certain use cases, where you might want to temporarily grant a user access to a tenant, but then revoke the access later, all the while not impacting their own tenant.
 
@@ -414,7 +414,7 @@ A nice side effect of this naming scheme is that it becomes very easy to find al
 
         GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=2gdhVFEQMXpaUMAPzLXen4_*
 
-Notice the asterisk at the end of the query? Stormpath's [query support](http://docs.stormpath.com/rest/product-guide/#Directory-groups) supports starts-with matching, so the above query will return all groups that start with our ID + underscore prefix.
+Notice the asterisk at the end of the query? Stormpath's [query support](https://docs.stormpath.com/rest/product-guide/#Directory-groups) supports starts-with matching, so the above query will return all groups that start with our ID + underscore prefix.
 
 If you wanted to retrieve the tenant group and all of its subgroups, make the query a little less restrictive by removing the underscore:
 

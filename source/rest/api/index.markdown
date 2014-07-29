@@ -22,7 +22,7 @@ This document has been deprecated.  Please refer to the [REST Product Guide](pro
 
 <p>Every request to the Stormpath REST API must be authenticated with an API key over HTTPS (HTTP is not supported). If you want to make a REST request to Stormpath, we assume you have already:</p>
 <ol>
-<li><a href="http://www.stormpath.com/" title="Sign up">Signed up for Stormpath</a>.</li>
+<li><a href="https://stormpath.com/" title="Sign up">Signed up for Stormpath</a>.</li>
 <li><a href="/console/product-guide#GetAPI" title="Get API key">Obtained your API key</a>.</li>
 </ol>
 <p>When you have an API key, you can choose one of two ways to authenticate with Stormpath:</p>
@@ -768,7 +768,7 @@ Content-Type: application/json;charset=UTF-8
   "code": 404,
   "message": "Oops! The application you specified cannot be found.",
   "developerMessage": "The specified Application cannot be found. If you accessed this url via a stale href reference, it might be helpful to acquire the tenant's Application Collection Resource to obtain the current list of applications.",
-  "moreInfo": "http://docs.stormpath.com/errors/404"
+  "moreInfo": "https://docs.stormpath.com/errors/404"
 }
 </code></pre>
 
