@@ -111,6 +111,8 @@ The `Client` object is what allows you to communicate with Stormpath.
 
     import com.stormpath.sdk.client.*;
 	
+    String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
+
 	ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
 	Client client = Clients.builder().setApiKey(apiKey).build();
 	
@@ -230,8 +232,7 @@ Authenticating users is equally simple -- you can specify either a `username` or
     import com.stormpath.sdk.resource.ResourceException;
     ...
 
-    //Capture the username and password, such as via an SSL-encrypted web HTML form.
-    //We'll just simulate a form lookup and use the values we used above:
+    //Capture the username and password, such as via an SSL-encrypted web HTML form. We'll just simulate a form lookup and use the values we used above:
     String usernameOrEmail = "tk421@stormpath.com"; 
     String rawPassword = "Changeme1"; 
 
@@ -240,19 +241,13 @@ Authenticating users is equally simple -- you can specify either a `username` or
 
     //Now let's authenticate the account with the application:
     try {
-        return application.authenticateAccount(request).getAccount();
-    } catch (ResourceException name) {
-        //...catch the error and print it to the syslog
-        log.error("Auth error: " + name.getDeveloperMessage());
-        return null;
-    } finally {
-        //Clear the request data to prevent later memory access
-        request.clear();
-    }
-
+        AuthenticationResult result = application.authenticateAccount(request);
+        Account account = result.getAccount();
+    } catch (ResourceException ex) {
+        System.out.println(ex.getStatus() + " " + ex.getMessage());
+    }   
 
 ***
-
 
 ## Other Things You Can Do with Stormpath
 
