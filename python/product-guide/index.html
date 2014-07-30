@@ -1119,7 +1119,7 @@ account = client.accounts.get(href, expansion)
 
 <p>For example, it would not be possible to return an account with its directory expanded and also the directory&rsquo;s groups expanded as well. Link expansion is currently only possible one level &lsquo;deep&rsquo;.</p>
 
-<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#97;&#105;&#x6c;&#116;&#x6f;&#x3a;&#x73;&#x75;&#x70;&#112;&#111;&#114;&#116;&#x40;&#115;&#116;&#x6f;&#114;&#109;&#x70;&#x61;&#116;&#104;&#x2e;&#99;&#111;&#x6d;">&#115;&#117;&#112;&#112;&#111;&#114;&#x74;&#64;&#115;&#116;&#111;&#x72;&#109;&#112;&#x61;&#116;&#104;&#x2e;&#x63;&#111;&#109;</a> and submit a feature request.</p>
+<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#97;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x73;&#x75;&#x70;&#112;&#x6f;&#x72;&#116;&#64;&#x73;&#116;&#111;&#x72;&#x6d;&#x70;&#x61;&#116;&#x68;&#46;&#99;&#111;&#109;">&#115;&#x75;&#x70;&#112;&#x6f;&#x72;&#x74;&#64;&#x73;&#116;&#x6f;&#114;&#109;&#x70;&#x61;&#x74;&#104;&#x2e;&#99;&#111;&#109;</a> and submit a feature request.</p>
 
 <h4>Expanding Multiple Resources</h4>
 
@@ -1237,7 +1237,7 @@ account = client.accounts.get(href, expansion)
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
 
-<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#58;&#x73;&#117;&#x70;&#112;&#x6f;&#x72;&#116;&#x40;&#115;&#x74;&#111;&#114;&#109;&#112;&#x61;&#116;&#104;&#x2e;&#99;&#111;&#109;">&#x73;&#x75;&#112;&#x70;&#111;&#x72;&#x74;&#x40;&#x73;&#x74;&#x6f;&#114;&#x6d;&#x70;&#x61;&#116;&#x68;&#46;&#99;&#111;&#109;</a> and request it.</p>
+<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#x73;&#x75;&#112;&#112;&#111;&#x72;&#116;&#x40;&#x73;&#x74;&#x6f;&#114;&#109;&#x70;&#97;&#116;&#104;&#46;&#x63;&#111;&#x6d;">&#x73;&#x75;&#x70;&#112;&#111;&#x72;&#116;&#64;&#115;&#116;&#x6f;&#x72;&#109;&#x70;&#97;&#x74;&#x68;&#x2e;&#99;&#x6f;&#x6d;</a> and request it.</p>
 
 <p><a class="anchor" name="tenant-retrieve"></a></p>
 
@@ -1954,7 +1954,7 @@ except Error as re:
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>result = application.authenticate_account('jsmith@mailinator.com', 'Ephai9ti', account_store)
+<pre><code>result = application.authenticate_account('jsmith@mailinator.com', 'Ephai9ti', account_store=account_store)
 </code></pre>
 
 <p><a class="anchor" name="application-password-reset"></a></p>
@@ -5055,6 +5055,252 @@ account_store_map = a.account_store_mappings.create({
 print acc.provider_data.access_token
 </code></pre>
 
+<h3><a id="using-stormpath-to-secure-and-manage-api-services"></a>Using Stormpath to Secure and Manage API Services</h3>
+
+<p><strong>This Feature is currently in beta</strong>. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#115;&#x75;&#112;&#x70;&#111;&#114;&#x74;&#64;&#x73;&#x74;&#111;&#x72;&#x6d;&#112;&#97;&#x74;&#x68;&#46;&#99;&#x6f;&#109;&#x2e;">&#115;&#x75;&#x70;&#x70;&#x6f;&#114;&#116;&#x40;&#x73;&#116;&#111;&#114;&#x6d;&#112;&#97;&#116;&#x68;&#x2e;&#x63;&#x6f;&#109;&#46;</a></p>
+
+<p>With a few lines of code, you can quickly and easily lock down your own APIs with OAuth-based authentication and secure API key management.
+Stormpath offers a complete solution that securely and easily helps you manage developer accounts, create and manage API Keys, and generate OAuth 2.0 bearer tokens to support Access Token authentication.</p>
+
+<h4>First, some terminology</h4>
+
+<p>Throughout this document we will use the following words with very specific meanings.</p>
+
+<p><strong>Admin</strong> or <strong>Administrator</strong> &ndash; Someone on your team who has access to the Stormpath API and/or Adminstration Console.  In turn, they will typically have the ability to create and manage user accounts, applications, API keys, etc.</p>
+
+<p><strong>Developer</strong> &ndash; A consumer of your API.  When you are generating and distributing API keys for your API, they are going to developers that are using your API.</p>
+
+<p><strong>OAuth 2.0 Access Token</strong>  &ndash; An access token is a string representation of authorization issued to a client. This access token is issued by an authority and grants access to a protected or gated resource. These tokens are opaque to the client.</p>
+
+<p><strong>Bearer Token</strong> &ndash; A Bearer token is a specific token type for an Access Token. A Bearer token is used with the Bearer Authorization Scheme in HTTP.  A client wanting to access a protected service is required to locate a trusted entity to generate a Bearer Token.  In this document, a Bearer Token represent an Access Token.</p>
+
+<p><strong>API Keys</strong> &ndash; Represents an API Key Id and Secret pair which is generated for a developer integrating with your API.</p>
+
+<h4>How do I use Stormpath for API Key Management?</h4>
+
+<p>If you haven&rsquo;t already, you should first familiarize your self with Stormpath basics in one of our <a href="https://stormpath.com/tutorial/">7-Minute Tutorials</a>.</p>
+
+<p>In order to implement API Key management with Stormpath you&rsquo;ll need to do the following:</p>
+
+<ul>
+<li>Create a User Account for each of your Developers</li>
+<li>Create / Manage API Keys for the Developers&#8217; Accounts</li>
+<li>Use the Stormpath SDK to Authenticate and Generate Tokens for your API</li>
+</ul>
+
+
+<h4>Create an Account in Stormpath for your Developers</h4>
+
+<p>First, you will need user accounts in Stormpath to represent the people that are developing against your API.
+Accounts can not only represent Developers, but also can be used to represent services, daemons, processes,
+or any “entity” that needs to login to a Stormpath-secured API. To see how to create an account refer to the
+section <a href="#account-create">here</a>.</p>
+
+<p>By assigning API keys directly to a User Account, as opposed to a general organization-wide set of keys, you get full traceability and accountability back to the specific individual in the event of an accident or breach on their end.</p>
+
+<h4>Create / Manage API Keys for the Developers&#8217; Accounts</h4>
+
+<p>After you create an account for a developer, you will need to generate an API Key (or multiple) to be used when accessing your API.  Each account will have an <code>api_keys</code> property that contains a collection of their API Keys. There will also be a list of API keys on a account&rsquo;s profile in the Stormpath Admin Console.  You will be able to both create and manage keys in both.</p>
+
+<p>The <code>api_keys</code> collection can be used to easily display the API Keys back to the Developer in your application&rsquo;s UI in addition to general purpose API key management.</p>
+
+<pre><code>john = app.accounts[0]
+api_keys = john.api_keys
+print api_keys
+&lt;ApiKeyList href=https://api.stormpath.com/v1/accounts/AC49tF50TeZdVpZSbi9FQK/apiKeys&gt;
+api_key = api_keys[0]
+
+# Create a new api key
+new_api_key = john.api_keys.create()
+
+# Disable old api_key
+api_key.status = 'DISABLED'
+api_key.save()
+
+# Access id and secret
+print new_api_key.id
+print new_api_key.secret
+
+# Delete an api key
+api_key.delete()
+</code></pre>
+
+<p>The <code>ApiKey</code> returned will have the following properties:
+Attribute | Description | Type | Valid Value
+:&mdash;&mdash;&ndash; | :&mdash;&mdash;&ndash; | :&mdash;&mdash; | :&mdash;&mdash;
+<code>id</code> | The unique identifier for the API Key | String | <span>&mdash;</span>
+<code>secret</code> | A secret identifier. Unique across all tenants. | String | &mdash;
+<code>status</code> | A property that represent the status of the key.  Keys with a disabled status will not be able to authenticate. | ApiKeyStatus | ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED,
+<code>account</code> | A link to the ApiKey&rsquo;s applications. | Account | <span>&mdash;</span>
+<code>tenant</code> | A link to the ApiKey&rsquo;s tenant. | Tenant | <span>&mdash;</span></p>
+
+<p>After the API Key is created, you will need to deliver the API Key ID and Secret to the developer so they can start using them to access your API securely.  In most cases, this is done by displaying the API keys on a web page.</p>
+
+<h4>Using the Stormpath SDK to Authenticate and Generate Tokens for your API</h4>
+
+<p>The Stormpath SDK does all the heavy lifting for you in your application.  It automatically processes authentications via HTTP Basic or OAuth 2.0. In addition, the SDK will handle more advance OAuth 2.0 features like <em>scope</em> and <em>time-to-live</em>.</p>
+
+<p>Specifically, Stormpath supports two HTTP <code>Authorization</code> methods, Basic and Bearer (OAuth 2.0 client-credentials grant type). In this section we will discuss the strategies and best practices using these authorization methods.</p>
+
+<p>All authentication attempts in Stormpath start with the <code>Application</code> object in the SDK.  You will likely have initialized the <code>Application</code> during startup.</p>
+
+<p>To demonstrate how the SDK works, we&rsquo;ll use an example.  We are building a Stormtrooper API for managing Stormtrooper equipment &mdash; like awesome helmets and blasters.  In order to secure our API, a developer must base64 encode their API Key and Secret and then pass the encoded data in the authorization header.</p>
+
+<pre><code>base64.b64encode(id + ":" + secret)
+</code></pre>
+
+<h5>Basic Auth</h5>
+
+<p>The developer request would look something like this (using HTTPS Basic authentication):</p>
+
+<pre><code>GET /troopers/tk421/equipment 
+    Accept: application/json
+    Authorization: Basic MzRVU1BWVUFURThLWDE4MElDTFVUMDNDTzpQSHozZitnMzNiNFpHc1R3dEtOQ2h0NzhBejNpSjdwWTIwREo5N0R2L1g4
+    Host: api.trooperapp.com
+</code></pre>
+
+<p>The Basic Authentication mechanism provides no confidentiality protection for the transmitted credentials. They are merely encoded with Base64 in transit, but not encrypted or hashed in any way. Stormpath recommends that when a developer calls your API, and if you use Basic Authentication, the call needs to be communicated over HTTPS protocol to provide additional security.</p>
+
+<p>In the simplest form, the Stormpath Python SDK would authenticate the above request (Basic or Bearer) as follows:</p>
+
+<pre><code>uri = 'https://api.trooperapp.com'
+http_method = 'GET'
+body = {}
+headers = {
+    'Authorization': 'Basic BASE64ENCODEDAPIKEYANDSECRET'
+}
+# Used only for Bearer auth
+allowed_scopes = []
+
+result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+if result:
+    print result.api_key
+    print result.account
+else:
+    print "Invalid or not authenticated request."
+</code></pre>
+
+<p>The SDK provides a caching layer to ensure fast response times in your API by reducing network traffic to the Stormpath service. The caching layer will cache the API Key securely. Stormpath will use the cache entry for API Key and Secret authentication when possible.</p>
+
+<p><strong>Note</strong> When doing Basic auth the result returned will have no token attached to it, ie. <code>result.token</code> will be <code>None</code>.</p>
+
+<h5>Exchanging API Keys for OAuth 2.0 Bearer Tokens</h5>
+
+<p>In the section above, we show how to perform Basic authentication on a request.  Basic authentication is common in the market, but there are more secure methods for securing your API. This is one of benefit of OAuth. Instead of passing base64 encoded API keys over the wire, you can exchange an API Key Id and Secret for an Access Token, and use the Access Token as a Bearer Token to authentication for a protected API or resource.</p>
+
+<p>Stormpath SDK has all the tools needed to enable your API to support OAuth 2.0 Bearer Tokens as a means of authentication. Stormpath explicitly supports OAuth 2.0 client credential grant type.  This workflow is represented as:</p>
+
+<pre><code> +---------+                                  +---------------+
+ |         |                                  |               |
+ |         |&gt;--- 1. Client Authentication ---&gt;| Authorization |
+ | Client  |                                  |     Server    |
+ |         |&lt;--- 2. -- Access Token ---------&lt;|               |
+ |         |                                  |               |
+ +---------+                                  +---------------+
+</code></pre>
+
+<ol>
+<li>  The client authenticates with the authorization server and requests an access token from the token endpoint.</li>
+<li>  The authorization server authenticates the client, and if valid issues an access token.</li>
+</ol>
+
+
+<p>Stormpath in this case is acting as the Authorization Server and will authenticate the client based on the API Key ID and Secret.  This allows you to generate an Access Token for a successful authentication result.</p>
+
+<p>Going back to the Stormtrooper Equipment API example. The app would require that a developer call a REST endpoint to exchange a valid API Key and Secret for an Access Token. The REST endpoint would canonically be <code>/oauth/token</code>. The API Key and Secret would need to be base64 encoded in the request. An example of the REST call:</p>
+
+<pre><code>POST /oauth/token
+Accept: application/json
+Authorization: Basic MzRVU1BWVUFURThLWDE4MElDTFVUMDNDTzpQSHozZitnMzNiNFpHc1
+Content-Type: application/x-www-form-urlencoded
+Host: api.trooperapp.com
+
+  grant_type=client_credentials&amp;scope=somescope
+</code></pre>
+
+<p>The request will need to explicitly state the grant type for the OAuth Access Token Request. Stormpath only supports client credential grant type for exchanging API Keys for Access Tokens.</p>
+
+<p>Below is sample code to show how you would handle the request with the Stormpath PythonSDK and return an access token to the client:</p>
+
+<pre><code>result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+if result:
+    print result.token
+    print result.token.to_json()
+</code></pre>
+
+<p>When returning the token to the client you can use the convenience method <code>token.to_json()</code> to get a JSON
+representation of the token. The response should then be look something like this:</p>
+
+<pre><code>HTTP 200 OK
+Content-Type: application/json
+{
+   "access_token":"7FRhtCNRapj9zs.YI8MqPiS8hzx3wJH4.qT29JUOpU64T",
+   "token_type":"bearer",
+   "expires_in":3600
+}
+</code></pre>
+
+<p>Notice that we used the same <code>app.authenticate</code> method for Basic auth and for getting the Bearer token. This works because the SDK will
+check the body of the request while doing Basic auth and if it finds the correct <code>grant_type</code> it will authenticate the request and
+attach the <code>token</code> to the result in one go.</p>
+
+<p>The <code>allowed_scopes</code> parameter has a twofold meaning here, for token generation it represents all the scopes that the developer can request, ie.
+all the valid scopes for that particular Stormpath Application. The second use-case is documented below.</p>
+
+<h5>Using OAuth as Authentication for your REST API</h5>
+
+<p>After you return an OAuth Access Token to a developer using your API service, they can start using the OAuth Access Token to validate authentication to your service.</p>
+
+<p>Stormpath requires that the developer send the Access Token in the Authorization header of the request.</p>
+
+<p>Again, the Stormtrooper Equipment API example. We will require that a developer exchange his API Key and Secret for an Access Token and then pass the Access Token in future requests to gain access to your API.</p>
+
+<p>The developer request would look something like this:</p>
+
+<pre><code>GET /troopers/tk421/equipment 
+Accept: application/json
+Authorization: Bearer 7FRhtCNRapj9zs.YI8MqPiS8hzx3wJH4.qT29JUOpU64T
+Host: api.trooperapp.com
+</code></pre>
+
+<p>The Access Token needs to be passed to your API in the Authorization header, using the Bearer method.
+We can then proceed to authenticate the request with the same method as we did before:</p>
+
+<pre><code>result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+if result:
+    print result.account
+else:
+    "Invalid or expired Token"
+</code></pre>
+
+<p>Notice the <code>allowed_scopes</code> parameter has a different meaning here than it did above. We can use it to specify allowed scopes
+for the specific endpoint the user is accessing (in this case /troopers/tk421/equipment). If the Access Token was not generated
+with all the scopes that this endpoint requires, the authentication will fail and the <code>result</code> variable will be empty.</p>
+
+<p>You can easily check the scope of a token with:</p>
+
+<pre><code>print result.token.scopes
+</code></pre>
+
+<p>This allows you to do more fine grained access control after the request has been authenticated. For instance you can check if a user
+is in a specific Stormpath group before returning a response:</p>
+
+<pre><code>if result.account.has_group('admin'):
+    # return result
+else:
+    print "Unsufficient permissions."
+</code></pre>
+
+<p><strong>Note</strong> While requesting an Access Token if the developer does not request any scopes the Access Token will be
+generated without them. This implies that if any subsequent request is done with that access token but tries to access
+an endpoint that requires any scopes, the request will fail to authenticate.</p>
+
+<p><strong>Note</strong> When doing Bearer auth the <code>result.token</code> is the same token the developer used for authenticating, it is
+just attached for convenience, ie. to check <code>result.token.scopes</code> and such.</p>
+
+<p><strong>Note</strong> Token validity/ttl is in seconds and the default is 3600 (1 hour). If you wish to change this while generating tokens:
+use the optional <code>ttl</code> parameter with the  <code>authenticate</code> method.</p>
+
 <hr />
 
 <p><a class="anchor" name="administration"></a></p>
@@ -5494,7 +5740,7 @@ addthis:url="https://stormpath.com" >
 				<a href="/python/product-guide">Product Guide</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#python-sdk" data-level="1" class="fragment">Python SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#caching" data-level="1" class="fragment">Caching</a><ul class="menu"></ul></li><li class="leaf"><a href="#errors" data-level="1" class="fragment">Errors</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-applications" data-level="1" class="fragment">Tenant Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-password-policy" data-level="1" class="fragment">Account Password Policy</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-accounts-email-address" data-level="1" class="fragment">Verify An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-custom-data" data-level="1" class="fragment">Group Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticating-an-account" data-level="1" class="fragment">Authenticating An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-google" data-level="0" class="fragment">Integrating with Google</a><ul class="menu"><li class="leaf"><a href="#google-provider-resource" data-level="1" class="fragment">Google Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-google-directory" data-level="1" class="fragment">Creating a Google Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-google-authorization-codes-or-an-access-tokens" data-level="1" class="fragment">Accessing Accounts with Google Authorization Codes or an Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-facebook" data-level="0" class="fragment">Integrating with Facebook</a><ul class="menu"><li class="leaf"><a href="#facebook-provider-resource" data-level="1" class="fragment">Facebook Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-facebook-directory" data-level="1" class="fragment">Creating a Facebook Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-facebook-user-access-tokens" data-level="1" class="fragment">Accessing Accounts with Facebook User Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#python-sdk" data-level="1" class="fragment">Python SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#caching" data-level="1" class="fragment">Caching</a><ul class="menu"></ul></li><li class="leaf"><a href="#errors" data-level="1" class="fragment">Errors</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-applications" data-level="1" class="fragment">Tenant Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-password-policy" data-level="1" class="fragment">Account Password Policy</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-accounts-email-address" data-level="1" class="fragment">Verify An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-custom-data" data-level="1" class="fragment">Group Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticating-an-account" data-level="1" class="fragment">Authenticating An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-google" data-level="0" class="fragment">Integrating with Google</a><ul class="menu"><li class="leaf"><a href="#google-provider-resource" data-level="1" class="fragment">Google Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-google-directory" data-level="1" class="fragment">Creating a Google Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-google-authorization-codes-or-an-access-tokens" data-level="1" class="fragment">Accessing Accounts with Google Authorization Codes or an Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-facebook" data-level="0" class="fragment">Integrating with Facebook</a><ul class="menu"><li class="leaf"><a href="#facebook-provider-resource" data-level="1" class="fragment">Facebook Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-facebook-directory" data-level="1" class="fragment">Creating a Facebook Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-facebook-user-access-tokens" data-level="1" class="fragment">Accessing Accounts with Facebook User Access Tokens</a><ul class="menu"></ul></li><li class="leaf"><a href="#using-stormpath-to-secure-and-manage-api-services" data-level="1" class="fragment">Using Stormpath to Secure and Manage API Services</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
