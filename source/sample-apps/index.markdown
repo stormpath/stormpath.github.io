@@ -131,6 +131,7 @@ body_id: [sample-apps-page]
         </div>
       </div>
     </div>
+    <!--
     <div class="panel-container">
       <div class="panel-title">Rails Sample</div>
       <div class="panel-inner">
@@ -148,6 +149,7 @@ body_id: [sample-apps-page]
         </div>
       </div>
     </div>
+    -->
     <div class="panel-container">
       <div class="panel-title">Stormpath Heroku Add-on</div>
       <div class="panel-inner">
