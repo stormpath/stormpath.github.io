@@ -97,12 +97,14 @@
 <li class="toctree-l2"><a class="reference internal" href="#use-password-reset">Use Password Reset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-facebook-login">Use Facebook Login</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-google-login">Use Google Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-hosted-login">Use Hosted Login</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="help.html">Getting Help</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-2">Version 0.2.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-1">Version 0.2.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-0">Version 0.2.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-9">Version 0.1.9</a></li>
@@ -117,6 +119,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-1-version-0-2-2">Version 0.2.1 -&gt; Version 0.2.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-0-version-0-2-1">Version 0.2.0 -&gt; Version 0.2.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-9-version-0-2-0">Version 0.1.9 -&gt; Version 0.2.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-8-version-0-1-9">Version 0.1.8 -&gt; Version 0.1.9</a></li>
@@ -1236,6 +1239,78 @@ select your Google account:</p>
 then immediately redirected back to your website at the URL specified by
 <tt class="docutils literal"><span class="pre">redirectUrl</span></tt> in your app&#8217;s settings.</p>
 <p>Simple, right?!</p>
+</div>
+</div>
+<div class="section" id="use-hosted-login">
+<h2>Use Hosted Login<a class="headerlink" href="#use-hosted-login" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;d like to use Stormpath&#8217;s new hosted login functionality (<em>known as ID
+Site</em>), you can now do so using Express-Stormpath 0.2.2+!</p>
+<p>Stormpath&#8217;s ID Site functionality works as so:</p>
+<ul class="simple">
+<li>If a user wants to register for your web site, they&#8217;ll be redirected to your
+ID site URL (<em>hosted by Stormpath</em>).  This can be something like:
+<a class="reference external" href="https://login.mysite.com">https://login.mysite.com</a></li>
+<li>Stormpath will then display a login / registration / forgot password page
+automatically, depending on what the user wants to do, allowing the user to
+register <strong>without touching your Express application!</strong>  These pages can be
+completely customized however you like, of course.</li>
+<li>Once Stormpath has registered or logged the user in, they&#8217;ll be redirected
+back to a route on your Express app (<em>which defaults to /redirect</em>).  This
+route will then verify that the user was successfully logged in, and create a
+user session.</li>
+<li>Lastly, the user will be redirected back to whatever page on your site is
+configured as the <tt class="docutils literal"><span class="pre">redirectUrl</span></tt> (<em>this defaults to /</em>).</li>
+</ul>
+<p>For more information on ID Site, please read the official documentation:
+<a class="reference external" href="http://docs.stormpath.com/guides/using-id-site/">http://docs.stormpath.com/guides/using-id-site/</a></p>
+<div class="section" id="enable-id-site">
+<h3>Enable ID Site<a class="headerlink" href="#enable-id-site" title="Permalink to this headline">¶</a></h3>
+<p>The first step in getting hosted login working is enabling the ID Site
+functionality on Stormpath.</p>
+<p>To do this, you&#8217;ll want to first visit your <a class="reference external" href="https://api.stormpath.com/v#!idSite">ID Site dashboard</a>.  This page is
+where you can configure your hosted login functionality.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These instructions will only cover using the built-in hosted login site &#8211;
+if you&#8217;d like to customize your ID Site URL or theme, that will be covered
+later.</p>
+</div>
+<p>In the box labeled &#8220;Authorized Redirect URIs&#8221;, enter your redirect URL &#8211; this
+should be set to something like: <tt class="docutils literal"><span class="pre">https://www.mysite.com/redirect</span></tt>.  If you&#8217;re
+testing locally, you might want to set this to:
+<tt class="docutils literal"><span class="pre">http://localhost:3000/redirect</span></tt>.</p>
+<p>If you&#8217;d like to support <em>both</em> production and local environments, you can add
+multiple URLs (<em>just click the &#8220;Add another&#8221; button and enter as many URLs as
+you&#8217;d like</em>).</p>
+<p>Lastly, make sure to click the &#8220;Update&#8221; button at the bottom of the page to save
+your changes.</p>
+<p>In the end, it should look something like this:</p>
+<img alt="_images/id-site-settings.png" src="_images/id-site-settings.png" />
+</div>
+<div class="section" id="id7">
+<h3>Configure Your Express App<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<p>Now that we&#8217;ve configured Stormpath properly, let&#8217;s configure our Express app!</p>
+<p>In your app&#8217;s config, you&#8217;ll want to add the following settings:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">enableIdSite</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>This setting tells Express-Stormpath to use the hosted login functionality
+instead of the built-in local authentication functionality.</p>
+</div>
+<div class="section" id="id8">
+<h3>Test it Out<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve configured hosted login, let&#8217;s give it a test.</p>
+<p>If you start your Express server, then visit either the login or registration
+page (<em>/login or /registration, respectively</em>), you should be redirected to your
+hosted login site on Stormpath, where you can either create or log into your
+account.</p>
+<p>Once you&#8217;ve logged in, you&#8217;ll be redirected back to your application in a logged
+in state!</p>
+<p>Here&#8217;s a screenshot of the login page to show you what the hosted login site
+currently looks like:</p>
+<img alt="_images/id-site-login.png" src="_images/id-site-login.png" />
 </div>
 </div>
 </div>
