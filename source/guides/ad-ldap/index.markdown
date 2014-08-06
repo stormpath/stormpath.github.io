@@ -51,7 +51,7 @@ A `Directory` in Stormpath is a top-level storage container of `Accounts` and `G
 A `Mirror Directory` is a special `Directory` used for AD/LDAP synchronization. And each `Mirror Directory` is paired with a synchronization `Agent` that is installed alongside the AD/LDAP server. 
 
 
-To configure a `Mirror Directoy` and its `Agent`, you first log in to the [Administrator Console](api.stormpath.com), and follow these steps:
+To configure a `Mirror Directoy` and its `Agent`, you first log in to the [Administrator Console](https://api.stormpath.com), and follow these steps:
 
 1. Click on the `Directories` tab
 2. Click on the `Create Directory` button
