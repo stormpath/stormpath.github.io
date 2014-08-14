@@ -273,7 +273,7 @@ to do many things (including social login).
 
 ## Final Code
 
-In the end, your Flask app should look like this:
+In the end, your Express app should look like this:
 
     var express = require('express');
     var stormpath = require('express-stormpath');
