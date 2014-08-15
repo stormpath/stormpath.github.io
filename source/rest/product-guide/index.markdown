@@ -4889,13 +4889,11 @@ Groups Membership resources support the full suite of CRUD commands and other in
 *** 
 ## Custom Data
 
-`Account` and `Group` resources have predefined fields that are useful to many `Applications`, but you are likely to have your own custom data that you need to associate with an account or group as well.
-
-For this reason, both the account and group resources support a linked `customData` resource that you can use for your own needs.
+Stormpath resources have predefined fields that are useful to many `Applications`, but you are likely to have your own requirements and custom fields that you need to associate with Stormpath resources. For this reason, `Accounts`, `Groups`, `Applications`, `Directories` and `Tenant` resources support a linked `customData` resource that you can use for your own needs.
 
 The `customData` resource is a schema-less JSON object (aka 'map', 'associative array', or 'dictionary') that allows you to specify whatever name/value pairs you wish.
 
-The `customData` resource `href` is always the account or group `href` with a `/customData` suffix:
+The `customData` resource `href` is always the Stormpath resource `href` with a `/customData` suffix:
 
 <a class="anchor" name="account-custom-data-resource-uri"></a>
 **Account Custom Data Resource URI**
@@ -4906,6 +4904,21 @@ The `customData` resource `href` is always the account or group `href` with a `/
 **Group Custom Data Resource URI**
 
     /v1/groups/:groupId/customData
+
+<a class="anchor" name="application-custom-data-resource-uri"></a>
+**Application Custom Data Resource URI**
+
+    /v1/applications/:applicationId/customData
+
+<a class="anchor" name="directory-custom-data-resource-uri"></a>
+**Directory Custom Data Resource URI**
+
+    /v1/directories/:directoryId/customData
+
+<a class="anchor" name="tenant-custom-data-resource-uri"></a>
+**Tenant Custom Data Resource URI**
+
+    /v1/tenants/:tenantId/customData
 
 In addition to your custom name/value pairs, a `customData` resource will always contain 3 reserved read-only fields:
 
@@ -4936,9 +4949,9 @@ For Custom Data, you can:
 <a class="anchor" name="create-custom-data"></a>
 ### Create Custom Data
 
-Whenever you create an account or a group, an empty `customData` resource is created for that account or group automatically - you do not need to explicitly execute a request to create it.
+Whenever you create an Stormpath resource, an empty `customData` resource is created for that resource automatically - you do not need to explicitly execute a request to create it.
 
-However, it is often useful to populate custom data at the same time you create an account or group.  You can do this by embedding the `customData` directly in the account or group resource. For example:
+However, it is often useful to populate custom data at the same time you create a resource.  You can do this by embedding the `customData` directly in the resource. For example:
 
 **Example Create Account with Custom Data**
 
@@ -4975,6 +4988,8 @@ However, it is often useful to populate custom data at the same time you create 
               }' \
       "https://api.stormpath.com/v1/directories/exampleDirectoryId/groups"
 
+Similar to `Accounts` and `Groups`, `Applications` / `Directories` can have custom data assigned on creation by specifying `customData` on the request.
+
 <a class="anchor" name="retrieve-custom-data"></a>
 ### Retrieve Custom Data
 
@@ -4988,7 +5003,19 @@ A common way to retrieve an account or group's custom data is to use [link expan
 
     curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/groups/exampleGroupId?expand=customData
 
-You can also of course return an account or group's custom data resource by executing a `GET` request directly to the account-specific or group-specific Custom Data Resource URI.
+**Example: Retrieve an Application with its Custom Data**
+
+    curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/applications/exampleApplicationId?expand=customData
+
+**Example: Retrieve a Directory with its Custom Data**
+
+    curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/directories/exampleDirectoryId?expand=customData
+
+**Example: Retrieve a Tenant with its Custom Data**
+
+    curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/tenants/exampleTenantId?expand=customData
+
+You can also of course return a resources custom data resource by executing a `GET` request directly to the resource Custom Data Resource URI.
 
 **Example Retrieve Account Custom Data Request**
 
@@ -4997,6 +5024,8 @@ You can also of course return an account or group's custom data resource by exec
 **Example Retrieve Group Custom Data Request**
 
     curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/groups/exampleGroupId/customData
+
+Similar to `Accounts` and `Groups`, `Applications` / `Directories` / `Tenants` can have custom data retrieved by the Custom Data Resource URI.
 
 **Example Response**
 
@@ -5022,7 +5051,7 @@ You may update an account or group's custom data, in one of two ways:
 <a class="anchor" name="update-custom-data-directly"></a>
 #### Update Custom Data Directly
 
-The first way to update an account or group's custom data is by `POST`ing changes directly to the custom data's `href`.  This allows you to interact with the customData resource directly, without having to do so 'through' an account or group request.
+The first way to update an resource's custom data is by `POST`ing changes directly to the custom data's `href`.  This allows you to interact with the customData resource directly, without having to do so 'through' a resource request.
 
 In the following example request, we're interacting with a `customData` resource directly, and we're changing the value of an existing field named `favoriteColor` and we're adding a brand new field named `hobby`:
 
@@ -5054,9 +5083,9 @@ The response will contain the resource with the latest values:
 As you can see, the response contains the 'merged' representation of what was already on the server plus what was sent in the request, and at no point did we need to interact with the account directly.
 
 <a class="anchor" name="update-custom-data-embedded"></a>
-#### Update Custom Data as part of an Account or Group Request
+#### Update Custom Data as part of a Resource Request
 
-Sometimes it is helpful to update an account or group's `customData` as part of an update request for the account or group.  In this case, just submit customData changes in an embedded `customData` field embedded in the account or group request resource.  For example:
+Sometimes it is helpful to update a resource's `customData` as part of an update request for the account or group.  In this case, just submit customData changes in an embedded `customData` field embedded in the resource's request data.  For example:
 
     curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
          -H "Accept: application/json" \
@@ -5078,12 +5107,12 @@ In the above example, we're performing 3 modifications in one request:
 
 This request modifies both the account resource _and_ that account's custom data in a single request.
 
-The same simultaneous update behavior may be performed for Group updates as well.
+The same simultaneous update behavior may be performed for `Group`, `Application`, and `Directory` updates as well.
 
 <a class="anchor" name="delete-custom-data"></a>
 ### Delete Custom Data
 
-You may delete all of an account or group's custom data by sending a `DELETE` request to the account or group's customData `href`:
+You may delete all of an resource's custom data by sending a `DELETE` request to the resource's customData `href`:
 
 **Example: Delete all of an Account's Custom Data**
 
@@ -5097,7 +5126,7 @@ You may delete all of an account or group's custom data by sending a `DELETE` re
 
     HTTP/1.1 204 No Content
 
-This will delete all of the respective account or group's custom data fields, but it leaves the `customData` placeholder in the account or group resource.  You cannot delete the `customData` resource entirely - it will be automatically permanently deleted when the account or group is deleted.
+This will delete all of the respective resource's custom data fields, but it leaves the `customData` placeholder in the account or group resource.  You cannot delete the `customData` resource entirely - it will be automatically permanently deleted when the account or group is deleted.
 
 <a class="anchor" name="delete-account-custom-data-field"></a>
 ### Delete Custom Data Field
@@ -5121,15 +5150,11 @@ Because `null` is an important and often useful value for JSON data, then, we ca
 
 Therefore, to delete a customData field, we must send an explicit `DELETE` request to an href representing the exact field to delete, using the following resource URI:
 
-**Account Custom Data Field Resource URI**
+**Example Account Custom Data Field Resource URI**
 
     https://api.stormpath.com/v1/accounts/:accountId/customData/:fieldName
 
-**Group Custom Data Field Resource URI**
-
-    https://api.stormpath.com/v1/groups/:groupId/customData/:fieldName
-
-These URIs only supports `DELETE` requests.
+These URIs only supports `DELETE` requests and can similarly be deleted on `Group`, `Application`, `Directory` and `Tenant` custom data fields.
 
 **Example Request**
 
