@@ -603,7 +603,7 @@ application.get_provider_account(provider=Provider.FACEBOOK, access_token="%ACCE
 application.getAccount({
   providerData: {
     providerId: 'facebook',
-    code: ACCESS_TOKEN_FROM_FACEBOOK
+    accessToken: ACCESS_TOKEN_FROM_FACEBOOK
   }
 }, function(err, result){
   console.log(result.created);
@@ -793,7 +793,7 @@ curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
 
 <h3><a id="accessing-an-account-with-google-tokens"></a>Accessing an Account with Google Tokens</h3>
 
-<p>To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google&rsquo;s <a href="https://developers.google.com/accounts/docs/OAuth2Login">OAuth 2.0 protocol</a> and the user&rsquo;s consent for your application&rsquo;s permissions.</p>
+<p>To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code or Access Token on behalf of the user.  This requires leveraging Google&rsquo;s <a href="https://developers.google.com/accounts/docs/OAuth2Login">OAuth 2.0 protocol</a> and the user&rsquo;s consent for your application&rsquo;s permissions.</p>
 
 <p>Generically, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the Authorization Code.  This is documented in detail <a href="https://developers.google.com/accounts/docs/OAuth2Login#authenticatingtheuser">here</a>.</p>
 
@@ -848,6 +848,12 @@ curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 </div>
 
 
+<p>If you have already exchanged an <code>Authorization Code</code> for an <code>Access Token</code>, this can be passed to Stormpath in a similar fashion:</p>
+
+<pre><code>  "providerId": "google",
+  "accessToken": "%ACCESS_TOKEN_FROM_GOOGLE%"
+</code></pre>
+
 <p>Once an <code>Account</code> is retrieved, Stormpath maps common fields for the Google User to the  Account.  The access token and the refresh token for any additional calls in the <code>providerData</code> resource and can be retrieved by:</p>
 
 <div class="tabs"><ul><li><a href="#tabs-google-get-provider-data-java">java</a></li><li><a href="#tabs-google-get-provider-data-python">python</a></li><li><a href="#tabs-google-get-provider-data-node">node</a></li><li><a href="#tabs-google-get-provider-data-curl">curl</a></li></ul><div id="tabs-google-get-provider-data-java"><pre lang="java"><code>
@@ -880,7 +886,7 @@ GET https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData
 
 <h2><a id="wrapping-up"></a>Wrapping up</h2>
 
-<p>In this guide, we discussed how to set up a Stormpath to enable your users to log in with Facebook and Google. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#x6f;&#58;&#115;&#117;&#x70;&#x70;&#x6f;&#114;&#116;&#64;&#115;&#116;&#111;&#114;&#109;&#112;&#97;&#x74;&#x68;&#x2e;&#99;&#x6f;&#x6d;&#46;">&#115;&#117;&#112;&#112;&#x6f;&#114;&#x74;&#64;&#115;&#x74;&#111;&#x72;&#109;&#x70;&#97;&#116;&#x68;&#46;&#x63;&#x6f;&#x6d;&#x2e;</a></p>
+<p>In this guide, we discussed how to set up a Stormpath to enable your users to log in with Facebook and Google. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#58;&#x73;&#117;&#x70;&#112;&#x6f;&#x72;&#116;&#x40;&#115;&#116;&#x6f;&#x72;&#109;&#112;&#x61;&#x74;&#104;&#46;&#99;&#x6f;&#x6d;&#x2e;">&#x73;&#117;&#112;&#112;&#x6f;&#x72;&#x74;&#x40;&#x73;&#x74;&#x6f;&#114;&#x6d;&#112;&#x61;&#x74;&#x68;&#46;&#x63;&#111;&#x6d;&#46;</a></p>
 
             <div id="spread-word">
 <hr>

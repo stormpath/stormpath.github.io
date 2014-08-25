@@ -571,7 +571,7 @@ client = Stormpath::Client.new  api_key: api_key
 <p>Another way to create a client is by creating an <code>api_key</code> hash with the API credentials and passing this hash to create the client instance:</p>
 
 <pre><code>client = Stormpath::Client.new({
-          api_key: { id: foo, secret: bar }
+             api_key: { id: foo, secret: bar }
           })
 </code></pre>
 
@@ -585,20 +585,7 @@ client = Stormpath::Client.new  api_key: api_key
 
 <h4>Authentication Scheme Configuration</h4>
 
-<p>You can choose one of two authentication schemes to authenticate with Stormpath:</p>
-
-<ol>
-<li><strong>Stormpath SAuthc1 Authentication</strong>:  This is the recommended approach, and the default setting.  This approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath SAuthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.</li>
-<li><strong>Basic Authentication</strong>: This is <em>only</em> recommended when your application runs in an environment outside of your control, and that environment manipulates your application&rsquo;s request headers when requests are made.  Google App Engine is one known such environment.  However, Basic Authentication is not as secure as Stormpath&rsquo;s <code>SAuthc</code> algorithm, so only use this if you are forced to do so by your application runtime environement.</li>
-</ol>
-
-
-<p>When no authentication scheme is explicitly configured, <code>Sauthc1</code> is used by default.</p>
-
-<p>If you must change to basic authentication for these special environments, set the <code>scheme</code> property:</p>
-
-<pre><code>client = Client(id: 'foo', secret: 'bar', scheme: 'basic')
-</code></pre>
+<p><strong>Stormpath SAuthc1 Authentication</strong>:  This is the default setting.  This approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath SAuthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.</p>
 
 <p><a class="anchor" name="high-level-overview"></a></p>
 
@@ -672,7 +659,7 @@ Ruby instances representing REST resources use the <a href="http://en.wikipedia.
 <p>For example, using the SDK Communication Flow diagram in the <a href="#high-level-overview">high-level overview</a> section, assuming you have a reference to an <code>account</code> object &ndash; perhaps you have queried for it or you already have the account <code>href</code> and you want to load the <code>account</code> resource from the server:</p>
 
 <pre><code>account_href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
-account = client.accounts.get(account_href)
+account = client.accounts.get account_href
 </code></pre>
 
 <p>This retrieves the account at the specified <code>href</code> location using an HTTP <code>GET</code> request.</p>
@@ -851,9 +838,6 @@ applications = client.applications
 
 <pre><code>Collections can be paginated using chainable Arel-like methods:
 
-for app in client.applications[1:5]:
-    print(app.name)
-
 client.applications.offset(10).limit(100).each do |application|
     puts application.name
 end
@@ -926,6 +910,7 @@ For example, a sorted request might look like this:</p>
 
 <pre><code>accounts.each do |account|
     puts account.username
+end
 </code></pre>
 
 <p><strong>Matching Logic</strong></p>
@@ -973,6 +958,7 @@ For example, a sorted request might look like this:</p>
 
 <pre><code>accounts.each do |account|
     puts account.username
+end
 </code></pre>
 
 <p>Attribute-based queries use standard URI query parameters and function as follows:</p>
@@ -993,17 +979,18 @@ For example, a sorted request might look like this:</p>
 
 <p>For example, consider the following search:</p>
 
-<pre><code>accounts = application.accounts.search. 'given_name': 'Joe',
-                                        'middle_name': '*aul',
-                                        'surname': '*mit*',
-                                        'email': 'joePaul*',
-                                        'status': 'DISABLED'
+<pre><code>accounts = application.accounts.search  given_name: 'Joe',
+                                        middle_name: '*aul',
+                                        surname: '*mit*',
+                                        email: 'joePaul*',
+                                        status: 'DISABLED'
 </code></pre>
 
 <p>Now you can loop through the collection resource and get the results according to the specified search:</p>
 
 <pre><code>accounts.each do |account|
     puts account.username
+end
 </code></pre>
 
 <p>This returns all accounts where:</p>
@@ -1103,7 +1090,7 @@ account = client.accounts.get href, expansion
 
 <p>For example, it would not be possible to return an account with its directory expanded and also the directory&rsquo;s groups expanded as well. Link expansion is currently only possible one level &lsquo;deep&rsquo;.</p>
 
-<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#58;&#115;&#x75;&#112;&#112;&#111;&#114;&#116;&#64;&#115;&#x74;&#111;&#114;&#109;&#112;&#97;&#x74;&#104;&#x2e;&#x63;&#x6f;&#x6d;">&#115;&#117;&#112;&#x70;&#111;&#x72;&#x74;&#64;&#x73;&#x74;&#111;&#114;&#x6d;&#x70;&#97;&#x74;&#x68;&#x2e;&#x63;&#111;&#x6d;</a> and submit a feature request.</p>
+<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#115;&#x75;&#112;&#112;&#x6f;&#114;&#116;&#x40;&#115;&#116;&#x6f;&#x72;&#x6d;&#x70;&#x61;&#x74;&#104;&#46;&#x63;&#111;&#109;">&#115;&#117;&#112;&#x70;&#111;&#114;&#x74;&#x40;&#115;&#116;&#x6f;&#x72;&#x6d;&#x70;&#97;&#x74;&#104;&#46;&#x63;&#111;&#x6d;</a> and submit a feature request.</p>
 
 <h4>Expanding Multiple Resources</h4>
 
@@ -1216,7 +1203,7 @@ account = client.accounts.get(href, expansion)
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
 
-<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#x73;&#117;&#112;&#x70;&#111;&#114;&#116;&#x40;&#x73;&#x74;&#x6f;&#114;&#109;&#x70;&#x61;&#x74;&#104;&#x2e;&#99;&#111;&#109;">&#115;&#117;&#112;&#112;&#x6f;&#114;&#116;&#x40;&#115;&#x74;&#x6f;&#114;&#x6d;&#112;&#x61;&#x74;&#x68;&#46;&#99;&#111;&#x6d;</a> and request it.</p>
+<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#109;&#97;&#105;&#108;&#x74;&#111;&#58;&#x73;&#x75;&#112;&#x70;&#x6f;&#x72;&#116;&#x40;&#x73;&#x74;&#111;&#x72;&#x6d;&#x70;&#97;&#116;&#x68;&#46;&#x63;&#x6f;&#109;">&#115;&#x75;&#x70;&#x70;&#x6f;&#114;&#x74;&#x40;&#115;&#x74;&#111;&#x72;&#109;&#x70;&#x61;&#x74;&#x68;&#46;&#99;&#111;&#x6d;</a> and request it.</p>
 
 <p><a class="anchor" name="tenant-retrieve"></a></p>
 
@@ -1301,6 +1288,7 @@ If you want to update one or more attribute of your `Tenant` resource, execute a
 
 applications.each do |application|
     puts application.name
+end
 </code></pre>
 
 <p><a class="anchor" name="tenant-applications-search"></a></p>
@@ -1326,6 +1314,7 @@ applications.each do |application|
 
 applications.each do |application|
     puts application.name
+end
 </code></pre>
 
 <h4>Working With Tenant Applications</h4>
@@ -1362,6 +1351,7 @@ applications.each do |application|
 
 directories.each do |directory|
     puts directory.name
+end
 </code></pre>
 
 <p><a class="anchor" name="tenant-directories-search"></a></p>
@@ -1387,6 +1377,7 @@ directories.each do |directory|
 
 directories.each do |directory|
     puts directory.name
+end
 </code></pre>
 
 <h4>Working With Tenant Directories</h4>
@@ -1895,7 +1886,10 @@ This workflow is disabled by default for accounts, but you can enable it easily 
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>result = application.authenticate_account('usernameOrEmail', 'password')
+<pre><code>auth_request =
+  Stormpath::Authentication::UsernamePasswordRequest.new 'usernameOrEmail', 'password'
+
+result = application.authenticate_account(auth_request)
 </code></pre>
 
 <p>If the login attempt is successful, a <code>LoginAttempt</code> object is returned with a reference to the successfully authenticated account:</p>
@@ -2002,7 +1996,7 @@ auth_result = application.authenticate_account auth_request, account_store
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>account = client.accounts.verify_password_reset_token('TOKEN')
+<pre><code>account = application.verify_password_reset_token('TOKEN')
 </code></pre>
 
 <p>If the password reset token is invalid &ndash; it never existed or has expired &ndash; a <code>404 Not Found</code> response is returned.</p>
@@ -2022,6 +2016,7 @@ auth_result = application.authenticate_account auth_request, account_store
 <pre><code>accounts = application.accounts
 accounts.each do |account|
     puts account.username
+end
 </code></pre>
 
 <p><a class="anchor" name="application-accounts-search"></a></p>
@@ -2048,6 +2043,7 @@ accounts.each do |account|
 <pre><code>accounts = application.accounts.search('foo').limit(50)order('given_name')
 accounts.each do |account|
     puts "#{account.given_name} #{acc.surname}"
+end
 </code></pre>
 
 <h4>More Account Functionality</h4>
@@ -2144,6 +2140,7 @@ accounts.each do |account|
 <pre><code>groups = application.groups
 groups.each do |group|
     puts group.name
+end
 </code></pre>
 
 <p><a class="anchor" name="application-groups-search"></a></p>
@@ -2167,6 +2164,7 @@ groups.each do |group|
 <pre><code>groups = application.groups.search('foo').limit(50).order('name')
 groups.each do |group|
     puts group.name
+end
 </code></pre>
 
 <h4>More Group Functionality</h4>
@@ -2204,6 +2202,7 @@ You define an application&rsquo;s account store mappings by creating, modifying 
 <pre><code>account_store_mappings = application.account_store_mappings
 account_store_mappings.each do |account_store_mapping|
     puts account_store_mapping.account_store.name
+end
 </code></pre>
 
 <hr />
@@ -2290,7 +2289,55 @@ effective <em>user base</em>; those accounts may login to the application.  If n
 </tr>
 <tr>
 <td align="left"><a id="account-store-mapping-resource-is-default-group-store"></a><code>is_default_group_store</code> </td>
-<td align="left"> A <code>true</code> value indicates that new groups created by the <code>application</code> will be automatically saved to the mapping&rsquo;s <code>accountStore</code>. A <code>false</code> value indicates that new groups created by the application will not be saved to the <code>accountStore</code>. <strong>This may only be set to <code>true</code> if the <code>accountStore</code> is a Directory.  Stormpath does not currently support Groups storing other Groups.</strong> </td>
+<td align="left"> A <code>true</code> value indicates that new groups created by the <code>application</code> will be automatically saved to the mapping&rsquo;s <code>accountStore</code>. A <code>false</code> value indicates that new groups created by the application will not be saved to the <code>accountStore</code>. </td>
+<td align="left"> boolean </td>
+<td align="left"> <code>true</code>,<code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>is_default_account_store=</code> </td>
+<td align="left"> A setter method for defining whether the account store will be an default account store for the application. </td>
+<td align="left"> boolean </td>
+<td align="left"> <code>true</code>,<code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>is_default_groupt_store=</code> </td>
+<td align="left"> A setter method for defining whether the account store will be an default group store for the application. <strong>This may only be set to <code>true</code> if the <code>accountStore</code> is a Directory.  Stormpath does not currently support Groups storing other Groups.</strong> </td>
+<td align="left"> boolean </td>
+<td align="left"> <code>true</code>,<code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>default_account_store</code> </td>
+<td align="left"> Alias for <code>is_default_account_store</code>. </td>
+<td align="left"> boolean </td>
+<td align="left"> <code>true</code>,<code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>default_account_store?</code> </td>
+<td align="left"> Alias for <code>is_default_account_store</code>. </td>
+<td align="left"> boolean </td>
+<td align="left"> <code>true</code>,<code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>default_account_store=</code> </td>
+<td align="left"> Alias for <code>is_default_account_store=</code>. </td>
+<td align="left"> boolean </td>
+<td align="left"> <code>true</code>,<code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>default_group_store</code> </td>
+<td align="left"> Alias for <code>is_default_group_store</code>. </td>
+<td align="left"> boolean </td>
+<td align="left"> <code>true</code>,<code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>default_group_store?</code> </td>
+<td align="left"> Alias for <code>is_default_group_store</code>. </td>
+<td align="left"> boolean </td>
+<td align="left"> <code>true</code>,<code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>default_group_store=</code> </td>
+<td align="left"> Alias for <code>is_default_group_store=</code>. </td>
 <td align="left"> boolean </td>
 <td align="left"> <code>true</code>,<code>false</code></td>
 </tr>
@@ -2493,6 +2540,12 @@ account_store_mapping.save
 </div>
 
 
+
+
+<div class='docs-warning'><p>Google and Facebook Directories <code>can't</code> be a default account stores.</p>
+</div>
+
+
 <p><a class="anchor" name="account-store-mapping-default-group-store"></a></p>
 
 <h4>Set The Default Group Store for new Application Groups</h4>
@@ -2528,6 +2581,12 @@ account_store_mappint.save
 <p>Also, note that Stormpath does not currently support storing groups within groups.  Therefore <code>is_default_group_store</code> can only be set to <code>true</code> when the AccountStoreMapping&#8217;s <code>accountStore</code> is a Directory.  Attempting to set <code>is_default_group_store</code> to <code>true</code> on an AccountStoreMapping that reflects a group will result in an error response.</p>
 
 <p>Lastly, note that mirrored directories are read-only; they cannot be set as an application&#8217;s default group store. Attempting to set <code>is_default_group_store</code> to <code>true</code> on an AccountStoreMapping that reflects a mirrored directory will result in an error response.</p>
+</div>
+
+
+
+
+<div class='docs-warning'><p>Google and Facebook Directories <code>can't</code> be a default group stores.</p>
 </div>
 
 
@@ -2569,6 +2628,7 @@ account_store_mappint.save
 <pre><code>account_store_mappings = application.account_store_mappings
 account_store_mappings.each do |account_store_mapping|
     puts account_store_mapping.account_store.name
+end
 </code></pre>
 
 <hr />
@@ -2762,11 +2822,7 @@ account_store_mappings.each do |account_store_mapping|
 <p><strong>Example Request</strong></p>
 
 <pre><code>directories = tenant.directories
-directory = false
-for dire in directories:
-    if directory.name == "My Directory":
-        directory = dire
-        break
+directories.find {|directory| directory.name == "My Directory" }
 </code></pre>
 
 <p>If you know the name exactly, you can use an <a href="#search-attribute">attribute search</a> (e.g., <code>directory.search({'name', 'My Directory'})</code>) or, if you only know a small part, you can use a <a href="#search-filter">filter search</a> (e.g., <code>directory.search('*My*')</code>) to narrow down the selection.</p>
@@ -3036,6 +3092,7 @@ This is a self-service password reset workflow.  The account is sent an email wi
 <pre><code>groups = directory.groups
 groups.each do |group|
     puts group.name
+end
 </code></pre>
 
 <h4>Search Directory Groups</h4>
@@ -3057,6 +3114,7 @@ groups.each do |group|
 <pre><code>groups = directory.groups.search('foo').limit(50).order('name')
 groups.each do |group|
     puts group.name
+end
 </code></pre>
 
 <h4>Working With Directory Groups</h4>
@@ -3085,6 +3143,7 @@ groups.each do |group|
 <pre><code>accounts = directory.accounts
 accounts.each do |account|
     puts account.given_name
+end
 </code></pre>
 
 <h4>Search Directory Accounts</h4>
@@ -3109,6 +3168,7 @@ accounts.each do |account|
 <pre><code>accounts = directory.accounts.search('foo').order('name')[0:50]
 accounts.each do |account|
     puts account.given_name
+end
 </code></pre>
 
 <h4>Working With Directory Accounts</h4>
@@ -3251,9 +3311,6 @@ accounts.each do |account|
 <p><strong>Example Request</strong></p>
 
 <pre><code>groups = directory.groups.search({'name': 'My Group'})
-group = false
-for grp in groups:
-    group = grp
 </code></pre>
 
 <p>If you know the name exactly, you can use an <a href="#search-attribute">attribute search</a> (e.g., <code>groups.search({'name': 'My Group'})</code>) or, if you only know a small part, you can use a <a href="#search-filter">filter search</a> (e.g., <code>groups.search('*My*')</code>) to narrow down the selection.</p>
@@ -3440,6 +3497,7 @@ group.save
 <pre><code>groups = application.groups
 groups.each do |group|
     puts group.name
+end
 </code></pre>
 
 <h5>Account Groups</h5>
@@ -3458,6 +3516,7 @@ groups.each do |group|
 <pre><code>groups = account.groups
 groups.each do |group|
     puts group.name
+end
 </code></pre>
 
 <h5>Directory Groups</h5>
@@ -3476,6 +3535,7 @@ groups.each do |group|
 <pre><code>groups = directory.groups
 groups.each do |group|
     puts group.name
+end
 </code></pre>
 
 <p><a class="anchor" name="groups-search"></a></p>
@@ -3535,6 +3595,7 @@ groups.each do |group|
 <pre><code>accounts = group.accounts
 accounts.each do |account|
     puts account.given_name
+end
 </code></pre>
 
 <p><a class="anchor" name="group-accounts-search"></a></p>
@@ -3562,6 +3623,7 @@ accounts.each do |account|
 
 accounts.each do |account|
     puts account.given_name
+end
 </code></pre>
 
 <p><a class="anchor" name="working-with-group-accounts"></a></p>
@@ -3591,6 +3653,7 @@ accounts.each do |account|
 account_membersips.each do |account_membership|
     puts account_membership.group.name
     puts account_membership.account.given_name)
+end
 </code></pre>
 
 <p><a class="anchor" name="working-with-group-account-memberships"></a></p>
@@ -3680,15 +3743,13 @@ account_membersips.each do |account_membership|
 
 <p><strong>Example Request</strong></p>
 
-<pre><code>group_memberships = account.group_memberships
-group_membership = false
-for gms in group_membership:
-    if gms.group.name = 'Group Name':
-        group_membership = gms
-        break
+<pre><code>account.group_memberships.each do |group_membership|
+    group = group_membership.group
+    return group if group_membership.group.name = 'Group Name':
+end
 </code></pre>
 
-<p>If you know the name exactly, you can use an <a href="#search-attribute">attribute search</a> (e.g., &ldquo;name=&rdquo;) or, if you only know a small part, you can use a <a href="#search-filter">filter search</a> (e.g., &ldquo;My*&rdquo;) to narrow down the selection.</p>
+<p>If you know the name exactly, you can use an <a href="#search-attribute">attribute search</a> (e.g., &ldquo;name&rdquo;) or, if you only know a small part, you can use a <a href="#search-filter">filter search</a> (e.g., &ldquo;My*&rdquo;) to narrow down the selection.</p>
 
 <p><a class="anchor" name="group-membership-create"></a></p>
 
@@ -3771,6 +3832,7 @@ group_membership = client.group_memberships.get href
 group_memberships.each do |group_membership|
     puts group_membership.account.given_name
     puts group_membership.group.name
+end
 </code></pre>
 
 <p><a class="anchor" name="account-membership-by-group"></a></p>
@@ -3794,6 +3856,7 @@ group_memberships.each do |group_membership|
 account_memberships.each do |account_membership|
     puts account_membership.account.given_name
     puts account_membership.group.name
+end
 </code></pre>
 
 <hr />
@@ -3991,12 +4054,14 @@ account_memberships.each do |account_membership|
 <p><strong>Example Request</strong></p>
 
 <pre><code>accounts = application.accounts.search({'username': 'test'})
-account = false
-for acc in accounts:
-    account = acc
 </code></pre>
 
-<p>If you know the username exactly, you can use an <a href="#search-attribute">attribute search</a> (e.g., &ldquo;username=&rdquo;) or, if you only know a small part, you can use a <a href="#search-filter">filter search</a> (e.g., &ldquo;test*&rdquo;) to narrow down the selection.</p>
+<p>If you know the username exactly, you can use an <a href="#search-attribute">attribute search</a> (e.g., &ldquo;username: &rdquo;) or, if you only know a small part, you can use a <a href="#search-filter">filter search</a> (e.g., &ldquo;test*&rdquo;) to narrow down the selection.</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>accounts = application.accounts.search({'username': 'test*'})
+</code></pre>
 
 <p><a class="anchor" name="account-create"></a></p>
 
@@ -4376,21 +4441,21 @@ account.save
   middleName: "test"
   surname: "test"
   status: "UNVERIFIED"
- -groups: {
+  groups: {
     href: "https://api.stormpath.com/v1/accounts/6XLbNaUsKm3E0kXMTTr10V/groups"
   }
- -groupMemberships: {
+  groupMemberships: {
     href: "https://api.stormpath.com/v1/accounts/6XLbNaUsKm3E0kXMTTr10V/groupMemberships"
   }
- -directory: {
+  directory: {
     href: "https://api.stormpath.com/v1/directories/5D1bvO5To6KQBaGFh793Zz"
-  }-
- -tenant: {
+  }
+  tenant: {
     href: "https://api.stormpath.com/v1/tenants/23mq7BPIxNgPUPZDwj04SZ"
   }
- -emailVerificationToken: {
+  emailVerificationToken: {
     href: "https://api.stormpath.com/v1/accounts/emailVerificationTokens/6YJv9XBH1dZGP5A8rq7Zyl"
-  }-
+  }
 }
 </code></pre>
 
@@ -4476,6 +4541,7 @@ account.save
 <pre><code>groups = account.groups
 groups.each do |group|
     puts group.name
+end
 </code></pre>
 
 <p><a class="anchor" name="search-account-groups"></a></p>
@@ -4500,6 +4566,7 @@ groups.each do |group|
 <pre><code>groups = account.groups.search('foo').limit(50).order('name')
 groups.each do |group|
     puts group.name
+end
 </code></pre>
 
 <p><a class="anchor" name="working-with-account-groups"></a></p>
@@ -4531,6 +4598,7 @@ groups.each do |group|
 group_memberships.each do |group_membership|
     puts group_membership.account.given_name
     puts group_membership.group.name
+end
 </code></pre>
 
 <p><a class="anchor" name="working-with-account-group-memberships"></a></p>
@@ -4575,6 +4643,65 @@ group_memberships.each do |group_membership|
 </ul>
 
 
+<p><a class="anchor" name="custom-data-resource-methods"></a>
+<strong>Resource Methods</strong></p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description </th>
+<th align="left"> Type </th>
+<th align="left"> Valid Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>href</code> </td>
+<td align="left"> The custom data resource&rsquo;s fully qualified location URI. It is the href of it&rsquo;s Account or Group + &ldquo;/customData&rdquo; </td>
+<td align="left"> String </td>
+<td align="left"> <span>&mdash;</span></td>
+</tr>
+<tr>
+<td align="left"><code>has_key?(key)</code> </td>
+<td align="left"> Inspects whether the custom data resource has a key or not. </td>
+<td align="left"> boolean </td>
+<td align="left"> <code>true</code>,<code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>include?(key)</code> </td>
+<td align="left"> Alias method for has_key?. </td>
+<td align="left"> boolean </td>
+<td align="left"> <code>true</code>,<code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>has_value?(value)</code> </td>
+<td align="left"> Inspects whether the custom data resource has a value or not. </td>
+<td align="left"> boolean </td>
+<td align="left"> <code>true</code>,<code>false</code></td>
+</tr>
+<tr>
+<td align="left"><code>store(key, value)</code> </td>
+<td align="left"> Maps a key and a value together. This is an alias for <code>custom_data[key] = value</code> </td>
+<td align="left"> value </td>
+<td align="left"> <span>&mdash;</span></td>
+</tr>
+<tr>
+<td align="left"><code>keys</code> </td>
+<td align="left"> Returns an array containing all key names. </td>
+<td align="left"> Array </td>
+<td align="left"> <span>&mdash;</span></td>
+</tr>
+<tr>
+<td align="left"><code>values</code> </td>
+<td align="left"> Returns an array containing all values. </td>
+<td align="left"> Array </td>
+<td align="left"> <span>&mdash;</span></td>
+</tr>
+</tbody>
+</table>
+
+
 <p>For Custom Data, you can:</p>
 
 <ul>
@@ -4594,22 +4721,22 @@ group_memberships.each do |group_membership|
 
 <p>However, it is often useful to populate custom data at the same time you create an account or group.  You can do this by embedding the <code>customData</code> directly in the account or group resource. For example:</p>
 
-<pre><code>    account = directory.accounts.create({
-        username: "jlpicardp",
-        email: "capt@enterprise.cpm",
-        given_name: "Jean-Luc",
-        middle_name: "",
-        surname: "Picard",
-        password: "uGhd%a8Kl!",
-        status: "ENABLED",
-        custom_data: {
-            rank: "Captain",
-            birthDate: "2305-07-13",
-            birthPlace: "La Barre, France",
-            favoriteDrink: "Earl Grey tea"
-            favoriteColor: "red",
-        }
-    })
+<pre><code>account = directory.accounts.create({
+    username: "jlpicardp",
+    email: "capt@enterprise.cpm",
+    given_name: "Jean-Luc",
+    middle_name: "",
+    surname: "Picard",
+    password: "uGhd%a8Kl!",
+    status: "ENABLED",
+    custom_data: {
+        rank: "Captain",
+        birthDate: "2305-07-13",
+        birthPlace: "La Barre, France",
+        favoriteDrink: "Earl Grey tea"
+        favoriteColor: "red",
+    }
+})
 </code></pre>
 
 <p><a class="anchor" name="retrieve-custom-data"></a></p>
@@ -4618,7 +4745,7 @@ group_memberships.each do |group_membership|
 
 <p>Retrieving an account or group’s custom data is managed by accessing the <code>custom_data</code> attribute on those resources, and fetching each individual field like you would when fetching a Ruby dictionary field:</p>
 
-<pre><code>    puts account.custom_data["rank"]
+<pre><code>puts account.custom_data["rank"]
 </code></pre>
 
 <p>A common way to retrieve an account or group&rsquo;s custom data is to use <a href="#links-expansion">link expansion</a> and retrieve the custom data at the same time as when you retrieve an account or group.</p>
@@ -4639,8 +4766,8 @@ group_memberships.each do |group_membership|
 
 <p>Updating custom_data is managed in the same manner as saving resources, by using the <code>save</code> method:</p>
 
-<pre><code>    account.custom_data["favoriteColor"] = "blue"
-    account.custom_data.save
+<pre><code>account.custom_data["favoriteColor"] = "blue"
+account.custom_data.save
 </code></pre>
 
 <div class='docs-note'><p><code>Custom_data</code> keys can be either symbols or strings. The same value can be retrieved using either a symbol or a string, but any nested data will be saved using a string. Since JSON format cannot recognize the difference between symbols and strings, when nested <code>custom_data</code> hashes are saved on the server, keys will always be sent and retrieved as strings. The recommended approach would be to save everything with keys that are strings.</p>
@@ -4653,10 +4780,10 @@ group_memberships.each do |group_membership|
 
 <p>Sometimes it is helpful to update an account or group&rsquo;s <code>custom_data</code> as part of an update request for the account or group.  In this case, just submit customData changes in an embedded <code>custom_data</code> field embedded in the account or group request resource.  For example:</p>
 
-<pre><code>    account.status = "ENABLED"
-    account.custom_data["favoriteColor"] = "blue"
-    account.custom_data["hobby"] = "Kendo"
-    account.save
+<pre><code>account.status = "ENABLED"
+account.custom_data["favoriteColor"] = "blue"
+account.custom_data["hobby"] = "Kendo"
+account.save
 </code></pre>
 
 <p>In the above example, we&rsquo;re performing 3 modifications in one request:</p>
@@ -4678,9 +4805,8 @@ group_memberships.each do |group_membership|
 
 <p>You may delete all of an account or group’s custom data by calling <code>delete</code> method on the account or group’s custom_data:</p>
 
-<pre><code>    account.custom_data.delete
-
-    group.custom_data.delete
+<pre><code>account.custom_data.delete
+group.custom_data.delete
 </code></pre>
 
 <p>This will delete all of the respective account or group&rsquo;s custom data fields, but it leaves the <code>custom_data</code> placeholder in the account or group resource.  You cannot delete the <code>custom_data</code> resource entirely &ndash; it will be automatically permanently deleted when the account or group is deleted.</p>
@@ -4689,16 +4815,333 @@ group_memberships.each do |group_membership|
 
 <h3><a id="delete-custom-data-field"></a>Delete Custom Data Field</h3>
 
-<p>You may also delete an individual custom data field by calling the <code>del</code> method on the account or group&rsquo;s custom_data while stating the custom data field as a parameter:</p>
+<p>You may also delete an individual custom data field by calling the <code>delete</code> method on the account or group&rsquo;s custom_data while stating the custom data field as a parameter:</p>
 
-<pre><code>    del account.custom_data["vehicle"]
-
-    account.custom_data.save
+<pre><code>account.custom_data.delete("vehicle")
+account.custom_data.save
 </code></pre>
 
 <div class='docs-note'><p>The <code>custom_data</code> field isn&#8217;t actually deleted on Stormpath until the <code>save</code> method is called. You should consider that in situations where you rely that your local resource object is in sync with Stormpath.</p>
 </div>
 
+
+<hr />
+
+<p><a class="anchor" name="integration-google"></a></p>
+
+<h2><a id="integrating-with-google"></a>Integrating with Google</h2>
+
+<p>Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codes (or access tokens) to return an <code>Account</code> for a given code.</p>
+
+<p>The steps to enable this functionality into your application include:</p>
+
+<ul>
+<li><a href="#creating-a-google-directory">Create a Google Directory</a></li>
+<li>Create an <code>Account Store Mapping</code> between a Google Directory and your <code>Application</code></li>
+<li><a href="#accessing-accounts-with-google-authorization-codes-or-an-access-tokens">Accessing Accounts with Google Authorization Codes or an Access Tokens</a></li>
+</ul>
+
+
+<p>Google Directories follow behavior similar to <a href="#directories-mirrored">mirror directories</a>, but have a <code>Provider</code> resource that contains information regarding the Google application that the directory is configured for.</p>
+
+<h3><a id="google-provider-resource"></a>Google Provider Resource</h3>
+
+<p>A <code>Provider</code> resource holds specific information needed for working with a Google Directory.  It is important to understand the format of the provider resource when creating and updating a Google Directory.</p>
+
+<p>A provider resource can be obtained by accessing the directory&rsquo;s provider attribute:</p>
+
+<p>Example:</p>
+
+<pre><code>directory = client.directories.first
+puts directory.provider.href
+</code></pre>
+
+<p><strong>Resource Attributes</strong></p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description </th>
+<th align="left"> Type </th>
+<th align="left"> Valid Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>client_id</code> </td>
+<td align="left"> The App ID for your Google application </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>client_secret</code> </td>
+<td align="left"> The App Secret for your Google application </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>redirect_uri</code> </td>
+<td align="left"> The redirection Uri for your Google application </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>provider_id</code> </td>
+<td align="left"> The provider ID is the Stormpath ID for the Directory&rsquo;s account provider </td>
+<td align="left"> String </td>
+<td align="left"> &lsquo;google&rsquo;</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>In addition to your application specific attributes, a <code>Provider</code> resource will always contain 3 reserved read-only fields:</p>
+
+<ul>
+<li><code>href</code> : The fully qualified location of the custom data resource</li>
+<li><code>created_at</code> : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> formatted string</li>
+<li><code>modified_at</code> : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> formatted string</li>
+</ul>
+
+
+<h3><a id="creating-a-google-directory"></a>Creating a Google Directory</h3>
+
+<p>Creating a Google Directory requires that you gather some information beforehand from Google&rsquo;s Developer Console regarding your application.</p>
+
+<ul>
+<li>Client ID</li>
+<li>Client Secret</li>
+<li>Redirect URI</li>
+</ul>
+
+
+<p>Creating a Google Directory is very similar to <a href="#directory-create">creating a directory</a> within Stormpath.
+For a Google Directory to be configured correctly, you must specify the correct <code>Provider</code> information.</p>
+
+<p><strong>Example</strong></p>
+
+<pre><code># create a directory with google auth provider
+directory = client.directories.create({
+                                name: 'MyGoogleDirectory',
+                                description: 'My First Google Dir.',
+                                provider: {
+                                    client_id: '857385-m8vk0fn2r7jmjo.apps.googleusercontent.com',
+                                    client_secret: 'ehs7_-bA7OWQSQ4',
+                                    redirect_uri: 'https://myapplication.com/auth/google_oauth2/callback',
+                                    provider_id: :google }})
+</code></pre>
+
+<p>After the Google Directory has been created, it needs to be <a href="#account-store-mappings">mapped with an application as an account store</a>. The Google Directory cannot be a default account store or a default group store.  Once the directory is mapped as an account store for an application, you are ready to access <code>Accounts</code> with Google Authorization Codes.</p>
+
+<pre><code># create a new application
+application = client.applications.create({ name: 'MyGoogleApp', description: 'Google Test App' })
+
+# make the app use the directory
+account_store_mapping = application.account_store_mappings.create({
+    application: application,
+    account_store: directory
+})
+</code></pre>
+
+<h3><a id="accessing-accounts-with-google-authorization-codes-or-an-access-tokens"></a>Accessing Accounts with Google Authorization Codes or an Access Tokens</h3>
+
+<p>To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google&rsquo;s OAuth 2.0 protocol and the user&rsquo;s consent for your application&rsquo;s permissions.</p>
+
+<p>Once the Authorization Code is gathered, you can get or create the <code>Account</code> by using the <code>app.get_provider_account</code> method.</p>
+
+<pre><code>request = Stormpath::Provider::AccountRequest.new(:google, :code, 'my-authorization-code')
+result = application.get_provider_account(request)
+puts result.is_new_account?
+account = result.account
+puts account.email
+</code></pre>
+
+<p>The following is how you use <code>provider_data</code> to get an <code>account</code> for a given authorization code:</p>
+
+<div class='docs-note'><p>When accessing the result based on a Google Authorization Code the <code>result.is_new_account?</code> method tells us if the account was created or if it already existed in the Google Directory.</p>
+</div>
+
+
+
+
+<div class='docs-note'><p>To <a href="#links-expansion">expand</a> the <code>provider_data</code> to get the Access Token for the Account in one HTTP request, use an Expansion <code>expansion.add_property 'provider_data'</code>.</p>
+</div>
+
+
+
+
+<div class='docs-note'><p>It is required that your Google application request for the <code>email</code> permission (not just the <code>profile</code> permission) from Google.
+If the access token does not grant <code>email</code> permissions, you will not be able to get an <code>Account</code> with an access token.</p>
+</div>
+
+
+<p>Once an <code>Account</code> is retreived, Stormpath maps common fields for the Google User to the Account. The access token and the refresh token for any additional calls are in the <code>provider_data</code> resource and can be retreived by:</p>
+
+<pre><code>account.provider_data.access_token
+account.provider_data.refresh_token
+</code></pre>
+
+<div class='docs-note'><p>The <code>access_token</code> can also be passed as a field for the <code>provider_data</code> to access the account once it is retrieved</p>
+
+<pre><code>request = Stormpath::Provider::AccountRequest.new(:google, :access_token, 'my-access-token')
+acc = app.get_provider_account(request)
+</code></pre>
+</div>
+
+
+
+
+<div class='docs-note'><p>The <code>refresh_token</code> will only be present if your application asked for offline access.  Review Google&#8217;s documentation for more information regarding OAuth offline access.</p>
+</div>
+
+
+<hr />
+
+<p><a class="anchor" name="integration-facebook"></a></p>
+
+<h2><a id="integrating-with-facebook"></a>Integrating with Facebook</h2>
+
+<p>Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an <code>Account</code>.</p>
+
+<p>The steps to enable this functionality into your application include:</p>
+
+<ul>
+<li><a href="#creating-a-facebook-directory">Create a Facebook Directory</a></li>
+<li>Create an <code>Account Store Mapping</code> between a Facebook Directory and your <code>Application</code></li>
+<li><a href="#accessing-accounts-with-facebook-user-access-tokens">Accessing Accounts with Facebook User Access Tokens</a></li>
+</ul>
+
+
+<p>Facebook Directories follow behavior similar to <a href="#directories-mirrored">mirror directories</a>, but have a <code>Provider</code> resource that contains information regarding the Google application that the directory is configured for.</p>
+
+<h3><a id="facebook-provider-resource"></a>Facebook Provider Resource</h3>
+
+<p>A <code>Provider</code> resource holds specific information needed for working with a Facebook Directory.  It is important to understand the format of the provider resource when creating and updating a Facebook Directory.</p>
+
+<p>A provider resource can be obtained by accessing the directory&rsquo;s provider attribute as follows:</p>
+
+<p>Example</p>
+
+<pre><code>directory = client.directories.first
+puts directory.provider.href
+</code></pre>
+
+<p><strong>Resource Attributes</strong></p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description </th>
+<th align="left"> Type </th>
+<th align="left"> Valid Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>client_id</code> </td>
+<td align="left"> The App ID for your Google application </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>client_secret</code> </td>
+<td align="left"> The App Secret for your Google application </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>provider_id</code> </td>
+<td align="left"> The provider ID is the Stormpath ID for the Directory&rsquo;s account provider </td>
+<td align="left"> String </td>
+<td align="left"> &lsquo;facebook&rsquo;</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>In addition to your application specific attributes, a <code>Provider</code> resource will always contain 3 reserved read-only fields:</p>
+
+<ul>
+<li><code>href</code> : The fully qualified location of the custom data resource</li>
+<li><code>created_at</code> : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> formatted string</li>
+<li><code>modified_at</code> : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an <a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a> formatted string</li>
+</ul>
+
+
+<h3><a id="creating-a-facebook-directory"></a>Creating a Facebook Directory</h3>
+
+<p>Creating a Facebook Directory requires that you gather some information beforehand from Facebook&rsquo;s Developer Console regarding your application.</p>
+
+<ul>
+<li>Client ID</li>
+<li>Client Secret</li>
+</ul>
+
+
+<p>Creating a Facebook Directory is very similar to <a href="#directory-create">creating a directory</a> within Stormpath.
+For a Facebook Directory to be configured correctly, you must specify the correct <code>Provider</code> information.</p>
+
+<p><strong>Example</strong></p>
+
+<pre><code># create a directory with facebook auth provider
+directory = client.directories.create({
+                                name: 'MyFacebookDirectory',
+                                description: 'My First FB Dir.',
+                                provider: {
+                                    client_id: '85733424235s',
+                                    client_secret: 'Wda934msiaQ',
+                                    redirect_uri: 'https://myapplication.com/auth/facebook/callback',
+                                    provider_id: :facebook }})
+</code></pre>
+
+<p>After the Facebook Directory has been created, it needs to be <a href="#account-store-mappings">mapped with an application as an account store</a>. The Facebook Directory cannot be a default account store or a default group store.  Once the directory is mapped to an account store for an application, you are ready to access <code>Accounts</code> with Facebook User Access Tokens.</p>
+
+<pre><code># create a new application
+application = client.applications.create({ name: 'MyFacebookApp', description: 'Facebook Test App' })
+
+# make the app use the directory
+account_store_mapping = application.account_store_mappings.create({
+    application: application,
+    account_store: directory
+})
+</code></pre>
+
+<h3><a id="accessing-accounts-with-facebook-user-access-tokens"></a>Accessing Accounts with Facebook User Access Tokens</h3>
+
+<p>To access or create an account in an already created Facebook Directory, it is required to gather the <code>User Access Token</code> on behalf of the user.  This usually requires leveraging Facebook&rsquo;s javascript library and the user&rsquo;s consent for your application&rsquo;s permissions.</p>
+
+<div class='docs-note'><p>It is required that your Facebook application request for the <code>email</code> permission from Facebook. If the access token does not grant <code>email</code> permissions, you will not be able to get an <code>Account</code> with an access token.</p>
+</div>
+
+
+<p>Once the <code>User Access Token</code> is gathered, you can get or create the <code>Account</code> using the <code>app.get_provider_account</code> method.</p>
+
+<pre><code>request = Stormpath::Provider::AccountRequest.new(:facebook, :access_token, 'my-access-token')
+result = application.get_provider_account(request)
+puts result.is_new_account?
+account = result.account
+puts account.email
+</code></pre>
+
+<div class='docs-note'><p>When accessing an account based on a Facebook Access Token the <code>account.is_new_account?</code> method tells us if the account was created or if it already existed in the Facebook Directory.</p>
+</div>
+
+
+
+
+<div class='docs-note'><p>To <a href="#links-expansion">expand</a> the <code>provider_data</code> to get the Access Token for the Account in one HTTP request, use an Expansion <code>expansion.add_property 'provider_data'</code>.</p>
+</div>
+
+
+<p>Once an <code>Account</code> is retreived, Stormpath maps common fields for the Facebook User to the  Account.  The access token for any additional calls is in the <code>provider_data</code> resource and can be retreived by:</p>
+
+<pre><code>puts account.provider_data
+puts account.provider_data.access_token
+</code></pre>
+
+<hr />
 
 <p><a class="anchor" name="administration"></a></p>
 
@@ -5134,7 +5577,7 @@ addthis:url="https://stormpath.com" >
 				<a href="/ruby/product-guide">Product Guide</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#ruby-sdk" data-level="1" class="fragment">Ruby SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#caching" data-level="1" class="fragment">Caching</a><ul class="menu"></ul></li><li class="leaf"><a href="#errors" data-level="1" class="fragment">Errors</a><ul class="menu"></ul></li><li class="leaf"><a href="#error-handling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-applications" data-level="1" class="fragment">Tenant Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-password-policy" data-level="1" class="fragment">Account Password Policy</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-accounts-email-address" data-level="1" class="fragment">Verify An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-custom-data" data-level="1" class="fragment">Group Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticating-an-account" data-level="1" class="fragment">Authenticating An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#ruby-sdk" data-level="1" class="fragment">Ruby SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#caching" data-level="1" class="fragment">Caching</a><ul class="menu"></ul></li><li class="leaf"><a href="#errors" data-level="1" class="fragment">Errors</a><ul class="menu"></ul></li><li class="leaf"><a href="#error-handling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-applications" data-level="1" class="fragment">Tenant Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-password-policy" data-level="1" class="fragment">Account Password Policy</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-accounts-email-address" data-level="1" class="fragment">Verify An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-custom-data" data-level="1" class="fragment">Group Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticating-an-account" data-level="1" class="fragment">Authenticating An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-google" data-level="0" class="fragment">Integrating with Google</a><ul class="menu"><li class="leaf"><a href="#google-provider-resource" data-level="1" class="fragment">Google Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-google-directory" data-level="1" class="fragment">Creating a Google Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-google-authorization-codes-or-an-access-tokens" data-level="1" class="fragment">Accessing Accounts with Google Authorization Codes or an Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-facebook" data-level="0" class="fragment">Integrating with Facebook</a><ul class="menu"><li class="leaf"><a href="#facebook-provider-resource" data-level="1" class="fragment">Facebook Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-facebook-directory" data-level="1" class="fragment">Creating a Facebook Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-facebook-user-access-tokens" data-level="1" class="fragment">Accessing Accounts with Facebook User Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
