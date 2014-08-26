@@ -238,7 +238,7 @@ In addition to user registration and login, Stormpath can do a lot more!
 - Verify new users via email.
 - Automatically provide secure password reset functionality.
 - Centralize your user store across multiple applications.
-- Plug into your favorite web framework (*like Symfony!*).
+- Plug into your favorite web framework.
 
 
 ***

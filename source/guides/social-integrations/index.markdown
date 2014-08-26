@@ -214,7 +214,7 @@ application.get_provider_account(provider=Provider.FACEBOOK, access_token="%ACCE
 application.getAccount({
   providerData: {
     providerId: 'facebook',
-    code: ACCESS_TOKEN_FROM_FACEBOOK
+    accessToken: ACCESS_TOKEN_FROM_FACEBOOK
   }
 }, function(err, result){
   console.log(result.created);
@@ -398,7 +398,7 @@ curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
 
 ### Accessing an Account with Google Tokens
 
-To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google's [OAuth 2.0 protocol](https://developers.google.com/accounts/docs/OAuth2Login) and the user's consent for your application's permissions.
+To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code or Access Token on behalf of the user.  This requires leveraging Google's [OAuth 2.0 protocol](https://developers.google.com/accounts/docs/OAuth2Login) and the user's consent for your application's permissions. 
 
 Generically, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the Authorization Code.  This is documented in detail [here](https://developers.google.com/accounts/docs/OAuth2Login#authenticatingtheuser).
 
@@ -406,7 +406,6 @@ Once the Authorization Code is gathered, you can ask the `Application` object to
     
       "providerId": "google",
       "code": "%ACCESS_CODE_FROM_GOOGLE%"
-  
 
 The following is how you use `providerData` to get an `Account` for a given authorization code:
 
@@ -449,6 +448,11 @@ The `Authentication Result` or HTTP Status code (using REST) when accessing an a
 {% docs note %}
 To [expand](#link-expansion) the `providerData` to get the Access Token for the Account in one HTTP request, add `expand=providerData` to the URL query parameters.
 {% enddocs %}
+
+If you have already exchanged an `Authorization Code` for an `Access Token`, this can be passed to Stormpath in a similar fashion:
+
+      "providerId": "google",
+      "accessToken": "%ACCESS_TOKEN_FROM_GOOGLE%"
 
 Once an `Account` is retrieved, Stormpath maps common fields for the Google User to the  Account.  The access token and the refresh token for any additional calls in the `providerData` resource and can be retrieved by:
 

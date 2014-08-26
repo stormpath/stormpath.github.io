@@ -163,7 +163,7 @@ The client can be configured by passing the `id` and `secret` parameters to crea
 Another way to create a client is by creating an `api_key` hash with the API credentials and passing this hash to create the client instance:
 
     client = Stormpath::Client.new({
-              api_key: { id: foo, secret: bar }
+                 api_key: { id: foo, secret: bar }
               })
 
 {% docs warning %}
@@ -175,16 +175,7 @@ Only use this technique if the values are obtained at runtime using a configurat
 <a class="anchor" name="authentication-scheme-configuration"></a>
 #### Authentication Scheme Configuration
 
-You can choose one of two authentication schemes to authenticate with Stormpath:
-
-1. **Stormpath SAuthc1 Authentication**:  This is the recommended approach, and the default setting.  This approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath SAuthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.
-2. **Basic Authentication**: This is _only_ recommended when your application runs in an environment outside of your control, and that environment manipulates your application's request headers when requests are made.  Google App Engine is one known such environment.  However, Basic Authentication is not as secure as Stormpath's `SAuthc` algorithm, so only use this if you are forced to do so by your application runtime environement.
-
-When no authentication scheme is explicitly configured, `Sauthc1` is used by default.
-
-If you must change to basic authentication for these special environments, set the `scheme` property:
-
-    client = Client(id: 'foo', secret: 'bar', scheme: 'basic')
+**Stormpath SAuthc1 Authentication**:  This is the default setting.  This approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath SAuthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.
 
 <a class="anchor" name="high-level-overview"></a>
 ### High-level Overview
@@ -242,7 +233,7 @@ When applications interact with a Stormpath SDK `resource` instance, they are re
 For example, using the SDK Communication Flow diagram in the [high-level overview](#high-level-overview) section, assuming you have a reference to an `account` object - perhaps you have queried for it or you already have the account `href` and you want to load the `account` resource from the server:
 
     account_href = 'https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE'
-    account = client.accounts.get(account_href)
+    account = client.accounts.get account_href
 
 This retrieves the account at the specified `href` location using an HTTP `GET` request.
 
@@ -374,9 +365,6 @@ There are two optional query parameters that may be specified to control paginat
 
     Collections can be paginated using chainable Arel-like methods:
 
-    for app in client.applications[1:5]:
-        print(app.name)
-
     client.applications.offset(10).limit(100).each do |application|
         puts application.name
     end
@@ -435,6 +423,7 @@ Now you can loop through the collection resource and get the results according t
 
     accounts.each do |account|
         puts account.username
+    end
 
 **Matching Logic**
 
@@ -474,6 +463,7 @@ Now you can loop through the collection resource and get the results according t
 
     accounts.each do |account|
         puts account.username
+    end
 
 Attribute-based queries use standard URI query parameters and function as follows:
 
@@ -486,17 +476,18 @@ Attribute-based queries use standard URI query parameters and function as follow
 
 For example, consider the following search:
 
-    accounts = application.accounts.search. 'given_name': 'Joe',
-                                            'middle_name': '*aul',
-                                            'surname': '*mit*',
-                                            'email': 'joePaul*',
-                                            'status': 'DISABLED'
+    accounts = application.accounts.search  given_name: 'Joe',
+                                            middle_name: '*aul',
+                                            surname: '*mit*',
+                                            email: 'joePaul*',
+                                            status: 'DISABLED'
 
 
 Now you can loop through the collection resource and get the results according to the specified search:
 
     accounts.each do |account|
         puts account.username
+    end
 
 This returns all accounts where:
 
@@ -733,6 +724,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
 
     applications.each do |application|
         puts application.name
+    end
 
 <a class="anchor" name="tenant-applications-search"></a>
 #### Search Tenant Applications
@@ -753,6 +745,7 @@ In addition to the the [search query parameters](#search), you may also use [pag
 
     applications.each do |application|
         puts application.name
+    end
 
 
 #### Working With Tenant Applications
@@ -785,6 +778,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
 
     directories.each do |directory|
         puts directory.name
+    end
 
 
 <a class="anchor" name="tenant-directories-search"></a>
@@ -806,6 +800,7 @@ In addition to the the [search query parameters](#search), you may also use [pag
 
     directories.each do |directory|
         puts directory.name
+    end
 
 #### Working With Tenant Directories
 
@@ -1104,7 +1099,6 @@ Set the required [account resource attributes](#account-resource) and any additi
         password: '4P@$$w0rd!'
     })
 
-
 **How does this work?**
 
 As we [said previously](#application-accounts), an Application does not 'own' accounts of its own - it has access to accounts in one or more directories or groups and the directories actually own the accounts.  So how are we able to create a new account based on only the application?
@@ -1173,7 +1167,10 @@ You may authenticate an account by calling the `authenticate_account` method of 
 
 **Example Request**
 
-    result = application.authenticate_account('usernameOrEmail', 'password')
+    auth_request =
+      Stormpath::Authentication::UsernamePasswordRequest.new 'usernameOrEmail', 'password'
+
+    result = application.authenticate_account(auth_request)
 
 If the login attempt is successful, a `LoginAttempt` object is returned with a reference to the successfully authenticated account:
 
@@ -1269,7 +1266,7 @@ Retrieving a token resource successfully using a call to the `verify_password_re
 
 **Example Request**
 
-    account = client.accounts.verify_password_reset_token('TOKEN')
+    account = application.verify_password_reset_token('TOKEN')
 
 If the password reset token is invalid - it never existed or has expired - a `404 Not Found` response is returned.
 
@@ -1287,6 +1284,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
     accounts = application.accounts
     accounts.each do |account|
         puts account.username
+    end
 
 <a class="anchor" name="application-accounts-search"></a>
 #### Search Application Accounts
@@ -1308,6 +1306,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
     accounts = application.accounts.search('foo').limit(50)order('given_name')
     accounts.each do |account|
         puts "#{account.given_name} #{acc.surname}"
+    end
 
 #### More Account Functionality
 
@@ -1390,6 +1389,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
     groups = application.groups
     groups.each do |group|
         puts group.name
+    end
 
 <a class="anchor" name="application-groups-search"></a>
 #### Search Application Groups
@@ -1408,6 +1408,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
     groups = application.groups.search('foo').limit(50).order('name')
     groups.each do |group|
         puts group.name
+    end
 
 #### More Group Functionality
 
@@ -1441,6 +1442,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
     account_store_mappings = application.account_store_mappings
     account_store_mappings.each do |account_store_mapping|
         puts account_store_mapping.account_store.name
+    end
 
 ***
 
@@ -1489,8 +1491,15 @@ Attribute | Description | Type | Valid Value
 <a id="account-store-accountStore"></a>`account_store` | The mapping's account store (either a Group or Directory) containing accounts that may login to the `application`.  Required. | resource | <span>--</span>
 <a id="list-index"></a>`list_index` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `list_index` of `0` will be consulted first (has the highest priority), followed the account store at `list_index` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `list_index` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size
 <a id="account-store-mapping-resource-is-default-account-store"></a>`is_default_account_store` | A `true` value indicates that new accounts [created by the application](#application-account-register) will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
-<a id="account-store-mapping-resource-is-default-group-store"></a>`is_default_group_store` | A `true` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `true` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `true`,`false`
-
+<a id="account-store-mapping-resource-is-default-group-store"></a>`is_default_group_store` | A `true` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
+`is_default_account_store=` | A setter method for defining whether the account store will be an default account store for the application. | boolean | `true`,`false`
+`is_default_groupt_store=` | A setter method for defining whether the account store will be an default group store for the application. **This may only be set to `true` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `true`,`false`
+`default_account_store` | Alias for `is_default_account_store`. | boolean | `true`,`false`
+`default_account_store?` | Alias for `is_default_account_store`. | boolean | `true`,`false`
+`default_account_store=` | Alias for `is_default_account_store=`. | boolean | `true`,`false`
+`default_group_store` | Alias for `is_default_group_store`. | boolean | `true`,`false`
+`default_group_store?` | Alias for `is_default_group_store`. | boolean | `true`,`false`
+`default_group_store=` | Alias for `is_default_group_store=`. | boolean | `true`,`false`
 For Account Store Mappings, you may:
 
 * [Locate an account store mapping's REST URL](#account-store-mapping-url)
@@ -1642,6 +1651,10 @@ If none of the application's AccountStoreMappings are designated as the default 
 Also note that Mirrored directories or groups within Mirrored directories are read-only; they cannot be set as an application's default account store.  Attempting to set `isDefaultAccountStore` to `true` on an AccountStoreMapping that reflects a mirrored directory or group will result in an error response.
 {% enddocs %}
 
+{% docs warning %}
+Google and Facebook Directories `can't` be a default account stores.
+{% enddocs %}
+
 <a class="anchor" name="account-store-mapping-default-group-store"></a>
 #### Set The Default Group Store for new Application Groups
 
@@ -1672,6 +1685,10 @@ If no `AccountStoreMapping` is designated as the default group store, the applic
 Also, note that Stormpath does not currently support storing groups within groups.  Therefore `is_default_group_store` can only be set to `true` when the AccountStoreMapping's `accountStore` is a Directory.  Attempting to set `is_default_group_store` to `true` on an AccountStoreMapping that reflects a group will result in an error response.
 
 Lastly, note that mirrored directories are read-only; they cannot be set as an application's default group store. Attempting to set `is_default_group_store` to `true` on an AccountStoreMapping that reflects a mirrored directory will result in an error response.
+{% enddocs %}
+
+{% docs warning %}
+Google and Facebook Directories `can't` be a default group stores.
 {% enddocs %}
 
 <a class="anchor" name="account-store-mapping-delete"></a>
@@ -1707,6 +1724,7 @@ The response is a paginated list of `accountStoreMapping` resources.  You may us
     account_store_mappings = application.account_store_mappings
     account_store_mappings.each do |account_store_mapping|
         puts account_store_mapping.account_store.name
+    end
 
 ***
 
@@ -1818,11 +1836,7 @@ In all cases, the process is fundamentally the same. Consider the first case as 
 **Example Request**
 
     directories = tenant.directories
-    directory = false
-    for dire in directories:
-        if directory.name == "My Directory":
-            directory = dire
-            break
+    directories.find {|directory| directory.name == "My Directory" }
 
 If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., `directory.search({'name', 'My Directory'})`) or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., `directory.search('*My*')`) to narrow down the selection.
 
@@ -2047,6 +2061,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
     groups = directory.groups
     groups.each do |group|
         puts group.name
+    end
 
 #### Search Directory Groups
 
@@ -2064,6 +2079,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
     groups = directory.groups.search('foo').limit(50).order('name')
     groups.each do |group|
         puts group.name
+    end
 
 
 #### Working With Directory Groups
@@ -2090,6 +2106,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
     accounts = directory.accounts
     accounts.each do |account|
         puts account.given_name
+    end
 
 #### Search Directory Accounts
 
@@ -2110,6 +2127,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
     accounts = directory.accounts.search('foo').order('name')[0:50]
     accounts.each do |account|
         puts account.given_name
+    end
 
 #### Working With Directory Accounts
 
@@ -2183,9 +2201,6 @@ For example, if you want to find a group with the name "My Group", you'll need t
 **Example Request**
 
     groups = directory.groups.search({'name': 'My Group'})
-    group = false
-    for grp in groups:
-        group = grp
 
 If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., `groups.search({'name': 'My Group'})`) or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., `groups.search('*My*')`) to narrow down the selection.
 
@@ -2339,6 +2354,7 @@ The request returns a paginated list of groups accessible to an application.
     groups = application.groups
     groups.each do |group|
         puts group.name
+    end
 
 ##### Account Groups
 
@@ -2355,6 +2371,7 @@ The request returns a paginated list of groups for which an account is a member.
     groups = account.groups
     groups.each do |group|
         puts group.name
+    end
 
 ##### Directory Groups
 
@@ -2371,6 +2388,7 @@ The request returns a paginated list of groups that belong to this directory.
     groups = directory.groups
     groups.each do |group|
         puts group.name
+    end
 
 <a class="anchor" name="groups-search"></a>
 ### Search Groups
@@ -2405,6 +2423,7 @@ The request returns a paginated list of accounts that are members of a specific 
     accounts = group.accounts
     accounts.each do |account|
         puts account.given_name
+    end
 
 <a class="anchor" name="group-accounts-search"></a>
 #### Search Group Accounts
@@ -2427,6 +2446,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
 
     accounts.each do |account|
         puts account.given_name
+    end
 
 <a class="anchor" name="working-with-group-accounts"></a>
 #### Working With Group Accounts
@@ -2452,6 +2472,7 @@ A request returns a Collection Resource containing the group memberships to whic
     account_membersips.each do |account_membership|
         puts account_membership.group.name
         puts account_membership.account.given_name)
+    end
 
 <a class="anchor" name="working-with-group-account-memberships"></a>
 #### Working With Account Memberships
@@ -2503,14 +2524,13 @@ In all cases, the process is fundamentally the same. Consider the first case as 
 
 **Example Request**
 
-    group_memberships = account.group_memberships
-    group_membership = false
-    for gms in group_membership:
-        if gms.group.name = 'Group Name':
-            group_membership = gms
-            break
+    account.group_memberships.each do |group_membership|
+        group = group_membership.group
+        return group if group_membership.group.name = 'Group Name':
+    end
 
-If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., "name=") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "My*") to narrow down the selection.
+
+If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., "name") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "My*") to narrow down the selection.
 
 <a class="anchor" name="group-membership-create"></a>
 ### Create a Group Membership
@@ -2578,6 +2598,7 @@ A request returns a paginated list of the group memberships where the account is
     group_memberships.each do |group_membership|
         puts group_membership.account.given_name
         puts group_membership.group.name
+    end
 
 <a class="anchor" name="account-membership-by-group"></a>
 #### List Account Memberships For A Group
@@ -2598,6 +2619,7 @@ A request returns a paginated list of the group memberships where the group is i
     account_memberships.each do |account_membership|
         puts account_membership.account.given_name
         puts account_membership.group.name
+    end
 
 ***
 
@@ -2683,11 +2705,12 @@ For example, if you want to find an account with the username "test" across an a
 **Example Request**
 
     accounts = application.accounts.search({'username': 'test'})
-    account = false
-    for acc in accounts:
-        account = acc
 
-If you know the username exactly, you can use an [attribute search](#search-attribute) (e.g., "username=") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "test*") to narrow down the selection.
+If you know the username exactly, you can use an [attribute search](#search-attribute) (e.g., "username: ") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "test*") to narrow down the selection.
+
+**Example Request**
+
+    accounts = application.accounts.search({'username': 'test*'})
 
 <a class="anchor" name="account-create"></a>
 ### Create an Account
@@ -2995,21 +3018,21 @@ For example, if you were to request the account object for a user who has not ye
       middleName: "test"
       surname: "test"
       status: "UNVERIFIED"
-     -groups: {
+      groups: {
         href: "https://api.stormpath.com/v1/accounts/6XLbNaUsKm3E0kXMTTr10V/groups"
       }
-     -groupMemberships: {
+      groupMemberships: {
         href: "https://api.stormpath.com/v1/accounts/6XLbNaUsKm3E0kXMTTr10V/groupMemberships"
       }
-     -directory: {
+      directory: {
         href: "https://api.stormpath.com/v1/directories/5D1bvO5To6KQBaGFh793Zz"
-      }-
-     -tenant: {
+      }
+      tenant: {
         href: "https://api.stormpath.com/v1/tenants/23mq7BPIxNgPUPZDwj04SZ"
       }
-     -emailVerificationToken: {
+      emailVerificationToken: {
         href: "https://api.stormpath.com/v1/accounts/emailVerificationTokens/6YJv9XBH1dZGP5A8rq7Zyl"
-      }-
+      }
     }
 
 {% docs tip %}
@@ -3085,6 +3108,7 @@ A request returns a Collection Resource containing all [groups](#groups) where a
     groups = account.groups
     groups.each do |group|
         puts group.name
+    end
 
 <a class="anchor" name="search-account-groups"></a>
 #### Search Account Groups
@@ -3104,6 +3128,7 @@ In addition to the [search query parameters](#search), you may also use [paginat
     groups = account.groups.search('foo').limit(50).order('name')
     groups.each do |group|
         puts group.name
+    end
 
 <a class="anchor" name="working-with-account-groups"></a>
 #### Working With Account Groups
@@ -3130,6 +3155,7 @@ A request returns a Collection Resource containing the group memberships to whic
     group_memberships.each do |group_membership|
         puts group_membership.account.given_name
         puts group_membership.group.name
+    end
 
 <a class="anchor" name="working-with-account-group-memberships"></a>
 #### Working With Account Group Memberships
@@ -3160,6 +3186,19 @@ You can store an unlimited number of additional name/value pairs in the `customD
     * contain only alphanumeric characters `0-9A-Za-z`, underscores `_` or dashes `-` but cannot start with a dash `-`.
     * may not equal any of the following reserved names: `href`, `createdAt`, `modifiedAt`, `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta`.
 
+<a class="anchor" name="custom-data-resource-methods"></a>
+**Resource Methods**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`href` | The custom data resource's fully qualified location URI. It is the href of it's Account or Group + "/customData" | String | <span>--</span>
+`has_key?(key)` | Inspects whether the custom data resource has a key or not. | boolean | `true`,`false`
+`include?(key)` | Alias method for has_key?. | boolean | `true`,`false`
+`has_value?(value)` | Inspects whether the custom data resource has a value or not. | boolean | `true`,`false`
+`store(key, value)` | Maps a key and a value together. This is an alias for `custom_data[key] = value` | value | <span>--</span>
+`keys` | Returns an array containing all key names. | Array | <span>--</span>
+`values` | Returns an array containing all values. | Array | <span>--</span>
+
 For Custom Data, you can:
 
 * [Create Custom Data](#create-custom-data)
@@ -3175,29 +3214,29 @@ Whenever you create an account or a group, an empty `customData` resource is cre
 
 However, it is often useful to populate custom data at the same time you create an account or group.  You can do this by embedding the `customData` directly in the account or group resource. For example:
 
-        account = directory.accounts.create({
-            username: "jlpicardp",
-            email: "capt@enterprise.cpm",
-            given_name: "Jean-Luc",
-            middle_name: "",
-            surname: "Picard",
-            password: "uGhd%a8Kl!",
-            status: "ENABLED",
-            custom_data: {
-                rank: "Captain",
-                birthDate: "2305-07-13",
-                birthPlace: "La Barre, France",
-                favoriteDrink: "Earl Grey tea"
-                favoriteColor: "red",
-            }
-        })
+    account = directory.accounts.create({
+        username: "jlpicardp",
+        email: "capt@enterprise.cpm",
+        given_name: "Jean-Luc",
+        middle_name: "",
+        surname: "Picard",
+        password: "uGhd%a8Kl!",
+        status: "ENABLED",
+        custom_data: {
+            rank: "Captain",
+            birthDate: "2305-07-13",
+            birthPlace: "La Barre, France",
+            favoriteDrink: "Earl Grey tea"
+            favoriteColor: "red",
+        }
+    })
 
 <a class="anchor" name="retrieve-custom-data"></a>
 ### Retrieve Custom Data
 
 Retrieving an account or group’s custom data is managed by accessing the `custom_data` attribute on those resources, and fetching each individual field like you would when fetching a Ruby dictionary field:
 
-        puts account.custom_data["rank"]
+    puts account.custom_data["rank"]
 
 A common way to retrieve an account or group's custom data is to use [link expansion](#links-expansion) and retrieve the custom data at the same time as when you retrieve an account or group.
 
@@ -3213,8 +3252,8 @@ You may update an account or group's custom data, in one of two ways:
 
 Updating custom_data is managed in the same manner as saving resources, by using the `save` method:
 
-        account.custom_data["favoriteColor"] = "blue"
-        account.custom_data.save
+    account.custom_data["favoriteColor"] = "blue"
+    account.custom_data.save
 
 {% docs note %}
 `Custom_data` keys can be either symbols or strings. The same value can be retrieved using either a symbol or a string, but any nested data will be saved using a string. Since JSON format cannot recognize the difference between symbols and strings, when nested `custom_data` hashes are saved on the server, keys will always be sent and retrieved as strings. The recommended approach would be to save everything with keys that are strings.
@@ -3225,10 +3264,10 @@ Updating custom_data is managed in the same manner as saving resources, by using
 
 Sometimes it is helpful to update an account or group's `custom_data` as part of an update request for the account or group.  In this case, just submit customData changes in an embedded `custom_data` field embedded in the account or group request resource.  For example:
 
-        account.status = "ENABLED"
-        account.custom_data["favoriteColor"] = "blue"
-        account.custom_data["hobby"] = "Kendo"
-        account.save
+    account.status = "ENABLED"
+    account.custom_data["favoriteColor"] = "blue"
+    account.custom_data["hobby"] = "Kendo"
+    account.save
 
 In the above example, we're performing 3 modifications in one request:
 
@@ -3245,24 +3284,247 @@ The same simultaneous update behavior may be performed for Group updates as well
 
 You may delete all of an account or group’s custom data by calling `delete` method on the account or group’s custom_data:
 
-        account.custom_data.delete
-
-        group.custom_data.delete
+    account.custom_data.delete
+    group.custom_data.delete
 
 This will delete all of the respective account or group's custom data fields, but it leaves the `custom_data` placeholder in the account or group resource.  You cannot delete the `custom_data` resource entirely - it will be automatically permanently deleted when the account or group is deleted.
 
 <a class="anchor" name="delete-account-custom-data-field"></a>
 ### Delete Custom Data Field
 
-You may also delete an individual custom data field by calling the `del` method on the account or group's custom_data while stating the custom data field as a parameter:
+You may also delete an individual custom data field by calling the `delete` method on the account or group's custom_data while stating the custom data field as a parameter:
 
-        del account.custom_data["vehicle"]
-
-        account.custom_data.save
+    account.custom_data.delete("vehicle")
+    account.custom_data.save
 
 {% docs note %}
 The `custom_data` field isn't actually deleted on Stormpath until the `save` method is called. You should consider that in situations where you rely that your local resource object is in sync with Stormpath.
 {% enddocs %}
+
+***
+
+<a class="anchor" name="integration-google"></a>
+## Integrating with Google
+
+Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codes (or access tokens) to return an `Account` for a given code.
+
+The steps to enable this functionality into your application include:
+
++ [Create a Google Directory](#creating-a-google-directory)
++ Create an `Account Store Mapping` between a Google Directory and your `Application`
++ [Accessing Accounts with Google Authorization Codes or an Access Tokens](#accessing-accounts-with-google-authorization-codes-or-an-access-tokens)
+
+Google Directories follow behavior similar to [mirror directories](#directories-mirrored), but have a `Provider` resource that contains information regarding the Google application that the directory is configured for.
+
+### Google Provider Resource
+
+A `Provider` resource holds specific information needed for working with a Google Directory.  It is important to understand the format of the provider resource when creating and updating a Google Directory.
+
+A provider resource can be obtained by accessing the directory's provider attribute:
+
+Example:
+
+    directory = client.directories.first
+    puts directory.provider.href
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`client_id` | The App ID for your Google application | String | --
+`client_secret` | The App Secret for your Google application | String | --
+`redirect_uri` | The redirection Uri for your Google application | String | --
+`provider_id` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'google'
+
+In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
+
++ `href` : The fully qualified location of the custom data resource
++ `created_at` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
++ `modified_at` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
+
+### Creating a Google Directory
+
+Creating a Google Directory requires that you gather some information beforehand from Google's Developer Console regarding your application.
+
++ Client ID
++ Client Secret
++ Redirect URI
+
+Creating a Google Directory is very similar to [creating a directory](#directory-create) within Stormpath.
+For a Google Directory to be configured correctly, you must specify the correct `Provider` information.
+
+**Example**
+
+    # create a directory with google auth provider
+    directory = client.directories.create({
+                                    name: 'MyGoogleDirectory',
+                                    description: 'My First Google Dir.',
+                                    provider: {
+                                        client_id: '857385-m8vk0fn2r7jmjo.apps.googleusercontent.com',
+                                        client_secret: 'ehs7_-bA7OWQSQ4',
+                                        redirect_uri: 'https://myapplication.com/auth/google_oauth2/callback',
+                                        provider_id: :google }})
+
+
+After the Google Directory has been created, it needs to be [mapped with an application as an account store](#account-store-mappings). The Google Directory cannot be a default account store or a default group store.  Once the directory is mapped as an account store for an application, you are ready to access `Accounts` with Google Authorization Codes.
+
+    # create a new application
+    application = client.applications.create({ name: 'MyGoogleApp', description: 'Google Test App' })
+
+    # make the app use the directory
+    account_store_mapping = application.account_store_mappings.create({
+        application: application,
+        account_store: directory
+    })
+
+### Accessing Accounts with Google Authorization Codes or an Access Tokens
+
+To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code on behalf of the user.  This requires leveraging Google's OAuth 2.0 protocol and the user's consent for your application's permissions.
+
+Once the Authorization Code is gathered, you can get or create the `Account` by using the `app.get_provider_account` method.
+
+    request = Stormpath::Provider::AccountRequest.new(:google, :code, 'my-authorization-code')
+    result = application.get_provider_account(request)
+    puts result.is_new_account?
+    account = result.account
+    puts account.email
+
+The following is how you use `provider_data` to get an `account` for a given authorization code:
+
+{% docs note %}
+When accessing the result based on a Google Authorization Code the `result.is_new_account?` method tells us if the account was created or if it already existed in the Google Directory.
+{% enddocs %}
+
+{% docs note %}
+To [expand](#links-expansion) the `provider_data` to get the Access Token for the Account in one HTTP request, use an Expansion `expansion.add_property 'provider_data' `.
+{% enddocs %}
+
+{% docs note %}
+It is required that your Google application request for the `email` permission (not just the `profile` permission) from Google.
+If the access token does not grant `email` permissions, you will not be able to get an `Account` with an access token.
+{% enddocs %}
+
+Once an `Account` is retreived, Stormpath maps common fields for the Google User to the Account. The access token and the refresh token for any additional calls are in the `provider_data` resource and can be retreived by:
+
+    account.provider_data.access_token
+    account.provider_data.refresh_token
+
+{% docs note %}
+The `access_token` can also be passed as a field for the `provider_data` to access the account once it is retrieved
+
+    request = Stormpath::Provider::AccountRequest.new(:google, :access_token, 'my-access-token')
+    acc = app.get_provider_account(request)
+
+{% enddocs %}
+
+{% docs note %}
+The `refresh_token` will only be present if your application asked for offline access.  Review Google's documentation for more information regarding OAuth offline access.
+{% enddocs %}
+
+***
+
+<a class="anchor" name="integration-facebook"></a>
+## Integrating with Facebook
+
+Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an `Account`.
+
+The steps to enable this functionality into your application include:
+
++ [Create a Facebook Directory](#creating-a-facebook-directory)
++ Create an `Account Store Mapping` between a Facebook Directory and your `Application`
++ [Accessing Accounts with Facebook User Access Tokens](#accessing-accounts-with-facebook-user-access-tokens)
+
+Facebook Directories follow behavior similar to [mirror directories](#directories-mirrored), but have a `Provider` resource that contains information regarding the Google application that the directory is configured for.
+
+### Facebook Provider Resource
+
+A `Provider` resource holds specific information needed for working with a Facebook Directory.  It is important to understand the format of the provider resource when creating and updating a Facebook Directory.
+
+A provider resource can be obtained by accessing the directory's provider attribute as follows:
+
+Example
+
+    directory = client.directories.first
+    puts directory.provider.href
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`client_id` | The App ID for your Google application | String | --
+`client_secret` | The App Secret for your Google application | String | --
+`provider_id` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'facebook'
+
+In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
+
++ `href` : The fully qualified location of the custom data resource
++ `created_at` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
++ `modified_at` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
+
+### Creating a Facebook Directory
+
+Creating a Facebook Directory requires that you gather some information beforehand from Facebook's Developer Console regarding your application.
+
++ Client ID
++ Client Secret
+
+Creating a Facebook Directory is very similar to [creating a directory](#directory-create) within Stormpath.
+For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information.
+
+**Example**
+    # create a directory with facebook auth provider
+    directory = client.directories.create({
+                                    name: 'MyFacebookDirectory',
+                                    description: 'My First FB Dir.',
+                                    provider: {
+                                        client_id: '85733424235s',
+                                        client_secret: 'Wda934msiaQ',
+                                        redirect_uri: 'https://myapplication.com/auth/facebook/callback',
+                                        provider_id: :facebook }})
+
+
+After the Facebook Directory has been created, it needs to be [mapped with an application as an account store](#account-store-mappings). The Facebook Directory cannot be a default account store or a default group store.  Once the directory is mapped to an account store for an application, you are ready to access `Accounts` with Facebook User Access Tokens.
+
+    # create a new application
+    application = client.applications.create({ name: 'MyFacebookApp', description: 'Facebook Test App' })
+
+    # make the app use the directory
+    account_store_mapping = application.account_store_mappings.create({
+        application: application,
+        account_store: directory
+    })
+
+### Accessing Accounts with Facebook User Access Tokens
+
+To access or create an account in an already created Facebook Directory, it is required to gather the `User Access Token` on behalf of the user.  This usually requires leveraging Facebook's javascript library and the user's consent for your application's permissions.
+
+{% docs note %}
+It is required that your Facebook application request for the `email` permission from Facebook. If the access token does not grant `email` permissions, you will not be able to get an `Account` with an access token.
+{% enddocs %}
+
+Once the `User Access Token` is gathered, you can get or create the `Account` using the `app.get_provider_account` method.
+
+    request = Stormpath::Provider::AccountRequest.new(:facebook, :access_token, 'my-access-token')
+    result = application.get_provider_account(request)
+    puts result.is_new_account?
+    account = result.account
+    puts account.email
+
+
+{% docs note %}
+When accessing an account based on a Facebook Access Token the `account.is_new_account?` method tells us if the account was created or if it already existed in the Facebook Directory.
+{% enddocs %}
+
+{% docs note %}
+To [expand](#links-expansion) the `provider_data` to get the Access Token for the Account in one HTTP request, use an Expansion `expansion.add_property 'provider_data'`.
+{% enddocs %}
+
+Once an `Account` is retreived, Stormpath maps common fields for the Facebook User to the  Account.  The access token for any additional calls is in the `provider_data` resource and can be retreived by:
+
+    puts account.provider_data
+    puts account.provider_data.access_token
+
+***
 
 <a class="anchor" name="administration"></a>
 ## Administering Stormpath
