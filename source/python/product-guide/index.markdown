@@ -1842,13 +1842,10 @@ In all cases, the process is fundamentally the same. Consider the first case as 
 
 **Example Request**
 
-    directories = tenant.directories
-    directory = False
-    for dire in directories:
-        if directory.name == "My Directory":
-            directory = dire
-            break
-
+    try:
+        directory = tenant.directories.search({'name': 'My Directory'})[0]
+    except IndexError:
+        print("Requested directory not found.")
 If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., `directory.search({'name', 'My Directory'})`) or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., `directory.search('*My*')`) to narrow down the selection.
 
 <a class="anchor" name="directory-create"></a>
@@ -2535,12 +2532,10 @@ In all cases, the process is fundamentally the same. Consider the first case as 
 
 **Example Request**
 
-    group_memberships = account.group_memberships
-    group_membership = False
-    for gms in group_membership:
-        if gms.group.name = 'Group Name':
-            group_membership = gms
-            break
+    try:
+        group_membership = account.group_memberships.search({'name': 'Group Name'})[0]
+    except IndexError:
+        print("Requested group membership not found.")
 
 If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., "name=") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "My*") to narrow down the selection.
 
