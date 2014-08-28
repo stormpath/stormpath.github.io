@@ -1844,8 +1844,10 @@ In all cases, the process is fundamentally the same. Consider the first case as 
 
     try:
         directory = tenant.directories.search({'name': 'My Directory'})[0]
+        print(directory.href)
     except IndexError:
         print("Requested directory not found.")
+
 If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., `directory.search({'name', 'My Directory'})`) or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., `directory.search('*My*')`) to narrow down the selection.
 
 <a class="anchor" name="directory-create"></a>
@@ -2528,14 +2530,15 @@ There are multiple ways to find a group membership's `href` depending on what in
 * Retrieve a full list of group memberships for an account
 * Retrieve a full list of group members (as group membership pairings) for a group
 
-In all cases, the process is fundamentally the same. Consider the first case as example. If you want to find a specific group mapping on a specific account,  you'll need to search the group memberships for the associated `account` resource:
+In all cases, the process is fundamentally the same. Consider the first case as example. If you want to find a specific group mapping on a specific account,  you'll need to search the group memberships for the associated `group` resource:
 
 **Example Request**
 
     try:
-        group_membership = account.group_memberships.search({'name': 'Group Name'})[0]
+        group = [g for g in account.group_memberships if g.group.name == 'My Group Name'][0]
+        print(group.href)
     except IndexError:
-        print("Requested group membership not found.")
+        print('Account is not part of the requested group.')
 
 If you know the name exactly, you can use an [attribute search](#search-attribute) (e.g., "name=") or, if you only know a small part, you can use a [filter search](#search-filter) (e.g., "My*") to narrow down the selection.
 
