@@ -3596,21 +3596,21 @@ Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `id` | The unique identifier for the API Key | String | <span>--</span>
 `secret` | A secret identifier. Unique across all tenants. | String | --
-`status` | A property that represent the status of the key.  Keys with a disabled status will not be able to authenticate. | ApiKeyStatus | ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED, 
+`status` | A property that represent the status of the key.  Keys with a disabled status will not be able to authenticate. | ApiKeyStatus | ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED,
 `account` | A link to the ApiKey's applications. | Account | <span>--</span>
 `tenant` | A link to the ApiKey's tenant. | Tenant | <span>--</span>
 
-After the API Key is created, you will need to deliver the API Key ID and Secret to the developer so they can start using them to access your API securely.  In most cases, this is done by displaying the API keys on a web page. 
+After the API Key is created, you will need to deliver the API Key ID and Secret to the developer so they can start using them to access your API securely.  In most cases, this is done by displaying the API keys on a web page.
 
 #### Using the Stormpath SDK to Authenticate and Generate Tokens for your API
 
-The Stormpath SDK does all the heavy lifting for you in your application.  It automatically processes authentications via HTTP Basic or OAuth 2.0. In addition, the SDK will handle more advance OAuth 2.0 features like _scope_ and _time-to-live_.  
+The Stormpath SDK does all the heavy lifting for you in your application.  It automatically processes authentications via HTTP Basic or OAuth 2.0. In addition, the SDK will handle more advance OAuth 2.0 features like _scope_ and _time-to-live_.
 
 Specifically, Stormpath supports two HTTP `Authorization` methods, Basic and Bearer (OAuth 2.0 client-credentials grant type). In this section we will discuss the strategies and best practices using these authorization methods.
 
 All authentication attempts in Stormpath start with the `Application` object in the SDK.  You will likely have initialized the `Application` during startup.
 
-To demonstrate how the SDK works, we'll use an example.  We are building a Stormtrooper API for managing Stormtrooper equipment -- like awesome helmets and blasters.  In order to secure our API, a developer must base64 encode their API Key and Secret and then pass the encoded data in the authorization header. 
+To demonstrate how the SDK works, we'll use an example.  We are building a Stormtrooper API for managing Stormtrooper equipment -- like awesome helmets and blasters.  In order to secure our API, a developer must base64 encode their API Key and Secret and then pass the encoded data in the authorization header.
 
     base64.b64encode(id + ":" + secret)
 
@@ -3619,12 +3619,12 @@ To demonstrate how the SDK works, we'll use an example.  We are building a Storm
 
 The developer request would look something like this (using HTTPS Basic authentication):
 
-    GET /troopers/tk421/equipment 
+    GET /troopers/tk421/equipment
         Accept: application/json
         Authorization: Basic MzRVU1BWVUFURThLWDE4MElDTFVUMDNDTzpQSHozZitnMzNiNFpHc1R3dEtOQ2h0NzhBejNpSjdwWTIwREo5N0R2L1g4
         Host: api.trooperapp.com
 
-The Basic Authentication mechanism provides no confidentiality protection for the transmitted credentials. They are merely encoded with Base64 in transit, but not encrypted or hashed in any way. Stormpath recommends that when a developer calls your API, and if you use Basic Authentication, the call needs to be communicated over HTTPS protocol to provide additional security. 
+The Basic Authentication mechanism provides no confidentiality protection for the transmitted credentials. They are merely encoded with Base64 in transit, but not encrypted or hashed in any way. Stormpath recommends that when a developer calls your API, and if you use Basic Authentication, the call needs to be communicated over HTTPS protocol to provide additional security.
 
 In the simplest form, the Stormpath Python SDK would authenticate the above request (Basic or Bearer) as follows:
 
@@ -3662,13 +3662,13 @@ Stormpath SDK has all the tools needed to enable your API to support OAuth 2.0 B
      |         |<--- 2. -- Access Token ---------<|               |
      |         |                                  |               |
      +---------+                                  +---------------+
-  
+
   1.  The client authenticates with the authorization server and requests an access token from the token endpoint.
   2.  The authorization server authenticates the client, and if valid issues an access token.
- 
-Stormpath in this case is acting as the Authorization Server and will authenticate the client based on the API Key ID and Secret.  This allows you to generate an Access Token for a successful authentication result. 
 
-Going back to the Stormtrooper Equipment API example. The app would require that a developer call a REST endpoint to exchange a valid API Key and Secret for an Access Token. The REST endpoint would canonically be `/oauth/token`. The API Key and Secret would need to be base64 encoded in the request. An example of the REST call: 
+Stormpath in this case is acting as the Authorization Server and will authenticate the client based on the API Key ID and Secret.  This allows you to generate an Access Token for a successful authentication result.
+
+Going back to the Stormtrooper Equipment API example. The app would require that a developer call a REST endpoint to exchange a valid API Key and Secret for an Access Token. The REST endpoint would canonically be `/oauth/token`. The API Key and Secret would need to be base64 encoded in the request. An example of the REST call:
 
     POST /oauth/token
     Accept: application/json
@@ -3710,13 +3710,13 @@ all the valid scopes for that particular Stormpath Application. The second use-c
 
 After you return an OAuth Access Token to a developer using your API service, they can start using the OAuth Access Token to validate authentication to your service.
 
-Stormpath requires that the developer send the Access Token in the Authorization header of the request. 
+Stormpath requires that the developer send the Access Token in the Authorization header of the request.
 
-Again, the Stormtrooper Equipment API example. We will require that a developer exchange his API Key and Secret for an Access Token and then pass the Access Token in future requests to gain access to your API. 
+Again, the Stormtrooper Equipment API example. We will require that a developer exchange his API Key and Secret for an Access Token and then pass the Access Token in future requests to gain access to your API.
 
 The developer request would look something like this:
 
-    GET /troopers/tk421/equipment 
+    GET /troopers/tk421/equipment
     Accept: application/json
     Authorization: Bearer 7FRhtCNRapj9zs.YI8MqPiS8hzx3wJH4.qT29JUOpU64T
     Host: api.trooperapp.com
@@ -3731,7 +3731,7 @@ We can then proceed to authenticate the request with the same method as we did b
         "Invalid or expired Token"
 
 Notice the `allowed_scopes` parameter has a different meaning here than it did above. We can use it to specify allowed scopes
-for the specific endpoint the user is accessing (in this case /troopers/tk421/equipment). If the Access Token was not generated 
+for the specific endpoint the user is accessing (in this case /troopers/tk421/equipment). If the Access Token was not generated
 with all the scopes that this endpoint requires, the authentication will fail and the `result` variable will be empty.
 
 You can easily check the scope of a token with:
@@ -3746,7 +3746,7 @@ is in a specific Stormpath group before returning a response:
     else:
         print "Unsufficient permissions."
 
-**Note** While requesting an Access Token if the developer does not request any scopes the Access Token will be 
+**Note** While requesting an Access Token if the developer does not request any scopes the Access Token will be
 generated without them. This implies that if any subsequent request is done with that access token but tries to access
 an endpoint that requires any scopes, the request will fail to authenticate.
 
