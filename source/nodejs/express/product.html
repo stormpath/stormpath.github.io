@@ -85,6 +85,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#restrict-session-duration-expiration">Restrict Session Duration / Expiration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#enable-caching">Enable Caching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#access-user-data">Access User Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-events">Handling Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#working-with-custom-user-data">Working With Custom User Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api-authentication">API Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-redirect-logic">Customize Redirect Logic</a></li>
@@ -104,6 +105,9 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-7">Version 0.2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-6">Version 0.2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-5">Version 0.2.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-4">Version 0.2.4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-3">Version 0.2.3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-2">Version 0.2.2</a></li>
@@ -121,6 +125,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-6-version-0-2-7">Version 0.2.6 -&gt; Version 0.2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-5-version-0-2-6">Version 0.2.5 -&gt; Version 0.2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-4-version-0-2-5">Version 0.2.4 -&gt; Version 0.2.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-3-version-0-2-4">Version 0.2.3 -&gt; Version 0.2.4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-2-version-0-2-3">Version 0.2.2 -&gt; Version 0.2.3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-1-version-0-2-2">Version 0.2.1 -&gt; Version 0.2.2</a></li>
@@ -396,6 +403,53 @@ easily accomplish this with the following code:</p>
 <p>As you can see above, you can directly modify <tt class="docutils literal"><span class="pre">user</span></tt> attributes, then
 persist any changes by running <tt class="docutils literal"><span class="pre">res.locals.user.save()</span></tt>.</p>
 </div>
+<div class="section" id="handling-events">
+<h2>Handling Events<a class="headerlink" href="#handling-events" title="Permalink to this headline">¶</a></h2>
+<p>As of Express-Stormpath <strong>0.2.8</strong>, it is now possible to handle specific events!
+This means you can run your own custom code when a specific event happens.</p>
+<p>All supported events are listed below.</p>
+<div class="section" id="post-registration">
+<h3>Post Registration<a class="headerlink" href="#post-registration" title="Permalink to this headline">¶</a></h3>
+<p>Want to run some custom code after a user registers for your site?  If so, this
+is the event you want to handle!</p>
+<p>By defining a <tt class="docutils literal"><span class="pre">postRegistrationHandler</span></tt> you&#8217;re able to do stuff like:</p>
+<ul class="simple">
+<li>Send a new user a welcome email.</li>
+<li>Generate API keys for all new users.</li>
+<li>Setup Stripe billing.</li>
+<li>etc.</li>
+</ul>
+<p>To use a <tt class="docutils literal"><span class="pre">postRegistrationHandler</span></tt>, you need to define your handler function
+in the Stormpath middleware setup:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">postRegistrationHandler</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">account</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;User:&#39;</span><span class="p">,</span> <span class="nx">account</span><span class="p">.</span><span class="nx">email</span><span class="p">,</span> <span class="s1">&#39;just registered!&#39;</span><span class="p">);</span>
+    <span class="nx">next</span><span class="p">();</span>
+  <span class="p">},</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>As you can see in the example above, the <tt class="docutils literal"><span class="pre">postRegistrationHandler</span></tt> function
+takes in three parameters:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">account</span></tt>: The new, successfully created, user account.</li>
+<li><tt class="docutils literal"><span class="pre">res</span></tt>: The Express response object.  This can be used to modify the HTTP
+response directly.</li>
+<li><tt class="docutils literal"><span class="pre">next</span></tt>: The callback to call when you&#8217;re done doing whatever it is you want
+to do.  If you call this, execution will continue on normally.  If you don&#8217;t
+call this, you&#8217;re responsible for handling the response.</li>
+</ul>
+<p>In the example below, we&#8217;ll use the <tt class="docutils literal"><span class="pre">postRegistrationHandler</span></tt> to redirect the
+user to a special page (<em>instead of the normal registration flow</em>):</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">postRegistrationHandler</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">account</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="mi">302</span><span class="p">,</span> <span class="s1">&#39;/secretpage&#39;</span><span class="p">).</span><span class="nx">end</span><span class="p">();</span>
+  <span class="p">},</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="working-with-custom-user-data">
 <h2>Working With Custom User Data<a class="headerlink" href="#working-with-custom-user-data" title="Permalink to this headline">¶</a></h2>
 <p>In addition to managing basic user fields, Stomrpath also allows you to store
@@ -623,6 +677,15 @@ redirect URL by adding the following config setting:</p>
 </div>
 <p>This allows you to build nicer apps as you can do stuff like redirect newly
 registered users to a tutorial, dashboard, or something similar.</p>
+<p>What if someone visits the login route when they are logged in?  By default
+they will see the login screen again, but, but enabling the <tt class="docutils literal"><span class="pre">enableAutoLogin</span></tt>
+feature, users who are already logged in will be automatically redirected to
+your <tt class="docutils literal"><span class="pre">redirectUrl</span></tt> &#8211; skipping the login page all together:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">enableAutoLogin</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If a user visits a page which has restricted access, they&#8217;ll be redirected
