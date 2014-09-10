@@ -301,8 +301,7 @@ The cache options dictionary can have a complex structure if we want to fine-tun
 3. `store` - The cache store, if none is set for this region, the global stores set at the root of the cache options is used.
 4. `ttl` - Time To Live. The amount of time (in seconds) after which the stored resource data will be considered expired.
 5. `tti` - Time To Interact. If this amount of time has passed after the resource was last accessed, it will be considered expired.
-6. `store_opts` - The store-specific options, if any. E.g. `RedisStore` requires a host and a port to be set because we need that information when accessing Redis, while `MemoryStore` requires no further options.
-
+6. `store_opts` - The store-specific options, if any. E.g. `RedisStore` requires a host and a port to be set because we need that information when accessing Redis, while `MemoryStore` has the ability to set the maximum number of entries that should be held in memory.
 <a class="anchor" name="errors"></a>
 ### Errors
 
