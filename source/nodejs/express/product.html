@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Product Guide &mdash; Express-Stormpath 0.1.0 documentation</title>
+  <title>Product Guide &mdash; Express-Stormpath 0.4.0 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Express-Stormpath 0.1.0 documentation" href="index.html"/>
+    <link rel="top" title="Express-Stormpath 0.4.0 documentation" href="index.html"/>
         <link rel="next" title="Getting Help" href="help.html"/>
         <link rel="prev" title="Quickstart" href="quickstart.html"/> 
 
@@ -82,6 +82,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#enforce-user-authentication">Enforce User Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#enforce-user-authorization">Enforce User Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#session-management">Session Management</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#restrict-session-duration-expiration">Restrict Session Duration / Expiration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#enable-caching">Enable Caching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#access-user-data">Access User Data</a></li>
@@ -105,6 +106,14 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-0">Version 0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-4">Version 0.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-3">Version 0.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-2">Version 0.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-1">Version 0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-0">Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-9">Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-8">Version 0.2.8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-7">Version 0.2.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-6">Version 0.2.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-5">Version 0.2.5</a></li>
@@ -125,6 +134,14 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-4-version-0-4-0">Version 0.3.4 -&gt; Version 0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-3-version-0-3-4">Version 0.3.3 -&gt; Version 0.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-2-version-0-3-3">Version 0.3.2 -&gt; Version 0.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-1-version-0-3-2">Version 0.3.1 -&gt; Version 0.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-0-version-0-3-1">Version 0.3.0 -&gt; Version 0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-9-version-0-3-0">Version 0.2.9 -&gt; Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-8-version-0-2-9">Version 0.2.8 -&gt; Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-7-version-0-2-8">Version 0.2.7 -&gt; Version 0.2.8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-6-version-0-2-7">Version 0.2.6 -&gt; Version 0.2.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-5-version-0-2-6">Version 0.2.5 -&gt; Version 0.2.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-4-version-0-2-5">Version 0.2.4 -&gt; Version 0.2.5</a></li>
@@ -293,6 +310,54 @@ groups, let&#8217;s take a look at how you can enforce selective group membershi
 <p>The view above lists three groups, and sets the <tt class="docutils literal"><span class="pre">all</span></tt> parameter to <tt class="docutils literal"><span class="pre">false</span></tt>
 &#8211; signifying that a user must be a member of <strong>at least one</strong> of the listed
 groups in order to gain access.</p>
+</div>
+<div class="section" id="session-management">
+<h2>Session Management<a class="headerlink" href="#session-management" title="Permalink to this headline">¶</a></h2>
+<p>Express-Stormpath ships with a default, pre-configured session middleware by
+deafult.  This middleware library, <a class="reference external" href="https://github.com/mozilla/node-client-sessions">client-sessions</a>, is preconfigured for
+security and statelessness.</p>
+<p>If, for some reason, you&#8217;d like to store your session state in a database or
+server of some kind, you can swap out the built-in session management middleware
+with your own.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Express-Stormpath&#8217;s session management will not interfere with any existing
+session middleware you might have.  The sessions that Stormpath uses are
+exclusively used for Stormpath purposes, so it&#8217;s safe you create your own
+separate sessions.</p>
+<p class="last">This works by utilizing the Express <a class="reference external" href="http://expressjs.com/api#router">router</a>.</p>
+</div>
+<p>If you&#8217;d like to use your own session middleware, you can set it up during the
+Stormpath middleware initialization.  The only requirement is that your request
+key for the session is <tt class="docutils literal"><span class="pre">session</span></tt>.</p>
+<p>You can do it this way:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">session</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-session&#39;</span><span class="p">);</span>
+
+<span class="c1">// In this example we&#39;ll store our session state in a Redis server.</span>
+<span class="kd">var</span> <span class="nx">RedisStore</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;connect-redis&#39;</span><span class="p">)(</span><span class="nx">session</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">sessionMiddleware</span> <span class="o">=</span> <span class="nx">session</span><span class="p">({</span>
+  <span class="nx">store</span><span class="o">:</span> <span class="k">new</span> <span class="nx">RedisStore</span><span class="p">(</span><span class="nx">options</span><span class="p">),</span>
+  <span class="nx">secret</span><span class="o">:</span> <span class="s1">&#39;this is very secret&#39;</span><span class="p">,</span>
+<span class="p">});</span>
+
+<span class="c1">// Enable your session middleware for your app.</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">sessionMiddleware</span><span class="p">);</span>
+
+<span class="c1">// Initialize Stormpath, and have it use your session middleware instead of</span>
+<span class="c1">// it&#39;s own.</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">sessionMiddleware</span><span class="o">:</span> <span class="nx">sessionMiddleware</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Substituting your own session middleware in for the default is most likely a
+security concern &#8211; please only do this if you absolutely know what you&#8217;re
+doing and are sure you need to do it!  If you&#8217;re not sure, please contact us
+directly to figure it out: <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a></p>
+</div>
 </div>
 <div class="section" id="restrict-session-duration-expiration">
 <h2>Restrict Session Duration / Expiration<a class="headerlink" href="#restrict-session-duration-expiration" title="Permalink to this headline">¶</a></h2>
@@ -1420,7 +1485,7 @@ currently looks like:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.1.0',
+            VERSION:'0.4.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
