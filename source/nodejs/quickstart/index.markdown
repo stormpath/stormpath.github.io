@@ -125,9 +125,12 @@ If you want to see all the code from this tutorial in one file, check out this [
 Before you can create user Accounts you'll need to retrieve your Stormpath
 Application.  An Application in Stormpath is the same thing as a project. If
 you're building a web app named "Lightsabers Galore", you'd want to name your
-Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath account will have an application already created for you to use.  We will use this application for the quickstart. 
+Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath
+account will have an application already created for you to use.  We will use
+this application for the quickstart. 
 
-You can retrieve your example `Application` using the client you created in the previous step:
+You can retrieve your example `Application` using the client you created in the
+previous step:
 
     client.getApplications({name:'Example Application'}, function(err, applications){
         if (err) throw err;
@@ -136,7 +139,8 @@ You can retrieve your example `Application` using the client you created in the 
 
     });
 
-The code above will retrieve your example `Application`, which we can use later to do stuff like:
+The code above will retrieve your example `Application`, which we can use later
+to do stuff like:
 
 - Create user accounts.
 - Log users into their account.
