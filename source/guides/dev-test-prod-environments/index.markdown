@@ -36,8 +36,6 @@ Once the Directories are created, they can be mapped to your application giving 
  Directories and Groups mapped to an Application are also referred to as AccountStores.  You can map any directories to any applications by changing your Application’s Account Store configuration in the Console or via API.  
 {% enddocs %}
 
-Using this strategy, you 
-
 ##Strategy 2: Separate Production into its own Stormpath Tenant
 
 In some scenarios, you may want to isolate your production environment even further.  You can do that by creating a separate Stormpath tenant to just manage Production.
