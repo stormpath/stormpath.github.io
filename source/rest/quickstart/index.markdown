@@ -67,62 +67,76 @@ easily authenticate with the Stormpath library.
 
 
 ***
-## Create an Application
+## Retrieve your Application
 
-Before you can create user Accounts you'll need to create a Stormpath
-Application.  An Application in Stormpath is the same thing as a project.  If
+Before you can create user Accounts you'll need to retrieve your Stormpath
+Application.  An Application in Stormpath is the same thing as a project. If
 you're building a web app named "Lightsabers Galore", you'd want to name your
-Stormpath Application "Lightsabers Galore" as well.
+Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath account will have an application already created for you to use.  We will use this application for the quickstart. 
 
-You can create an Application  by `POST`ing a new Application resource to the `applications` URL:
+Before you can get your Application, you must get the location of your tenant from Stormpath, like so:
 
-    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
-         -H "Accept: application/json" \
-         -H "Content-Type: application/json" \
-         -d '{
-               "name" : "My Awesome Application"
-             }' \
-         'https://api.stormpath.com/v1/applications?createDirectory=true'
+    curl -i --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+      'https://api.stormpath.com/v1/tenants/current'
 
 where:
 
 * `$YOUR_API_KEY_ID` is the `apiKey.id` value in `apiKey.properties` and
 * `$YOUR_API_KEY_SECRET` is the `apiKey.secret` value in `apiKey.properties`
 
+This will return the header for the call:
+
+    HTTP/1.1 302 Found
+    Location: https://api.stormpath.com/v1/tenants/7g91YMBXFbu0KAFK
+    Content-Length: 0
+    Connection: keep-alive
+
+Make note of the `Location` header.  This is the location of your tenant in Stormpath.
+
+From here, using the location of the tenant, you can get your Application by performing a search for the application by name: 
+
+curl -u $API_KEY_ID:$API_KEY_SECRET \
+     -H "Accept: application/json" \
+     '$TENANT_HREF/applications?name=Example%20Application'
+
+where:
+
+* $TENANT_HREF is the location of your found tenant from the previous cURL
+
 Here's an example response to the above REST request:
 
     {
-      "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe",
-      "name": "My Awesome Application",
-      "description": null,
-      "status": "ENABLED",
-      "tenant": {
-        "href": "https://api.stormpath.com/v1/tenants/sOmELoNgRaNDoMIdHeRe"
-      },
-      "accounts": {
-        "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/accounts"
-      },
-      "groups": {
-        "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/groups"
-      },
-      "loginAttempts": {
-        "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeR/loginAttempts"
-      },
-      "passwordResetTokens": {
-        "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/passwordResetTokens"
-      }
+      "href":"https://api.stormpath.com/v1/tenants/7g91YMBXFbu0KAFK/applications",
+      "offset":0,
+      "limit":25,
+      "items":[
+        {
+          "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe",
+          "name": "Example Application",
+          "description": null,
+          "status": "ENABLED",
+          "tenant": {
+            "href": "https://api.stormpath.com/v1/tenants/sOmELoNgRaNDoMIdHeRe"
+          },
+          "accounts": {
+            "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/accounts"
+          },
+          "groups": {
+            "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/groups"
+          },
+          "loginAttempts": {
+            "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeR/loginAttempts"
+          },
+          "passwordResetTokens": {
+            "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/passwordResetTokens"
+          }
+        }
+      ]
     }
 
 Make note of the `accounts` and `loginAttempts` `href` URLs in the above response.  We're going to use those URLs next to create a new account and then authenticate it.
 
-{% docs note %}
-The only required field when creating an Application is `name`.  Descriptions
-are optional!
-{% enddocs %}
-
-
 ***
-
 
 ## Create a User Account
 
