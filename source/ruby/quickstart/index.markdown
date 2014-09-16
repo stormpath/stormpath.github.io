@@ -109,32 +109,24 @@ create multiple `Client` instances as it could negatively affect caching.
 ***
 
 
-## Create an Application
+## Retrieve your Application
 
-Before you can create user Accounts you'll need to create a Stormpath
-`Application`.  An `Application` in Stormpath is the same thing as a project.
-If you're building a web app named "Lightsabers Galore", you'd want to name
-your Stormpath `Application` "Lightsabers Galore" as well.
+Before you can create user Accounts you'll need to retrieve your Stormpath
+Application.  An Application in Stormpath is the same thing as a project. If
+you're building a web app named "Lightsabers Galore", you'd want to name your
+Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath account will have an application already created for you to use.  We will use this application for the quickstart. 
 
-You can create an `Application` using the `Client` you created in the previous
-step:
+You can retrieve your example `Application` using the client you created in the previous step:
 
-    application = client.applications.create({
-        name: 'My Awesome Application',
-        description: 'Super awesome!',
-    }, {createDirectory: true})
+    
+    applications = client.applications.search name: 'Example Application'
+    application = applications.each.next
 
-The code above will create a new `Application`, which we can use later to do
-stuff like:
+The code above will retrieve your example `Application`, which we can use later to do stuff like:
 
 - Create user accounts.
 - Log users into their account.
 - etc.
-
-{% docs note %}
-The only required field when creating an `Application` is `name`.  Descriptions
-are optional!
-{% enddocs %}
 
 
 ***
