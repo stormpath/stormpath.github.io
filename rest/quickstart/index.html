@@ -448,22 +448,17 @@ easily authenticate with the Stormpath library.</p>
 
 <hr />
 
-<h2><a id="create-an-application"></a>Create an Application</h2>
+<h2><a id="retrieve-your-application"></a>Retrieve your Application</h2>
 
-<p>Before you can create user Accounts you&rsquo;ll need to create a Stormpath
-Application.  An Application in Stormpath is the same thing as a project.  If
+<p>Before you can create user Accounts you&rsquo;ll need to retrieve your Stormpath
+Application.  An Application in Stormpath is the same thing as a project. If
 you&rsquo;re building a web app named &ldquo;Lightsabers Galore&rdquo;, you&rsquo;d want to name your
-Stormpath Application &ldquo;Lightsabers Galore&rdquo; as well.</p>
+Stormpath Application &ldquo;Lightsabers Galore&rdquo; as well.  By default, your Stormpath account will have an application already created for you to use.  We will use this application for the quickstart.</p>
 
-<p>You can create an Application  by <code>POST</code>ing a new Application resource to the <code>applications</code> URL:</p>
+<p>Before you can get your Application, you must get the location of your tenant from Stormpath, like so:</p>
 
-<pre><code>curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
-     -H "Accept: application/json" \
-     -H "Content-Type: application/json" \
-     -d '{
-           "name" : "My Awesome Application"
-         }' \
-     'https://api.stormpath.com/v1/applications?createDirectory=true'
+<pre><code>curl -i --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+  'https://api.stormpath.com/v1/tenants/current'
 </code></pre>
 
 <p>where:</p>
@@ -474,37 +469,64 @@ Stormpath Application &ldquo;Lightsabers Galore&rdquo; as well.</p>
 </ul>
 
 
+<p>This will return the header for the call:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Location: https://api.stormpath.com/v1/tenants/7g91YMBXFbu0KAFK
+Content-Length: 0
+Connection: keep-alive
+</code></pre>
+
+<p>Make note of the <code>Location</code> header.  This is the location of your tenant in Stormpath.</p>
+
+<p>From here, using the location of the tenant, you can get your Application by performing a search for the application by name:</p>
+
+<p>curl -u $API_KEY_ID:$API_KEY_SECRET \</p>
+
+<pre><code> -H "Accept: application/json" \
+ '$TENANT_HREF/applications?name=Example%20Application'
+</code></pre>
+
+<p>where:</p>
+
+<ul>
+<li>$TENANT_HREF is the location of your found tenant from the previous cURL</li>
+</ul>
+
+
 <p>Here&rsquo;s an example response to the above REST request:</p>
 
 <pre><code>{
-  "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe",
-  "name": "My Awesome Application",
-  "description": null,
-  "status": "ENABLED",
-  "tenant": {
-    "href": "https://api.stormpath.com/v1/tenants/sOmELoNgRaNDoMIdHeRe"
-  },
-  "accounts": {
-    "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/accounts"
-  },
-  "groups": {
-    "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/groups"
-  },
-  "loginAttempts": {
-    "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeR/loginAttempts"
-  },
-  "passwordResetTokens": {
-    "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/passwordResetTokens"
-  }
+  "href":"https://api.stormpath.com/v1/tenants/7g91YMBXFbu0KAFK/applications",
+  "offset":0,
+  "limit":25,
+  "items":[
+    {
+      "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe",
+      "name": "Example Application",
+      "description": null,
+      "status": "ENABLED",
+      "tenant": {
+        "href": "https://api.stormpath.com/v1/tenants/sOmELoNgRaNDoMIdHeRe"
+      },
+      "accounts": {
+        "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/accounts"
+      },
+      "groups": {
+        "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/groups"
+      },
+      "loginAttempts": {
+        "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeR/loginAttempts"
+      },
+      "passwordResetTokens": {
+        "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe/passwordResetTokens"
+      }
+    }
+  ]
 }
 </code></pre>
 
 <p>Make note of the <code>accounts</code> and <code>loginAttempts</code> <code>href</code> URLs in the above response.  We&rsquo;re going to use those URLs next to create a new account and then authenticate it.</p>
-
-<div class='docs-note'><p>The only required field when creating an Application is <code>name</code>.  Descriptions
-are optional!</p>
-</div>
-
 
 <hr />
 
@@ -1001,7 +1023,7 @@ addthis:url="https://stormpath.com" >
 				<a href="/rest/quickstart">Quickstart</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#get-an-api-key" data-level="0" class="fragment">Get an API Key</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application" data-level="0" class="fragment">Create an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-user-account" data-level="0" class="fragment">Create a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-a-user-account" data-level="0" class="fragment">Search for a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-a-user-account" data-level="0" class="fragment">Authenticate a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#other-things-you-can-do-with-stormpath" data-level="0" class="fragment">Other Things You Can Do with Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#next-steps" data-level="0" class="fragment">Next Steps</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#get-an-api-key" data-level="0" class="fragment">Get an API Key</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-your-application" data-level="0" class="fragment">Retrieve your Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-user-account" data-level="0" class="fragment">Create a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-a-user-account" data-level="0" class="fragment">Search for a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-a-user-account" data-level="0" class="fragment">Authenticate a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#other-things-you-can-do-with-stormpath" data-level="0" class="fragment">Other Things You Can Do with Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#next-steps" data-level="0" class="fragment">Next Steps</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
