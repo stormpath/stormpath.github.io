@@ -12,29 +12,15 @@ When building your application, you might wish to isolate user management data a
 
 We strongly recommend separating production user data from all other stages of the software development cycle like staging and active development. The goal is to ensure your production user accounts are protected from any changes or errors you might make during software development. 
 
-Luckily, partitioning your data is easy to do in Stormpath in one of two ways.  The first and recommended strategy is to use Stormpath’s Application and Directory objects to create the separation.  The second and more complex option is to create separate Stormpath tenants for your environments (that is, sign up for Stormpath multiple times).  While this is the strategy Stormpath uses for its own production data isolation, we only recommend it for larger teams with more stringent development processes. 
+Luckily, partitioning your data is easy to do in Stormpath in one of two ways.  The first and recommended strategy is to use Stormpath’s Directory objects to create the separation.  The second and more complex option is to create separate Stormpath tenants for your environments (that is, sign up for Stormpath multiple times).  While this is the strategy Stormpath uses for its own production data isolation, we only recommend it for larger teams with more stringent development processes. 
 
-##Strategy 1: Using Stormpath Application and Directory Resources
+##Strategy 1: Using Stormpath Directory Resources
 
-The easiest way to isolate your production data in Stormpath is to leverage Stormpath Application and Directory resources.  They were designed for isolation of data for a variety of use cases and work well here, too.  
+The easiest way to isolate your production data in Stormpath is to leverage Stormpath Directory resources.  They were designed for isolation of data for a variety of use cases and work well here, too.  
 
 A Stormpath Application resource is typically a representation of a real world application.  For this example, we will call our application MyWebApp.  
 
-In order to separate Production from Staging and other environments, we will create one new Application to represent each stage of your development cycle. For example: 
-
-* MyWebApp–Prod
-* MyWebApp–Staging
-* MyWebApp–Dev 
-
-![Development, Test, and Production Applications](/images/dev-test-prod-apps.png)
-
-By default, each application you create will also create and map a corresponding Directory.  In this case the default settings will get you the following directories:
-
-* MyWebApp–Prod’s Directory
-* MyWebApp–Staging’s Directory
-* MyWebApp–Dev’s Directory
-
-For this guide, we renamed them so they would look nicer :)
+In order to separate Production from Staging and other environments, we will create one new Directory to represent each stage of your development cycle. For example: 
 
 * MyWebApp–Prod-Users
 * MyWebApp–Staging-Users
@@ -43,6 +29,8 @@ For this guide, we renamed them so they would look nicer :)
 A Stormpath Directory is a top-level collection of groups and user accounts.  Directories are completely isolated from each other.  In addition, the collection of Directories and/or Groups associated with an Application make up that Application’s unique user base.  
 
 ![Development, Test, and Production User Directoriess](/images/dev-test-prod-dir.png)
+
+Once the Directories are created, they can be mapped to your application giving the users in the Directories to login, reset their passwords, etc.  During development, you can make modifications to existing development Directory and test with the accounts in that directory without affecting production users.
 
 {% docs tip %}
  Directories and Groups mapped to an Application are also referred to as AccountStores.  You can map any directories to any applications by changing your Application’s Account Store configuration in the Console or via API.  
