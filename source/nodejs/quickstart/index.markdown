@@ -6,6 +6,7 @@ image: https://stormpath.com/images/blog/og-node-stormpath.png
 title: Stormpath Node.js Quickstart
 ---
 
+
 Welcome to Stormpath's Node.js Quickstart!
 
 This quickstart will get you up and running with Stormpath in about 7 minutes
