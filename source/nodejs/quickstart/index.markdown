@@ -6,6 +6,7 @@ image: https://stormpath.com/images/blog/og-node-stormpath.png
 title: Stormpath Node.js Quickstart
 ---
 
+
 Welcome to Stormpath's Node.js Quickstart!
 
 This quickstart will get you up and running with Stormpath in about 7 minutes
@@ -119,32 +120,31 @@ If you want to see all the code from this tutorial in one file, check out this [
 ***
 
 
-## Create an Application
+## Retrieve your Application
 
-Before you can create user accounts you'll need to create a Stormpath
-`Application`.  An `Application` in Stormpath is the same thing as a project.  If you're building a web app named "Lightsabers Galore", you'd want to name your Stormpath Application "Lightsabers Galore" as well.
+Before you can create user Accounts you'll need to retrieve your Stormpath
+Application.  An Application in Stormpath is the same thing as a project. If
+you're building a web app named "Lightsabers Galore", you'd want to name your
+Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath
+account will have an application already created for you to use.  We will use
+this application for the quickstart. 
 
-You can create an `Application` using the client you created in the previous step:
+You can retrieve your example `Application` using the client you created in the
+previous step:
 
-    var app = {
-      name: 'My Awesome Application',
-      description: 'Super awesome!',
-    };
-    client.createApplication(app, {createDirectory: true}, function(err, createdApp) {
-      if (err) throw err;
-      app = createdApp;
+    client.getApplications({name:'Example Application'}, function(err, applications){
+        if (err) throw err;
+
+        app = applications.items[0];
+
     });
 
-The code above will create a new `Application`, which we can use later to do stuff like:
+The code above will retrieve your example `Application`, which we can use later
+to do stuff like:
 
 - Create user accounts.
 - Log users into their account.
 - etc.
-
-{% docs note %}
-The only required field when creating an Application is `name`.  Descriptions
-are optional!
-{% enddocs %}
 
 
 ***

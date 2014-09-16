@@ -119,7 +119,7 @@ The `client` instance is intended to be an application singleton.  You should
 reuse this instance throughout your application code.  You *should not*
 create multiple `Client` instances as it could negatively affect caching.
 
-{% docs tip %} 
+{% docs tip %}
 If you want to see all the code from this tutorial in one file, check out this [Gist on GitHub](https://gist.github.com/rdegges/1155b9e3fc3432c0f7b2#file-quickstart-py):  [https://gist.github.com/rdegges/1155b9e3fc3432c0f7b2#file-quickstart-py](https://gist.github.com/rdegges/1155b9e3fc3432c0f7b2#file-quickstart-py)
 {% enddocs %}
 
@@ -127,22 +127,22 @@ If you want to see all the code from this tutorial in one file, check out this [
 ***
 
 
-## Create an Application
+## Retrieve your Application
 
-Before you can create user Accounts you'll need to create a Stormpath
+Before you can create user Accounts you'll need to retrieve your Stormpath
 Application.  An Application in Stormpath is the same thing as a project.  If
 you're building a web app named "Lightsabers Galore", you'd want to name your
-Stormpath Application "Lightsabers Galore" as well.
+Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath
+account will have an application already created for you to use.  We will use
+this application for the quickstart.
 
-You can create an Application using the client you created in the previous step:
+You can retrieve your example Application using the client you created in the
+previous step:
 
-    >>> application = client.applications.create({
-    >>>    'name': 'My Awesome Application',
-    >>>    'description': 'Super awesome!',
-    >>> }, create_directory=True)
+    >>> application = client.applications.search('Example Application')[0]
 
-The code above will create a new Application, which we can use later to do stuff
-like:
+The code above will retrieve your example Application, which we can use later
+to do stuff like:
 
 - Create user accounts.
 - Log users into their account.

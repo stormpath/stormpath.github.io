@@ -136,36 +136,25 @@ instance throughout your application code.
 ***
 
 
-## Create an Application
+## Retrieve your Application
 
-Before you can create user accounts you'll need to create a Stormpath
-`Application`.  An `Application` in Stormpath is the same thing as a project.
-If you're building a web app named "Lightsabers Galore", you'd want to name
-your Stormpath `Application` "Lightsabers Galore" as well.
+Before you can create user Accounts you'll need to retrieve your Stormpath
+Application.  An Application in Stormpath is the same thing as a project. If
+you're building a web app named "Lightsabers Galore", you'd want to name your
+Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath account will have an application already created for you to use.  We will use this application for the quickstart. 
 
-You can create an `Application` using the client you created in the previous
-step:
+You can retrieve your example `Application` using the client you created in the previous step:
 
-    $application = \Stormpath\Resource\Application::create(
-        array(
-            'name' => 'My Awesome Application-PHP',
-            'description' => 'Super awesome!',
-        ),
-        array('createDirectory' => true)
-    );
+    $apps = $client->tenant->applications;
+    $apps->search = array('name' => 'Example Application');
+    $application = $apps->getIterator()->current();
 
-The code above will create a new `Application`, which we can use later to do
-stuff like:
+
+The code above will retrieve your example `Application`, which we can use later to do stuff like:
 
 - Create user accounts.
 - Log users into their account.
 - etc.
-
-{% docs note %}
-The only required field when creating an Application is `name`.  Descriptions
-are optional!
-{% enddocs %}
-
 
 ***
 
