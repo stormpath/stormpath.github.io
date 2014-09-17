@@ -1119,8 +1119,8 @@ You can only create accounts for cloud, or Stormpath-managed directories. For ac
 
 ![Create Account](/images/docs/CreateAccount.png =640x380 "Create Account")
 	
-	Attribute | Description
-:----- | :-----
+Attribute | Description 
+:----- | :----- 
 Directory | The directory to which the account will be added.
 Username | The login name of the account for applications using username instead of email. The value must be unique within its parent directory.|
 First Name | The account owner first name.
