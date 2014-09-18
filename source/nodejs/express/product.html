@@ -88,6 +88,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#access-user-data">Access User Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#handling-events">Handling Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#working-with-custom-user-data">Working With Custom User Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#automatic-expansion">Automatic Expansion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api-authentication">API Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-redirect-logic">Customize Redirect Logic</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-user-registration-fields">Customize User Registration Fields</a></li>
@@ -106,6 +107,9 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-3">Version 0.4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-2">Version 0.4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-1">Version 0.4.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-0">Version 0.4.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-4">Version 0.3.4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-3">Version 0.3.3</a></li>
@@ -134,6 +138,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-2-version-0-4-3">Version 0.4.2 -&gt; Version 0.4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-1-version-0-4-2">Version 0.4.1 -&gt; Version 0.4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-0-version-0-4-1">Version 0.4.0 -&gt; Version 0.4.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-4-version-0-4-0">Version 0.3.4 -&gt; Version 0.4.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-3-version-0-3-4">Version 0.3.3 -&gt; Version 0.3.4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-2-version-0-3-3">Version 0.3.2 -&gt; Version 0.3.3</a></li>
@@ -314,7 +321,7 @@ groups in order to gain access.</p>
 <div class="section" id="session-management">
 <h2>Session Management<a class="headerlink" href="#session-management" title="Permalink to this headline">¶</a></h2>
 <p>Express-Stormpath ships with a default, pre-configured session middleware by
-deafult.  This middleware library, <a class="reference external" href="https://github.com/mozilla/node-client-sessions">client-sessions</a>, is preconfigured for
+default.  This middleware library, <a class="reference external" href="https://github.com/mozilla/node-client-sessions">client-sessions</a>, is preconfigured for
 security and statelessness.</p>
 <p>If, for some reason, you&#8217;d like to store your session state in a database or
 server of some kind, you can swap out the built-in session management middleware
@@ -543,6 +550,110 @@ model:</p>
 </div>
 <p>As you can see above &#8211; storing custom information on a <tt class="docutils literal"><span class="pre">user</span></tt> account is
 extremely simple!</p>
+</div>
+<div class="section" id="automatic-expansion">
+<h2>Automatic Expansion<a class="headerlink" href="#automatic-expansion" title="Permalink to this headline">¶</a></h2>
+<p>As of Express-Stormpath <strong>0.4.3</strong>, you can now take advantage of automatic
+expansion.  Automatic expansion allows you to more easily work with user data.</p>
+<p>Let&#8217;s say you&#8217;re working on an app which makes use of the <tt class="docutils literal"><span class="pre">customData</span></tt>
+property.  As mentioned in the previous section, you could always work with this
+data in each route by requesting it like so:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">getCustomData</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>However &#8211; this is a bit nasty, right?  If you know that you always want to use
+<tt class="docutils literal"><span class="pre">customData</span></tt> &#8211; then having to repeatedly call <tt class="docutils literal"><span class="pre">req.user.getCustomData</span></tt> over
+and over again is going to get boring!</p>
+<p>With automatic expansion, you can pass in a configuration option when setting up
+your middleware, and tell it you want a particular property to be expanded
+automatically &#8211; for instance:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">expandCustomData</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Now, inside of <em>any</em> route, you could do the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">customData</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>As you can see above, by automatically expanding the <tt class="docutils literal"><span class="pre">customData</span></tt> property, it
+means you don&#8217;t have to make any additional Stormpath calls &#8211; it will happen
+automatically on each request!</p>
+<p>You can expand any of the <em>&#8220;linked resources&#8221;</em> below:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">apiKeys</span></tt> - A user&#8217;s API keys.</li>
+<li><tt class="docutils literal"><span class="pre">customData</span></tt> - A user&#8217;s custom data.</li>
+<li><tt class="docutils literal"><span class="pre">directory</span></tt> - A user&#8217;s directory data.</li>
+<li><tt class="docutils literal"><span class="pre">groups</span></tt> - A user&#8217;s group data.</li>
+<li><tt class="docutils literal"><span class="pre">groupMemberships</span></tt> - A user&#8217;s group membership data.</li>
+<li><tt class="docutils literal"><span class="pre">providerData</span></tt> - A user&#8217;s provider data (<em>for social login providers</em>).</li>
+<li><tt class="docutils literal"><span class="pre">tenant</span></tt> - A user&#8217;s tenant data.</li>
+</ul>
+<p>Now, some of the linked resources above are simple JSON objects:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">customData</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">directory</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">providerData</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">tenant</span></tt></li>
+</ul>
+<p>Each of the above objects contains some fields, and can be referenced like a
+normal JSON object.</p>
+<p>The other fields, however:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">apiKeys</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">groups</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">groupMemberships</span></tt></li>
+</ul>
+<p>Are collections &#8211; and they can&#8217;t be queried in a single request.</p>
+<p>Take <tt class="docutils literal"><span class="pre">groups</span></tt>, for instance, if your account is a member of 1,000 groups, you
+won&#8217;t be able to squeeze all 1,000 groups into a single object (<em>it&#8217;s just not
+efficient</em>) &#8211; so instead, you have to iterate over the collection.</p>
+<p>Below is an example which shows how you can iterate over a collection resource
+(<em>groups, in this case</em>):</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">group</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;group:&#39;</span><span class="p">,</span> <span class="nx">group</span><span class="p">);</span>
+    <span class="nx">callback</span><span class="p">();</span>
+  <span class="p">},</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Finished logging all groups to the console!&#39;</span><span class="p">)</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Each collection resource has an <tt class="docutils literal"><span class="pre">each</span></tt> method which takes in two functions
+with signature: <tt class="docutils literal"><span class="pre">function(data,</span> <span class="pre">callback),</span> <span class="pre">function()</span></tt>.  The first function
+will be called for each resource in the collection.  The second function will be
+called when you&#8217;ve finished iterating through all of the available resources.</p>
+<p>So, given the example above, we could just as easily iterate over all of a
+user&#8217;s <tt class="docutils literal"><span class="pre">apiKeys</span></tt>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">apiKeys</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">apiKey</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;apiKey:&#39;</span><span class="p">,</span> <span class="nx">apiKey</span><span class="p">);</span>
+    <span class="nx">callback</span><span class="p">();</span>
+  <span class="p">},</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Finished logging all apiKeys to the console!&#39;</span><span class="p">)</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Below is a full list of the available expansion options that you&#8217;ll need to
+enable in your middleware if you&#8217;d like to turn expansion on (<em>each field can be
+enabled by setting its value to true</em>):</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">expandApiKeys</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">expandCustomData</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">expandDirectory</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">expandGroups</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">expandGroupMemberships</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">expandProviderData</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">expandTenant</span></tt></li>
+</ul>
 </div>
 <div class="section" id="api-authentication">
 <h2>API Authentication<a class="headerlink" href="#api-authentication" title="Permalink to this headline">¶</a></h2>
