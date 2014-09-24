@@ -1436,6 +1436,39 @@ You define and modify an application's account store mappings by creating, modif
 
     application.getAccountStoreMappings();
 
+<a class="anchor" name="application-account-store-mappings-add-directory"></a>
+#### Add Application Account Store Mappings
+
+The `Application` Resource provides a convenience method  that facilitates the creation of account atores in the application. With these methods you can add a new account store just by providing a `Directory` or `Group` `href` or `name`.
+
+The given Resource must have either its href or name property set. Having that information, this method will look for the Resource that matches either the `href` or the `name` given, will create the `AccountStoreMapping` Resource and will associate it to the `Application`.
+
+**Example Request for Directory with href**
+
+	Directory directory = client.getResource("https://api.stormpath.com/v1/directory/3xwt06QyMt6u2DhKLfzvie", Directory.class);
+    AccountStoreMapping accountStoreMapping = application.addDirectory(directory);
+
+**Example Request for Directory with name**
+
+	Directory directory = client.instantiate(Directory.class);
+    directory.setName("Foo Directory");
+    AccountStoreMapping accountStoreMapping = application.addDirectory(directory);
+
+**Example Request for Group with href**
+
+	Group group = client.getResource("https://api.stormpath.com/v1/groups/2rwq022yMt4u2DwKLfzriP", Group.class);
+    AccountStoreMapping accountStoreMapping = application.adGroup(group);
+
+**Example Request for Group with name**
+
+	Group group = client.instantiate(Group.class);
+	group.setName("Foo Group");
+    AccountStoreMapping accountStoreMapping = application.addGroup(group);
+
+{% docs note %}
+Providing the `Group` name, will cause an iteration though every directory existing in this tenant. In contrast, providing the `Group` href is more efficient, and thus suggested, as no actual search operation needs to be carried out.
+{% enddocs %}
+
 <a class="anchor" name="application-account-store-mappings-list"></a>
 #### List Application Account Store Mappings
 
