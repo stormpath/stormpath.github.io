@@ -67,7 +67,7 @@ This will start the directory creation wizard for AD / LDAP.  After configuring 
 Once the creation wizard is completed, you can download the `Agent` to deploy on the same network as the AD / LDAP server.`Agent` installation instructions are provided in the console as the last step of the wizard.
 
 {% docs note %}
-The Stormpath `Agent` requires Java 1.6 or higher.
+The Stormpath `Agent` requires Java 1.7 or Java 1.8.
 {% enddocs %}
 
 After the agent is deployed and started, the agent will reports its status, pull down its configuration data, and then begin synchronization.  The agent can be monitored directly from the Stormpath Administrator Console in the Agents tab _(visible for Premium subscribers and above)_.
