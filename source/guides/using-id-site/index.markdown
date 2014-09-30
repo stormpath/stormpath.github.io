@@ -259,29 +259,29 @@ ALl comm is over SSL.  Host their SSL -->
 
 ## Customizing the Default ID Site
 
-Based on your ID Site requirements, you may need to customize the ID Site's look and feel or even use the default ID site as a base for enhancement.  This section will explain how you can leverage the existing Stormpath ID Site source code to make the needed modifications.
+Based on your ID Site requirements, you may need to customize the ID Site's look and feel or even use the default ID site as a base for enhancement.  This section will explain how you can leverage the existing Stormpath ID Site source code to make modifications.
 
 {% docs info %}
 Customizing an ID Site requires features that are available on Lite Plans and above.  More information about pricing can be found [here](https://stormpath.com/pricing/)
 {% enddocs %}
 
 {% docs info %}
-**Prerequisites** Customizing and creating your own ID Site requires that you have already follow the [Using Stormpath's ID Site](/guides/using-id-site).  Having ID Site set up and working with the default Stormpath ID Site is required to work with the information in this guide.
+**Prerequisites** Customizing and creating your own ID Site requires that you have already follow the [Using Stormpath's ID Site](/guides/using-id-site).  Having ID Site set up and working with the default Stormpath ID Site is required to work with this guide.
 
 Installation prerequisites include:
 
-+ node
-+ bower
++ [node](http://nodejs.org/download/)
++ [bower](http://bower.io/)
 {% enddocs %}
 
 ### Getting Set Up
 
-Stormpath hosts the source for ID Site on [github](https://github.com/stormpath/idsite-src).  This repository is the development environment for the Stormpath hosted ID Site. You can use this repository to build the same single page application (SPA) that Stormpath provides, or you can modify it to suit your needs. The SPA uses [AngularJS](https://angularjs.org/) / [Browserify](http://browserify.org/) and it is built using [Grunt](http://gruntjs.com/) and Yeoman (http://yeoman.io/).
+Stormpath hosts the ID Site's source on [github](https://github.com/stormpath/idsite-src).  This repository is the development environment for the Stormpath hosted ID Site. You can use this repository to build the same single page application (SPA) that Stormpath provides, or you can modify it to suit your needs. The SPA uses [AngularJS](https://angularjs.org/) and [Browserify](http://browserify.org/). It is built using [Grunt](http://gruntjs.com/) and Yeoman (http://yeoman.io/).
 
 The ID Site contains all HTML, CSS, JavaScript assets, and scripts needed to build and maintain your own ID Site.  To get started, there are four steps required:
 
 + Set up a fork of ID Site in github to clone locally
-+ Install dependencies and build the ID Site using grunt c
++ Install dependencies and build the ID Site using grunt
 + Host the built ID Site on github
 + Configure Stormpath to use your ID Site
 
@@ -311,7 +311,7 @@ This will produce a `dist` folder with the compiled and minified ID Site.
 
 #### Host the built ID Site on github
 
-Once the ID Site is built and exists in the `dist` folder, it needs to be hosted on github.  This will allow Stormpath to clone and host the ID Site once configured in the Admin Console.
+Once the ID Site is built to the `dist` folder, it needs to be hosted on github.  This will allow Stormpath to clone and host the ID Site once configured in the Admin Console.
 
 To host the built ID Site on github:
 
@@ -382,24 +382,24 @@ The `master index` is already wired for Google Analytics and can quickly be used
       ga('send', 'pageview');
     </script>
 
-The `views` location is `idsite-src/app/views` and contains the templates for individual functionality.  These views are loaded at runtime into the main `master index` based on the path accessed on the ID Site. These views include:
+The `views` location is `idsite-src/app/views` and contains the templates for individual functionality.  These views are loaded at runtime into the main `master index` based on the path accessed on the ID Site. The following views can be modified to effect their distinct functionality and include:
 
 + `login.html` - The HTML for the login form for the ID Site.  This contains the HTML form that displays all of the fields associated with login.  By default, the root path `/` will display the login page.
 + `registration.html` - The HTML the registration form for the ID Site. This contains the HTML form that displays the fields associated with registration.  By default, the URL path `/register` will display the registration page
 + `forgot.html` - The HTML for the first step of the password reset workflow.  This includes the HTML that displays a form with fields for a end user to input his email address.  By default, the URL path `/forgot` will display the forgot password page
-+ `reset.html` - The HTML for the second step of the password reset workflow.  This page is displayed when the user clicks on the password reset link that is sent to the end user's email.  This contains the HTML form to collect the new password and password confirmation.  By default, the URL path is
++ `reset.html` - The HTML for the second step of the password reset workflow.  This page is displayed when the user clicks on the password reset link that is sent to the end user's email.  This contains the HTML form to collect the new password and password confirmation.  
 + `unverified.html` - The HTML for the 'check your email' message when a newly created account needs to be verified.
 + `verify.html` - The HTML for the verification message when a user registers for an account and clicks on the email verification link.
 + `error.html` - The HTML for the error page when a fatal error occurs when using the ID Site.  This page is displayed when there is a problem with the redirection from your application to the ID Site
 + `password-error-messages.html` - The HTML template used for displaying password related error messages when validating passwords during registration.  For example, 'Password is too short'.
 
-Modifying the individual views is possible once you isolate which view you want to change.  After making your HTML modifications, you can [update your ID Site](#updating-your-id-site).
+After making your HTML modifications, you can [update your ID Site](#updating-your-id-site).
 
 ### Customizing CSS
 
 Your ID Site's CSS is built using LESS, a dynamic stylesheet language.  LESS is very similar to CSS but has more advanced functionality like variables, mixins, and nesting.  When your ID Site is built using the `build` grunt, the LESS files are built into CSS for the ID Site.
 
-Common CSS Customizations include:
+Common CSS customizations include:
 
 + Modifying colors of text, background, inputs
 + Modifying the sizing of components, including height / width / margins / padding
@@ -501,7 +501,6 @@ Once your changes have been pushed to github:
 {% docs info %}
 To automatically sync your ID Site changes from Github to Stormpath, you can setup the Stormpath Service in Github to handle the sync.  To configure this option, navigate to your Github repository that hosts your ID Site and click on `Settings`.  Under `Webhooks & Services`, click `Add Service`, select Stormpath and follow the instructions in Github.
 {% enddocs %}
-
 
 ##  Wrapping up
 
