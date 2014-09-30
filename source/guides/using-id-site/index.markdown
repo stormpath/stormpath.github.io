@@ -21,7 +21,7 @@ ID site page are a convenience feature in Stormpath.  If you prefer to build and
 ##What is an ID Site
 Stormpath ID Site is a set of hosted and pre-built user interface screens that take care of common identity functions for your applications-- login, registration, password reset.  ID Site can be access via your own custom domain like id.mydomain.com and shared across multiple applications to create centralized authentication if needed.  
 
-The screens, and even the functionality, of ID site are completely customizable.  You have full access to the source code of the ID Site screens so you can make simple changes like adding your own logo and changing CSS or more complex changes like adding fields, adding javascript code, adding screens, removing screens, and even changing how the screens behave.  
+The screens, and even the functionality, of ID site are completely customizable.  You have full access to the source code of the ID Site screens so you can make simple changes like adding your own logo and changing CSS or more complex changes like adding fields, adding JavaScript code, adding screens, removing screens, and even changing how the screens behave.  
 
 ## Why should I use Stormpath ID Site?
 
@@ -71,11 +71,11 @@ For more advanced configurations, there are additional properties in the ID Site
 
 + Set a Logo to appear at the top of the default ID Site
 + Set a custom domain name (like id.mydomain.com) and SSL certificate to host your ID Site from your domain, securely
-+ Set a custom github repo to host your ID Site (to host custom code)
++ Set a custom Github repo to host your ID Site (to host custom code)
 
 <!-- I feel like we need to talk about this more -->
 
-### Setting your own custom domain name and SSL certificate
+### Setting your own Custom Domain Name and SSL certificate
 
 By default, the address of your ID Site is tenant-name.id.stormpath.io. However, you can change the address to a subdomain of your own website, such as id.mysite.com. This is called setting up a custom domain name.
 
@@ -88,7 +88,7 @@ The workflow for changing the address consists of the following steps:
 + Enable the custom domain in Stormpath's ID Site configuration
 + Input SSL information for Stormpath to host
 
-#### Getting a domain name and a subdomain
+#### Getting a Domain Name and a Subdomain
 
 If not already done, you must register a domain name and add an ID subdomain to it.
 
@@ -100,7 +100,7 @@ Working with domain names and subdomains can be confusing because it's something
 
 + _Create a subdomain for your domain for your ID Site._ See the Help on the registrar's website for instructions on adding a subdomain. You can call the subdomain "id", "login" or something similar. Example: id.trooperapp.com.
 
-#### Making the subdomain an alias of your ID Site on Stormpath
+#### Making the Subdomain an Alias of your ID Site on Stormpath
 
 The next step is to make your subdomain an alias of your ID Site on Stormpath. An alias is simply an alternate address for a website. For example, you can make the addresses "id.trooperapp.com" and "happy-rebel.id.stormpath.io" interchangeable as far as web browsers are concerned.
 
@@ -119,7 +119,7 @@ To make your subdomain an alias of your ID Site website on Stormpath, you must u
 It takes time for changes to the DNS system to be implemented. Typically, it can take anywhere from a few hours to a day, depending on your Time To Live (TTL) settings in the registrar's control panel. In the example above, the TTL is 14,400 seconds, or 4 hours.
 {% enddocs%}
 
-#### Enabling the custom domain in Stormpath's ID Site configuration
+#### Enabling the Custom Domain in Stormpath's ID Site Configuration
 
 After making your subdomain an alias of your support ID Site on Stormpath, you must enable a custom domain in the Stormpath. If you omit this step, your subdomain will point to a error page rather than your ID Site.
 
@@ -146,14 +146,14 @@ Once the SSL certificate is retrieved from the certificate authority, you can lo
 
 When the ID Site is updated, the SSL information is uploaded to Stormpath and will be update your ID Site automatically.
 
-### Customizing ID Site look, feel, and behavior
+### Customizing ID Site Look, Feel, and Behavior
 Your ID Site can be customized to have your own look and feel. Simple customization, like adding a logo, can be doing via Stormpath's Admin Console.
 
 Below is the default look and feel for your ID Site:
 
 ![](/images/guides/Login.png =700x) 
 
-More advanced customization can be achieved by forking the [default ID Site source code found on GitHub](https://github.com/stormpath/idsite-src) and then pointing ID Site to your new GitHub repository.  Stormpath infrastructure can detect any changes to a specific branch in your GitHub repository and automatically sync your file to the Stormpath infrastructure.
+More advanced customization can be achieved by forking the [default ID Site source code found on GitHub](https://github.com/stormpath/idsite-src) and then pointing ID Site to your new GitHub repository.  Stormpath infrastructure can detect any changes to a specific branch in your GitHub repository and automatically sync your file to the Stormpath infrastructure. More information on this is included at the [bottom of this guide](#customizing-the-default-id-site)
 
 <!-- anything we want to add here? Angular SPA? Stormpath.js? Fluffy kittens, rainbows, and unicorns? -->
 
@@ -182,10 +182,21 @@ The Stormpath SDK forwards information to the ID Site including a
 To build an ID Site URL for redirection, you must ask the Stormpath `Application` object for an `ID Site URL Builder`.  From the builder, you can set important properties to pass information and make sure the ID Site can call back to your application.
 
 To get an `ID Site URL Builder`:
+{% codetab id:id-site-builder langs:java node %}
+------
+Application application = client.getResource(applicationRestUrl, Application.class);
 
-        Application application = client.getResource(applicationRestUrl, Application.class);
+IdSiteUrlBuilder idSiteBuilder = application.newIdSiteUrlBuilder();
+------
+client.getApplication(applicationRestUrl, function(err, application) {
+  var url = application.createIdSiteUrl({
+    callbackUri: 'https://www.mysite.com/dashboard'
+  });
+});
+------
 
-        IdSiteUrlBuilder idSiteBuilder = application.newIdSiteUrlBuilder();
+------
+{% endcodetab %}
 
 {% docs info %}
 **Reminder** - An `Application` in Stormpath is a representation of your real world application.  For more info check out our [Tutorial](https://stormpath.com/tutorial/) or [Product Guide](/java/product-guide/).
@@ -203,12 +214,12 @@ Once the parameters are configured on your `ID Site URL Builder`, you can call t
 
 The HTTP response to the user should resemble:
 
-        HTTP/1.1 302 Found
+    HTTP/1.1 302 Found
 
-        Cache-Control: no-store no-cache
-        Pragma: no-cache
-        Expires: -1
-        Location: %%GENERATED_ID_SITE_URL_FROM_BUILDER%%
+    Cache-Control: no-store no-cache
+    Pragma: no-cache
+    Expires: -1
+    Location: %%GENERATED_ID_SITE_URL_FROM_BUILDER%%
 
 Creating the redirection with an `HTTPServletResponse` would follow:
 
@@ -223,19 +234,35 @@ Creating the redirection with an `HTTPServletResponse` would follow:
 To demonstrate how the SDK works, we’ll use an example. Imagine you are  building a Stormtrooper application for managing Stormtrooper equipment— like awesome helmets and blasters. The application is using Stormpath's ID Site for authentication.
 -->
 
-### Consuming responses from the ID Site to your Application
+### Consuming Responses from the ID Site to your Application
 
 Once the user has logged in, created an account, or verified an account, the ID Site will redirect the user along with a security assertion back to your application.  ID Site will use the `Callback URI` you included when you first redirected the user to ID Site.  The Stormpath SDK will verify the cryptographic signature on the assertion and and unpacks the user information. 
 
 For example:
+{% codetab id:handle-response langs:java node %}
+------
+public void dashboard(HttpServletRequest request, HttpServletResponse response) {
+     Application application = client.getResource(applicationRestUrl, Application.class);
 
-    public void authenticate(HttpServletRequest request, HttpServletResponse response) {
-         Application application = client.getResource(applicationRestUrl, Application.class);
+     AccountResult accountResult = application.newIdSiteCallbackHandler(request).getAccountResult();
 
-         AccountResult accountResult = application.newIdSiteCallbackHandler(request).getAccountResult();
+     Account account = accountResult.getAccount();
+}   
+------
+app.get('/dashboard',function(req,res) {
+  client.getApplication(applicationRestUrl, function(err, application) {
 
-         Account account = accountResult.getAccount();
-    }   
+    application.handleIdSiteCallback(req.url,function(err,idSiteResult) {
+        var account = idSiteResult.account;
+        // render the user dashboard for this account
+    });
+
+  });
+});
+------
+
+------
+{% endcodetab %}
 
 The `AccountResult` will be able to give your application the ability to understand:
 
@@ -259,10 +286,10 @@ ALl comm is over SSL.  Host their SSL -->
 
 ## Customizing the Default ID Site
 
-Based on your ID Site requirements, you may need to customize the ID Site's look and feel or even use the default ID site as a base for enhancement.  This section will explain how you can leverage the existing Stormpath ID Site source code to make modifications.
+Based on your ID Site requirements, you may need to customize the ID Site's look and feel or use the default ID site as a base for enhancements.  This section will explain how you can leverage the existing Stormpath ID Site source code to make modifications.
 
 {% docs info %}
-Customizing an ID Site requires features that are available on Lite Plans and above.  More information about pricing can be found [here](https://stormpath.com/pricing/)
+ID Site Customization requires features that are available on Lite Plans and above.  More information about pricing can be found [here](https://stormpath.com/pricing/)
 {% enddocs %}
 
 {% docs info %}
@@ -270,38 +297,39 @@ Customizing an ID Site requires features that are available on Lite Plans and ab
 
 Installation prerequisites include:
 
-+ [node](http://nodejs.org/download/)
-+ [bower](http://bower.io/)
++ [NodeJS](http://nodejs.org/download/)
++ [Bower](http://bower.io/)
 {% enddocs %}
 
 ### Getting Set Up
 
-Stormpath hosts the ID Site's source on [github](https://github.com/stormpath/idsite-src).  This repository is the development environment for the Stormpath hosted ID Site. You can use this repository to build the same single page application (SPA) that Stormpath provides, or you can modify it to suit your needs. The SPA uses [AngularJS](https://angularjs.org/) and [Browserify](http://browserify.org/). It is built using [Grunt](http://gruntjs.com/) and Yeoman (http://yeoman.io/).
+Stormpath hosts the ID Site's source on [Github](https://github.com/stormpath/idsite-src).  This repository is the development environment for the Stormpath hosted ID Site. You can use this repository to build the same single page application that Stormpath provides, or you can modify it to suit your needs. The single page application uses [AngularJS](https://angularjs.org/) and [Browserify](http://browserify.org/). It is built using [Grunt](http://gruntjs.com/) and Yeoman (http://yeoman.io/).
 
 The ID Site contains all HTML, CSS, JavaScript assets, and scripts needed to build and maintain your own ID Site.  To get started, there are four steps required:
 
-+ Set up a fork of ID Site in github to clone locally
-+ Install dependencies and build the ID Site using grunt
-+ Host the built ID Site on github
-+ Configure Stormpath to use your ID Site
+1. Set up a fork of ID Site in Github to clone locally
+2. Install dependencies and build the ID Site using grunt
+3. Host the built ID Site on Github
+4. Configure Stormpath to use your ID Site
 
-#### Set up a fork of ID Site in github to clone locally
+#### Set up a Fork of ID Site in Github to Clone Locally
 
-The first thing to complete when setting up to customize an ID Site is to fork Stormpath's ID Site source git repository.  This will allow you to have a fork of the git repository that you can modify when customizing.  To fork a github repository it is required that you have a github account.
+First, it is required to fork Stormpath's ID Site source git repository.  This will allow you to have a fork of the git repository that you can modify when customizing.  To fork a Github repository it is required that you have a Github account.
 
 To fork the ID Site source git repository, click [here](https://github.com/stormpath/idsite-src/fork) and select the destination for the fork.
 
-Once github forks the repository, you can clone it locally by running this command from the terminal:
+Once Github forks the repository, you can clone it locally by running this command from the terminal:
 
     git clone https://github.com/YOUR_USERNAME/idsite-src/
 
-#### Install dependencies and build the ID Site using grunt 
+
+#### Install Dependencies and Build the ID Site Using Grunt 
 
 Once you have a local clone of a fork of the ID Site source repository, you need to install the dependencies required to build and run the ID Site.  To accomplish this, in your terminal:
 
-+ Navigate to the local idsite-src folder
-+ Run: `npm install`
-+ Run: `bower install`
+1. Navigate to the local idsite-src folder
+2. Run: `npm install`
+3. Run: `bower install`
 
 After installing the dependencies, you can build the site by running:
 
@@ -309,36 +337,36 @@ After installing the dependencies, you can build the site by running:
 
 This will produce a `dist` folder with the compiled and minified ID Site.
 
-#### Host the built ID Site on github
+#### Host the built ID Site on Github
 
-Once the ID Site is built to the `dist` folder, it needs to be hosted on github.  This will allow Stormpath to clone and host the ID Site once configured in the Admin Console.
+Once the ID Site is built to the `dist` folder, it needs to be hosted on Github.  This will allow Stormpath to clone and host the ID Site once configured in the Admin Console.
 
-To host the built ID Site on github:
+To host the built ID Site on Github:
 
-+ Create a new github repo by visiting [this link](https://github.com/new)
+1. Create a new Github repo by visiting [this link](https://github.com/new)
     * Make sure the git repository is marked as public
     * Once created - note the URL for the git repo (it will end with .git). It will be used in the next couple steps
-+ Create a new git repo for the build ID Site
+2. Create a new git repo for the build ID Site
     * Navigate into the `dist` folder
     * Run: `git init` to initialize the git repository
     * Run: `git add .` to add the built files to staging
     * Run: `git commit` to commit these to the repository
-+ Create a remote for your `dist` git repo for github and push your ID Site to github
+3. Create a remote for your `dist` git repo for Github and push your ID Site to Github
     * Run: `git remote add origin YOUR_GIT_REPO_URL`
     * Run: `git push -u origin master`
 
 #### Configure Stormpath to use your ID Site
 
-Once the built ID Site is hosted on github, you can use the Stormpath [Administrator Console](https://api.stormpath.com) to point to your git repository.   
+Once the built ID Site is hosted on Github, you can use the Stormpath [Administrator Console](https://api.stormpath.com) to point to your git repository.   
 
 To update your ID Site configuration to use your fork:
 
-* Log into the [Stormpath Admin Console](https://api.stormpath.com/login)
-* Click on the ID Site tab
-* Under Git Repository HTTPS URL
+1. Log into the [Stormpath Admin Console](https://api.stormpath.com/login)
+2. Click on the ID Site tab
+3. Under Git Repository HTTPS URL
     - Click the `Custom` radio button
     - Add your Github repository URL to the textbox.  For ex: `https://github.com/stormpath/my-custom-id-site.git`
-* Scroll to the bottom of the dialog and click `Update`
+4. Scroll to the bottom of the dialog and click `Update`
 
 Once the configuration is updated, Stormpath will clone your repository and host it on Stormpath infrastructure to provide hosting your ID Site.
 
@@ -362,7 +390,7 @@ There are three distinct areas where you can customize the ID Site:
 
 The ID Site HTML contains multiple HTML assets that provide the markdown for the ID Site.  These can be broken down into two distinct groups, the `master index` and the `views`.
 
-The `master index` location is `idsite-src/app/index.html` and contains the definitions of the individual template views, CSS references, and references to JavaScript.  This file would be the location for any global HTML changes to apply to your ID Site.  For example:
+The `master index` location is `idsite-src/app/index.html` and contains the definitions of the individual template views, CSS references, and JavaScript references.  This file would be the location for any global HTML changes to apply to your ID Site.  For example:
 
 + Modifications of the meta tags
 + Modifications of the favicon
@@ -447,7 +475,7 @@ Once your modifications are made to your ID Site locally, you can [update your c
 
 ### Customizing JavaScript
 
-Your ID Site contains Javascript to handle the client-side logic.  Since your ID Site is a AngularJS application, this includes single-page-application logic such as URL routing, controllers for individual page logic, directives for input validation, and services across controllers for communication to Stormpath.
+Your ID Site contains JavaScript to handle the client-side logic.  Since your ID Site is a AngularJS application, this includes single-page-application logic such as URL routing, controllers for individual page logic, directives for input validation, and services across controllers for communication to Stormpath.
 
 #### Customizing URL Routing
 
@@ -481,26 +509,30 @@ Directives are markers on a DOM element that attach a specific set of behaviors 
 
 ### Updating your ID Site
 
-Once modifications are made to your ID Site, you will need to rebuild and deploy your changes to github.
+Once modifications are made to your ID Site, you will need to rebuild and deploy your changes to Github.
 
 In the terminal, to update your changes:
 
-+ Navigate to the local idsite-src folder
-+ Run: `grunt build`
-+ Navigate to the `dist` folder
-+ Run: `git add .` to add all changes to staging
-+ Run: `git commit` to commit your changes to the local git repository
-+ Run: `git push -u origin master` to push your changes to Github
+1. Navigate to the local idsite-src folder
+2. Run: `grunt build`
+3. Navigate to the `dist` folder
+4. Run: `git add .` to add all changes to staging
+5. Run: `git commit` to commit your changes to the local git repository
+6. Run: `git push -u origin master` to push your changes to Github
 
-Once your changes have been pushed to github:
+Once your changes have been pushed to Github:
 
-+ Login to the [Stormpath Admin Console](https://api.stormpath.com)
-+ Navigate to the `ID Site` tab
-+ Click the `Sync Now` button next to the `Git Repository Branch Name`
+1. Login to the [Stormpath Admin Console](https://api.stormpath.com)
+2. Navigate to the `ID Site` tab
+3. Click the `Sync Now` button next to the `Git Repository Branch Name`
 
 {% docs info %}
 To automatically sync your ID Site changes from Github to Stormpath, you can setup the Stormpath Service in Github to handle the sync.  To configure this option, navigate to your Github repository that hosts your ID Site and click on `Settings`.  Under `Webhooks & Services`, click `Add Service`, select Stormpath and follow the instructions in Github.
 {% enddocs %}
+
+##  Building an ID Site with stormpath.js
+
+Stormpath provides a library to enable developers to build their own ID Site outside of Stormpath's default AngularJS ID Site.  This is hosted on [Github](https://github.com/stormpath/stormpath.js) with installation and instructions.  This is useful for developers that want to Stormpath to host your login and user management screens but require full control of the site or want to leverage another JavaScript framework for building out their site.
 
 ##  Wrapping up
 
