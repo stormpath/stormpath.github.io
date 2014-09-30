@@ -136,12 +136,12 @@ Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath
 account will have an application already created for you to use.  We will use
 this application for the quickstart.
 
-You can retrieve your example Application using the client you created in the
+You can retrieve your Application using the client you created in the
 previous step:
 
-    >>> application = client.applications.search('Example Application')[0]
+    >>> application = client.applications.search('My Application')[0]
 
-The code above will retrieve your example Application, which we can use later
+The code above will retrieve your Application, which we can use later
 to do stuff like:
 
 - Create user accounts.

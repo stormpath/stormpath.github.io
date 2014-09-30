@@ -132,7 +132,7 @@ this application for the quickstart.
 You can retrieve your example `Application` using the client you created in the
 previous step:
 
-    client.getApplications({name:'Example Application'}, function(err, applications){
+    client.getApplications({name:'My Application'}, function(err, applications){
         if (err) throw err;
 
         app = applications.items[0];

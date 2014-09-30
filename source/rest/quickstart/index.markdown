@@ -97,7 +97,7 @@ From here, using the location of the tenant, you can get your Application by per
 
 curl -u $API_KEY_ID:$API_KEY_SECRET \
      -H "Accept: application/json" \
-     '$TENANT_HREF/applications?name=Example%20Application'
+     '$TENANT_HREF/applications?name=My%20Application'
 
 where:
 
@@ -112,7 +112,7 @@ Here's an example response to the above REST request:
       "items":[
         {
           "href": "https://api.stormpath.com/v1/applications/aLoNGrAnDoMAppIdHeRe",
-          "name": "Example Application",
+          "name": "My Application",
           "description": null,
           "status": "ENABLED",
           "tenant": {

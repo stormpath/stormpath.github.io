@@ -119,7 +119,7 @@ Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath 
 You can retrieve your example `Application` using the client you created in the previous step:
 
     
-    applications = client.applications.search name: 'Example Application'
+    applications = client.applications.search name: 'My Application'
     application = applications.each.next
 
 The code above will retrieve your example `Application`, which we can use later to do stuff like:

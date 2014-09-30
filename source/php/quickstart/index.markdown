@@ -127,7 +127,9 @@ First, open the PHP shell by running:
 Then, create a new Stormpath `Client` with the following code:
 
     require 'vendor/autoload.php';
-    \Stormpath\Client::$apiKeyFileLocation = $_SERVER['HOME'] .  '/.stormpath/apiKey.properties';
+    $apiKeyFile = $_SERVER['HOME'] .  '/.stormpath/apiKey.properties';
+    $builder = new \Stormpath\ClientBuilder();
+    $client = $builder->setApiKeyFileLocation($apiKeyFile)->build();
 
 The `Client` instance is an application singleton.  You should reuse this
 instance throughout your application code.
@@ -146,7 +148,7 @@ Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath 
 You can retrieve your example `Application` using the client you created in the previous step:
 
     $apps = $client->tenant->applications;
-    $apps->search = array('name' => 'Example Application');
+    $apps->search = array('name' => 'My Application');
     $application = $apps->getIterator()->current();
 
 
