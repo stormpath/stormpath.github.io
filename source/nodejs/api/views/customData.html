@@ -1,40 +1,16 @@
-<h2 id="custom-data">Custom Data</h2><p><code>Account</code> and <code>Group</code> resources have predefined fields that are useful to many <code>Applications</code>, but you are likely to have your own custom data that you need to associate with an account or group as well.</p><p>For this reason, both the account and group resources support a linked <code>customData</code> resource that you can use for your own needs. The <code>customData</code> resource is a schema-less JSON object that allows you to specify whatever name/value pairs you wish.</p><p>Since <code>customData</code> is a linked resource, it can be obtained by <code>Account</code>&#39;s or <code>Group</code>&#39;s getCustomData function.</p><p>Custom data can also be expanded and retrieved by specifying the <code>expand</code> option in the query parameters</p><pre><code class="lang-javascript">
-application.getAccounts()
-  .search({email: &quot;some@email.com&quot;})
-  .expand({customData: true})
-  .exec(function(err, accounts){
-    // accounts with custom data
-  });</code></pre><p><strong>Since</strong>: 0.1.2</p><hr><p><a name="get"></a></p><h3 id="-span-class-member-method-span-get-callback-"><span class="member">method</span> get(callback)</h3><p>Calling this method retrieves <code>CustomData</code> resource.</p><h4 id="usage">Usage</h4><pre><code class="lang-javascript">
-//Account
-account.customData.get(function(err, customData){
-  // customData
-});
-
-//Group
-group.customData.get(function(err, customData){
-  // customData
-});</code></pre><h4 id="parameters">Parameters</h4><table><thead><tr><th>Parameter<th>Type<th>Presence<th>Description<tbody><tr><td><em><code>callback</code></em><td>function<td><em><code>required</code></em><td>The callback to execute upon</table><p>resource update. Parameters are <code>Error</code> and <code>CustomData</code> objects.</p><h4 id="return">Return</h4><p>void; the callback function if specified will be called with an <code>Error</code>(if an error occurred) and <code>CustomData</code>(if request was successful) objects.</p><hr><p><a name="delete"></a></p><h3 id="-span-class-member-method-span-delete-callback-"><span class="member">method</span> delete(callback)</h3><p>This function is used to delete the contents of an account&#39;s or group&#39;s custom data resource. This will delete all of the respective account&#39;s or group&#39;s custom data fields, but it leaves the <code>customData</code> placeholder in the account or group resource. You cannot delete the <code>customData</code> resource entirely – it will be automatically permanently deleted when the account or group is deleted.</p><h4 id="usage">Usage</h4><pre><code class="lang-javascript">
-//Account
-account.customData.delete(function(err){
-  if(err) throw err;
-});
-
-//Group
-group.customData.delete(function(err){
-  if(err) throw err;
-});</code></pre><h4 id="parameters">Parameters</h4><table><thead><tr><th>Parameter<th>Type<th>Presence<th>Description<tbody><tr><td><em><code>callback</code></em><td>function<td><em><code>required</code></em><td>The callback to execute upon resource deletion. The only parameter is an <code>Error</code> object.</table><h4 id="returns">Returns</h4><p>void; the callback function if specified will return an <code>Error</code> object if an error occurred. There is no body to return of a successful deletion call.</p><hr><p><a name="remove"></a></p><h3 id="-span-class-member-method-span-remove-fieldname-"><span class="member">method</span> remove(fieldName)</h3><p>Call to this methods queues removal of any <code>CustomData</code> field until next update of <code>Account</code>,<code>Group</code> or <code>CustomData</code> via <code>save()</code> method.</p><h4 id="usage">Usage</h4><pre><code class="lang-javascript">
-//Account
-account.customData.remove(&#39;address1&#39;);
-
-//Group
-group.customData.remove(&#39;old_image_url&#39;)
-  .remove(&#39;old_profile_id&#39;);</code></pre><h4 id="parameters">Parameters</h4><table><thead><tr><th>Parameter<th>Type<th>Presence<th>Description<tbody><tr><td><em><code>fieldName</code></em><td>string<td><em><code>required</code></em><td>The name of <code>CustomData</code> field to remove.</table><h4 id="return">Return</h4><p>Current custom data instance, so remove calls can be chained.</p><hr><p><a name="save"></a></p><h3 id="-span-class-member-method-span-save-callback-"><span class="member">method</span> save(callback)</h3><p>Calling this method updates <code>CustomData</code> resource directly.</p><h4 id="usage">Usage</h4><pre><code class="lang-javascript">
-//Account
-account.customData.save(function(err, customData){
-  // customData
-});
-
-//Group
-group.customData.save(function(err, customData){
-  // customData
-});</code></pre><h4 id="parameters">Parameters</h4><table><thead><tr><th>Parameter<th>Type<th>Presence<th>Description<tbody><tr><td><em><code>callback</code></em><td>function<td><em><code>required</code></em><td>The callback to execute upon</table><p>resource update. Parameters are <code>Error</code> and <code>CustomData</code> objects.</p><h4 id="return">Return</h4><p>void; the callback function if specified will be called with an <code>Error</code>(if an error occurred) and <code>CustomData</code>(if update was successful) objects.</p>
+<h2 id="custom-data">Custom Data</h2><p>Stormpath resources have predefined fields that are useful to many Applications, but you are likely to have your own requirements and custom fields that you need to associate with Stormpath resources. For this reason, <code>Accounts</code>, <code>Groups</code>, <code>Applications</code>, <code>Directories</code> and <code>Tenant</code> resources support a linked <code>CustomData</code> resource that you can use for your own needs.</p><p>For each of those resources you can use the <code>getCustomData()</code> method to retrieve the the custom data resource as a <code>CustomData</code> instance.</p><h4 id="usage-example">Usage example</h4><pre><code class="lang-javascript">client.getAccount(accountHref,function(err,account){
+  account.getCustomData(function(err,customData){
+    console.log(&#39;my custom property&#39;,customData.myCustomProperty);
+  });
+});</code></pre><p><strong>Since</strong>: 0.1.2</p><hr><p><a name="delete"></a></p><h3 id="-span-class-member-method-span-delete-callback-"><span class="member">method</span> delete(callback)</h3><p>This function is used to delete the contents of the resource&#39;s custom data resource. This will delete all of the respective custom data fields, but it leaves the <code>customData</code> placeholder in the account or group resource. You cannot delete the <code>customData</code> resource entirely – it will be permanently deleted when the parent resource is deleted.</p><h4 id="usage">Usage</h4><pre><code class="lang-javascript">account.getCustomData(function(err,customData){
+  customData.delete(function(err){
+    if(err) throw err;
+  });
+})</code></pre><h4 id="parameters">Parameters</h4><table><thead><tr><th>Parameter<th>Type<th>Presence<th>Description<tbody><tr><td><code>callback</code><td>function<td><code>required</code><td>The callback to execute upon resource deletion. The only parameter is an <code>Error</code> object.</table><h4 id="returns">Returns</h4><p>void; the callback function if specified will return an <code>Error</code> object if an error occurred. There is no body to return of a successful deletion call.</p><hr><p><a name="remove"></a></p><h3 id="-span-class-member-method-span-remove-fieldname-"><span class="member">method</span> remove(fieldName)</h3><p>Call to this methods queues removal of any <code>CustomData</code> field until next update of <code>Account</code>,<code>Group</code> or <code>CustomData</code> via <code>save()</code> method.</p><h4 id="usage">Usage</h4><pre><code class="lang-javascript">account.getCustomData(function(err,customData){
+  customData.remove(&#39;address1&#39;);
+});</code></pre><h4 id="parameters">Parameters</h4><table><thead><tr><th>Parameter<th>Type<th>Presence<th>Description<tbody><tr><td><code>fieldName</code><td>string<td><code>required</code><td>The name of <code>CustomData</code> field to remove.</table><h4 id="return">Return</h4><p>Current custom data instance, so remove calls can be chained.</p><hr><p><a name="save"></a></p><h3 id="-span-class-member-method-span-save-callback-"><span class="member">method</span> save(callback)</h3><p>Calling this method updates <code>CustomData</code> resource directly.</p><h4 id="usage">Usage</h4><pre><code class="lang-javascript">account.getCustomData(function(err,customData){
+  customData.remove(&#39;address1&#39;);
+  customData.save(function(err){
+    if(err) throw err;
+  })
+});</code></pre><h4 id="parameters">Parameters</h4><table><thead><tr><th>Parameter<th>Type<th>Presence<th>Description<tbody><tr><td><code>callback</code><td>function<td><code>required</code><td>The callback to execute upon</table><p>resource update. Parameters are <code>Error</code> and <code>CustomData</code> objects.</p><h4 id="return">Return</h4><p>void; the callback function if specified will be called with an <code>Error</code>(if an error occurred) and <code>CustomData</code>(if update was successful) objects.</p>
