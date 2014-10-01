@@ -157,11 +157,6 @@ like:
 - Log users into their account.
 - etc.
 
-{% docs note %}
-The only required field when creating an Application is `name`.  Descriptions
-are optional!
-{% enddocs %}
-
 
 ***
 
