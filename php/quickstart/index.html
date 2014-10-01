@@ -502,7 +502,9 @@ allows you to communicate with Stormpath.</p>
 <p>Then, create a new Stormpath <code>Client</code> with the following code:</p>
 
 <pre><code>require 'vendor/autoload.php';
-\Stormpath\Client::$apiKeyFileLocation = $_SERVER['HOME'] .  '/.stormpath/apiKey.properties';
+$apiKeyFile = $_SERVER['HOME'] .  '/.stormpath/apiKey.properties';
+$builder = new \Stormpath\ClientBuilder();
+$client = $builder-&gt;setApiKeyFileLocation($apiKeyFile)-&gt;build();
 </code></pre>
 
 <p>The <code>Client</code> instance is an application singleton.  You should reuse this
@@ -520,7 +522,7 @@ Stormpath Application &ldquo;Lightsabers Galore&rdquo; as well.  By default, you
 <p>You can retrieve your example <code>Application</code> using the client you created in the previous step:</p>
 
 <pre><code>$apps = $client-&gt;tenant-&gt;applications;
-$apps-&gt;search = array('name' =&gt; 'Example Application');
+$apps-&gt;search = array('name' =&gt; 'My Application');
 $application = $apps-&gt;getIterator()-&gt;current();
 </code></pre>
 
