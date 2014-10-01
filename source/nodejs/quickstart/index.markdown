@@ -129,7 +129,7 @@ Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath
 account will have an application already created for you to use.  We will use
 this application for the quickstart. 
 
-You can retrieve your example `Application` using the client you created in the
+You can retrieve your `Application` using the client you created in the
 previous step:
 
     client.getApplications({name:'My Application'}, function(err, applications){

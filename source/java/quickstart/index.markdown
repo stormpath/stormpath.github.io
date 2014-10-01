@@ -129,24 +129,28 @@ create multiple `Client` instances as it could negatively affect caching.
 ***
 
 
-## Create an Application
+## Retrieve your Application
 
-Before you can create user Accounts you'll need to create a Stormpath
-Application.  An Application in Stormpath is the same thing as a project.  If
+Before you can create user Accounts you'll need to retrieve your Stormpath
+Application.  An Application in Stormpath is the same thing as a project. If
 you're building a web app named "Lightsabers Galore", you'd want to name your
-Stormpath Application "Lightsabers Galore" as well.
+Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath
+account will have an application already created for you to use.  We will use
+this application for the quickstart. 
 
-You can create an Application using the Client you created in the previous step:
+You can retrieve your example `Application` using the client you created in the
+previous step:
 
     import com.stormpath.sdk.tenant.*;
     import com.stormpath.sdk.application.*;
 	
-    Application application = client.instantiate(Application.class);
-    application.setName("My Awesome Application"); //must be unique among your other apps
-    application = client.createApplication(
-        Applications.newCreateRequestFor(application).createDirectory().build());
+    ApplicationList applications = tenant.getApplications(
+            Applications.where(Applications.name().eqIgnoreCase("My Application"))
+    );
 
-The code above will create a new Application, which we can use later to do stuff
+    Application application = applications.iterator.next();
+
+The code above will retrieve your `Application`, which we can use later to do stuff
 like:
 
 - Create user accounts.
