@@ -40,6 +40,8 @@ Only use this code if a more accurate status code is not available. For example,
 
 <a id="2015"></a>[**2015**](/errors/2015): Unknown property. For example, trying to set a 'srname' property instead of 'surname'.
 
+<a id="2016"></a>[**2016**](/errors/2016): Property value does not match a known resource.
+
 <a id="2100"></a>[**2100**](/errors/2100): Malformed query. One or more query criteria parameters was not specified correctly.
 
 <a id="2101"></a>[**2101**](/errors/2101): The supplied query parameter must have a corresponding value.
@@ -110,6 +112,8 @@ Only use this code if a more accurate status code is not available. For example,
 ##<a id="Directory"></a>6XXX: Directory
 
 <a id="6100"></a>[**6100**](/errors/6100): The directory does not allow creation of new accounts or groups.
+
+<a id="6101"></a>[**6101**](/errors/6101): The account's directory is not enabled for the verification email workflow.
 
 <a id="6201"></a>[**6201**](/errors/6201): This directory cannot be converted to an external provider directory.
 
