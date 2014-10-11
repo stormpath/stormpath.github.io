@@ -193,9 +193,11 @@
       // Mark active menu item.
       if (window.location.hash === this.hash || window.location.hash == '#!'+ this.hash.substr(1)) {
         menu_map.setCurrent(this);
+        /*
         var id = this.hash.substr(1);
         var el = document.getElementById(id);
         $(content_area).scrollTop(Math.max(0, el.offsetTop));
+        */
         return false; // break;
       }
     });
@@ -215,6 +217,7 @@
     if (menu_map.current === null) {
       menu_map.setCurrent(current_root);
     }
+    
     $(content_area).scroll(function(e) {
       var top = $(content_area).scrollTop() + MAGIC_OFFSET + 2;
       var new_item_found = false;
@@ -233,9 +236,10 @@
         menu_map.setCurrent(current_root);
       }
     });
+    
     // Trigger scroll event to set actual current item.
     // User could already had scrolled content area until window.load triggered.
-    $(content_area).trigger('scroll');
+    //$(content_area).trigger('scroll');
   });
 
   // Fancy select functions.
