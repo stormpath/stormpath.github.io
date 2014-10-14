@@ -1117,6 +1117,104 @@ In addition to the the [search query parameters](#search), you may also use [pag
 
 Directory resources support the full suite of CRUD commands and other interactions. Please see the [Directories section](#directories) for more information.
 
+### Tenant Accounts
+
+A `Tenant` has [Accounts](#accounts) that represent the users of your `Applications`.  Accounts may login to [applications](#applications) and can have `Groups` assigned to them.  Accounts across applications and directories can be accessed from your `Tenant` to provide a tenant-wide view of your account base.
+
+**Tenant Account Collection Resource URI**
+
+/v1/tenants/:tenantId/accounts
+
+#### List Tenant Accounts
+
+You can list your tenant's accounts by sending a `GET` request your tenant's `accounts` Collection Resource `href` URL.  The response is a [paginated](#pagination) list of your tenant's  accounts.
+
+**Example request**
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Accept: application/json" \
+         "https://api.stormpath.com/v1/tenants/$TENANT_ID/accounts"
+
+**Example Response**
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href": "https://api.stormpath.com/v1/tenants/Gh9238fksJlsieJkPkQuW/accounts"
+      "offset": 0,
+      "limit": 25,
+      "items" : [
+        {
+          "href" : "https://api.stormpath.com/v1/accounts/bckhcGMXQDujIXpbCDRb2Q"
+          ... remaining Account name/value pairs ...
+        },
+        {
+          "href" : "https://api.stormpath.com/v1/accounts/lIKeabOss8w9fJf0fJfb34"
+          ... remaining Accounts name/value pairs ...
+        },
+        {
+          "href" : "https://api.stormpath.com/v1/accounts/Hfjks7kj9sfKfh9fhsPifa"
+          ... remaining Account name/value pairs ...
+        }
+      ]
+    }
+
+#### Search Tenant Accounts
+
+You may search for accounts by sending a `GET` request to your tenant's `accounts` Collection Resource `href` URL using [search query parameters](#search).  Any matching accounts with your tenant will be returned as a [paginated](#pagination) list. 
+
+In addition to the the [search query parameters](#search), you may also use [pagination](#pagination), [sorting](#sorting), and [link expansion](#link-expansion) query parameters to customize the paginated response.
+
+### Tenant Groups
+
+A `Tenant` has [Groups](#groups) that represent the groups of your `Applications`.  Groups may be assigned to `Accounts` for access control or authorization.  Groups across applications and directories can be accessed from your `Tenant` to provide a tenant-wide view of your groups.
+
+**Tenant Groups Collection Resource URI**
+
+/v1/tenants/:tenantId/groups
+
+#### List Tenant Groups
+
+You can list your tenant's groups by sending a `GET` request your tenant's `groups` Collection Resource `href` URL.  The response is a [paginated](#pagination) list of your tenant's  groups.
+
+**Example request**
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Accept: application/json" \
+         "https://api.stormpath.com/v1/tenants/$TENANT_ID/groups"
+
+**Example Response**
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href": "https://api.stormpath.com/v1/tenants/Gh9238fksJlsieJkPkQuW/groups"
+      "offset": 0,
+      "limit": 25,
+      "items" : [
+        {
+          "href" : "https://api.stormpath.com/v1/groups/bckhcGMXQDujIXpbCDRb2Q"
+          ... remaining Account name/value pairs ...
+        },
+        {
+          "href" : "https://api.stormpath.com/v1/groups/lIKeabOss8w9fJf0fJfb34"
+          ... remaining Accounts name/value pairs ...
+        },
+        {
+          "href" : "https://api.stormpath.com/v1/groups/Hfjks7kj9sfKfh9fhsPifa"
+          ... remaining Account name/value pairs ...
+        }
+      ]
+    }
+
+#### Search Tenant Groups
+
+You may search for groups by sending a `GET` request to your tenant's `groups` Collection Resource `href` URL using [search query parameters](#search).  Any matching groups with your tenant will be returned as a [paginated](#pagination) list. 
+
+In addition to the the [search query parameters](#search), you may also use [pagination](#pagination), [sorting](#sorting), and [link expansion](#link-expansion) query parameters to customize the paginated response.
+
 ***
 
 <a class="anchor" name="applications"></a>
@@ -1687,6 +1785,42 @@ This workflow is disabled by default for accounts, but you can enable it easily 
 {% docs note %}
 Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the REST API. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
 {% enddocs %}
+
+<a class="anchor" name="application-resend-verify-email"></a>
+#### Resending the Verification Email
+
+In some cases, it may be needed to resend the verification email.  This could be because the user accidentally deleted the verification email or it was undeliverable at a certain time.  An `Application` has the ability to resend verification emails based on the account's username or email.
+
+**Application Resend Email Verification Resource URI**
+
+    /v1/applications/:applicationId/verificationEmails
+
+**Resend Email Verification Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`login` | Either the email or username for the account that needs an email verification resent | String | A email or user name for an account
+`accountStore`| An optional link to the application's accountStore (directory or group) that you are certain contains the account attempting to resend the verification email to. | link | --
+
+**Execute Email Verification Resend**
+
+An HTTP `POST` to the `Resend Email Verification Resource URI` will trigger Stormpath to resend the verification email.  When `POST`ing to this URI, you can specify either the username or email for the account and optionally the account store to target a specific location for the account:
+
+**Example Request**
+
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d '{
+           "login": "email@foo.com"
+         }' \
+     "https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/verificationEmails"
+
+If the verification email is queued to be sent, a `202 ACCEPTED` response is returned:
+
+**Example Login Attempt Success Response**
+
+      HTTP/1.1 202 Accepted
 
 <a class="anchor" name="application-account-authc"></a>
 #### Log In (Authenticate) an Account
