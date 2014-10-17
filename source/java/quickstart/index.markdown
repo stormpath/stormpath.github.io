@@ -25,9 +25,7 @@ of this quickstart.
 
 Let's get started!
 
-
 ***
-
 
 ## Add the Stormpath SDK
 
@@ -36,12 +34,12 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-api</artifactId>
-        <version>1.0.RC2</version>
+        <version>1.0.RC2.1</version>
     </dependency>
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-httpclient</artifactId>
-        <version>1.0.RC2</version>
+        <version>1.0.RC2.1</version>
         <scope>runtime</scope>
     </dependency>
     <!-- This next runtime dependency is only necessary if you have
@@ -49,7 +47,7 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-oauth</artifactId>
-        <version>1.0.RC2</version>
+        <version>1.0.RC2.1</version>
         <scope>runtime</scope>
     </dependency>
 
@@ -57,9 +55,7 @@ If you are not using a Maven Repository-compatable tool, follow these [instructi
 
 More information on different ways to configure and retrieve information from this file can be found in the [Client Builder](https://github.com/stormpath/stormpath-sdk-java/blob/master/api/src/main/java/com/stormpath/sdk/client/ClientBuilder.java) API documentation.
 
-
 ***
-
 
 ## Get an API Key
 
