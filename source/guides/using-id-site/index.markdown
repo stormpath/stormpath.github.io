@@ -9,7 +9,7 @@ title: Using Stormpath's ID Site to Host your User Management UI
 {% enddocs %}
 
 {% docs info %} 
-Currently supported Stormpath SDKs for this feature include: **Java**.  Other language platforms are on their way soon.
+Currently supported Stormpath SDKs for this feature include: **Java** and **NodeJS**.  Other language platforms are on their way soon.
 {% enddocs %}
 
 In this guide, we discuss how to set up Stormpath to host a set of web pages that enable your applications to quickly and securely offer common identity management functions like login, registration, and password reset.
