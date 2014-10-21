@@ -1150,6 +1150,37 @@ This workflow is disabled by default for accounts, but you can enable it easily 
 Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the Java SDK. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
 {% enddocs %}
 
+<a class="anchor" name="application-resend-verify-email"></a>
+#### Resending the Verification Email
+
+In some cases, it may be needed to resend the verification email.  This could be because the user accidentally deleted the verification email or it was undeliverable at a certain time.  An `Application` has the ability to resend verification emails based on the account's username or email.
+
+**Application Resend Email Verification Resource**
+
+    application.sendVerificationEmail(VerificationEmailRequest);
+
+**Resend Email Verification Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`login` | Either the email or username for the account that needs an email verification resent | String | A email or user name for an account
+`accountStore`| An optional link to the application's accountStore (directory or group) that you are certain contains the account attempting to resend the verification email to. | link | --
+
+**Execute Email Verification Resend**
+
+An invocation to the `sendVerificationEmail(VerificationEmailRequest)` method of the `Application` will trigger Stormpath to resend the verification email.  When doing so, you can specify either the username or email for the account and optionally the account store to target a specific location for the account:
+
+**Example Request**
+
+	Directory dir = client.getResource("https://api.stormpath.com/v1/directories/7WcyHGlDa0V2Nk11Vum3Zd", Directory.class);
+	VerificationEmailRequest verificationEmailRequest = Applications.verificationEmailBuilder()
+                                                                        .setLogin("email@foo.com")
+                                                                        .setAccountStore(dir)
+                                                                        .build();
+	application.sendVerificationEmail(verificationEmailRequest);
+
+If the verification email is successfully queued to be sent, no response will be received. Otherwise a `ResourceException` will be thrown.
+
 <a class="anchor" name="application-account-authc"></a>
 #### Log In (Authenticate) an Account
 
