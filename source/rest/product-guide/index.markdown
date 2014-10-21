@@ -5525,10 +5525,10 @@ Stormpath supports accessing accounts from a number of different locations inclu
 The steps to enable this functionality into your application include:
 
 + [Create a Facebook Directory](#creating-a-facebook-directory)
-+ Create an `Account Store Mapping` between a Google Directory and your `Application`
++ Create an `Account Store Mapping` between a Facebook Directory and your `Application`
 + [Accessing Accounts with Facebook User Access Tokens](#accessing-accounts-with-facebook-user-access-tokens)
 
-Facebook Directories follow behavior similar to [mirror directories](#directory-mirror), but have a `Provider` resource that contains information regarding the Google application that the directory is configured for.
+Facebook Directories follow behavior similar to [mirror directories](#directory-mirror), but have a `Provider` resource that contains information regarding the Facebook application that the directory is configured for.
 
 ### Facebook Provider Resource
 
@@ -5545,7 +5545,7 @@ Example Response
     {
         "clientId": "501417", 
         "clientSecret": "4913953281ec6bb109", 
-        "redirectUri": "https://myapp.com/google/authentication"
+        "redirectUri": "https://myapp.com/facebook/authentication"
         "createdAt": "2014-03-31T21:01:34.631Z", 
         "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", 
         "modifiedAt": "2014-03-31T21:01:34.643Z", 
@@ -5556,8 +5556,8 @@ Example Response
 
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
-`clientId` | The App ID for your Google application | String | --
-`clientSecret` | The App Secret for your Google application | String | -- 
+`clientId` | The App ID for your Facebook application | String | --
+`clientSecret` | The App Secret for your Facebook application | String | -- 
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'facebook'
 
 In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
