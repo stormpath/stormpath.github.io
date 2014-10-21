@@ -1908,7 +1908,7 @@ If you desire to target a specific accountStore, then include the reference in t
      -H "Content-Type: application/json" \
      -d '{
            "type": "basic",
-           "value": "anNtaXRoOmNoYW5nZW1l"
+           "value": "anNtaXRoOmNoYW5nZW1l",
            "accountStore": {
                  "href": "https://api.stormpath.com/v1/groups/$YOUR_GROUP_ID"
            }
@@ -2519,7 +2519,7 @@ You do this by `POST`ing a new `AccountStoreMapping` resource to the `/v1/accoun
          -d '{
                "application": {
                  "href": "https://api.stormpath.com/v1/applications/Uh8FzIouQ9C8EpcExAmPLe"
-               }
+               },
                "accountStore": {
                  "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpExAmPLe"
                },
