@@ -634,6 +634,8 @@ For Tenants, you can:
 * [Retrieve a tenant](#tenant-retrieve)
 * [Access a tenant's applications](#tenant-applications)
 * [Access a tenant's directories](#tenant-directories)
+* [Access a tenant's accounts](#tenant-accounts)
+* [Access a tenant's groups](#tenant-groups)
 
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
@@ -766,7 +768,85 @@ In addition to the the [search query parameters](#search), you may also use [pag
 
 Directory resources support the full suite of CRUD commands and other interactions. Please see the [Directories section](#directories) for more information.
 
-***        
+### Tenant Accounts
+
+A `Tenant` has [Accounts](#accounts) that represent the users of your `Applications`.  Accounts may login to [applications](#applications) and can have `Groups` assigned to them.  Accounts across applications and directories can be accessed from your `Tenant` to provide a tenant-wide view of your account base.
+
+**Tenant Account Collection Resource**
+
+	tenant.getAccounts();
+
+#### List Tenant Accounts
+
+You can list your tenant's accounts by invoking the `getAccounts()` method in your `Tenant` resource.  The response is a [paginated](#pagination) list of your tenant's accounts.
+
+**Example request**
+
+    AccountList accounts = tenant.getAccounts();
+
+#### Search Tenant Accounts
+
+You may search for accounts by invoking the `getAccounts(AccountCriteria)` or `getAccounts(Map)` methods in your `Tenant` resource using [search query parameters](#search). Any matching accounts for your tenant will be returned as a [paginated](#pagination) list. 
+
+In addition to the the [search query parameters](#search), you may also use [pagination](#pagination), [sorting](#sorting), and [link expansion](#link-expansion) query parameters to customize the paginated response.
+
+**Example request using AccountCriteria**
+
+	AccountList accounts = client.getAccounts(Accounts
+	                                .where(Accounts.givenName().containsIgnoreCase("foo"))
+	                                .and(Accounts.surname().startsWithIgnoreCase("bar"))
+	                                .orderBySurname().descending()
+	                                .withGroups(10)
+	                                .offsetBy(20)
+	                                .limitTo(25));
+									
+**Example request using Map**
+	
+	Map<String, Object> params = new LinkedHashMap<String, Object>();
+	params.put("givenName", "*foo*");
+	params.put("surname", "*bar");
+	AccountList accounts = tenant.getAccounts(params);
+
+### Tenant Groups
+
+A `Tenant` has [Groups](#groups) that represent the groups of your `Applications`.  Groups may be assigned to `Accounts` for access control or authorization.  Groups across applications and directories can be accessed from your `Tenant` to provide a tenant-wide view of your groups.
+
+**Tenant Groups Collection Resource**
+
+	tenant.getGroups();
+
+#### List Tenant Groups
+
+You can list your tenant's groups by invoking the `getGroups()` method in your `Tenant` resource.  The response is a [paginated](#pagination) list of your tenant's  groups.
+
+**Example request**
+
+    GroupList groups = tenant.getGroups();
+
+#### Search Tenant Groups
+
+You may search for groups by invoking the `getGroups(GroupCriteria)` or `getGroups(Map)` methods in your `Tenant` resource using [search query parameters](#search).  Any matching groups with your tenant will be returned as a [paginated](#pagination) list. 
+
+In addition to the [search query parameters](#search), you may also use [pagination](#pagination), [sorting](#sorting), and [link expansion](#link-expansion) query parameters to customize the paginated response.
+
+**Example request using GroupCriteria**
+
+	GroupList groups = client.getGroups(Groups
+								.where(Groups.name().containsIgnoreCase("foo"))
+								.and(Groups.description().startsWithIgnoreCase("bar"))
+								.orderByName().descending()
+								.withAccounts(10)
+								.offsetBy(20)
+								.limitTo(25);
+									
+**Example request using Map**
+	
+	Map<String, Object> params = new LinkedHashMap<String, Object>();
+	params.put("name", "*foo*");
+	params.put("description", "*bar");
+	GroupList groups = tenant.getGroups(params);
+
+***
 
 <a class="anchor" name="applications"></a>
 ## Applications
