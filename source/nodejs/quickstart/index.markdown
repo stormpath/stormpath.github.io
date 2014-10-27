@@ -163,7 +163,7 @@ this, you'll need to use your application (*created in the previous step*):
       password: 'Changeme1',
       customData: {
         favoriteColor: 'white',
-      },
+      }
     };
     app.createAccount(account, function(err, account) {
       if (err) throw err;
