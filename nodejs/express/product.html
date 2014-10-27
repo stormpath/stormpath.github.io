@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Product Guide &mdash; Express-Stormpath 0.4.6 documentation</title>
+  <title>Product Guide &mdash; Express-Stormpath 0.4.9 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Express-Stormpath 0.4.6 documentation" href="index.html"/>
+    <link rel="top" title="Express-Stormpath 0.4.9 documentation" href="index.html"/>
         <link rel="next" title="Getting Help" href="help.html"/>
         <link rel="prev" title="Quickstart" href="quickstart.html"/> 
 
@@ -88,6 +88,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#access-user-data">Access User Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#handling-events">Handling Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#working-with-custom-user-data">Working With Custom User Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extra-context-for-templates">Extra Context For Templates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#automatic-expansion">Automatic Expansion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api-authentication">API Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-redirect-logic">Customize Redirect Logic</a></li>
@@ -96,6 +97,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#customize-user-registration-login-and-logout-routes">Customize User Registration, Login, and Logout Routes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-the-views">Customize the Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#disable-the-built-in-views">Disable the Built-in Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#passing-extra-variables-to-the-built-in-templates">Passing Extra Variables to the Built-in Templates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-account-verification">Use Account Verification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-password-reset">Use Password Reset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-facebook-login">Use Facebook Login</a></li>
@@ -104,9 +106,16 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="help.html">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributors.html#developers">Developers</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-9">Version 0.4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-8">Version 0.4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-7">Version 0.4.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-6">Version 0.4.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-5">Version 0.4.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-4">Version 0.4.4</a></li>
@@ -141,6 +150,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-8-version-0-4-9">Version 0.4.8 -&gt; Version 0.4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-7-version-0-4-8">Version 0.4.7 -&gt; Version 0.4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-6-version-0-4-7">Version 0.4.6 -&gt; Version 0.4.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-5-version-0-4-6">Version 0.4.5 -&gt; Version 0.4.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-4-version-0-4-5">Version 0.4.4 -&gt; Version 0.4.5</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-3-version-0-4-4">Version 0.4.3 -&gt; Version 0.4.4</a></li>
@@ -530,7 +542,7 @@ user to a special page (<em>instead of the normal registration flow</em>):</p>
 </div>
 <div class="section" id="working-with-custom-user-data">
 <h2>Working With Custom User Data<a class="headerlink" href="#working-with-custom-user-data" title="Permalink to this headline">¶</a></h2>
-<p>In addition to managing basic user fields, Stomrpath also allows you to store
+<p>In addition to managing basic user fields, Stormpath also allows you to store
 up to 10MB of JSON information with each user account!</p>
 <p>Instead of defining a database table for users, and another database table for
 user profile information &#8211; with Stormpath, you don&#8217;t need either!</p>
@@ -556,6 +568,27 @@ model:</p>
 </div>
 <p>As you can see above &#8211; storing custom information on a <tt class="docutils literal"><span class="pre">user</span></tt> account is
 extremely simple!</p>
+</div>
+<div class="section" id="extra-context-for-templates">
+<h2>Extra Context For Templates<a class="headerlink" href="#extra-context-for-templates" title="Permalink to this headline">¶</a></h2>
+<p>Your app might need to add custom data like analytics code to the templates. This
+data will most likely change depending of the environment you are running on and you
+can&#8217;t hardcode it in the template.</p>
+<p>To fix that you can pass extra context to Express-Stormpath like so:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">templateContext</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">extraData</span><span class="o">:</span> <span class="s1">&#39;This is extra data.&#39;</span><span class="p">,</span>
+    <span class="nx">googleAnalyticsID</span><span class="o">:</span> <span class="s1">&#39;UA-0000000-1&#39;</span><span class="p">,</span>
+    <span class="nx">mixpanelID</span><span class="o">:</span> <span class="s1">&#39;123456&#39;</span>
+  <span class="p">}</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>And in each template, you&#8217;ll have access to <tt class="docutils literal"><span class="pre">extraData</span></tt> and the other variables
+you defined. Keep in mind that thosevalues might override the ones from
+Express-Stormpath. If you experience clashes, you might need to check your variable names first.</p>
 </div>
 <div class="section" id="automatic-expansion">
 <h2>Automatic Expansion<a class="headerlink" href="#automatic-expansion" title="Permalink to this headline">¶</a></h2>
@@ -1096,6 +1129,56 @@ following:</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="passing-extra-variables-to-the-built-in-templates">
+<h2>Passing Extra Variables to the Built-in Templates<a class="headerlink" href="#passing-extra-variables-to-the-built-in-templates" title="Permalink to this headline">¶</a></h2>
+<p>If you&#8217;ve started to customize the base Stormpath templates that render the
+registration and login pages (<em>as well as many others</em>), you might have been
+wondering how you can pass extra information into each template &#8211; stuff like
+your Google Analytics tracking code, social sharing stuff, etc.</p>
+<p>As of Express-Stormpath <strong>0.4.9</strong>, you&#8217;re now able to define a JSON object that
+will be automatically available to all of the Stormpath templates!</p>
+<p>The way this works is simple.</p>
+<p>Firstly, you can you specify your template variables during the middleware
+initialization process or via an environment variable:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">templateContext</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">googleAnalyticsCode</span><span class="o">:</span> <span class="s1">&#39;UA-XXX-XX&#39;</span><span class="p">,</span>
+    <span class="nx">intercomId</span><span class="o">:</span> <span class="s1">&#39;xxx&#39;</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>Or, if you prefer environment variables:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span> <span class="kr">export</span> <span class="nx">STORMPATH_TEMPLATE_CONTEXT</span><span class="o">=</span><span class="s1">&#39;{&quot;googleAnalyticsCode&quot;: &quot;UA-XXX-XX&quot;, &quot;intercomId&quot;: &quot;xxx&quot;}&#39;</span>
+</pre></div>
+</div>
+<p>Now that you&#8217;ve defined your variables, you can use them freely inside of your
+customized Stormpath templates!  For example, if you wanted to customize the
+built-in <tt class="docutils literal"><span class="pre">registration.jade</span></tt> template, you could create a new Jade file that
+looks like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">html</span>
+  <span class="nx">body</span>
+    <span class="nx">script</span><span class="p">(</span><span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="p">).</span>
+      <span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span><span class="nx">s</span><span class="p">,</span><span class="nx">o</span><span class="p">,</span><span class="nx">g</span><span class="p">,</span><span class="nx">r</span><span class="p">,</span><span class="nx">a</span><span class="p">,</span><span class="nx">m</span><span class="p">){</span><span class="nx">i</span><span class="p">[</span><span class="s1">&#39;GoogleAnalyticsObject&#39;</span><span class="p">]</span><span class="o">=</span><span class="nx">r</span><span class="p">;</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">]</span><span class="o">=</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">]</span><span class="o">||</span><span class="kd">function</span><span class="p">(){</span>
+      <span class="p">(</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">].</span><span class="nx">q</span><span class="o">=</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">].</span><span class="nx">q</span><span class="o">||</span><span class="p">[]).</span><span class="nx">push</span><span class="p">(</span><span class="nx">arguments</span><span class="p">)},</span><span class="nx">i</span><span class="p">[</span><span class="nx">r</span><span class="p">].</span><span class="nx">l</span><span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="k">new</span> <span class="nb">Date</span><span class="p">();</span><span class="nx">a</span><span class="o">=</span><span class="nx">s</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="nx">o</span><span class="p">),</span>
+      <span class="nx">m</span><span class="o">=</span><span class="nx">s</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="nx">o</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span><span class="nx">a</span><span class="p">.</span><span class="nx">async</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="nx">a</span><span class="p">.</span><span class="nx">src</span><span class="o">=</span><span class="nx">g</span><span class="p">;</span><span class="nx">m</span><span class="p">.</span><span class="nx">parentNode</span><span class="p">.</span><span class="nx">insertBefore</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">m</span><span class="p">)</span>
+      <span class="p">})(</span><span class="nb">window</span><span class="p">,</span><span class="nb">document</span><span class="p">,</span><span class="s1">&#39;script&#39;</span><span class="p">,</span><span class="s1">&#39;//www.google-analytics.com/analytics.js&#39;</span><span class="p">,</span><span class="s1">&#39;ga&#39;</span><span class="p">);</span>
+
+      <span class="nx">ga</span><span class="p">(</span><span class="s1">&#39;create&#39;</span><span class="p">,</span> <span class="s1">&#39;#{googleAnalyticsCode}&#39;</span><span class="p">,</span> <span class="s1">&#39;auto&#39;</span><span class="p">);</span>
+      <span class="nx">ga</span><span class="p">(</span><span class="s1">&#39;send&#39;</span><span class="p">,</span> <span class="s1">&#39;pageview&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>See how the template above now has the Google Analytics Tracking code embedded
+in it?  This is working because the <tt class="docutils literal"><span class="pre">#{googleAnalyticsCode}</span></tt> variable is being
+made available to your templates automatically.</p>
+<p>Lastly, in order to activate your new template, you need to activate it:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">registrationView</span><span class="o">:</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/views/register.jade&#39;</span><span class="p">,</span>
+<span class="p">}))</span>
+</pre></div>
+</div>
+<p>Once you&#8217;ve done that, you&#8217;ll be good to go!</p>
+</div>
 <div class="section" id="use-account-verification">
 <h2>Use Account Verification<a class="headerlink" href="#use-account-verification" title="Permalink to this headline">¶</a></h2>
 <p>As of Express-Stormpath <strong>0.1.8</strong>, it is now possible to easily enable an
@@ -1607,7 +1690,7 @@ currently looks like:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.4.6',
+            VERSION:'0.4.9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
