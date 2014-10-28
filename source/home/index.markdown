@@ -40,7 +40,7 @@ alias: [/index.html]
               <li class="first leaf"><a href="/nodejs/quickstart" title="">Quickstart</a></li>
         <li class="leaf"><a href="/nodejs/api" title="">API Docs</a></li>
               <li class="leaf"><a href="/nodejs/express/" title="">Express Integration</a></li>
-              <li class="leaf"><a href="https://github.com/stormpath/passport-stormpath" title="">Passport.js Integration</a></li>
+              <li class="leaf"><a href="/nodejs/passport/" title="">Passport.js Integration</a></li>
         <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-node" title="">SDK on GitHub</a></li>
               <li class="leaf"><a href="https://www.npmjs.org/package/stormpath" title="">npm Package Info</a></li>
         <li class="last leaf"><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/" title="">Express Sample App</a></li>
