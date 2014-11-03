@@ -9,7 +9,7 @@ title: Using Stormpath's ID Site to Host your User Management UI
 {% enddocs %}
 
 {% docs info %} 
-Currently supported Stormpath SDKs for this feature include: **Java** and **NodeJS**.  Other language platforms are on their way soon.
+Currently supported Stormpath SDKs for this feature include: **Java**, **Node.js**, **Python**.  Other language platforms are on their way soon.
 {% enddocs %}
 
 In this guide, we discuss how to set up Stormpath to host a set of web pages that enable your applications to quickly and securely offer common identity management functions like login, registration, and password reset.
@@ -182,7 +182,7 @@ The Stormpath SDK forwards information to the ID Site including a
 To build an ID Site URL for redirection, you must ask the Stormpath `Application` object for an `ID Site URL Builder`.  From the builder, you can set important properties to pass information and make sure the ID Site can call back to your application.
 
 To get an `ID Site URL Builder`:
-{% codetab id:id-site-builder langs:java node %}
+{% codetab id:id-site-builder langs:java node python%}
 ------
 Application application = client.getResource(applicationRestUrl, Application.class);
 
@@ -194,7 +194,7 @@ client.getApplication(applicationRestUrl, function(err, application) {
   });
 });
 ------
-
+url = app.build_id_site_redirect_url("https://www.mysite.com/dashboard")
 ------
 {% endcodetab %}
 
@@ -239,7 +239,7 @@ To demonstrate how the SDK works, we’ll use an example. Imagine you are  build
 Once the user has logged in, created an account, or verified an account, the ID Site will redirect the user along with a security assertion back to your application.  ID Site will use the `Callback URI` you included when you first redirected the user to ID Site.  The Stormpath SDK will verify the cryptographic signature on the assertion and and unpacks the user information. 
 
 For example:
-{% codetab id:handle-response langs:java node %}
+{% codetab id:handle-response langs:java node python%}
 ------
 public void dashboard(HttpServletRequest request, HttpServletResponse response) {
      Application application = client.getResource(applicationRestUrl, Application.class);
@@ -260,7 +260,11 @@ app.get('/dashboard',function(req,res) {
   });
 });
 ------
-
+result = app.handle_id_site_callback(url_response) # feed the whole URI to the method (with parameters and all)
+if result is not None:
+    print result.account
+    print result.account.is_new_account # if the user came to the callback uri from the register screen
+    print result.state # if any state was set during the creation of the redirect URI
 ------
 {% endcodetab %}
 
