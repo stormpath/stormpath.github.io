@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Product Guide &mdash; Express-Stormpath 0.4.9 documentation</title>
+  <title>Product Guide &mdash; Express-Stormpath 0.5.2 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Express-Stormpath 0.4.9 documentation" href="index.html"/>
+    <link rel="top" title="Express-Stormpath 0.5.2 documentation" href="index.html"/>
         <link rel="next" title="Getting Help" href="help.html"/>
         <link rel="prev" title="Quickstart" href="quickstart.html"/> 
 
@@ -84,6 +84,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#enforce-user-authorization">Enforce User Authorization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#session-management">Session Management</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#restrict-session-duration-expiration">Restrict Session Duration / Expiration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#making-session-cookies-work-on-subdomains">Making Session Cookies Work on Subdomains</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#enable-caching">Enable Caching</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#access-user-data">Access User Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#handling-events">Handling Events</a></li>
@@ -95,7 +96,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#customize-user-registration-fields">Customize User Registration Fields</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-user-login-fields">Customize User Login Fields</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-user-registration-login-and-logout-routes">Customize User Registration, Login, and Logout Routes</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#customize-the-views">Customize the Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-views-routes">Custom Views &amp; Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customize-the-built-in-views">Customize the Built-in Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#disable-the-built-in-views">Disable the Built-in Views</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#passing-extra-variables-to-the-built-in-templates">Passing Extra Variables to the Built-in Templates</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-account-verification">Use Account Verification</a></li>
@@ -113,6 +115,9 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-2">Version 0.5.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-1">Version 0.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-0">Version 0.5.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-9">Version 0.4.9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-8">Version 0.4.8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-7">Version 0.4.7</a></li>
@@ -150,6 +155,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-1-version-0-5-2">Version 0.5.1 -&gt; Version 0.5.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-0-version-0-5-1">Version 0.5.0 -&gt; Version 0.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-9-version-0-5-0">Version 0.4.9 -&gt; Version 0.5.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-8-version-0-4-9">Version 0.4.8 -&gt; Version 0.4.9</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-7-version-0-4-8">Version 0.4.7 -&gt; Version 0.4.8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-6-version-0-4-7">Version 0.4.6 -&gt; Version 0.4.7</a></li>
@@ -404,6 +412,30 @@ logged in without activity before being forced to log into their account again.<
 <p class="last">The <tt class="docutils literal"><span class="pre">sessionDuration</span></tt> setting expects an integer, which must be the number
 of <strong>milliseconds</strong> before the session will expire &#8211; if you miscalculate
 this number, your sessions will expire very quickly!</p>
+</div>
+</div>
+<div class="section" id="making-session-cookies-work-on-subdomains">
+<h2>Making Session Cookies Work on Subdomains<a class="headerlink" href="#making-session-cookies-work-on-subdomains" title="Permalink to this headline">¶</a></h2>
+<p>If your application and users are going to be accessing multiple subdomains &#8211;
+you will most likely want to provide a seamless user experience &#8211; you don&#8217;t
+want to force users to log in each time they visit a new subdomain &#8211; right?</p>
+<p>In order to make this work, you need to modify the <tt class="docutils literal"><span class="pre">sessionDomain</span></tt> middleware
+setting:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">sessionDomain</span><span class="o">:</span> <span class="s1">&#39;mysite.com&#39;</span><span class="p">,</span> <span class="c1">// Make the session cookie work on all mysite.com subdomains.</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>By default, sessions will <em>only</em> work on the subdomain in which the user
+initially logged in.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you explicitly set a domain as shown above &#8211; things will NOT work
+locally.  Once you&#8217;ve set the domain option, users will only be able to log
+in when accessing that domain directly.</p>
 </div>
 </div>
 <div class="section" id="enable-caching">
@@ -1016,8 +1048,77 @@ modify your app&#8217;s config.</p>
 </div>
 <p>Then visit <tt class="docutils literal"><span class="pre">/welcome</span></tt>, you&#8217;d see your registration page there, instead!</p>
 </div>
-<div class="section" id="customize-the-views">
-<h2>Customize the Views<a class="headerlink" href="#customize-the-views" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="custom-views-routes">
+<h2>Custom Views &amp; Routes<a class="headerlink" href="#custom-views-routes" title="Permalink to this headline">¶</a></h2>
+<p>Now that your website is fully functioning with login and registration,
+you&#8217;ll want to add your own pages to the site!  In Express these are
+referred to as views that are served by routes.</p>
+<p>You  need to tell Express which templating engine you&#8217;d like to use.
+While we use Jade for the built-in views you are free to use your engine
+of choice when creating your own pages.</p>
+<div class="section" id="using-jade">
+<h3>Using Jade<a class="headerlink" href="#using-jade" title="Permalink to this headline">¶</a></h3>
+<p>If you wish to use Jade, you&#8217;ll need to add the Jade package to your project:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="o">--</span><span class="nx">save</span> <span class="nx">jade</span>
+</pre></div>
+</div>
+<p>Then declare this in your configuration:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;views&#39;</span><span class="p">,</span> <span class="s1">&#39;./views&#39;</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;view engine&#39;</span><span class="p">,</span> <span class="s1">&#39;jade&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>With that you&#8217;re good to go!  Going back to our previous example, let&#8217;s say
+we had a page that we wanted to serve at <tt class="docutils literal"><span class="pre">/secret</span></tt>.  We&#8217;ll create a file
+<tt class="docutils literal"><span class="pre">views/secret.jade</span></tt> and put this template in it:</p>
+<div class="highlight-javascript"><div class="highlight"><pre>html
+  head
+    title=title
+  body
+    p Hello, #{user.username}
+    p You are permitted to see the secrets
+</pre></div>
+</div>
+<p>Then create a route handler for this page:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/secret&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="s1">&#39;secret&#39;</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">title</span><span class="o">:</span> <span class="s1">&#39;Top Secret HQ&#39;</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-ejs">
+<h3>Using EJS<a class="headerlink" href="#using-ejs" title="Permalink to this headline">¶</a></h3>
+<p>Jade not your thing?  No problem!  EJS is just as easy to configure.</p>
+<p>Just install the package:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">npm</span> <span class="nx">install</span> <span class="o">--</span><span class="nx">save</span> <span class="nx">ejs</span>
+</pre></div>
+</div>
+<p>Then configure your app like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;views&#39;</span><span class="p">,</span> <span class="s1">&#39;./views&#39;</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">engine</span><span class="p">(</span><span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;ejs&#39;</span><span class="p">).</span><span class="nx">renderFile</span><span class="p">);</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;view engine&#39;</span><span class="p">,</span> <span class="s1">&#39;html&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>EJS uses HTML, so your file will now be named <tt class="docutils literal"><span class="pre">views/secret.html</span></tt> and will
+look like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre>&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;&lt;%= title %&gt;&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;Hello, &lt;%= user.username %&gt;&lt;/p&gt;
+    &lt;p&gt;You are permitted to see the secrets&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre></div>
+</div>
+<p>The route handler will look exactly the same as the Jade example above.  That
+is the beauty of the templating layer in Express!</p>
+</div>
+</div>
+<div class="section" id="customize-the-built-in-views">
+<h2>Customize the Built-in Views<a class="headerlink" href="#customize-the-built-in-views" title="Permalink to this headline">¶</a></h2>
 <p>Although I personally find our registration and login pages to be incredibly
 good looking &#8211; I realize that you might not share my same design passion!</p>
 <p>Express-Stormpath was built with customizability in mind, and makes it very easy
@@ -1690,7 +1791,7 @@ currently looks like:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.4.9',
+            VERSION:'0.5.2',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
