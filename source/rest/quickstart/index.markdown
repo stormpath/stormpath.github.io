@@ -25,6 +25,10 @@ of this quickstart.
 
 Let's get started!
 
+{% docs note %}
+This quickstart uses cURL. cURL is pre-installed on many Linux and Mac systems. Windows users can download a version at curl.haxx.se/. When using HTTPS on Windows, ensure that your system meets the cURL requirements for SSL.
+{% enddocs %}
+
 ***
 
 ## Get an API Key
