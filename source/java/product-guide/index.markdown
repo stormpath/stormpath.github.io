@@ -261,6 +261,7 @@ The core component concepts of the SDK are as follows:<br />
 * **DataStore** is central to the Stormpath SDK. It is responsible for managing all Java `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on Java `resource` objects into REST requests to the Stormpath API server as necessary. It works between your application and the Stormpath API server.
 	* **RequestExecutor** is an internal infrastructure component used by the `DataStore` to execute HTTP requests (`GET`, `PUT`, `POST`, `DELETE`) as necessary. When the DataStore needs to send a Java `Resource` instance state to or query the server for resources, it delegates to the RequestExecutor to perform the actual HTTP requests. The Stormpath SDK default `RequestExecutor` implementation is `HttpClientRequestExecutor` which uses [Apache HTTPComponents](http://hc.apache.org/) to execute the raw requests and read the raw responses.
 	* **MapMarshaller** is an internal infrastructure component used by the `DataStore` to convert JSON strings into Java `Object` instances or the reverse. The map instances are used by the `ResourceFactory` to construct standard Java objects representing REST resources. The Stormpath SDK default `MapMarshaller` uses [Jackson](https://github.com/FasterXML/jackson).
+	* **Cache** is an internal infrastructure component used by the `DataStore` to access data and translate it into standard Java `resource` objects. The Cache fetches or saves `resource` data from or to its internal storage instead of the Stormpath server. The cache is configurable and can use different [caching mechanisms](#caching). This saves on Stormpath API server calls if the data is already available inside the cache. Each cached resource is represented as a `CacheEntry`.
 	* **ResourceFactory** is an internal infrastructure component used by the `DataStore` to convert REST resource map data into standard Java `resource` objects. The ResourceFactory uses Objects from `MapMarshaller` to construct the Java resource instances.
 	* **Resources** are standard Java objects that have a 1-to-1 correlation with REST data resources in the Stormpath API server such as applications and directories. Applications directly use these `resource` objects for security needs, such as authenticating user accounts, creating groups and accounts, finding application accounts, assigning accounts to groups, and resetting passwords.
 
@@ -304,6 +305,46 @@ The previous lookup becomes:
 	Directory directory = account.getDirectory();
 
 If the directory already exists in memory because the `DataStore` has previously loaded it, the directory is immediately returned. However, if the directory is not present, the directory `href` is used to return the directory properties (the immediate data loaded) automatically for you. This technique is known as *lazy loading* which allows you to traverse entire object graphs automatically without requiring constant knowledge of `href` URLs.
+
+<a class="anchor" name="caching"></a>
+### Caching
+
+The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we access the resource again and the data inside the cache hasn't yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath. 
+
+By default, a simple production-grade in-memory `CacheManager` will be enabled when the Client instance is
+created. This `CacheManager` implementation has the following characteristics:
+
+1. It assumes a default time-to-live and time-to-idle of 1 hour for all cache entries.
+2. It auto-sizes itself based on your application's memory usage.  It will not cause OutOfMemoryExceptions.
+
+But, please note that the default cache manager is not suitable for an application deployed across multiple JVMs. As a result, if your application that uses a Stormpath Client instance is deployed across multiple JVMs, you SHOULD ensure that the Client is configured with a custom `CacheManager` implementation that uses coherent and clustered/distributed memory, like Hazelcast.
+
+If your application is deployed on a <b>single JVM</b> and you want to use the default `CacheManager` implementation, but the default cache configuration does not meet your needs, you can specify a different configuration. For example:</p>
+
+    CacheManager cacheManager = Caches.newCacheManager()
+        .withDefaultTimeToLive(1, TimeUnit.DAYS) //general default
+        .withDefaultTimeToIdle(2, TimeUnit.HOURS) //general default
+        .withCache(Caches.forResource(Application.class) //Application-specific cache settings
+            .withTimeToLive(1, TimeUnit.HOURS)
+            .withTimeToIdle(30, TimeUnit.MINUTES))
+        .withCache(Caches.forResource(Directory.class) //Directory-specific cache settings
+            .withTimeToLive(30, TimeUnit.MINUTES))
+    .build(); //build the CacheManager
+
+    Client client = Clients.builder().setApiKey(ApiKeys.builder().setFileLocation(path).build()).setCacheManager(cacheManager).build();
+
+The cache options dictionary can have a complex structure if we want to fine-tune the cache by using all the available options:
+
+1. The `newCacheManager()` operation instantiates a new CacheManager suitable for <b>SINGLE-JVM APPLICATIONS</b>.  If your application is deployed on multiple JVMs (e.g. for a distributed/clustered web app), you might not want to use this method and instead implement the `CacheManager` API directly to use your distributed/clustered cache technology of choice.
+2. The `forResource(Class)` operation configures a cache region that will store data for instances of that class. E.g. `Application` resources have a TTL of 1 hour but `Directory` resources have a 30-minute TTL. These kind of resource groups are called `regions`, each with its own options:
+3. `withTimeToLive` - Time To Live. The amount of time after which the stored resource data will be considered expired.
+4. `withTimeToIdle` - Time To Idle. If this amount of time has passed after the resource was last accessed, it will be considered expired.
+
+While production applications will usually enable a working CacheManager as described above, you might wish to disable caching entirely when testing or debugging to remove 'moving parts' for better clarity into request/response behavior.  You can do this by configuring a <em>disabled</em> `CacheManager` instance. For example:</p>
+
+    Client client = Clients.builder().setCacheManager(
+        Caches.newDisabledCacheManager()
+    ).build();
 
 <a class="anchor" name="error-handling"></a>
 ### Error Handling
