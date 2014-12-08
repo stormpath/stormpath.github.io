@@ -2032,6 +2032,7 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="password-reset-url"></a>`href` | Fully qualified URL of the password reset token resource. | String | <span>--</span>
 <a class="anchor" name="password-reset-email"></a>`email` | Email address of the account for which the password reset will occur. | String | Valid email address. Required.
 <a class="anchor" name="password-reset-acount"></a>`account` | A link to the account for which the password reset will occur. | Link | Cannot set in a request. Returned in a response only.
+`accountStore` | An optional link to the application's `Account Store` that you are certain contains the account attempting for the password reset | Link | --
 
 The application password reset tokens endpoint supports the password reset workflow for an account in the application assigned [account stores](#account-store-mappings).
 
