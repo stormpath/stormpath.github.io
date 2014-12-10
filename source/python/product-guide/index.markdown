@@ -3525,7 +3525,7 @@ Once an `Account` is retreived, Stormpath maps common fields for the Facebook Us
     print acc.provider_data
     print acc.provider_data.access_token
 
-### Using Stormpath to Secure and Manage API Services
+## Using Stormpath to Secure and Manage API Services
 
 **This Feature is currently in beta**. If you have any questions, bug reports, or enhancement requests please email support@stormpath.com.
 
@@ -3546,7 +3546,7 @@ Throughout this document we will use the following words with very specific mean
 
 **API Keys** - Represents an API Key Id and Secret pair which is generated for a developer integrating with your API.
 
-#### How do I use Stormpath for API Key Management?
+### How do I use Stormpath for API Key Management?
 
 If you haven't already, you should first familiarize your self with Stormpath basics in one of our [7-Minute Tutorials](https://stormpath.com/tutorial/).
 
@@ -3556,7 +3556,7 @@ In order to implement API Key management with Stormpath you'll need to do the fo
   * Create / Manage API Keys for the Developers' Accounts
   * Use the Stormpath SDK to Authenticate and Generate Tokens for your API
 
-#### Create an Account in Stormpath for your Developers
+### Create an Account in Stormpath for your Developers
 
 First, you will need user accounts in Stormpath to represent the people that are developing against your API.
 Accounts can not only represent Developers, but also can be used to represent services, daemons, processes,
@@ -3565,9 +3565,7 @@ section [here](#account-create).
 
 By assigning API keys directly to a User Account, as opposed to a general organization-wide set of keys, you get full traceability and accountability back to the specific individual in the event of an accident or breach on their end.
 
-
-
-#### Create / Manage API Keys for the Developers' Accounts
+### Create / Manage API Keys for the Developers' Accounts
 
 After you create an account for a developer, you will need to generate an API Key (or multiple) to be used when accessing your API.  Each account will have an `api_keys` property that contains a collection of their API Keys. There will also be a list of API keys on a account's profile in the Stormpath Admin Console.  You will be able to both create and manage keys in both.
 
@@ -3594,17 +3592,18 @@ The `api_keys` collection can be used to easily display the API Keys back to the
     api_key.delete()
 
 The `ApiKey` returned will have the following properties:
-Attribute | Description | Type | Valid Value
-:----- | :----- | :---- | :----
-`id` | The unique identifier for the API Key | String | <span>--</span>
-`secret` | A secret identifier. Unique across all tenants. | String | --
-`status` | A property that represent the status of the key.  Keys with a disabled status will not be able to authenticate. | ApiKeyStatus | ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED,
-`account` | A link to the ApiKey's applications. | Account | <span>--</span>
-`tenant` | A link to the ApiKey's tenant. | Tenant | <span>--</span>
+
+| Attribute | Description | Type | Valid Value
+| :----- | :----- | :---- | :----
+| `id` | The unique identifier for the API Key | String | <span>--</span>
+| `secret` | A secret identifier. Unique across all tenants. | String | --
+| `status` | A property that represent the status of the key.  Keys with a disabled status will not be able to authenticate. | ApiKeyStatus | ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED,
+| `account` | A link to the ApiKey's applications. | Account | <span>--</span>
+| `tenant` | A link to the ApiKey's tenant. | Tenant | <span>--</span>
 
 After the API Key is created, you will need to deliver the API Key ID and Secret to the developer so they can start using them to access your API securely.  In most cases, this is done by displaying the API keys on a web page.
 
-#### Using the Stormpath SDK to Authenticate and Generate Tokens for your API
+### Using the Stormpath SDK to Authenticate and Generate Tokens for your API
 
 The Stormpath SDK does all the heavy lifting for you in your application.  It automatically processes authentications via HTTP Basic or OAuth 2.0. In addition, the SDK will handle more advance OAuth 2.0 features like _scope_ and _time-to-live_.
 
@@ -3617,7 +3616,7 @@ To demonstrate how the SDK works, we'll use an example.  We are building a Storm
     base64.b64encode(id + ":" + secret)
 
 
-##### Basic Auth
+#### Basic Auth
 
 The developer request would look something like this (using HTTPS Basic authentication):
 
@@ -3650,7 +3649,7 @@ The SDK provides a caching layer to ensure fast response times in your API by re
 
 **Note** When doing Basic auth the result returned will have no token attached to it, ie. `result.token` will be `None`.
 
-##### Exchanging API Keys for OAuth 2.0 Bearer Tokens
+#### Exchanging API Keys for OAuth 2.0 Bearer Tokens
 
 In the section above, we show how to perform Basic authentication on a request.  Basic authentication is common in the market, but there are more secure methods for securing your API. This is one of benefit of OAuth. Instead of passing base64 encoded API keys over the wire, you can exchange an API Key Id and Secret for an Access Token, and use the Access Token as a Bearer Token to authentication for a protected API or resource.
 
@@ -3708,7 +3707,7 @@ The `allowed_scopes` parameter has a twofold meaning here, for token generation 
 all the valid scopes for that particular Stormpath Application. The second use-case is documented below.
 
 
-##### Using OAuth as Authentication for your REST API
+#### Using OAuth as Authentication for your REST API
 
 After you return an OAuth Access Token to a developer using your API service, they can start using the OAuth Access Token to validate authentication to your service.
 
