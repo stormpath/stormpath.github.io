@@ -3546,11 +3546,11 @@ Throughout this document we will use the following words with very specific mean
 
 **API Keys** - Represents an API Key Id and Secret pair which is generated for a developer integrating with your API.
 
-#### How do I use Stormpath for API Key Management?
+#### How do I use Stormpath for API Authentication?
 
 If you haven't already, you should first familiarize your self with Stormpath basics in one of our [7-Minute Tutorials](https://stormpath.com/tutorial/).
 
-In order to implement API Key management with Stormpath you'll need to do the following:
+In order to implement API Authentication with Stormpath you'll need to do the following:
 
   * Create a User Account for each of your Developers
   * Create / Manage API Keys for the Developers' Accounts
