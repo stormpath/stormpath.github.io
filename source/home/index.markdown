@@ -25,7 +25,7 @@ alias: [/index.html]
               <li class="first leaf"><a href="/guides/multi-tenant" title="">Multi-Tenant SaaS Guide</a></li>
               <li class="leaf"><a href="/guides/using-id-site" title="">ID Site Guide</a></li>
               <li class="leaf"><a href="/guides/social-integrations" title="">Social Integration Guide</a></li>
-              <li class="leaf"><a href="/guides/api-key-management" title="">API Key Management Guide</a></li>
+              <li class="leaf"><a href="/guides/api-key-management" title="">API Authentication Guide</a></li>
               <li class="leaf"><a href="/guides/ad-ldap" title="">Active Directory / LDAP Guide</a></li>
               <li class="last leaf"><a href="/guides/dev-test-prod-environments" title="">Development and Production Environments Guide</a></li>
             </ul>

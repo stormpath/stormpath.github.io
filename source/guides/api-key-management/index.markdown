@@ -1,22 +1,18 @@
 ---
 layout: doc
 lang: guides
-title: Using Stormpath for API Key Management 
+title: Using Stormpath for API Authentication
 alias: [/guides/securing-your-api]
 ---
 
 <!-- this should be an Octopress include -->
-{% docs info %}
- **This feature is currently in Beta.**  If you have any questions, bug reports, or enhancement requests please email support@stormpath.com. 
-{% enddocs %}
-
 {% docs info %}
 Currently supported Stormpath SDKs for this feature include: **Java**, **Node.js**, **Python**
 {% enddocs %}
 
 In this guide, we discuss how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services.  Stormpath provides not only the user management piece around API Keys, but also allows you to associate permissions and custom data with the accounts for advanced use-cases.  
 
-## Why should I use Stormpath for API Key Management?
+## Why should I use Stormpath for API Authentication?
 With few lines of code, you can quickly and easily lock down your own APIs with OAuth-based authentication and secure API key management.   
 
 Stormpath offers a complete solution that securely and easily helps you manage developer accounts, create and manage API Keys, and generate OAuth 2.0 bearer tokens to support Access Token authentication.   
@@ -39,11 +35,11 @@ Throughout this document we will use the following words with very specific mean
 
 **API Keys** - Represents an API Key Id and Secret pair which is generated for a developer integrating with your API. 
 
-## How do I use Stormpath for API Key Management?
+## How do I use Stormpath for API Authentication?
 
 If you haven't already, you should first familiarize your self with Stormpath basics in one of our [7-Minute Tutorials](https://stormpath.com/tutorial/).
 
-In order to implement API Key management with Stormpath you'll need to do the following:
+In order to implement API Authentication with Stormpath you'll need to do the following:
 
 + Create a User Account for each of your Developers 
 + Create / Manage API Keys for the Developers' Accounts
