@@ -288,6 +288,51 @@ Communication between ID site and Stormpath is using one time use tokens.  So no
 Info being sent from ID site back to your app is being signed that only your app and id site have shared secret.  All of this is transparent to the developer its all handled by the sdk.
 
 ALl comm is over SSL.  Host their SSL -->
+### Single Sign On for Multiple Applications
+
+ID Site supports single-sign-on (SSO) for multiple applications.  SSO allows your user to log into ID Site once, and allows ID Site to make send a cryptographically signed JSON Web Token (JWT) to other applications.
+
+The way that SSO works is that ID Site will keep a configurable session for authenticated users.  When a user is sent from your application to ID Site, if ID Site can confirm that the session is still valid for the user, they will be automatically redirected to the `callbackUri`.  This `callbackUri` can be the originating application or any application supported by a Stormpath SDK.
+
+To enable these applications for SSO, there is some configuration needed in the Admin Console.  This includes setting up the `Authorized Redirect URIs` and configuring session properties.
+
+To set up the `Authorized Redirect URIs`, log into the Admin Console and:
+
++ Click on the `ID Site` tab
++ Add `Authorized Redirect URIs` for each of your applications you want to use for SSO.  This allows Stormpath to only redirect the user to applications that you configuration.
+
+When on the `ID Site` tab, configure the `Session Max Age` and `Session Time to Live` to meet your application's needs.
+
++ Session Max Age - The maximum time the session is allowed to be valid, regardless on how often the user visits ID Site
++ Session Time to Live - The maximum time that the session is allowed to idle.
+
+To show how you would configure a couple application for SSO, let's use two sample applications `trooperapp.com` and `darksidecentral.com`.   Both of these applications have `Authorized Redirect URIs` configured in the Stormpath Admin Console to receive callbacks from the ID Site:
+
++ http://trooperapp.com/id-site-sso
++ http://darksidecentral.com/id-site-sso
+
+To get a user from `trooperapp.com` to `darksidecentral.com`, we can use the `ID Site URL Builder`
+
+{% codetab id:id-site-builder langs:java node python%}
+------
+Application application = client.getResource(trooperAppStormpathHref, Application.class);
+
+IdSiteUrlBuilder idSiteBuilder = application.newIdSiteUrlBuilder();
+idSiteBuilder.setCallbackUri('http://darksidecentral.com/id-site-sso');
+
+------
+client.getApplication(trooperAppStormpathHref, function(err, application) {
+  var url = application.createIdSiteUrl({
+    callbackUri: 'http://darksidecentral.com/id-site-sso'
+  });
+});
+------
+url = app.build_id_site_redirect_url("http://darksidecentral.com/id-site-sso")
+------
+{% endcodetab %}
+
+When redirecting the user to the URL that the `ID Site URL Builder` generates, the user if the user has a valid session based on the `Session Max Age` and `Session Idle Time`, they will be automatically redirected to the callbackUri, which is `http://darksidecentral.com/id-site-sso`.  Darksidecentral can then use the [Stormpath SDK to consume the response](#consuming-responses-from-the-id-site-to-your-application) from the ID Site to get the authenticated account and its properties.
+
 
 ## Customizing the Default ID Site
 
