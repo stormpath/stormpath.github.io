@@ -1,7 +1,7 @@
 ---
 layout: doc
 lang: java
-description: "7-minute Tutorial for Java"
+description: 7-minute Stormpath Tutorial for Java. Get connected to the Stormpath API in minutes.
 image: https://stormpath.com/images/tutorial/java-icon.png
 title: Stormpath Java Quickstart
 ---

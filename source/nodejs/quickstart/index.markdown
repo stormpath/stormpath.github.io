@@ -1,7 +1,7 @@
 ---
 layout: doc
 lang: nodejs
-description: "7-minute Tutorial for Node.js"
+description: 7-minute Stormpath Tutorial for Node.js. Get connected to the Stormpath API in minutes.
 image: https://stormpath.com/images/blog/og-node-stormpath.png
 title: Stormpath Node.js Quickstart
 ---

@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: php
+description: Authenticate, manage and secure users with the Stormpath PHP SDK. Complete API reference documentation.
 title: Stormpath PHP Product Guide
 ---
 

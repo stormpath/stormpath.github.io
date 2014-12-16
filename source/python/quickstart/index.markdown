@@ -1,7 +1,7 @@
 ---
 layout: doc
 lang: python
-description: "7-minute Tutorial for Python"
+description: 7-minute Stormpath Tutorial for Python. Get connected to the Stormpath API in minutes.
 image: https://stormpath.com/images/tutorial/python.png
 title: Stormpath Python Quickstart
 ---

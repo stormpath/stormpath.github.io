@@ -1,7 +1,7 @@
 ---
 layout: doc
 lang: rest
-description: "7-minute Tutorial for REST"
+description: 7-minute Stormpath Tutorial for REST. Get connected to the Stormpath API in minutes.
 image: https://stormpath.com/images/tutorial/rest.png
 title: Stormpath REST Quickstart
 ---

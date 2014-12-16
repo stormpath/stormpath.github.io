@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: java
+description: Complete product guide and API reference documentation for the Stormpath Java SDK.
 title: Stormpath Java Product Guide
 ---
 
