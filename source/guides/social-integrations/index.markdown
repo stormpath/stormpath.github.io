@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: guides
+description: Stormpath makes it easy to login users with Facebook, Google, Linkedin, or GitHub in one API call
 title: Integrating Stormpath with Facebook and Google
 ---
 

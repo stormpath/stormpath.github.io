@@ -1,7 +1,7 @@
 ---
 layout: doc
 lang: php
-description: "7-minute Tutorial for PHP"
+description: 7-minute Stormpath Tutorial for PHP. Get connected to the Stormpath API in minutes.
 image: https://stormpath.com/images/tutorial/php.png
 title: Stormpath PHP Quickstart
 ---

@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: guides
+description: Secure authentication to your API with API Keys and OAuth tokens managed by Stormpath
 title: Using Stormpath for API Authentication
 alias: [/guides/securing-your-api]
 ---

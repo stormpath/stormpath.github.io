@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: console
+description: Learn how to manage your users in the Stormpath admin console.
 title: Stormpath Admin Console Guide
 ---
 

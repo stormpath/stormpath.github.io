@@ -1,7 +1,7 @@
 ---
 layout: doc
 lang: nodejs
-description: "10-minute Tutorial for Express"
+description: 7-minute Stormpath Tutorial for Express.js.  Get connected to the Stormpath API in minutes.
 image: https://stormpath.com/images/tutorial/express.png
 title: Stormpath Express Quickstart
 ---

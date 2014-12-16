@@ -1,5 +1,6 @@
 ---
 layout: doc
+description: Stormpath error code documentation plus examples
 title: Stormpath Error Codes
 alias: [/stormpath-error-codes]
 lang: rest

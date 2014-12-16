@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: guides
+description: Learn how to design and implement multi-tenant user models and secure data partitions with Stormpath for SaaS
 title: Multi-Tenant SaaS Applications with Stormpath
 ---
 

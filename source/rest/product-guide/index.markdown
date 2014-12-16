@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: rest
+description: Authenticate, manage and secure users easily. Complete product guide for the Stormpath REST API.
 title: Stormpath REST API Product Guide
 ---
 

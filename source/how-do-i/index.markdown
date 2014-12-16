@@ -1,5 +1,6 @@
 ---
 layout: doc
+description: Quick guides to common user management tasks with Stormpath.
 title: How Do I...?
 lang: rest
 ---

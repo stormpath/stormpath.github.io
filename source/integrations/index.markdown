@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: rest
+description: Stormpath framework integrations, including Express.js, Flask, Apache Shiro, Spring Security and more.
 title: Integrations
 body_id: [integrations-page]
 ---

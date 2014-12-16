@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: rest
+description: Get started on Stormpath with complete, easy sample applications in Node.js, Java, Python and many more.
 title: Sample Apps
 body_id: [sample-apps-page]
 ---

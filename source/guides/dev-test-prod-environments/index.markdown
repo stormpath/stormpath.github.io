@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: guides
+description: Separate production users from development and testing data for easy, secure development against Stormpath.
 title: Setting up Development and Production Environments
 ---
 

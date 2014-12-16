@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: guides
+description: Use Stormpath to give users in existing Active Directory/LDAP servers access to your new web applications.
 title: Integrating Stormpath with Active Directory and LDAP
 ---
 

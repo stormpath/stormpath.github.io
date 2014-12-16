@@ -1,7 +1,7 @@
 ---
 layout: doc
 lang: python
-description: "10-minute Tutorial for Flask"
+description: 7-minute Stormpath Tutorial for Flask. Get connected to the Stormpath API in minutes. 
 image: https://stormpath.com/images/tutorial/python.png
 title: Stormpath Flask Quickstart
 ---

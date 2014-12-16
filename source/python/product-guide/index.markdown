@@ -1,6 +1,7 @@
 ---
 layout: doc
 lang: python
+description: Authenticate, manage and secure users with the Stormpath Python SDK. Complete API reference documentation.
 title: Stormpath Python Product Guide
 ---
 

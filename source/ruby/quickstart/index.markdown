@@ -1,7 +1,7 @@
 ---
 layout: doc
 lang: ruby
-description: "7-minute Tutorial for Ruby"
+description: 7-minute Stormpath Tutorial for Ruby. Get connected to the Stormpath API in minutes.
 image: https://stormpath.com/images/tutorial/ruby.png
 title: Stormpath Ruby Quickstart
 ---
