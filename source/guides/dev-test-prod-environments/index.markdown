@@ -29,8 +29,6 @@ In order to separate Production from Staging and other environments, we will cre
 
 A Stormpath Directory is a top-level collection of groups and user accounts.  Directories are completely isolated from each other.  In addition, the collection of Directories and/or Groups associated with an Application make up that Application’s unique user base.  
 
-![Development, Test, and Production User Directoriess](/images/dev-test-prod-dir.png)
-
 Once the Directories are created, they can be mapped to your application giving the users in the Directories to login, reset their passwords, etc.  During development, you can make modifications to existing development Directory and test with the accounts in that directory without affecting production users.
 
 {% docs tip %}

@@ -62,14 +62,14 @@ As an administrator in Stormpath, you have full access to the Stormpath Admin Co
 * [Registering applications](#register-an-application)
 * [Creating directories](#create-a-directory)
 * [Creating groups](#create-a-group)
-* [Managing login sources](#manage-application-login-sources)
+* [Managing account stores](#manage-application-login-sources)
 * [Configuring workload account automation](#workflow-automations)
 
 ### Billing and Subscription Level
 
 When you initially sign up for Stormpath, your account is established with the default Developer subscription level. The Developer level is available for free.
 
-If you would like to view or take advantage of features provided by higher-level subscriptions, in the top corner of the Stormpath Admin Console, click Settings, Subscription. If you upgrade your subscription level, you will also have to provide billing information by clicking **Settings**, **Billing**.
+If you would like to view or take advantage of features provided by higher-level subscriptions, in the top corner of the Stormpath Admin Console, click the drop drown, Subscription. If you upgrade your subscription level, you will also have to provide billing information by clicking the drop down, **Billing**.
 
 For additional information on the various service offerings and subscription levels, see the [pricing page](https://stormpath.com/monthly-pricing-plans).
 
@@ -85,14 +85,14 @@ When you initially sign up for Stormpath, three resources are automatically esta
 	* Is always located in the Stormpath Administrators directory.
 	* Is initially responsible for inviting new administrators and managing the Stormpath tenant.
 
-* An application named `Stormpath IAM`, which:
+* An application named `Stormpath`, which:
 	* Cannot be disabled or deleted.
 	* Controls access to the Stormpath Admin Console and API.
 
 * A directory named `Stormpath Administrators`, which:
 	* Cannot be disabled or deleted.
-	* Is automatically associated with the Stormpath IAM application.
-	* Cannot be removed as a login source for the Stormpath IAM application, but it can be moved in the login source priority order.
+	* Is automatically associated with the Stormpath application.
+	* Cannot be removed as a account store for the Stormpath application, but it can be moved in the account store priority order.
 	* Has various predetermined workflow automations that cannot be altered.
 	* Provides any user accounts within this directory log in access to the Stormpath Admin Console.
 	* Provides any user accounts within this directory with API keys direct API access.
@@ -103,37 +103,38 @@ When you initially sign up for Stormpath, three resources are automatically esta
 
 You can invite other administrator users to help you manage Stormpath applications, directories, and other aspects of your Stormpath tenant. 
 
-![Invite Another Admin](/images/docs/InviteAdmin.png =670x "Invite Another Admin")
+To invite an administrator, use the `Add Administrator` feature. This feature sends an invitation email for other administrators to collaborate with you in Stormpath.
 
-To invite an administrator, use the Add Admin feature. This feature sends an invitation for other administrators to collaborate with you in Stormpath.
+To invite an admin to your tenant:
 
-The invitees must complete their account information. When the information is submitted, the new administrator user account is added to the Stormpath Administrators directory and gains access to the applications, directories, and accounts you have created.
+1. Log in to the Admin Console
+2. Click the drop down menu at top right that includes your tenant name and subscription plan
+3. Click on **Manage Admins**
+4. On the **Tenant Adminstrators** page, click the **Add Administrator** button
+5. Fill in the email, subject, and body of the email if needed
+6. Click Invite 
+
+This will send an email invitation to the email specified. The invitees must complete their account information, once receiving the email and clicking on the invitation link that will send them to a web page. When the information is submitted, the new administrator user account is added to the Stormpath Administrators directory and gains access to the applications, directories, and accounts you have created.
 
 ### Manage API Keys
 
 As an administrator for the tenant, you must manage the associated API keys. 
 
-API keys give you access to manage your Stormpath account, you risk exposing confidential information if you fail to take proper care of you API keys.
+API keys give you access to manage your Stormpath Tenant, you risk exposing confidential information if you fail to take proper care of you API keys.
 
 With API keys, you must never:
 
-* Send API keys by email
+* Send API keys by email, or transfer API keys unencrypted
 * Share API keys with other people in your organization - for example saving the keys in public or cloud-based folders
-* Transfer API keys unencrypted
 * Commit API keys in source repositories, such as Github
 * Save API keys in configuration files
 
 Best practices:
 
-* Download your own API keys from Stormpath admin console, this will minimize the risk of compromising the keys by transferring them through an insecure channel.
+* Download your own API keys from Stormpath Admin Console, this will minimize the risk of compromising the keys by transferring them through an insecure channel.
 * Set proper privileges on the API keys file (can be read only by the owner of the keys) in the OS.
 * Rotate API keys on a regular basis.
-* Minimize API key transfers.
 * If API key transfer is mandatory, encrypt the key.
-
-{% docs note %}
-You must update the applications using the API keys to use the new ones.
-{% enddocs %}
 
 The following is a command line example of how to compress an apiKey file using tar and gzip and encrypt it using openssl:
 
@@ -154,48 +155,45 @@ To extract and decrypt the API key, the recipient must do the following:
 	$ unzip apiKey.encrypted.zip
 	$ Enter password:
 
-For API keys, you can [assign or create new keys](#assign-new-api-keys), [activate inactive keys](#activate-inactive-keys), [deactivate existing keys](#deactivate-existing-api-keys), or [delete existing keys](#delete-existing-api-keys) for users.
+For API keys, you can [assign or create new keys](#create-new-api-keys), [activate inactive keys](#activate-inactive-keys), [disable existing keys](#deactivate-existing-api-keys), or [delete existing keys](#delete-existing-api-keys) for users.
 
-Deactivating the API key prevents it from making API calls, while deleting the API key permanently removes it from Stormpath.
+Disabling the API key prevents it from making API calls, while deleting the API key permanently removes it from Stormpath.
 
-![API Keys](/images/docs/APIKeys.png =760x "API Keys")
+![API Keys](/images/console/api-keys.png =760x "API Keys")
 
-<a name="assign-new-api-keys"></a>
-#### Assign New API Keys
+<a name="create-new-api-keys"></a>
+#### Create New API Keys
 
 As an administrator, within the Stormpath Administrators directory you can create, or add more, [API keys](#APIKey) to user accounts.
 
-To create a new API key for a user:
+To create a new API key for an Account:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Accounts** tab.
-3. Locate the account and click the account link or under Actions, click **Edit**.
-4. Under Security Credentials, click **Create API Key**.
-5. In the confirmation window, click **Ok**.
+3. Locate the account in the Stormpath Administrator directory filtering the accounts by directory (left pane) or using the search bar.
+4. When clicking the account, on the **Details** pane, scroll down to the bottom of the page to the **API Keys** section and click **Create API Key**.
 
 <a name="activate-inactive-keys"></a>
-#### Activate API Keys
+#### Enable API Keys
 
-To activate a previously deactivated API key for a user:
+To activate a previously disabled API key for an Account:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Accounts** tab.
-3. Locate the account and click the account link or under Actions, click **Edit**.
-4. Under Security Credentials, in the Status column, click **Activate**.
+3. Locate the account in the Stormpath Administrator directory filtering the accounts by directory (left pane) or using the search bar.
+4. When clicking the account, on the **Details** pane, scroll down to the bottom of the page to the **API Keys** 
+5. Find the API Key that you want to enable, and use the status drop down to select **Enabled**
 
 <a name="deactivate-existing-api-keys"></a>
-#### Deactivate API Keys
+#### Disable API Keys
 
-To deactivate an API key for a user:
+To disable an API key for an Account:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Accounts** tab.
-3. Locate the account and click the account link or under Actions, click **Edit**.
-4. Under Security Credentials, in the Status column, click **Deactivate**.<br>
-
-	![Deactivate API Key](/images/docs/DeactivateAPIKey.png =700x "Deactivate API Key")
-
-5. In the confirmation window, click **Ok**.
+3. Locate the account in the Stormpath Administrator directory filtering the accounts by directory (left pane) or using the search bar.
+4. When clicking the account, on the **Details** pane, scroll down to the bottom of the page to the **API Keys** 
+5. Find the API Key that you want to disable, and use the status drop down to select **Disable**
 
 {% docs note %}
 Any applications using this API key with no longer be able to communicate or authenticate with Stormpath. When it is re-activated, the applications will work again.
@@ -208,35 +206,29 @@ To delete an API key for a user:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Accounts** tab.
-3. Locate the account and click the account link or under Actions, click **Edit**.
-4. Under Security Credentials, in the Status column, click **Delete**.<br>
-![Delete API Key](/images/docs/DeleteAPIKey.png =700x "Delete API Key")
-5. In the confirmation window, click **Ok**.<br>The API key has been permanently deleted from Stormpath.
+3. Locate the account in the Stormpath Administrator directory filtering the accounts by directory (left pane) or using the search bar.
+4. When clicking the account, on the **Details** pane, scroll down to the bottom of the page to the **API Keys** 
+5. Find the API Key that you want to delete, and click the **Delete** button in the **Action** column
 
 {% docs note %}
 Deleting an API key permanently removes it from Stormpath, any applications using this API key with no longer be able to communicate or authenticate with Stormpath. To have the application communicate with Stormpath, you must change the API key to an active API key.
 {% enddocs %}
 
-### Workflow Automations
+### Setting up Workflows
 
-Stormpath automates common security workflows that many applications require. These include,  [account registration and verification](#account-registration-and-verification) and [resetting passwords](#password-reset). Configurations for workflow automations are applied at the directory level using the Stormpath Admin Console. You can only use this feature on Stormpath-managed (cloud) directories; workflow automations are not available for LDAP directories. Workflow automations also exist for the default Stormpath Administrator directory, but they cannot be modified.
+Stormpath automates common security workflows that many applications require. These include, [account registration and verification](#account-registration-and-verification) and [resetting passwords](#password-reset). Configurations for workflow automations are applied at the directory level using the Stormpath Admin Console. You can only use this feature on Stormpath-managed (cloud) directories. Workflow automations also exist for the default Stormpath Administrator directory, but they cannot be modified.
 
-{% docs note %}
-The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.
-{% enddocs %}
+The **Account Registration and Verification** workflow manages how accounts are created in your directory. It allows you to control the steps that happen when new users are added to a directory. These steps typically include a verification, verification success, and welcome email. 
 
-The **Account Registration and Verification** workflow manages how accounts are created in your directory. It allows you to control the steps that happen when new users are added to a directory. These steps typically include a verification and welcome email. 
+Within a Directory, you can click on the **Workflows** tab to:
 
-Within the account registration and verification workflow automation feature, you can select:
-
-* **Enable Registration and Verification Workflow** 
-* **Require newly registered accounts to verify their email address**
+* Enable email verification, configure emails related to verifying the account's email address.
+* Enable a welcome email to be sent with information about your application.
+* Configure password reset emails to automate password reset for password reset requests.
 
 Account Registration and Verification is disabled by default on new directories.
-	
-The **Password Reset** workflow configuration manages user password resets through emails and tokens. Password Reset is enabled by default on new directories.
 
-To learn more, see [Manage Workflow Automation](#cloud-directory-workflow-automations).
+To learn more, see [Manage Workflow Automation](#directory-workflows).
 
 ***
 
@@ -244,19 +236,18 @@ To learn more, see [Manage Workflow Automation](#cloud-directory-workflow-automa
 
 An [application](#application) in Stormpath represents a real world software application that communicates with Stormpath for its user management and authentication needs.
 
-When defining an application in Stormpath, it is typically associated with one or more directories or groups. The associated directories and groups form the application user base. The accounts within the associated directories and groups are considered the application users and can login to the application. 
+When defining an application in Stormpath, it is typically associated with one or more directories or groups. These are called `Account Stores` in Stormpath. The associated directories and groups form the application user base. The accounts within the associated directories and groups are considered the application users and can login to the application. 
 
 For applications, you can: 
 
 * [Locate the application REST URL](#locate-the-application-rest-url)
-* [Navigate the application browser](#navigate-the-application-browser)
 * [Register an application](#register-an-application)
 * [Edit an application](#edit-an-application)
-* [Manage application login sources](#manage-application-login-sources) 
+* [Manage application account stores](#manage-application-login-sources) 
 	* [Change default account and group locations](#change-default-account-and-group-locations)
-	* [Add another login source](#add-another-login-source)
-	* [Change the login source priority order](#change-login-source-priority-order)
-	* [Remove login sources](#remove-login-sources)
+	* [Add another account store](#add-another-login-source)
+	* [Change the account store priority order](#change-login-source-priority-order)
+	* [Remove account stores](#remove-login-sources)
 * [Enable an application](#enable-an-application)
 * [Disable an application](#disable-an-application)
 * [Delete an application](#delete-an-application)
@@ -269,22 +260,7 @@ To obtain an application REST URL:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
-3. In the Applications table, click the application name.<br>
-The REST URL appears on the Details tab.<br>
-
-![Application Resturl](/images/docs/AppResturl.png)
-
-### Navigate the Application Browser
-The application browser enables you to view and search for integrated applications.
-
-To view all applications in your tenant:
-
-1. Log in to the Stormpath Admin Console.
-2. Click the **Applications** tab.
-	* This displays the Application Browser, showing all applications that exist in your Stormpath tenant.
-	* A disabled application cannot authenticate any user accounts. <br>
-3. To view or edit an application, click the application name or, under the Actions column, click **Edit**.
-
+3. In the Applications table, click the application name. The REST URL appears on the Details tab.
 
 ### Register an Application
 To associate an [application](#authenticate-accounts) with Stormpath for [authentication](#groups), you must register the application within Stormpath. 
@@ -293,11 +269,10 @@ To register an application:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
-3. Click **Register Application**.<br> 
-	![Register Application Wizard](/images/docs/ApplicationRegistrationWizard.png =700x "Register Application Wizard")
+3. Click **Create Application**.<br> 
 4. Complete the fields as follows:
 
-	Attribute | Description
+Attribute | Description
 :----- | :-----
 Name | The name used to identify the application within Stormpath. This value must be unique.
 Description | A short description of the application. 
@@ -309,10 +284,6 @@ Status | By default, this value is set to Enabled. Change the value to Disabled 
 6. After specifying the directory parameters, you can specify the login priority order.
 7. When all information is complete, click **Save**.
 
-{% docs tip %}
-A URL for the application is often helpful as a description for an application.
-{% enddocs %}
-
 
 ### Edit an Application
 
@@ -323,126 +294,112 @@ You can update an application:
 3. Click the application name or, under the Actions column, click **Edit**. 
 4. Make the necessary edits and click **Save**.
 
+### Manage Application account stores
 
-### Manage Application Login Sources
+Account stores, otherwise called [Account Store Mappings](#account_store_mapping), define the user base for a given application. account stores determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.
 
-Login sources, otherwise called [Account Store Mappings](#account_store_mapping), define the user base for a given application. Login sources determine which user account stores are used and the order in which they are accessed when a user account attempts to log in to your application.
-
-In Stormpath, a directory or group can be a login source for an application. At least one login source must be associated with an application for accounts to log in to that application.
+In Stormpath, a directory or group can be a account store for an application. At least one account store must be associated with an application for accounts to log in to that application.
 
 ####How Login Attempts Work
 
-**Example:** Assume an application named Foo has been mapped to two login sources, the Customers and Employees directories, in that order.
+**Example:** Assume an application named Foo has been mapped to two Account Stores, the Customers and Employees directories, in that order.
 
 Here is what happens when a user attempts to log in to an application named Foo:
 
-![Login Sources Diagram](/images/docs/LoginAttemptFlow.png =650x500 "Login Sources Diagram")
+![Account Sources Diagram](/images/docs/LoginAttemptFlow.png =650x500 "account stores Diagram")
 
-You can configure multiple login sources, but only one is required for logging in. Multiple login sources allows each application to view multiple directories as a single repository during a login attempt.
+You can configure multiple Account Stores, but only one is required for logging in. Multiple account stores allows each application to view multiple directories as a single repository during a login attempt.
 
 After an application has been registered in Stormpath, you can:
 
 * [Change default account and group locations](#change-default-account-and-group-locations)
-* [Add another login source](#add-another-login-source)
-* [Change the login source priority order](#change-login-source-priority-order)
-* [Remove login sources](#remove-login-sources)
+* [Add another Account Store](#add-another-login-source)
+* [Change the Account Store priority order](#change-login-source-priority-order)
+* [Remove Account Stores](#remove-login-sources)
 
-To manage application login sources, you must log in to the Stormpath Admin Console:
+To manage an Application's Account Stores, you must log in to the Stormpath Admin Console:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. Click the application name.
-4. Click the **Login Sources** tab.<br>
-The login sources appear in order of priority.<br> 
-	![Login Sources](/images/docs/LoginSources.png =650x170 "Login Sources")
+4. Click the **Account Stores** tab. The Account Stores appear in order of priority.
 
 <a name="change-default-account-and-group-locations"></a>
 #### Change Default Account and Group Locations
 
-On the Login Sources tab for applications, you can select the login sources (directory or group) to use as the default locations when creating new accounts and groups.
+On the Account Stores tab for applications, you can select the account stores (directory or group) to use as the default locations when creating new accounts and groups.
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. Click the application name.
-4. Click the **Login Sources** tab.
-	a. To specify the default creation location(directory) for new accounts created in the application, in the appropriate row, select **New Account Location**.
-	b. To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select **New Group Location**.
-5. Click **Save**.
+4. Click the **Account Sources** tab.
+	a. To specify the default creation location(directory) for new accounts created in the application, in the appropriate row, select **Default Account Location**.
+	b. To specify the default creation location(directory) for new groups created in the application, in the appropriate row, select **Default Group Location**.
 
 <a name="add-another-login-source"></a>
-#### Add Another Login Source
+#### Add Another Account Store
 
-Adding a login source to an application provisions a directory or group to that application. By doing so, all login source accounts can log into the application.
+Adding a account source to an application provisions a directory or group to that application. By doing so, all account source accounts can log into the application.
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. Click the application name.
-4. Click the **Login Sources** tab.
-5. Click **Add Login Source**.
-6. In the *login source* list, select the appropriate directory.<br>
-	![Login Sources](/images/docs/LSDropdown1.png "Login Sources")
-
-7. If the directory contains groups, you can select all users or specific group for access.<br> 
-	![Login Sources](/images/docs/LSDropdown2.png "Login Sources")<br>
-8. Click **Add Login Source**.<br>
-The new login source is added to the bottom of the login sources list. 
+4. Click the **Account Sources** tab.
+5. Click **Add Account Source**.
+6. In the *account source* list, select the appropriate directory.
+7. If the directory contains groups, you can select all users or specific group for access.  Groups show under the directory.
+8. Click **Create Mapping**. The new account store is added to the bottom of the account store list. 
 
 <a name="change-login-source-priority-order"></a>
-#### Change Login Source Priority Order
+#### Change Account Store Priority Order
 
-When you map multiple login sources to an application, you must also define the login source order.
+When you map multiple account stores to an application, you must also define the account store order.
 
-The login source order is important during the login attempt for a user account because of cases where the same user account exists in multiple directories. When a user account attempts to log in to an application, Stormpath searches the listed login sources in the order specified, and uses the credentials (password) of the first occurrence of the user account to validate the login attempt.
+The account store order is important during the login attempt for a user account because of cases where the same user account exists in multiple directories. When a user account attempts to log in to an application, Stormpath searches the listed account stores in the order specified, and uses the credentials (password) of the first occurrence of the user account to validate the login attempt.
 
-To specify the login source order:
+To specify the account store order:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. Click the application name.
-4. Click the **Login Sources** tab.
+4. Click the **Account Stores** tab.
 5. Click the row of the directory to move.
-6. Drag the row to the appropriate order.<br>For example, if you want to move the first login source to the second login source, click anywhere in the first row of the login source table and drop the row on the second row.<br>
-	![Login Sources](/images/docs/LoginPriority.png =650x "Login Sources")
-7. Click **Save Priorities**.
+6. Drag the row to the appropriate order. For example, if you want to move the first account store to the second account store, click anywhere in the first row of the account store table and drop the row on the second row.
 
 <a name="remove-login-sources"></a>
-#### Remove Login Sources
+#### Remove Account Stores
 
-Removing a login source from an application deprovisions that directory or group from the application. By doing so, all accounts from the login source are no longer able to log into the application.
+Removing a account source from an application deprovisions that directory or group from the application. By doing so, all accounts from the account store are no longer able to log into the application.
 
-To remove a login source from an application:
+To remove an account source from an application:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. Click the application name.
-4. Click the **Login Sources** tab.
-5. On the Login Sources tab, locate the directory or group.
-6. Under the Actions column, click **Remove**.
+4. Click the **Account Stores** tab.
+5. On the account stores tab, locate the directory or group.
+6. Under the Actions column, click **Unmap**.
 
 ### Enable an Application
 
-Enabling a previously disabled application allows any enabled directories, groups, and accounts associated with the application login sources in Stormpath to log in.
+Enabling a previously disabled application allows any enabled directories, groups, and accounts associated with the application account stores in Stormpath to log in.
 
 To enable an application:
 
 1. Log in to the Stormpath Admin Console.
-2. Click the **Applications** tab.<br>The application browser appears showing all applications that exist in your Stormpath tenant.
-3. Under the Actions column, click **Enable**. 
+2. Click the **Applications** tab. The application browser appears showing all applications that exist in your Stormpath tenant.
+3. On the **Details** tab, click **Enable** in the Status row. 
 
 
 ### Disable an Application
 
-Disabling an application prevents the application from accepting log ins from the directories (including the contained groups and accounts) defined as login sources, but retains all application configurations. If you must temporarily turn off logins, disable an application. 
-
-The Stormpath IAM application cannot be disabled.
+Disabling an application prevents the application from accepting log ins from the directories (including the contained groups and accounts) defined as account stores, but retains all application configurations. If you must temporarily turn off logins, disable an application. 
 
 To disable an application:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.<br>The application browser appears showing all applications that exist in your Stormpath tenant.
-3. Under the Actions column, click **Disable**. <br>
-The application can no longer be logged into by accounts.
-
+3. Under the Actions column, click **Disable**. The application can no longer be logged into by accounts.
 
 ### Delete an Application
 
@@ -450,7 +407,7 @@ Deleting an application completely erases the application and its configurations
 
 We recommend that you disable an application rather than delete it, if you anticipate that you might use the application again.
 
-The Stormpath IAM application cannot be deleted.
+The Stormpath application cannot be deleted.
 
 To delete an application:
 
@@ -461,24 +418,23 @@ To delete an application:
 The application is erased from Stormpath and no longer appears in the application browser. 
 
 	
-### View Accounts Mapped to an Application
+### View Accounts for an Application
 
 To see the users visible to an application:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Applications** tab.
 3. Click the application name. 
-4. Click the **Accounts** tab.
+4. Click the **Accounts** tab in the left sub menu.
 
-On the Accounts tab for an application, you can see all accounts from all login sources mapped to the selected application. You also see basic information for each user account, such as:
+On the Accounts tab for an application, you can see all accounts from all account stores mapped to the selected application. You also see basic information for each user account, such as:
 
 * Account full name
-* Username
 * Email address
 * Status
 * Parent directory
 
-To [edit an account](#edit-an-account), under the Actions column of the account row, click **Edit**. You are redirected to the Account Details tab.
+To [edit an account](#edit-an-account), under the Actions column of the account row, click **Edit**.
 
 
 ***	
@@ -487,15 +443,16 @@ To [edit an account](#edit-an-account), under the Actions column of the account 
 
 [Directories](#directories) contain [authentication](#authenticate-accounts) and [authorization](#groups) information about users and groups. Stormpath supports an unlimited number of directories. Administrators can use different directories to create silos of users. For example, you might store your customers in one directory and your employees in another.
 
-Within Stormpath, there are two types of directories you can implement:
+Within Stormpath, there are different types of directories you can implement:
 
 * **Cloud** also known as Stormpath-managed directories are hosted by Stormpath and use the Stormpath data model to store user and group information. This is the most common type of directory in Stormpath.
 * **Mirror** is a synchronization agent for your existing Lightweight Directory Access Protocol (LDAP) or Active Directory (AD) directory provided by Stormpath. All user management is done on your existing LDAP/AD agent directory, but the cloud mirror can be accessed through the Stormpath APIs on your modern applications.
 	* LDAP/AD directories cannot be created using the API. 
 	* You can specify various LDAP/AD object and attribute settings of the specific LDAP/AD server for users and groups. 
 	* If the agent status is Online, but you are unable to see any data when browsing your LDAP/AD mapped directory, it is likely that your object and filters are configured incorrectly.
+* **Social** allows integration to Facebook, Google, LinkedIn, and Github applications so accounts can login with a valid access token.
 
-You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped login sources.
+You can add as many directories of each type as you require. Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped account stores.
 
 LDAP/AD accounts are automatically deleted when:
 
@@ -506,10 +463,8 @@ LDAP/AD accounts are automatically deleted when:
 For directories, you can:
 
 * [Locate the directory REST URL](#locate-the-directory-rest-url).
-* [Navigate the directory browser](#navigate-the-directory-browser).
 * [Create directories](#create-a-directory).
-	* [Create a cloud directory](#create-a-cloud-directory). 
-	* [Create a mirrored directory](#create-a-mirrored-directory).
+	* [Create a directory](#create-a-cloud-directory). 
 * [Edit cloud directory details](#edit-a-directory). 
 * [Update mirrored agent configuration](#UpdateAgent).
 * [Create and manage cloud directory accounts](#CMAccounts).
@@ -519,7 +474,6 @@ For directories, you can:
 * [Disable a directory](#DisableDir).
 * [Delete a directory](#DeleteDir).
 
-
 ### Locate the Directory REST URL
 When communicating with the Stormpath REST API, you might need to reference a directory using the REST URL or `href`. For example, you require the REST URL to create accounts in the directory using an SDK. 
 
@@ -527,23 +481,7 @@ To obtain a directory REST URL:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Directories** tab.
-3. In the Directories table, click the directory name.<br>
-The REST URL appears on the Details tab.<br>
-![Application Resturl](/images/docs/Resturl.png "Application Resturl")
-
-### Navigate the Directory Browser
-
-To view directories:
-
-1. Log in to the Stormpath Admin Console.
-2. Click the **Directories** tab.
-	* This will display the Directory Browser, showing all the directories that exist in your Stormpath tenant.
-	* A Disabled directory cannot be used by any applications, regardless of whether or not they are mapped to it.
-
-3. To view or edit directory details, click the directory name or, under the Actions column, click **Edit**.
-	* The Stormpath Administrators directory is set up by default when you first signed up for Stormpath.
-	* To add more directories, see [Create a Directory](#create-a-directory).
-	
+3. In the Directories table, click the directory name. The REST URL appears on the Details tab.
 
 ### Create a Directory
 
@@ -551,122 +489,24 @@ To create a directory for application authentication, you must know which type o
 
 You can create a:
 
-* [Cloud Directory](#create-a-cloud-directory), which is hosted by Stormpath and uses the Stormpath data model to store user and group information. This is the most common type of directory in Stormpath.
-
-**OR**
-
-* [Mirrored (LDAP) agent directory](#create-a-mirrored-directory), which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.
+* **Cloud Directory**, which is hosted by Stormpath and uses the Stormpath data model to store user and group information. This is the most common type of directory in Stormpath.
+* **Mirrored (LDAP) agent directory**, which uses a synchronization agent for your existing LDAP/AD directory. All user account management is done on your existing LDAP/AD directory with the Stormpath agent mirroring the primary LDAP/AD server.
+* **Social Directory**, which uses social providers such as Google, Facebook, LinkedIn and Github to authenticate and sync to Stormpath
 
 {% docs note %}
 The ability to create a mirrored, or agent, directory is connected to your subscription. If the option is not available, click the question mark for more information.
 {% enddocs %}
 
 <a name="create-a-cloud-directory"></a>
-#### Create a Cloud Directory
+#### Create a Directory
 
 1. Click the **Directories** tab.
 2. Click **Create Directory**.
-3. Click **Cloud**.
-4. Complete the field values noted in the table that follows.
-5. Click **Create**. 
+3. Select the Directory Type.
+4. Complete the field values in the UI.  Some field value require information from the AD/LDAP system or a social provider (like Application ID and Secret).
+5. Click **Create**
 
-![Create Cloud Directory](/images/docs/CreateCloudDirectory.png =650x460 "Create Cloud Directory")
-
-Attribute | Description
-:----- | :-----
-Name | The name used to identify the directory within Stormpath. This value must be unique.
-Description | Details about this specific directory.
-Status | By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
-Min characters | The minimum number of acceptable characters for the account password.
-Max characters | The maximum number of acceptable characters for the account password.
-Mandatory characters | The required character patterns which new passwords will be validated against. For example, for an alphanumeric password of at least 8 characters with at least one lowercase and one uppercase character, select the abc, ABC, and 012 options. The more patterns selected, the more secure the passwords but the more complicated for a user.
-
-<a name="create-a-mirrored-directory"></a>
-#### Create a Mirrored Directory
-
-Mirrored directories, after initial configuration, are accessible through the Agents tab of the directory. 
-
-1. Click the **Directories** tab.
-2. Click **Create Directory**.
-3. Click **Mirror**. <br> 
-![Create Mirrored Directory](/images/docs/CreateLDAPDirectory.png =650x "Create Mirrored Directory")
-
-4. On the 1. Directory Basics tab, complete the field values as follows:
-	
-	Attribute | Description
-:----- | :-----
-Directory Name | A short name for this directory, unique from your other Stormpath directories.
-Directory Description | An optional description explaining the purpose for the directory.
-Directory Status | Whether or not the directory is to be used to authenticate accounts for any assigned applications. By default, this value is set to Enabled. Change the value to Disabled if you want to prevent all user accounts in the directory from authenticating even where the directory is set as a login source to an application.
-
-5. Click **Next**.
-	![Agent Configuration](/images/docs/CreateLDAP2.png =640x "Agent Configuration")
-	
-6. On the 2. Agent Configuration tab, complete the field values as follows::
-	
-	Attribute | Description
-	:----- | :-----
-Directory Service | The type of directory service to be mirrored. For example, LDAP.
-Directory Host | The IP address or Host name of the directory server to connect to. This domain must be accessible to the agent, for example, behind any firewall that might exist.
-Directory Port | The directory server port to connect to. Example: `10389` for LDAP, `10689` for LDAPS, however your directory server maybe configured differently.|
-Use SSL | Should the agent socket connection to the directory use Secure Sockets Layer (SSL) encryption? The Directory Port must accept SSL.
-Agent User DN | The username used to connect to the directory. For example: `cn=admin,cn=users,dc=ad,dc=acmecorp,dc=com`
-Agent Password | The agent user DN password.
-Base DN | The base Distinguished Name (DN) to use when querying the directory. For example, `o=mycompany,c=com`
-Directory Services Poll Interval | How often (in minutes) to poll the directory to detect directory object changes.
-
-7. Click **Next**.
-	![Account Configuration](/images/docs/CreateLDAP3.png =640x "Account Configuration")
-		
-8. On the 3. Account Configuration tab, complete the field values as follows:
-		
-	Attribute | Description 
-:----- | :-----
-Account DN Suffix | Optional value appended to the Base DN when accessing accounts. For example, `ou=Users`. If left unspecified, account searches will stem from the Base DN.
-Account Object Class | The object class to use when loading accounts. For example, `user`
-Account Object Filter | The filter to use when searching user objects.
-Account Email Attribute | The attribute field to use when loading the user email address. Example: `email`
-Account First Name Attribute | The attribute field to use when loading the account first name. Example: `givenname`
-Account Middle Name Attribute | The attribute field to use when loading the account middle name. Example: `middlename`
-Account Last Name Attribute | The attribute field to use when loading the account last name. Example: `sn`
-Account Login Name Attribute |  The attribute field to use when logging in the account. Example: `uid`
-Account Password Attribute | The attribute field to use when loading the account password. Example: `password`
-
-9. Click **Next**.
-	![Group Configuration](/images/docs/CreateLDAP4.png =640x "Group Configuration")
-
-10. On the 4. Group Configuration tab, complete the field values as follows:
-	
-	Attribute | Description 
-:----- | :-----
-Group DN Suffix | This value is used in addition to the base DN when searching and loading roles. An example is `ou=Roles`. If no value is supplied, the subtree search will start from the base DN.
-Group Object Class | This is the name of the class used for the LDAP group object. Example: `group`
-Group Object Filter | The filter to use when searching for group objects.
-Group Name Attribute | The attribute field to use when loading the group name. Example: `cn`
-Group Description Attribute | The attribute field to use when loading the group description. Example: `desc`
-Group Members Attribute | The attribute field to use when loading the group members. Example: `member`
-
-11. Click **Next**.
-12. On the 5. Confirm tab, review the information and click **Create Directory**.<br>The webpage refreshes with the populated directory information. 
-13. Review the Download Agent tab and perform the steps as directed.
-	
-	![Download Agent](/images/docs/LastLDAPCreate.png "Download Agent")
-
-The `agent.id` and `agent.key` values will be specific to the agent of this directory.
-
-After creating a backed directory in the Stormpath Admin Console and installing the Stormpath agent, the synchronization of the directory data starts when you start the agent.
-
-After the agent is configured, associated with the agent is a status. This status is the **agent communication status** which reflects communication state as the agent communicates with Stormpath. As you make changes to the agent configuration, those changes are automatically pushed to the remote client and applied. Any further errors or conditions appear under the status column. The valid status codes are:
-
-* **Online**: The agent is online and all things are working nominally.
-* **Offline**: Stormpath detects that the agent is not communicating with it at all.
-* **Error**: The agent is online, but there is a problem with communicating nominally with Stormpath or LDAP.
-
-{% docs note %}
-After the directory has been created, although the Workflows tab appears, workflows cannot be configured for this type of directory.
-{% enddocs %}
-
-### Edit a Cloud Directory
+### Edit a Directory
 
 To edit the details of a cloud directory:
 
@@ -675,49 +515,14 @@ To edit the details of a cloud directory:
 3. Click the directory name or, under the Actions column, click **Edit**.
 4. Make the necessary changes and click **Update**.
 
-### Update Agent Configuration
-
-You can modify an agent configuration going through the [Directories](#directory) or [Agent](#directory-agent) tabs.
-
-The Agents tab contains a table listing all known agents used by you. Each table entry shows the following:
-
-* The **Stormpath directory name** as a link which you can click to modify any parameters.
-* A **description** which is pulled from the directory Details tab.
-* The agent communication **status** reflects communication state as the agent communicates with Stormpath. As you make changes to the agent configuration, those changes are automatically pushed to the remote client and applied. Any further errors or conditions appear under the status column. The valid status codes are:
-
-	* **Online**: The agent is online and all things are working nominally.
-	* **Offline**: Stormpath detects that the agent is not communicating with it at all.
-	* **Error**: The agent is online, but there is a problem with communicating nominally with Stormpath or LDAP/AD.
-
-Although the Workflows tab appears for a mirrored LDAP/AD directory, workflows cannot be configured for this type of directory.
-
-#### Directories Tab
-1. Log in to the Stormpath Admin Console.
-2. Click the **Directories** tab.
-3. Click the directory name.
-4. Click the **Agent Configuration** tab. 
-5. Make the necessary changes and click **Update**.
-
-{% docs note %}
-If you do not see an Agent Configuration tab, you are looking at a Stormpath cloud directory.
-{% enddocs %}
-
-#### Agents Tab
-1. Log in to the Stormpath Admin Console.
-2. Click the **Agents** tab.
-3. Click the directory name.
-4. Make the necessary changes and click **Update**.
-
 ### Create and Manage Cloud Directory Accounts
 
 For accounts within cloud directories, you can [create](#create-cloud-directory-accounts), [edit](#edit-cloud-directory-accounts), [disable](#disable-cloud-directory-accounts), or [delete](#delete-cloud-directory-accounts) accounts.
 
-Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped login sources.
+Changing group memberships, adding accounts, or deleting accounts in directories affects ALL applications to which the directories are mapped account stores.
 
 <a name="create-cloud-directory-accounts"></a>
-#### Create Cloud Directory Accounts
-
-Although within a directory there is a create account feature, you are redirected to the Create Account screen on the Accounts tab.
+#### Create Directory Accounts
 
 To create an account:
 
@@ -725,15 +530,15 @@ To create an account:
 2. Click the **Directories** tab.
 3. Click the directory name.
 4. Click the **Accounts** tab.
-5. Click **Create Account**. 
-6. For more information about creating an account, click [here](#create-an-account)
+5. Fill in the information about the account
+6. Click **Create Account**. 
 
 {% docs tip %}
 If you do not see the Create Account button, you are looking at a mirrored directory.	
 {% enddocs %}
 
 <a name="edit-cloud-directory-accounts"></a>
-#### Edit an Existing Cloud Directory Account
+#### Edit an Existing Directory's Account
 1. Log in to the Stormpath Admin Console.
 2. Click the **Directories** tab.
 3. Click the directory name or under the Actions column, click **Edit**.
@@ -741,7 +546,7 @@ If you do not see the Create Account button, you are looking at a mirrored direc
 5. For more information about editing an account, click [here](#edit-an-account)
 	
 <a name="disable-cloud-directory-accounts"></a>	
-#### Disable an Existing Cloud Directory Account
+#### Disable an Existing Directory Account
 
 Although the Stormpath Admin Console provides an option to disable an account within a directory, the disable command is actually performed against the account. If you disable an account within a cloud directory or group, you are completely disabling the account from logging in to any applications to which it is associated.
 
@@ -768,38 +573,21 @@ To delete an account from within a directory:
 5. Under the Actions column, click **Delete**.
 6. In the prompt that appears, to confirm deleting the account, click **Ok**.
 
-### Associate Directories with Applications
+### Directory Workflows
 
-1. Log in to the Stormpath Admin Console.
-2. Click the **Directories** tab.
-3. Click the directory name.
-4. Click the **Applications** tab.<br>The applications table shows the application for which the directory is providing account authentication, or log in, credentials.
-5. To change the login source, you must modify the application login source information.<br>If the directory is currently not specified as a login source for an application, the table contains the following message:
-	
-	*Currently, there are no applications associated with this directory. To create an association, click here, and select an application. From the login sources tab, you can create the association.*
+Workflows are common user management operations that are automated for you by Stormpath. Account Registration and Verification workflows manage how accounts are created in your directory. The Password Reset workflow enables you to configure how password reset works and the context of messages. For both workflows, messages can be formatted in plain text or HTML.
 
-### Cloud Directory Workflow Automations
-
-Workflows are common user management operations that are automated for you by Stormpath. Account Registration and Verification workflow configurations manage how accounts are created in your directory. The Password Reset workflow enables you to configure how password reset works and the context of messages. For both workflows, messages can be formatted in plain text or HTML.
-
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.The Stormpath Administrator directory has default workflow automations which cannot be altered.
+Workflows are only available on cloud directories and are configurable using the Stormpath Admin Console.The Stormpath Administrator directory has default workflow automations which cannot be altered.
 
 On the Workflows tab, you can automate <a href="#account-registration-and-verification" title="account registration and verification">account registration and verification</a> and <a href="#password-reset" title="password reset">password resets</a>.
 
-![Workflow Automation](/images/docs/ManageWorkflows.png =670x250 "Workflow Automation")
-
 <a name="account-registration-and-verification"></a>
-#### Account Registration and Verification
+#### Account Verification on Registration
 
-For the Account Registration and Verification workflow, you must perform the following actions:
-
-* <a href="#ConfigureAccountRegistration" title="Configure Account Registration and Verification">Configure account registration and verification</a>
-* <a href="#InitiateAccountRegistration" title="Initiate Account Registration and Verification">Initiate account registration and verification</a>
-* <a href="#VerifyAccount" title="Verify the Account">Verify the account</a>
-<br>
+Account verification on registration, allows account to be created in a directory with an `UNVERIFIED` status until the account owner can access their email account and click on a verification link.
 
 {% docs note %}
-The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out), click the question mark for more information.
+The ability to modify workflows, depends on your subscription level. If an option is not available (grayed out)
 {% enddocs %}
 
 ##### Configure Account Registration and Verification
@@ -810,81 +598,18 @@ To configure account registration and verification:
 2. Click the **Directories** tab.
 3. Click the directory name.
 4. Click **Workflows** tab.
-5. On the Workflows tab, next to Registration and Verification, click **show**.
-	* By default, the Account Registration and Verification workflow automation is disabled. By leaving this workflow off, all accounts created in the directory are enabled, unless otherwise specified, and the user does not receive any registration or verification emails from Stormpath.
-	* By only enabling **Enable Registration and Verification Workflow** and not also enabling **Require newly registered accounts to verify their email address**, new accounts are marked as enabled and the users receive a registration success email.
+5. On the Workflows tab, click Account Registration & Verification
+6. In the pane, you can set up three distinct emails to be sent.  Verification Email, Verification Success Email, and a Welcome Email.
 
-		![Account Registration and Verification](/images/docs/RegistrationVerification.png =650x430 "Account Registration and Verification")
+The Verification Email, when enabled for a Directory, will require the user visit their email inbox to click a link to verify their account.  Accounts in directories that have the Verification Email enabled will be created with an `UNVERIFIED` status.
 
-	* You configure the Registration Success Message with the following attributes:
-	
-		Attribute | Description
-:----- | :-----
-Message Format | The message format for the body of the Account Registration Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
-"From" Name | The value to display in the "From" field of the Account Registration Success message.
-"From" Email Address | The email address from which the Account Registration Success message is sent.
-Subject | The value for the subject field of the Account Registration Success message.
-Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
+The Verification Success Email, when enabled, is an optional email that will send a success email to the account when the account is verified by clicking on the link in the email.
 
-	* By also selecting **Require newly registered accounts to verify their email address**:
-		* Newly created accounts are given an *unverified* status and a verification email is sent to the user. The verification email contains a token unique to the user account. When the user clicks the link, they are sent to the verification base URL where the token is submitted to Stormpath for verification. If verified, the account status changes to enabled and a verification success email is sent to the user.
-		* An Account Verification Message section appears.
-			![Account Verification](/images/docs/AccountVerificationMessage.png =700x420 "Account Verification")
-
-		* You configure the Account Verification Message with the following attributes: 
-
-			Attribute | Description
-:----- | :-----
-Account Base URL | Your application URL which receives the token and completes the workflow. Stormpath offers a default base URL to help during development.
-Message Format | The message format for the body of the Account Verification email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
-From" Name | The value to display in the "From" field of the Account Success message.
-"From" Email Address | The email address from which the Account Verification message is sent.
-Subject | The value for the subject field of the Account Verification message.
-Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered and the url (containing the token) that the user must click.
-		* A Verification Success Message section appears.<br>
-
-		![Email Verification](/images/docs/VerificationEmailParams.png =700x420 "Email Verification")	
-
-		* You configure the Verification Success Message with the following attributes:
-
-			Attribute | Description
-:----- | :-----
-Message Format | The message format for the body of the Account Verification Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
-"From" Name | The value to display in the "From" field of the Account Verification Success message.
-"From" Email Address | The email address from which the Account Verification Success message is sent.
-Subject | The value for the subject field of the Account Verification Success message.
-Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
-
-		
-6. When all the fields are complete, click **Update**.
-
+The Welcome Email, when enabled, is an optional email that will be sent when the account is created (Verification Email Disabled) or when the account is verified (Verification Email Enabled).  This email can be used to send important information about your application to the user.
 
 ##### Initiate Account Registration and Verification
 
-If the workflow is enabled, an account registration is automatically initiated during an account creation. 
-
-
-##### Verify Account
-
-If a directory has the the account verification workflow enabled:
-
-1. A newly created account in the directory has an `UNVERIFIED` status until the email address has been verified.
-2. When a new user is registered for the first time, Stormpath sends an email to the user with a secure verification link, which includes a secure verification token.
-3. When the user clicks the link in the email, they are sent to the verification URL set up in the verification workflow. 
-	* To verify the account email address (which sets the account status to `ENABLED`), the verification token in the account verification email must be obtained from the link account holders receive in the email. 
-	* This is achieved by implementing the following logic:
-
-			require "stormpath-sdk"
-			include Stormpath::Resource
-			...
-			...
-			verification_token = # obtain it from query parameter, according to the workflow configuration of the link
-
-			tenant = client.current_tenant
-
-			# when the account is correctly verified it gets activated and that account is returned in this verification
-			account = tenant.verify_account_email verification_token
-
+If the Verification Email is enabled, an account verification is initialized   automatically during an account creation. 
 
 <a name="password-reset"></a>
 #### Password Reset
@@ -901,96 +626,18 @@ To configure the password reset workflow:
 2. Click the **Directories** tab.
 3. Click the directory name.
 4. Click **Workflows** tab.
-5. On the Workflows tab, next to Password Reset, click **show**.<br />
-	![Password Reset](/images/docs/ResetPW1.png =640x430 "Password Reset")
-
-6. Complete the values as follows:<br>
-		
-	Attribute | Description
-:----- | :-----
-<a name="base-url"></a> Base URL | Your application URL which receives the token and completes the workflow. Stormpath offers a default base URL to help during development.
-Expiration Window | The number of hours that the password reset token remains valid from the time it is sent.
-
-7. Under Password Reset Message, complete the values as follows:<br>
-
-	Attribute | Description
-:----- | :-----
-Message Format | The message format for the body of the Password Reset email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
-"From" Name | The value to display in the "From" field of the Password Reset message.
-"From" Email Address | The email address from which the Password Reset message is sent.
-Subject | The value for the subject field of the Password Reset message.
-Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered, the url the user must click to verify their account, and the number of hours for which the URL is valid.
-
-8. Under Password Reset Success Message, complete the values as follows:<br>
-
-	Attribute | Description
-:----- | :-----
-Message Format | The message format for the body of the Password Reset Success email. It can be Plain Text or HTML. Available formats depend on the tenant subscription level.
-"From" Name | The value to display in the "From" field of the Password Reset Success message.
-"From" Email Address | The email address from which the Password Reset Success message is sent.
-Subject | The value for the subject field of the Password Reset Success message.
-Body | The value for the body of the message. Variable substitution is supported for the account first name, last name, username, and email, as well as the name of the directory where the account is registered.
-	![Password Reset Message](/images/docs/ResetPW2.png =640x418 "Password Reset Message")
-
-9. When all the fields are complete, click **Update**.
-
-##### Initiate Password Reset
-
-To initiate the password reset workflow in your application, you must create a password reset token, which is sent from Stormpath in an email to the user. 
-	
-This is done from the application as follows:
-
-	require "stormpath-sdk"
-	include Stormpath::Resource
-	...
-	...
-	href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE'
-	application = client.data_store.get_resource href, Application
-
-	# creating the password reset token and sending the email
-	application.send_password_reset_email 'username or email'
-
-
-##### Complete Password Reset
-
-After the password reset token is created and the workflow is initiated, Stormpath sends a reset email to the user. The email contains a web link that includes the [base URL](#base-url) and the reset token. 
-
-`https://myAwesomeapp.com/passwordReset?sptoken=TOKEN`
-
-Where `myAwesomeapp.com/passwordReset` is the base URL.
-
-After the user clicks the link, the user is sent to the base URL. The password reset token can then be obtained from the query string.
-
-To complete password reset, collect and submit the user's new password with the reset token to Stormpath.
-
-{% docs note %}
-To complete the password reset, you do not need any identifying information from the user. Only the password reset token and the new password are required.
-{% enddocs %}
-
-The password is changed as follows:
-
-	require "stormpath-sdk"
-	include Stormpath::Resource
-	...
-	...  
-	href = 'https://api.stormpath.com/v1/applications/APP_UID_HERE'
-	application = client.data_store.get_resource href, Application 
-
-	# getting the Account from the token and changing the password
-	account = application.verify_password_reset_token 'PASS_RESET_TOKEN'
-	account.set_password 'New Password'
-	account.save
-
+5. On the Workflows tab, click the **Password Reset** tab.
+6. Configure the Password Reset and optionally the Password Reset Success Email
 
 ### Enable a Directory
 
-Enabling previously disabled directories allows the groups and accounts to log into any applications for which the directory is defined as a login source.
+Enabling previously disabled directories allows the groups and accounts to log into any applications for which the directory is defined as a account store.
 
 To enable a directory:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Directories** tab.
-3. Locate the directory and, in the Actions column, click **Enable**.
+3. Locate the directory and, in the Status column, use the dropdown to select **ENABLED**.
 
 
 ### Disable a Directory
@@ -1003,9 +650,9 @@ To disable a directory:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Directories** tab.
-3. Locate the directory and, in the Actions column, click **Disable**.
+3. Locate the directory and, in the Status column, use the dropdown to select ***DISABLED**.
 
-All groups and accounts within the directory are now unable to log into any applications for which the directory is a login source.
+All groups and accounts within the directory are now unable to log into any applications for which the directory is a account store.
 
 
 ### Delete a Directory
@@ -1025,23 +672,15 @@ To delete a directory:
 
 ***
 
-## *Accounts*
+## Accounts
 
-In Stormpath, users are referred to as user account objects or [accounts](#account). The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported. 
-
-You manage LDAP/AD accounts on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:
-
-* The backing object is deleted from the LDAP/AD directory service.
-* The backing LDAP/AD object information no longer matches the account filter criteria configured for the agent.
-* The LDAP/AD directory is deleted.
+In Stormpath, users are referred to as [accounts](#account). The username and email fields for accounts are unique within a directory and are used to log into applications. Within Stormpath, an unlimited number of accounts per directory is supported. 
 
 An account is a unique identity within a directory. An account can exist in only a single directory but can be a part of multiple [groups](#group) owned by that directory.
 
 For accounts, you can: 
 
 * [Locate the account REST URL](#locate-the-account-rest-url)
-* [Authenticate accounts](#authenticate-accounts)
-* [Navigate the account browser](#navigate-the-account-browser)
 * [Create an account](#create-an-account)
 * [Edit account details](#edit-an-account)
 * [Change an account password](#change-an-account-password)
@@ -1059,55 +698,7 @@ To obtain an account REST URL:
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Accounts** tab.
-3. In the Accounts table, click the account name.<br>The REST URL appears on the Details tab.
-
-
-### Authenticate Accounts
-
-
-**cURL**
-
-1. Base64 encode the user-submitted username (or email), colon character ':', and password. For example, on *nix:
-
-		$ echo 'account_username:account_password' | openssl base64
-		YWNjb3VudF91c2VybmFtZTphY2NvdW50X3Bhc3N3b3JkCg==
-
-2. Use your API key ID and secret and the base64 `value` and POST to your application loginAttempts URL:
-
-		$ curl --user API_KEY_ID:API_KEY_SECRET \
-	       -H "Accept: application/json" \
-    	   -H "Content-Type: application/json" 
-    	   -d '{"type": "basic", \
-    	   "value":"YWNjb3VudF91c2VybmFtZTphY2NvdW50X3Bhc3N3b3JkCg=="}' \
-    	   https://api.stormpath.com/v1/applications/APP_UID/loginAttempts
-
-**httpie**
-
-1. Base64 encode the user-submitted username (or email), colon character ':', and password. For example, on *nix:
-
-		$ echo 'account_username:account_password' | openssl base64
-		YWNjb3VudF91c2VybmFtZTphY2NvdW50X3Bhc3N3b3JkCg==
-
-2. Use your API key ID and secret and the base64 `value` and POST to your application loginAttempts URL:
-
-		$ http -a API_KEY_ID:API_KEY_SECRET POST \
-		  https://api.stormpath.com/v1/applications/APP_UID/loginAttempts \
-		  type=basic value=YWNjb3VudF91c2VybmFtZTphY2NvdW50X3Bhc3N3b3JkCg==
-    
-
-
-### Navigate the Account Browser
-
-The accounts browser enables you to view and search for accounts in Stormpath.
-
-1. Log in to the Stormpath Admin Console.
-2. Click the **Accounts** tab.
-	* This displays the accounts browser, showing all accounts that exist in your Stormpath tenant.
-	* A disabled account cannot log into any application, regardless of whether or not they are mapped to it.
-3. To view or edit an account, click the account name or, under the Actions column, click **Edit**.
-4. To view the groups for which the account is a member, click the **Groups** tab.
-5. To view the applications to which the account has access, click the **Applications** tab.
-
+3. In the Accounts table, filter, search for, and click the account name. The REST URL appears on the Details tab.
 
 ### Create an Account
 
@@ -1116,13 +707,12 @@ You can only create accounts for cloud, or Stormpath-managed directories. For ac
 1. Log in to the Stormpath Admin Console.
 2. Click the **Accounts** tab.
 3. Click **Create an Account**.
-4. Complete the fields as follows:<br>
-
-![Create Account](/images/docs/CreateAccount.png =640x380 "Create Account")
+4. Complete the fields as follows:
 	
 Attribute | Description 
 :----- | :----- 
 Directory | The directory to which the account will be added.
+Groups | The groups in the directory to which to add the account to when created
 Username | The login name of the account for applications using username instead of email. The value must be unique within its parent directory.|
 First Name | The account owner first name.
 Middle Name | The account owner middle name.
@@ -1139,57 +729,31 @@ Confirm Password | Confirmation of the account credentials. This value must matc
 The account cannot be moved to a different directory after it has been created.
 {% enddocs %}
 
-If workflow automation is configured:
-
-* Creating an account automatically initiates an Account Registration & Verification workflow that sends the account owner an email. 
-* You can suppress emails by selecting Suppress Registration and Verification emails.
-
-After adding an account, you can specify its group membership, specify any administrator rights to Stormpath, and set the API keys.
+If workflow automation is configured, creating an account automatically initiates an Account Registration & Verification workflow that sends the account owner an email. 
 
 
 ### Edit an Account
 
 1. Log in to the Stormpath Admin Console. 
-2. Click the **Accounts** tab.<br>You can refine your search to the directory level by clicking the appropriate directory name under the Directory column.
-3. Under the Name column, click the account name link.<br>
-	**OR**<br>	
-4. Under the Actions column for the account, click **Edit**.<br>
-![Edit Account](/images/docs/AccountDetail.png =700x "Edit Account")
-<br>
-5. On the Details tab, change the values as required, noting the following information:
-	
-	Attribute | Description
-:----- | :-----
-Directory | The directory to which the account was added.
-Username | The login name of the account for applications using username instead of email. The value must be unique within its parent directory.
-First Name | The account owner first name.
-Middle Name | The account owner middle name.
-Last Name | The account owner last name.
-First Name | The account owner first name.
-Email | The account owner email address. This is can be used by applications, such as the Stormpath Admin Console, that use an email address for logging in. The value must be unique within its parent directory.
-Status | The status is changed within the Accounts table on the Accounts tab.
+2. Click the **Accounts** tab. You can filter, and search to find the account.
+3. Under the Actions column for the account, click **Edit**.
+4. On the Details tab, change the values as required.
+6. Under Details tab, you can add an API Key or update Custom Data if needed
+7. Under the Groups tab, you can modify Group memberships
 
-6. Under Security Credentials, you can:
-	* Change the password. Your options include, forcing the account owner to change the password or resetting the password for the account owner.
-	* Create an API key. 
-7. When all updates are complete, click **Update**.
 
 {% docs note %}
 The account cannot be moved to a different directory.
 {% enddocs %}
-	
+
 ### Change an Account Password
 
 To change an account password: 
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Accounts** tab.
-3. Under the Name column, click the account name.
-4. On the Details tab, under Security Credentials, click **Change Password**.<br>
-![Change Password](/images/docs/PasswordChange.png =700x "Change Password")
-<br>
-5. You can cancel the password change, select to have the user reset the password, or change the password for the user.
-6. When all updates are complete, click **Update**.
+3. Under the Name column, click the account name for the account that you want to change the password.
+4. In the Detail tab, under Security Credentials, choose the options to reset the password by email or enter in a new password
 	
 
 ### Assign an Account to a Group
@@ -1198,13 +762,10 @@ If the account is part of a directory containing groups, you can associate the a
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Accounts** tab.
-3. Under the Name column, click the account name.
+3. Under the Name column, click the account name or the Edit button.
 4. Click the **Groups** tab.
-5. Click **Assign to group**.
+5. Click **Add to group**.
 6. In the Assign account dialog, select the appropriate groups and click **Assign**.
-
-The Account Groups tab refreshes to include the new group.
-
 
 ### Remove an Account from Groups
 
@@ -1216,11 +777,9 @@ If the account is the member of a group within a directory, you can remove the a
 3. Click the **Groups** tab.
 4. Under the Actions column, click **Remove**.
 
-The Account Groups tab refreshes with the group removed.
-
 ### Enable an Account
 
-Enabling a previously disabled account allows the account to log in to any applications where the directory or group is defined as an application login source.
+Enabling a previously disabled account allows the account to log in to any applications where the directory or group is defined as an application account store.
 
 {% docs note %}
 Enabling and disabling accounts for mirrored directories is not available in Stormpath. You manage mirrored accounts on the primary server installation.
@@ -1239,14 +798,14 @@ Disabling an account prevents the account from logging into any applications in 
 If you disable an account within a directory or group, you are completely disabling the account from logging in to any applications to which it is associated.
 
 {% docs note %}
-nabling and disabling accounts for mirrored directories is not available in Stormpath. You manage mirrored accounts on the primary server installation.
+Enabling and disabling accounts for mirrored directories is not available in Stormpath. You manage mirrored accounts on the primary server installation.
 {% enddocs %}
 
-You can disable cloud directory accounts using the Stormpath Admin Console.
+You can disable accounts using the Stormpath Admin Console.
 
 1. Log in to the Stormpath Admin Console.
 2. Click the **Accounts** tab.
-3. To disable an account, in the Accounts table, under Actions column for the account, click **Disable**.
+3. To disable an account, in the Accounts table, under Status column for the account, select **Disabled** from the drop down.
 4. In the prompt that appears, to confirm disabling the account, click **Ok**.
 
 
@@ -1266,12 +825,6 @@ Deleting an account completely erases the account from the directory and erases 
 ## *Groups*
 
 [Groups](#group) are collections of accounts within a directory that are often used for authorization and access control to the application. In Stormpath, the term group is synonymous with role.
-
-You manage LDAP/AD groups on your primary LDAP/AD installation. LDAP/AD accounts and groups are automatically deleted when:
-
-* The backing object is deleted from the LDAP/AD directory service.
-* The backing LDAP/AD object information no longer matches the account filter criteria configured for the agent.
-* The LDAP/AD directory is deleted.
 
 For groups, you can:
 
@@ -1329,7 +882,7 @@ To create a group:
 	:----- | :-----
 Name | The name of the group. Within a given directory, this value must be unique.
 Description | A short description of the group.
-Status| This is set to Enabled by default. This is only set to Disabled to prevent all group accounts from logging into any application even when the group is set as a login source to an application.
+Status| This is set to Enabled by default. This is only set to Disabled to prevent all group accounts from logging into any application even when the group is set as a account store to an application.
 
 {% docs note %}
 If an account is also a member to another group that does have access to an application, then the account can login.
@@ -1352,11 +905,11 @@ To edit the details of a group:
 
 ### Enable a Group
 
-If the group is contained within an *enabled directory where the directory is defined as a login source*, then enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as a login source.
+If the group is contained within an *enabled directory where the directory is defined as a account store*, then enabling the group allows all accounts contained within the group (membership list) to log in to any applications for which the directory is defined as a account store.
 
-If the group is contained within an *disabled directory where the directory is defined as a login source*, the group members are not be able to log in to any applications for which the directory is defined as a login source. 
+If the group is contained within an *disabled directory where the directory is defined as a account store*, the group members are not be able to log in to any applications for which the directory is defined as a account store. 
 
-If the group is defined as a login source, then enabling the group allows accounts contained within the group (membership list) to log in to any applications for which the group is defined as a login source.
+If the group is defined as a account store, then enabling the group allows accounts contained within the group (membership list) to log in to any applications for which the group is defined as a account store.
 
 To enable a group:
 
@@ -1369,9 +922,9 @@ To enable a group:
 
 ### Disable a Group
 
-If a group is explicitly set as an application login source, then disabling that group prevents any of its user accounts from logging into that application but retains the group data and memberships. You would typically disable a group if you must shut off a group of user accounts quickly and easily.
+If a group is explicitly set as an application account store, then disabling that group prevents any of its user accounts from logging into that application but retains the group data and memberships. You would typically disable a group if you must shut off a group of user accounts quickly and easily.
 
-If the group is contained within an directory defined as a login source, disabling the group prevents group members from logging in to any applications for which the directory is defined as a login source. 
+If the group is contained within an directory defined as a account store, disabling the group prevents group members from logging in to any applications for which the directory is defined as a account store. 
 
 To disable a group:
 
