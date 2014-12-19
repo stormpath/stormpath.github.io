@@ -492,6 +492,7 @@ Attribute | Description | Type
 `href` | The fully qualified location URI of the Collection Resource. | String
 <a id="collections-offset"></a>`offset`| The zero-based starting index in the entire collection of the first item to return. The default value is `0`. This is a [pagination](#pagination)-specific attribute. | Integer
 <a id="collections-limit"></a>`limit` | The maximum number of collection items to return for a single request. Minimum value is `1`. The maximum value is `100` and the default value is `25`. This is a [pagination](#pagination)-specific attribute. | Integer
+`size` | An integer that represents the total number of items in the collection | Integer
 <a id="collections-items"></a>`items` | An array containing the current page of resources. The size of this array can be less than the requested `limit`. For example, if the limit requested is greater than the maximum allowed or if the response represents the final page in the total collection and the item count of the final page is less than the `limit`. This is a [pagination](#pagination)-specific attribute. | Array
 
 **Request**
