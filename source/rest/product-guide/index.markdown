@@ -2874,6 +2874,8 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="directory-resource-accounts"></a>`accounts` | A link to the accounts owned by the directory. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-groups"></a>`groups` | A link to the groups owned by the directory. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-tenant"></a>`tenant` | A link to the owning tenant. | Link | <span>--</span>
+`accountCreationPolicy` | A link to the directory's Account Creation Policy | Link | <span>--</span>
+`passwordPolicy` | A link to the directory's Password Policy | Link | <span>--</span>
 
 For directories, you can:
 
@@ -2896,6 +2898,8 @@ For directories, you can:
     * [Reset An Account's Password](#directories-password-reset)
 * [Work with directory groups](#directory-groups)
 * [Work with directory accounts](#directory-accounts)
+* [Update a directory's Account Creation Policy](#directory-account-creation-policy)
+* [Update a directory's Password Policy](#directory-password-policy)
 
 <a class="anchor" name="locate-a-directorys-rest-url"></a>
 ### Locate a Directory's REST URL
@@ -3148,15 +3152,15 @@ You may search for directories as described in [Search Tenant directories](#tena
 
 <a class="anchor" name="work-with-directories"></a>
 <a class="anchor" name="directories-account-password-policy"></a><a class="anchor" name="directories-password-restrictions"></a>
-### Account Password Policy
+### Account Password Strength Policy
 
 Directories can be configured to enforce specific restrictions on passwords for accounts associated with, such as requiring at least one or more non-alphanumeric characters.
 
-With Stormpath's Cloud directories, you can configure custom restrictions for the passwords on accounts associated with that directory. You can specify the following elements in your directory's password requirements:
+With Stormpath's directories, you can configure custom strength restrictions for the passwords on accounts associated with that directory. You can specify the following elements in your directory's password strength requirements:
 
 * Min characters
 * Max characters
-* Mandatry characters
+* Number of Mandatory characters
   * Lower case alphabetical
   * Uppercase case alphabetical
   * Numeric
@@ -3165,15 +3169,9 @@ With Stormpath's Cloud directories, you can configure custom restrictions for th
 
 By default, passwords must be of mixed case, include at least one number, and be between 8 and 100 characters in length.
 
-{% docs note %}
-It is not currently possible to configure a Directory's account password policy via the REST API.  You must use the [Stormpath Admin Console](https://api.stormpath.com) (Directories --> &lt;choose your directory&gt; --> Details tab).
-{% enddocs %}
+Account's password strength policy are available on cloud directories and configurable using the Stormpath Admin Console.  It is also possible to modify the password strength policy through REST.
 
-{% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. 
-
-Additionally, the `Stormpath Administrator` directory's automated workflows cannot be altered.
-{% enddocs %}
+To modify the password strength for a directory, 
 
 <a class="anchor" name="directories-reg"></a>
 ### Register A New Account
@@ -3355,6 +3353,147 @@ In addition to the [search query parameters](#search), you may also use [paginat
 #### Working With Directory Accounts
 
 Account resources support the full suite of CRUD commands and other interactions. Please see the [Accounts section](#accounts) for more information.
+
+### Directory Account Creation Policy
+
+### Directory Password Policy
+
+A Directory's `Password Policy` resource contains data that controls how passwords behave and are reset for the directory. This include information used to reset passwords and to enforce password strength.  By modifying this information, you can modify the behavior of the account's that are apart of the directory.
+
+The password policy can be retrieved by interacting with the directory resource.  The directory resource has a `passwordPolicy` link to the directory's `Password Policy`.  
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`href` | The href location of the passwordPolicy | String | --
+`resetEmailStatus` | The status of the reset email workflow.  If this is set to ENABLED, then Stormpath will allow for passwords to be reset through the email workflow and will use the template that is stored in the passwordPolicy's `resetEmailTemplates`| String | `"ENABLED"` or `"DISABLED"`
+`resetEmailTemplates` | A collection of email templates that can be used for sending password reset email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
+`resetSuccessEmailStatus` | The status of the reset success email.  If this is set to ENABLED, then Stormpath will send the a email when an account's password is reset using the email workflow and it is successful.  The email template that is sent is defined in the passwordPolicy's `resetSuccessEmailTemplates` | String | `"ENABLED"` or `"DISABLED"`
+`resetSuccessEmailTemplates` | A collection of email templates that can be used for sending password reset success email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
+`resetTokenTtl` | An integer that defines how long the password reset token is valid for during the password reset email workflow. | Integer |  A positive integer, less than 169 (0 < i < 169). Default is 24
+`strength` |  A link to the password strength requirements for the directory | Link | -- 
+
+**Directory Password Policy URI**
+
+    /v1/passwordPolicies/:passwordPolicyID
+
+The href location of the password policy for a directory can be retrieved by from the directory's passwordPolicy property.  Once retrieved, you can get the password policy by:
+
+**Example Request**
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Accept: application/json" \
+         "https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID"
+    
+
+**Example Response**
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8
+
+    {
+        "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc", 
+        "resetEmailStatus": "ENABLED", 
+        "resetEmailTemplates": {
+            "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc/resetEmailTemplates"
+        }, 
+        "resetSuccessEmailStatus": "ENABLED", 
+        "resetSuccessEmailTemplates": {
+            "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc/resetSuccessEmailTemplates"
+        }, 
+        "resetTokenTtl": 24, 
+        "strength": {
+            "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc/strength"
+        }
+    }
+
+For password policies, you can:
+
++ Modify the Directory's Password Reset Workflow
++ Update the password strength requirements for accounts
+
+#### Modify the Directory's Password Reset Workflow
+
+The Password Reset Email is configurable for a directory.  There is a set of properties that define its behavior.  This includes the `resetEmailStatus` and the `resetEmailTemplates` for the initial password reset email that sends an email to the account's email address with a link to reset the account's password and `resetSuccessEmailStatus` and the `resetSuccessEmailTemplates` for the resulting email that is sent when the password reset is successful through the email workflow.
+
+To enable or disable the ability to send a password reset email, issue a `POST` with the desired status for the `resetEmailStatus`.
+
+**Example Request**
+
+    curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Content-Type: application/json;charset=UTF-8" \
+         -d '{
+               "resetEmailStatus": "ENABLED"
+             }' \
+         'https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID'
+
+To enable or disable the ability to send a password success reset email, issue a `POST` with the desired status for the `resetSuccessEmailStatus`.  This email will only be set if both `resetEmailStatus` and `resetSuccessEmailStatus` are set to `ENABLED`
+
+**Example Request**
+
+    curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Content-Type: application/json;charset=UTF-8" \
+         -d '{
+               "resetSuccessEmailStatus": "ENABLED"
+             }' \
+         'https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID'
+
+To modify the emails that get sent during the password reset workflow, let's take a look at the email templates for the password reset.  Email templates in Stormpath have common properties that can be modified to change the appearance of the emails.  The properties below apply to both email templates that reside in the password policy (resetEmailTemplate and resetSuccessEmailTemplate).
+
+**Resource Attribute for Email Templates**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`fromEmailAddress` | The address that appears in the email's from field. | String | A valid email address
+`fromName` | The name that appears in the email's from field | String |
+ A string
+`subject` | The subject that appears in the email's subject field | String | A string
+`htmlBody` | The body of the email in HTML format.  This body is only sent when the `mimeType` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`textBody` | The body of the email is plain text format.  This body is only sent when the `mimeType` for the template is set to `text/plain` | String | A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`mimeType` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
+`defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String 
+
+To update an email template, first you must get the email template's href.  This is done by working with the resetEmailTemplates and resetSuccessEmailTemplates collection.  These collections hold only one email template, but in the future may hold multiple templates.  
+
+**Example Request**
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Accept: application/json" \
+         "https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID/resetEmailTemplates"
+
+**Example Response**
+
+    {
+        "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc/resetEmailTemplates", 
+        "items": [
+            {
+                ...
+                "href": "https://api.stormpath.com/v1/emailTemplates/3wztp77rsr05swAFL3AnrY",
+                ...
+            }
+        ], 
+        "limit": 25, 
+        "offset": 0, 
+        "size": 1
+    }
+
+After getting the href for the email template, you can update by an HTTP `POST` and update properties of the template:
+
+**Example Request**
+
+    curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Content-Type: application/json;charset=UTF-8" \
+         -d '{
+               "fromName": "Application Support",
+               "fromEmail": "support@application.com",
+               "subject": "Reset your Password for application.com"
+               "defaultModel": {
+                  "linkBaseUrl": "https://application.com/password-reset"
+               }
+             }' \
+         'https://api.stormpath.com/v1/emailTemplates/3wztp77rsr05swAFL3AnrY'
+
 
 ***
 
