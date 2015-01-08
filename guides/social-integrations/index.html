@@ -768,6 +768,12 @@ curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 </code> </pre> </div></div>
 
 
+
+
+<div class='docs-note'><p>If you are using <a href="https://developers.google.com/+/web/signin/server-side-flow">Google+ Sign-In for server-side apps</a>, Google recommends that you leave the Authorized redirect URI field blank in the Google Developer Console.  In Stormpath, when creating the Google Directory, you must set the redirect URI to <code>postmessage</code>.</p>
+</div>
+
+
 <h3><a id="mapping-the-directory-as-an-account-store-to-an-application"></a>Mapping the Directory as an Account Store to an Application</h3>
 
 <p>Once a Google <code>Directory</code> has been created, it must be mapped to an application as an <code>Account Store</code>.  When an Account Store (which can be a <code>Directory</code> or <code>Group</code>) is mapped to an <code>Application</code>, the accounts in the account store are considered the application’s users and they can login to the application.</p>
@@ -833,6 +839,10 @@ curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
 <pre><code>  "providerId": "google",
   "code": "%ACCESS_CODE_FROM_GOOGLE%"
 </code></pre>
+
+<div class='docs-note'><p>It is required that your Google application requests for the <code>email</code> scope from Google. If the authorization code or access token does not grant <code>email</code> scope, you will not be able to get an <code>Account</code> with an access token.</p>
+</div>
+
 
 <p>The following is how you use <code>providerData</code> to get an <code>Account</code> for a given authorization code:</p>
 
@@ -917,7 +927,7 @@ GET https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData
 
 <h2><a id="wrapping-up"></a>Wrapping up</h2>
 
-<p>In this guide, we discussed how to set up a Stormpath to enable your users to log in with Facebook and Google. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#x3a;&#x73;&#117;&#x70;&#112;&#x6f;&#x72;&#116;&#x40;&#115;&#116;&#111;&#x72;&#109;&#112;&#97;&#x74;&#x68;&#46;&#x63;&#x6f;&#109;&#46;">&#115;&#x75;&#112;&#112;&#x6f;&#114;&#x74;&#x40;&#x73;&#116;&#x6f;&#x72;&#109;&#112;&#97;&#x74;&#x68;&#46;&#x63;&#x6f;&#x6d;&#x2e;</a></p>
+<p>In this guide, we discussed how to set up a Stormpath to enable your users to log in with Facebook and Google. If you have any questions, bug reports, or enhancement requests please email <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#115;&#117;&#112;&#112;&#111;&#114;&#x74;&#64;&#115;&#116;&#111;&#114;&#x6d;&#x70;&#97;&#116;&#x68;&#46;&#x63;&#111;&#x6d;&#46;">&#115;&#x75;&#112;&#x70;&#111;&#114;&#116;&#64;&#x73;&#116;&#111;&#x72;&#109;&#112;&#x61;&#x74;&#x68;&#x2e;&#x63;&#x6f;&#109;&#46;</a></p>
 
             <div id="spread-word">
 <hr>
