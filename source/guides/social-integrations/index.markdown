@@ -345,6 +345,10 @@ curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 ------
 {% endcodetab %}
 
+{% docs note %}
+If you are using [Google+ Sign-In for server-side apps](https://developers.google.com/+/web/signin/server-side-flow), Google recommends that you leave the Authorized redirect URI field blank in the Google Developer Console.  In Stormpath, when creating the Google Directory, you must set the redirect URI to `postmessage`.
+{% enddocs %}
+
 ### Mapping the Directory as an Account Store to an Application
 
 Once a Google `Directory` has been created, it must be mapped to an application as an `Account Store`.  When an Account Store (which can be a `Directory` or `Group`) is mapped to an `Application`, the accounts in the account store are considered the application’s users and they can login to the application. 
@@ -407,6 +411,10 @@ Once the Authorization Code is gathered, you can ask the `Application` object to
     
       "providerId": "google",
       "code": "%ACCESS_CODE_FROM_GOOGLE%"
+
+{% docs note %}
+It is required that your Google application requests for the `email` scope from Google. If the authorization code or access token does not grant `email` scope, you will not be able to get an `Account` with an access token.
+{% enddocs %}
 
 The following is how you use `providerData` to get an `Account` for a given authorization code:
 
