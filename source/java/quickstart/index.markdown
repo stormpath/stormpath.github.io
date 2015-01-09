@@ -105,7 +105,9 @@ The first step to working with Stormpath is creating a Stormpath
 [Client](/java/product-guide#client) using your `apiKey.properties` file.
 The `Client` object is what allows you to communicate with Stormpath.
 
-    import com.stormpath.sdk.client.*;
+    import com.stormpath.sdk.client.Clients;
+    import com.stormpath.sdk.client.Client;
+    import com.stormpath.sdk.api.ApiKeys;
 	
     String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
 
