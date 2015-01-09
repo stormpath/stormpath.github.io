@@ -3171,9 +3171,7 @@ With Stormpath's directories, you can configure custom strength restrictions for
 
 By default, passwords must be of mixed case, include at least one number, and be between 8 and 100 characters in length.
 
-Account's password strength policy are available on cloud directories and configurable using the Stormpath Admin Console.  It is also possible to modify the password strength policy through REST.
-
-To modify the password strength for a directory, modify the [Password Strength Policy for the Directory](#password-strength-policy-for-directory)
+Account's password strength policy are available on cloud directories and configurable using the Stormpath Admin Console and REST by modifying the [Password Strength Policy for the Directory](#password-strength-policy-for-directory)
 
 <a class="anchor" name="directories-reg"></a>
 ### Register A New Account
@@ -3358,7 +3356,7 @@ Account resources support the full suite of CRUD commands and other interactions
 
 ### Directory Password Policy
 
-A Directory's `Password Policy` resource contains data that controls how passwords behave and are reset for the directory. This include information used to reset passwords and to enforce password strength.  By modifying this information, you can modify the behavior of the account's that are apart of the directory.
+A Directory's `Password Policy` resource contains data that controls how strong passwords need to be for account in the directory and how they are reset.  By modifying this information, you can modify the behavior of the account's that are apart of the directory.
 
 The password policy can be retrieved by interacting with the directory resource.  The directory resource has a `passwordPolicy` link to the directory's `Password Policy`.  
 
