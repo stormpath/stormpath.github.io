@@ -3171,7 +3171,7 @@ By default, passwords must be of mixed case, include at least one number, and be
 
 Account's password strength policy are available on cloud directories and configurable using the Stormpath Admin Console.  It is also possible to modify the password strength policy through REST.
 
-To modify the password strength for a directory, 
+To modify the password strength for a directory, modify the [Password Strength Policy for the Directory](#password-strength-policy-for-directory)
 
 <a class="anchor" name="directories-reg"></a>
 ### Register A New Account
@@ -3354,8 +3354,6 @@ In addition to the [search query parameters](#search), you may also use [paginat
 
 Account resources support the full suite of CRUD commands and other interactions. Please see the [Accounts section](#accounts) for more information.
 
-### Directory Account Creation Policy
-
 ### Directory Password Policy
 
 A Directory's `Password Policy` resource contains data that controls how passwords behave and are reset for the directory. This include information used to reset passwords and to enforce password strength.  By modifying this information, you can modify the behavior of the account's that are apart of the directory.
@@ -3408,12 +3406,12 @@ The href location of the password policy for a directory can be retrieved by fro
         }
     }
 
-For password policies, you can:
+For password policies, you can modify:
 
-+ Modify the Directory's Password Reset Workflow
-+ Update the password strength requirements for accounts
++ Password Reset Workflow for Directory's Accounts
++ Password Strength Policy for Directory's Accounts
 
-#### Modify the Directory's Password Reset Workflow
+#### Password Reset Workflow for Directory's Accounts
 
 The Password Reset Email is configurable for a directory.  There is a set of properties that define its behavior.  This includes the `resetEmailStatus` and the `resetEmailTemplates` for the initial password reset email that sends an email to the account's email address with a link to reset the account's password and `resetSuccessEmailStatus` and the `resetSuccessEmailTemplates` for the resulting email that is sent when the password reset is successful through the email workflow.
 
@@ -3446,8 +3444,7 @@ To modify the emails that get sent during the password reset workflow, let's tak
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `fromEmailAddress` | The address that appears in the email's from field. | String | A valid email address
-`fromName` | The name that appears in the email's from field | String |
- A string
+`fromName` | The name that appears in the email's from field | String | A string
 `subject` | The subject that appears in the email's subject field | String | A string
 `htmlBody` | The body of the email in HTML format.  This body is only sent when the `mimeType` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `textBody` | The body of the email is plain text format.  This body is only sent when the `mimeType` for the template is set to `text/plain` | String | A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
@@ -3494,6 +3491,89 @@ After getting the href for the email template, you can update by an HTTP `POST` 
              }' \
          'https://api.stormpath.com/v1/emailTemplates/3wztp77rsr05swAFL3AnrY'
 
+**Example Response**
+    
+    HTTP/1.1 200 OK
+    {
+        "defaultModel": {
+            "linkBaseUrl": "https://application.com/password-reset"
+        }, 
+        "description": "This is the password reset email template that is associated with the directory", 
+        "fromEmailAddress": "support@application.com", 
+        "fromName": "Application Support", 
+        "href": "https://api.stormpath.com/v1/emailTemplates/3wztp77rsr05swAFL3AnrY", 
+        "htmlBody": "<p>Forgot your password?</p><br/><br/><p>We've received a request to reset the password for this email address.</p><p>To reset your password please click on this link (link expires ${expirationWindow} hours):<br/><a href=\"${url}\">Link</a></p><p>This link takes you to a secure page where you can change your password. If you don't want to reset your password, please ignore this message. Your password will not be reset.</p><p>----------------------<br/>For general inquiries or to request support with your account, please email support@application.com</p>", 
+        "mimeType": "text/plain", 
+        "name": "Default Password Reset Email Template", 
+        "subject": "Reset your Password for application.com", 
+        "textBody": "Forgot your password?\n\nWe've received a request to reset the password for this email address.\n\nTo reset your password please click on this link or cut and paste this URL into your browser (link expires in ${expirationWindow} hours):\n${url}\n\nThis link takes you to a secure page where you can change your password.\n\nIf you don't want to reset your password, please ignore this message. Your password will not be reset.\n---------------------\nFor general inquiries or to request support with your account, please email support@application.com"
+    }
+
+<a class="anchor" name="password-strength-policy-for-directory"></a>
+#### Password Strength Policy for Directory's Accounts
+
+The `Password Strength Policy` for a Directory can be modified through the Administrator Console and through the REST API.  Password Strength Policy is part of the Directory's Password Policy and can be accessed through the `strength` property.
+
+**Resource Attribute for Password Strength**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`maxLength` |  Represents the maximum length for a password.  For example maxLength of 10 requires that a password has no more than 10 characters | Integer | Valid Integer, default is 100
+`minLength` | Represents the minimum length for a password.  For example minLength of 5 requires that a password has no less than 5 characters | Integer | Valid Integer, default is 8
+`minLowerCase` | Represents the minimum number of lower case characters required for the password.  For example, minLowerCase of 3 requires the password have 3 lower case characters | Integer | Valid Integer, default is 1
+`minNumeric` | Represents the minimum number of number characters required for the password.  For example, minNumeric of 3 requires the password have 3 numbers | Integer | Valid Integer, default is 1
+`minSymbol` | Represents the minimum number of symbol characters required for the password.  For example, minSymbol of 3 requires the password have 3 symbols | Integer | Valid Integer, default is 0
+`minUpperCase` | Represents the minimum number of upper case characters required for the password.  For example, minUpperCase of 3 requires the password have 3 upper case characters | Integer | Valid Integer, default is 1
+`minDiacritic` | Represents the minimum number of symbol characters required for the password.  For example, minSymbol of 3 requires the password have 3 symbols | Integer | Valid Integer, default is 0
+
+To retrieve the `Password Strength` requirements for a directory:
+
+**Example Request**
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Accept: application/json" \
+         "https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID/strength"
+
+**Example Response**
+
+    HTTP/1.1 200 OK
+
+    {
+      "href": "https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID/strength", 
+      "maxLength": 100, 
+      "minDiacritic": 0, 
+      "minLength": 8, 
+      "minLowerCase": 1, 
+      "minNumeric": 1, 
+      "minSymbol": 0, 
+      "minUpperCase": 1
+    }
+
+Setting new `Password Strength` requirement for a directory modifies the requirement for new accounts and also password changes on existing account's in a directory.  To update `Password Strength`, simple HTTP `POST` to the resource with the changes necessary.
+
+**Example Request**
+
+    curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Content-Type: application/json;charset=UTF-8" \
+         -d '{
+               "minLength": 1,
+               "maxLength": 24,
+               "minSymbol": 1,
+             }' \
+         'https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID/strength'
+
+**Example Response**
+
+    {
+      "href": "https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID/strength", 
+      "maxLength": 24, 
+      "minDiacritic": 0, 
+      "minLength": 1, 
+      "minLowerCase": 1, 
+      "minNumeric": 1, 
+      "minSymbol": 1, 
+      "minUpperCase": 1
+    }
 
 ***
 
