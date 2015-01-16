@@ -10,7 +10,7 @@ title: Integrating Stormpath with Active Directory and LDAP
 {% enddocs %}
 
 {% docs note %}
-AD/LDAP integration is only available to customers with a [Premium subscription plan or higher](https://stormpath.com/pricing)
+AD/LDAP integration is only available to customers with a [Lite subscription plan or higher](https://stormpath.com/pricing)
 {% enddocs %}
 
 
