@@ -3524,7 +3524,7 @@ Attribute | Description | Type | Valid Value
 `minNumeric` | Represents the minimum number of number characters required for the password.  For example, minNumeric of 3 requires the password have 3 numbers | Integer | Valid Integer, default is 1
 `minSymbol` | Represents the minimum number of symbol characters required for the password.  For example, minSymbol of 3 requires the password have 3 symbols | Integer | Valid Integer, default is 0
 `minUpperCase` | Represents the minimum number of upper case characters required for the password.  For example, minUpperCase of 3 requires the password have 3 upper case characters | Integer | Valid Integer, default is 1
-`minDiacritic` | Represents the minimum number of symbol characters required for the password.  For example, minSymbol of 3 requires the password have 3 symbols | Integer | Valid Integer, default is 0
+`minDiacritic` | Represents the minimum number of diacritic characters required for the password.  For example, minDiacritic of 3 requires the password have 3 symbols | Integer | Valid Integer, default is 0
 
 To retrieve the `Password Strength` requirements for a directory:
 
@@ -5470,11 +5470,11 @@ You may delete all of an resource's custom data by sending a `DELETE` request to
 
 **Example: Delete all of an Account's Custom Data**
 
-    curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/accounts/exampleAccountId/customData
+    curl -X DELETE --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/accounts/exampleAccountId/customData
 
 **Example: Delete all of a Group's Custom Data**
 
-    curl --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/groups/exampleGroupId/customData
+    curl -X DELETE --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET https://api.stormpath.com/v1/groups/exampleGroupId/customData
 
 **Example Response**
 
