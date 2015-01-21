@@ -68,7 +68,7 @@ alias: [/index.html]
             </ul>  
           </div>
         </div>
-        <div class="panel-separator">   
+        <div class="panel-separator">
         </div>
          <div class="panel-pane pane-block pane-menu-menu-docs-python">
           <h2 class="pane-title">Python Docs</h2>
@@ -93,7 +93,9 @@ alias: [/index.html]
           <div class="pane-content">
             <ul class="menu">
               <li class="first leaf"><a href="/java/quickstart" title="">Quickstart</a></li>
+              <li class="leaf"><a href="/java/servlet-plugin/quickstart.html" title="">Web App Quickstart</a></li>
               <li class="leaf"><a href="/java/product-guide" title="">Product Guide</a></li>
+              <li class="leaf"><a href="/java/servlet-plugin/" title="Stormpath Servlet Plugin Guide">Web App Plugin Guide</a></li>
               <li class="leaf"><a href="/java/apidocs/" title="">JavaDocs</a></li>
               <li class="leaf"><a href="/integrations/#sample-apps-java-container-jump" title="">Framework Integrations</a></li>
         <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-java" title="">SDK on GitHub</a></li>
@@ -104,7 +106,7 @@ alias: [/index.html]
         </div>
         <div class="panel-separator">
         </div>
-        
+
         <div class="panel-pane pane-block pane-menu-menu-docs-admin-console">
           <h2 class="pane-title">Admin Console Docs</h2>
           <div class="pane-content">

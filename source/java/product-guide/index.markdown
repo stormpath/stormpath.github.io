@@ -41,7 +41,7 @@ When building your applications in the past, how much time have you spent writin
 By offloading all of this effort to Stormpath, a service with deep security roots, you can quickly get back to writing your actual application and never worry about password attacks again.
 
 <a class="anchor" name="core"></a>
-### Core Concepts 
+### Core Concepts
 
 Stormpath has five core concepts, and everything else in the Stormpath REST API exists to support them:
 
@@ -62,7 +62,7 @@ You can assign one or more *Account Stores* to an Application.  Accounts within 
 
 **Account Stores**
 
-An *Account Store* is a generic term for either a `Directory` or a `Group`. Directories and Groups are both considered 'account stores' because they both contain, or 'store', Accounts. 
+An *Account Store* is a generic term for either a `Directory` or a `Group`. Directories and Groups are both considered 'account stores' because they both contain, or 'store', Accounts.
 
 * **Directories**
 
@@ -104,7 +104,7 @@ For more detailed documentation on the Stormpath API, visit the [REST API Produc
 
 The Stormpath Java SDK allows any JVM-based application to easily use the Stormpath user management service for all authentication and access control needs. The Java SDK can be found on [Github](https://github.com/stormpath/stormpath-sdk-java).
 
-When you make SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Java SDK therefore provides a clean object-oriented paradigm natural to JVM developers and alleviates the need to know how to make REST+JSON requests. 
+When you make SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Java SDK therefore provides a clean object-oriented paradigm natural to JVM developers and alleviates the need to know how to make REST+JSON requests.
 
 Any JVM-based programming language can use the Stormpath Java SDK. JVM languages include Java, Groovy, Scala, Clojure, Kotlin, Jython, and JRuby.
 
@@ -156,10 +156,10 @@ You could configure the Client by creating a client instance using the following
             .setIdPropertyName(foo)
             .setSecretPropertyName(bar)
             .build();
-    
+
     Client client = Clients.builder()
     		.setApiKey(apiKey)
-            .build();               
+            .build();
 
 <a class="anchor" name="api-key-properties-string"></a>
 #### API Key Properties
@@ -199,7 +199,7 @@ Assign user accounts to Stormpath, through [account stores](#account-store-mappi
 <a class="anchor" name="authentication-scheme-configuration"></a>
 #### Authentication Scheme Configuration
 
-You can choose one of two authentication schemes to authenticate with Stormpath: 
+You can choose one of two authentication schemes to authenticate with Stormpath:
 
 1. **Stormpath SAuthc1 Authentication**:  This is the recommended approach, and the default setting.  This approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath SAuthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.
 2. **Basic Authentication**: This is _only_ recommended when your application runs in an environment outside of your control, and that environment manipulates your application's request headers when requests are made.  Google App Engine is one known such environment.  However, Basic Authentication is not as secure as Stormpath's `SAuthc` algorithm, so only use this if you are forced to do so by your application runtime environement.
@@ -310,7 +310,7 @@ If the directory already exists in memory because the `DataStore` has previously
 <a class="anchor" name="caching"></a>
 ### Caching
 
-The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we access the resource again and the data inside the cache hasn't yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath. 
+The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we access the resource again and the data inside the cache hasn't yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath.
 
 By default, a simple production-grade in-memory `CacheManager` will be enabled when the Client instance is
 created. This `CacheManager` implementation has the following characteristics:
@@ -723,7 +723,7 @@ ApplicationList applications = tenant.getApplications(Applications.where(Applica
         for(Application application : applications) {
             System.out.println(application.getName());
         }
-        
+
 <a class="anchor" name="tenant-applications-search"></a>
 #### Search Tenant Applications
 
@@ -808,7 +808,7 @@ In addition to the the [search query parameters](#search), you may also use [pag
 
 Directory resources support the full suite of CRUD commands and other interactions. Please see the [Directories section](#directories) for more information.
 
-***        
+***
 
 <a class="anchor" name="applications"></a>
 ## Applications
@@ -933,7 +933,7 @@ When sending the creation request, you can append the `createDirectory()` method
             .setName("My Application")
             .setDescription("My Application Description")
             .setStatus(ApplicationStatus.ENABLED);
-    
+
     tenant.createApplication(
     		Applications.newCreateRequestFor(application)
             	.createDirectory()
@@ -1168,7 +1168,7 @@ The execution of the registration workflow can be explicitly overwritten on a pe
         .setSurname("Picard")
         .setEmail("capt@enterprise.com")
         .setPassword("4P@$$w0rd!");
-	
+
 	application.createAccount(
 		Accounts.newCreateRequestFor(account)
 			.setRegistrationWorkflowEnabled(true)
@@ -1228,7 +1228,7 @@ When you submit an authentication request to Stormpath, instead of executing the
 At the time you create the request, it is likely that you may know the account store where the account resides, therefore you can target it directly. This will speed up the authentication attempt (especially if you have a very large number of account stores).
 
 **Example Request**
-	
+
 	AccountStore accountStore = anAccountStoreMapping.getAccountStore();
 	UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("usernameOrEmail", "password", accountStore);
     AuthenticationResult result = application.authenticateAccount(authenticationRequest);
@@ -1280,7 +1280,7 @@ If the password reset token creation fails, a `400 Bad Request` is returned with
 
 At this point, an email will be built using the [password reset base URL](#password-reset-base-URL) specified in the Stormpath Admin Console.
 
-In a real-world implementation, you must build an end-point in your application that is designed to accept a request with the query string parameter "sptoken", which is the token value generated for the user. This token is then used to verify the reset request before updating the account accordingly.        
+In a real-world implementation, you must build an end-point in your application that is designed to accept a request with the query string parameter "sptoken", which is the token value generated for the user. This token is then used to verify the reset request before updating the account accordingly.
 
 <a class="anchor" name="password-reset-token-retrieve"></a>
 ##### Validate A Password Reset Request (Validate A Token)
@@ -1301,7 +1301,7 @@ If the password reset token is invalid - it never existed or has expired - a `40
 
 ##### Resetting the Password for a Token
 
-After a successfully call with the query string token, you can return a page to the end user to collect the password to update for the account. Once you have the password, you can update it by a using the `Application`'s reset password method. 
+After a successfully call with the query string token, you can return a page to the end user to collect the password to update for the account. Once you have the password, you can update it by a using the `Application`'s reset password method.
 
     Account account = application.resetPassword("$TOKEN", "newPassword");
 
@@ -1583,7 +1583,7 @@ Creating it from an application instance:
             .setDefaultAccountStore(Boolean.TRUE)
             .setDefaultGroupStore(Boolean.FALSE)
             .setListIndex(0);
-        
+
     application.createAccountStoreMapping(accountStoreMapping);
 
 
@@ -1753,7 +1753,7 @@ The response is a paginated list of `accountStoreMapping` resources.  You may us
 <a class="anchor" name="directories"></a>
 ## Directories
 
-A Directory is a top-level storage containers of `Accounts` and `Groups`. A Directory also manages security policies (like password strength) for the Accounts it contains. 
+A Directory is a top-level storage containers of `Accounts` and `Groups`. A Directory also manages security policies (like password strength) for the Accounts it contains.
 
 Additionally:
 
@@ -1789,7 +1789,7 @@ Mirror directories are a big benefit to Stormpath customers who need LDAP or Act
 LDAP or Active Directory are still the 'system of record' or source of identity 'truth' for these accounts and groups.  The big benefit is that your Stormpath-enabled applications still use the same convenient REST+JSON API - they do not need to know anything about LDAP, Active Directory or legacy connection protocols!
 
 {% docs tip %}
-The Stormpath Agent is **firewall friendly**: you do not need to open any inbound holes in your company firewall.  The only requirement is that the Agent be able to make an _outbound_ HTTPS connection to https://api.stormpath.com 
+The Stormpath Agent is **firewall friendly**: you do not need to open any inbound holes in your company firewall.  The only requirement is that the Agent be able to make an _outbound_ HTTPS connection to https://api.stormpath.com
 {% enddocs %}
 
 Finally, note that accounts and groups in mirrored directories are automatically deleted when:
@@ -1883,7 +1883,7 @@ You can achieve the same result using the type-unsafe variant:
     for(Directory directory : tenant.getDirectories(queryParams)) {
     	System.out.println(directory.getHref());
     }
-    
+
 If you only know a small part, you can use the asterisk wildcard (e.g., `queryParams.put("name", "My*");`) to narrow down the selection.
 
 <a class="anchor" name="directory-create"></a>
@@ -1923,7 +1923,7 @@ When you invoke this method, at least the `name` attribute must be specified, an
         .setDescription("Captains from a variety of stories");
 
     tenant.createDirectory(directory);
-    
+
 <a class="anchor" name="directory-create-mirror"></a>
 #### Create a Mirrored (LDAP/AD) Directory
 
@@ -2031,7 +2031,7 @@ It is not currently possible to configure a Directory's account password policy 
 {% enddocs %}
 
 {% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. 
+Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API.
 
 Additionally, the `Stormpath Administrator` directory's automated workflows cannot be altered.
 {% enddocs %}
@@ -2242,7 +2242,7 @@ For example, if you want to find  a group with the name "My Group", you'll need 
     }
 
 If you know the name exactly, you can use an [attribute search](#search-attribute):
-	
+
 	Map<String, Object> queryParams = new HashMap<String, Object>();
     queryParams.put("name", "My Group");
     Iterator<Group> iterator = directory.getGroups(queryParams).iterator();
@@ -2368,7 +2368,7 @@ It returns a paginated list of links for groups accessible to an application.
     for( Group group : groups) {
     	System.out.println(group.getName());
     }
-        
+
 
 ##### Account Groups
 
@@ -3020,7 +3020,7 @@ If the verification token is not found, a `404 Not Found` is returned with an [e
 <a class="anchor" name="accounts-authenticate"></a>
 ### Authenticate An Account
 
-After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts. 
+After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts.
 
 For more information on working with applications and authentication, refer to the [Log in (Authenticate) an Account](#application-account-authc) section of this guide.
 
@@ -3091,7 +3091,7 @@ The account resource provides the `isMemberOfGroup` operation. This operation re
 
 	String groupName = "Foo Group";
 	account.isMemberOfGroup(groupName);
-	
+
 
 <a class="anchor" name="working-with-account-groups"></a>
 #### Working With Account Groups
@@ -3217,7 +3217,7 @@ Another alternative using [link expansion](#link-expansion):
 	AccountList accounts = application.getAccounts(
                 Accounts.where(Accounts.email().eqIgnoreCase("some@email.com"))
                         .withCustomData()
-	);	
+	);
 
 **Example: Retrieve a Group with its Custom Data**
 
@@ -3306,7 +3306,7 @@ This request would remove the `favoriteColor` field entirely from the customData
 <a class="anchor" name="integration-google"></a>
 ## Integrating with Google
 
-Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codea (or access tokens) to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codea (or access tokens) to return an `Account` for a given code.
 
 The steps to enable this functionality into your application include:
 
@@ -3325,7 +3325,7 @@ A provider resource can be obtained by accessing the directory's provider as fol
 Example Request
 
     GoogleProvider provider = client.getResource("https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", GoogleProvider.class);
-        
+
 or, by means of the directory Resource:
 
     GoogleProvider provider = (GoogleProvider) directory.getProvider();
@@ -3336,7 +3336,7 @@ Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `clientId` | The App ID for your Google application | String | --
 `clientSecret` | The App Secret for your Google application | String | --
-`redirectUri` | The redirection Uri for your Google application | String | -- 
+`redirectUri` | The redirection Uri for your Google application | String | --
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'google'
 
 In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
@@ -3368,7 +3368,7 @@ Creating a Google Directory is very similar to [creating a directory](#create-a-
                         .setRedirectUri("https://myapplication.com/authenticate")
                         .build()
                 ).build();
-    
+
     Tenant tenant = client.getCurrentTenant();
     directory = tenant.createDirectory(request);
 
@@ -3399,27 +3399,27 @@ In order to know if the account was created or if it already existed in the Stor
 Once an `Account` is retreived, Stormpath maps common fields for the Google User to the  Account.  The access token and the refresh token for any additional calls in the `GoogleProviderData` resource and can be retrieved by:
 
     GoogleProviderData providerData = (GoogleProviderData) account.getProviderData();
-    
+
 The returned `GoogleProviderData` includes:
 
     providerData.getAccessToken(); //-> y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4
-    providerData.getCreatedAt(); //-> 2014-04-01T17:00:09.154Z 
-    providerData.getHref(); //-> https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData 
-    providerData.getModifiedAt(); //-> 2014-04-01T17:00:09.189Z 
-    providerData.getProviderId(); //-> google 
+    providerData.getCreatedAt(); //-> 2014-04-01T17:00:09.154Z
+    providerData.getHref(); //-> https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData
+    providerData.getModifiedAt(); //-> 2014-04-01T17:00:09.189Z
+    providerData.getProviderId(); //-> google
     providerData.getRefreshToken(); //-> 1/qQTS638g3ArE4U02FoiXL1yIh-OiPmhc
 
 {% docs note %}
 The `accessToken` can also be passed as a field for the `ProviderData` to access the account once it is retrieved:
-    
+
     ProviderAccountRequest request = Providers.GOOGLE.account()
                 .setAccessToken("y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4")
                 .build();
 
     ProviderAccountResult result = application.getAccount(request);
     Account account = result.getAccount();
-    
-    
+
+
 {% enddocs %}
 
 {% docs note %}
@@ -3431,7 +3431,7 @@ The `refreshToken` will only be present if your application asked for offline ac
 <a class="anchor" name="integration-facebook"></a>
 ## Integrating with Facebook
 
-Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code.
 
 The steps to enable this functionality into your application include:
 
@@ -3450,7 +3450,7 @@ A provider resource can be obtained by accessing the directory's provider as fol
 Example Request
 
     FacebookProvider provider = client.getResource("https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", FacebookProvider.class);
-        
+
 or, by means of the directory Resource:
 
     FacebookProvider provider = (FacebookProvider) directory.getProvider();
@@ -3460,7 +3460,7 @@ or, by means of the directory Resource:
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `clientId` | The App ID for your Facebook application | String | --
-`clientSecret` | The App Secret for your Facebook application | String | -- 
+`clientSecret` | The App Secret for your Facebook application | String | --
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'facebook'
 
 In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
@@ -3476,7 +3476,7 @@ Creating a Facebook Directory requires that you gather some information beforeha
 + Client ID
 + Client Secret
 
-Creating a Facebook Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information. 
+Creating a Facebook Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information.
 
 **Example Request**
 
@@ -3538,13 +3538,13 @@ The returned `FacebookProviderData` will include:
 
 ***
 
-## Java Sample Code 
+## Java Sample Code
 
-### Spring MVC Sample App 
+### Spring MVC Sample App
 
 This <a href="https://github.com/stormpath/stormpath-spring-samples" title="pring MVC Sample">application</a> is a Spring MVC-based Twitter clone that helps demonstrate the core functionality of Stormpath. The sample application shows Stormpath-based login, user registration, email verification, password reset, group assignments, <a href="#RBAC" title="RBAC">RBAC</a> checks, and user profile updates.
 
-####Readme: 
+####Readme:
 
 **stormpath-spring-samples**: Stormpath example applications based on the Spring Framework.
 
@@ -3563,11 +3563,11 @@ Deploy the .war file to your web container/application server and launch/access 
 
 A detailed documentation on tooter and how to integrate with the Stormpath Java SDK can be found on the wiki <a href="https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter" title="tooter">https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter</a>.
 
-### Apache Shiro Sample Web App 
+### Apache Shiro Sample Web App
 
 This is a <a href="https://github.com/stormpath/stormpath-shiro-web-sample" title="shiro web sample">simple web application</a> secured by the Apache Shiro security framework and Stormpath. The example is based of the standard Apache Shiro web sample application and it shows login and <a href="#RBAC" title="RBAC">RBAC</a> using an authorization cache.
 
-### Spring Security Sample Web App 
+### Spring Security Sample Web App
 
 This is a <a href="https://github.com/stormpath/stormpath-spring-security-example" title="spring security web sample">simple web application</a> secured by the Spring Security framework and Stormpath. It demostrates how to achieve Stormpath and Spring Security integration by means of the <a href="https://github.com/stormpath/stormpath-spring-security">stormpath-spring-security</a> plugin
 
@@ -3580,8 +3580,8 @@ For more information about administering Stormpath using the Admin Console, plea
 
 ***
 
-## Appendix 
-### How to get the Java SDK jar files if you are not using a Maven-compatible build tool 
+## Appendix
+### How to get the Java SDK jar files if you are not using a Maven-compatible build tool
 
 If you are not using a Maven-compatible build tool (such as Maven, Ant+Ivy, Gradle or SBT) to acquire your project dependencies, then you will need to manually download the Stormpath Java SDK jars and its runtime dependencies.
 

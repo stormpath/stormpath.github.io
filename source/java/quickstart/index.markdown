@@ -23,6 +23,9 @@ Stormpath also can do a lot more (*like Groups, Multitenancy, Social
 Integration, and Security workflows*) which you can learn more about at the end
 of this quickstart.
 
+**TIP**:
+This is a generic Java quickstart.  If you are building a web app deployed to a servlet container like Tomcat or Jetty, you might also find the [Stormpath Servlet Plugin Quickstart](https://docs.stormpath.com/java/servlet-plugin/) helpful.
+
 Let's get started!
 
 ***
@@ -34,12 +37,12 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-api</artifactId>
-        <version>1.0.RC2.1</version>
+        <version>1.0.RC3</version>
     </dependency>
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-httpclient</artifactId>
-        <version>1.0.RC2.1</version>
+        <version>1.0.RC3</version>
         <scope>runtime</scope>
     </dependency>
     <!-- This next runtime dependency is only necessary if you have
@@ -47,7 +50,7 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-oauth</artifactId>
-        <version>1.0.RC2.1</version>
+        <version>1.0.RC3</version>
         <scope>runtime</scope>
     </dependency>
 
@@ -108,12 +111,12 @@ The `Client` object is what allows you to communicate with Stormpath.
     import com.stormpath.sdk.client.Clients;
     import com.stormpath.sdk.client.Client;
     import com.stormpath.sdk.api.ApiKeys;
-	
+
     String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
 
 	ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
 	Client client = Clients.builder().setApiKey(apiKey).build();
-	
+
 	//If using Google App Engine, you must use Basic authentication:
     //Client client = Clients.builder().setApiKey(apiKey)
 	//    .setAuthenticationScheme(AuthenticationScheme.BASIC)
@@ -134,14 +137,14 @@ Application.  An Application in Stormpath is the same thing as a project. If
 you're building a web app named "Lightsabers Galore", you'd want to name your
 Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath
 account will have an application already created for you to use.  We will use
-this application for the quickstart. 
+this application for the quickstart.
 
 You can retrieve your example `Application` using the client you created in the
 previous step:
 
     import com.stormpath.sdk.tenant.*;
     import com.stormpath.sdk.application.*;
-	
+
     ApplicationList applications = tenant.getApplications(
             Applications.where(Applications.name().eqIgnoreCase("My Application"))
     );
@@ -167,10 +170,10 @@ this, you'll need to use your application (*created in the previous step*):
     import com.stormpath.sdk.account.*;
     import com.stormpath.sdk.application.*;
     import com.stormpath.sdk.directory.*;
-	
+
     //Create the account object
     Account account = client.instantiate(Account.class);
-	
+
     //Set the account properties
     account.setGivenName("Joe");
     account.setSurname("Stormtrooper");
@@ -179,7 +182,7 @@ this, you'll need to use your application (*created in the previous step*):
     account.setPassword("Changeme1");
     CustomData customData = account.getCustomData();
     customData.put("favoriteColor", "white");
-	
+
     //Create the account using the existing Application object
     application.createAccount(account);
 
@@ -196,7 +199,7 @@ Once you've created an Account, you can access the Account's data by referencing
 the attribute names, for instance:
 
     account.getGivenName();
-    
+
 	account.getCustomData().get("favoriteColor");
 
 
@@ -230,8 +233,8 @@ Authenticating users is equally simple -- you can specify either a `username` or
     ...
 
     //Capture the username and password, such as via an SSL-encrypted web HTML form. We'll just simulate a form lookup and use the values we used above:
-    String usernameOrEmail = "tk421@stormpath.com"; 
-    String rawPassword = "Changeme1"; 
+    String usernameOrEmail = "tk421@stormpath.com";
+    String rawPassword = "Changeme1";
 
     //Create an authentication request using the credentials
     AuthenticationRequest request = new UsernamePasswordRequest(usernameOrEmail, rawPassword);
@@ -242,7 +245,7 @@ Authenticating users is equally simple -- you can specify either a `username` or
         Account account = result.getAccount();
     } catch (ResourceException ex) {
         System.out.println(ex.getStatus() + " " + ex.getMessage());
-    }   
+    }
 
 ***
 
@@ -275,4 +278,3 @@ learn more?  Here are a few other helpful resources you can jump into.
 * Checkout our integrations to [Apache Shiro](/integrations/#sample-apps-java-container-jump) or [Spring Security](/integrations/#sample-apps-java-container-jump).
 * Learn to easily partition user data with our [Guide to Building Multitenant SaaS Applications](/guides/multi-tenant/).
 * Easily support Social Login with [Google](/java/product-guide/#integrating-with-google) and [Facebook](/java/product-guide#integrating-with-facebook) integrations in Java.
-
