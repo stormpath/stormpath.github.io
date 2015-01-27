@@ -600,8 +600,8 @@ Below are language specific libraries that Stormpath has sanity tested with ID S
 
 To use ID Site without an Stormpath SDK their are two flows that need to be implemented:
 
-+ Getting a user to ID Site
-+ Handling the callback to your application from ID Site
++ [Getting a user to ID Site](#getting-a-user-to-id-site)
++ [Handling the Callback to your Application from ID Site](#handling-the-callback-to-your-application-from-id-site)
 
 ### Getting a User to ID Site
 
@@ -640,6 +640,33 @@ The Stormpath `/sso` endpoint will validate the JWT, and redirect the user to yo
 
 ### Handling the Callback to your Application from ID Site
 
+Once the user signs up or logs in to your application, they will be redirected back to your application using the `cb_uri` callback property that was set in the JWT.  In addition to the callback URI, ID Site will include a `jwtResponse` parameter in the query.  For example, if the specified `cb_uri` is `https://yourapp.com/dashboard` then the user will be redirected to:
+
+    https://yourapp.com/dashboard?jwtResponse={GENERATED_ID_SITE_ASSERTION_JWT}
+
+The `jwtResponse` represents a JWT that provides a signed security assertion about who the user is and what they did on ID Site.
+
+Before you trust any of the information in the JWT, you __MUST__:
+
++  Validate the signature with your `API Key Secret` from Stormpath.  This will prove that the information stored in the JWT has not been tampered with during transit.  
++  Validate that the JWT has not expired
+
+{% docs note %}
+If you are using a library to generate a JWT, these usually have methods to help you validate the JWT.  Some libraries will only validate the signature, but not the expiration time.  Please review your JWT library to verify what it can help you verify
+{% enddocs %}
+
+Once the JWT is validated, you can read information about the user from the JWT.  The JWT contains the following information:
+
+Claim Name  | Description
+------------|-------------
+`iss`       | The issuer of the JWT.  This will match your ID Site domain, and can be used for additional validation for the JWT
+`sub`       | The subject of the JWT.  This will be an HREF for the Stormpath account that signed up or logged into the ID Site.  This HREF can be queried for using a Stormpath SDK or the REST API to get more information about the account
+`aud`       | The audience of the JWT.  This will match your API Key ID from Stormpath
+`exp`       | The expiration time for the JWT in seconds since epoch
+`iat`       | The created at time for the JWT in seconds since epoch
+`jti`       | A one-time-use-token for the JWT.  The Stormpath SDKs automatically validate the `jti`. If you require additional security around the validation of the token, you can store the `jti` in your application to validate it only has one time use
+`state`     | The state of the application that you need to pass through the ID Site back to your application through the callback, once the user makes an action on the ID Site.  It is up to the developer to serialize/deserialize this value
+`status`    | The status of the JWT.  This will let you know the status of the request from ID Site.  Valid values are `AUTHENTICATED` and `LOGOUT`
 
 
 ##  Wrapping up
