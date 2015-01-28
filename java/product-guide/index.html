@@ -9,7 +9,7 @@
   <meta name="author" content="Stormpath, Inc.">
 
   
-  <meta name="description" content="Complete product guide and API reference documentation for the Stormpath Java SDK.">
+  <meta name="description" content="Stormpath is a User Management API that reduces development time with instant-on, scalable user infrastructure. Stormpath’s intuitive API and expert &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,14 +65,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="goStormpath">
 <meta name="twitter:title" content="Stormpath Java Product Guide - Stormpath">
-<meta name="twitter:description" content="Complete product guide and API reference documentation for the Stormpath Java SDK.">
+
 <meta name="twitter:image:src" content="https://docs.stormpath.com/images/icons/twitter-stormpath-icon.jpg">
 <!-- opengraph -->
 <meta property="og:title" content="Stormpath Java Product Guide - Stormpath" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://stormpath.github.io/java/product-guide" />
 <meta property="og:image" content="https://docs.stormpath.com/images/icons/og-stormpath-icon.jpg" />
-<meta property="og:description" content="Complete product guide and API reference documentation for the Stormpath Java SDK." />
+
 <meta property="og:site_name" content="Stormpath" />
 <meta property="fb:admins" content="3230401" />
 
@@ -589,7 +589,7 @@ String bar = "APIKEYSECRET";
 
 Client client = Clients.builder()
         .setApiKey(apiKey)
-        .build();
+        .build();               
 </code></pre>
 
 <p><a class="anchor" name="api-key-properties-string"></a></p>
@@ -712,7 +712,6 @@ Java instances representing REST resources use the <a href="http://en.wikipedia.
 <ul>
 <li><strong>RequestExecutor</strong> is an internal infrastructure component used by the <code>DataStore</code> to execute HTTP requests (<code>GET</code>, <code>PUT</code>, <code>POST</code>, <code>DELETE</code>) as necessary. When the DataStore needs to send a Java <code>Resource</code> instance state to or query the server for resources, it delegates to the RequestExecutor to perform the actual HTTP requests. The Stormpath SDK default <code>RequestExecutor</code> implementation is <code>HttpClientRequestExecutor</code> which uses <a href="http://hc.apache.org/">Apache HTTPComponents</a> to execute the raw requests and read the raw responses.</li>
 <li><strong>MapMarshaller</strong> is an internal infrastructure component used by the <code>DataStore</code> to convert JSON strings into Java <code>Object</code> instances or the reverse. The map instances are used by the <code>ResourceFactory</code> to construct standard Java objects representing REST resources. The Stormpath SDK default <code>MapMarshaller</code> uses <a href="https://github.com/FasterXML/jackson">Jackson</a>.</li>
-<li><strong>Cache</strong> is an internal infrastructure component used by the <code>DataStore</code> to access data and translate it into standard Java <code>resource</code> objects. The Cache fetches or saves <code>resource</code> data from or to its internal storage instead of the Stormpath server. The cache is configurable and can use different <a href="#caching">caching mechanisms</a>. This saves on Stormpath API server calls if the data is already available inside the cache. Each cached resource is represented as a <code>CacheEntry</code>.</li>
 <li><strong>ResourceFactory</strong> is an internal infrastructure component used by the <code>DataStore</code> to convert REST resource map data into standard Java <code>resource</code> objects. The ResourceFactory uses Objects from <code>MapMarshaller</code> to construct the Java resource instances.</li>
 <li><strong>Resources</strong> are standard Java objects that have a 1-to-1 correlation with REST data resources in the Stormpath API server such as applications and directories. Applications directly use these <code>resource</code> objects for security needs, such as authenticating user accounts, creating groups and accounts, finding application accounts, assigning accounts to groups, and resetting passwords.</li>
 </ul>
@@ -765,55 +764,6 @@ Directory directory = client.getDataStore().getResource(href, Directory.class);
 </code></pre>
 
 <p>If the directory already exists in memory because the <code>DataStore</code> has previously loaded it, the directory is immediately returned. However, if the directory is not present, the directory <code>href</code> is used to return the directory properties (the immediate data loaded) automatically for you. This technique is known as <em>lazy loading</em> which allows you to traverse entire object graphs automatically without requiring constant knowledge of <code>href</code> URLs.</p>
-
-<p><a class="anchor" name="caching"></a></p>
-
-<h3><a id="caching"></a>Caching</h3>
-
-<p>The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we access the resource again and the data inside the cache hasn&rsquo;t yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath.</p>
-
-<p>By default, a simple production-grade in-memory <code>CacheManager</code> will be enabled when the Client instance is
-created. This <code>CacheManager</code> implementation has the following characteristics:</p>
-
-<ol>
-<li>It assumes a default time-to-live and time-to-idle of 1 hour for all cache entries.</li>
-<li>It auto-sizes itself based on your application&rsquo;s memory usage.  It will not cause OutOfMemoryExceptions.</li>
-</ol>
-
-
-<p>But, please note that the default cache manager is not suitable for an application deployed across multiple JVMs. As a result, if your application that uses a Stormpath Client instance is deployed across multiple JVMs, you SHOULD ensure that the Client is configured with a custom <code>CacheManager</code> implementation that uses coherent and clustered/distributed memory, like Hazelcast.</p>
-
-<p>If your application is deployed on a <b>single JVM</b> and you want to use the default <code>CacheManager</code> implementation, but the default cache configuration does not meet your needs, you can specify a different configuration. For example:</p></p>
-
-<pre><code>CacheManager cacheManager = Caches.newCacheManager()
-    .withDefaultTimeToLive(1, TimeUnit.DAYS) //general default
-    .withDefaultTimeToIdle(2, TimeUnit.HOURS) //general default
-    .withCache(Caches.forResource(Application.class) //Application-specific cache settings
-        .withTimeToLive(1, TimeUnit.HOURS)
-        .withTimeToIdle(30, TimeUnit.MINUTES))
-    .withCache(Caches.forResource(Directory.class) //Directory-specific cache settings
-        .withTimeToLive(30, TimeUnit.MINUTES))
-.build(); //build the CacheManager
-
-Client client = Clients.builder().setApiKey(ApiKeys.builder().setFileLocation(path).build()).setCacheManager(cacheManager).build();
-</code></pre>
-
-<p>The cache options dictionary can have a complex structure if we want to fine-tune the cache by using all the available options:</p>
-
-<ol>
-<li>The <code>newCacheManager()</code> operation instantiates a new CacheManager suitable for <b>SINGLE-JVM APPLICATIONS</b>.  If your application is deployed on multiple JVMs (e.g. for a distributed/clustered web app), you might not want to use this method and instead implement the <code>CacheManager</code> API directly to use your distributed/clustered cache technology of choice.</li>
-<li>The <code>forResource(Class)</code> operation configures a cache region that will store data for instances of that class. E.g. <code>Application</code> resources have a TTL of 1 hour but <code>Directory</code> resources have a 30-minute TTL. These kind of resource groups are called <code>regions</code>, each with its own options:</li>
-<li><code>withTimeToLive</code> &ndash; Time To Live. The amount of time after which the stored resource data will be considered expired.</li>
-<li><code>withTimeToIdle</code> &ndash; Time To Idle. If this amount of time has passed after the resource was last accessed, it will be considered expired.</li>
-</ol>
-
-
-<p>While production applications will usually enable a working CacheManager as described above, you might wish to disable caching entirely when testing or debugging to remove &lsquo;moving parts&rsquo; for better clarity into request/response behavior.  You can do this by configuring a <em>disabled</em> <code>CacheManager</code> instance. For example:</p></p>
-
-<pre><code>Client client = Clients.builder().setCacheManager(
-    Caches.newDisabledCacheManager()
-).build();
-</code></pre>
 
 <p><a class="anchor" name="error-handling"></a></p>
 
@@ -1138,7 +1088,7 @@ AccountList accounts = application.getAccounts(criteria);
 
 <p>For example, it would not be possible to return an account with its directory expanded and also the directory&rsquo;s groups expanded as well. Link expansion is currently only possible one level &lsquo;deep&rsquo;.</p>
 
-<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#58;&#x73;&#x75;&#112;&#x70;&#111;&#114;&#116;&#64;&#115;&#116;&#x6f;&#x72;&#x6d;&#x70;&#x61;&#x74;&#104;&#46;&#99;&#111;&#109;">&#115;&#x75;&#x70;&#112;&#111;&#x72;&#116;&#64;&#115;&#x74;&#x6f;&#114;&#x6d;&#112;&#97;&#x74;&#x68;&#46;&#99;&#x6f;&#109;</a> and submit a feature request.</p>
+<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#115;&#117;&#x70;&#112;&#x6f;&#x72;&#116;&#x40;&#x73;&#x74;&#111;&#x72;&#109;&#112;&#97;&#x74;&#104;&#46;&#x63;&#x6f;&#109;">&#115;&#x75;&#112;&#x70;&#x6f;&#x72;&#x74;&#x40;&#115;&#116;&#x6f;&#114;&#x6d;&#112;&#97;&#116;&#104;&#x2e;&#99;&#111;&#x6d;</a> and submit a feature request.</p>
 
 <h4>Expanding Collection Resources</h4>
 
@@ -1251,13 +1201,15 @@ AccountList accounts = application.getAccounts(criteria);
 <li><a href="#tenant-retrieve">Retrieve a tenant</a></li>
 <li><a href="#tenant-applications">Access a tenant&rsquo;s applications</a></li>
 <li><a href="#tenant-directories">Access a tenant&rsquo;s directories</a></li>
+<li><a href="#tenant-accounts">Access a tenant&rsquo;s accounts</a></li>
+<li><a href="#tenant-groups">Access a tenant&rsquo;s groups</a></li>
 </ul>
 
 
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
 
-<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#97;&#x69;&#108;&#116;&#x6f;&#58;&#115;&#117;&#112;&#112;&#x6f;&#114;&#x74;&#x40;&#x73;&#x74;&#x6f;&#114;&#109;&#x70;&#97;&#x74;&#x68;&#46;&#x63;&#111;&#109;">&#x73;&#117;&#112;&#112;&#111;&#114;&#116;&#64;&#x73;&#x74;&#111;&#x72;&#x6d;&#x70;&#97;&#x74;&#104;&#46;&#x63;&#x6f;&#x6d;</a> and request it.</p>
+<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#115;&#x75;&#112;&#112;&#111;&#114;&#x74;&#64;&#x73;&#x74;&#x6f;&#x72;&#x6d;&#112;&#97;&#x74;&#104;&#46;&#x63;&#x6f;&#x6d;">&#x73;&#x75;&#x70;&#112;&#x6f;&#114;&#116;&#64;&#115;&#116;&#111;&#114;&#109;&#x70;&#97;&#116;&#104;&#46;&#x63;&#x6f;&#x6d;</a> and request it.</p>
 
 <p><a class="anchor" name="tenant-retrieve"></a></p>
 
@@ -1406,6 +1358,92 @@ for(Directory directory : directories) {
 <h4>Working With Tenant Directories</h4>
 
 <p>Directory resources support the full suite of CRUD commands and other interactions. Please see the <a href="#directories">Directories section</a> for more information.</p>
+
+<h3><a id="tenant-accounts"></a>Tenant Accounts</h3>
+
+<p>A <code>Tenant</code> has <a href="#accounts">Accounts</a> that represent the users of your <code>Applications</code>.  Accounts may login to <a href="#applications">applications</a> and can have <code>Groups</code> assigned to them.  Accounts across applications and directories can be accessed from your <code>Tenant</code> to provide a tenant-wide view of your account base.</p>
+
+<p><strong>Tenant Account Collection Resource</strong></p>
+
+<pre><code>tenant.getAccounts();
+</code></pre>
+
+<h4>List Tenant Accounts</h4>
+
+<p>You can list your tenant&rsquo;s accounts by invoking the <code>getAccounts()</code> method in your <code>Tenant</code> resource.  The response is a <a href="#pagination">paginated</a> list of your tenant&rsquo;s accounts.</p>
+
+<p><strong>Example request</strong></p>
+
+<pre><code>AccountList accounts = tenant.getAccounts();
+</code></pre>
+
+<h4>Search Tenant Accounts</h4>
+
+<p>You may search for accounts by invoking the <code>getAccounts(AccountCriteria)</code> or <code>getAccounts(Map)</code> methods in your <code>Tenant</code> resource using <a href="#search">search query parameters</a>. Any matching accounts for your tenant will be returned as a <a href="#pagination">paginated</a> list.</p>
+
+<p>In addition to the the <a href="#search">search query parameters</a>, you may also use <a href="#pagination">pagination</a>, <a href="#sorting">sorting</a>, and <a href="#link-expansion">link expansion</a> query parameters to customize the paginated response.</p>
+
+<p><strong>Example request using AccountCriteria</strong></p>
+
+<pre><code>AccountList accounts = client.getAccounts(Accounts
+                                .where(Accounts.givenName().containsIgnoreCase("foo"))
+                                .and(Accounts.surname().startsWithIgnoreCase("bar"))
+                                .orderBySurname().descending()
+                                .withGroups(10)
+                                .offsetBy(20)
+                                .limitTo(25));
+</code></pre>
+
+<p><strong>Example request using Map</strong></p>
+
+<pre><code>Map&lt;String, Object&gt; params = new LinkedHashMap&lt;String, Object&gt;();
+params.put("givenName", "*foo*");
+params.put("surname", "*bar");
+AccountList accounts = tenant.getAccounts(params);
+</code></pre>
+
+<h3><a id="tenant-groups"></a>Tenant Groups</h3>
+
+<p>A <code>Tenant</code> has <a href="#groups">Groups</a> that represent the groups of your <code>Applications</code>.  Groups may be assigned to <code>Accounts</code> for access control or authorization.  Groups across applications and directories can be accessed from your <code>Tenant</code> to provide a tenant-wide view of your groups.</p>
+
+<p><strong>Tenant Groups Collection Resource</strong></p>
+
+<pre><code>tenant.getGroups();
+</code></pre>
+
+<h4>List Tenant Groups</h4>
+
+<p>You can list your tenant&rsquo;s groups by invoking the <code>getGroups()</code> method in your <code>Tenant</code> resource.  The response is a <a href="#pagination">paginated</a> list of your tenant&rsquo;s  groups.</p>
+
+<p><strong>Example request</strong></p>
+
+<pre><code>GroupList groups = tenant.getGroups();
+</code></pre>
+
+<h4>Search Tenant Groups</h4>
+
+<p>You may search for groups by invoking the <code>getGroups(GroupCriteria)</code> or <code>getGroups(Map)</code> methods in your <code>Tenant</code> resource using <a href="#search">search query parameters</a>.  Any matching groups with your tenant will be returned as a <a href="#pagination">paginated</a> list.</p>
+
+<p>In addition to the <a href="#search">search query parameters</a>, you may also use <a href="#pagination">pagination</a>, <a href="#sorting">sorting</a>, and <a href="#link-expansion">link expansion</a> query parameters to customize the paginated response.</p>
+
+<p><strong>Example request using GroupCriteria</strong></p>
+
+<pre><code>GroupList groups = client.getGroups(Groups
+                            .where(Groups.name().containsIgnoreCase("foo"))
+                            .and(Groups.description().startsWithIgnoreCase("bar"))
+                            .orderByName().descending()
+                            .withAccounts(10)
+                            .offsetBy(20)
+                            .limitTo(25);
+</code></pre>
+
+<p><strong>Example request using Map</strong></p>
+
+<pre><code>Map&lt;String, Object&gt; params = new LinkedHashMap&lt;String, Object&gt;();
+params.put("name", "*foo*");
+params.put("description", "*bar");
+GroupList groups = tenant.getGroups(params);
+</code></pre>
 
 <hr />
 
@@ -4610,7 +4648,7 @@ CustomData customData = client.getResource(account.getCustomData().getHref(), Cu
 <pre><code>AccountList accounts = application.getAccounts(
             Accounts.where(Accounts.email().eqIgnoreCase("some@email.com"))
                     .withCustomData()
-);
+);  
 </code></pre>
 
 <p><strong>Example: Retrieve a Group with its Custom Data</strong></p>
@@ -4776,7 +4814,7 @@ customData.save();
 <td align="left"><code>redirectUri</code> </td>
 <td align="left"> The redirection Uri for your Google application </td>
 <td align="left"> String </td>
-<td align="left"> &mdash;</td>
+<td align="left"> &mdash; </td>
 </tr>
 <tr>
 <td align="left"><code>providerId</code> </td>
@@ -4860,10 +4898,10 @@ Account account = result.getAccount();
 <p>The returned <code>GoogleProviderData</code> includes:</p>
 
 <pre><code>providerData.getAccessToken(); //-&gt; y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4
-providerData.getCreatedAt(); //-&gt; 2014-04-01T17:00:09.154Z
-providerData.getHref(); //-&gt; https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData
-providerData.getModifiedAt(); //-&gt; 2014-04-01T17:00:09.189Z
-providerData.getProviderId(); //-&gt; google
+providerData.getCreatedAt(); //-&gt; 2014-04-01T17:00:09.154Z 
+providerData.getHref(); //-&gt; https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData 
+providerData.getModifiedAt(); //-&gt; 2014-04-01T17:00:09.189Z 
+providerData.getProviderId(); //-&gt; google 
 providerData.getRefreshToken(); //-&gt; 1/qQTS638g3ArE4U02FoiXL1yIh-OiPmhc
 </code></pre>
 
@@ -4942,7 +4980,7 @@ Account account = result.getAccount();
 <td align="left"><code>clientSecret</code> </td>
 <td align="left"> The App Secret for your Facebook application </td>
 <td align="left"> String </td>
-<td align="left"> &mdash;</td>
+<td align="left"> &mdash; </td>
 </tr>
 <tr>
 <td align="left"><code>providerId</code> </td>
@@ -5552,7 +5590,7 @@ addthis:url="https://stormpath.com" >
 				<a href="/java/product-guide">Product Guide</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#java-sdk" data-level="1" class="fragment">Java SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#caching" data-level="1" class="fragment">Caching</a><ul class="menu"></ul></li><li class="leaf"><a href="#error-handling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-applications" data-level="1" class="fragment">Tenant Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-password-policy" data-level="1" class="fragment">Account Password Policy</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#verifying-an-accounts-email-address" data-level="1" class="fragment">Verifying An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#resetting-an-accounts-password" data-level="1" class="fragment">Resetting An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-an-account" data-level="1" class="fragment">Authenticate An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-google" data-level="0" class="fragment">Integrating with Google</a><ul class="menu"><li class="leaf"><a href="#google-provider-resource" data-level="1" class="fragment">Google Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-google-directory" data-level="1" class="fragment">Creating a Google Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-google-authorization-codes-or-access-tokens" data-level="1" class="fragment">Accessing Accounts with Google Authorization Codes or Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-facebook" data-level="0" class="fragment">Integrating with Facebook</a><ul class="menu"><li class="leaf"><a href="#facebook-provider-resource" data-level="1" class="fragment">Facebook Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-facebook-directory" data-level="1" class="fragment">Creating a Facebook Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-facebook-user-access-tokens" data-level="1" class="fragment">Accessing Accounts with Facebook User Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#java-sample-code" data-level="0" class="fragment">Java Sample Code</a><ul class="menu"><li class="leaf"><a href="#spring-mvc-sample-app" data-level="1" class="fragment">Spring MVC Sample App</a><ul class="menu"></ul></li><li class="leaf"><a href="#apache-shiro-sample-web-app" data-level="1" class="fragment">Apache Shiro Sample Web App</a><ul class="menu"></ul></li><li class="leaf"><a href="#spring-security-sample-web-app" data-level="1" class="fragment">Spring Security Sample Web App</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#appendix" data-level="0" class="fragment">Appendix</a><ul class="menu"><li class="leaf"><a href="#how-to-get-the-java-sdk-jar-files-if-you-are-not-using-a-maven-compatible-build-tool" data-level="1" class="fragment">How to get the Java SDK jar files if you are not using a Maven-compatible build tool</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#java-sdk" data-level="1" class="fragment">Java SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#error-handling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-applications" data-level="1" class="fragment">Tenant Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-accounts" data-level="1" class="fragment">Tenant Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-groups" data-level="1" class="fragment">Tenant Groups</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-password-policy" data-level="1" class="fragment">Account Password Policy</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#verifying-an-accounts-email-address" data-level="1" class="fragment">Verifying An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#resetting-an-accounts-password" data-level="1" class="fragment">Resetting An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-an-account" data-level="1" class="fragment">Authenticate An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-google" data-level="0" class="fragment">Integrating with Google</a><ul class="menu"><li class="leaf"><a href="#google-provider-resource" data-level="1" class="fragment">Google Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-google-directory" data-level="1" class="fragment">Creating a Google Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-google-authorization-codes-or-access-tokens" data-level="1" class="fragment">Accessing Accounts with Google Authorization Codes or Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-facebook" data-level="0" class="fragment">Integrating with Facebook</a><ul class="menu"><li class="leaf"><a href="#facebook-provider-resource" data-level="1" class="fragment">Facebook Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-facebook-directory" data-level="1" class="fragment">Creating a Facebook Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-facebook-user-access-tokens" data-level="1" class="fragment">Accessing Accounts with Facebook User Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#java-sample-code" data-level="0" class="fragment">Java Sample Code</a><ul class="menu"><li class="leaf"><a href="#spring-mvc-sample-app" data-level="1" class="fragment">Spring MVC Sample App</a><ul class="menu"></ul></li><li class="leaf"><a href="#apache-shiro-sample-web-app" data-level="1" class="fragment">Apache Shiro Sample Web App</a><ul class="menu"></ul></li><li class="leaf"><a href="#spring-security-sample-web-app" data-level="1" class="fragment">Spring Security Sample Web App</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#appendix" data-level="0" class="fragment">Appendix</a><ul class="menu"><li class="leaf"><a href="#how-to-get-the-java-sdk-jar-files-if-you-are-not-using-a-maven-compatible-build-tool" data-level="1" class="fragment">How to get the Java SDK jar files if you are not using a Maven-compatible build tool</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		
