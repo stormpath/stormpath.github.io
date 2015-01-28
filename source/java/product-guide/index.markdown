@@ -1,7 +1,6 @@
 ---
 layout: doc
 lang: java
-description: Complete product guide and API reference documentation for the Stormpath Java SDK.
 title: Stormpath Java Product Guide
 ---
 
@@ -41,7 +40,7 @@ When building your applications in the past, how much time have you spent writin
 By offloading all of this effort to Stormpath, a service with deep security roots, you can quickly get back to writing your actual application and never worry about password attacks again.
 
 <a class="anchor" name="core"></a>
-### Core Concepts
+### Core Concepts 
 
 Stormpath has five core concepts, and everything else in the Stormpath REST API exists to support them:
 
@@ -62,7 +61,7 @@ You can assign one or more *Account Stores* to an Application.  Accounts within 
 
 **Account Stores**
 
-An *Account Store* is a generic term for either a `Directory` or a `Group`. Directories and Groups are both considered 'account stores' because they both contain, or 'store', Accounts.
+An *Account Store* is a generic term for either a `Directory` or a `Group`. Directories and Groups are both considered 'account stores' because they both contain, or 'store', Accounts. 
 
 * **Directories**
 
@@ -104,7 +103,7 @@ For more detailed documentation on the Stormpath API, visit the [REST API Produc
 
 The Stormpath Java SDK allows any JVM-based application to easily use the Stormpath user management service for all authentication and access control needs. The Java SDK can be found on [Github](https://github.com/stormpath/stormpath-sdk-java).
 
-When you make SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Java SDK therefore provides a clean object-oriented paradigm natural to JVM developers and alleviates the need to know how to make REST+JSON requests.
+When you make SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Java SDK therefore provides a clean object-oriented paradigm natural to JVM developers and alleviates the need to know how to make REST+JSON requests. 
 
 Any JVM-based programming language can use the Stormpath Java SDK. JVM languages include Java, Groovy, Scala, Clojure, Kotlin, Jython, and JRuby.
 
@@ -156,10 +155,10 @@ You could configure the Client by creating a client instance using the following
             .setIdPropertyName(foo)
             .setSecretPropertyName(bar)
             .build();
-
+    
     Client client = Clients.builder()
     		.setApiKey(apiKey)
-            .build();
+            .build();               
 
 <a class="anchor" name="api-key-properties-string"></a>
 #### API Key Properties
@@ -199,7 +198,7 @@ Assign user accounts to Stormpath, through [account stores](#account-store-mappi
 <a class="anchor" name="authentication-scheme-configuration"></a>
 #### Authentication Scheme Configuration
 
-You can choose one of two authentication schemes to authenticate with Stormpath:
+You can choose one of two authentication schemes to authenticate with Stormpath: 
 
 1. **Stormpath SAuthc1 Authentication**:  This is the recommended approach, and the default setting.  This approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath SAuthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.
 2. **Basic Authentication**: This is _only_ recommended when your application runs in an environment outside of your control, and that environment manipulates your application's request headers when requests are made.  Google App Engine is one known such environment.  However, Basic Authentication is not as secure as Stormpath's `SAuthc` algorithm, so only use this if you are forced to do so by your application runtime environement.
@@ -262,7 +261,6 @@ The core component concepts of the SDK are as follows:<br />
 * **DataStore** is central to the Stormpath SDK. It is responsible for managing all Java `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on Java `resource` objects into REST requests to the Stormpath API server as necessary. It works between your application and the Stormpath API server.
 	* **RequestExecutor** is an internal infrastructure component used by the `DataStore` to execute HTTP requests (`GET`, `PUT`, `POST`, `DELETE`) as necessary. When the DataStore needs to send a Java `Resource` instance state to or query the server for resources, it delegates to the RequestExecutor to perform the actual HTTP requests. The Stormpath SDK default `RequestExecutor` implementation is `HttpClientRequestExecutor` which uses [Apache HTTPComponents](http://hc.apache.org/) to execute the raw requests and read the raw responses.
 	* **MapMarshaller** is an internal infrastructure component used by the `DataStore` to convert JSON strings into Java `Object` instances or the reverse. The map instances are used by the `ResourceFactory` to construct standard Java objects representing REST resources. The Stormpath SDK default `MapMarshaller` uses [Jackson](https://github.com/FasterXML/jackson).
-	* **Cache** is an internal infrastructure component used by the `DataStore` to access data and translate it into standard Java `resource` objects. The Cache fetches or saves `resource` data from or to its internal storage instead of the Stormpath server. The cache is configurable and can use different [caching mechanisms](#caching). This saves on Stormpath API server calls if the data is already available inside the cache. Each cached resource is represented as a `CacheEntry`.
 	* **ResourceFactory** is an internal infrastructure component used by the `DataStore` to convert REST resource map data into standard Java `resource` objects. The ResourceFactory uses Objects from `MapMarshaller` to construct the Java resource instances.
 	* **Resources** are standard Java objects that have a 1-to-1 correlation with REST data resources in the Stormpath API server such as applications and directories. Applications directly use these `resource` objects for security needs, such as authenticating user accounts, creating groups and accounts, finding application accounts, assigning accounts to groups, and resetting passwords.
 
@@ -306,46 +304,6 @@ The previous lookup becomes:
 	Directory directory = account.getDirectory();
 
 If the directory already exists in memory because the `DataStore` has previously loaded it, the directory is immediately returned. However, if the directory is not present, the directory `href` is used to return the directory properties (the immediate data loaded) automatically for you. This technique is known as *lazy loading* which allows you to traverse entire object graphs automatically without requiring constant knowledge of `href` URLs.
-
-<a class="anchor" name="caching"></a>
-### Caching
-
-The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we access the resource again and the data inside the cache hasn't yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath.
-
-By default, a simple production-grade in-memory `CacheManager` will be enabled when the Client instance is
-created. This `CacheManager` implementation has the following characteristics:
-
-1. It assumes a default time-to-live and time-to-idle of 1 hour for all cache entries.
-2. It auto-sizes itself based on your application's memory usage.  It will not cause OutOfMemoryExceptions.
-
-But, please note that the default cache manager is not suitable for an application deployed across multiple JVMs. As a result, if your application that uses a Stormpath Client instance is deployed across multiple JVMs, you SHOULD ensure that the Client is configured with a custom `CacheManager` implementation that uses coherent and clustered/distributed memory, like Hazelcast.
-
-If your application is deployed on a <b>single JVM</b> and you want to use the default `CacheManager` implementation, but the default cache configuration does not meet your needs, you can specify a different configuration. For example:</p>
-
-    CacheManager cacheManager = Caches.newCacheManager()
-        .withDefaultTimeToLive(1, TimeUnit.DAYS) //general default
-        .withDefaultTimeToIdle(2, TimeUnit.HOURS) //general default
-        .withCache(Caches.forResource(Application.class) //Application-specific cache settings
-            .withTimeToLive(1, TimeUnit.HOURS)
-            .withTimeToIdle(30, TimeUnit.MINUTES))
-        .withCache(Caches.forResource(Directory.class) //Directory-specific cache settings
-            .withTimeToLive(30, TimeUnit.MINUTES))
-    .build(); //build the CacheManager
-
-    Client client = Clients.builder().setApiKey(ApiKeys.builder().setFileLocation(path).build()).setCacheManager(cacheManager).build();
-
-The cache options dictionary can have a complex structure if we want to fine-tune the cache by using all the available options:
-
-1. The `newCacheManager()` operation instantiates a new CacheManager suitable for <b>SINGLE-JVM APPLICATIONS</b>.  If your application is deployed on multiple JVMs (e.g. for a distributed/clustered web app), you might not want to use this method and instead implement the `CacheManager` API directly to use your distributed/clustered cache technology of choice.
-2. The `forResource(Class)` operation configures a cache region that will store data for instances of that class. E.g. `Application` resources have a TTL of 1 hour but `Directory` resources have a 30-minute TTL. These kind of resource groups are called `regions`, each with its own options:
-3. `withTimeToLive` - Time To Live. The amount of time after which the stored resource data will be considered expired.
-4. `withTimeToIdle` - Time To Idle. If this amount of time has passed after the resource was last accessed, it will be considered expired.
-
-While production applications will usually enable a working CacheManager as described above, you might wish to disable caching entirely when testing or debugging to remove 'moving parts' for better clarity into request/response behavior.  You can do this by configuring a <em>disabled</em> `CacheManager` instance. For example:</p>
-
-    Client client = Clients.builder().setCacheManager(
-        Caches.newDisabledCacheManager()
-    ).build();
 
 <a class="anchor" name="error-handling"></a>
 ### Error Handling
@@ -676,6 +634,8 @@ For Tenants, you can:
 * [Retrieve a tenant](#tenant-retrieve)
 * [Access a tenant's applications](#tenant-applications)
 * [Access a tenant's directories](#tenant-directories)
+* [Access a tenant's accounts](#tenant-accounts)
+* [Access a tenant's groups](#tenant-groups)
 
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
@@ -723,7 +683,7 @@ ApplicationList applications = tenant.getApplications(Applications.where(Applica
         for(Application application : applications) {
             System.out.println(application.getName());
         }
-
+        
 <a class="anchor" name="tenant-applications-search"></a>
 #### Search Tenant Applications
 
@@ -807,6 +767,84 @@ In addition to the the [search query parameters](#search), you may also use [pag
 #### Working With Tenant Directories
 
 Directory resources support the full suite of CRUD commands and other interactions. Please see the [Directories section](#directories) for more information.
+
+### Tenant Accounts
+
+A `Tenant` has [Accounts](#accounts) that represent the users of your `Applications`.  Accounts may login to [applications](#applications) and can have `Groups` assigned to them.  Accounts across applications and directories can be accessed from your `Tenant` to provide a tenant-wide view of your account base.
+
+**Tenant Account Collection Resource**
+
+	tenant.getAccounts();
+
+#### List Tenant Accounts
+
+You can list your tenant's accounts by invoking the `getAccounts()` method in your `Tenant` resource.  The response is a [paginated](#pagination) list of your tenant's accounts.
+
+**Example request**
+
+    AccountList accounts = tenant.getAccounts();
+
+#### Search Tenant Accounts
+
+You may search for accounts by invoking the `getAccounts(AccountCriteria)` or `getAccounts(Map)` methods in your `Tenant` resource using [search query parameters](#search). Any matching accounts for your tenant will be returned as a [paginated](#pagination) list. 
+
+In addition to the the [search query parameters](#search), you may also use [pagination](#pagination), [sorting](#sorting), and [link expansion](#link-expansion) query parameters to customize the paginated response.
+
+**Example request using AccountCriteria**
+
+	AccountList accounts = client.getAccounts(Accounts
+	                                .where(Accounts.givenName().containsIgnoreCase("foo"))
+	                                .and(Accounts.surname().startsWithIgnoreCase("bar"))
+	                                .orderBySurname().descending()
+	                                .withGroups(10)
+	                                .offsetBy(20)
+	                                .limitTo(25));
+									
+**Example request using Map**
+	
+	Map<String, Object> params = new LinkedHashMap<String, Object>();
+	params.put("givenName", "*foo*");
+	params.put("surname", "*bar");
+	AccountList accounts = tenant.getAccounts(params);
+
+### Tenant Groups
+
+A `Tenant` has [Groups](#groups) that represent the groups of your `Applications`.  Groups may be assigned to `Accounts` for access control or authorization.  Groups across applications and directories can be accessed from your `Tenant` to provide a tenant-wide view of your groups.
+
+**Tenant Groups Collection Resource**
+
+	tenant.getGroups();
+
+#### List Tenant Groups
+
+You can list your tenant's groups by invoking the `getGroups()` method in your `Tenant` resource.  The response is a [paginated](#pagination) list of your tenant's  groups.
+
+**Example request**
+
+    GroupList groups = tenant.getGroups();
+
+#### Search Tenant Groups
+
+You may search for groups by invoking the `getGroups(GroupCriteria)` or `getGroups(Map)` methods in your `Tenant` resource using [search query parameters](#search).  Any matching groups with your tenant will be returned as a [paginated](#pagination) list. 
+
+In addition to the [search query parameters](#search), you may also use [pagination](#pagination), [sorting](#sorting), and [link expansion](#link-expansion) query parameters to customize the paginated response.
+
+**Example request using GroupCriteria**
+
+	GroupList groups = client.getGroups(Groups
+								.where(Groups.name().containsIgnoreCase("foo"))
+								.and(Groups.description().startsWithIgnoreCase("bar"))
+								.orderByName().descending()
+								.withAccounts(10)
+								.offsetBy(20)
+								.limitTo(25);
+									
+**Example request using Map**
+	
+	Map<String, Object> params = new LinkedHashMap<String, Object>();
+	params.put("name", "*foo*");
+	params.put("description", "*bar");
+	GroupList groups = tenant.getGroups(params);
 
 ***
 
@@ -933,7 +971,7 @@ When sending the creation request, you can append the `createDirectory()` method
             .setName("My Application")
             .setDescription("My Application Description")
             .setStatus(ApplicationStatus.ENABLED);
-
+    
     tenant.createApplication(
     		Applications.newCreateRequestFor(application)
             	.createDirectory()
@@ -1168,7 +1206,7 @@ The execution of the registration workflow can be explicitly overwritten on a pe
         .setSurname("Picard")
         .setEmail("capt@enterprise.com")
         .setPassword("4P@$$w0rd!");
-
+	
 	application.createAccount(
 		Accounts.newCreateRequestFor(account)
 			.setRegistrationWorkflowEnabled(true)
@@ -1191,37 +1229,6 @@ This workflow is disabled by default for accounts, but you can enable it easily 
 {% docs note %}
 Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console. They are not currently configurable via the Java SDK. Also, the Stormpath Administrator directory's automated workflows cannot be altered.
 {% enddocs %}
-
-<a class="anchor" name="application-resend-verify-email"></a>
-#### Resending the Verification Email
-
-In some cases, it may be needed to resend the verification email.  This could be because the user accidentally deleted the verification email or it was undeliverable at a certain time.  An `Application` has the ability to resend verification emails based on the account's username or email.
-
-**Application Resend Email Verification Resource**
-
-    application.sendVerificationEmail(VerificationEmailRequest);
-
-**Resend Email Verification Resource Attributes**
-
-Attribute | Description | Type | Valid Value
-:----- | :----- | :---- | :----
-`login` | Either the email or username for the account that needs an email verification resent | String | A email or user name for an account
-`accountStore`| An optional link to the application's accountStore (directory or group) that you are certain contains the account attempting to resend the verification email to. | link | --
-
-**Execute Email Verification Resend**
-
-An invocation to the `sendVerificationEmail(VerificationEmailRequest)` method of the `Application` will trigger Stormpath to resend the verification email.  When doing so, you can specify either the username or email for the account and optionally the account store to target a specific location for the account:
-
-**Example Request**
-
-	Directory dir = client.getResource("https://api.stormpath.com/v1/directories/7WcyHGlDa0V2Nk11Vum3Zd", Directory.class);
-	VerificationEmailRequest verificationEmailRequest = Applications.verificationEmailBuilder()
-                                                                        .setLogin("email@foo.com")
-                                                                        .setAccountStore(dir)
-                                                                        .build();
-	application.sendVerificationEmail(verificationEmailRequest);
-
-If the verification email is successfully queued to be sent, no response will be received. Otherwise a `ResourceException` will be thrown.
 
 <a class="anchor" name="application-account-authc"></a>
 #### Log In (Authenticate) an Account
@@ -1259,7 +1266,7 @@ When you submit an authentication request to Stormpath, instead of executing the
 At the time you create the request, it is likely that you may know the account store where the account resides, therefore you can target it directly. This will speed up the authentication attempt (especially if you have a very large number of account stores).
 
 **Example Request**
-
+	
 	AccountStore accountStore = anAccountStoreMapping.getAccountStore();
 	UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("usernameOrEmail", "password", accountStore);
     AuthenticationResult result = application.authenticateAccount(authenticationRequest);
@@ -1311,7 +1318,7 @@ If the password reset token creation fails, a `400 Bad Request` is returned with
 
 At this point, an email will be built using the [password reset base URL](#password-reset-base-URL) specified in the Stormpath Admin Console.
 
-In a real-world implementation, you must build an end-point in your application that is designed to accept a request with the query string parameter "sptoken", which is the token value generated for the user. This token is then used to verify the reset request before updating the account accordingly.
+In a real-world implementation, you must build an end-point in your application that is designed to accept a request with the query string parameter "sptoken", which is the token value generated for the user. This token is then used to verify the reset request before updating the account accordingly.        
 
 <a class="anchor" name="password-reset-token-retrieve"></a>
 ##### Validate A Password Reset Request (Validate A Token)
@@ -1332,7 +1339,7 @@ If the password reset token is invalid - it never existed or has expired - a `40
 
 ##### Resetting the Password for a Token
 
-After a successfully call with the query string token, you can return a page to the end user to collect the password to update for the account. Once you have the password, you can update it by a using the `Application`'s reset password method.
+After a successfully call with the query string token, you can return a page to the end user to collect the password to update for the account. Once you have the password, you can update it by a using the `Application`'s reset password method. 
 
     Account account = application.resetPassword("$TOKEN", "newPassword");
 
@@ -1509,39 +1516,6 @@ You define and modify an application's account store mappings by creating, modif
 
     application.getAccountStoreMappings();
 
-<a class="anchor" name="application-account-store-mappings-add-directory"></a>
-#### Add Application Account Store Mappings
-
-The `Application` Resource provides a convenience method  that facilitates the creation of account atores in the application. With these methods you can add a new account store just by providing a `Directory` or `Group` `href` or `name`.
-
-The given Resource must have either its href or name property set. Having that information, this method will look for the Resource that matches either the `href` or the `name` given, will create the `AccountStoreMapping` Resource and will associate it to the `Application`.
-
-**Example Request for Directory with href**
-
-	Directory directory = client.getResource("https://api.stormpath.com/v1/directory/3xwt06QyMt6u2DhKLfzvie", Directory.class);
-    AccountStoreMapping accountStoreMapping = application.addDirectory(directory);
-
-**Example Request for Directory with name**
-
-	Directory directory = client.instantiate(Directory.class);
-    directory.setName("Foo Directory");
-    AccountStoreMapping accountStoreMapping = application.addDirectory(directory);
-
-**Example Request for Group with href**
-
-	Group group = client.getResource("https://api.stormpath.com/v1/groups/2rwq022yMt4u2DwKLfzriP", Group.class);
-    AccountStoreMapping accountStoreMapping = application.adGroup(group);
-
-**Example Request for Group with name**
-
-	Group group = client.instantiate(Group.class);
-	group.setName("Foo Group");
-    AccountStoreMapping accountStoreMapping = application.addGroup(group);
-
-{% docs note %}
-Providing the `Group` name, will cause an iteration though every directory existing in this tenant. In contrast, providing the `Group` href is more efficient, and thus suggested, as no actual search operation needs to be carried out.
-{% enddocs %}
-
 <a class="anchor" name="application-account-store-mappings-list"></a>
 #### List Application Account Store Mappings
 
@@ -1647,7 +1621,7 @@ Creating it from an application instance:
             .setDefaultAccountStore(Boolean.TRUE)
             .setDefaultGroupStore(Boolean.FALSE)
             .setListIndex(0);
-
+        
     application.createAccountStoreMapping(accountStoreMapping);
 
 
@@ -1817,7 +1791,7 @@ The response is a paginated list of `accountStoreMapping` resources.  You may us
 <a class="anchor" name="directories"></a>
 ## Directories
 
-A Directory is a top-level storage containers of `Accounts` and `Groups`. A Directory also manages security policies (like password strength) for the Accounts it contains.
+A Directory is a top-level storage containers of `Accounts` and `Groups`. A Directory also manages security policies (like password strength) for the Accounts it contains. 
 
 Additionally:
 
@@ -1853,7 +1827,7 @@ Mirror directories are a big benefit to Stormpath customers who need LDAP or Act
 LDAP or Active Directory are still the 'system of record' or source of identity 'truth' for these accounts and groups.  The big benefit is that your Stormpath-enabled applications still use the same convenient REST+JSON API - they do not need to know anything about LDAP, Active Directory or legacy connection protocols!
 
 {% docs tip %}
-The Stormpath Agent is **firewall friendly**: you do not need to open any inbound holes in your company firewall.  The only requirement is that the Agent be able to make an _outbound_ HTTPS connection to https://api.stormpath.com
+The Stormpath Agent is **firewall friendly**: you do not need to open any inbound holes in your company firewall.  The only requirement is that the Agent be able to make an _outbound_ HTTPS connection to https://api.stormpath.com 
 {% enddocs %}
 
 Finally, note that accounts and groups in mirrored directories are automatically deleted when:
@@ -1947,7 +1921,7 @@ You can achieve the same result using the type-unsafe variant:
     for(Directory directory : tenant.getDirectories(queryParams)) {
     	System.out.println(directory.getHref());
     }
-
+    
 If you only know a small part, you can use the asterisk wildcard (e.g., `queryParams.put("name", "My*");`) to narrow down the selection.
 
 <a class="anchor" name="directory-create"></a>
@@ -1987,7 +1961,7 @@ When you invoke this method, at least the `name` attribute must be specified, an
         .setDescription("Captains from a variety of stories");
 
     tenant.createDirectory(directory);
-
+    
 <a class="anchor" name="directory-create-mirror"></a>
 #### Create a Mirrored (LDAP/AD) Directory
 
@@ -2095,7 +2069,7 @@ It is not currently possible to configure a Directory's account password policy 
 {% enddocs %}
 
 {% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API.
+Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. 
 
 Additionally, the `Stormpath Administrator` directory's automated workflows cannot be altered.
 {% enddocs %}
@@ -2306,7 +2280,7 @@ For example, if you want to find  a group with the name "My Group", you'll need 
     }
 
 If you know the name exactly, you can use an [attribute search](#search-attribute):
-
+	
 	Map<String, Object> queryParams = new HashMap<String, Object>();
     queryParams.put("name", "My Group");
     Iterator<Group> iterator = directory.getGroups(queryParams).iterator();
@@ -2432,7 +2406,7 @@ It returns a paginated list of links for groups accessible to an application.
     for( Group group : groups) {
     	System.out.println(group.getName());
     }
-
+        
 
 ##### Account Groups
 
@@ -3084,7 +3058,7 @@ If the verification token is not found, a `404 Not Found` is returned with an [e
 <a class="anchor" name="accounts-authenticate"></a>
 ### Authenticate An Account
 
-After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts.
+After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts. 
 
 For more information on working with applications and authentication, refer to the [Log in (Authenticate) an Account](#application-account-authc) section of this guide.
 
@@ -3155,7 +3129,7 @@ The account resource provides the `isMemberOfGroup` operation. This operation re
 
 	String groupName = "Foo Group";
 	account.isMemberOfGroup(groupName);
-
+	
 
 <a class="anchor" name="working-with-account-groups"></a>
 #### Working With Account Groups
@@ -3192,11 +3166,13 @@ Groups Membership resources support the full suite of CRUD commands and other in
 ***
 ## Custom Data
 
-Stormpath resources have predefined fields that are useful to many `Applications`, but you are likely to have your own requirements and custom fields that you need to associate with Stormpath resources. For this reason, `Accounts`, `Groups`, `Applications`, `Directories` and `Tenant` resources support a linked `customData` resource that you can use for your own needs.
+`Account` and `Group` resources have predefined fields that are useful to many `Applications`, but you are likely to have your own custom data that you need to associate with an account or group as well.
+
+For this reason, both the account and group resources support a linked `CustomData` resource that you can use for your own needs.
 
 The `CustomData` resource is a schema-less JSON object (aka 'map', 'associative array', or 'dictionary') that allows you to specify whatever name/value pairs you wish.
 
-The `CustomData` resource is always connected to accounts, groups, directories, applications and tenants and you can always reach it by calling the `getCustomData()` method on those resource instances:
+The `CustomData` resource is always conected to an account or group and you can always reach it  by calling the `getCustomData()` method on the account or group resource instance:
 
 <a class="anchor" name="account-custom-data-resource-uri"></a>
 **Account Custom Data Resource URI**
@@ -3207,21 +3183,6 @@ The `CustomData` resource is always connected to accounts, groups, directories, 
 **Group Custom Data Resource URI**
 
     group.getCustomData().getHref()
-
-<a class="anchor" name="application-custom-data-resource-uri"></a>
-**Application Custom Data Resource URI**
-
-    application.getCustomData().getHref()
-    
-<a class="anchor" name="directory-custom-data-resource-uri"></a>
-**Directory Custom Data Resource URI**
-
-    directory.getCustomData().getHref()
-    
-<a class="anchor" name="tenant-custom-data-resource-uri"></a>
-**Tenant Custom Data Resource URI**
-
-    tenant.getCustomData().getHref()
 
 In addition to your custom name/value pairs, a `CustomData` resource will always contain 3 reserved read-only fields:
 
@@ -3252,9 +3213,9 @@ For Custom Data, you can:
 <a class="anchor" name="create-custom-data"></a>
 ### Create Custom Data
 
-Whenever you create an Stormpath Resource, an empty `CustomData` resource is created for that resource automatically - you do not need to explicitly execute a request to create it.
+Whenever you create an account or a group, an empty `CustomData` resource is created for that account or group automatically - you do not need to explicitly execute a request to create it.
 
-However, it is often useful to populate custom data at the same time you create a resource.  You can do this by embedding the `customData` directly in the resource. For example:
+However, it is often useful to populate custom data at the same time you create an account or group. You can do this by embedding the `customData` directly in the account or group resource. For example:
 
 **Example Create Account with Custom Data**
 
@@ -3278,77 +3239,35 @@ However, it is often useful to populate custom data at the same time you create 
     CustomData customData = group.getCustomData();
     customData.put("headquarters", "San Francisco, CA");
     directory.createGroup(group);
-    
-Similar to `Accounts` and `Groups`, `Applications` and `Directories` can also have custom data assigned on creation by specifying the `customData` on the resource being created.
 
 <a class="anchor" name="retrieve-custom-data"></a>
 ### Retrieve Custom Data
 
-A common way to retrieve an account or group's custom data is to use [link expansion](#links-expansion) and retrieve the custom data at the same time as when you retrieve the resource.
+In order to retrieve an account' or group's custom data directly you can get the `CustomData` resource through the client instance providing the custom data href:
 
 **Example: Retrieve an Account's Custom Data**
+
+	Account account = client.getResource("https://api.stormpath.com/v1/accounts/someAccountId", Account.class);
+	CustomData customData = client.getResource(account.getCustomData().getHref(), CustomData.class);
+
+Another alternative using [link expansion](#link-expansion):
 
 	AccountList accounts = application.getAccounts(
                 Accounts.where(Accounts.email().eqIgnoreCase("some@email.com"))
                         .withCustomData()
 	);	
-	for (Account account : accounts) {
-    	//Here, the account will already contain the custom data retrieved
-    }
 
 **Example: Retrieve a Group with its Custom Data**
+
+	Group group = client.getResource("https://api.stormpath.com/v1/groups/someGroupId", Group.class);
+    CustomData customData = client.getResource(group.getCustomData().getHref(), CustomData.class);
+
+Another alternative using [link expansion](#link-expansion):
 
 	GroupList groups = application.getGroups(
                 Groups.where(Groups.name().eqIgnoreCase("Group Name"))
                         .withCustomData()
 	);
-	for (Group group : groups) {
-    	//Here, the group will already contain the custom data retrieved
-    }
-	
-**Example: Retrieve an Application with its Custom Data**
-
-	ApplicationList apps = client.getApplications(
-                Applications.where(Applications.name().eqIgnoreCase("App Name"))
-                        .withCustomData()
-	);
-	for (Application application : apps) {
-    	//Here, the application will already contain the custom data retrieved
-    }
-	
-**Example: Retrieve a Directory with its Custom Data**
-
-	DirectoryList dirs = client.getDirectories(
-                Directories.where(Directories.name().eqIgnoreCase("Dir Name"))
-                        .withCustomData()
-	);
-	for (Directory directory : dirs) {
-    	//Here, the directory will already contain the custom data retrieved
-    }
-
-	
-{% docs note %}
-There is currently no way to use [link expansion](#links-expansion) with the `Tenant` resource. In order to retrieve its custom data, you can do:
-	CustomData customData = client.getCurrentTenant().getCustomData();
-{% enddocs %}
-
-You can also of course return a resource's custom data resource by means of the resource Custom Data Resource URI.
-
-**Example Retrieve Account Custom Data Request**
-
-	CustomData accountCustomData = client.getResource("https://api.stormpath.com/v1/accounts/someAccountId/customData", CustomData.class);
-
-**Example Retrieve Group Custom Data Request**
-
-    CustomData groupCustomData = client.getResource("https://api.stormpath.com/v1/groups/someGroupId/customData", CustomData.class);
-
-Similar to `Accounts` and `Groups`, `Applications` / `Directories` / `Tenants` can have custom data retrieved by the Custom Data Resource URI.
-
-You can also use the `getCustomData()` method if you already have the resource instance:
-
-	Group group = client.getResource("https://api.stormpath.com/v1/groups/someGroupId", Group.class);
-    CustomData customData = group.getCustomData();
-
 
 <a class="anchor" name="update-custom-data"></a>
 ### Update Custom Data
@@ -3356,27 +3275,25 @@ You can also use the `getCustomData()` method if you already have the resource i
 You may update an account' or group's custom data, in one of two ways:
 
 * by [updating the customData resource directly](#update-custom-data-directly), independent of the group or account, or
-* by [embedding customData changes in a resource update](#update-custom-data-embedded)
+* by [embedding customData changes in an account or group update request](#update-custom-data-embedded)
 
 <a class="anchor" name="update-custom-data-directly"></a>
 #### Update Custom Data Directly
 
-The first way to update a resource's custom data is by saving changes directly to the `CustomData` resource.  This allows you to interact with the customData resource directly, without having to do so 'through' a resource.
+The first way to update an account or group's custom data is by saving changes directly to the `CustomData` resource.  This allows you to interact with the customData resource directly, without having to do so 'through' an account or group request.
 
-In the following example, we're interacting with a `CustomData` resource directly, and we're changing the value of an existing field named `favoriteColor` and we're adding a brand new field named `hobby`:
+In the following example request, we're interacting with a `CustomData` resource directly, and we're changing the value of an existing field named `favoriteColor` and we're adding a brand new field named `hobby`:
 
 **Example Account Custom Data Update**
 
 	customData.put("favoriteColor", "red");
     customData.put("hobby", "Kendo");
     customData.save();
-    
-At this point, the `customData` will contain the 'merged' representation of what was already on the server plus what was sent in the `save()` operation, and at no point did we need to interact with the resource directly.
 
 <a class="anchor" name="update-custom-data-embedded"></a>
-#### Update Custom Data as part of a Resource Update
+#### Update Custom Data as part of an Account or Group Request
 
-Sometimes it is helpful to update a resource's `CustomData` as part of an update for that resource.  In this case, just submit customData changes in an embedded `CustomData` field embedded in the resource update.  For example:
+Sometimes it is helpful to update an account or group's `CustomData` as part of an update request for the account or group.  In this case, just submit customData changes in an embedded `CustomData` field embedded in the account or group request resource.  For example:
 
 	account.setStatus(AccountStatus.ENABLED);
     CustomData customData = account.getCustomData();
@@ -3393,12 +3310,12 @@ In the above example, we're performing 3 modifications in one request:
 
 This request modifies both the account resource _and_ that account's custom data in a single request.
 
-The same simultaneous update behavior may be performed for `Group`, `Application`, `Directory` and `Tenant` updates as well.
+The same simultaneous update behavior may be performed for Group updates as well.
 
 <a class="anchor" name="delete-custom-data"></a>
 ### Delete Custom Data
 
-You may delete all of a resource's custom data by invoking the `delete()` method to that resource's `CustomData`:
+You may delete all of an account or group's custom data by invoking the `delete()` method to the account or group's `CustomData`:
 
 **Example: Delete all of an Account's Custom Data**
 
@@ -3408,7 +3325,7 @@ You may delete all of a resource's custom data by invoking the `delete()` method
 
     group.getCustomData().delete();
 
-This will delete all of the respective resource's custom data fields, but it leaves the `CustomData` placeholder in the resource.  You cannot delete the `CustomData` resource entirely - it will be automatically permanently deleted when the resource is deleted.
+This will delete all of the respective account or group's custom data fields, but it leaves the `CustomData` placeholder in the account or group resource.  You cannot delete the `CustomData` resource entirely - it will be automatically permanently deleted when the account or group is deleted.
 
 <a class="anchor" name="delete-account-custom-data-field"></a>
 ### Delete Custom Data Field
@@ -3427,7 +3344,7 @@ This request would remove the `favoriteColor` field entirely from the customData
 <a class="anchor" name="integration-google"></a>
 ## Integrating with Google
 
-Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codea (or access tokens) to return an `Account` for a given code.
+Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codea (or access tokens) to return an `Account` for a given code. 
 
 The steps to enable this functionality into your application include:
 
@@ -3446,7 +3363,7 @@ A provider resource can be obtained by accessing the directory's provider as fol
 Example Request
 
     GoogleProvider provider = client.getResource("https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", GoogleProvider.class);
-
+        
 or, by means of the directory Resource:
 
     GoogleProvider provider = (GoogleProvider) directory.getProvider();
@@ -3457,7 +3374,7 @@ Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `clientId` | The App ID for your Google application | String | --
 `clientSecret` | The App Secret for your Google application | String | --
-`redirectUri` | The redirection Uri for your Google application | String | --
+`redirectUri` | The redirection Uri for your Google application | String | -- 
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'google'
 
 In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
@@ -3489,7 +3406,7 @@ Creating a Google Directory is very similar to [creating a directory](#create-a-
                         .setRedirectUri("https://myapplication.com/authenticate")
                         .build()
                 ).build();
-
+    
     Tenant tenant = client.getCurrentTenant();
     directory = tenant.createDirectory(request);
 
@@ -3520,27 +3437,27 @@ In order to know if the account was created or if it already existed in the Stor
 Once an `Account` is retreived, Stormpath maps common fields for the Google User to the  Account.  The access token and the refresh token for any additional calls in the `GoogleProviderData` resource and can be retrieved by:
 
     GoogleProviderData providerData = (GoogleProviderData) account.getProviderData();
-
+    
 The returned `GoogleProviderData` includes:
 
     providerData.getAccessToken(); //-> y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4
-    providerData.getCreatedAt(); //-> 2014-04-01T17:00:09.154Z
-    providerData.getHref(); //-> https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData
-    providerData.getModifiedAt(); //-> 2014-04-01T17:00:09.189Z
-    providerData.getProviderId(); //-> google
+    providerData.getCreatedAt(); //-> 2014-04-01T17:00:09.154Z 
+    providerData.getHref(); //-> https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData 
+    providerData.getModifiedAt(); //-> 2014-04-01T17:00:09.189Z 
+    providerData.getProviderId(); //-> google 
     providerData.getRefreshToken(); //-> 1/qQTS638g3ArE4U02FoiXL1yIh-OiPmhc
 
 {% docs note %}
 The `accessToken` can also be passed as a field for the `ProviderData` to access the account once it is retrieved:
-
+    
     ProviderAccountRequest request = Providers.GOOGLE.account()
                 .setAccessToken("y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4")
                 .build();
 
     ProviderAccountResult result = application.getAccount(request);
     Account account = result.getAccount();
-
-
+    
+    
 {% enddocs %}
 
 {% docs note %}
@@ -3552,7 +3469,7 @@ The `refreshToken` will only be present if your application asked for offline ac
 <a class="anchor" name="integration-facebook"></a>
 ## Integrating with Facebook
 
-Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code.
+Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code. 
 
 The steps to enable this functionality into your application include:
 
@@ -3571,7 +3488,7 @@ A provider resource can be obtained by accessing the directory's provider as fol
 Example Request
 
     FacebookProvider provider = client.getResource("https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", FacebookProvider.class);
-
+        
 or, by means of the directory Resource:
 
     FacebookProvider provider = (FacebookProvider) directory.getProvider();
@@ -3581,7 +3498,7 @@ or, by means of the directory Resource:
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `clientId` | The App ID for your Facebook application | String | --
-`clientSecret` | The App Secret for your Facebook application | String | --
+`clientSecret` | The App Secret for your Facebook application | String | -- 
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'facebook'
 
 In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
@@ -3597,7 +3514,7 @@ Creating a Facebook Directory requires that you gather some information beforeha
 + Client ID
 + Client Secret
 
-Creating a Facebook Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information.
+Creating a Facebook Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information. 
 
 **Example Request**
 
@@ -3659,13 +3576,13 @@ The returned `FacebookProviderData` will include:
 
 ***
 
-## Java Sample Code
+## Java Sample Code 
 
-### Spring MVC Sample App
+### Spring MVC Sample App 
 
 This <a href="https://github.com/stormpath/stormpath-spring-samples" title="pring MVC Sample">application</a> is a Spring MVC-based Twitter clone that helps demonstrate the core functionality of Stormpath. The sample application shows Stormpath-based login, user registration, email verification, password reset, group assignments, <a href="#RBAC" title="RBAC">RBAC</a> checks, and user profile updates.
 
-####Readme:
+####Readme: 
 
 **stormpath-spring-samples**: Stormpath example applications based on the Spring Framework.
 
@@ -3684,11 +3601,11 @@ Deploy the .war file to your web container/application server and launch/access 
 
 A detailed documentation on tooter and how to integrate with the Stormpath Java SDK can be found on the wiki <a href="https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter" title="tooter">https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter</a>.
 
-### Apache Shiro Sample Web App
+### Apache Shiro Sample Web App 
 
 This is a <a href="https://github.com/stormpath/stormpath-shiro-web-sample" title="shiro web sample">simple web application</a> secured by the Apache Shiro security framework and Stormpath. The example is based of the standard Apache Shiro web sample application and it shows login and <a href="#RBAC" title="RBAC">RBAC</a> using an authorization cache.
 
-### Spring Security Sample Web App
+### Spring Security Sample Web App 
 
 This is a <a href="https://github.com/stormpath/stormpath-spring-security-example" title="spring security web sample">simple web application</a> secured by the Spring Security framework and Stormpath. It demostrates how to achieve Stormpath and Spring Security integration by means of the <a href="https://github.com/stormpath/stormpath-spring-security">stormpath-spring-security</a> plugin
 
@@ -3701,8 +3618,8 @@ For more information about administering Stormpath using the Admin Console, plea
 
 ***
 
-## Appendix
-### How to get the Java SDK jar files if you are not using a Maven-compatible build tool
+## Appendix 
+### How to get the Java SDK jar files if you are not using a Maven-compatible build tool 
 
 If you are not using a Maven-compatible build tool (such as Maven, Ant+Ivy, Gradle or SBT) to acquire your project dependencies, then you will need to manually download the Stormpath Java SDK jars and its runtime dependencies.
 
