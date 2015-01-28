@@ -3128,13 +3128,11 @@ Groups Membership resources support the full suite of CRUD commands and other in
 ***
 ## Custom Data
 
-`Account` and `Group` resources have predefined fields that are useful to many `Applications`, but you are likely to have your own custom data that you need to associate with an account or group as well.
-
-For this reason, both the account and group resources support a linked `CustomData` resource that you can use for your own needs.
+Stormpath resources have predefined fields that are useful to many `Applications`, but you are likely to have your own requirements and custom fields that you need to associate with Stormpath resources. For this reason, `Accounts`, `Groups`, `Applications`, `Directories` and `Tenant` resources support a linked `customData` resource that you can use for your own needs.
 
 The `CustomData` resource is a schema-less JSON object (aka 'map', 'associative array', or 'dictionary') that allows you to specify whatever name/value pairs you wish.
 
-The `CustomData` resource is always conected to an account or group and you can always reach it  by calling the `getCustomData()` method on the account or group resource instance:
+The `CustomData` resource is always connected to accounts, groups, directories, applications and tenants and you can always reach it by calling the `getCustomData()` method on those resource instances:
 
 <a class="anchor" name="account-custom-data-resource-uri"></a>
 **Account Custom Data Resource URI**
@@ -3145,6 +3143,21 @@ The `CustomData` resource is always conected to an account or group and you can 
 **Group Custom Data Resource URI**
 
     group.getCustomData().getHref()
+
+<a class="anchor" name="application-custom-data-resource-uri"></a>
+**Application Custom Data Resource URI**
+
+    application.getCustomData().getHref()
+    
+<a class="anchor" name="directory-custom-data-resource-uri"></a>
+**Directory Custom Data Resource URI**
+
+    directory.getCustomData().getHref()
+    
+<a class="anchor" name="tenant-custom-data-resource-uri"></a>
+**Tenant Custom Data Resource URI**
+
+    tenant.getCustomData().getHref()
 
 In addition to your custom name/value pairs, a `CustomData` resource will always contain 3 reserved read-only fields:
 
@@ -3175,9 +3188,9 @@ For Custom Data, you can:
 <a class="anchor" name="create-custom-data"></a>
 ### Create Custom Data
 
-Whenever you create an account or a group, an empty `CustomData` resource is created for that account or group automatically - you do not need to explicitly execute a request to create it.
+Whenever you create an Stormpath Resource, an empty `CustomData` resource is created for that resource automatically - you do not need to explicitly execute a request to create it.
 
-However, it is often useful to populate custom data at the same time you create an account or group. You can do this by embedding the `customData` directly in the account or group resource. For example:
+However, it is often useful to populate custom data at the same time you create a resource.  You can do this by embedding the `customData` directly in the resource. For example:
 
 **Example Create Account with Custom Data**
 
@@ -3201,35 +3214,77 @@ However, it is often useful to populate custom data at the same time you create 
     CustomData customData = group.getCustomData();
     customData.put("headquarters", "San Francisco, CA");
     directory.createGroup(group);
+    
+Similar to `Accounts` and `Groups`, `Applications` and `Directories` can also have custom data assigned on creation by specifying the `customData` on the resource being created.
 
 <a class="anchor" name="retrieve-custom-data"></a>
 ### Retrieve Custom Data
 
-In order to retrieve an account' or group's custom data directly you can get the `CustomData` resource through the client instance providing the custom data href:
+A common way to retrieve an account or group's custom data is to use [link expansion](#links-expansion) and retrieve the custom data at the same time as when you retrieve the resource.
 
 **Example: Retrieve an Account's Custom Data**
-
-	Account account = client.getResource("https://api.stormpath.com/v1/accounts/someAccountId", Account.class);
-	CustomData customData = client.getResource(account.getCustomData().getHref(), CustomData.class);
-
-Another alternative using [link expansion](#link-expansion):
 
 	AccountList accounts = application.getAccounts(
                 Accounts.where(Accounts.email().eqIgnoreCase("some@email.com"))
                         .withCustomData()
-	);
+	);	
+	for (Account account : accounts) {
+    	//Here, the account will already contain the custom data retrieved
+    }
 
 **Example: Retrieve a Group with its Custom Data**
-
-	Group group = client.getResource("https://api.stormpath.com/v1/groups/someGroupId", Group.class);
-    CustomData customData = client.getResource(group.getCustomData().getHref(), CustomData.class);
-
-Another alternative using [link expansion](#link-expansion):
 
 	GroupList groups = application.getGroups(
                 Groups.where(Groups.name().eqIgnoreCase("Group Name"))
                         .withCustomData()
 	);
+	for (Group group : groups) {
+    	//Here, the group will already contain the custom data retrieved
+    }
+	
+**Example: Retrieve an Application with its Custom Data**
+
+	ApplicationList apps = client.getApplications(
+                Applications.where(Applications.name().eqIgnoreCase("App Name"))
+                        .withCustomData()
+	);
+	for (Application application : apps) {
+    	//Here, the application will already contain the custom data retrieved
+    }
+	
+**Example: Retrieve a Directory with its Custom Data**
+
+	DirectoryList dirs = client.getDirectories(
+                Directories.where(Directories.name().eqIgnoreCase("Dir Name"))
+                        .withCustomData()
+	);
+	for (Directory directory : dirs) {
+    	//Here, the directory will already contain the custom data retrieved
+    }
+
+	
+{% docs note %}
+There is currently no way to use [link expansion](#links-expansion) with the `Tenant` resource. In order to retrieve its custom data, you can do:
+	CustomData customData = client.getCurrentTenant().getCustomData();
+{% enddocs %}
+
+You can also of course return a resource's custom data resource by means of the resource Custom Data Resource URI.
+
+**Example Retrieve Account Custom Data Request**
+
+	CustomData accountCustomData = client.getResource("https://api.stormpath.com/v1/accounts/someAccountId/customData", CustomData.class);
+
+**Example Retrieve Group Custom Data Request**
+
+    CustomData groupCustomData = client.getResource("https://api.stormpath.com/v1/groups/someGroupId/customData", CustomData.class);
+
+Similar to `Accounts` and `Groups`, `Applications` / `Directories` / `Tenants` can have custom data retrieved by the Custom Data Resource URI.
+
+You can also use the `getCustomData()` method if you already have the resource instance:
+
+	Group group = client.getResource("https://api.stormpath.com/v1/groups/someGroupId", Group.class);
+    CustomData customData = group.getCustomData();
+
 
 <a class="anchor" name="update-custom-data"></a>
 ### Update Custom Data
@@ -3237,25 +3292,27 @@ Another alternative using [link expansion](#link-expansion):
 You may update an account' or group's custom data, in one of two ways:
 
 * by [updating the customData resource directly](#update-custom-data-directly), independent of the group or account, or
-* by [embedding customData changes in an account or group update request](#update-custom-data-embedded)
+* by [embedding customData changes in a resource update](#update-custom-data-embedded)
 
 <a class="anchor" name="update-custom-data-directly"></a>
 #### Update Custom Data Directly
 
-The first way to update an account or group's custom data is by saving changes directly to the `CustomData` resource.  This allows you to interact with the customData resource directly, without having to do so 'through' an account or group request.
+The first way to update a resource's custom data is by saving changes directly to the `CustomData` resource.  This allows you to interact with the customData resource directly, without having to do so 'through' a resource.
 
-In the following example request, we're interacting with a `CustomData` resource directly, and we're changing the value of an existing field named `favoriteColor` and we're adding a brand new field named `hobby`:
+In the following example, we're interacting with a `CustomData` resource directly, and we're changing the value of an existing field named `favoriteColor` and we're adding a brand new field named `hobby`:
 
 **Example Account Custom Data Update**
 
 	customData.put("favoriteColor", "red");
     customData.put("hobby", "Kendo");
     customData.save();
+    
+At this point, the `customData` will contain the 'merged' representation of what was already on the server plus what was sent in the `save()` operation, and at no point did we need to interact with the resource directly.
 
 <a class="anchor" name="update-custom-data-embedded"></a>
-#### Update Custom Data as part of an Account or Group Request
+#### Update Custom Data as part of a Resource Update
 
-Sometimes it is helpful to update an account or group's `CustomData` as part of an update request for the account or group.  In this case, just submit customData changes in an embedded `CustomData` field embedded in the account or group request resource.  For example:
+Sometimes it is helpful to update a resource's `CustomData` as part of an update for that resource.  In this case, just submit customData changes in an embedded `CustomData` field embedded in the resource update.  For example:
 
 	account.setStatus(AccountStatus.ENABLED);
     CustomData customData = account.getCustomData();
@@ -3272,12 +3329,12 @@ In the above example, we're performing 3 modifications in one request:
 
 This request modifies both the account resource _and_ that account's custom data in a single request.
 
-The same simultaneous update behavior may be performed for Group updates as well.
+The same simultaneous update behavior may be performed for `Group`, `Application`, `Directory` and `Tenant` updates as well.
 
 <a class="anchor" name="delete-custom-data"></a>
 ### Delete Custom Data
 
-You may delete all of an account or group's custom data by invoking the `delete()` method to the account or group's `CustomData`:
+You may delete all of a resource's custom data by invoking the `delete()` method to that resource's `CustomData`:
 
 **Example: Delete all of an Account's Custom Data**
 
@@ -3287,7 +3344,7 @@ You may delete all of an account or group's custom data by invoking the `delete(
 
     group.getCustomData().delete();
 
-This will delete all of the respective account or group's custom data fields, but it leaves the `CustomData` placeholder in the account or group resource.  You cannot delete the `CustomData` resource entirely - it will be automatically permanently deleted when the account or group is deleted.
+This will delete all of the respective resource's custom data fields, but it leaves the `CustomData` placeholder in the resource.  You cannot delete the `CustomData` resource entirely - it will be automatically permanently deleted when the resource is deleted.
 
 <a class="anchor" name="delete-account-custom-data-field"></a>
 ### Delete Custom Data Field
