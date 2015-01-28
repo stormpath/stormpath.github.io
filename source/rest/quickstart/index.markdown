@@ -99,9 +99,9 @@ Make note of the `Location` header.  This is the location of your tenant in Stor
 
 From here, using the location of the tenant, you can get your Application by performing a search for the application by name: 
 
-curl -u $API_KEY_ID:$API_KEY_SECRET \
-     -H "Accept: application/json" \
-     '$TENANT_HREF/applications?name=My%20Application'
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+        -H "Accept: application/json" \
+        '$TENANT_HREF/applications?name=My%20Application'
 
 where:
 

@@ -145,11 +145,12 @@ previous step:
     import com.stormpath.sdk.tenant.*;
     import com.stormpath.sdk.application.*;
 
+    Tenant tenant = client.getCurrentTenant();
     ApplicationList applications = tenant.getApplications(
             Applications.where(Applications.name().eqIgnoreCase("My Application"))
     );
 
-    Application application = applications.iterator.next();
+    Application application = applications.iterator().next();
 
 The code above will retrieve your `Application`, which we can use later to do stuff
 like:
