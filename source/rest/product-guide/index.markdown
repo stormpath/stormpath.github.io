@@ -3301,7 +3301,7 @@ You may also use collection [pagination](#pagination) and [sort ordering](#sorti
 
     curl -u $API_KEY_ID:$API_KEY_SECRET \
          -H "Accept: application/json" \
-         "https://api.stormpath.com/v1/directories/$DIRECTORY_ID/groups"
+         "https://api.stormpath.com/v1/directories/$DIRECTORY_ID/accounts"
 <!-- {: .bash} -->
 
 **Example Response**
@@ -3353,6 +3353,173 @@ In addition to the [search query parameters](#search), you may also use [paginat
 #### Working With Directory Accounts
 
 Account resources support the full suite of CRUD commands and other interactions. Please see the [Accounts section](#accounts) for more information.
+
+### Directory Account Creation Policy
+
+A Directory's `Account Creation Policy` resource contains data and properties that control what Stormpath does when an `Account` is created.  This includes email verification and welcome emails.
+
+The `Account Creation Policy` can be retrieved by interacting with the directory resource.  The directory resource has a `accountCreationPolicy` link to the `Account Creation Policy`.
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`verificationEmailStatus` | The status of the verification email workflow.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account to have them verify their email.  The email sent is configurable through `verificationEmailTemplates` property | String | `ENABLED` or `DISABLED`
+`verificationEmailTemplates` | A collection of email templates that can be used for sending the 'email verification' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+`verificationSuccessEmailStatus` | The status of the verification success email.  If this is set to `ENABLED`, Stormpath will send an email to a newly verified account to let them know that they have successfully verified their email.  The email sent is configurable through `verificationSuccessEmailTemplates` property | String | `ENABLED` or `DISABLED`
+`verificationSuccessEmailTemplates`| A collection of email templates that can be used for sending 'email verification success' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+`welcomeEmailStatus` | The status of the welcome email.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account (if `verificationEmailStatus` is set to disabled) or a newly verified account (if `verificationEmailStatus` is set to enabled).  The email sent is configurable through `welcomeEmailTemplates` property | String | `ENABLED` or `DISABLED`
+`welcomeEmailTemplates` | A collection of email templates that can be used for sending a welcome email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+
+**Directory Account Creation Policy URI**
+
+    /v1/accountCreationPolicies/:accountCreationPolicyID
+
+The `href` of the account creation policy for a directory can be retrieved by from the directory's `accountCreationPolicy` property.  Once retrieved, you can get the password policy by:
+
+**Example Request**
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Accept: application/json" \
+         "https://api.stormpath.com/v1/accountCreationPolicies/$ACCOUNT_CREATION_POLICY_ID"
+
+**Example Response**
+
+    HTTP/1.1 200 OK
+
+    {
+      "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy", 
+      "verificationEmailStatus": "DISABLED", 
+      "verificationEmailTemplates": {
+          "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/verificationEmailTemplates"
+      }, 
+      "verificationSuccessEmailStatus": "DISABLED", 
+      "verificationSuccessEmailTemplates": {
+          "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/verificationSuccessEmailTemplates"
+      }, 
+      "welcomeEmailStatus": "DISABLED", 
+      "welcomeEmailTemplates": {
+          "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/welcomeEmailTemplates"
+      }
+    }
+
+Using the `Account Creation Policy` for a directory you can:
+
++ [Enable or Disable the Verification, Verification Success, or Welcome Email](#enable-verification-welcome-email-status)
++ [Modify the Email Templates Used for Verification and Welcome Emails](modify-account-creation-email-templates)
+
+<a name="enable-verification-welcome-email-status" />
+#### Enable or Disable the Verification, Verification Success, or Welcome Email
+
+To enable or disable an email from being sent associated with verifying email or a welcome email, issue a `POST` with the desired status for correct status properties.
+
+The `Account Creation Policy` has three separate statuses for the emails:
+
++ `verificationEmailStatus` - Denotes if the verification email will be sent to verify the email the end user used to create the account.  When this is set to a status of `ENABLED`, the new `Account` resources in the `Directory` will be created with the status of `UNVERIFIED` and an email will be sent to verify the address.  More information for verifying accounts can be found [here](#account-verify-email)  The email properties are configurable through `verificationEmailTemplates`
++ `verificationSuccessEmailStatus` - Denotes if a success email will be sent to the end user when the email has been [verified through the email verification workflow](#account-verify-email).  The email properties are configurabel through `verificationSuccessEmailTemplates`
++ `welcomeEmailStatus` - Denotes if a welcome email will be sent to the end user when the account has been registered (with email verification turned off by verificationEmailStatus == DISABLED) or verified (with email verification turn on by verificationEmailStatus == ENABLED)
+
+By default, all of the `Account Creation Policy` email status are set to `DISABLED`.  To modify the policy, issue a `POST` to the `accountCreationPolicy` endpoint specifying the statuses that you would like to modify:
+
+**Example Request**
+
+    curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Content-Type: application/json;charset=UTF-8" \
+         -d '{
+               "verificationEmailStatus": "ENABLED",
+               "welcomeEmailStatus": "ENABLED"
+             }' \
+         'https://api.stormpath.com/v1/accountCreationPolicies/$ACCOUNT_CREATION_POLICY_ID'
+
+**Example Response**
+
+    HTTP/1.1 200 OK
+
+    {
+      "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy", 
+      "verificationEmailStatus": "ENABLED", 
+      "verificationEmailTemplates": {
+          "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/verificationEmailTemplates"
+      }, 
+      "verificationSuccessEmailStatus": "DISABLED", 
+      "verificationSuccessEmailTemplates": {
+          "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/verificationSuccessEmailTemplates"
+      }, 
+      "welcomeEmailStatus": "ENABLED", 
+      "welcomeEmailTemplates": {
+          "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/welcomeEmailTemplates"
+      }
+    }
+
+<a name="modify-account-creation-email-templates" />
+#### Modify the Email Templates Used for Verification and Welcome Emails
+
+To modify the emails that get sent during the email verification and registration, let's take a look at the email templates for the account creation policy.  Email templates in Stormpath have common properties that can be modified to change the appearance of the emails.  The properties below apply to both email templates that reside in the account creation policy (verificationEmailTemplates, verificationSuccessEmailTemplates, and welcomeEmailTemplates).
+
+**Resource Attribute for Email Templates**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`fromEmailAddress` | The address that appears in the email's from field. | String | A valid email address
+`fromName` | The name that appears in the email's from field | String | A string
+`subject` | The subject that appears in the email's subject field | String | A string
+`htmlBody` | The body of the email in HTML format.  This body is only sent when the `mimeType` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`textBody` | The body of the email is plain text format.  This body is only sent when the `mimeType` for the template is set to `text/plain` | String | A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`mimeType` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
+`defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String 
+
+To update an email template, first you must get the email template's href.  This is done by working with the verificationEmailTemplates, verificationSuccessEmailTemplates, and welcomeEmailTemplates collection.  These collections hold only one email template, but in the future may hold multiple templates.  
+
+**Example Request**
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Accept: application/json" \
+         "https://api.stormpath.com/v1/accountCreationPolicies/$ACCOUNT_CREATION_POLICY_ID/welcomeEmailTemplates "
+
+**Example Response**
+
+    {
+        "href": "https://api.stormpath.com/v1/accountCreationPolicies/3vuJwv33xO5P3HVX4C9kHy/welcomeEmailTemplates", 
+        "items": [
+            {
+                ...
+                "href": "https://api.stormpath.com/v1/emailTemplates/wztp77rsr05swAFL3AnrY",
+                ...
+            }
+        ], 
+        "limit": 25, 
+        "offset": 0, 
+        "size": 1
+    }
+
+After getting the href for the email template, you can update by an HTTP `POST` and update properties of the template:
+
+**Example Request**
+
+    curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Content-Type: application/json;charset=UTF-8" \
+         -d '{
+               "fromName": "Application Support",
+               "fromEmail": "support@application.com",
+               "subject": "Welcome to application.com"
+             }' \
+         'https://api.stormpath.com/v1/emailTemplates/wztp77rsr05swAFL3AnrY'
+
+**Example Response**
+    
+    HTTP/1.1 200 OK
+
+    {
+        "description": "This is the welcome email template that is associated with the directory.", 
+        "fromEmailAddress": "tom@stormpath.com", 
+        "fromName": "Tom Abbott", 
+        "href": "https://api.stormpath.com/v1/emailTemplates/wztp77rsr05swAFL3AnrY", 
+        "htmlBody": "You have been successfully registered for an application that uses Stormpath.\n\n--------------------\nFor general inquiries or to request support with your account, please email tom@stormpath.com", 
+        "mimeType": "text/plain", 
+        "name": "Default Welcome Email Template", 
+        "subject": "Your registration was successful", 
+        "textBody": "You have been successfully registered for an application that uses Stormpath.\n\n--------------------\nFor general inquiries or to request support with your account, please email tom@stormpath.com"
+    }
 
 ### Directory Password Policy
 
