@@ -3406,9 +3406,9 @@ The `href` of the account creation policy for a directory can be retrieved by fr
 Using the `Account Creation Policy` for a directory you can:
 
 + [Enable or Disable the Verification, Verification Success, or Welcome Email](#enable-verification-welcome-email-status)
-+ [Modify the Email Templates Used for Verification and Welcome Emails](modify-account-creation-email-templates)
++ [Modify the Email Templates Used for Verification and Welcome Emails](#modify-account-creation-email-templates)
 
-<a name="enable-verification-welcome-email-status" />
+<a class="anchor" name="enable-verification-welcome-email-status"></a>
 #### Enable or Disable the Verification, Verification Success, or Welcome Email
 
 To enable or disable an email from being sent associated with verifying email or a welcome email, issue a `POST` with the desired status for correct status properties.
@@ -3451,7 +3451,7 @@ By default, all of the `Account Creation Policy` email status are set to `DISABL
       }
     }
 
-<a name="modify-account-creation-email-templates" />
+<a class="anchor" name="modify-account-creation-email-templates"></a>
 #### Modify the Email Templates Used for Verification and Welcome Emails
 
 To modify the emails that get sent during the email verification and registration, let's take a look at the email templates for the account creation policy.  Email templates in Stormpath have common properties that can be modified to change the appearance of the emails.  The properties below apply to both email templates that reside in the account creation policy (verificationEmailTemplates, verificationSuccessEmailTemplates, and welcomeEmailTemplates).
