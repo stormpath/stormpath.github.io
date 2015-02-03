@@ -5,12 +5,8 @@ description: Stormpath Hosted Subdomains provide pre-built screens for login, re
 title: Using Stormpath's ID Site to Host your User Management UI
 ---
 
-{% docs info %}
-  **This feature is currently in Beta.**  If you have any questions, bug reports, or enhancement requests please email support@stormpath.com. 
-{% enddocs %}
-
 {% docs info %} 
-Currently supported Stormpath SDKs for this feature include: **Java**, **Node.js**, **Python**.  Other language platforms are on their way soon.
+Currently supported Stormpath SDKs for this feature include: **Java**, **Node.js**, **Python**, and **REST**
 {% enddocs %}
 
 In this guide, we discuss how to set up Stormpath to host a set of web pages that enable your applications to quickly and securely offer common identity management functions like login, registration, and password reset.
