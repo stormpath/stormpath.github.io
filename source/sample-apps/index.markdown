@@ -13,11 +13,69 @@ body_id: [sample-apps-page]
     </div>
     <div class="sample-apps-jump-to">
       <span>Jump to:</span>
+      <a class="jump-to-node" href="#sample-apps-node-container-jump">Node.js</a>
       <a class="jump-to-java" href="#sample-apps-java-container-jump">Java</a>
       <a class="jump-to-python" href="#sample-apps-python-container-jump">Python</a>
       <a class="jump-to-ruby" href="#sample-apps-ruby-container-jump">Ruby</a>
     </div>
   </div>
+
+  <div id="sample-apps-node-container">
+    <a id="sample-apps-node-container-jump"></a>
+    <div class="node-title">Node.js</div>
+    <div class="panel-container">
+      <div class="panel-title">Passport.js + Express.js Sample</div>
+      <div class="panel-inner">
+        <div class="panel-text">
+          A simple site built using Express.js, Passport.js, and Stormpath.
+          <ul>
+            <li>Demonstrates the Stormpath Passport.js integration.</li>
+            <li>Requires Express.js.</li>
+          </ul>
+        </div>
+        <div class="panel-buttons">
+          <a class="btn-download" href="https://github.com/stormpath/stormpath-passport-express-sample/archive/master.zip">Download ZIP</a>
+          <a class="btn-github" href="https://github.com/stormpath/stormpath-passport-express-sample">View on GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel-container">
+      <div class="panel-title">Express.js API Auth Sample</div>
+      <div class="panel-inner">
+        <div class="panel-text">
+          A sample app using Stormpath and Express.js to secure a REST API.
+          <ul>
+            <li>Assign API keys to users.</li>
+            <li>Generate, manage, and revoke API keys.</li>
+            <li>Authenticate users with HTTP Basic Auth or OAuth2.</li>
+          </ul>
+        </div>
+        <div class="panel-buttons">
+          <a class="btn-download" href="https://github.com/stormpath/stormpath-express-api-auth-sample/archive/master.zip">Download ZIP</a>
+          <a class="btn-github" href="https://github.com/stormpath/stormpath-express-api-auth-sample">View on GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel-container">
+      <div class="panel-title">Stormpath + Heroku Sample</div>
+      <div class="panel-inner">
+        <div class="panel-text">
+          Instantly deploy a fully functional web app (with user registration)
+          to Heroku!
+          <ul>
+            <li>Full application security and user management.</li>
+            <li>Can be instantly deployed to Heroku in one click.</li>
+            <li>Requires Express.js.</li>
+          </ul>
+        </div>
+        <div class="panel-buttons">
+          <a class="btn-download" href="https://github.com/stormpath/stormpath-heroku-express-sample/archive/master.zip">Download ZIP</a>
+          <a class="btn-github" href="https://github.com/stormpath/stormpath-heroku-express-sample">View on GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="sample-apps-java-container">
     <a id="sample-apps-java-container-jump"></a>
     <div class="java-title">Java</div>
