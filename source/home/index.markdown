@@ -60,6 +60,7 @@ alias: [/index.html]
               <li class="first leaf"><a href="/nodejs/quickstart" title="">Quickstart</a></li>
         <li class="leaf"><a href="/nodejs/api" title="">API Docs</a></li>
               <li class="leaf"><a href="/nodejs/express/" title="">Express.js Integration</a></li>
+              <li class="leaf"><a href="https://github.com/stormpath/stormpath-restify" title="">Restify Integration</a></li>
               <li class="leaf"><a href="/nodejs/passport/" title="">Passport.js Strategy</a></li>
         <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-node" title="">SDK on GitHub</a></li>
               <li class="leaf"><a href="https://www.npmjs.org/package/stormpath" title="">npm Package Info</a></li>
@@ -79,7 +80,7 @@ alias: [/index.html]
               <li class="leaf"><a href="http://flask-stormpath.readthedocs.org/en/latest" title="">Flask Integration</a></li>
               <li class="leaf"><a href="https://github.com/stormpath/stormpath-django" title="">Django Integration</a></li>
         <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-python" title="">SDK on GitHub</a></li>
-        <li class="last leaf"><a href="https://github.com/stormpath/stormpath-flask-sample" title="">Sample App</a></li>
+        <li class="last leaf"><a href="https://docs.stormpath.com/sample-apps/" title="">Sample Apps</a></li>
               <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-python/archive/master.zip">Download SDK</a></li>
             </ul>  
           </div>
