@@ -111,6 +111,7 @@ The `Client` object is what allows you to communicate with Stormpath.
     import com.stormpath.sdk.client.Clients;
     import com.stormpath.sdk.client.Client;
     import com.stormpath.sdk.api.ApiKeys;
+    import com.stormpath.sdk.api.ApiKey;
 
     String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
 
