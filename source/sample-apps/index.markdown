@@ -6,6 +6,7 @@ title: Sample Apps
 body_id: [sample-apps-page]
 ---
 
+<p>&nbsp;</p>
 <div id="sample-apps-wrapper">
   <div class="sample-apps-top">
     <div class="sample-apps-top-text">
@@ -13,10 +14,65 @@ body_id: [sample-apps-page]
     </div>
     <div class="sample-apps-jump-to">
       <span>Jump to:</span>
-      <a class="jump-to-node" href="#sample-apps-node-container-jump">Node.js</a>
       <a class="jump-to-java" href="#sample-apps-java-container-jump">Java</a>
+      <a class="jump-to-node" href="#sample-apps-node-container-jump">Node.js</a>
       <a class="jump-to-python" href="#sample-apps-python-container-jump">Python</a>
       <a class="jump-to-ruby" href="#sample-apps-ruby-container-jump">Ruby</a>
+    </div>
+  </div>
+
+  <div id="sample-apps-java-container">
+    <a id="sample-apps-java-container-jump"></a>
+    <div class="java-title">Java</div>
+    <div class="panel-container">
+      <div class="panel-title">Spring Framework Sample</div>
+      <div class="panel-inner">
+        <div class="panel-text">
+          See the Stormpath Java SDK in action in Tooter, a Twitter clone.
+          <ul>
+            <li>Demonstrates the Spring Framework and the Stormpath Java SDK</li>
+            <li>Requires Maven</li>
+          </ul>
+        </div>
+        <div class="panel-buttons">
+          <a class="btn-download" href="https://github.com/stormpath/stormpath-spring-samples/archive/master.zip">Download ZIP</a>
+          <a class="btn-github" href="https://github.com/stormpath/stormpath-spring-samples">View on GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel-container">
+      <div class="panel-title">Apache Shiro Sample</div>
+      <div class="panel-inner">
+        <div class="panel-text">
+          For Apache Shiro users, Stormpath offers a full integration and sample web app.
+          <ul>
+            <li>Full application security and user management</li>
+            <li>Extends Shiro with user account, roles and permissions support</li>
+            <li>Requires Maven</li>
+          </ul>
+        </div>
+        <div class="panel-buttons">
+          <a class="btn-download" href="https://github.com/stormpath/stormpath-shiro-web-sample/archive/master.zip">Download ZIP</a>
+          <a class="btn-github" href="https://github.com/stormpath/stormpath-shiro-web-sample">View on GitHub</a>
+        </div>
+      </div>
+    </div>
+    <div class="panel-container">
+      <div class="panel-title">Spring Security Sample</div>
+      <div class="panel-inner">
+        <div class="panel-text">
+          Login users to Spring Security apps with this plugin.
+          <ul>
+            <li>Full application security and user management</li>
+            <li>Uses standard or custom authentication filters and role checks</li>
+            <li>Requires Maven</li>
+          </ul>
+        </div>
+        <div class="panel-buttons">
+          <a class="btn-download" href="https://github.com/stormpath/stormpath-spring-security-example/archive/master.zip">Download ZIP</a>
+          <a class="btn-github" href="https://github.com/stormpath/stormpath-spring-security-example">View on GitHub</a>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -71,61 +127,6 @@ body_id: [sample-apps-page]
         <div class="panel-buttons">
           <a class="btn-download" href="https://github.com/stormpath/stormpath-heroku-express-sample/archive/master.zip">Download ZIP</a>
           <a class="btn-github" href="https://github.com/stormpath/stormpath-heroku-express-sample">View on GitHub</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="sample-apps-java-container">
-    <a id="sample-apps-java-container-jump"></a>
-    <div class="java-title">Java</div>
-    <div class="panel-container">
-      <div class="panel-title">Spring Framework Sample</div>
-      <div class="panel-inner">
-        <div class="panel-text">
-          See the Stormpath Java SDK in action in Tooter, a Twitter clone.
-          <ul>
-            <li>Demonstrates the Spring Framework and the Stormpath Java SDK</li>
-            <li>Requires Maven</li>
-          </ul>
-        </div>
-        <div class="panel-buttons">
-          <a class="btn-download" href="https://github.com/stormpath/stormpath-spring-samples/archive/master.zip">Download ZIP</a>
-          <a class="btn-github" href="https://github.com/stormpath/stormpath-spring-samples">View on GitHub</a>
-        </div>
-      </div>
-    </div>
-    <div class="panel-container">
-      <div class="panel-title">Apache Shiro Sample</div>
-      <div class="panel-inner">
-        <div class="panel-text">
-          For Apache Shiro users, Stormpath offers a full integration and sample web app.
-          <ul>
-            <li>Full application security and user management</li>
-            <li>Extends Shiro with user account, roles and permissions support</li>
-            <li>Requires Maven</li>
-          </ul>
-        </div>
-        <div class="panel-buttons">
-          <a class="btn-download" href="https://github.com/stormpath/stormpath-shiro-web-sample/archive/master.zip">Download ZIP</a>
-          <a class="btn-github" href="https://github.com/stormpath/stormpath-shiro-web-sample">View on GitHub</a>
-        </div>
-      </div>
-    </div>
-    <div class="panel-container">
-      <div class="panel-title">Spring Security Sample</div>
-      <div class="panel-inner">
-        <div class="panel-text">
-          Login users to Spring Security apps with this plugin.
-          <ul>
-            <li>Full application security and user management</li>
-            <li>Uses standard or custom authentication filters and role checks</li>
-            <li>Requires Maven</li>
-          </ul>
-        </div>
-        <div class="panel-buttons">
-          <a class="btn-download" href="https://github.com/stormpath/stormpath-spring-security-example/archive/master.zip">Download ZIP</a>
-          <a class="btn-github" href="https://github.com/stormpath/stormpath-spring-security-example">View on GitHub</a>
         </div>
       </div>
     </div>
