@@ -79,7 +79,7 @@ alias: [/index.html]
               <li class="leaf"><a href="http://flask-stormpath.readthedocs.org/en/latest" title="">Flask Integration</a></li>
               <li class="leaf"><a href="https://github.com/stormpath/stormpath-django" title="">Django Integration</a></li>
         <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-python" title="">SDK on GitHub</a></li>
-        <li class="last leaf"><a href="https://github.com/stormpath/stormpath-flask-sample" title="">Sample Apps</a></li>
+        <li class="last leaf"><a href="https://docs.stormpath.com/sample-apps/" title="">Sample Apps</a></li>
               <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-python/archive/master.zip">Download SDK</a></li>
             </ul>  
           </div>
