@@ -92,7 +92,7 @@ NG_DOCS={
   },
   "html5Mode": false,
   "editExample": true,
-  "startPage": "/api/stormpath",
+  "startPage": "/api",
   "scripts": [
     "angular.min.js"
   ]
