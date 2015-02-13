@@ -122,6 +122,16 @@ Only use this code if a more accurate status code is not available. For example,
 ***
 ##<a id="Agent"></a>7XXX: Account
 
+<a id="7100"></a>[**7100**](/errors/7100): Login attempt failed because the specified password is incorrect.
+
+<a id="7101"></a>[**7101**](/errors/7101): Login attempt failed because the Account is disabled.
+
+<a id="7102"></a>[**7102**](/errors/7102): Login attempt failed because the Account is not verified.
+
+<a id="7103"></a>[**7103**](/errors/7103): Login attempt failed because the Account is locked.
+
+<a id="7104"></a>[**7104**](/errors/7104): Login attempt failed because there is no Account in the Application's associated Account Stores with the specified username or email.
+
 <a id="7200"></a>[**7200**](/errors/7200): Stormpath was not able to complete the request to Facebook or Google: this can be caused by either a bad Facebook or Google directory configuration, or the provided account credentials are not valid.
 
 <a id="7201"></a>[**7201**](/errors/7201): Stormpath is unable to create or update the account because the Facebook or Google response did not contain the required property.
