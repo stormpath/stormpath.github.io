@@ -2183,14 +2183,7 @@ For password policies, you can modify:
 
 The Password Reset Email is configurable for a directory.  There is a set of properties that define its behavior.  This includes the `reset_email_status` and the `reset_email_templates` for the initial password reset email that sends an email to the account's email address with a link to reset the account's password and `reset_success_email_status` and the `reset_success_email_templates` for the resulting email that is sent when the password reset is successful through the email workflow.
 
-To enable or disable the ability to send a password reset email, use the `save` method to set the `reset_email_status` to either `ENABLED` or `DISABLED`.
-
-**Example**
-
-    password_policy.reset_email_status = 'ENABLED'
-    password_policy.save()
-
-To enable or disable the ability to send a password success reset email, use the `save` method to set the `reset_success_email_status` to either `ENABLED` or `DISABLE`. This email will only be set if both `reset_email_status` and `reset_success_email_status` are set to `ENABLED`
+To enable or disable the ability to send a password success reset email, use the `save` method to set the `reset_success_email_status` to either `ENABLED` or `DISABLED`. This email will only be set if both `reset_email_status` and `reset_success_email_status` are set to `ENABLED`
 
 **Example**
 
