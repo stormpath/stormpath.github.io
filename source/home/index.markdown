@@ -107,13 +107,13 @@ alias: [/index.html]
         </div>
         <div class="panel-separator">
         </div>
-
         <div class="panel-pane pane-block pane-menu-menu-docs-angularjs">
           <h2 class="pane-title">AngularJS</h2>
           <div class="pane-content">
             <ul class="menu">
-              <li class="last leaf"><a href="/angularjs/sdk/" title="">AngularJS SDK Documentation</a></li>
-              <li class="first leaf"><a href="/angularjs/guide/" title="">AngularJS + ExpressJS Guide</a></li>
+              <li class="first leaf"><a href="/angularjs/sdk/" title="">AngularJS SDK Documentation</a></li>
+              <li class="leaf"><a href="/angularjs/guide/" title="">AngularJS + ExpressJS Guide</a></li>
+              <li class="last leaf"><a href="https://github.com/stormpath/stormpath-sdk-angularjs">SDK on Github</a></li>
             </ul>
           </div>
         </div>
