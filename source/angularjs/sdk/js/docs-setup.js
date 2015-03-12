@@ -87,6 +87,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "stormpath.spEmailVerification:sp-email-verification",
+      "shortName": "sp-email-verification",
+      "type": "directive",
+      "moduleName": "stormpath",
+      "shortDescription": "Use this directive on the page that users land on when they click on an email verification link.",
+      "keywords": "address alternate api class click complete confirmation container current default directive email enter error expired form html invalid land link links login malformed prompt registers render sending sp-email-verification spemailverification spregistrationform sptoken stormpath template template-url token url user users valid verification verifies view"
+    },
+    {
+      "section": "api",
       "id": "stormpath.spLoginForm:sp-login-form",
       "shortName": "sp-login-form",
       "type": "directive",
@@ -96,12 +105,30 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "stormpath.spPasswordResetForm:sp-password-reset-form",
+      "shortName": "sp-password-reset-form",
+      "type": "directive",
+      "moduleName": "stormpath",
+      "shortDescription": "Use this directive on the page that users land on when they click on a password",
+      "keywords": "address allows alternate api class click container current default directive email enter error expired form html invalid land link malformed password prompt render reset send sending sp-password-reset-form sppasswordresetform sppasswordresetrequestform sptoken stormpath template template-url token url user users valid verifies"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.spPasswordResetRequestForm:sp-password-reset-request-form",
+      "shortName": "sp-password-reset-request-form",
+      "type": "directive",
+      "moduleName": "stormpath",
+      "shortDescription": "This directive will render a pre-built form which prompts the user for thier",
+      "keywords": "account alternate api class container default directive email form html link password pre-built prompts render reset send sp-password-reset-request-form sppasswordresetrequestform stormpath template template-url thier url user username"
+    },
+    {
+      "section": "api",
       "id": "stormpath.spRegistrationForm:sp-registration-form",
       "shortName": "sp-registration-form",
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "This directive will render a pre-built user registration form with the following",
-      "keywords": "$auth $authenticated account alternate api application authenticate authservice autologin automatically call check class complete container created creation default directive directory email enabled event events_ fields form html login main methods_authenticate option optionally options password post-login-state postloginstate pre-built redirect redirected register registration render sp-registration-form spregistrationform stormpath template template-url trigger true ui url user verification workflow"
+      "keywords": "$auth $authenticated account alternate api application authenticate authservice autologin automatically call check class complete container created creation default directive directory email enabled event events_ false fields form html login main methods_authenticate option optionally options password post-login-state postloginstate pre-built redirect redirected register registration render sp-registration-form spregistrationform stormpath template template-url trigger ui url user verification workflow"
     },
     {
       "section": "api",
