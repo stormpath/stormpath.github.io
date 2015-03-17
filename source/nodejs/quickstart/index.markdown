@@ -192,7 +192,7 @@ Finding user accounts is also simple.  You can search for accounts by field:
 
     app.getAccounts({email: 'tk421@stormpath.com'}, function(err, accounts) {
       if (err) throw err;
-      accounts.each(function (err, account, index) {
+      accounts.each(function (account, index) {
         console.log(account.givenName + " " + account.surname);
       });
     });
