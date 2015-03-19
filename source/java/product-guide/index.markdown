@@ -543,6 +543,63 @@ This returns all accounts where:
 For resources with a `status` attribute, string values can also be used; however, they **must be the exact value**. For example, `enabled` or `disabled` can be passed but fragments such as `ena`, `dis`, `bled` are not acceptable.
 {% enddocs %}
 
+#### Datetime Search
+
+Stormpath Java SDK exposes attributes on all resources that will give you information about when the resource was created or modified. This includes, but isn't exclusive to common resources like `Account`, `Group`, `Directory`, `Application`. For example, an `Account` resource will have the `createdAt` and `modifiedAt` attributes:
+
+ account.getCreatedAt()
+ account.getModifiedAt()
+
+These attributes are timezone aware datetimes parsed from `ISO 8601` formatted string. The timezone is coordinated universal time (UTC). Both of these parameters can be queried from collection.
+
+`createdAt` and `modifiedAt` query parameters are a type of [Attribute Search](#search-attribute) that allow you to filter or search collections that were created or modified at a particular time. The query parameters are supported for all collections. This includes `Account`, `Group`, `Directory`, `Application`. As an example, if you wanted to get all accounts created between Jan 12, 2015 and Jan 14, 2015 you would request:
+
+ application.getAccounts(Accounts.where(Accounts.createdAt().matches('[2015-01-12, 2015-01-14]')))
+
+The response would be a [collection](#collection-resources) of accounts created between the two days. The datetime range is denoted as:
+
+ createdAt|modifiedAt=[ISO-8601-BEGIN-DATETIME, ISO-8601-END-DATETIME]
+
+{% docs note %}
+ Omitting the beginning or ending date is valid for requests. Omitting the begin datetime range [,ISO-8601-END-DATETIME] would include all resources created or modified before the end datetime. Omitting the end datetime range [ISO-8601-BEGIN-DATETIME,] would include all resources created or modified after the the begin datetime.
+{% enddocs %}
+
+**Exclusion vs Inclusion**
+
+The brackets `[]` denote inclusion, but `createdAt` and `modifiedAt` also support exclusion with parentheses `()`. For example, if you wanted to get all accounts created between Jan 12, 2015 and Jan 14, 2015 not including the 14th, you would request:
+
+ application.getAccounts(Accounts.where(Accounts.createdAt().matches('[2015-01-12, 2015-01-14)')))
+
+**Precision**
+
+Precision of datetime for this request is controlled by the granularity of the ISO-8601 Datetime you specify. For example, if you need precision in seconds:
+
+ application.getAccounts(Accounts.where(Accounts.createdAt().matches('[2015-01-12T12:00:00, 2015-01-12T12:00:05]')))
+
+And, if you need precision in years:
+
+ application.getAccounts(Accounts.where(Accounts.createdAt().matches('[2014, 2015]')))
+
+**Shorthand**
+
+`createdAt` and `modifiedAt` can use shorthand for the range to simplify the query parameter. This is useful for queries where the range can be encapsulated in a particular year, month, day, hour, minute or second.
+
+For example if you wanted all accounts created in Jan 2015 :
+
+ application.getAccounts(Accounts.where(Accounts.createdAt().matches('2015-01')))
+
+is shorthand for:
+
+ application.getAccounts(Accounts.where(Accounts.createdAt().matches('[2015-01-01T00:00:00.000Z,2015-02-01T00:00:00.000)')))
+
+If you wanted all accounts modified at in the 12th hour UTC on Feb 03, 2015:
+
+ application.getAccounts(Accounts.where(Accounts.modifiedAt().matches('2015-02-03T12')))
+
+is shorthand for:
+
+ application.getAccounts(Accounts.where(Accounts.modifiedAt().matches('[2015-02-03T12:00:00.000Z, 2015-02-04T13:00:00.000)')))
+
 <a class="anchor" name="links-expansion"></a>
 ### Link Expansion
 
