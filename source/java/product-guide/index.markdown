@@ -574,7 +574,11 @@ The brackets `[]` denote inclusion, but `createdAt` and `modifiedAt` also suppor
 
 Precision of datetime for this request is controlled by the granularity of the ISO-8601 Datetime you specify. For example, if you need precision in seconds:
 
- application.getAccounts(Accounts.where(Accounts.createdAt().matches('[2015-01-12T12:00:00, 2015-01-12T12:00:05]')))
+ Calendar cal = Calendar.getInstance();
+ cal.setTimeInMillis(0);
+ cal.set(2014, 10, 21, 11, 45, 23);
+ Date date = cal.getTime();
+ application.getAccounts(Accounts.where(Accounts.createdAt().equals(date)))
 
 And, if you need precision in years:
 
