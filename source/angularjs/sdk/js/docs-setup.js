@@ -10,8 +10,8 @@ NG_DOCS={
       "shortName": "API Documentation",
       "type": "overview",
       "moduleName": "API Documentation",
-      "shortDescription": "stormpath-sdk-angularjs module for AngularJS [BETA]",
-      "keywords": "$stormpath _blank ability access accesstokenttl account adding allow alternate angular angularjs api application applications article attacks authenticate authentication backed backend becuase best cache code comprehensive configure conjuction controlled cookie cookies creation current declare default designed dive documentation endpoints environment espeically example expects expiration expire express express-based features field find flag form github guide heard hide href http-only https insecure integration intended issue issued javascript js jti jwt langues level login logs maintain mechanism module moments node nonce object options overview parts password place production project protect provider quickstart reading ready repo response revocation revoke rules sdk secure secure-only sense server services session set single specific started stateless statement storage store stored stormpath stormpath-sdk-angularjs support target token tokens truth ttl tutorial ui ui-router ui-state unique urls user username vague valid walkthrough works written xss"
+      "shortDescription": "stormpath-sdk-angularjs module for AngularJS",
+      "keywords": "$stormpath _blank ability access accesstokenttl account adding allow alternate angular angularjs api application applications article attacks authenticate authentication backed backend becuase best cache class code comprehensive configure conjuction controlled cookie cookies creation current declare default designed dive documentation endpoints environment espeically example expects expiration expire express express-based features field find flag form github guide heard hide href http-only https insecure integration intended issue issued javascript js jti jwt label label-warning langues level login logs maintain mechanism module moments node nonce object options overview parts password place production project protect provider quickstart reading ready repo response revocation revoke rules sdk secure secure-only sense server services session set single specific started stateless statement storage store stored stormpath stormpath-sdk-angularjs support target token tokens truth ttl tutorial ui ui-router ui-state unique urls user username vague valid walkthrough works written xss"
     },
     {
       "section": "api",
@@ -60,8 +60,8 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "stormpath.ifNotUser:if-not-user",
-      "shortName": "if-not-user",
+      "id": "stormpath.ifNotUser:ifNotUser",
+      "shortName": "ifNotUser",
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "Use this directive to conditionally show an element, if the user is NOT logged in.",
@@ -69,8 +69,8 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "stormpath.ifUser:if-user",
-      "shortName": "if-user",
+      "id": "stormpath.ifUser:ifUser",
+      "shortName": "ifUser",
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "Use this directive to conditionally show an element, if the user is logged in.",
@@ -78,26 +78,53 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "stormpath.logout:logout",
-      "shortName": "logout",
+      "id": "stormpath.ifUserInGroup:ifUserInGroup",
+      "shortName": "ifUserInGroup",
       "type": "directive",
       "moduleName": "stormpath",
-      "shortDescription": "This directive adds a click handler to the element.  When clicked the user will be logged out.",
-      "keywords": "adds api click clicked directive element handler logged logout main stormpath ui-sref user"
+      "shortDescription": "Use this directive to conditionally show an element if the user is logged in",
+      "keywords": "administrator admins api class conditionally container directive element fullname group if-user-in-group ifuseringroup logged member stormpath string user"
     },
     {
       "section": "api",
-      "id": "stormpath.spEmailVerification:sp-email-verification",
-      "shortName": "sp-email-verification",
+      "id": "stormpath.ifUserNotInGroup:ifUserNotInGroup",
+      "shortName": "ifUserNotInGroup",
       "type": "directive",
       "moduleName": "stormpath",
-      "shortDescription": "Use this directive on the page that users land on when they click on an email verification link.",
+      "shortDescription": "Use this directive to conditionally show an element if the user is logged in",
+      "keywords": "access administrator admins api class conditionally container directive element fullname group if-user-not-in-group ifusernotingroup logged member request stormpath string user"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.ifUserStateKnown:ifUserStateKnown",
+      "shortName": "ifUserStateKnown",
+      "type": "directive",
+      "moduleName": "stormpath",
+      "shortDescription": "Use this directive to show an element once the user state is known.",
+      "keywords": "api directive element if-not-user if-user if-user-state-known ifuserstateknown ifuserstateunknown inverse logged login logout main stormpath ui-sref user"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.ifUserStateUnknown:ifUserStateUnknown",
+      "shortName": "ifUserStateUnknown",
+      "type": "directive",
+      "moduleName": "stormpath",
+      "shortDescription": "Use this directive to show an element, while waiting to know if the user",
+      "keywords": "api application directive element graphic if-user-state-unknown ifuserstateunknown loading logged stormpath user waiting"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.spEmailVerification:spEmailVerification",
+      "shortName": "spEmailVerification",
+      "type": "directive",
+      "moduleName": "stormpath",
+      "shortDescription": "Use this directive on the page that users land on when they click an email verification link.",
       "keywords": "address alternate api class click complete confirmation container current default directive email enter error expired form html invalid land link links login malformed prompt registers render sending sp-email-verification spemailverification spregistrationform sptoken stormpath template template-url token url user users valid verification verifies view"
     },
     {
       "section": "api",
-      "id": "stormpath.spLoginForm:sp-login-form",
-      "shortName": "sp-login-form",
+      "id": "stormpath.spLoginForm:spLoginForm",
+      "shortName": "spLoginForm",
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "This directive will render a pre-built login form, with all",
@@ -105,8 +132,17 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "stormpath.spPasswordResetForm:sp-password-reset-form",
-      "shortName": "sp-password-reset-form",
+      "id": "stormpath.spLogout:spLogout",
+      "shortName": "spLogout",
+      "type": "directive",
+      "moduleName": "stormpath",
+      "shortDescription": "This directive adds a click handler to the element.  When clicked the user will be logged out.",
+      "keywords": "adds api click clicked directive element handler logged main sp-logout splogout stormpath ui-sref user"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.spPasswordResetForm:spPasswordResetForm",
+      "shortName": "spPasswordResetForm",
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "Use this directive on the page that users land on when they click on a password",
@@ -114,8 +150,8 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "stormpath.spPasswordResetRequestForm:sp-password-reset-request-form",
-      "shortName": "sp-password-reset-request-form",
+      "id": "stormpath.spPasswordResetRequestForm:spPasswordResetRequestForm",
+      "shortName": "spPasswordResetRequestForm",
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "This directive will render a pre-built form which prompts the user for thier",
@@ -123,12 +159,12 @@ NG_DOCS={
     },
     {
       "section": "api",
-      "id": "stormpath.spRegistrationForm:sp-registration-form",
-      "shortName": "sp-registration-form",
+      "id": "stormpath.spRegistrationForm:spRegistrationForm",
+      "shortName": "spRegistrationForm",
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "This directive will render a pre-built user registration form with the following",
-      "keywords": "$auth $authenticated account alternate api application authenticate authservice autologin automatically call check class complete container created creation default directive directory email enabled event events_ false fields form html login main methods_authenticate option optionally options password post-login-state postloginstate pre-built redirect redirected register registration render sp-registration-form spregistrationform stormpath template template-url trigger ui url user verification workflow"
+      "keywords": "$auth $authenticated $user _blank account add alternate api application authenticate authservice autologin automatically call check class container copy create created creation custom customdata customize customizing data default directive directory email enabled event events_ false field fields file fit form formmodel href html https inputs interaction login main making message method methods_authenticate methods_create middlename modify ng-model option optionally options password point post post-login-state postloginstate pre-built ready redirect redirected register registration render server set sp-registration-form spregistrationform stormpath target telling template template-url tpl trigger ui url user userservice verification view workflow"
     },
     {
       "section": "api",
@@ -155,7 +191,7 @@ NG_DOCS={
       "type": "object",
       "moduleName": "stormpath.userService",
       "shortDescription": "Use this service to get the current user and do access control checks",
-      "keywords": "$currentuser $http $notloggedin $scope $user accept access account accountdata address angular api application attach attemps attempt authenticated authenticating backend boolean case catch checks console control controller create created current data directory eh email emitted enabled error errormessage events express failure false fields function givenname http literal log meet message method middleware module myapp myappctrl object obseve occurs operation passed passing password posting proceed promise ready register rejected representing request required requirements requires resolved response returns sdk server service status stormmpath stormpath success successful surname true type unverified user userservice var verification weak wishes workflow wrapped"
+      "keywords": "$currentuser $http $notloggedin $scope $user _blank access account accountdata address angular api application attach attemps attempt authenticated authenticating automatically boolean case catch checks config console control controller create created current data directory eh email emitted enabled endpoint error errormessage events expects express failure false fields function givenname handled href http https js json literal log meet message method middleware modified module myapp myappctrl object obseve occurs operation option passed passing password post proceed promise ready register rejected representing require required requirements requires resolved response responses returns sdk send service simply status stormmpath stormpath submitting success successful surname target true type unverified user user_collection_uri userservice var verification weak wishes workflow wrapped"
     },
     {
       "section": "api",
@@ -172,8 +208,8 @@ NG_DOCS={
       "shortName": "while-resolving-user",
       "type": "directive",
       "moduleName": "stormpath",
-      "shortDescription": "Use this directive to show an element, while waiting to know if the user",
-      "keywords": "api application directive element graphic loading logged position stormpath style user wait waiting while-resolving-user whileresolvinguser"
+      "shortDescription": "[DEPRECATED]",
+      "keywords": "api directive ifuserstateunknown stormpath whileresolvinguser"
     },
     {
       "section": "quickstart",
