@@ -9,11 +9,15 @@ on the user</p>
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_create">create(accountData)</h3>
-<div class="create"><div class="stormpath-userservice-user-create-page"><p>Attemps to create a new user by posting to <code>/api/users</code></p>
-<p>Your backend server will need to accept this request and use a
-Stormpath SDK to create the account in the Stormpath service.  If you
-are using the Express SDK you want to attach <code>register</code> middleware
-to your application.</p>
+<div class="create"><div class="stormpath-userservice-user-create-page"><p>Attemps to create a new user by submitting the given <code>accountData</code> as
+JSON to <code>/api/users</code>.  The POST endpoint can be modified via the
+<a href="#/api/stormpath.config#user_collection_uri">USER_COLLECTION_URI</a> config option.</p>
+<p>This method expects a <code>201</code> response if the account does NOT require email
+verification.</p>
+<p>If email verification is enabled, you should send a <code>202</code> response instead.</p>
+<p> If you are using our Express.JS SDK you can simply attach the
+ <a href="https://github.com/stormpath/stormpath-sdk-express#register" target="_blank"><code>register</code></a> middleware
+to your application and these responses will be handled automatically for you.</p>
 </div><h5 id="methods_create_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>accountData</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-userservice-user-create-page"><p>An object literal for passing the data
 for the new account.</p>
 <p>Required fields:</p>

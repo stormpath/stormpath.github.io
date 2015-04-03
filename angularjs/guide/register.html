@@ -95,6 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#use-the-email-verification-directive">Use the Email Verification Directive</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configure-the-directory">Configure the Directory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#try-it-register-for-an-account">Try it, register for an account!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customizing-the-form">Customizing The Form</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="customize_menu.html">Customize the Menu</a><ul>
@@ -125,6 +126,12 @@
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#use-the-password-reset-directives">Use the password reset directives</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#configure-the-directory">Configure the Directory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#try-it-reset-your-password">Try it, reset your password!</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="access_control.html">Access Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="access_control.html#ui-state-control">UI State Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="access_control.html#helper-directives">Helper Directives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="access_control.html#api-security">API Security</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="coming_soon.html">Coming Soon!</a></li>
@@ -307,6 +314,38 @@ You will also be logged in automatically, and you will start seeing
 the list of things again - remember how we locked it down?  Now that
 you are authenticated you are allowed to access that part of the API
 again</p>
+</div>
+<div class="section" id="customizing-the-form">
+<h2>Customizing The Form<a class="headerlink" href="#customizing-the-form" title="Permalink to this headline">¶</a></h2>
+<p>Do you need to customize the form?  This can be done by supplying
+your own template and adding or removing the appropriate fields.</p>
+<p>For example, create a new file in <tt class="docutils literal"><span class="pre">client/app/register/</span></tt> and call it
+<tt class="docutils literal"><span class="pre">my-register.html</span></tt>.  Copy the contents from our existing <tt class="docutils literal"><span class="pre">register.html</span></tt>
+into it.  Then add the following markup to it, in a place that you like:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;div class=&quot;form-group&quot;&gt;
+  &lt;label for=&quot;favColor&quot; class=&quot;col-xs-12 col-sm-4 control-label&quot;&gt;Favorite Color&lt;/label&gt;
+  &lt;div class=&quot;col-xs-12 col-sm-4&quot;&gt;
+    &lt;input type=&quot;text&quot; class=&quot;form-control&quot; id=&quot;favColor&quot; ng-model=&quot;formModel.customData.favColor&quot; ng-disabled=&quot;creating&quot;&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</pre></div>
+</div>
+<p>Now modify your registration form directive, telling it to use this custom template:</p>
+<div class="highlight-python"><div class="highlight"><pre>&lt;div sp-registration-form post-login-state=&quot;main&quot; template-url=&quot;app/register/my-register.html&quot;&gt;&lt;/div&gt;
+</pre></div>
+</div>
+<p>You registration form should have a new field for entering your favorite color!  This information
+will go into the <tt class="docutils literal"><span class="pre">customData</span></tt> object on the Account object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>You need to ensure that your server-side framework is decoding complex form
+objects.  In our Yeoman example you will need to open <tt class="docutils literal"><span class="pre">sever/config/express.js</span></tt>
+and moodify this line to enable that option:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">app</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="n">bodyParser</span><span class="o">.</span><span class="n">urlencoded</span><span class="p">({</span> <span class="n">extended</span><span class="p">:</span> <span class="n">true</span> <span class="p">}));</span>
+</pre></div>
+</div>
+</div>
+<p>For more information about the registration form, see the  <a class="reference external" href="https://docs.stormpath.com/angularjs/sdk/#/api/stormpath.spRegistrationForm:spRegistrationForm">spRegistrationForm documentation</a></p>
 </div>
 </div>
 
