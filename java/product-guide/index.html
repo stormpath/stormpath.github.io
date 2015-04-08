@@ -375,6 +375,9 @@
 		sp_docs_menu['stylesheets'] = [];
 		
 	
+		sp_docs_menu['wizard'] = [];
+		
+	
 </script>
 
 <div id="page">
@@ -1151,7 +1154,7 @@ AccountList accounts = application.getAccounts(criteria);
 
 <p>For example, it would not be possible to return an account with its directory expanded and also the directory&rsquo;s groups expanded as well. Link expansion is currently only possible one level &lsquo;deep&rsquo;.</p>
 
-<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#109;&#97;&#105;&#x6c;&#x74;&#111;&#x3a;&#115;&#117;&#112;&#112;&#111;&#114;&#116;&#x40;&#115;&#116;&#111;&#x72;&#109;&#x70;&#97;&#116;&#104;&#46;&#99;&#111;&#109;">&#115;&#117;&#x70;&#112;&#x6f;&#114;&#x74;&#64;&#115;&#x74;&#111;&#114;&#x6d;&#112;&#97;&#x74;&#104;&#x2e;&#99;&#111;&#x6d;</a> and submit a feature request.</p>
+<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#x61;&#x69;&#x6c;&#x74;&#111;&#x3a;&#115;&#117;&#112;&#x70;&#x6f;&#x72;&#x74;&#64;&#x73;&#116;&#x6f;&#114;&#109;&#x70;&#97;&#x74;&#104;&#x2e;&#x63;&#x6f;&#x6d;">&#x73;&#117;&#x70;&#112;&#x6f;&#114;&#x74;&#x40;&#x73;&#116;&#x6f;&#x72;&#109;&#x70;&#x61;&#x74;&#104;&#x2e;&#99;&#111;&#109;</a> and submit a feature request.</p>
 
 <h4>Expanding Collection Resources</h4>
 
@@ -1272,7 +1275,7 @@ AccountList accounts = application.getAccounts(criteria);
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
 
-<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#117;&#112;&#112;&#x6f;&#114;&#116;&#64;&#115;&#116;&#111;&#114;&#x6d;&#112;&#97;&#116;&#104;&#46;&#99;&#111;&#x6d;">&#115;&#117;&#x70;&#x70;&#111;&#x72;&#x74;&#64;&#115;&#116;&#111;&#114;&#109;&#x70;&#x61;&#116;&#x68;&#x2e;&#99;&#x6f;&#x6d;</a> and request it.</p>
+<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#109;&#x61;&#x69;&#108;&#116;&#x6f;&#58;&#x73;&#117;&#x70;&#112;&#111;&#114;&#116;&#64;&#x73;&#x74;&#x6f;&#114;&#x6d;&#112;&#x61;&#116;&#x68;&#46;&#x63;&#x6f;&#x6d;">&#115;&#117;&#x70;&#112;&#x6f;&#114;&#x74;&#x40;&#115;&#x74;&#x6f;&#114;&#109;&#x70;&#x61;&#x74;&#104;&#x2e;&#99;&#x6f;&#109;</a> and request it.</p>
 
 <p><a class="anchor" name="tenant-retrieve"></a></p>
 
@@ -2848,6 +2851,12 @@ for (AccountStoreMapping accountStoreMapping : accountStoreMappings) {
 <td align="left"> Link </td>
 <td align="left"> <span>&mdash;</span></td>
 </tr>
+<tr>
+<td align="left"><code>passwordPolicy</code> </td>
+<td align="left"> A link to the directory&rsquo;s Password Policy </td>
+<td align="left"> Link </td>
+<td align="left"> <span>&mdash;</span></td>
+</tr>
 </tbody>
 </table>
 
@@ -2886,6 +2895,7 @@ for (AccountStoreMapping accountStoreMapping : accountStoreMappings) {
 </li>
 <li><a href="#directory-groups">Work with directory groups</a></li>
 <li><a href="#directory-accounts">Work with directory accounts</a></li>
+<li><a href="#directory-password-policy">Update a directory&rsquo;s Password Policy</a></li>
 </ul>
 
 
@@ -3088,7 +3098,7 @@ directory.save();
 <p><a class="anchor" name="work-with-directories"></a>
 <a class="anchor" name="directories-account-password-policy"></a><a class="anchor" name="directories-password-restrictions"></a></p>
 
-<h3><a id="account-password-policy"></a>Account Password Policy</h3>
+<h3><a id="account-password-strength-policy"></a>Account Password Strength Policy</h3>
 
 <p>Directories can be configured to enforce specific restrictions on passwords for accounts associated with, such as requiring at least one or more non-alphanumeric characters.</p>
 
@@ -3097,7 +3107,7 @@ directory.save();
 <ul>
 <li>Min characters</li>
 <li>Max characters</li>
-<li>Mandatry characters
+<li>Mandatory characters
 
 <ul>
 <li>Lower case alphabetical</li>
@@ -3112,17 +3122,7 @@ directory.save();
 
 <p>By default, passwords must be of mixed case, include at least one number, and be between 8 and 100 characters in length.</p>
 
-<div class='docs-note'><p>It is not currently possible to configure a Directory&#8217;s account password policy via the REST API.  You must use the <a href="https://api.stormpath.com">Stormpath Admin Console</a> (Directories &#8211;> &lt;choose your directory&gt; &#8211;> Details tab).</p>
-</div>
-
-
-
-
-<div class='docs-note'><p>Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API.</p>
-
-<p>Additionally, the <code>Stormpath Administrator</code> directory&#8217;s automated workflows cannot be altered.</p>
-</div>
-
+<p>Account&rsquo;s password strength policy is available on cloud directories and configurable using the Stormpath Admin Console and REST by modifying the <a href="#password-strength-policy-for-directory">Password Strength Policy for the Directory</a></p>
 
 <p><a class="anchor" name="directories-reg"></a></p>
 
@@ -3273,6 +3273,265 @@ for(Account account : accounts) {
 <h4>Working With Directory Accounts</h4>
 
 <p>Account resources support the full suite of CRUD commands and other interactions. Please see the <a href="#accounts">Accounts section</a> for more information.</p>
+
+<h3><a id="directory-password-policy"></a>Directory Password Policy</h3>
+
+<p>A Directory&rsquo;s <code>Password Policy</code> resource contains data that controls how strong passwords need to be for account in the directory and how they are reset.  By modifying this information, you can modify the behavior of the account&rsquo;s that are apart of the directory.</p>
+
+<p>The password policy can be retrieved by interacting with the directory resource.  The directory resource has a <code>passwordPolicy</code> link to the directory&rsquo;s <code>Password Policy</code>.</p>
+
+<p><strong>Resource Attributes</strong></p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description </th>
+<th align="left"> Type </th>
+<th align="left"> Valid Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>href</code> </td>
+<td align="left"> The href location of the passwordPolicy </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>resetEmailStatus</code> </td>
+<td align="left"> The status of the reset email workflow.  If this is set to ENABLED, then Stormpath will allow for passwords to be reset through the email workflow and will use the template that is stored in the passwordPolicy&rsquo;s <code>resetEmailTemplates</code></td>
+<td align="left"> String </td>
+<td align="left"> <code>"ENABLED"</code> or <code>"DISABLED"</code></td>
+</tr>
+<tr>
+<td align="left"><code>resetEmailTemplates</code> </td>
+<td align="left"> A collection of email templates that can be used for sending password reset email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. </td>
+<td align="left"> Link </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>resetSuccessEmailStatus</code> </td>
+<td align="left"> The status of the reset success email.  If this is set to ENABLED, then Stormpath will send the a email when an account&rsquo;s password is reset using the email workflow and it is successful.  The email template that is sent is defined in the passwordPolicy&rsquo;s <code>resetSuccessEmailTemplates</code> </td>
+<td align="left"> String </td>
+<td align="left"> <code>"ENABLED"</code> or <code>"DISABLED"</code></td>
+</tr>
+<tr>
+<td align="left"><code>resetSuccessEmailTemplates</code> </td>
+<td align="left"> A collection of email templates that can be used for sending password reset success email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. </td>
+<td align="left"> Link </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>resetTokenTtl</code> </td>
+<td align="left"> An integer that defines how long the password reset token is valid for during the password reset email workflow. </td>
+<td align="left"> Integer </td>
+<td align="left">  A positive integer, less than 169 (0 &lt; i &lt; 169). Default is 24</td>
+</tr>
+<tr>
+<td align="left"><code>strength</code> </td>
+<td align="left">  A link to the password strength requirements for the directory </td>
+<td align="left"> Link </td>
+<td align="left"> &mdash;</td>
+</tr>
+</tbody>
+</table>
+
+
+<p><strong>Directory Password Policy Resource</strong></p>
+
+<pre><code>PasswordPolicy passwordPolicy = directory.getPasswordPolicy();
+</code></pre>
+
+<p>For password policies, you can modify:</p>
+
+<ul>
+<li>Password Reset Workflow for Directory&rsquo;s Accounts</li>
+<li>Password Strength Policy for Directory&rsquo;s Accounts</li>
+</ul>
+
+
+<h4>Password Reset Workflow for Directory&rsquo;s Accounts</h4>
+
+<p>The Password Reset Email is configurable for a directory.  There is a set of properties that define its behavior.  This includes the <code>resetEmailStatus</code> and the <code>resetEmailTemplates</code> for the initial password reset email that sends an email to the account&rsquo;s email address with a link to reset the account&rsquo;s password and <code>resetSuccessEmailStatus</code> and the <code>resetSuccessEmailTemplates</code> for the resulting email that is sent when the password reset is successful through the email workflow.</p>
+
+<p>To enable or disable the ability to send a password reset email just set it to <code>Disabled</code>.</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>passwordPolicy.setResetEmailStatus(EmailStatus.DISABLED);
+passwordPolicy.save();
+</code></pre>
+
+<p>To enable or disable the ability to send a password success reset email, set the desired status for the <code>resetSuccessEmailStatus</code>.  This email will only be set if both <code>resetEmailStatus</code> and <code>resetSuccessEmailStatus</code> are set to <code>ENABLED</code></p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>passwordPolicy.setResetSuccessEmailStatus(EmailStatus.ENABLED);
+passwordPolicy.save();
+</code></pre>
+
+<p>To modify the emails that get sent during the password reset workflow, let&rsquo;s take a look at the email templates for the password reset.  Email templates in Stormpath have common properties that can be modified to change the appearance of the emails.  The properties below apply to both email templates that reside in the password policy (resetEmailTemplate and resetSuccessEmailTemplate).</p>
+
+<p><strong>Resource Attribute for Email Templates</strong></p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description </th>
+<th align="left"> Type </th>
+<th align="left"> Valid Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>fromEmailAddress</code> </td>
+<td align="left"> The address that appears in the email&rsquo;s from field. </td>
+<td align="left"> String </td>
+<td align="left"> A valid email address</td>
+</tr>
+<tr>
+<td align="left"><code>fromName</code> </td>
+<td align="left"> The name that appears in the email&rsquo;s from field </td>
+<td align="left"> String </td>
+<td align="left"> A string</td>
+</tr>
+<tr>
+<td align="left"><code>subject</code> </td>
+<td align="left"> The subject that appears in the email&rsquo;s subject field </td>
+<td align="left"> String </td>
+<td align="left"> A string</td>
+</tr>
+<tr>
+<td align="left"><code>htmlBody</code> </td>
+<td align="left"> The body of the email in HTML format.  This body is only sent when the <code>mimeType</code> for the template is set to <code>text/html</code>.  This body can take valid HTML snippets. </td>
+<td align="left"> String </td>
+<td align="left"> A string. For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}</td>
+</tr>
+<tr>
+<td align="left"><code>textBody</code> </td>
+<td align="left"> The body of the email is plain text format.  This body is only sent when the <code>mimeType</code> for the template is set to <code>text/plain</code> </td>
+<td align="left"> String </td>
+<td align="left"> A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}</td>
+</tr>
+<tr>
+<td align="left"><code>mimeType</code> </td>
+<td align="left"> A property that defines whether Stormpath will send an email with the mime type of <code>text/plain</code> or <code>text/html</code>. </td>
+<td align="left"> String </td>
+<td align="left"> <code>text/plain</code> or <code>text/html</code></td>
+</tr>
+<tr>
+<td align="left"><code>defaultModel</code> </td>
+<td align="left"> An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows </td>
+<td align="left"> Object </td>
+<td align="left"> Object that includes one property linkBaseUrl that is a String</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>To update an email template, first you must get the email template&rsquo;s resource.  This is done by working with the resetEmailTemplates and resetSuccessEmailTemplates collection.  These collections hold only one email template, but in the future may hold multiple templates.</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>ResetEmailTemplateList emailTemplateList = passwordPolicy.getResetEmailTemplates();
+ResetEmailTemplate emailTemplate = emailTemplateList.iterator().next();
+</code></pre>
+
+<p>After getting the resource for the email template, you can update its properties:</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>emailTemplate.setFromName("Application Support")
+            .setFromEmailAddress("support@application.com")
+            .setSubject("Reset your Password for application.com")
+            .setLinkBaseUrl("https://application.com/password-reset");
+emailTemplate.save();
+</code></pre>
+
+<p><a class="anchor" name="password-strength-policy-for-directory"></a></p>
+
+<h4>Password Strength Policy for Directory&rsquo;s Accounts</h4>
+
+<p>The <code>Password Strength Policy</code> for a Directory can be modified through the Administrator Console and through the REST API.  Password Strength Policy is part of the Directory&rsquo;s Password Policy and can be accessed through the <code>Strength</code> resource.</p>
+
+<p><strong>Resource Attribute for Password Strength</strong></p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description </th>
+<th align="left"> Type </th>
+<th align="left"> Valid Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>maxLength</code> </td>
+<td align="left">  Represents the maximum length for a password.  For example maxLength of 10 requires that a password has no more than 10 characters </td>
+<td align="left"> Integer </td>
+<td align="left"> Valid Integer, default is 100</td>
+</tr>
+<tr>
+<td align="left"><code>minLength</code> </td>
+<td align="left"> Represents the minimum length for a password.  For example minLength of 5 requires that a password has no less than 5 characters </td>
+<td align="left"> Integer </td>
+<td align="left"> Valid Integer, default is 8</td>
+</tr>
+<tr>
+<td align="left"><code>minLowerCase</code> </td>
+<td align="left"> Represents the minimum number of lower case characters required for the password.  For example, minLowerCase of 3 requires the password have 3 lower case characters </td>
+<td align="left"> Integer </td>
+<td align="left"> Valid Integer, default is 1</td>
+</tr>
+<tr>
+<td align="left"><code>minNumeric</code> </td>
+<td align="left"> Represents the minimum number of number characters required for the password.  For example, minNumeric of 3 requires the password have 3 numbers </td>
+<td align="left"> Integer </td>
+<td align="left"> Valid Integer, default is 1</td>
+</tr>
+<tr>
+<td align="left"><code>minSymbol</code> </td>
+<td align="left"> Represents the minimum number of symbol characters required for the password.  For example, minSymbol of 3 requires the password have 3 symbols </td>
+<td align="left"> Integer </td>
+<td align="left"> Valid Integer, default is 0</td>
+</tr>
+<tr>
+<td align="left"><code>minUpperCase</code> </td>
+<td align="left"> Represents the minimum number of upper case characters required for the password.  For example, minUpperCase of 3 requires the password have 3 upper case characters </td>
+<td align="left"> Integer </td>
+<td align="left"> Valid Integer, default is 1</td>
+</tr>
+<tr>
+<td align="left"><code>minDiacritic</code> </td>
+<td align="left"> Represents the minimum number of diacritic characters required for the password.  For example, minDiacritic of 3 requires the password have 3 symbols </td>
+<td align="left"> Integer </td>
+<td align="left"> Valid Integer, default is 0</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>To retrieve the <code>Password Strength</code> requirements for a directory:</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>Strength strength = passwordPolicy.getStrength();
+</code></pre>
+
+<p>Setting new <code>Password Strength</code> requirement for a directory modifies the requirement for new accounts and also password changes on existing account&rsquo;s in a directory.  To update <code>Password Strength</code>, simple specify the desired values via its setters methods:</p>
+
+<p><strong>Example Request</strong></p>
+
+<pre><code>strength.setMinLength(1)
+            .setMaxLength(24)
+            .setMinSymbol(1);
+strength.save();
+</code></pre>
+
+<hr />
 
 <p><a class="anchor" name="groups"></a></p>
 
@@ -5639,6 +5898,9 @@ addthis:url="https://stormpath.com" >
 		sp_docs_menu['stylesheets'] = [];
 		
 	
+		sp_docs_menu['wizard'] = [];
+		
+	
 </script>
 
 
@@ -5666,7 +5928,7 @@ addthis:url="https://stormpath.com" >
 				<a href="/java/product-guide">Product Guide</a>
 			
 			
-				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#java-sdk" data-level="1" class="fragment">Java SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#caching" data-level="1" class="fragment">Caching</a><ul class="menu"></ul></li><li class="leaf"><a href="#error-handling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-applications" data-level="1" class="fragment">Tenant Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-accounts" data-level="1" class="fragment">Tenant Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-groups" data-level="1" class="fragment">Tenant Groups</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-password-policy" data-level="1" class="fragment">Account Password Policy</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#verifying-an-accounts-email-address" data-level="1" class="fragment">Verifying An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#resetting-an-accounts-password" data-level="1" class="fragment">Resetting An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-an-account" data-level="1" class="fragment">Authenticate An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-google" data-level="0" class="fragment">Integrating with Google</a><ul class="menu"><li class="leaf"><a href="#google-provider-resource" data-level="1" class="fragment">Google Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-google-directory" data-level="1" class="fragment">Creating a Google Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-google-authorization-codes-or-access-tokens" data-level="1" class="fragment">Accessing Accounts with Google Authorization Codes or Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-facebook" data-level="0" class="fragment">Integrating with Facebook</a><ul class="menu"><li class="leaf"><a href="#facebook-provider-resource" data-level="1" class="fragment">Facebook Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-facebook-directory" data-level="1" class="fragment">Creating a Facebook Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-facebook-user-access-tokens" data-level="1" class="fragment">Accessing Accounts with Facebook User Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#java-sample-code" data-level="0" class="fragment">Java Sample Code</a><ul class="menu"><li class="leaf"><a href="#spring-mvc-sample-app" data-level="1" class="fragment">Spring MVC Sample App</a><ul class="menu"></ul></li><li class="leaf"><a href="#apache-shiro-sample-web-app" data-level="1" class="fragment">Apache Shiro Sample Web App</a><ul class="menu"></ul></li><li class="leaf"><a href="#spring-security-sample-web-app" data-level="1" class="fragment">Spring Security Sample Web App</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#appendix" data-level="0" class="fragment">Appendix</a><ul class="menu"><li class="leaf"><a href="#how-to-get-the-java-sdk-jar-files-if-you-are-not-using-a-maven-compatible-build-tool" data-level="1" class="fragment">How to get the Java SDK jar files if you are not using a Maven-compatible build tool</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"><li class="leaf"><a href="#overview" data-level="1" class="fragment">Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#core-concepts" data-level="1" class="fragment">Core Concepts</a><ul class="menu"></ul></li><li class="leaf"><a href="#rest-api" data-level="1" class="fragment">REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#java-sdk" data-level="1" class="fragment">Java SDK</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#sdk-concepts" data-level="0" class="fragment">SDK Concepts</a><ul class="menu"><li class="leaf"><a href="#client" data-level="1" class="fragment">Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#high-level-overview" data-level="1" class="fragment">High-level Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#detailed-design" data-level="1" class="fragment">Detailed Design</a><ul class="menu"></ul></li><li class="leaf"><a href="#resources-and-proxying" data-level="1" class="fragment">Resources and Proxying</a><ul class="menu"></ul></li><li class="leaf"><a href="#caching" data-level="1" class="fragment">Caching</a><ul class="menu"></ul></li><li class="leaf"><a href="#error-handling" data-level="1" class="fragment">Error Handling</a><ul class="menu"></ul></li><li class="leaf"><a href="#collection-resources" data-level="1" class="fragment">Collection Resources</a><ul class="menu"></ul></li><li class="leaf"><a href="#pagination" data-level="1" class="fragment">Pagination</a><ul class="menu"></ul></li><li class="leaf"><a href="#sorting" data-level="1" class="fragment">Sorting</a><ul class="menu"></ul></li><li class="leaf"><a href="#search" data-level="1" class="fragment">Search</a><ul class="menu"></ul></li><li class="leaf"><a href="#link-expansion" data-level="1" class="fragment">Link Expansion</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#tenants" data-level="0" class="fragment">Tenants</a><ul class="menu"><li class="leaf"><a href="#tenant-resource" data-level="1" class="fragment">Tenant Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-tenant" data-level="1" class="fragment">Retrieve A Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-applications" data-level="1" class="fragment">Tenant Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-directories" data-level="1" class="fragment">Tenant Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-accounts" data-level="1" class="fragment">Tenant Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#tenant-groups" data-level="1" class="fragment">Tenant Groups</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#applications" data-level="0" class="fragment">Applications</a><ul class="menu"><li class="leaf"><a href="#application-resource" data-level="1" class="fragment">Application Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-for-an-application" data-level="1" class="fragment">Search for an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-application-aka-register-an-application-with-stormpath" data-level="1" class="fragment">Create an Application (aka Register an Application with Stormpath)</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-application" data-level="1" class="fragment">Retrieve an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-application" data-level="1" class="fragment">Update an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-application" data-level="1" class="fragment">Delete an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-applications" data-level="1" class="fragment">List Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-applications" data-level="1" class="fragment">Search Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-accounts" data-level="1" class="fragment">Application Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-groups" data-level="1" class="fragment">Application Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#application-account-store-mappings" data-level="1" class="fragment">Application Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#account-store-mappings" data-level="0" class="fragment">Account Store Mappings</a><ul class="menu"><li class="leaf"><a href="#account-store-mapping-resource" data-level="1" class="fragment">Account Store Mapping Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-account-store-mappings-rest-url" data-level="1" class="fragment">Locate an Account Store Mapping’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-store-mapping" data-level="1" class="fragment">Create an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account-store-mapping" data-level="1" class="fragment">Retrieve An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account-store-mapping" data-level="1" class="fragment">Update An Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account-store-mapping" data-level="1" class="fragment">Delete an Account Store Mapping</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-account-store-mappings" data-level="1" class="fragment">List Account Store Mappings</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#directories" data-level="0" class="fragment">Directories</a><ul class="menu"><li class="leaf"><a href="#directory-resource" data-level="1" class="fragment">Directory Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-directorys-rest-url" data-level="1" class="fragment">Locate a Directory’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-directory" data-level="1" class="fragment">Create a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-directory" data-level="1" class="fragment">Retrieve a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-directory" data-level="1" class="fragment">Update a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-directory" data-level="1" class="fragment">Delete a Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-directories" data-level="1" class="fragment">List Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-directories" data-level="1" class="fragment">Search Directories</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-password-strength-policy" data-level="1" class="fragment">Account Password Strength Policy</a><ul class="menu"></ul></li><li class="leaf"><a href="#register-a-new-account" data-level="1" class="fragment">Register A New Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#verifying-an-accounts-email-address" data-level="1" class="fragment">Verifying An Account’s Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#resetting-an-accounts-password" data-level="1" class="fragment">Resetting An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-groups" data-level="1" class="fragment">Directory Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-accounts" data-level="1" class="fragment">Directory Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#directory-password-policy" data-level="1" class="fragment">Directory Password Policy</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#groups" data-level="0" class="fragment">Groups</a><ul class="menu"><li class="leaf"><a href="#group-resource" data-level="1" class="fragment">Group Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-groups-rest-url" data-level="1" class="fragment">Locate a Group’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group" data-level="1" class="fragment">Create a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group" data-level="1" class="fragment">Retrieve a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-a-group" data-level="1" class="fragment">Update a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group" data-level="1" class="fragment">Delete a Group</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-groups" data-level="1" class="fragment">List Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-groups" data-level="1" class="fragment">Search Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#group-accounts" data-level="1" class="fragment">Group Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-memberships" data-level="1" class="fragment">Account Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#group-memberships" data-level="0" class="fragment">Group Memberships</a><ul class="menu"><li class="leaf"><a href="#group-membership-resource" data-level="1" class="fragment">Group Membership Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-a-group-memberships-rest-url" data-level="1" class="fragment">Locate a Group Membership’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-group-membership" data-level="1" class="fragment">Create a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-a-group-membership" data-level="1" class="fragment">Retrieve a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-a-group-membership" data-level="1" class="fragment">Delete a Group Membership</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-group-memberships" data-level="1" class="fragment">List Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#accounts" data-level="0" class="fragment">Accounts</a><ul class="menu"><li class="leaf"><a href="#account-resource" data-level="1" class="fragment">Account Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#locate-an-accounts-rest-url" data-level="1" class="fragment">Locate an Account’s REST URL</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account" data-level="1" class="fragment">Create an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-an-account" data-level="1" class="fragment">Retrieve an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-an-account" data-level="1" class="fragment">Update an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-an-account" data-level="1" class="fragment">Delete an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-custom-data" data-level="1" class="fragment">Account Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#list-accounts" data-level="1" class="fragment">List Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#search-accounts" data-level="1" class="fragment">Search Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#work-with-accounts" data-level="1" class="fragment">Work With Accounts</a><ul class="menu"></ul></li><li class="leaf"><a href="#verify-an-email-address" data-level="1" class="fragment">Verify An Email Address</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-an-account" data-level="1" class="fragment">Authenticate An Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#reset-an-accounts-password" data-level="1" class="fragment">Reset An Account’s Password</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-groups" data-level="1" class="fragment">Account Groups</a><ul class="menu"></ul></li><li class="leaf"><a href="#account-group-memberships" data-level="1" class="fragment">Account Group Memberships</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#custom-data" data-level="0" class="fragment">Custom Data</a><ul class="menu"><li class="leaf"><a href="#create-custom-data" data-level="1" class="fragment">Create Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-custom-data" data-level="1" class="fragment">Retrieve Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#update-custom-data" data-level="1" class="fragment">Update Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data" data-level="1" class="fragment">Delete Custom Data</a><ul class="menu"></ul></li><li class="leaf"><a href="#delete-custom-data-field" data-level="1" class="fragment">Delete Custom Data Field</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-google" data-level="0" class="fragment">Integrating with Google</a><ul class="menu"><li class="leaf"><a href="#google-provider-resource" data-level="1" class="fragment">Google Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-google-directory" data-level="1" class="fragment">Creating a Google Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-google-authorization-codes-or-access-tokens" data-level="1" class="fragment">Accessing Accounts with Google Authorization Codes or Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#integrating-with-facebook" data-level="0" class="fragment">Integrating with Facebook</a><ul class="menu"><li class="leaf"><a href="#facebook-provider-resource" data-level="1" class="fragment">Facebook Provider Resource</a><ul class="menu"></ul></li><li class="leaf"><a href="#creating-a-facebook-directory" data-level="1" class="fragment">Creating a Facebook Directory</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-accounts-with-facebook-user-access-tokens" data-level="1" class="fragment">Accessing Accounts with Facebook User Access Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#java-sample-code" data-level="0" class="fragment">Java Sample Code</a><ul class="menu"><li class="leaf"><a href="#spring-mvc-sample-app" data-level="1" class="fragment">Spring MVC Sample App</a><ul class="menu"></ul></li><li class="leaf"><a href="#apache-shiro-sample-web-app" data-level="1" class="fragment">Apache Shiro Sample Web App</a><ul class="menu"></ul></li><li class="leaf"><a href="#spring-security-sample-web-app" data-level="1" class="fragment">Spring Security Sample Web App</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#administering-stormpath" data-level="0" class="fragment">Administering Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#appendix" data-level="0" class="fragment">Appendix</a><ul class="menu"><li class="leaf"><a href="#how-to-get-the-java-sdk-jar-files-if-you-are-not-using-a-maven-compatible-build-tool" data-level="1" class="fragment">How to get the Java SDK jar files if you are not using a Maven-compatible build tool</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#glossary-of-terms" data-level="0" class="fragment">Glossary of Terms</a><ul class="menu"></ul></li></ul>
 			
 			</li>
 		

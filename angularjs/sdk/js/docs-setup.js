@@ -101,7 +101,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "Use this directive to show an element once the user state is known.",
-      "keywords": "api directive element if-not-user if-user if-user-state-known ifuserstateknown ifuserstateunknown inverse logged login logout main stormpath ui-sref user"
+      "keywords": "api directive element if-not-user if-user if-user-state-known ifuserstateknown ifuserstateunknown inverse logged login main sp-logout stormpath ui-sref user"
     },
     {
       "section": "api",
