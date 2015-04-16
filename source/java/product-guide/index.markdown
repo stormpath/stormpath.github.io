@@ -552,13 +552,18 @@ Stormpath Java SDK exposes attributes on all resources that will give you inform
 
 These attributes are timezone aware datetimes parsed from `ISO 8601` formatted string. The timezone is coordinated universal time (UTC). Both of these parameters can be queried from collection.
 
-`createdAt` and `modifiedAt` query parameters are a type of [Attribute Search](#search-attribute) that allow you to filter or search collections that were created or modified at a particular time. The query parameters are supported for all collections. This includes `Account`, `Group`, `Directory`, `Application`. As an example, if you wanted to get all accounts created between Jan 12, 2015 and Jan 14, 2015 you would request:
+`createdAt` and `modifiedAt` query parameters are a type of [Attribute Search](#search-attribute) that allow you to filter or search collections that were created or modified at a particular time. The query parameters are supported for all collections. This includes `Account`, `Group`, `Directory`, `Application`. As an example, if you wanted to get all accounts created from Jan 12, 2015 to Jan 14, 2015 you would request:
 
- application.getAccounts(Accounts.where(Accounts.createdAt().matches('[2015-01-12, 2015-01-14]')))
+ String date1 = "2015-01-12T00:00:00.00Z";
+ String date2 = "2015-01-15T00:00:00.00Z";
+ DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sssZ);
+ Date startDate = formatter.parse(date1);
+ Date endDate = formatter.parse(date2);
+ application.getAccounts(Accounts.where(Accounts.createdAt().gte(startDate)).and(Accounts.createdAt().lt(endDate)))
 
-The response would be a [collection](#collection-resources) of accounts created between the two days. The datetime range is denoted as:
+The response would be a [collection](#collection-resources) of accounts created between the two days. The corresponding datetime range is denoted as:
 
- createdAt|modifiedAt=[ISO-8601-BEGIN-DATETIME, ISO-8601-END-DATETIME]
+ createdAt|modifiedAt=[ISO-8601-BEGIN-DATETIME, ISO-8601-END-DATETIME)
 
 {% docs note %}
  Omitting the beginning or ending date is valid for requests. Omitting the begin datetime range [,ISO-8601-END-DATETIME] would include all resources created or modified before the end datetime. Omitting the end datetime range [ISO-8601-BEGIN-DATETIME,] would include all resources created or modified after the the begin datetime.
