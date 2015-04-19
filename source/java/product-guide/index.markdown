@@ -3318,7 +3318,7 @@ For this reason, both the account and group resources support a linked `CustomDa
 
 The `CustomData` resource is a schema-less JSON object (aka 'map', 'associative array', or 'dictionary') that allows you to specify whatever name/value pairs you wish.
 
-The `CustomData` resource is always conected to an account or group and you can always reach it  by calling the `getCustomData()` method on the account or group resource instance:
+The `CustomData` resource is always connected to an account or group and you can always reach it  by calling the `getCustomData()` method on the account or group resource instance:
 
 <a class="anchor" name="account-custom-data-resource-uri"></a>
 **Account Custom Data Resource URI**
@@ -3443,7 +3443,6 @@ Sometimes it is helpful to update an account or group's `CustomData` as part of 
 
 	account.setStatus(AccountStatus.ENABLED);
     CustomData customData = account.getCustomData();
-    customData.put("aaa", "aaaNEW");
     customData.put("favoriteColor", "blue");
 	customData.put("favoriteMovie", "Star Wars");
     account.save();

@@ -3532,11 +3532,145 @@ Groups Membership resources support the full suite of CRUD commands and other in
 
 ## Custom Data
 
+`Account`, `Group`, `Directory`, and `Application` resources have predefined fields that are useful to many applications, but you are likely to have your own custom data that you need to associate with an resource as well.
+
+For this reason, resources support a linked `CustomData` resource that you can use for your own needs.
+
+The `CustomData` resource is a schema-less JSON object (aka 'map', 'associative array', or 'dictionary') that allows you to specify whatever name/value pairs you wish.
+
+The `CustomData` resource is always connected to a resource and you can always reach it by calling `customData` magic method (alias to getCustomData()) on the resource instance:
+
+
+    $application = \Stormpath\Resource\Application::get($applicationHref);
+
+    $applicationCustomData = $application->customData;
+
+    //Or
+
+    $application = $client->
+                 dataStore->
+                 getResource($applicationHref, \Stormpath\Stormpath::APPLICATION);
+                 
+    $applicationCustomData = $application->customData;
+  
+In addition to your custom name/value pairs, a CustomData resource will always contain 3 reserved read-only fields:
+
+* href: The fully qualified location of the custom data resource
+* createdAt: the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an ISO 8601 formatted string, for example 2017-04-01T14:35:16.235Z
+* modifiedAt: the UTC timestamp with millisecond precision of when the resource was last updated in Stormpath as an ISO 8601 formatted string.
+
+You can store an unlimited number of additional name/value pairs in the CustomData resource, with the following restrictions:
+
+* The total storage size of a single CustomData resource cannot exceed 10 MB (megabytes). The href, createdAt and modifiedAt field names and values do not count against your resource size quota.
+* Field names must:
+    * be 1 or more characters long, but less than or equal to 255 characters long (1 <= N <= 255).
+    * contain only alphanumeric characters 0-9A-Za-z, underscores _ or dashes - but cannot start with a dash -.
+    * may not equal any of the following reserved names: href, createdAt, modifiedAt, meta, spMeta, spmeta, ionmeta, or ionMeta.
+
 {% docs note %}
-Custom Data is not available in the Stormpath PHP SDK and is currently under development.  For early access, please contact support@stormpath.com. 
+While the `meta`, `spMeta`, `spmeta`, `ionmeta`, or `ionMeta` fields are not returned in the response today, they might be used in the future.  As is the case with all JSON use cases, ensure your REST client will not break if it encounters one of these (or other fields it does not recognize) at some time in the future.
 {% enddocs %}
 
-***
+For Custom Data, you can:
+
+* [Create Custom Data](#create-custom-data)
+* [Retrieve Custom Data](#retrieve-custom-data)
+* [Update Custom Data](#update-custom-data)
+* [Delete All Custom Data](#update-custom-data)
+* [Delete a single Custom Data field](#delete-custom-data-field)
+
+<a class="anchor" name="create-custom-data"></a>
+### Create Custom Data
+
+Whenever you create an account or a group, an empty `CustomData` resource is created for that account or group automatically - you do not need to explicitly execute a request to create it.
+
+However, it is often useful to populate custom data at the same time you create an account or group. You can do this by embedding the `customData` directly in the resource. For example:
+
+**Example Create Account with Custom Data**
+
+    $account = $client->dataStore->instantiate(\Stormpath\Stormpath::ACCOUNT);
+    $account->email = 'john.smith@example.com';
+    $account->givenName = 'John';
+    $account->password ='4P@$$w0rd!';
+    $account->surname = 'Smith';
+    $account->username = 'johnsmith';
+
+    $customData = $account->customData;
+    $customData->rank = "Captain";
+    $customData->birthDate = "2305-07-13";
+    $customData->favoriteDrink = "favoriteDrink";
+
+    $directory->createAccount($account);
+
+<a class="anchor" name="retrieve-custom-data"></a>
+### Retrieve Custom Data
+
+In order to retrieve a resource's custom data directly you can get the `CustomData` resource through the client instance providing the custom data href:
+
+
+    $application = $client->
+                     dataStore->
+                     getResource($applicationHref, \Stormpath\Stormpath::APPLICATION);
+                     
+    $applicationCustomData = $application->customData;
+
+After you have access to the whole custom data resource, you can then retrieve a specific property with the following.
+
+    $property = $applicationCustomData->property;
+ 
+<a class="anchor" name="update-custom-data"></a>
+### Update Custom Data
+
+You may update an account' or group's custom data, in one of two ways:
+
+* by [updating the customData resource directly](#update-custom-data-directly), independent of the group or account, or
+* by [embedding customData changes in an account or group update request](#update-custom-data-embedded)
+
+<a class="anchor" name="update-custom-data-directly"></a>
+#### Update Custom Data Directly
+
+The first way to update an account or group's custom data is by saving changes directly to the `CustomData` resource.  This allows you to interact with the customData resource directly, without having to do so 'through' an account or group request.
+
+In the following example request, we're interacting with a `CustomData` resource directly, and we're changing the value of an existing field named `favoriteColor` and we're adding a brand new field named `hobby`:
+
+**Example Account Custom Data Update**
+
+    $customData->favoriteColor = "red";
+    $customData->hobby = "Kendo";
+    $customData->save();
+
+<a class="anchor" name="update-custom-data-embedded"></a>
+#### Update Custom Data as part of an Account or Group Request
+
+Sometimes it is helpful to update an account or group's `CustomData` as part of an update request for the resource.  In this case, just submit customData changes in an embedded `CustomData` field embedded in the account or group request resource.  For example:
+
+    $account->status = "ENABLED";
+    $customData = $account->customData;
+    customData->favoriteColor = "blue";
+    customData->favoriteMovie = "Star Wars";
+    account->save();
+
+In the above example, we're performing 3 modifications in one request:
+
+1. We're modifying the account's `status` attribute and setting it to `ENABLED`.  We're _also_
+2. Changing the existing customData `favoriteColor` field value to `blue` (it was previously `red`) and
+3. Adding a new customData field `favoriteMovie` with a value of `Star Wars`.
+
+This request modifies both the account resource _and_ that account's custom data in a single request.
+
+#### Delete Custom Data
+You may delete all of a resource's custom data by invoking the delete() method to the resource's CustomData
+
+    $account->customData->delete();
+
+This will delete all of the respective resource's custom data fields, but it leaves the `CustomData` placeholder in the resource. You cannot delete the `CustomData` resource entirely – it will be automatically permanently deleted when the resource is deleted.
+
+### Delete Custom Data Field
+
+You may also delete an individual custom data field entirely by calling the remove() method on the resource's `CustomData` while stating the custom data field as a parameter.
+
+
+    $customData->remove("favoriteColor");
 
 <a class="anchor" name="administration"></a>
 ## Administering Stormpath
