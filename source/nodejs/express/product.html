@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Product Guide &mdash; Express-Stormpath 1.0.1 documentation</title>
+  <title>Product Guide &mdash; Express-Stormpath 1.0.4 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Express-Stormpath 1.0.1 documentation" href="index.html"/>
+    <link rel="top" title="Express-Stormpath 1.0.4 documentation" href="index.html"/>
         <link rel="next" title="Getting Help" href="help.html"/>
         <link rel="prev" title="Quickstart" href="quickstart.html"/> 
 
@@ -115,6 +115,10 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-5">Version 1.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-4">Version 1.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-3">Version 1.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-2">Version 1.0.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-1">Version 1.0.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-0">Version 1.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-9">Version 0.6.9</a></li>
@@ -174,6 +178,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-4-version-1-0-5">Version 1.0.4 -&gt; Version 1.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-3-version-1-0-4">Version 1.0.3 -&gt; Version 1.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-2-version-1-0-3">Version 1.0.2 -&gt; Version 1.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-1-version-1-0-2">Version 1.0.1 -&gt; Version 1.0.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-0-version-1-0-1">Version 1.0.0 -&gt; Version 1.0.1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-9-version-1-0-0">Version 0.6.9 -&gt; Version 1.0.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-8-version-0-6-9">Version 0.6.8 -&gt; Version 0.6.9</a></li>
@@ -294,6 +302,13 @@ could define the following variables:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span> <span class="kr">export</span> <span class="nx">STORMPATH_SECRET_KEY</span><span class="o">=</span><span class="nx">blah</span>
 <span class="nx">$</span> <span class="kr">export</span> <span class="nx">STORMPATH_ENABLE_HTTPS</span><span class="o">=</span><span class="kc">false</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you&#8217;re on Windows, that will look like:</p>
+<div class="last highlight-javascript"><div class="highlight"><pre><span class="nx">set</span> <span class="nx">STORMPATH_SECRET_KEY</span><span class="o">=</span><span class="nx">blah</span>
+</pre></div>
+</div>
 </div>
 <p>Then, when defining my middleware, I could simply write:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
@@ -442,7 +457,7 @@ logged in without activity before being forced to log into their account again.<
 <span class="p">}));</span>
 </pre></div>
 </div>
-<p>By default, sessions will not expire for one month (<em>out of convenience</em>).</p>
+<p>By default, sessions will not expire for 30 minutes (<em>a secure default</em>).</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The <tt class="docutils literal"><span class="pre">sessionDuration</span></tt> setting expects an integer, which must be the number
@@ -534,7 +549,7 @@ do this:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/email&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Your email address is:&#39;</span><span class="p">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">email</span><span class="p">);</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Your email address is: &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">email</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
 </div>
@@ -1872,7 +1887,7 @@ currently looks like:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.1',
+            VERSION:'1.0.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
