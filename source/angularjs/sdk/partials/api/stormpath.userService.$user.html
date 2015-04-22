@@ -5,21 +5,21 @@
 </h1>
 <div><h2 id="description">Description</h2>
 <div class="description"><div class="stormpath-userservice-user-page"><p>Use this service to get the current user and do access control checks
-on the user</p>
+on the user.</p>
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_create">create(accountData)</h3>
-<div class="create"><div class="stormpath-userservice-user-create-page"><p>Attemps to create a new user by submitting the given <code>accountData</code> as
+<div class="create"><div class="stormpath-userservice-user-create-page"><p>Attempts to create a new user by submitting the given <code>accountData</code> as
 JSON to <code>/api/users</code>.  The POST endpoint can be modified via the
 <a href="#/api/stormpath.config#user_collection_uri">USER_COLLECTION_URI</a> config option.</p>
 <p>This method expects a <code>201</code> response if the account does NOT require email
 verification.</p>
 <p>If email verification is enabled, you should send a <code>202</code> response instead.</p>
-<p> If you are using our Express.JS SDK you can simply attach the
+<p>If you are using our Express.JS SDK, you can simply attach the
  <a href="https://github.com/stormpath/stormpath-sdk-express#register" target="_blank"><code>register</code></a> middleware
 to your application and these responses will be handled automatically for you.</p>
 </div><h5 id="methods_create_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>accountData</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-userservice-user-create-page"><p>An object literal for passing the data
-for the new account.</p>
+to the new account.</p>
 <p>Required fields:</p>
 <ul>
 <li><code>givenName</code> - the user&#39;s first name</li>
@@ -30,17 +30,15 @@ account.  Must meet the password requirements that you have specified
 on the directory that this account will be created in.</li>
 </ul>
 </div></td></tr></tbody></table><h5 id="methods_create_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="stormpath-userservice-user-create-page"><p>A promise representing the operation to create a
-new user.  If an error occurs (duplicate email, weak password) the
+new user.  If an error occurs (duplicate email, weak password), the
 promise will be rejected and the http response will be passed.
-If the operation is successful the promise
+If the operation is successful, the promise
 will be resolved with a boolean <code>enabled</code> value.</p>
 <ul>
-<li><p>If <code>true</code>, the
-account&#39;s status is Enabled and you can proceed with authenticating the user.</p>
+<li><p>If <code>true</code>, the account&#39;s status is Enabled and you can proceed with authenticating the user.</p>
 </li>
 <li><p>If <code>false</code>, the account&#39;s status is Unverified.
-This will be the case when you have
-enabled the email verification workflow on the directory of this
+This will be the case when you have enabled the email verification workflow on the directory of this
 account.</p>
 </li>
 </ul>
@@ -64,18 +62,18 @@ $user.create(accountData)
 </li>
 <li><h3 id="methods_get">get()</h3>
 <div class="get"><div class="stormpath-userservice-user-get-page"><p>Attempt to get the current user.  Returns a promise.  If the user
-is authenticated the promise will be resolved with the user object.
-If the user is not authenticated the promise will be rejected and
+is authenticated, the promise will be resolved with the user object.
+If the user is not authenticated, the promise will be rejected and
 passed the error response from the $http service.</p>
-<p>If you cannot make use of the promise you can also obseve the
+<p>If you cannot make use of the promise, you can also observe the
 <a href="#/api/$notLoggedin">$notLoggedin</a> or <a href="#/api/$currentUser">$currentUser</a>
 events.  They are emitted when this method has a success or failure.</p>
 <p>The user object is a Stormpath Account
-object which is wrapped by by a <a href="#/api/eh">User</a> type</p>
-</div><h5 id="methods_get_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="stormpath-userservice-user-get-page"><p>A promise representing the operation to get the current user data</p>
+object, which is wrapped by a <a href="#/api/eh">User</a> type.</p>
+</div><h5 id="methods_get_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="stormpath-userservice-user-get-page"><p>A promise representing the operation to get the current user data.</p>
 </div></td></tr></table><h4 id="methods_get_example">Example</h4>
 <div class="example"><div class="stormpath-userservice-user-get-page"><pre class="prettyprint linenums">
-var myApp = angular.module('myApp', ['stormmpath']);
+var myApp = angular.module('myApp', ['stormpath']);
 
 myApp.controller('MyAppCtrl', function ($scope, $user) {
   $user.get()
@@ -96,8 +94,8 @@ myApp.controller('MyAppCtrl', function ($scope, $user) {
 <ul class="events"><li><h3 id="events_$currentuser">$currentUser</h3>
 <div class="$currentuser"><div class="stormpath-userservice-user-currentuser-page"><p>This event is broadcast when a call to
 <a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a>
-results in a <a href="#/api/User">User</a> object</p>
-<p>See the next section, the $notLoggeInEvent, for example usage</p>
+results in a <a href="#/api/User">User</a> object.</p>
+<p>See the next section, the $notLoggeInEvent, for example usage.</p>
 </div><div class="inline"><h4 id="events_$currentuser_type">Type:</h4>
 <div class="type">broadcast</div>
 </div>
@@ -105,17 +103,17 @@ results in a <a href="#/api/User">User</a> object</p>
 <div class="target">root scope</div>
 </div>
 <h5 id="events_$currentuser_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>event</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-userservice-user-currentuser-page"><p>Angular event object.</p>
-</div></td></tr><tr><td>user</td><td><a href="" class="label type-hint type-hint-user">User</a></td><td><div class="stormpath-userservice-user-currentuser-page"><p>The current user object</p>
+</div></td></tr><tr><td>user</td><td><a href="" class="label type-hint type-hint-user">User</a></td><td><div class="stormpath-userservice-user-currentuser-page"><p>The current user object.</p>
 </div></td></tr></tbody></table></div>
 </li>
 <li><h3 id="events_$notloggedin">$notLoggedIn</h3>
 <div class="$notloggedin"><div class="stormpath-userservice-user-notloggedin-page"><p>This event is broadcast when a call to
 <a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a>
-results in an authentication failure</p>
+results in an authentication failure.</p>
 <p>This event is useful for situations where you want to trigger
 the call to get the current user, but need to respond to it
-from some other place in your application.  An example could be
-during application bootstrap: you make a single call to get the current
+from some other place in your application.  An example could be,
+during application bootstrap, you make a single call to get the current
 user from the run function, then react to it inside your
 application controller.</p>
 </div><div class="inline"><h4 id="events_$notloggedin_type">Type:</h4>
@@ -127,7 +125,7 @@ application controller.</p>
 <h5 id="events_$notloggedin_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>event</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-userservice-user-notloggedin-page"><p>Angular event object.</p>
 </div></td></tr></tbody></table><h4 id="events_$notloggedin_example">Example</h4>
 <div class="example"><div class="stormpath-userservice-user-notloggedin-page"><pre class="prettyprint linenums">
-var myApp = angular.module('myApp', ['stormmpath']);
+var myApp = angular.module('myApp', ['stormpath']);
 myApp.run(function($user){
   //
   // Once our app is ready to run, trigger a call to $user.get()
@@ -135,6 +133,7 @@ myApp.run(function($user){
   //
   $user.get();
 });
+
 myApp.controller('MyAppCtrl', function ($scope, $rootScope) {
   $scope.isVisible = false; // Wait for authentication
   $rootScope.$on('$notLoggedIn',function(){
