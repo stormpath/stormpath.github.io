@@ -26,6 +26,8 @@ of this quickstart.
 **TIP**:
 This is a generic Java quickstart.  If you are building a web app deployed to a servlet container like Tomcat or Jetty, you might also find the [Stormpath Servlet Plugin Quickstart](https://docs.stormpath.com/java/servlet-plugin/) helpful.
 
+Also, you can take a look to a [full runnable java class](https://github.com/stormpath/stormpath-sdk-java/blob/master/examples/quickstart-code/src/main/java/App.java) that illustrates the items in this guide.
+
 Let's get started!
 
 ***
@@ -110,18 +112,24 @@ The `Client` object is what allows you to communicate with Stormpath.
 
     import com.stormpath.sdk.client.Clients;
     import com.stormpath.sdk.client.Client;
+    import com.stormpath.sdk.client.ClientBuilder;
     import com.stormpath.sdk.api.ApiKeys;
     import com.stormpath.sdk.api.ApiKey;
 
     String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
 
 	ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
-	Client client = Clients.builder().setApiKey(apiKey).build();
+
+    // Instantiate a builder for your client and set required properties
+    ClientBuilder builder = Clients.builder()
+    builder.setApiKey(apiKey)
+
+    // Build the client instance that you will use throughout your application code
+    Client client = builder.build();
 
 	//If using Google App Engine, you must use Basic authentication:
-    //Client client = Clients.builder().setApiKey(apiKey)
-	//    .setAuthenticationScheme(AuthenticationScheme.BASIC)
-	//    .build();
+    //builder.setAuthenticationScheme(AuthenticationScheme.BASIC)
+    //Client client = builder.build();
 
 The `client` instance is intended to be an application singleton.  You should
 reuse this instance throughout your application code.  You *should not*
