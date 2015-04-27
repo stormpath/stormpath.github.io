@@ -11,7 +11,7 @@ NG_DOCS={
       "type": "overview",
       "moduleName": "API Documentation",
       "shortDescription": "stormpath-sdk-angularjs module for AngularJS",
-      "keywords": "$stormpath _blank ability access accesstokenttl account adding allow alternate angular angularjs api application applications article attacks authenticate authentication backed backend best cache class code comprehensive configure conjunction controlled cookie cookies creation current declare default designed dive documentation endpoints environment example expects expiration expire express express-based features field find flag form github guide heard hide href http-only https insecure integration intended issue issued javascript js jti jwt label label-warning languages level login logs maintain mechanism module moments node nonce object options overview parts password place production project protect provider quickstart reading ready repo response revocation revoke rules sdk secure secure-only sense server services session set single specific started stateless statement storage store stored stormpath stormpath-sdk-angularjs support target token tokens truth ttl tutorial ui ui-router ui-state unique urls user username vague valid walkthrough works written xss"
+      "keywords": "$stormpath _blank ability access accesstokenttl account adding allow alternate angular angularjs api application applications article attacks authenticate authentication backend best cache class code comprehensive configure conjunction controlled cookie cookies creation current declare default designed dive documentation endpoints environment example expects expiration expire express express-based features field find flag form github guide heard hide href http-only https insecure integration intended issue issued javascript js jti jwt label label-warning languages level login logs maintain mechanism module moments node nonce object options overview parts password place production project protect provider quickstart reading ready repo response revocation revoke rules sdk secure secure-only sense server services session set single specific started stateless statement storage store stored stormpath stormpath-sdk-angularjs support target token tokens truth ttl tutorial ui ui-router ui-state unique urls user username vague valid walkthrough works written xss"
     },
     {
       "section": "api",
@@ -74,7 +74,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "Use this directive to conditionally show an element if the user is logged in",
-      "keywords": "administrator admins api class conditionally container directive element fullname group if-user-in-group ifuseringroup logged member stormpath string user"
+      "keywords": "$scope administrator admins api attribute conditionally create directive element equivalent example expression expressions fullname function group hello if-user-in-group ifuseringroup literal logged match matchgroup member ng-controller pass property quotes reference referencing regexp regular scope somecontroller stormpath string surrounded syntax text type user wrapping"
     },
     {
       "section": "api",
@@ -83,7 +83,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "Use this directive to conditionally show an element if the user is logged in",
-      "keywords": "access administrator admins api class conditionally container directive element fullname group if-user-not-in-group ifusernotingroup logged member request stormpath string user"
+      "keywords": "access administrator admins api class conditionally container directive element expression full fullname group hello if-user-not-in-group ifuseringroup ifusernotingroup inverse logged member refer request stormpath usage user"
     },
     {
       "section": "api",
