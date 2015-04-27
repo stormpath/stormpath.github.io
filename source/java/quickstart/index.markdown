@@ -113,23 +113,12 @@ The `Client` object is what allows you to communicate with Stormpath.
     import com.stormpath.sdk.client.Clients;
     import com.stormpath.sdk.client.Client;
     import com.stormpath.sdk.client.ClientBuilder;
-    import com.stormpath.sdk.api.ApiKeys;
-    import com.stormpath.sdk.api.ApiKey;
-
-    String path = System.getProperty("user.home") + "/.stormpath/apiKey.properties";
-
-	ApiKey apiKey = ApiKeys.builder().setFileLocation(path).build();
-
+    
     // Instantiate a builder for your client and set required properties
-    ClientBuilder builder = Clients.builder()
-    builder.setApiKey(apiKey)
+    ClientBuilder builder = Clients.builder()    
 
     // Build the client instance that you will use throughout your application code
     Client client = builder.build();
-
-	//If using Google App Engine, you must use Basic authentication:
-    //builder.setAuthenticationScheme(AuthenticationScheme.BASIC)
-    //Client client = builder.build();
 
 The `client` instance is intended to be an application singleton.  You should
 reuse this instance throughout your application code.  You *should not*
