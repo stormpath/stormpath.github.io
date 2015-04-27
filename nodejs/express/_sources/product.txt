@@ -33,6 +33,11 @@ could define the following variables::
     $ export STORMPATH_SECRET_KEY=blah
     $ export STORMPATH_ENABLE_HTTPS=false
 
+.. note::
+    If you're on Windows, that will look like::
+
+        set STORMPATH_SECRET_KEY=blah
+
 Then, when defining my middleware, I could simply write::
 
     var stormpath = require('express-stormpath');
@@ -198,7 +203,7 @@ You can easily change the default session / cookie expiration by modifying the
       sessionDuration: 1000 * 60 * 15, // Make sessions expire after 15 minutes.
     }));
 
-By default, sessions will not expire for one month (*out of convenience*).
+By default, sessions will not expire for 30 minutes (*a secure default*).
 
 .. note::
     The ``sessionDuration`` setting expects an integer, which must be the number
@@ -297,7 +302,7 @@ do this::
     var stormpath = require('express-stormpath');
 
     app.get('/email', stormpath.loginRequired, function(req, res) {
-      res.send('Your email address is:', req.user.email);
+      res.send('Your email address is: ' + req.user.email);
     });
 
 The ``req.user`` context allows you to directly interact with the current
