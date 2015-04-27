@@ -148,7 +148,7 @@ We recommend using digest authentication whenever possible because it is inheren
 
 All Stormpath SDKs (currently [Java](/java/product_guide), [Ruby](/ruby/product_guide), [PHP](/php/product_guide), and [Python](/python/product_guide)) use this more secure digest authentication so we recommend that you use the SDKs whenever possible. However, if we do not yet have an SDK for your programming language, you should use basic authentication over HTTPS.
 
-Finally, if you would like to use Stormpath digest authentication in a programming language that Stormpath does not yet support, you can attempt to port the algorithm to that language. You can try to replicate the algorithm and use Stormpath existing code as examples to help:
+Finally, if you would like to use Stormpath digest authentication in a programming language that Stormpath does not yet support, you can attempt to port the algorithm to that language. You can try to replicate the algorithm and use Stormpath existing code as examples or the [documented algorithm](https://github.com/stormpath/stormpath-sdk-spec/blob/master/specifications/algorithms/sauthc1.md):
 
 * Java: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-java/blob/master/impl/src/main/java/com/stormpath/sdk/impl/http/authc/Sauthc1Signer.java) (the **sign** method)
 * Ruby: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-ruby/blob/master/lib/stormpath-sdk/http/authc/sauthc1_signer.rb) (the **sign_request** method)
@@ -689,6 +689,7 @@ This returns all accounts where:
 For resources with a `status` attribute, status query values **must be the exact value**. For example, `enabled` or `disabled` must be passed and fragments such as `ena`, `dis`, `bled` are not acceptable.
 {% enddocs %}
 
+<a class="anchor" name="datetime-search"></a>
 #### Datetime Search
 
 Stormpath exposes properties on all resources that will give you information about when the resource was created or modified.  This includes, but isn't exclusive to common resources like `Account`, `Group`, `Directory`, `Application`.  For example, an `Account` resource will have the `createdAt` and `modifiedAt` properties:
@@ -2166,15 +2167,15 @@ If the password reset token creation fails, a `400 Bad Request` is returned with
 
 **Example Password Reset Token Creation Failure Response**
 
-    HTTP/1.1 404 Not Found
+    HTTP/1.1 400 Bad Request
     Content-Type: application/json;charset=UTF-8;
 
     {
-      status: 404,
-      code: 404,
-      message: "The requested resource does not exist.",
-      developerMessage: "The requested resource does not exist.",
-      moreInfo: "mailto:support@stormpath.com"
+      status: 400,
+      code: 2016,
+      message: "The email property value 'dontexist@stormpath.com' does not match a known resource.",
+      developerMessage: "The email property value 'dontexist@stormpath.com' does not match a known resource.",
+      moreInfo: "http://docs.stormpath.com/errors/2016"
     }
 
 At this point, an email will be built using the [password reset base URL](#password-reset-base-URL) specified in the Stormpath Admin Console.
