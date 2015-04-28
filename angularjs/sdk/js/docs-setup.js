@@ -20,7 +20,7 @@ NG_DOCS={
       "type": "object",
       "moduleName": "stormpath",
       "shortDescription": "This service allows you to enable application-wide features of the library.",
-      "keywords": "$auth $authenticated $stormpath access allows alternatively angular api application-wide authservice autoredirect call config configurations control defaultpostloginstate defaults define defined directly enable enabled event events_ examples features function happen integration library ll login loginstate logs main method module myapp object originally redirected requested router send service spstateconfig stormpath successful true ui uirouter user visited"
+      "keywords": "$auth $authenticated $stormpath access allows alternatively angular api application application-wide authorize authorized authservice autoredirect behavior call config configurations control default defaultpostloginstate defaults define defined directly documented enable enabled event events events_ feature features forbidden forbiddenstate function happen happening implement integration library ll logic login loginstate logs main method module moment myapp object omit options originally pass redirected requested response router rule send service simply situations spstateconfig stormpath successful true ui uirouter user view visited"
     },
     {
       "section": "api",
@@ -74,7 +74,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "Use this directive to conditionally show an element if the user is logged in",
-      "keywords": "$scope administrator admins api attribute conditionally create directive element equivalent example expression expressions fullname function group hello if-user-in-group ifuseringroup literal logged match matchgroup member ng-controller pass property quotes reference referencing regexp regular scope somecontroller stormpath string surrounded syntax text type user wrapping"
+      "keywords": "$scope administrator admins api attribute conditionally create directive element equivalent evaluated example expression expressions fullname function group hello if-user-in-group ifuseringroup literal logged match matchgroup member mozilla ng-controller org pass property prototype quotes reference referencing regexp regular scope somecontroller stormpath string surrounded syntax test text type user wrapping"
     },
     {
       "section": "api",
@@ -163,8 +163,8 @@ NG_DOCS={
       "shortName": "SpStateConfig",
       "type": "object",
       "moduleName": "stormpath",
-      "shortDescription": "The Stormpath State Config is an object that you can define on a",
-      "keywords": "$stateprovider $stormpath access adminctrl admins angular api authenticate authenticated authentication authorize calling check class config control controller currently define defines delay depending enable example group group-based homepage integration logged login main methods_uirouter module myapp object order originally redirected requested require router rules secrets secretsctrl showing situations sp spstateconfig stormpath stormpath-spstateconfig-page stormpath-spstateconfig-spstateconfig-page supports transition true ui uirouter url user view wait waitforuser"
+      "shortDescription": "The Stormpath State Config is an object that you can define on a UI Router",
+      "keywords": "$routeprovider $stateprovider $stormpath abstract access add adminctrl admins angular api application authenticate authenticated authentication authorize block built-in calling check child class config configuration control controller currently define defined defines delay depending enable example future group group-based homepage initialized integration logged login main met methods_uirouter module myapp object order originally redirected requested require router routes rules secrets secretsctrl showing situations sp spstateconfig stormpath stormpath-spstateconfig-page stormpath-spstateconfig-spstateconfig-page support supports time transition true ui uirouter url user version view wait waitforuser"
     },
     {
       "section": "api",
