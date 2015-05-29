@@ -20,29 +20,16 @@ var apiKey = new stormpath.ApiKey(
 );
 
 var client = new stormpath.Client({apiKey: apiKey});</code></pre></li></ul><h3 id="list-your-applications-and-directories">List Your Applications and Directories</h3><p>In order to get a list of all your Stormpath <a href="https://api.stormpath.com/v#!applications" title="Your Stormpath Applications">Applications</a> and <a href="https://api.stormpath.com/v#!directories" title="Your Stormpath Directories">Directories</a>, you can use the following code snippet:</p><pre><code class="lang-javascript">client.getApplications(function(err, apps) {
-  apps.each(function(app, cb) {
-    console.log(app);
-    cb();
-  }, function(err) {
-    if (err) {
-      console.log(&#39;Failed to list all apps:&#39;, err);
-    } else {
-      console.log(&#39;Done listing all apps!&#39;);
-    }
+  apps.each(function(err, app, offset) { //offset is an optional argument
+    console.log(offset + &quot;: &quot; + app);
   });
 });
 
 
 client.getDirectories({expand: &#39;groups&#39;}, function(err, dirs) {
-  dirs.each(function(dir, cb) {
+  dirs.each(function(dir, callback) {
     console.log(dir);
-    cb();
-  }, function(err) {
-    if (err) {
-      console.log(&#39;Failed to list all dirs:&#39;, err);
-    } else {
-      console.log(&#39;Done listing all dirs!&#39;);
-    }
+    callback();
   });
 });</code></pre><p><strong>NOTE</strong>: You can <em>expand</em> any linked properties available when listing Stormpath resources. This is a great way to reduce the amount of network calls you make to Stormpath when developing fast applications.</p><h3 id="retrieve-a-specific-resource">Retrieve a Specific Resource</h3><p>If you know a resource&#39;s <code>href</code>, you can retrieve it directly:</p><pre><code class="lang-javascript">client.getApplication(&#39;https://api.stormpath.com/v1/applications/xxx&#39;, callback);
 client.getDirectory(&#39;https://api.stormpath.com/v1/directories/xxx&#39;, callback);
