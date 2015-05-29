@@ -53,7 +53,7 @@ alias: [/index.html]
           <a href="/php/quickstart"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-php.jpg"></a>
         </div>
         <div class="col-xs-6 col-sm-4 col-md-3">
-          <a href="https://github.com/google/go-github"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-go.jpg"></a>
+          <a href="https://github.com/jarias/stormpath-sdk-go"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-go.jpg"></a>
         </div>
       </div>
     </div>

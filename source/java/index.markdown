@@ -76,7 +76,7 @@ alias: [/index.html]
                 <ul class="fa-ul">
                   <li><i class="fa-li fa fa-car"></i><a href="/java/quickstart/">Quickstart</a></li>
                   <li><i class="fa-li fa fa-book"></i><a href="/java/product-guide/">Documentation</a></li>
-                  <li><i class="fa-li fa fa-code"></i><a href="/java/apidocs/">Example Application</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/java/apidocs/">API Documentation</a></li>
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-java">Project on GitHub</a></li>
                 </ul>
               </div>
