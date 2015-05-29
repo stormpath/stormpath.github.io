@@ -1,7 +1,7 @@
 NG_DOCS={
   "sections": {
     "api": "API Reference",
-    "quickstart": "Quickstart"
+    "server": "Server Integration Guide"
   },
   "pages": [
     {
@@ -11,7 +11,7 @@ NG_DOCS={
       "type": "overview",
       "moduleName": "API Documentation",
       "shortDescription": "stormpath-sdk-angularjs module for AngularJS",
-      "keywords": "$stormpath _blank ability access accesstokenttl account adding allow alternate angular angularjs api application applications article attacks authenticate authentication backend best cache class code comprehensive configure conjunction controlled cookie cookies creation current declare default designed dive documentation endpoints environment example expects expiration expire express express-based features field find flag form github guide heard hide href http-only https insecure integration intended issue issued javascript js jti jwt label label-warning languages level login logs maintain mechanism module moments node nonce object options overview parts password place production project protect provider quickstart reading ready repo response revocation revoke rules sdk secure secure-only sense server services session set single specific started stateless statement storage store stored stormpath stormpath-sdk-angularjs support target token tokens truth ttl tutorial ui ui-router ui-state unique urls user username vague valid walkthrough works written xss"
+      "keywords": "account add adding allow angular angularjs api application authenticate backend bower class configuration conjunction core current declare default defaults dependency directives dist document documentation features file files folder forms github guide hide include includes inside install installation integration intended io javascript js json label label-warning latest level library login main manual manually mechanism min module moments myapp object option optional override overrides overview package parts password reading registration remove response rest rules scripts sdk sense server services session sever simply src started stateless stormpath stormpath-sdk-angularjs supporting templates tokens tpls ui ui-router ui-state user username var view"
     },
     {
       "section": "api",
@@ -168,6 +168,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "stormpath.STORMPATH_CONFIG:STORMPATH_CONFIG",
+      "shortName": "STORMPATH_CONFIG",
+      "type": "object",
+      "moduleName": "stormpath",
+      "shortDescription": "This constant allows you to configure the internal settings of the module,",
+      "keywords": "$auth $authenticated $authenticationfailure $currentuser $notloggedin $sessionend $statechangeunauthenticated $statechangeunauthorized $user accept access account active add allowedorigins allows angular api application attempts auth_service_name authenticated authentication authentication_endpoint authentication_failure_event_name authentication_success_event_name backend base behaviour block browser changes config configure constant consume content control cookie cookies create credentials current_user_uri currently data default delete delivered destroy_session_endpoint directive domain email email_verification_endpoint endpoint endpoint_prefix endpoints event events express fetch fired form form_content_type format forward get_user_event group http inject internal invalid json logged login logs meet methods_create methods_get methods_passwordresetrequest methods_resendverificationemail methods_resetpassword methods_verify methods_verifypasswordresettoken modified module mozilla myapp mydomain names not_logged_in_event object omit org password password_reset_token_collection_endpoint passwordresetrequest port post posts prefix properties property re-send rejected relate request requests requires resend_email_verification_endpoint resendverificationemail reset resetpassword resolved respond router rule running sdk server service session session_end_event settings slash splogout sptoken state_change_unauthenticated state_change_unauthorized stormpath stormpath_config submitting token tokens trailing trigger type ui unauthorized uri url user user_collection_uri username users userservice verification verify verifying verifypasswordresettoken visit xsrf"
+    },
+    {
+      "section": "api",
       "id": "stormpath.userService",
       "shortName": "stormpath.userService",
       "type": "overview",
@@ -182,7 +191,7 @@ NG_DOCS={
       "type": "object",
       "moduleName": "stormpath.userService",
       "shortDescription": "Use this service to get the current user and do access control checks",
-      "keywords": "$currentuser $http $notloggedin $scope $user _blank access account accountdata address angular api application attach attempt attempts authenticated authenticating automatically boolean case catch checks config console control controller create created current data directory eh email emitted enabled endpoint error errormessage events expects express failure false fields function givenname handled href http https js json literal log meet message method middleware modified module myapp myappctrl object observe occurs operation option passed passing password post proceed promise ready register rejected representing require required requirements requires resolved response responses returns sdk send service simply status stormpath submitting success successful surname target true type unverified user user_collection_uri userservice var verification weak wishes workflow wrapped"
+      "keywords": "$currentuser $http $notloggedin $scope $user _blank access account accountdata address angular api application attach attempt attempts authenticated authenticating automatically boolean called case catch changed checks config console consume control controller create created current currently currentuser data delivered directory eh email emailed emitted enabled endpoint error errormessage events exist expects expired express failure false fields follow format function generate givenname handled href http https invalid js json literal log logged login meet message method methods_get middleware modified module myapp myappctrl network null object observe occurs operation option passed passing password passwordresetrequest post posted proceed promise property re-sends ready register rejected representing require required requirements requires resend resendverificationemail reset resetpassword resets resolve resolved response responses retains returns rules sdk send service simply sptoken status stormpath strength submitting success successful surname target token triggers true type unknown unverified user user_collection_uri username userservice valid var verification verified verifies verify verifypasswordresettoken weak wishes workflow wrapped"
     },
     {
       "section": "api",
@@ -203,18 +212,18 @@ NG_DOCS={
       "keywords": "api directive ifuserstateunknown stormpath whileresolvinguser"
     },
     {
-      "section": "quickstart",
+      "section": "server",
       "id": "index",
-      "shortName": "Get Started",
+      "shortName": "Server Integration Guide",
       "type": "overview",
-      "moduleName": "Get Started",
-      "shortDescription": "Installation - Bower",
-      "keywords": "add angular application bower configuration core default defaults dependency directives dist document file files folder forms github include includes inside install installation io javascript js json latest library login main manual manually min module myapp option optional override overrides overview package quickstart registration remove rest scripts sense simply src started stormpath stormpath-sdk-angularjs templates tpls var view"
+      "moduleName": "Server Integration Guide",
+      "shortDescription": "Server Integration Guide",
+      "keywords": "ability access accesstokenttl account accounts add agnostic angular api apis application apps attacks attempts authenticate authenticate-an-account authentication authentication_endpoint based best blog cache choice column complete configure consume controlled convenience cookie cookies create create-an-account creation current_user_uri currently describe description destroy_session_endpoint docs easily email email_verification_endpoint endpoint endpoints ensure environment environments expects expiration expire express field find flag follow form generate guide heard http-only https identifies implement initiate insecure integration issue issued issuing javascript js json jti jwt jwts language logged-in logs maintain manually methods module node nonce object options overview password password_reset_token_collection_endpoint place points post production properties_authentication_endpoint properties_current_user_uri properties_destroy_session_endpoint properties_email_verification_endpoint properties_password_reset_token_collection_endpoint properties_resend_email_verification_endpoint properties_user_collection_uri protect protected read references registration remove resend_email_verification_endpoint reset reset-an-accounts-password respond rest revocation revoke sdk sdks secure secure-only sense server session session-related sessions set setup single specific statement storage store stored stormpath stormpath_config strategy support table token tokens truth ttl type unauthorized unique user user_collection_uri username vague valid verification verify verify-an-email-address visit work workflow works xss"
     }
   ],
   "apis": {
     "api": true,
-    "quickstart": false
+    "server": false
   },
   "html5Mode": false,
   "editExample": true,
