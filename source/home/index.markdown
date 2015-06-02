@@ -10,29 +10,9 @@ alias: [/index.html]
 
 <div class="container">
   <div class="row">
-    <div class="col-xs-12">
-      <h1>REST Documentation</h1>
-      <p>Connect to the Stormpath API in minutes with the REST quickstart or find comprehensive documentation in the REST Product Guide.</p>
-      <div class="row">
-        <div class="col-xs-6 col-sm-4 col-md-3">
-          <a href="/rest/quickstart"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-quick.jpg"></a>
-        </div>
-        <div class="col-xs-6 col-sm-4 col-md-3">
-          <a href="/rest/product-guide"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-product.jpg"></a>
-        </div>
-        <div class="col-xs-6 col-sm-4 col-md-3">
-          <a href="/errors"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-error.jpg"></a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12">
       <h1>Integrations</h1>
-      <p>It’s easy to get started with Stormpath using one of our many language libraries and framework integrations. Check out one of the official SDKs or community-built repos below.</p>
+      <p>It’s easy to get started with Stormpath using one of our language libraries or framework integrations. Check out one of the official SDKs or community repos below.  If your platform isn't listed, you can always use the core REST API with any platform.</p>
       <div class="row">
         <div class="col-xs-6 col-sm-4 col-md-3">
           <a href="/nodejs"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-node.jpg"></a>
@@ -54,6 +34,26 @@ alias: [/index.html]
         </div>
         <div class="col-xs-6 col-sm-4 col-md-3">
           <a href="https://github.com/jarias/stormpath-sdk-go"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-go.jpg"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>REST Documentation</h1>
+      <p>Connect to the Stormpath API in minutes with the REST quickstart or find comprehensive documentation in the REST Product Guide.</p>
+      <div class="row">
+        <div class="col-xs-6 col-sm-4 col-md-3">
+          <a href="/rest/quickstart"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-quick.jpg"></a>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-3">
+          <a href="/rest/product-guide"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-product.jpg"></a>
+        </div>
+        <div class="col-xs-6 col-sm-4 col-md-3">
+          <a href="/errors"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-error.jpg"></a>
         </div>
       </div>
     </div>
