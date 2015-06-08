@@ -4,7 +4,6 @@ classes_array: [page-docs]
 description: User management & authentication for Node.js, Express.js, Passport & Restify apps. Complete set of Stormpath developer documentation & integration tools. 
 title: Node JS Support
 content_top: [docs_top.html]
-alias: [/index.html]
 ---
 <div class="landingpage nodejs">
 

@@ -4,7 +4,6 @@ classes_array: [page-docs]
 description: User management & authentication for Java, Spring, Spring Boot & Apache Shiro apps. Complete set of Stormpath developer documentation & integration tools. 
 title: Java Support
 content_top: [docs_top.html]
-alias: [/index.html]
 ---
 <div class="landingpage java">
 
@@ -40,7 +39,7 @@ alias: [/index.html]
               <div class="col-xs-12">
                 <ul class="fa-ul">
                   <li><i class="fa-li fa fa-car"></i><a href="/java/spring-boot-web/quickstart.html">Quickstart</a></li>
-                  <li><i class="fa-li fa fa-book"></i><a href="/java/spring-boot-web">Documentation</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/java/spring-boot-web/">Documentation</a></li>
                   <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/examples/spring-boot-webmvc">Example Application</a></li>
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/extensions/spring/spring-boot-starter-stormpath">Project on GitHub</a></li>
                 </ul>
@@ -55,8 +54,8 @@ alias: [/index.html]
             <div class="row">
               <div class="col-xs-12">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="https://docs.stormpath.com/java/servlet-plugin/quickstart.html">Quickstart</a></li>
-                  <li><i class="fa-li fa fa-book"></i><a href="https://docs.stormpath.com/java/servlet-plugin/">Documentation</a></li>
+                  <li><i class="fa-li fa fa-car"></i><a href="/java/servlet-plugin/quickstart.html">Quickstart</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/java/servlet-plugin/">Documentation</a></li>
                   <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/examples/servlet">Example Application</a></li>
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/extensions/servlet">Project on GitHub</a></li>
                   <li><i class="fa-li fa fa-pencil"></i><a href="https://stormpath.com/blog/java-webapp-instant-user-management/">Tutorial</a></li>
