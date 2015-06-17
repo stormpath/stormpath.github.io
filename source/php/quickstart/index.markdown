@@ -128,8 +128,7 @@ Then, create a new Stormpath `Client` with the following code:
 
     require 'vendor/autoload.php';
     $apiKeyFile = $_SERVER['HOME'] .  '/.stormpath/apiKey.properties';
-    $builder = new \Stormpath\ClientBuilder();
-    $client = $builder->setApiKeyFileLocation($apiKeyFile)->build();
+    \Stormpath\Client::$apiKeyFileLocation = $apiKeyFile;
 
 The `Client` instance is an application singleton.  You should reuse this
 instance throughout your application code.
