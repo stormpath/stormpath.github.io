@@ -439,7 +439,7 @@ To update your ID Site configuration to use your fork:
 2. Click on the ID Site tab
 3. Under Git Repository HTTPS URL
     - Click the `Custom` radio button
-    - Add your Github repository URL to the textbox.  For ex: `https://github.com/stormpath/my-custom-id-site.git`
+    - Add your Github repository URL to the textbox.  For ex: `https://github.com/stormpath/my-custom-id-site` (*NOTE: this URL should NOT end with .git*)
 4. Scroll to the bottom of the dialog and click `Update`
 
 Once the configuration is updated, Stormpath will clone your repository and host it on Stormpath infrastructure to provide hosting your ID Site.
