@@ -9,7 +9,7 @@ title: Using Stormpath for OAuth 2.0 and Access/Refresh Token Management
 Currently supported Stormpath's REST API.  Support for SDKs and Integrations is coming soon.  Reach out to us on support for an update.
 {% enddocs %}
 
-In this guide, we will discuss how to use Stormpath to authenticate your users for an access token, how to manage the tokens in Stormpath, and how to provide token based authentication for your application and API endpoints.
+In this guide, we will discuss how to use Stormpath to authenticate your users for an Access Token, how to manage the tokens in Stormpath, and how to provide token based authentication for your application and API endpoints.
 
 ## What is Token Based Authentication?
 
@@ -63,19 +63,19 @@ curl -X GET \
      -H "Content-Type: application/json;charset=UTF-8" \
      "https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oAuthPolicy"
 
-//returns
-
-{
-    "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oAuthPolicy",
-    "tokenEndpoint": { 
-            "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oauth/token"
-    },
-    "accessTokenTtl": "PT1H",
-    "refreshTokenTtl": "P60D"
-}
-
 ------
 {% endcodetab %}
+
+Response:
+
+    {
+        "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oAuthPolicy",
+        "tokenEndpoint": { 
+                "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oauth/token"
+        },
+        "accessTokenTtl": "PT1H",
+        "refreshTokenTtl": "P60D"
+    }
 
 To update the `Access Token` and `Refresh Token` TTL, making a `POST` request to the application's oAuthPolicy with the updated values.  The valid valueFor example, if your application needs to have an shorter lived access and refresh token:
 
@@ -91,19 +91,19 @@ curl -X GET \
         }' \
      "https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oAuthPolicy"
 
-//returns
-
-{
-    "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oAuthPolicy",
-    "tokenEndpoint": { 
-            "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oauth/token"
-    },
-    "accessTokenTtl": "PT30M",
-    "refreshTokenTtl": "P7D"
-}
-
 ------
 {% endcodetab %}
+
+Response:
+
+    {
+        "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oAuthPolicy",
+        "tokenEndpoint": { 
+                "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oauth/token"
+        },
+        "accessTokenTtl": "PT30M",
+        "refreshTokenTtl": "P7D"
+    }
 
 Refresh tokens are optional, if you would like to disable the refresh token from being generated, set a zero duration value (`PT0M`, `PT0S`, etc).
 
@@ -131,10 +131,10 @@ Request:
 
 {% codetab id:get-access-token langs:curl %}
 ------
-    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
-        -H "Content-Type: application/x-www-form-urlencoded" \
-        -d "grant_type=password&username=tom@stormpath.com&password=Secret1"
-        https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
+curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -d "grant_type=password&username=tom@stormpath.com&password=Secret1"
+    https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
 ------
 {% endcodetab %}
 
@@ -167,7 +167,7 @@ The response is an `OAuth 2.0 Access Token Response` and includes the following:
 + `expires_in` - A value denoting the time in seconds before the token expires
 + `stormpath_access_token_href` - A value denoting the href location of the token in Stormpath.
 
-### Using Validate Access and Refresh Tokens
+### Validating Access Tokens
 
 Once an `Access Token` has been generated, the client will need to pass the bearer token to your application. 
 
@@ -206,13 +206,310 @@ To see how to validate tokens with the Stormpath REST API, let's go back to the 
     Host: https://yourapplication.com
     Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
 
+The `Authorization` header specifies the `Bearer` token.  This token can be used in a `HTTP GET` to your Stormpath `Application`'s `authTokens` endpoint:
+
+    https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/
+
+Request:
+
+{% codetab id:validate-token langs:curl %}
+------
+curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \    
+    https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
+------
+{% endcodetab %}
+
+If the access token can be validated, Stormpath will return a 302 to the ` Access Token` resource
+
+Response:
+
+    HTTP/1.1 302 Location Found
+    Location: https://api.stormpath.com/v1/accessTokens/jr1zCsicMWpA661fe6715ed477ZiTtPFtPFMD0D
+
+The location of the `Access Token` resource can be directly retrieved to get information about the `Token`, `Account`, and `Application`.
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`href` | The token's fully qualified URL | String | --
+`account` | A link to the `Account` that the `Token` is associated with | Link | --
+`application` | A link to the `Application` that the `Token` is associated with | Link | --
+`jwt` | The compact JWT for the token | String | --
+`expandedJwt` | The expanded JWT, this will describe the header, claims, and signature for the token. | --
+`tenant` | A link to the `Tenant` that the `Token` is associated with | Link | --
+
+To get the `Access Token`, issue a GET to the the resource href.
+
+Request:
+
+{% codetab id:get-access-token langs:curl %}
+------
+curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+    https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7
+------
+{% endcodetab %}
+
+Response:
+
+    {
+        "account": {
+            "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+        }, 
+        "application": {
+            "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
+        }, 
+        "createdAt": "2015-06-24T21:42:27.535Z", 
+        "expandedJwt": {
+            "claims": {
+                "exp": 1435183947, 
+                "iat": 1435182147, 
+                "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6", 
+                "jti": "74Zd80iW0cOhotjXH4GqM7", 
+                "rti": "zxRTYcdBDiTFQmNIVudTv", 
+                "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+            }, 
+            "header": {
+                "alg": "HS256", 
+                "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
+            }, 
+            "signature": "qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ"
+        }, 
+        "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7", 
+        "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ", 
+        "tenant": {
+            "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
+        }
+    }
+
+{% docs note %}
+If you need to get the `Account` and/or `Application` information with the `Access Token`, you can use [expansion](http://docs.stormpath.com/rest/product-guide/#link-expansion).  For example:
+
+    https://api.stormpath.com/v1/accessTokens/jr1zCsicMWpA661fe6715ed477ZiTtPFtPFMD0D?expand=account
+{% enddocs %}
 
 
 <a class="anchor" name="validate-the-token-locally"></a>
 #### Validating the Token Locally
 
+To see how to validate tokens locally, let's go back to the example where a user has already generated an access token. The user has attempted to access a secured resource by passing the access token in the `Bearer` header:
+
+    HTTP/1.1
+    GET /secure-resource
+    Host: https://yourapplication.com
+    Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
+
+The `Authorization` header specifies the `Bearer` token.  This token is a JSON Web Token that has been digitally signed with the Stormpath `API Key` Secret that was used to [generate the token]().  This means that you can use a JWT library to validate the token locally if necessary.
+
+To use a JWT library to validate the token:
+
+{% codetab id:get-access-token langs:java node python %}
+------
+/* This sample uses JJWT a Java JWT Library (https://github.com/jwtk/jjwt) */
+
+import io.jsonwebtoken.Jwts;
+
+String bearerToken = "eyJraWQiOiI0TElJMTM3MVRZUkxWVUU5QjJSVU1JRDMwIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIyZHk1a09HTVBGd3FPR3VLVnZscWpKIiwiaWF0IjoxNDM1MTY2NDQxLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvdjEvYXBwbGljYXRpb25zLzNBZ2ExdWZHbFhnVGJLUWZvdmt5ZjMiLCJzdWIiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvdjEvYWNjb3VudHMvMWVQQmdWa3hDVm1meVJRYzV0UVpDRCIsImV4cCI6MTQzNTE2NzA0MSwicnRpIjoiMmRzTkUyRExRWkpnTE9MRzhwclJsaCJ9.fq-6BUHM5MBOoas2EGZepEib6RTwh6V6MnbDLe8rThs";
+
+try {
+
+    Jwt<Header, Claims> jwt = Jwts.parser().setSigningKey("$STORMPATH_API_KEY_SECRET").parse(bearerToken);
+
+    //Get the account href
+    String accountHref = jwt.getClaims().getSubject();
+
+} catch (SignatureException e) {
+
+    //don't trust the JWT!
+}
+
+------
+/* This sample uses NJWT a Node JWT Library (https://github.com/jwtk/jjwt) */
+
+var nJwt = require('nJwt');
+
+var bearerToken = "eyJraWQiOiI0TElJMTM3MVRZUkxWVUU5QjJSVU1JRDMwIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIyZHk1a09HTVBGd3FPR3VLVnZscWpKIiwiaWF0IjoxNDM1MTY2NDQxLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvdjEvYXBwbGljYXRpb25zLzNBZ2ExdWZHbFhnVGJLUWZvdmt5ZjMiLCJzdWIiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvdjEvYWNjb3VudHMvMWVQQmdWa3hDVm1meVJRYzV0UVpDRCIsImV4cCI6MTQzNTE2NzA0MSwicnRpIjoiMmRzTkUyRExRWkpnTE9MRzhwclJsaCJ9.fq-6BUHM5MBOoas2EGZepEib6RTwh6V6MnbDLe8rThs";
+
+nJwt.verify(bearerToken, "$STORMPATH_API_KEY_SECRET", function(err, verifiedJwt) {
+    if(err){
+        console.log(err); // Token has expired, has been tampered with, etc
+    }else{
+        console.log(verifiedJwt); // Will contain the header and body
+    }
+});    
+
+------
+    /* This sample uses PyJWT a Python JWT Library (https://github.com/jpadilla/pyjwt) */
+------
+{% endcodetab %}
+
 ### Refreshing Access Tokens
+
+Passing Access Tokens and validating the token allows access to resources in your application.  But what happens when the `Access Token` expires?  You could either require the end user to authenticate, or if the user has a `Refresh Token`, they can get a new `Access Token` without requiring credentials.
+
+{% docs warning %}
+If using a `Refresh Token` in a web application, it is important NOT to expose the refresh token through javascript.
+{% enddocs %}
+
+To get a new `Access Token` to for a `Refresh Token`, you must first make sure that the [application has been configured](#Configuration) to generate a `Refresh Token` in the `OAuth 2.0 Access Token Response`.
+
+Once your application has a `Refresh Token`, you can pass the token to your Stormpath Application's tokenEndpoint using the `refresh_token` OAuth 2.0 grant type.
+
+{% codetab id:refresh-access-token langs:curl %}
+------
+curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -d "grant_type=refresh_token&refresh_token=$REFRESH_TOKEN"
+    https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
+------
+{% endcodetab %}
+
+Response:
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8
+    Cache-Control: no-store
+    Pragma: no-cache
+
+    {
+        "access_token":"2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg",
+        "refresh_token": "$REFRESH_TOKEN",
+        "token_type": "Bearer"
+        "expires_in": 3600,
+        "stormpath_access_token_href": "https://api.stormpath.com/v1/accessTokens/r0klomitodnOCuvESIP5"
+    }
+
+When Stormpath generates a new `Access Token` for a `Refresh Token` it does not generate or modify the expiration time of the `Refresh Token`.  This means that once the Refresh Token expires, the user must authenticate again to get a new `Access Token` and `Refresh Token`
 
 ### Using Stormpath to Revoke Access and Refresh Tokens
 
+Using `Access Token`s and `Refresh Token`s can control the access to your application. In some cases it is needed to revoke the tokens.  This is important under a couple different scenarios.
 
++ The user has explicitly logged out, and you want to revoke their access, requiring authentication
++ The application, device, client has been compromised and you need to revoke tokens for an account.
+
+When [validating the tokens with Stormpath](#using-stormpath-to-validate-the-token), Stormpath will validate that the token has not been revoked before returning successfully.  To revoke tokens in Stormpath, you delete the token resource.
+
+To get the access tokens / refresh tokens for an account, you can get the [collection](http://docs.stormpath.com/rest/product-guide/#collection-resources) from the account's `accessTokens` and `refreshTokens` collection:
+
+    {
+        "accessTokens": {
+            "href": "https://.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/accessTokens"
+        },
+        ...
+        "refreshTokens": {
+            "href": "https://.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/refreshTokens"
+        },
+        ...
+        "username": "tom@stormpath.com"
+    }
+
+The `accessTokens` and `refreshTokens` links on an account that be queried for a particular application.  This is accomplished by passing the Application's href as a query parameter
+
+For example:
+
+{% codetab id:get-tokens-for-account langs:curl %}
+------
+curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+    https://.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/accessTokens?application.href=https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6
+------
+{% endcodetab %}
+
+Response:
+
+    {
+        "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/accessTokens", 
+        "items": [
+            {
+                "account": {
+                    "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+                }, 
+                "application": {
+                    "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
+                }, 
+                "createdAt": "2015-06-24T21:36:52.684Z", 
+                "expandedJwt": {
+                    "claims": {
+                        "exp": 1435183612, 
+                        "iat": 1435181812, 
+                        "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6", 
+                        "jti": "zxa7fCzt2etCTce2RWIv5", 
+                        "rti": "zxRTYcdBDiTFQmNIVudTv", 
+                        "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+                    }, 
+                    "header": {
+                        "alg": "HS256", 
+                        "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
+                    }, 
+                    "signature": "da8G6xRUVird3MnG8HYTleDtXbwhqUfFK8KUvK8HDYI"
+                }, 
+                "href": "https://api.stormpath.com/v1/accessTokens/zxa7fCzt2etCTce2RWIv5", 
+                "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJ6eGE3ZkN6dDJldENUY2UyUldJdjUiLCJpYXQiOjE0MzUxODE4MTIsImlzcyI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xcDRSMXI5VUJNUXowZVNGQzZYWkU2Iiwic3ViIjoiaHR0cHM6Ly9zdGFnaW5nLWFwaS1iLnN0b3JtcGF0aC5jb20vdjEvYWNjb3VudHMvN05aeFZ5NXJVUzdXZzV2TlNzVFVhYyIsImV4cCI6MTQzNTE4MzYxMiwicnRpIjoienhSVFljZEJEaVRGUW1OSVZ1ZFR2In0.da8G6xRUVird3MnG8HYTleDtXbwhqUfFK8KUvK8HDYI", 
+                "tenant": {
+                    "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
+                }
+            }, 
+            {
+                "account": {
+                    "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+                }, 
+                "application": {
+                    "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
+                }, 
+                "createdAt": "2015-06-24T21:42:27.535Z", 
+                "expandedJwt": {
+                    "claims": {
+                        "exp": 1435183947, 
+                        "iat": 1435182147, 
+                        "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6", 
+                        "jti": "74Zd80iW0cOhotjXH4GqM7", 
+                        "rti": "zxRTYcdBDiTFQmNIVudTv", 
+                        "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+                    }, 
+                    "header": {
+                        "alg": "HS256", 
+                        "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
+                    }, 
+                    "signature": "qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ"
+                }, 
+                "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7", 
+                "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ", 
+                "tenant": {
+                    "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
+                }
+            }
+        ], 
+        "limit": 25, 
+        "offset": 0, 
+        "size": 2
+    }
+
+{% docs note %}
+Querying the account's `accessTokens` or `refreshTokens` by `Application` href is optional.  If you would like to get tokens across all applications, do not include the `application.href` query parameter.
+{% enddocs %}
+
+To revoke the tokens, you iterate over the collection, collect the href for the token and issue a `HTTP Delete`
+
+For example:
+
+{% codetab id:refresh-access-token langs:curl %}
+------
+curl -X DELETE --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+    https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7
+------
+{% endcodetab %}
+
+Response:
+
+    HTTP/1.1 204 No Content
+
+When the token is deleted from Stormpath, attempting to validate the the deleted token in Stormpath will return the following error:
+
+    {
+        "code": "404",
+        "status": "10013",
+        "message": "Token is invalid",
+        "developerMessage": "Token does not exist. This can occur if the token has been manually deleted, or if the token has expired and removed by Stormpath"
+    }
+
+### Wrapping it up
+
+In this guide, we discussed how to set up and use Stormpath to generate and manage OAuth 2.0 Access Tokens and Refresh Tokens. If you have any questions, bug reports, or enhancement requests please email support@stormpath.com.
