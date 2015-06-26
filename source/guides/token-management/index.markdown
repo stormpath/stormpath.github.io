@@ -6,7 +6,7 @@ title: Using Stormpath for OAuth 2.0 and Access/Refresh Token Management
 ---
 
 {% docs info %} 
-Currently supported Stormpath's REST API.  Support for SDKs and Integrations is coming soon.  Reach out to us on support for an update.
+Currently supported in Stormpath's REST API.  Support for SDKs and Integrations is coming soon.  Reach out to us on support for an update.
 {% enddocs %}
 
 In this guide, we will discuss how to use Stormpath to authenticate your users for an `OAuth 2.0 Access Token`, and how to manage these tokens in Stormpath.
@@ -202,12 +202,13 @@ The benefit of using Stormpath to validate the token through the REST API (or an
 
 Validation Criteria | Locally | Stormpath
 :---- | :---- | :---- 
-Account is still enabled, and hasn't been deleted | no | yes
-Token is expired | yes | yes
-Token has been revoked | no | yes
-Issuer is not Stormpath | yes | yes
+Token hasn't been tampered with | yes | yes
+Token hasn't expired | yes | yes
+Token hasn't been revoked | no | yes
+Account hasn't been disabled, and hasn't been deleted | no | yes
+Issuer is Stormpath | yes | yes
 Issuing application is still enabled, and hasn't been deleted | no | yes
-Account is still in an Account Store for the issuing application | no | yes
+Account is still in an account store for the issuing application | no | yes
 
 Why is this important?  There are different goals for every application and the level of validation that each application needs may differ.  If you need to validate the state of the account / application or if you need to use  token revocation, then using Stormpath to validate the token is the obvious choice.  This does require an request to the Stormpath REST API.  If you only require that the token has not expired and has not been tampered with, you can validate the token locally and minimize the network request to Stormpath.
 
