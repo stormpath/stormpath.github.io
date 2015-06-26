@@ -4830,7 +4830,8 @@ Here are some account creation examples:
 
 * [Simple Create Account Example](#account-create-simple)
 * [Create an Account with Custom Data](#account-create-with-custom-data)
-* [Create an Account and suppress registration emails](#account-create-no-email)
+* [Create an Account and Suppress Registration Emails](#account-create-no-email)
+* [Create an Account with an Existing Password Hash](#create-an-account-with-an-existing-password-hash)
 
 <a class="anchor" name="account-create-simple"></a>
 Simple creation request:
@@ -4927,6 +4928,82 @@ If you want to create a directory account and you want to override the directory
                "status" : "ENABLED",
              }' \
          "https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts?registrationWorkflowEnabled=false"
+
+<a class="anchor" name="create-an-account-with-an-existing-password-hash"></a>
+#### Create an Account with an Existing Password Hash
+
+If you are moving from an existing user repository to Stormpath, you may have existing password hashes that you want to reuse to provide a seamless upgrade path for your end users.
+
+Stormpath allows for account creation with a password hash instead of a plain text password.  This works as follows:
+
++ Create the account specifying the password hash instead of a plain text password
++ Stormpath will use the password hash to authenticate the account's login attempt
++ If the login attempt is successful, Stormpath will recreate the password hash using a secure HMAC algorithm.
+
+Stormpath does not allow for account creation with ANY password hash, the password hash must follow [modular crypt format](https://pythonhosted.org/passlib/modular_crypt_format.html)(MCF), which is a `$` delimited string.  Stormpath only supports password hashes that use the following algorithms:
+
++ [bcrypt](https://en.wikipedia.org/wiki/Bcrypt): These password hashes have the identifier `$2a$`, `$2b$`, `$2x$`, `$2a$`
++ `stormpath2`: A Stormpath specific password hash format that can be generated with common password hash information, such as algorithm, iterations, salt, and the derived cryptographic hash
+
+`stormpath2` has format allows for you to derive a MCF hash that Stormpath can read to understand how to recreate the password hash to use during a login attempt. `stormpath2` hash format is formatted as:
+
+    $stormpath2$ALGORITHM_NAME$ITERATION_COUNT$BASE64_SALT$BASE64_PASSWORD_HASH
+
+Property | Description | Valid Values
+:---- | :---- | :---- 
+`ALGORITHM_NAME` | The name of the hashing algorithm used to generate the `BASE64_PASSWORD_HASH`. | `MD5`, `SHA-1`, `SHA-256`, `SHA-384`, `SHA-512`
+`ITERATION_COUNT` | The number of iterations executed when generating the `BASE64_PASSWORD_HASH` | Integer greater than 0 (1 or more)
+`BASE64_SALT` | The salt byte array used to salt the first hash iteration, formatted as a Base64 string. | Base64 String, if your password hashes do you have salt, you can leave it blank ($stormpath2$ALGORITHM_NAME$ITERATION_COUNT$$BASE64_PASSWORD_HASH)
+`BASE64_PASSWORD_HASH` | The computed hash byte array formatted as a Base64 string | Base64 String
+
+Once you have a `bcrypt` or `stormpath2` MCF password hash, you can create the account in Stormpath with the password hash by `POST`ing the account information to the `Directory` or `Application` accounts endpoint and specifying `passwordFormat=mcf` as a query parameter.
+
+**Example Request**
+
+    POST https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts?passwordFormat=mcf
+    
+    {
+      "username" : "jlpicard",
+      "email" : "capt@enterprise.com",
+      "givenName" : "Jean-Luc",
+      "surname" : "Picard",
+      "password" : "$stormpath2$MD5$1$NzEyN2ZhYzdkZTAyMjJlMGQyMWYxMWRmZmY2YjA1MWI=$K18Ak0YikAFrqgglhIaY5g=="
+    }
+
+**Example Response**
+
+    HTTP/1.1 201 Created
+    Location: https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
+      "username" : "jlpicard",
+      "email" : "capt@enterprise.com",
+      "fullName" : "Jean-Luc Picard",
+      "givenName" : "Jean-Luc",
+      "middleName" : "",
+      "surname" : "Picard",
+      "status" : "UNVERIFIED",
+      "customData": {
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+      },
+      "groups" : {
+        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
+      },
+      "groupMemberships" : {
+        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groupMemberships"
+      },
+      "directory" : {
+        "href" : "https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA"
+      },
+      "tenant" : {
+        "href" : "https://api.stormpath.com/v1/tenants/Ad8mIcavSty7XzD-xZdP3g"
+      },
+      "emailVerificationToken" : {
+        "href" : "https://api.stormpath.com/v1/accounts/emailVerificationTokens/4VQxTP5I7Xio03QJTOwQy1"
+      }
+    }
 
 <a class="anchor" name="account-retrieve"></a>
 ### Retrieve an Account
