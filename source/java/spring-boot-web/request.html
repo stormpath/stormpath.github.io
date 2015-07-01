@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Request Context &mdash; Spring Boot Stormpath Web Starter 1.0.RC4.3 documentation</title>
+  <title>Request Context &mdash; Spring Boot Stormpath Web Starter 1.0.RC4.4 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC4.3 documentation" href="index.html"/>
+    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC4.4 documentation" href="index.html"/>
         <link rel="next" title="Internationalization (i18n)" href="i18n.html"/>
         <link rel="prev" title="HTTP Request Authentication" href="http-request-authentication.html"/> 
 
@@ -215,11 +215,11 @@
 <span id="request"></span><h1>Request Context<a class="headerlink" href="#request-context" title="Permalink to this headline">¶</a></h1>
 <p>The Spring Boot Stormpath Web Starter ensures important Stormpath objects are available to you during a request:</p>
 <ul class="simple">
-<li>The Stormpath SDK <tt class="docutils literal"><span class="pre">Client</span></tt> instance, in case you want to communicate with Stormpath for any behavior that the Spring Boot Stormpath Web Starter does not automate.</li>
-<li>The Stormpath <tt class="docutils literal"><span class="pre">Application</span></tt> instance that corresponds to your web application.</li>
-<li>A Stormpath <tt class="docutils literal"><span class="pre">Account</span></tt> instance that represents the current authenticated user account making a request to your web application.</li>
+<li>The Stormpath SDK <code class="docutils literal"><span class="pre">Client</span></code> instance, in case you want to communicate with Stormpath for any behavior that the Spring Boot Stormpath Web Starter does not automate.</li>
+<li>The Stormpath <code class="docutils literal"><span class="pre">Application</span></code> instance that corresponds to your web application.</li>
+<li>A Stormpath <code class="docutils literal"><span class="pre">Account</span></code> instance that represents the current authenticated user account making a request to your web application.</li>
 </ul>
-<p>The <tt class="docutils literal"><span class="pre">Client</span></tt> and <tt class="docutils literal"><span class="pre">Application</span></tt> will always be available.  The current user <tt class="docutils literal"><span class="pre">Account</span></tt> is only available if the user making the request has previously logged in.</p>
+<p>The <code class="docutils literal"><span class="pre">Client</span></code> and <code class="docutils literal"><span class="pre">Application</span></code> will always be available.  The current user <code class="docutils literal"><span class="pre">Account</span></code> is only available if the user making the request has previously logged in.</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
 <li><a class="reference internal" href="#current-user-account" id="id7">Current User Account</a><ul>
@@ -244,10 +244,10 @@
 </div>
 <div class="section" id="current-user-account">
 <h2><a class="toc-backref" href="#id7">Current User Account</a><a class="headerlink" href="#current-user-account" title="Permalink to this headline">¶</a></h2>
-<p>After a user <a class="reference internal" href="registration.html#registration"><em>registers</em></a> or <a class="reference internal" href="login.html#login"><em>logs in</em></a>, you can get the user <tt class="docutils literal"><span class="pre">Account</span></tt> making the request using an <tt class="docutils literal"><span class="pre">AccountResolver</span></tt>, request attributes, or the <tt class="docutils literal"><span class="pre">HttpServletRequest</span></tt> API directly.</p>
+<p>After a user <a class="reference internal" href="registration.html#registration"><span>registers</span></a> or <a class="reference internal" href="login.html#login"><span>logs in</span></a>, you can get the user <code class="docutils literal"><span class="pre">Account</span></code> making the request using an <code class="docutils literal"><span class="pre">AccountResolver</span></code>, request attributes, or the <code class="docutils literal"><span class="pre">HttpServletRequest</span></code> API directly.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">A request <tt class="docutils literal"><span class="pre">Account</span></tt> will only be available if a known user has previously authenticated and is making the request.  If the request is made by an unknown user (a &#8216;guest&#8217;) that has not yet authenticated, the request will not have an associated <tt class="docutils literal"><span class="pre">Account</span></tt>.</p>
+<p class="last">A request <code class="docutils literal"><span class="pre">Account</span></code> will only be available if a known user has previously authenticated and is making the request.  If the request is made by an unknown user (a &#8216;guest&#8217;) that has not yet authenticated, the request will not have an associated <code class="docutils literal"><span class="pre">Account</span></code>.</p>
 </div>
 <div class="contents local topic" id="id1">
 <ul class="simple">
@@ -258,7 +258,7 @@
 </div>
 <div class="section" id="account-resolver">
 <h3><a class="toc-backref" href="#id19">Account Resolver</a><a class="headerlink" href="#account-resolver" title="Permalink to this headline">¶</a></h3>
-<p>A type-safe way to get an <tt class="docutils literal"><span class="pre">Account</span></tt> associated with the current request is to use the <tt class="docutils literal"><span class="pre">AccountResolver</span></tt>:</p>
+<p>A type-safe way to get an <code class="docutils literal"><span class="pre">Account</span></code> associated with the current request is to use the <code class="docutils literal"><span class="pre">AccountResolver</span></code>:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">com.stormpath.sdk.servlet.account.Account</span><span class="o">;</span>
 <span class="c1">//...</span>
 
@@ -278,21 +278,21 @@
 </div>
 <div class="admonition caution">
 <p class="first admonition-title">Caution</p>
-<p>Notice that the <tt class="docutils literal"><span class="pre">AccountResolver</span> <span class="pre">getRequiredAccount</span></tt> method is only invoked if it is known that there is indeed an Account instance available.  If an account is not available when calling <tt class="docutils literal"><span class="pre">getRequiredAccount</span></tt> an exception will be thrown.</p>
+<p>Notice that the <code class="docutils literal"><span class="pre">AccountResolver</span> <span class="pre">getRequiredAccount</span></code> method is only invoked if it is known that there is indeed an Account instance available.  If an account is not available when calling <code class="docutils literal"><span class="pre">getRequiredAccount</span></code> an exception will be thrown.</p>
 <p class="last">This <em>check-then-use</em> pattern helps eliminate NullPointerExceptions and conditional branching bugs when working with user identities - often desirable in sensitive logic.</p>
 </div>
 </div>
 <div class="section" id="request-attributes">
 <h3><a class="toc-backref" href="#id20">Request Attributes</a><a class="headerlink" href="#request-attributes" title="Permalink to this headline">¶</a></h3>
-<p>While request attribute lookups are not type-safe (<tt class="docutils literal"><span class="pre">String</span></tt> keys and <tt class="docutils literal"><span class="pre">Object</span></tt> return types), they can be convenient or preferred in some situations.</p>
+<p>While request attribute lookups are not type-safe (<code class="docutils literal"><span class="pre">String</span></code> keys and <code class="docutils literal"><span class="pre">Object</span></code> return types), they can be convenient or preferred in some situations.</p>
 <div class="section" id="request-attribute-names">
 <h4>Request Attribute Names<a class="headerlink" href="#request-attribute-names" title="Permalink to this headline">¶</a></h4>
-<p>If an <tt class="docutils literal"><span class="pre">Account</span></tt> is associated with the current request, it will be available via the request attribute name equal to the <tt class="docutils literal"><span class="pre">Account</span></tt> interface&#8217;s fully qualified class name.  For example:</p>
+<p>If an <code class="docutils literal"><span class="pre">Account</span></code> is associated with the current request, it will be available via the request attribute name equal to the <code class="docutils literal"><span class="pre">Account</span></code> interface&#8217;s fully qualified class name.  For example:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="n">Account</span> <span class="n">account</span> <span class="o">=</span> <span class="o">(</span><span class="n">Account</span><span class="o">)</span><span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="n">Account</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
 <span class="c1">//account will be null if the request is not yet associated with a known user account.</span>
 </pre></div>
 </div>
-<p>It will also be available via the simpler unqualified name of <tt class="docutils literal"><span class="pre">account</span></tt>.  For example, the following line provides the same exact result as the one above:</p>
+<p>It will also be available via the simpler unqualified name of <code class="docutils literal"><span class="pre">account</span></code>.  For example, the following line provides the same exact result as the one above:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="n">Account</span> <span class="n">account</span> <span class="o">=</span> <span class="o">(</span><span class="n">Account</span><span class="o">)</span><span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;account&quot;</span><span class="o">);</span>
 <span class="c1">//account will be null if the request is not associated with a known user account.</span>
 </pre></div>
@@ -311,7 +311,7 @@
 </div>
 <div class="section" id="http-servlet-request-api">
 <h3><a class="toc-backref" href="#id21">HTTP Servlet Request API</a><a class="headerlink" href="#http-servlet-request-api" title="Permalink to this headline">¶</a></h3>
-<p>If you&#8217;d prefer to use the native <tt class="docutils literal"><span class="pre">HttpServletRequest</span></tt> API to obtain any associated account information, you can!  You can call either of the two following methods:</p>
+<p>If you&#8217;d prefer to use the native <code class="docutils literal"><span class="pre">HttpServletRequest</span></code> API to obtain any associated account information, you can!  You can call either of the two following methods:</p>
 <ul class="simple">
 <li>HttpServletRequest <a class="reference external" href="http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletRequest.html#getRemoteUser()">getRemoteUser()</a></li>
 <li>HttpServletRequest <a class="reference external" href="http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletRequest.html#getUserPrincipal()">getUserPrincipal()</a></li>
@@ -319,48 +319,48 @@
 <p>Even better, you can customize exactly what is returned from either of these methods.</p>
 <div class="section" id="httpservletrequest-getremoteuser">
 <h4>HttpServletRequest getRemoteUser()<a class="headerlink" href="#httpservletrequest-getremoteuser" title="Permalink to this headline">¶</a></h4>
-<p>If there is an <tt class="docutils literal"><span class="pre">Account</span></tt> associated with the request, invoking <tt class="docutils literal"><span class="pre">httpServletRequest.getRemoteUser()</span></tt> will return the Account&#8217;s  <tt class="docutils literal"><span class="pre">username</span></tt> by default.  If there is no associated Account, <tt class="docutils literal"><span class="pre">null</span></tt> is returned.</p>
-<p>But you can specify what the return value should be via the <tt class="docutils literal"><span class="pre">stormpath.web.request.remoteUser.strategy</span></tt> configuration property:</p>
+<p>If there is an <code class="docutils literal"><span class="pre">Account</span></code> associated with the request, invoking <code class="docutils literal"><span class="pre">httpServletRequest.getRemoteUser()</span></code> will return the Account&#8217;s  <code class="docutils literal"><span class="pre">username</span></code> by default.  If there is no associated Account, <code class="docutils literal"><span class="pre">null</span></code> is returned.</p>
+<p>But you can specify what the return value should be via the <code class="docutils literal"><span class="pre">stormpath.web.request.remoteUser.strategy</span></code> configuration property:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.web.request.remoteUser.strategy</span> <span class="o">=</span> <span class="s">username</span>
 </pre></div>
 </div>
-<p>The property value may be one of the following strings: <tt class="docutils literal"><span class="pre">username</span></tt>, <tt class="docutils literal"><span class="pre">email</span></tt>, <tt class="docutils literal"><span class="pre">givenName</span></tt>, <tt class="docutils literal"><span class="pre">href</span></tt>, or <tt class="docutils literal"><span class="pre">bypass</span></tt>:</p>
+<p>The property value may be one of the following strings: <code class="docutils literal"><span class="pre">username</span></code>, <code class="docutils literal"><span class="pre">email</span></code>, <code class="docutils literal"><span class="pre">givenName</span></code>, <code class="docutils literal"><span class="pre">href</span></code>, or <code class="docutils literal"><span class="pre">bypass</span></code>:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">username</span></tt>: <tt class="docutils literal"><span class="pre">getRemoteUser()</span></tt> will return the Account&#8217;s username, <tt class="docutils literal"><span class="pre">account.getUsername()</span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre">email</span></tt>: returns <tt class="docutils literal"><span class="pre">account.getEmail()</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">givenName</span></tt>: returns <tt class="docutils literal"><span class="pre">account.getGivenName()</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">href</span></tt>: returns <tt class="docutils literal"><span class="pre">account.getHref()</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">bypass</span></tt>: disables the behavior for this method and delegates to the Servlet Container implementation.</li>
+<li><code class="docutils literal"><span class="pre">username</span></code>: <code class="docutils literal"><span class="pre">getRemoteUser()</span></code> will return the Account&#8217;s username, <code class="docutils literal"><span class="pre">account.getUsername()</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">email</span></code>: returns <code class="docutils literal"><span class="pre">account.getEmail()</span></code></li>
+<li><code class="docutils literal"><span class="pre">givenName</span></code>: returns <code class="docutils literal"><span class="pre">account.getGivenName()</span></code></li>
+<li><code class="docutils literal"><span class="pre">href</span></code>: returns <code class="docutils literal"><span class="pre">account.getHref()</span></code></li>
+<li><code class="docutils literal"><span class="pre">bypass</span></code>: disables the behavior for this method and delegates to the Servlet Container implementation.</li>
 </ul>
-<p>Again, if there is no Account associated with the request, <tt class="docutils literal"><span class="pre">getRemoteUser()</span></tt> will return <tt class="docutils literal"><span class="pre">null</span></tt>.</p>
+<p>Again, if there is no Account associated with the request, <code class="docutils literal"><span class="pre">getRemoteUser()</span></code> will return <code class="docutils literal"><span class="pre">null</span></code>.</p>
 </div>
 <div class="section" id="httpservletrequest-getuserprincipal">
 <h4>HttpServletRequest getUserPrincipal()<a class="headerlink" href="#httpservletrequest-getuserprincipal" title="Permalink to this headline">¶</a></h4>
-<p>If there is an <tt class="docutils literal"><span class="pre">Account</span></tt> associated with the request, invoking <tt class="docutils literal"><span class="pre">httpServletRequest.getUserPrincipal()</span></tt> will return a <tt class="docutils literal"><span class="pre">java.security.Principal</span></tt> instance that reflects the associated Account.  If there is no associated <tt class="docutils literal"><span class="pre">Account</span></tt>, <tt class="docutils literal"><span class="pre">null</span></tt> is returned.</p>
-<p>If there is an account, by default, an instance of <tt class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.AccountPrincipal</span></tt> is returned.  This allows you to get the Account object directly by invoking <tt class="docutils literal"><span class="pre">accountPrincipal.getAccount()</span></tt>.</p>
-<p>But you can specify what type of <tt class="docutils literal"><span class="pre">Principal</span></tt> implementation is returned via the <tt class="docutils literal"><span class="pre">stormpath.web.request.userPrincipal.strategy</span></tt> configuration property:</p>
+<p>If there is an <code class="docutils literal"><span class="pre">Account</span></code> associated with the request, invoking <code class="docutils literal"><span class="pre">httpServletRequest.getUserPrincipal()</span></code> will return a <code class="docutils literal"><span class="pre">java.security.Principal</span></code> instance that reflects the associated Account.  If there is no associated <code class="docutils literal"><span class="pre">Account</span></code>, <code class="docutils literal"><span class="pre">null</span></code> is returned.</p>
+<p>If there is an account, by default, an instance of <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.AccountPrincipal</span></code> is returned.  This allows you to get the Account object directly by invoking <code class="docutils literal"><span class="pre">accountPrincipal.getAccount()</span></code>.</p>
+<p>But you can specify what type of <code class="docutils literal"><span class="pre">Principal</span></code> implementation is returned via the <code class="docutils literal"><span class="pre">stormpath.web.request.userPrincipal.strategy</span></code> configuration property:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.web.request.userPrincipal.strategy</span> <span class="o">=</span> <span class="s">account</span>
 </pre></div>
 </div>
-<p>The property value may be one of the following strings: <tt class="docutils literal"><span class="pre">account</span></tt>, <tt class="docutils literal"><span class="pre">email</span></tt>, <tt class="docutils literal"><span class="pre">username</span></tt>, <tt class="docutils literal"><span class="pre">givenName</span></tt>, <tt class="docutils literal"><span class="pre">href</span></tt>, <tt class="docutils literal"><span class="pre">bypass</span></tt>:</p>
+<p>The property value may be one of the following strings: <code class="docutils literal"><span class="pre">account</span></code>, <code class="docutils literal"><span class="pre">email</span></code>, <code class="docutils literal"><span class="pre">username</span></code>, <code class="docutils literal"><span class="pre">givenName</span></code>, <code class="docutils literal"><span class="pre">href</span></code>, <code class="docutils literal"><span class="pre">bypass</span></code>:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">account</span></tt>: <tt class="docutils literal"><span class="pre">getUserPrincipal()</span></tt> returns a <tt class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.AccountPrincipal</span></tt> that represents the entire <tt class="docutils literal"><span class="pre">Account</span></tt> object</li>
-<li><tt class="docutils literal"><span class="pre">email</span></tt>: returns a <tt class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.EmailPrincipal</span></tt> matching <tt class="docutils literal"><span class="pre">account.getEmail()</span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre">username</span></tt>: returns a <tt class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.UsernamePrincipal</span></tt> matching <tt class="docutils literal"><span class="pre">account.getUsername()</span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre">givenname</span></tt>: returns a <tt class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.GivenNamePrincipal</span></tt> matching <tt class="docutils literal"><span class="pre">account.getGivenName()</span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre">href</span></tt>: returns a <tt class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.HrefPrincipal</span></tt> matching <tt class="docutils literal"><span class="pre">account.getHref()</span></tt>.</li>
-<li><tt class="docutils literal"><span class="pre">bypass</span></tt>: disables the behavior for this method and delegates to the Servlet Container implementation.</li>
+<li><code class="docutils literal"><span class="pre">account</span></code>: <code class="docutils literal"><span class="pre">getUserPrincipal()</span></code> returns a <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.AccountPrincipal</span></code> that represents the entire <code class="docutils literal"><span class="pre">Account</span></code> object</li>
+<li><code class="docutils literal"><span class="pre">email</span></code>: returns a <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.EmailPrincipal</span></code> matching <code class="docutils literal"><span class="pre">account.getEmail()</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">username</span></code>: returns a <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.UsernamePrincipal</span></code> matching <code class="docutils literal"><span class="pre">account.getUsername()</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">givenname</span></code>: returns a <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.GivenNamePrincipal</span></code> matching <code class="docutils literal"><span class="pre">account.getGivenName()</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">href</span></code>: returns a <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.HrefPrincipal</span></code> matching <code class="docutils literal"><span class="pre">account.getHref()</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">bypass</span></code>: disables the behavior for this method and delegates to the Servlet Container implementation.</li>
 </ul>
-<p>Again, if there is no Account associated with the request, <tt class="docutils literal"><span class="pre">getUserPrincipal()</span></tt> will return <tt class="docutils literal"><span class="pre">null</span></tt>.</p>
+<p>Again, if there is no Account associated with the request, <code class="docutils literal"><span class="pre">getUserPrincipal()</span></code> will return <code class="docutils literal"><span class="pre">null</span></code>.</p>
 </div>
 </div>
 </div>
 <div class="section" id="stormpath-application">
 <span id="request-application"></span><h2><a class="toc-backref" href="#id11">Stormpath Application</a><a class="headerlink" href="#stormpath-application" title="Permalink to this headline">¶</a></h2>
-<p>The Spring Boot Stormpath Web Starter requires that your web application correspond to a registered <tt class="docutils literal"><span class="pre">Application</span></tt> record within Stormpath.  You can access this <tt class="docutils literal"><span class="pre">Application</span></tt> for your own needs (for example, searching your application&#8217;s user accounts, creating groups, etc.) using Spring autowiring, an <tt class="docutils literal"><span class="pre">ApplicationResolver</span></tt> or request attributes.</p>
+<p>The Spring Boot Stormpath Web Starter requires that your web application correspond to a registered <code class="docutils literal"><span class="pre">Application</span></code> record within Stormpath.  You can access this <code class="docutils literal"><span class="pre">Application</span></code> for your own needs (for example, searching your application&#8217;s user accounts, creating groups, etc.) using Spring autowiring, an <code class="docutils literal"><span class="pre">ApplicationResolver</span></code> or request attributes.</p>
 <div class="section" id="spring-autowiring">
 <h3><a class="toc-backref" href="#id12">Spring autowiring</a><a class="headerlink" href="#spring-autowiring" title="Permalink to this headline">¶</a></h3>
-<p>The <tt class="docutils literal"><span class="pre">Application</span></tt> is created at application startup and is not request-specific, so the easiest thing to do is to obtain it by normal Spring autowiring:</p>
+<p>The <code class="docutils literal"><span class="pre">Application</span></code> is created at application startup and is not request-specific, so the easiest thing to do is to obtain it by normal Spring autowiring:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="nd">@Autowired</span>
 <span class="kd">private</span> <span class="n">Application</span> <span class="n">application</span><span class="o">;</span>
 </pre></div>
@@ -368,7 +368,7 @@
 </div>
 <div class="section" id="application-resolver">
 <h3><a class="toc-backref" href="#id13">Application Resolver</a><a class="headerlink" href="#application-resolver" title="Permalink to this headline">¶</a></h3>
-<p>If you want to look up the Application using only the HttpServletRequest, you can do so in a type-safe way using the <tt class="docutils literal"><span class="pre">ApplicationResolver</span></tt>:</p>
+<p>If you want to look up the Application using only the HttpServletRequest, you can do so in a type-safe way using the <code class="docutils literal"><span class="pre">ApplicationResolver</span></code>:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">com.stormpath.sdk.servlet.application.ApplicationResolver</span><span class="o">;</span>
 <span class="c1">//...</span>
 
@@ -378,21 +378,21 @@
 </div>
 <div class="section" id="id2">
 <h3><a class="toc-backref" href="#id14">Request Attributes</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
-<p>While request attribute lookups are not type-safe (<tt class="docutils literal"><span class="pre">String</span></tt> keys and <tt class="docutils literal"><span class="pre">Object</span></tt> return types), they can be convenient or preferred in some situations.</p>
+<p>While request attribute lookups are not type-safe (<code class="docutils literal"><span class="pre">String</span></code> keys and <code class="docutils literal"><span class="pre">Object</span></code> return types), they can be convenient or preferred in some situations.</p>
 <div class="section" id="default-request-attribute-name">
 <h4>Default Request Attribute Name<a class="headerlink" href="#default-request-attribute-name" title="Permalink to this headline">¶</a></h4>
-<p>The <tt class="docutils literal"><span class="pre">Application</span></tt> will always be available under the request attribute key equal to the <tt class="docutils literal"><span class="pre">Application</span></tt> interface&#8217;s fully qualified class name.  For example:</p>
+<p>The <code class="docutils literal"><span class="pre">Application</span></code> will always be available under the request attribute key equal to the <code class="docutils literal"><span class="pre">Application</span></code> interface&#8217;s fully qualified class name.  For example:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="n">Application</span> <span class="n">myApp</span> <span class="o">=</span> <span class="o">(</span><span class="n">Application</span><span class="o">)</span><span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="n">Application</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="custom-request-attribute-names">
 <h4>Custom Request Attribute Names<a class="headerlink" href="#custom-request-attribute-names" title="Permalink to this headline">¶</a></h4>
-<p>The <tt class="docutils literal"><span class="pre">Application</span></tt> is also available via simpler unqualified attribute names for convenience.  For example, the default convenience attribute name key is just <tt class="docutils literal"><span class="pre">application</span></tt>.  This allows the exact same Application lookup above to be done like this:</p>
+<p>The <code class="docutils literal"><span class="pre">Application</span></code> is also available via simpler unqualified attribute names for convenience.  For example, the default convenience attribute name key is just <code class="docutils literal"><span class="pre">application</span></code>.  This allows the exact same Application lookup above to be done like this:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="n">Application</span> <span class="n">myApp</span> <span class="o">=</span> <span class="o">(</span><span class="n">Application</span><span class="o">)</span><span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;application&quot;</span><span class="o">);</span>
 </pre></div>
 </div>
-<p>If you want to change this name, or add other names, you can change the <tt class="docutils literal"><span class="pre">stormpath.web.request.application.attributeNames</span></tt> configuration property and set a comma-delimited list of names.  For example:</p>
+<p>If you want to change this name, or add other names, you can change the <code class="docutils literal"><span class="pre">stormpath.web.request.application.attributeNames</span></code> configuration property and set a comma-delimited list of names.  For example:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.web.request.application.attributeNames</span> <span class="o">=</span> <span class="s">app, application, stormpathApplication, stormpathApp</span>
 </pre></div>
 </div>
@@ -411,10 +411,10 @@
 </div>
 <div class="section" id="stormpath-sdk-client">
 <span id="request-sdk-client"></span><h2><a class="toc-backref" href="#id15">Stormpath SDK Client</a><a class="headerlink" href="#stormpath-sdk-client" title="Permalink to this headline">¶</a></h2>
-<p>The Spring Boot Stormpath Web Starter uses a Stormpath SDK <tt class="docutils literal"><span class="pre">Client</span></tt> for all communication to Stormpath. You can access this <tt class="docutils literal"><span class="pre">Client</span></tt> for your own needs using Spring autowiring, the <tt class="docutils literal"><span class="pre">ClientResolver</span></tt> or request attributes.</p>
+<p>The Spring Boot Stormpath Web Starter uses a Stormpath SDK <code class="docutils literal"><span class="pre">Client</span></code> for all communication to Stormpath. You can access this <code class="docutils literal"><span class="pre">Client</span></code> for your own needs using Spring autowiring, the <code class="docutils literal"><span class="pre">ClientResolver</span></code> or request attributes.</p>
 <div class="section" id="id3">
 <h3><a class="toc-backref" href="#id16">Spring autowiring</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
-<p>The <tt class="docutils literal"><span class="pre">Client</span></tt> is created at application startup and is not request-specific, so the easiest thing to do is to obtain it by normal Spring autowiring:</p>
+<p>The <code class="docutils literal"><span class="pre">Client</span></code> is created at application startup and is not request-specific, so the easiest thing to do is to obtain it by normal Spring autowiring:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="nd">@Autowired</span>
 <span class="kd">private</span> <span class="n">Client</span> <span class="n">client</span><span class="o">;</span>
 </pre></div>
@@ -422,7 +422,7 @@
 </div>
 <div class="section" id="client-resolver">
 <h3><a class="toc-backref" href="#id17">Client Resolver</a><a class="headerlink" href="#client-resolver" title="Permalink to this headline">¶</a></h3>
-<p>If you want to look up the Client using only the HttpServletRequest, you can do so in a type-safe way using the <tt class="docutils literal"><span class="pre">ClientResolver</span></tt>:</p>
+<p>If you want to look up the Client using only the HttpServletRequest, you can do so in a type-safe way using the <code class="docutils literal"><span class="pre">ClientResolver</span></code>:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">com.stormpath.sdk.servlet.client.ClientResolver</span><span class="o">;</span>
 <span class="c1">//...</span>
 
@@ -432,21 +432,21 @@
 </div>
 <div class="section" id="id4">
 <h3><a class="toc-backref" href="#id18">Request Attributes</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<p>While request attribute lookups are not type-safe (<tt class="docutils literal"><span class="pre">String</span></tt> keys and <tt class="docutils literal"><span class="pre">Object</span></tt> return types), they can be convenient or preferred in some situations.</p>
+<p>While request attribute lookups are not type-safe (<code class="docutils literal"><span class="pre">String</span></code> keys and <code class="docutils literal"><span class="pre">Object</span></code> return types), they can be convenient or preferred in some situations.</p>
 <div class="section" id="id5">
 <h4>Default Request Attribute Name<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
-<p>The <tt class="docutils literal"><span class="pre">Client</span></tt> will always be available under the request attribute key equal to the <tt class="docutils literal"><span class="pre">Client</span></tt> interface&#8217;s fully qualified class name.  For example:</p>
+<p>The <code class="docutils literal"><span class="pre">Client</span></code> will always be available under the request attribute key equal to the <code class="docutils literal"><span class="pre">Client</span></code> interface&#8217;s fully qualified class name.  For example:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="n">Client</span> <span class="n">client</span> <span class="o">=</span> <span class="o">(</span><span class="n">Client</span><span class="o">)</span><span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="n">Client</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="id6">
 <h4>Custom Request Attribute Names<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
-<p>The <tt class="docutils literal"><span class="pre">Client</span></tt> is also available via simpler unqualified attribute names for convenience.  For example, the default convenience attribute name key is just <tt class="docutils literal"><span class="pre">client</span></tt>.  This allows the exact same Client lookup above to be done like this:</p>
+<p>The <code class="docutils literal"><span class="pre">Client</span></code> is also available via simpler unqualified attribute names for convenience.  For example, the default convenience attribute name key is just <code class="docutils literal"><span class="pre">client</span></code>.  This allows the exact same Client lookup above to be done like this:</p>
 <div class="highlight-java"><div class="highlight"><pre><span class="n">Client</span> <span class="n">client</span> <span class="o">=</span> <span class="o">(</span><span class="n">Client</span><span class="o">)</span><span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;client&quot;</span><span class="o">);</span>
 </pre></div>
 </div>
-<p>If you want to change this name, or add other names, you can change the <tt class="docutils literal"><span class="pre">stormpath.web.request.client.attributeNames</span></tt> configuration property and set a comma-delimited list of names.  For example:</p>
+<p>If you want to change this name, or add other names, you can change the <code class="docutils literal"><span class="pre">stormpath.web.request.client.attributeNames</span></code> configuration property and set a comma-delimited list of names.  For example:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.web.request.client.attributeNames</span> <span class="o">=</span> <span class="s">client, stormpathClient, awesomeStormpathClient</span>
 </pre></div>
 </div>
@@ -503,7 +503,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.RC4.3',
+            VERSION:'1.0.RC4.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
