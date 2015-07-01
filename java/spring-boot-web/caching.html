@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Caching &mdash; Spring Boot Stormpath Web Starter 1.0.RC4.3 documentation</title>
+  <title>Caching &mdash; Spring Boot Stormpath Web Starter 1.0.RC4.4 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC4.3 documentation" href="index.html"/>
+    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC4.4 documentation" href="index.html"/>
         <link rel="next" title="ID Site" href="idsite.html"/>
         <link rel="prev" title="Events" href="events.html"/> 
 
@@ -214,10 +214,10 @@
   <div class="section" id="caching">
 <span id="id1"></span><h1>Caching<a class="headerlink" href="#caching" title="Permalink to this headline">¶</a></h1>
 <p>The Stormpath SDK Client supports caching to reduce round-trips to the Stormpath API servers and to improve performance.  By default, a single (non-clustered) in-process memory cache is enabled.</p>
-<p>This behavior is relevant for applications that are deployed to a single JVM only.  If your application is deployed on multiple hosts/nodes simultaneously (i.e. a striped or clustered web application), then you should <a class="reference internal" href="#cache-config"><em>configure a shared cache</em></a> instead to ensure that cached data remains coherent across all application nodes.</p>
+<p>This behavior is relevant for applications that are deployed to a single JVM only.  If your application is deployed on multiple hosts/nodes simultaneously (i.e. a striped or clustered web application), then you should <a class="reference internal" href="#cache-config"><span>configure a shared cache</span></a> instead to ensure that cached data remains coherent across all application nodes.</p>
 <div class="section" id="disable-caching">
 <h2>Disable Caching<a class="headerlink" href="#disable-caching" title="Permalink to this headline">¶</a></h2>
-<p>If you want to disable caching for the Stormpath SDK <tt class="docutils literal"><span class="pre">Client</span></tt> entirely, you can set the <tt class="docutils literal"><span class="pre">stormpath.cache.enabled</span></tt> property to <tt class="docutils literal"><span class="pre">false</span></tt>:</p>
+<p>If you want to disable caching for the Stormpath SDK <code class="docutils literal"><span class="pre">Client</span></code> entirely, you can set the <code class="docutils literal"><span class="pre">stormpath.cache.enabled</span></code> property to <code class="docutils literal"><span class="pre">false</span></code>:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.cache.enabled</span> <span class="o">=</span> <span class="s">false</span>
 </pre></div>
 </div>
@@ -225,30 +225,30 @@
 </div>
 <div class="section" id="cache-configuration">
 <span id="cache-config"></span><h2>Cache Configuration<a class="headerlink" href="#cache-configuration" title="Permalink to this headline">¶</a></h2>
-<p>If you want to control caching behavior, such as specific cache regions and time-to-live or time-to-idle timeouts, you just need to enable Spring&#8217;s caching support.  If you configure a Spring <tt class="docutils literal"><span class="pre">CacheManager</span></tt>, it will automatically be used for the Stormpath SDK Client&#8217;s needs as well.  This ensures that the same cache mechanism is used in your project, ensuring consistent cache config for your application.</p>
+<p>If you want to control caching behavior, such as specific cache regions and time-to-live or time-to-idle timeouts, you just need to enable Spring&#8217;s caching support.  If you configure a Spring <code class="docutils literal"><span class="pre">CacheManager</span></code>, it will automatically be used for the Stormpath SDK Client&#8217;s needs as well.  This ensures that the same cache mechanism is used in your project, ensuring consistent cache config for your application.</p>
 <p>For example, specify the <a class="reference external" href="http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/cache/annotation/EnableCaching.html">&#64;EnableCaching</a> annotation on a Java Config class.  See Spring&#8217;s <a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/cache.html">caching chapter</a> and particularly, <a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/cache.html#cache-store-configuration">configuring a cache store</a>.</p>
 <p>You can enable any of Spring&#8217;s supported cache mechanisms and configure each cache region or TTL and TTI values accordingly.</p>
 <div class="admonition caution">
 <p class="first admonition-title">Caution</p>
-<p class="last">If your application is deployed on multiple hosts/nodes simultaneously, it is important to configure a Spring <tt class="docutils literal"><span class="pre">CacheManager</span></tt> that supports <a class="reference external" href="http://en.wikipedia.org/wiki/Cache_coherence">coherent</a> distributed memory, like Hazelcast, Redis, Gemfire, etc.  This ensures that all of your application nodes &#8216;see&#8217; the same data and minimizes the likelihood of any one node seeing stale data.</p>
+<p class="last">If your application is deployed on multiple hosts/nodes simultaneously, it is important to configure a Spring <code class="docutils literal"><span class="pre">CacheManager</span></code> that supports <a class="reference external" href="http://en.wikipedia.org/wiki/Cache_coherence">coherent</a> distributed memory, like Hazelcast, Redis, Gemfire, etc.  This ensures that all of your application nodes &#8216;see&#8217; the same data and minimizes the likelihood of any one node seeing stale data.</p>
 </div>
 <div class="section" id="cache-regions">
 <h3>Cache Regions<a class="headerlink" href="#cache-regions" title="Permalink to this headline">¶</a></h3>
 <p>Resources retrieved from the Stormpath API servers are cached in regions named after the fully-qualified name of the <em>interface</em> (not concrete implementation class) of the resource type, for example:</p>
 <ul class="simple">
-<li><tt class="docutils literal"><span class="pre">com.stormpath.sdk.application.Application</span></tt></li>
-<li><tt class="docutils literal"><span class="pre">com.stormpath.sdk.account.Account</span></tt></li>
+<li><code class="docutils literal"><span class="pre">com.stormpath.sdk.application.Application</span></code></li>
+<li><code class="docutils literal"><span class="pre">com.stormpath.sdk.account.Account</span></code></li>
 <li>etc.</li>
 </ul>
 <p>This allows you to configure region-specific TTL and TTI values based on type.  We typically recommend a minimum TTL and TTI of 5 minutes, potentially moving up to 1 hour or more if you have enough cache memory space.</p>
 <div class="section" id="nonce-cache-region">
 <h4>Nonce Cache Region<a class="headerlink" href="#nonce-cache-region" title="Permalink to this headline">¶</a></h4>
-<p>In addition to the type-specific regions mentioned above, another region exists to cache nonce values (nonce = &#8216;number used once&#8217;) for certain cryptographic values that should not be repeated at runtime. By default, the cache region is named <tt class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.nonces</span></tt> and each nonce value will be cached in that region.</p>
-<p>If you want to change the name of the region, you can set the <tt class="docutils literal"><span class="pre">stormpath.web.nonce.cache.name</span></tt> configuration property and specify your own region name.</p>
+<p>In addition to the type-specific regions mentioned above, another region exists to cache nonce values (nonce = &#8216;number used once&#8217;) for certain cryptographic values that should not be repeated at runtime. By default, the cache region is named <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.nonces</span></code> and each nonce value will be cached in that region.</p>
+<p>If you want to change the name of the region, you can set the <code class="docutils literal"><span class="pre">stormpath.web.nonce.cache.name</span></code> configuration property and specify your own region name.</p>
 <div class="admonition caution">
 <p class="first admonition-title">Caution</p>
 <p>Because the nonce cache region is used for CSRF (Cross Site Request Forgery) attack prevention, any TTL or TTI specified for this region <em>must</em> be longer than the CSRF token TTL.  By default, the CSRF token TTL is 1 hour (3,600,000 milliseconds), so you must ensure that the nonce cache region has the same or longer TTL and TTI.</p>
-<p class="last">Also, if you change the CSRF token TTL (via the <tt class="docutils literal"><span class="pre">stormpath.web.csrf.token.ttl</span></tt> property), you <em>must</em> ensure the nonce cache region TTL and TTI are both longer than the CSRF token TTL (even if it is just by 1 second).</p>
+<p class="last">Also, if you change the CSRF token TTL (via the <code class="docutils literal"><span class="pre">stormpath.web.csrf.token.ttl</span></code> property), you <em>must</em> ensure the nonce cache region TTL and TTI are both longer than the CSRF token TTL (even if it is just by 1 second).</p>
 </div>
 </div>
 </div>
@@ -293,7 +293,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.RC4.3',
+            VERSION:'1.0.RC4.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

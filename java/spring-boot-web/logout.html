@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Logout &mdash; Spring Boot Stormpath Web Starter 1.0.RC4.3 documentation</title>
+  <title>Logout &mdash; Spring Boot Stormpath Web Starter 1.0.RC4.4 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC4.3 documentation" href="index.html"/>
+    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC4.4 documentation" href="index.html"/>
         <link rel="next" title="HTTP Request Authentication" href="http-request-authentication.html"/>
         <link rel="prev" title="Forgot Password" href="forgot-password.html"/> 
 
@@ -213,41 +213,41 @@
             
   <div class="section" id="logout">
 <span id="id1"></span><h1>Logout<a class="headerlink" href="#logout" title="Permalink to this headline">¶</a></h1>
-<p>Logging out a user is simple: just redirect the user to <tt class="docutils literal"><span class="pre">/logout</span></tt>. This will:</p>
+<p>Logging out a user is simple: just redirect the user to <code class="docutils literal"><span class="pre">/logout</span></code>. This will:</p>
 <ul class="simple">
-<li>Trigger a <tt class="docutils literal"><span class="pre">LogoutRequestEvent</span></tt>.  You can listen for this event and perform custom cleanup logic if desired.</li>
+<li>Trigger a <code class="docutils literal"><span class="pre">LogoutRequestEvent</span></code>.  You can listen for this event and perform custom cleanup logic if desired.</li>
 <li>Clear any authentication state that may be associated with the logged in account (like identity cookies or JWT tokens, etc).</li>
 <li>Clear any request identity.</li>
 <li>Terminate the user&#8217;s HTTP session if one exists as it could be a security risk to allow the session to live.</li>
 </ul>
 <div class="section" id="uri">
 <h2>URI<a class="headerlink" href="#uri" title="Permalink to this headline">¶</a></h2>
-<p>Users will be logged-out if they visit <tt class="docutils literal"><span class="pre">/logout</span></tt>.</p>
-<p>If you want to change this path, set the <tt class="docutils literal"><span class="pre">stormpath.web.logout.uri</span></tt> configuration property:</p>
+<p>Users will be logged-out if they visit <code class="docutils literal"><span class="pre">/logout</span></code>.</p>
+<p>If you want to change this path, set the <code class="docutils literal"><span class="pre">stormpath.web.logout.uri</span></code> configuration property:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span class="c"># The context-relative path that will log out the user if visited:</span>
 <span class="na">stormpath.web.logout.uri</span> <span class="o">=</span> <span class="s">/logout</span>
 </pre></div>
 </div>
 <div class="section" id="next-query-parameter">
 <h3>Next Query Parameter<a class="headerlink" href="#next-query-parameter" title="Permalink to this headline">¶</a></h3>
-<p>The logout controller supports a <tt class="docutils literal"><span class="pre">next</span></tt> query parameter.  If present in the request, the value must be a context-relative path to where the user should be redirected after the current request completes.</p>
-<p>If the logout URI is visited with a <tt class="docutils literal"><span class="pre">next</span></tt> query parameter, the user will be redirected to the <tt class="docutils literal"><span class="pre">next</span></tt> path instead of the default <tt class="docutils literal"><span class="pre">nextUri</span></tt>.</p>
+<p>The logout controller supports a <code class="docutils literal"><span class="pre">next</span></code> query parameter.  If present in the request, the value must be a context-relative path to where the user should be redirected after the current request completes.</p>
+<p>If the logout URI is visited with a <code class="docutils literal"><span class="pre">next</span></code> query parameter, the user will be redirected to the <code class="docutils literal"><span class="pre">next</span></code> path instead of the default <code class="docutils literal"><span class="pre">nextUri</span></code>.</p>
 </div>
 </div>
 <div class="section" id="next-uri">
 <h2>Next URI<a class="headerlink" href="#next-uri" title="Permalink to this headline">¶</a></h2>
-<p>If the request to the logout URI does not have a <tt class="docutils literal"><span class="pre">next</span></tt> query parameter, the user will be redirected to the application&#8217;s web context root path (&#8216;home page&#8217;) by default.</p>
-<p>If you want the user to visit a different default post-logout path, set the <tt class="docutils literal"><span class="pre">stormpath.web.logout.nextUri</span></tt> configuration property:</p>
+<p>If the request to the logout URI does not have a <code class="docutils literal"><span class="pre">next</span></code> query parameter, the user will be redirected to the application&#8217;s web context root path (&#8216;home page&#8217;) by default.</p>
+<p>If you want the user to visit a different default post-logout path, set the <code class="docutils literal"><span class="pre">stormpath.web.logout.nextUri</span></code> configuration property:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span class="c"># The default context-relative path where the user will be redirected after logout:</span>
 <span class="na">stormpath.web.logout.nextUri</span> <span class="o">=</span> <span class="s">/</span>
 </pre></div>
 </div>
-<p>If the request to the logout URI has a <tt class="docutils literal"><span class="pre">next</span></tt> query parameter, that parameter value will be used as the context-relative path instead and the <tt class="docutils literal"><span class="pre">stormpath.web.logout.nextUri</span></tt> value will be ignored.</p>
+<p>If the request to the logout URI has a <code class="docutils literal"><span class="pre">next</span></code> query parameter, that parameter value will be used as the context-relative path instead and the <code class="docutils literal"><span class="pre">stormpath.web.logout.nextUri</span></code> value will be ignored.</p>
 </div>
 <div class="section" id="events">
 <h2>Events<a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
-<p>If you implement a <a class="reference internal" href="events.html#events"><em>Request Event Listener</em></a>, you can listen for the <tt class="docutils literal"><span class="pre">LogoutRequestEvent</span></tt>.</p>
-<p>The <tt class="docutils literal"><span class="pre">LogoutRequestEvent</span></tt> is published when processing an HTTP request that will logout the request&#8217;s associated <tt class="docutils literal"><span class="pre">Account</span></tt>.  After the request is complete, the account will be logged out.</p>
+<p>If you implement a <a class="reference internal" href="events.html#events"><span>Request Event Listener</span></a>, you can listen for the <code class="docutils literal"><span class="pre">LogoutRequestEvent</span></code>.</p>
+<p>The <code class="docutils literal"><span class="pre">LogoutRequestEvent</span></code> is published when processing an HTTP request that will logout the request&#8217;s associated <code class="docutils literal"><span class="pre">Account</span></code>.  After the request is complete, the account will be logged out.</p>
 </div>
 </div>
 
@@ -289,7 +289,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.RC4.3',
+            VERSION:'1.0.RC4.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

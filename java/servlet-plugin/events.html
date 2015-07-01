@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Events &mdash; Stormpath Java Servlet Plugin 1.0.RC4.3 documentation</title>
+  <title>Events &mdash; Stormpath Java Servlet Plugin 1.0.RC4.4 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Stormpath Java Servlet Plugin 1.0.RC4.3 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath Java Servlet Plugin 1.0.RC4.4 documentation" href="index.html"/>
         <link rel="next" title="Caching" href="caching.html"/>
         <link rel="prev" title="Internationalization (i18n)" href="i18n.html"/> 
 
@@ -209,16 +209,16 @@
 <p>The Stormpath Java Servlet Plugin will trigger events when interesting things happen.  You can listen for these events and implement custom behavior when desired.</p>
 <div class="section" id="requesteventlistener">
 <h2>RequestEventListener<a class="headerlink" href="#requesteventlistener" title="Permalink to this headline">¶</a></h2>
-<p>When the plugin publishes various events, a <tt class="docutils literal"><span class="pre">RequestEventListener</span></tt> will be notified.  If you want to listen for events, you can implement your own <tt class="docutils literal"><span class="pre">RequestEventListener</span></tt> in one of two ways:</p>
+<p>When the plugin publishes various events, a <code class="docutils literal"><span class="pre">RequestEventListener</span></code> will be notified.  If you want to listen for events, you can implement your own <code class="docutils literal"><span class="pre">RequestEventListener</span></code> in one of two ways:</p>
 <ol class="arabic simple">
-<li>Implement the <tt class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.event.RequestEventListener</span></tt> interface directly and implement all event methods.</li>
-<li>Subclass the <tt class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.event.RequestEventListenerAdapter</span></tt> and override only the event methods you are interested in.</li>
+<li>Implement the <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.event.RequestEventListener</span></code> interface directly and implement all event methods.</li>
+<li>Subclass the <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.event.RequestEventListenerAdapter</span></code> and override only the event methods you are interested in.</li>
 </ol>
-<p>You may specify your implementation&#8217;s fully qualified class name using the <tt class="docutils literal"><span class="pre">stormpath.web.event.listener</span></tt> configuration property:</p>
+<p>You may specify your implementation&#8217;s fully qualified class name using the <code class="docutils literal"><span class="pre">stormpath.web.event.listener</span></code> configuration property:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.web.request.event.listener</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.event.RequestEventListenerAdapter</span>
 </pre></div>
 </div>
-<p>As you can see, the default implementation is an instance of the adapter, which simply just logs each event to the <tt class="docutils literal"><span class="pre">debug</span></tt> log level.</p>
+<p>As you can see, the default implementation is an instance of the adapter, which simply just logs each event to the <code class="docutils literal"><span class="pre">debug</span></code> log level.</p>
 </div>
 <div class="section" id="id2">
 <h2>Events<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
@@ -234,23 +234,23 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">SuccessfulAuthenticationRequestEvent</span></tt></td>
-<td>successfully authenticates an <tt class="docutils literal"><span class="pre">Account</span></tt></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">SuccessfulAuthenticationRequestEvent</span></code></td>
+<td>successfully authenticates an <code class="docutils literal"><span class="pre">Account</span></code></td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">FailedAuthenticationRequestEvent</span></tt></td>
-<td>attempts to authenticate an <tt class="docutils literal"><span class="pre">Account</span></tt> but the authentication attempt failed</td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">FailedAuthenticationRequestEvent</span></code></td>
+<td>attempts to authenticate an <code class="docutils literal"><span class="pre">Account</span></code> but the authentication attempt failed</td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">RegisteredAccountRequestEvent</span></tt></td>
-<td>results in a newly registered <tt class="docutils literal"><span class="pre">Account</span></tt>.  If the newly registered account
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">RegisteredAccountRequestEvent</span></code></td>
+<td>results in a newly registered <code class="docutils literal"><span class="pre">Account</span></code>.  If the newly registered account
 requires email verification before it can login,
-<tt class="docutils literal"><span class="pre">event.getAccount().getStatus()</span> <span class="pre">==</span> <span class="pre">AccountStatus.UNDEFINED</span></tt> will be <tt class="docutils literal"><span class="pre">true</span></tt></td>
+<code class="docutils literal"><span class="pre">event.getAccount().getStatus()</span> <span class="pre">==</span> <span class="pre">AccountStatus.UNDEFINED</span></code> will be <code class="docutils literal"><span class="pre">true</span></code></td>
 </tr>
-<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">VerifiedAccountRequestEvent</span></tt></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">VerifiedAccountRequestEvent</span></code></td>
 <td>verifies an account&#8217;s email address.  The event&#8217;s associated account is
 considered verified and may login to the application.</td>
 </tr>
-<tr class="row-even"><td><tt class="docutils literal"><span class="pre">LogoutRequestEvent</span></tt></td>
-<td>will logout the request&#8217;s associated <tt class="docutils literal"><span class="pre">Account</span></tt>.  After the request is
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">LogoutRequestEvent</span></code></td>
+<td>will logout the request&#8217;s associated <code class="docutils literal"><span class="pre">Account</span></code>.  After the request is
 complete, the account will be logged out.</td>
 </tr>
 </tbody>
@@ -259,7 +259,7 @@ complete, the account will be logged out.</td>
 <div class="section" id="listener-best-practices">
 <h2>Listener Best Practices<a class="headerlink" href="#listener-best-practices" title="Permalink to this headline">¶</a></h2>
 <p>Events are sent and consumed <em>synchronously</em> during the HTTP request that triggers them.</p>
-<p>To ensure requests are responded to quickly, ensure your event listener methods return quickly or dispatch work asynchronously to another thread or <tt class="docutils literal"><span class="pre">ExecutorService</span></tt> (for example).</p>
+<p>To ensure requests are responded to quickly, ensure your event listener methods return quickly or dispatch work asynchronously to another thread or <code class="docutils literal"><span class="pre">ExecutorService</span></code> (for example).</p>
 </div>
 </div>
 
@@ -301,7 +301,7 @@ complete, the account will be logged out.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.RC4.3',
+            VERSION:'1.0.RC4.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
