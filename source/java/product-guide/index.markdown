@@ -1312,6 +1312,16 @@ At the time you create the request, it is likely that you may know the account s
 	AccountStore accountStore = anAccountStoreMapping.getAccountStore();
 	UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("usernameOrEmail", "password", accountStore);
     AuthenticationResult result = application.authenticateAccount(authenticationRequest);
+    
+#### Authentication Expansion 
+
+If you want the actual account object returned from a successful authentication attempt, then you can [expand the account in-line](#links-expansion) using `AuthenticationOptions`.  For example:
+
+    UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("johnsmith", "badPassword");
+    AuthenticationOptions options = Authentications.BASIC.options().withAccount();
+    AuthenticationResult result = application.authenticateAccount(authenticationRequest, options);
+
+If the login attempt is successful, the `Account` in the `AuthenticationResult` will be already expanded, therefore the following operation will not hit the server: `Account account = result.getAccount();`
 
 <a class="anchor" name="application-password-reset"></a>
 #### Reset An Account's Password
