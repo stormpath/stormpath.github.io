@@ -1352,7 +1352,8 @@ The `sendPasswordResetEmail` method of an application instance must be called to
 
 **Example Request**
 
-    Account account = application.sendPasswordResetEmail("john.smith@example.com");
+    PasswordResetToken passwordResetToken = application.sendPasswordResetEmail("john.smith@example.com");
+    Account account = passwordResetToken.getAccount();
 
 A successfully returned account by this request indicates that a password reset email will be sent as soon as possible to the email specified.
 
