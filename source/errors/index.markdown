@@ -6,6 +6,10 @@ alias: [/stormpath-error-codes]
 lang: rest
 ---
 
+## <a id="BillingPayment"></a>19XX: Billing / Payment
+
+<a id="1902"></a>[**1902**](/errors/1902): Reserved application limit reached. Please add more applications in the admin console.
+
 ##<a id="GeneralValidation"></a>2XXX: General Validation
 
 <a id="2000"></a>[**2000**](/errors/2000): The property value is required; it cannot be null, empty, or blank.
