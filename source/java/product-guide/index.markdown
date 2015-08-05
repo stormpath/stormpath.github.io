@@ -274,10 +274,14 @@ For example, using the SDK Communication Flow diagram in the [high-level overvie
 
 Using the static Client configuration:
 
-    String href = "https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE";
+    String href = "/accounts/ACCOUNT_UID_HERE";
     Account account = client.getDataStore().getResource(href, Account.class);
 
 This retrieves the account at the specified `href` location using an HTTP `GET` request.
+
+Notice that `getResource()` method supports receiving the `href` param as a fragment of the resource's absolute href. In the example above, the `href` parameter will be resolved using the `baseUrl` defined when building the client, so it is equivalent to doing:
+
+    String href = "https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE";
 
 If you also want information about the `directory` owning that account, every account has a reference to the parent directory location in the JSON representation. For example:
 
