@@ -279,7 +279,7 @@ Using the static Client configuration:
 
 This retrieves the account at the specified `href` location using an HTTP `GET` request.
 
-Notice that `getResource()` method supports receiving the `href` param as a fragment of the resource's absolute URL. In the example above, the `href` parameter will be resolved using the `baseUrl` defined when building the client, so it is equivalent to doing:
+Notice that `getResource()` method supports receiving the `href` parameter as a fragment of the resource's absolute URL. In the example above, the `href` parameter will be resolved using the `baseUrl` defined when building the client, so it is equivalent to:
 
     String href = "https://api.stormpath.com/v1/accounts/ACCOUNT_UID_HERE";
 
