@@ -6,7 +6,6 @@ image: https://stormpath.com/images/tutorial/php.png
 title: Stormpath PHP Quickstart
 ---
 
-
 Welcome to Stormpath's PHP Quickstart!
 
 This quickstart will get you up and running with Stormpath in about 7 minutes
@@ -34,7 +33,7 @@ Let's get started!
 
 {% docs note %}
 Stormpath works with PHP *5.3* and higher.  This documentation covers version
-*1.3.0.beta* of our PHP library.
+*1.8.0.beta* of our PHP library.
 {% enddocs %}
 
 You can install [Stormpath](https://github.com/stormpath/stormpath-sdk-php) using [composer](https://getcomposer.org/).
@@ -49,7 +48,7 @@ You can install [Stormpath](https://github.com/stormpath/stormpath-sdk-php) usin
 
         {
           "require": {
-            "stormpath/sdk": "1.3.*@beta"
+            "stormpath/sdk": "1.8.*@beta"
           }
         }
 	
