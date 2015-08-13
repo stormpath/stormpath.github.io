@@ -2737,19 +2737,14 @@ In all cases, the process is fundamentally the same. Consider the first case as 
 To create a group membership from the Account, you need the group, the group href or the group name. In the example below, all the uses of addGroup() method are valid and equivalent:
 
     account.addGroup(group);
-
     account.addGroup(group.getHref());
-
     account.addGroup(group.getName());
 
 In a similar way, to add a group membership from the Group, you need the account, its href, username or email. The following calls are valid and equivalent:
 
     group.addAccount(account);
-
     group.addAccount(account.getHref());
-
     group.addAccount(account.getEmail());
-
     group.addAccount(account.getUsername());
 
 <a class="anchor" name="group-membership-retrieve"></a>
@@ -2759,6 +2754,24 @@ A request returns a representation of a `groupMembership` resource that includes
 
     String href = "https://api.stormpath.com/v1/groupMemberships/249Up9ojT6NUNEYocdG4Dj";
     GroupMembership groupMembership = client.getResource(href, GroupMembership.class);
+
+<a class="anchor" name="group-membership-delete"></a>
+### Delete a Group Membership
+
+Deleting a group membership completely erases the groupMembership resource from Stormpath. This operation does not delete the group or the account involved in the group membership, only the association between them.
+
+This operation can be performed from the Account or the Group. When deleting a group membership from the Account, you need the group, its href or name. In the example below, all calls are valid and equivalent:
+
+    account.removeGroup(group);
+    account.removeGroup(group.getHref());
+    account.removeGroup(group.getName());
+
+When deleting a group membership from the Group, you need the account, its href, username or email. In the example below, all calls are equivalent:
+
+    group.removeAccount(account);
+    group.removeAccount(account.getHref());
+    group.removeAccount(account.getEmail());
+    group.removeAccount(account.getUsername());
 
 <a class="anchor" name="group-membership-resources-expand"></a>
 #### Expandable Resources
