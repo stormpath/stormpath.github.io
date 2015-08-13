@@ -3039,7 +3039,7 @@ To assign an account to a group:
 
     account.addGroup(group);
 
-Both the account and the group must exist and contain a valid `href` property. For more information about assigning accounts to groups, see the <a href="#group-memberships">Group Memberships section</a>.
+Both the account and the group must exist and contain a valid `href` property. For more information about assigning accounts to groups, see the <a href="#group-membership-create">Create a Group Membership section</a>.
 
 <a class="anchor" name="account-remove-group"></a>
 #### Remove an Account from a Group
@@ -3056,7 +3056,7 @@ If instead of the groupMembership, you have the group, you can remove the accoun
 
     account.removeGroup(group);
 
-For more information about removing accounts from groups, see the <a href="#group-memberships">Group Memberships section</a>.
+For more information about removing accounts from groups, see the <a href="#group-membership-delete">Delete a Group Membership section</a>.
 
 <a class="anchor" name="account-enable"></a>
 #### Enable or Disable an Account
