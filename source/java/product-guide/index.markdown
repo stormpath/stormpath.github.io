@@ -2734,13 +2734,23 @@ In all cases, the process is fundamentally the same. Consider the first case as 
 <a class="anchor" name="group-membership-create"></a>
 ### Create a Group Membership
 
-To create a group membership you need the account and the group.
+To create a group membership from the Account, you need the group, the group href or the group name. In the example below, all the uses of addGroup() method are valid and equivalent:
 
     account.addGroup(group);
 
-Or, from the group
+    account.addGroup(group.getHref());
+
+    account.addGroup(group.getName());
+
+In a similar way, to add a group membership from the Group, you need the account, its href, username or email. The following calls are valid and equivalent:
 
     group.addAccount(account);
+
+    group.addAccount(account.getHref());
+
+    group.addAccount(account.getEmail());
+
+    group.addAccount(account.getUsername());
 
 <a class="anchor" name="group-membership-retrieve"></a>
 ### Retrieve a Group Membership
