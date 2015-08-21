@@ -3721,6 +3721,218 @@ The returned `FacebookProviderData` will include:
 
 ***
 
+<a class="anchor" name="integration-github"></a>
+## Integrating with Github
+
+Stormpath supports accessing accounts from a number of different locations including Github.  Github uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code. 
+
+The steps to enable this functionality into your application include:
+
++ [Create a Github Directory](#creating-a-github-directory)
++ Create an `Account Store Mapping` between a Github Directory and your `Application`
++ [Accessing Accounts with Github User Access Tokens](#accessing-accounts-with-github-user-access-tokens)
+
+Github Directories follow behavior similar to [mirror directories](#directory-mirror), but have a `Provider` resource that contains information regarding the Github application that the directory is configured for.
+
+### Github Provider Resource
+
+A `GithubProvider` resource holds specific information needed for working with a Github Directory.  It is important to understand the format of the provider resource when creating and updating a Github Directory.
+
+A provider resource can be obtained by accessing the directory's provider as follows:
+
+Example Request
+
+    GithubProvider provider = client.getResource("https://api.stormpath.com/v1/directories/eckhcGMrQDujpXpbCDRb3L/provider", GithubProvider.class);
+        
+or, by means of the directory Resource:
+
+    GithubProvider provider = (GithubProvider) directory.getProvider();
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`clientId` | The App ID for your Github application | String | --
+`clientSecret` | The App Secret for your Github application | String | -- 
+`providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'github'
+
+In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
+
++ `href` : The fully qualified location of the custom data resource
++ `createdAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
++ `modifiedAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
+
+### Creating a Github Directory
+
+Creating a Github Directory requires that you gather some information beforehand from Github's Developer Console regarding your application.  
+
++ Client ID
++ Client Secret
+
+Creating a Github Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a Github Directory to be configured correctly, you must specify the correct `Provider` information. 
+
+**Example Request**
+
+    Directory directory = client.instantiate(Directory.class);
+    directory.setName("my-github-directory")
+             .setDescription("A Github directory");
+
+    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
+                forProvider(Providers.GITHUB.builder()
+                        .setClientId("966ha2c75t1706f3f34e")
+                        .setClientSecret("12o26d5eybab2384ca8b4341d7eu5bf1e3dc8df6")
+                        .build()
+                ).build();
+
+    Tenant tenant = client.getCurrentTenant();
+    directory = tenant.createDirectory(request);
+
+
+After the Github Directory has been created, it needs to be [mapped with an application as an account store](#application-account-store-mappings). The Github Directory cannot be a default account store or a default group store.  Once the directory is mapped to an account store for an application, you are ready to access `Accounts` with Github User Access Tokens.
+
+### Accessing Accounts with Github User Access Tokens
+
+To access or create an account in an already created Github Directory, it is required to gather the `User Access Token` on behalf of the user.
+
+Once the Authorization Code is gathered, you can get or create the `Account` by means of the `Application` and specifying its `ProviderData`. The following example shows how you use `ProviderData` to get an `Account` for a given authorization code:
+
+
+**Example Request**
+
+    String applicationHref = "https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu";
+    Application application = client.getResource(applicationHref, Application.class);
+    ProviderAccountRequest request = Providers.GITHUB.account()
+                .setAccessToken("di3e16c7e42f294c6812e711lc838347ae175b3r")
+                .build();
+
+    ProviderAccountResult result = application.getAccount(request);
+    Account account = result.getAccount();
+
+
+{% docs note %}
+In order to know if the account was created or if it already existed in the Stormpath's Github Directory you can do: `result.isNewAccount();`. It will return `true` if it is a newly created account; `false` otherwise.
+{% enddocs %}
+
+Once an `Account` is retrieved, Stormpath maps common fields for the Github User to the  Account.  The access token for any additional calls in the `GithubProviderData` resource and can be retrieved by:
+
+    GithubProviderData providerData = (GithubProviderData) account.getProviderData();
+
+The returned `GithubProviderData` will include:
+
+    providerData.getAccessToken(); //-> di3e16c7e42f294c6812e711lc838347ae175b3r
+    providerData.getCreatedAt(); //-> 2015-07-02T18:21:09.126Z
+    providerData.getHref(); //-> https://api.stormpath.com/v1/accounts/tiQGtETeeH0tbHRnas1D0/providerData
+    providerData.getModifiedAt(); //-> 2015-07-05T17:10:04.128Z
+    providerData.getProviderId(); //-> github
+
+***
+
+<a class="anchor" name="integration-linkedin"></a>
+## Integrating with LinkedIn
+
+Stormpath supports accessing accounts from a number of different locations including LinkedIn.  LinkedIn uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code. 
+
+The steps to enable this functionality into your application include:
+
++ [Create a LinkedIn Directory](#creating-a-linkedin-directory)
++ Create an `Account Store Mapping` between a LinkedIn Directory and your `Application`
++ [Accessing Accounts with LinkedIn User Access Tokens](#accessing-accounts-with-linkedin-user-access-tokens)
+
+LinkedIn Directories follow behavior similar to [mirror directories](#directory-mirror), but have a `Provider` resource that contains information regarding the LinkedIn application that the directory is configured for.
+
+### LinkedIn Provider Resource
+
+A `LinkedInProvider` resource holds specific information needed for working with a LinkedIn Directory.  It is important to understand the format of the provider resource when creating and updating a LinkedIn Directory.
+
+A provider resource can be obtained by accessing the directory's provider as follows:
+
+Example Request
+
+    LinkedInProvider provider = client.getResource("https://api.stormpath.com/v1/directories/tckhcG5rQDurpXpbCtRb3n/provider", LinkedInProvider.class);
+        
+or, by means of the directory Resource:
+
+    LinkedInProvider provider = (LinkedInProvider) directory.getProvider();
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`clientId` | The App ID for your LinkedIn application | String | --
+`clientSecret` | The App Secret for your LinkedIn application | String | -- 
+`providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'linkedin'
+
+In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
+
++ `href` : The fully qualified location of the custom data resource
++ `createdAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
++ `modifiedAt` : the UTC timestamp with millisecond precision of when the resource was created in Stormpath as an [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601) formatted string
+
+### Creating a LinkedIn Directory
+
+Creating a LinkedIn Directory requires that you gather some information beforehand from LinkedIn's Developer Console regarding your application.  
+
++ Client ID
++ Client Secret
+
+Creating a LinkedIn Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a LinkedIn Directory to be configured correctly, you must specify the correct `Provider` information. 
+
+**Example Request**
+
+    Directory directory = client.instantiate(Directory.class);
+    directory.setName("my-linkedin-directory")
+             .setDescription("A LinkedIn directory");
+
+    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
+                forProvider(Providers.LINKEDIN.builder()
+                        .setClientId("25u1dw2frl02v2")
+                        .setClientSecret("tJhYc92lq3jCOr23")
+                        .build()
+                ).build();
+
+    Tenant tenant = client.getCurrentTenant();
+    directory = tenant.createDirectory(request);
+
+
+After the LinkedIn Directory has been created, it needs to be [mapped with an application as an account store](#application-account-store-mappings). The LinkedIn Directory cannot be a default account store or a default group store.  Once the directory is mapped to an account store for an application, you are ready to access `Accounts` with LinkedIn User Access Tokens.
+
+### Accessing Accounts with LinkedIn User Access Tokens
+
+To access or create an account in an already created LinkedIn Directory, it is required to gather the `User Access Token` on behalf of the user.
+
+Once the Authorization Code is gathered, you can get or create the `Account` by means of the `Application` and specifying its `ProviderData`. The following example shows how you use `ProviderData` to get an `Account` for a given authorization code:
+
+
+**Example Request**
+
+    String applicationHref = "https://api.stormpath.com/v1/applications/24mp4us71ntza6lBwlu";
+    Application application = client.getResource(applicationHref, Application.class);
+    ProviderAccountRequest request = Providers.LINKEDIN.account()
+                .setAccessToken("AQXiKlCpWAll5xh7r11B1mL5IA302lVoWk6SQ-GNFVgGO7eLYiGtqNJHU70G9--LB2S64ZCQRSc9ypBum6-wHLS43cEOrZV6oNG7CZlTuMU6VsFuyaK6sMh_b6wpD1QpcEqA3MQKfaLtCdH_ERw_oKPUMDlCK9_-_En3bQB6wURmPaahLdo")
+                .build();
+
+    ProviderAccountResult result = application.getAccount(request);
+    Account account = result.getAccount();
+
+
+{% docs note %}
+In order to know if the account was created or if it already existed in the Stormpath's LinkedIn Directory you can do: `result.isNewAccount();`. It will return `true` if it is a newly created account; `false` otherwise.
+{% enddocs %}
+
+Once an `Account` is retrieved, Stormpath maps common fields for the LinkedIn User to the  Account.  The access token for any additional calls in the `LinkedInProviderData` resource and can be retrieved by:
+
+    LinkedInProviderData providerData = (LinkedInProviderData) account.getProviderData();
+
+The returned `LinkedInProviderData` will include:
+
+    providerData.getAccessToken(); //-> AQXiKlCpWAll5xh7r11B1mL5IA302lVoWk6SQ-GNFVgGO7eLYiGtqNJHU70G9--LB2S64ZCQRSc9ypBum6-wHLS43cEOrZV6oNG7CZlTuMU6VsFuyaK6sMh_b6wpD1QpcEqA3MQKfaLtCdH_ERw_oKPUMDlCK9_-_En3bQB6wURmPaahLdo
+    providerData.getCreatedAt(); //-> 2015-07-02T19:41:09.223Z
+    providerData.getHref(); //-> https://api.stormpath.com/v1/accounts/diObtEYytH0tbHwBas1e7/providerData
+    providerData.getModifiedAt(); //-> 2015-07-05T07:11:09.320Z
+    providerData.getProviderId(); //-> linkedin
+
+***
+
 ## Java Sample Code 
 
 ### Spring MVC Sample App 
