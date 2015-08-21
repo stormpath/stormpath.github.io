@@ -245,6 +245,14 @@ For example, using the SDK Communication Flow diagram in the [high-level overvie
 
 This retrieves the account at the specified `href` location using an HTTP `GET` request.
 
+It is also possible to provide partial `href`, which will be resolved using the `base_url` parameter specified on `Client` instance creation. For example:
+
+    client = Client(base_url='https://enterprise.stormpath.io/v1')
+    account_href = '/accounts/ACCOUNT_UID_HERE'
+    account = client.accounts.get(account_href)
+
+This retrieves the account at https://enterprise.stormpath.io/v1/accounts/ACCOUNT_UID_HERE using an HTTP `GET` request. 
+
 If you also want information about the `directory` owning that account, every account has a reference to the parent directory location in the JSON representation. For example:
 
     {
