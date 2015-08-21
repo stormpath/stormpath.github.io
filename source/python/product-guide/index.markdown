@@ -2202,6 +2202,95 @@ Account resources support the full suite of CRUD commands and other interactions
 
 ***
 
+### Directory Account Creation Policy
+
+A Directory's `Account Creation Policy` resource contains data and properties that control what Stormpath does when an `Account` is created.  This includes email verification and welcome emails.
+
+The `Account Creation Policy` can be retrieved by interacting with the directory resource.  The directory resource has a `account_creation_policy` attribute to the `Account Creation Policy`.
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`verification_email_status` | The status of the verification email workflow.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account to have them verify their email.  The email sent is configurable through `verification_email_templates` property | String | `ENABLED` or `DISABLED`
+`verification_email_templates` | A collection of email templates that can be used for sending the 'email verification' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | -- 
+`verification_success_email_status` | The status of the verification success email.  If this is set to `ENABLED`, Stormpath will send an email to a newly verified account to let them know that they have successfully verified their email.  The email sent is configurable through `verification_success_email_templates` property | String | `ENABLED` or `DISABLED`
+`verification_success_email_templates`| A collection of email templates that can be used for sending 'email verification success' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | -- 
+`welcome_email_status` | The status of the welcome email.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account (if `verification_email_status` is set to disabled) or a newly verified account (if `verification_email_status` is set to enabled).  The email sent is configurable through `welcome_email_templates` property | String | `ENABLED` or `DISABLED`
+`welcome_email_templates` | A collection of email templates that can be used for sending a welcome email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | -- 
+`created_at` | A Datetime value that represents when this resource was created | Datetime | <span>--</span>
+`modified_at` | A Datetime value that represents when this resource's properties were last modified | Datetime | <span>--</span>
+
+**Directory Account Creation Policy Class**
+
+    \stormpath\resources\account_creation_policy
+
+An account creation policy resource can be obtained by accessing the directory’s account_creation_policy attribute:
+
+**Example**
+
+    d = client.directories[0]
+    print d.account_creation_policy.href
+
+Using the `Account Creation Policy` for a directory you can:
+
++ [Enable or Disable the Verification, Verification Success, or Welcome Email](#enable-verification-welcome-email-status)
++ [Modify the Email Templates Used for Verification and Welcome Emails](#modify-account-creation-email-templates)
+
+<a class="anchor" name="enable-verification-welcome-email-status"></a>
+#### Enable or Disable the Verification, Verification Success, or Welcome Email
+
+To enable or disable an email from being sent associated with verifying email or a welcome email, use the `save` method to set the desired status for correct status properties.
+
+The `Account Creation Policy` has three separate statuses for the emails:
+
++ `verification_email_status` - Denotes if the verification email will be sent to verify the email the end user used to create the account.  When this is set to a status of `ENABLED`, the new `Account` resources in the `Directory` will be created with the status of `UNVERIFIED` and an email will be sent to verify the address.  More information for verifying accounts can be found [here](#account-verify-email)  The email properties are configurable through `verification_email_templates`
++ `verification_success_email_status` - Denotes if a success email will be sent to the end user when the email has been [verified through the email verification workflow](#account-verify-email).  The email properties are configurabel through `verification_success_email_templates`
++ `welcome_email_status` - Denotes if a welcome email will be sent to the end user when the account has been registered (with email verification turned off by verification_email_status == DISABLED) or verified (with email verification turn on by verification_email_status == ENABLED)
+
+By default, all of the `Account Creation Policy` email status are set to `DISABLED`.  To modify the policy, use the `save` method on the `AccountCreationPolicy` resource:
+
+**Example**
+    
+    account_creation_policy.account_creation_policy = 'ENABLED'
+    account_creation_policy.save()
+
+<a class="anchor" name="modify-account-creation-email-templates"></a>
+#### Modify the Email Templates Used for Verification and Welcome Emails
+
+To modify the emails that get sent during the email verification and registration, let's take a look at the email templates for the account creation policy.  Email templates in Stormpath have common properties that can be modified to change the appearance of the emails.  The properties below apply to both email templates that reside in the account creation policy (verification_email_templates, verification_success_email_templates, and welcome_email_templates).
+
+**Resource Attribute for Email Templates**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`from_email_address` | The address that appears in the email's from field. | String | A valid email address
+`from_name` | The name that appears in the email's from field | String | A string
+`subject` | The subject that appears in the email's subject field | String | A string
+`html_body` | The body of the email in HTML format.  This body is only sent when the `mime_type` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the reset_email_template it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`text_body` | The body of the email is plain text format.  This body is only sent when the `mime_type` for the template is set to `text/plain` | String | A string.  For the reset_email_template it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`mime_type` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html` 
+`default_model` | A dict that defines the model of the email template.  The default_model currently holds one item, which has the key linkBaseUrl.  The value of linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl value and the sptoken used in password reset workflows | dict | dict that includes one item with key linkBaseUrl and value that is a String
+`created_at` | A Datetime value that represents when this resource was created | Datetime | <span>--</span>
+`modified_at` | A Datetime value that represents when this resource's properties were last modified | Datetime | <span>--</span>
+
+To update an email template, first you must get the email template object. This is done by working with the verification_email_templates, verification_success_email_templates and welcome_email_templates collection. These collections hold only one email template, but in the future may hold multiple templates.
+
+**Example**
+
+    verification_email_template = account_creation_policy.verification_email_templates[0]
+
+After getting the email template object, you can update by using the `save` method:
+         
+**Example**
+
+    verification_email_template.from_name = "Application Support"
+    verification_email_template.from_email = "support@application.com"
+    verification_email_template.subject = "Welcome to application.com"
+    verification_email_template.save()
+    
+***
+
 ### Directory Password Policy
 
 A Directory's `Password Policy` resource contains data that controls how strong passwords need to be for account in the directory and how they are reset.  By modifying this information, you can modify the behavior of the account's that are apart of the directory.
