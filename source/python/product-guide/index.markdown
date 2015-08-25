@@ -3801,7 +3801,7 @@ The Stormpath SDK does all the heavy lifting for you in your application.  It au
 
 Specifically, Stormpath supports two HTTP `Authorization` methods, Basic and Bearer (OAuth 2.0 client-credentials grant type). In this section we will discuss the strategies and best practices using these authorization methods.
 
-All authentication attempts in Stormpath start with the `Application` object in the SDK.  You will likely have initialized the `Application` during startup.
+All authentication attempts in Stormpath start with instance of one of `RequestAuthenticator` subclasses in the SDK.  They are all initialized with the `Application` object you will likely have initialized during startup.
 
 To demonstrate how the SDK works, we'll use an example.  We are building a Stormtrooper API for managing Stormtrooper equipment -- like awesome helmets and blasters.  In order to secure our API, a developer must base64 encode their API Key and Secret and then pass the encoded data in the authorization header.
 
@@ -3821,16 +3821,20 @@ The Basic Authentication mechanism provides no confidentiality protection for th
 
 In the simplest form, the Stormpath Python SDK would authenticate the above request (Basic or Bearer) as follows:
 
+    from stormpath.api_auth import ApiRequestAuthenticator
+
     uri = 'https://api.trooperapp.com'
     http_method = 'GET'
-    body = {}
     headers = {
         'Authorization': 'Basic BASE64ENCODEDAPIKEYANDSECRET'
     }
     # Used only for Bearer auth
     allowed_scopes = []
 
-    result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+    authenticator = ApiRequestAuthenticator(application)
+    result = authenticator.authenticate(
+        headers=headers, http_method=http_method, uri=uri)
+
     if result:
         print result.api_key
         print result.account
@@ -3840,6 +3844,8 @@ In the simplest form, the Stormpath Python SDK would authenticate the above requ
 The SDK provides a caching layer to ensure fast response times in your API by reducing network traffic to the Stormpath service. The caching layer will cache the API Key securely. Stormpath will use the cache entry for API Key and Secret authentication when possible.
 
 **Note** When doing Basic auth the result returned will have no token attached to it, ie. `result.token` will be `None`.
+
+**Note** When doing Basic auth you can use `BasicRequestAuthenticator` class that authenticates HTTP Basic auth requests only.
 
 #### Exchanging API Keys for OAuth 2.0 Bearer Tokens
 
@@ -3873,9 +3879,9 @@ Going back to the Stormtrooper Equipment API example. The app would require that
 
 The request will need to explicitly state the grant type for the OAuth Access Token Request. Stormpath only supports client credential grant type for exchanging API Keys for Access Tokens.
 
-Below is sample code to show how you would handle the request with the Stormpath PythonSDK and return an access token to the client:
+Below is sample code to show how you would handle the request with the Stormpath Python SDK and return an access token to the client:
 
-    result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+    result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes)
     if result:
         print result.token
         print result.token.to_json()
@@ -3891,11 +3897,14 @@ representation of the token. The response should then be look something like thi
        "expires_in":3600
     }
 
-Notice that we used the same `app.authenticate` method for Basic auth and for getting the Bearer token. This works because the SDK will
+Notice that we used the same `authenticator.authenticate` method for Basic auth and for getting the Bearer token. This works because the SDK will
 check the body of the request while doing Basic auth and if it finds the correct `grant_type` it will authenticate the request and
-attach the `token` to the result in one go.
+attach the `token` to the result in one go. Instead of `ApiRequestAuthenticator`, you can also use `OAuthRequestAuthenticator` or 
+`OAuthClientCredentialsRequestAuthenticator` for getting the Bearer token. `OAuthRequestAuthenticator` handles API key for access token exchanges 
+and authenticates OAuth2 access tokens. `OAuthClientCredentialsRequestAuthenticator` authenticates a request based on API key credentials, and if 
+valid returns an access token. These two authenticators cannot be used for Basic auth.
 
-The `allowed_scopes` parameter has a twofold meaning here, for token generation it represents all the scopes that the developer can request, ie.
+The `scopes` parameter has a twofold meaning here, for token generation it represents all the scopes that the developer can request, ie.
 all the valid scopes for that particular Stormpath Application. The second use-case is documented below.
 
 
@@ -3917,13 +3926,13 @@ The developer request would look something like this:
 The Access Token needs to be passed to your API in the Authorization header, using the Bearer method.
 We can then proceed to authenticate the request with the same method as we did before:
 
-    result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+    result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes)
     if result:
         print result.account
     else:
         "Invalid or expired Token"
 
-Notice the `allowed_scopes` parameter has a different meaning here than it did above. We can use it to specify allowed scopes
+Notice the `scopes` parameter has a different meaning here than it did above. We can use it to specify allowed scopes
 for the specific endpoint the user is accessing (in this case /troopers/tk421/equipment). If the Access Token was not generated
 with all the scopes that this endpoint requires, the authentication will fail and the `result` variable will be empty.
 
@@ -3949,7 +3958,11 @@ just attached for convenience, ie. to check `result.token.scopes` and such.
 **Note** Token validity/ttl is in seconds and the default is 3600 (1 hour). If you wish to change this while generating tokens:
 use the optional `ttl` parameter with the  `authenticate` method.
 
-***
+**Note** When doing Bearer auth you can use `OAuthRequestAuthenticator` or `OAuthBearerRequestAuthenticator` instead of `ApiRequestAuthenticator`. 
+`OAuthRequestAuthenticator` handles API key for access token exchanges and authenticates OAuth2 access tokens. `OAuthBearerRequestAuthenticator` authenticates 
+OAuth2 bearer token requests only. 
+
+*** 
 
 
 <a class="anchor" name="administration"></a>
