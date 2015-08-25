@@ -148,9 +148,9 @@ We recommend using digest authentication whenever possible because it is inheren
 
 All Stormpath SDKs (currently [Java](/java/product_guide), [Ruby](/ruby/product_guide), [PHP](/php/product_guide), and [Python](/python/product_guide)) use this more secure digest authentication so we recommend that you use the SDKs whenever possible. However, if we do not yet have an SDK for your programming language, you should use basic authentication over HTTPS.
 
-Finally, if you would like to use Stormpath digest authentication in a programming language that Stormpath does not yet support, you can attempt to port the algorithm to that language. You can try to replicate the algorithm and use Stormpath existing code as examples to help:
+Finally, if you would like to use Stormpath digest authentication in a programming language that Stormpath does not yet support, you can attempt to port the algorithm to that language. You can try to replicate the algorithm and use Stormpath existing code as examples or the [documented algorithm](https://github.com/stormpath/stormpath-sdk-spec/blob/master/specifications/algorithms/sauthc1.md):
 
-* Java: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-java/blob/master/impl/src/main/java/com/stormpath/sdk/impl/http/authc/Sauthc1Signer.java) (the **sign** method)
+* Java: [SAuthc1RequestAuthenticator](https://github.com/stormpath/stormpath-sdk-java/blob/master/impl/src/main/java/com/stormpath/sdk/impl/http/authc/SAuthc1RequestAuthenticator.java) (the **authenticate** method)
 * Ruby: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-ruby/blob/master/lib/stormpath-sdk/http/authc/sauthc1_signer.rb) (the **sign_request** method)
 * PHP: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-php/blob/master/src/Stormpath/Http/Authc/Sauthc1Signer.php) (the **signRequest** method)
 * Python: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/auth.py) (the **__call__** method)
@@ -689,6 +689,98 @@ This returns all accounts where:
 For resources with a `status` attribute, status query values **must be the exact value**. For example, `enabled` or `disabled` must be passed and fragments such as `ena`, `dis`, `bled` are not acceptable.
 {% enddocs %}
 
+<a class="anchor" name="datetime-search"></a>
+#### Datetime Search
+
+Stormpath exposes properties on all resources that will give you information about when the resource was created or modified.  This includes, but isn't exclusive to common resources like `Account`, `Group`, `Directory`, `Application`.  For example, an `Account` resource will have the `createdAt` and `modifiedAt` properties:
+
+    {
+        ...
+        "createdAt": "2015-02-02T12:44:28+00:00",
+        "customData": {
+            "href": "https://api.stormpath.com/v1/accounts/MYNtz266FZK0ruvbKziwc/customData"
+        },
+        "directory": {
+            "href": "https://api.stormpath.com/v1/directories/5r0p5s4uFj70MjL3bQ6EoZ"
+        },
+        "email": "tom+66@stormpath.com",
+        "emailVerificationToken": null,
+        "fullName": "tom tom",
+        "givenName": "tom",
+        "groupMemberships": {
+            "href": "https://api.stormpath.com/v1/accounts/MYNtz266FZK0ruvbKziwc/groupMemberships"
+        },
+        "groups": {
+            "href": "https://api.stormpath.com/v1/accounts/MYNtz266FZK0ruvbKziwc/groups"
+        },
+        "href": "https://api.stormpath.com/v1/accounts/MYNtz266FZK0ruvbKziwc",
+        "middleName": null, 
+        "modifiedAt": "2015-02-02T12:44:28+00:00",
+        ...
+    }
+
+Stormpath stores the datetime in `ISO 8601` which is human readable and has common support across all languages.  The timezone is coordinated universal time (UTC).  Both of these parameters can be queried from collection.
+
+`createdAt` and `modifiedAt` query parameters are a type of [Attribute Search](#search-attribute) that allow you to filter or search collections that were created or modified at a particular time.  The query parameters are supported for all collections.  This includes `Account`, `Group`, `Directory`, `Application`. As an example, if you want wanted to get all accounts created between Jan 12, 2015 and Jan 14, 2015 you would request:
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+     -H "Accept: application/json" \
+     "https://api.stormpath.com/v1/applications/MYNK0ruvbKziwc/accounts?createdAt=[2015-01-12, 2015-01-14]"
+
+The response would be a [collection](#collection-resources) of accounts created between the two days.  The datetime range is denoted as:
+
+    createdAt|modifiedAt=[ISO-8601-BEGIN-DATETIME, ISO-8601-END-DATETIME]
+
+{% docs note %}
+ Omitting the beginning or ending date is valid for requests.  Omitting the begin datetime range [,ISO-8601-END-DATETIME] would include all resources created or modified before the end datetime.  Omitting the end datetime range [ISO-8601-BEGIN-DATETIME,] would include all resources created or modified after the the begin datetime.
+{% enddocs %}
+
+**Exclusion vs Inclusion**
+
+The brackets `[]` denote inclusion, but `createdAt` and `modifiedAt` also support exclusion with parentheses `()`.  For example, if you wanted to get all accounts created between Jan 12, 2015 and Jan 14, 2015 not including the 14th, you would request:
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+     -H "Accept: application/json" \
+     "https://api.stormpath.com/v1/applications/MYNK0ruvbKziwc/accounts?createdAt=[2015-01-12, 2015-01-14)"
+
+**Precision**
+
+Precision of datetime for this request is controlled by the granularity of the ISO-8601 Datetime you specify.  For example, if you need precision in seconds:
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+       -H "Accept: application/json" \
+       "https://api.stormpath.com/v1/applications/MYNK0ruvbKziwc/accounts?createdAt=[2015-01-12T12:00:00, 2015-01-12T12:00:05]"
+
+And, if you need precision in years:
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+       -H "Accept: application/json" \
+       "https://api.stormpath.com/v1/applications/MYNK0ruvbKziwc/accounts?createdAt=[2014, 2015]"
+
+**Shorthand**
+
+`createdAt` and `modifiedAt` can use shorthand for the range to simplify the query parameter.  This is useful for queries where the range can be encapsulated in a particular year, month, day, hour, minute or second.  
+
+For example if you wanted all accounts created in Jan 2015 :
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+       -H "Accept: application/json" \
+       "https://api.stormpath.com/v1/applications/MYNK0ruvbKziwc/accounts?createdAt=2015-01"
+
+is shorthand for:
+
+    createdAt=[2015-01-01T00:00:00.000Z,2015-02-01T00:00:00.000)
+
+If you wanted all accounts modified at in the 12th hour UTC on Feb 03, 2015:
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+       -H "Accept: application/json" \
+       "https://api.stormpath.com/v1/applications/MYNK0ruvbKziwc/accounts?modifiedAt=2015-02-03T12"
+
+is shorthand for:
+
+    modifiedAt=[2015-02-03T12:00:00.000Z, 2015-02-04T13:00:00.000)
+
 <a class="anchor" name="links"></a>
 ### Links
 
@@ -733,7 +825,6 @@ The following example `account` resource has four links - `groups`, `groupMember
     }
 
 When encountering a link object, you can use the link `href` attribute to interact with that resource as necessary.
-
 <a class="anchor" name="links-expansion"></a>
 ### Link Expansion
 
@@ -873,6 +964,8 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="tenant-resource-key"></a>`key` | Human readable tenant key. Unique across all tenants. | String | 1 < N <= 63 characters, no whitespace, lower-case a-z and dash '-' characters only, cannot start or end with a dash '-' character.
 <a class="anchor" name="tenant-resource-applications"></a>`applications` | A link to the tenant's applications. | link | <span>--</span>
 <a class="anchor" name="tenant-resource-directories"></a>`directories` | A link to the tenant's directories. | link | <span>--</span>
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 For Tenants, you can:
 
@@ -1254,6 +1347,8 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="application-accountStoreMappings"></a>`accountStoreMappings` | A link to the collection of all [account store mappings](#account-store-mappings) that represent the application.  The accounts and groups within the mapped account stores are obtainable by the `accounts` and `groups` links respectively. | link | <span>--</span>
 <a class="anchor" name="application-defaultAccountStoreMapping"></a>`defaultAccountStoreMapping` | A link to the account store mapping that reflects the [default account store](#account-store-mapping-default-account-store) where the application will store newly created accounts.  (A POST to `/v1/applications/:applicationId/accounts` will result in storing the new account in the default account store). A `null` value disables the application from directly creating new accounts. | link | `null` or link
 <a class="anchor" name="application-defaultGroupStoreMapping"></a>`defaultGroupStoreMapping` | A link to the account store mapping that reflects the [default group store](#account-store-mapping-default-group-store) where the application will store newly created groups.  (A POST to `/v1/applications/:applicationId/groups` will result in storing the new group in the default group store). A `null` value disables the application from directly creating new groups. | link | `null` or link
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 For Applications, you can:
 
@@ -2035,6 +2130,8 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="password-reset-email"></a>`email` | Email address of the account for which the password reset will occur. | String | Valid email address. Required.
 <a class="anchor" name="password-reset-acount"></a>`account` | A link to the account for which the password reset will occur. | Link | Cannot set in a request. Returned in a response only.
 `accountStore` | An optional link to the application's `Account Store` that you are certain contains the account attempting for the password reset | Link | --
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 The application password reset tokens endpoint supports the password reset workflow for an account in the application assigned [account stores](#account-store-mappings).
 
@@ -2070,15 +2167,15 @@ If the password reset token creation fails, a `400 Bad Request` is returned with
 
 **Example Password Reset Token Creation Failure Response**
 
-    HTTP/1.1 404 Not Found
+    HTTP/1.1 400 Bad Request
     Content-Type: application/json;charset=UTF-8;
 
     {
-      status: 404,
-      code: 404,
-      message: "The requested resource does not exist.",
-      developerMessage: "The requested resource does not exist.",
-      moreInfo: "mailto:support@stormpath.com"
+      status: 400,
+      code: 2016,
+      message: "The email property value 'dontexist@stormpath.com' does not match a known resource.",
+      developerMessage: "The email property value 'dontexist@stormpath.com' does not match a known resource.",
+      moreInfo: "http://docs.stormpath.com/errors/2016"
     }
 
 At this point, an email will be built using the [password reset base URL](#password-reset-base-URL) specified in the Stormpath Admin Console.
@@ -2479,6 +2576,8 @@ Attribute | Description | Type | Valid Value
 <a id="list-index"></a>`listIndex` | The order (priority) when the associated `accountStore` will be consulted by the `application` during an authentication attempt.  This is a zero-based index; an account store at `listIndex` of `0` will be consulted first (has the highest priority), followed the account store at `listIndex` `1` (next highest priority), etc.  Setting a negative value will default the value to `0`, placing it first in the list.  A `listIndex` of larger than the current list size will place the mapping at the end of the list and then default the value to `(list size - 1)`. | Integer | 0 <= N < list size
 <a id="account-store-mapping-resource-is-default-account-store"></a>`isDefaultAccountStore` | A `true` value indicates that new accounts [created by the application](#application-account-register) will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new accounts created by the application will not be saved to the `accountStore`. | boolean | `true`,`false`
 <a id="account-store-mapping-resource-is-default-group-store"></a>`isDefaultGroupStore` | A `true` value indicates that new groups created by the `application` will be automatically saved to the mapping's `accountStore`. A `false` value indicates that new groups created by the application will not be saved to the `accountStore`. **This may only be set to `true` if the `accountStore` is a Directory.  Stormpath does not currently support Groups storing other Groups.** | boolean | `true`,`false`
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 For Account Store Mappings, you may:
 
@@ -2878,6 +2977,8 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="directory-resource-tenant"></a>`tenant` | A link to the owning tenant. | Link | <span>--</span>
 `accountCreationPolicy` | A link to the directory's Account Creation Policy | Link | <span>--</span>
 `passwordPolicy` | A link to the directory's Password Policy | Link | <span>--</span>
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 For directories, you can:
 
@@ -3370,6 +3471,8 @@ Attribute | Description | Type | Valid Value
 `verificationSuccessEmailTemplates`| A collection of email templates that can be used for sending 'email verification success' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
 `welcomeEmailStatus` | The status of the welcome email.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account (if `verificationEmailStatus` is set to disabled) or a newly verified account (if `verificationEmailStatus` is set to enabled).  The email sent is configurable through `welcomeEmailTemplates` property | String | `ENABLED` or `DISABLED`
 `welcomeEmailTemplates` | A collection of email templates that can be used for sending a welcome email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 **Directory Account Creation Policy URI**
 
@@ -3467,6 +3570,8 @@ Attribute | Description | Type | Valid Value
 `textBody` | The body of the email is plain text format.  This body is only sent when the `mimeType` for the template is set to `text/plain` | String | A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `mimeType` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
 `defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String 
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 To update an email template, first you must get the email template's href.  This is done by working with the verificationEmailTemplates, verificationSuccessEmailTemplates, and welcomeEmailTemplates collection.  These collections hold only one email template, but in the future may hold multiple templates.  
 
@@ -3538,6 +3643,8 @@ Attribute | Description | Type | Valid Value
 `resetSuccessEmailTemplates` | A collection of email templates that can be used for sending password reset success email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
 `resetTokenTtl` | An integer that defines how long the password reset token is valid for during the password reset email workflow. | Integer |  A positive integer, less than 169 (0 < i < 169). Default is 24
 `strength` |  A link to the password strength requirements for the directory | Link | -- 
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 **Directory Password Policy URI**
 
@@ -3774,6 +3881,8 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="group-resource-tenant"></a>`tenant` | The tenant that owns the directory containing this group. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-directory"></a>`directory` | A link to the directory resource that the group belongs to. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-accounts"></a>`accounts` | A link to the accounts that are contained within this group. | Link | <span>--</span>
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 With groups, you can:
 
@@ -4341,6 +4450,8 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="group-membership-href"></a>`href` | The resource fully qualified location URI. | String | —
 <a class="anchor" name="group-membership-account"></a>`account` | A link to the account of the group membership. | Link | —
 <a class="anchor" name="group-membership-group"></a>`group` | A link to the group of the group membership. | Link | —
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 For group memberships, you can:
 
@@ -4617,6 +4728,8 @@ Attribute | Description | Type | Valid Value
 <a id="account-resource-directory"></a>`directory` | A link to the account's directory. | Link | <span>--</span>
 <a id="account-resource-tenant"></a>`tenant` | A link to the tenant that owns the account's directory. | Link | <span>--</span>
 <a id="account-resource-emailVerificationToken"></a>`emailVerificationToken` | A link to the account's email verification token.  This will only be set if the account needs to be verified. | Link | <span>--</span>
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 For accounts, you can:
 
@@ -4717,7 +4830,8 @@ Here are some account creation examples:
 
 * [Simple Create Account Example](#account-create-simple)
 * [Create an Account with Custom Data](#account-create-with-custom-data)
-* [Create an Account and suppress registration emails](#account-create-no-email)
+* [Create an Account and Suppress Registration Emails](#account-create-no-email)
+* [Create an Account with an Existing Password Hash](#create-an-account-with-an-existing-password-hash)
 
 <a class="anchor" name="account-create-simple"></a>
 Simple creation request:
@@ -4814,6 +4928,82 @@ If you want to create a directory account and you want to override the directory
                "status" : "ENABLED",
              }' \
          "https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts?registrationWorkflowEnabled=false"
+
+<a class="anchor" name="create-an-account-with-an-existing-password-hash"></a>
+#### Create an Account with an Existing Password Hash
+
+If you are moving from an existing user repository to Stormpath, you may have existing password hashes that you want to reuse to provide a seamless upgrade path for your end users.
+
+Stormpath allows for account creation with a password hash instead of a plain text password.  This works as follows:
+
++ Create the account specifying the password hash instead of a plain text password
++ Stormpath will use the password hash to authenticate the account's login attempt
++ If the login attempt is successful, Stormpath will recreate the password hash using a secure HMAC algorithm.
+
+Stormpath does not allow for account creation with ANY password hash, the password hash must follow [modular crypt format](https://pythonhosted.org/passlib/modular_crypt_format.html)(MCF), which is a `$` delimited string.  Stormpath only supports password hashes that use the following algorithms:
+
++ [bcrypt](https://en.wikipedia.org/wiki/Bcrypt): These password hashes have the identifier `$2a$`, `$2b$`, `$2x$`, `$2a$`
++ `stormpath2`: A Stormpath specific password hash format that can be generated with common password hash information, such as algorithm, iterations, salt, and the derived cryptographic hash
+
+`stormpath2` has format allows for you to derive a MCF hash that Stormpath can read to understand how to recreate the password hash to use during a login attempt. `stormpath2` hash format is formatted as:
+
+    $stormpath2$ALGORITHM_NAME$ITERATION_COUNT$BASE64_SALT$BASE64_PASSWORD_HASH
+
+Property | Description | Valid Values
+:---- | :---- | :---- 
+`ALGORITHM_NAME` | The name of the hashing algorithm used to generate the `BASE64_PASSWORD_HASH`. | `MD5`, `SHA-1`, `SHA-256`, `SHA-384`, `SHA-512`
+`ITERATION_COUNT` | The number of iterations executed when generating the `BASE64_PASSWORD_HASH` | Integer greater than 0 (1 or more)
+`BASE64_SALT` | The salt byte array used to salt the first hash iteration, formatted as a Base64 string. | Base64 String, if your password hashes do you have salt, you can leave it blank ($stormpath2$ALGORITHM_NAME$ITERATION_COUNT$$BASE64_PASSWORD_HASH)
+`BASE64_PASSWORD_HASH` | The computed hash byte array formatted as a Base64 string | Base64 String
+
+Once you have a `bcrypt` or `stormpath2` MCF password hash, you can create the account in Stormpath with the password hash by `POST`ing the account information to the `Directory` or `Application` accounts endpoint and specifying `passwordFormat=mcf` as a query parameter.
+
+**Example Request**
+
+    POST https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts?passwordFormat=mcf
+    
+    {
+      "username" : "jlpicard",
+      "email" : "capt@enterprise.com",
+      "givenName" : "Jean-Luc",
+      "surname" : "Picard",
+      "password" : "$stormpath2$MD5$1$NzEyN2ZhYzdkZTAyMjJlMGQyMWYxMWRmZmY2YjA1MWI=$K18Ak0YikAFrqgglhIaY5g=="
+    }
+
+**Example Response**
+
+    HTTP/1.1 201 Created
+    Location: https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
+      "username" : "jlpicard",
+      "email" : "capt@enterprise.com",
+      "fullName" : "Jean-Luc Picard",
+      "givenName" : "Jean-Luc",
+      "middleName" : "",
+      "surname" : "Picard",
+      "status" : "UNVERIFIED",
+      "customData": {
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+      },
+      "groups" : {
+        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
+      },
+      "groupMemberships" : {
+        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groupMemberships"
+      },
+      "directory" : {
+        "href" : "https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA"
+      },
+      "tenant" : {
+        "href" : "https://api.stormpath.com/v1/tenants/Ad8mIcavSty7XzD-xZdP3g"
+      },
+      "emailVerificationToken" : {
+        "href" : "https://api.stormpath.com/v1/accounts/emailVerificationTokens/4VQxTP5I7Xio03QJTOwQy1"
+      }
+    }
 
 <a class="anchor" name="account-retrieve"></a>
 ### Retrieve an Account
@@ -5732,6 +5922,8 @@ Attribute | Description | Type | Valid Value
 `clientSecret` | The App Secret for your Google application | String | --
 `redirectUri` | The redirection Uri for your Google application | String | -- 
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'google'
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
 
@@ -5946,6 +6138,8 @@ Attribute | Description | Type | Valid Value
 `clientId` | The App ID for your Facebook application | String | --
 `clientSecret` | The App Secret for your Facebook application | String | -- 
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'facebook'
+`createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
+`modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
 In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
 

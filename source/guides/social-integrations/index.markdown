@@ -153,7 +153,7 @@ curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
      -d '{
            "application": {
              "href": "YOUR_APPLICATION_HREF"
-           }
+           },
            "accountStore": {
              "href": "YOUR_FACEBOOK_DIRECTORY_HREF"
            }
@@ -392,7 +392,7 @@ curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
      -d '{
            "application": {
              "href": "YOUR_APPLICATION_HREF"
-           }
+           },
            "accountStore": {
              "href": "YOUR_GOOGLE_DIRECTORY_HREF"
            }

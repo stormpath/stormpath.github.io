@@ -2,7 +2,7 @@
 layout: default
 ---
 
-#Error: 2001
+#Error: 7101
 Login attempt failed because the Account is disabled.
 
 ##Explanation

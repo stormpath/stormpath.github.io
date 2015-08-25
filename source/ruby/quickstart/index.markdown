@@ -40,6 +40,9 @@ using [RubyGems](https://rubygems.org/):
 
     $ gem install stormpath-sdk --pre
 
+{% docs note %}
+The Stormpath SDK for Ruby is in beta and requires the use of the gem  `--pre` flag. 
+{% enddocs %}
 
 ***
 

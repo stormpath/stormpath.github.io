@@ -4,21 +4,30 @@
 </div>
 </h1>
 <div><h2 id="description">Description</h2>
-<div class="description"><div class="stormpath-spstateconfig-page stormpath-spstateconfig-spstateconfig-page"><p>The Stormpath State Config is an object that you can define on a
-state.  You will need to be using the UI Router module, and you need
-to enable the integration by calling  <a href="#/api/stormpath.$stormpath#methods_uirouter">$stormpath.uiRouter()</a></p>
+<div class="description"><div class="stormpath-spstateconfig-page stormpath-spstateconfig-spstateconfig-page"><p>The Stormpath State Config is an object that you can define on a UI Router
+state.  Use this configuration to define access control for your routes, as
+defined by UI Router.</p>
+<p>You will need to be using the UI Router module, and you need
+to enable the integration by calling
+<a href="#/api/stormpath.$stormpath#methods_uirouter">$stormpath.uiRouter()</a> in your
+application&#39;s config block.</p>
+<p>This configuration does not support Angular&#39;s built-in <code>$routeProvider</code> at
+this time, we will add this in a future version.</p>
+<p><strong>NOTE:</strong> Do not define this configuration on a abstract state, it must go on
+the child state.  However, the controller of the abstract state will be
+initialized AFTER any configuration rules of the child state have been met.</p>
 </div></div>
 <div class="member property"><h2 id="properties">Properties</h2>
 <ul class="properties"><li><h3 id="properties_authenticate">authenticate</h3>
-<div class="authenticate"><div class="stormpath-spstateconfig-page stormpath-spstateconfig-spstateconfig-page"><p>If <code>true</code>, the user must be
-authenticated in order to view this state.  If the user is not authenticated they will
-be redircted to the <code>login</code> state.  After they login they will be redicted to
+<div class="authenticate"><div class="stormpath-spstateconfig-page stormpath-spstateconfig-spstateconfig-page"><p>If <code>true</code>, the user must be authenticated in order to view this state.
+If the user is not authenticated, they will
+be redirected to the <code>login</code> state.  After they login, they will be redirected to
 the state that was originally requested.</p>
 </div></div>
 </li>
 <li><h3 id="properties_authorize">authorize</h3>
-<div class="authorize"><div class="stormpath-spstateconfig-page stormpath-spstateconfig-spstateconfig-page"><p>An object which defines access control rules.  Currently is supports a group-based
-check.  See the example below</p>
+<div class="authorize"><div class="stormpath-spstateconfig-page stormpath-spstateconfig-spstateconfig-page"><p>An object that defines access control rules.  Currently, it supports a group-based
+check.  See the example below.</p>
 </div></div>
 </li>
 <li><h3 id="properties_waitforuser">waitForUser</h3>
@@ -36,7 +45,7 @@ depending on the user&#39;s authentication state.</p>
 angular.module('myApp')
   .config(function ($stateProvider) {
 
-    // Wait until we know if the user is logged in, before showing the homepage
+    // Wait until we know if the user is logged in before showing the homepage
     $stateProvider
       .state('main', {
         url: '/',
@@ -62,7 +71,7 @@ angular.module('myApp')
         controller: 'AdminCtrl',
         sp: {
           authorize: {
-            group: ['admins']
+            group: 'admins'
           }
         }
       });

@@ -1900,6 +1900,7 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="directory-resource-groups"></a>`groups` | A link to the groups owned by the directory. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-tenant"></a>`tenant` | A link to the owning tenant. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-account-creation-policy"></a>`accountCreationPolicy` | A link to the directory's Account Creation Policy | Link | <span>--</span>
+`passwordPolicy` | A link to the directory's Password Policy | Link | <span>--</span>
 
 For directories, you can:
 
@@ -1923,6 +1924,7 @@ For directories, you can:
 * [Work with directory groups](#directory-groups)
 * [Work with directory accounts](#directory-accounts)
 * [Update a directory's Account Creation Policy](#directory-account-creation-policy)
+* [Update a directory's Password Policy](#directory-password-policy)
 
 <a class="anchor" name="locate-a-directorys-rest-url"></a>
 ### Locate a Directory's REST URL
@@ -2091,7 +2093,7 @@ You may search for directories as described in [Search Tenant directories](#tena
 
 <a class="anchor" name="work-with-directories"></a>
 <a class="anchor" name="directories-account-password-policy"></a><a class="anchor" name="directories-password-restrictions"></a>
-### Account Password Policy
+### Account Password Strength Policy
 
 Directories can be configured to enforce specific restrictions on passwords for accounts associated with, such as requiring at least one or more non-alphanumeric characters.
 
@@ -2099,7 +2101,7 @@ With Stormpath's Cloud directories, you can configure custom restrictions for th
 
 * Min characters
 * Max characters
-* Mandatry characters
+* Mandatory characters
   * Lower case alphabetical
   * Uppercase case alphabetical
   * Numeric
@@ -2108,15 +2110,7 @@ With Stormpath's Cloud directories, you can configure custom restrictions for th
 
 By default, passwords must be of mixed case, include at least one number, and be between 8 and 100 characters in length.
 
-{% docs note %}
-It is not currently possible to configure a Directory's account password policy via the REST API.  You must use the [Stormpath Admin Console](https://api.stormpath.com) (Directories --> &lt;choose your directory&gt; --> Details tab).
-{% enddocs %}
-
-{% docs note %}
-Workflows are only available on cloud directories and only configurable using the Stormpath Admin Console.  They are not currently configurable via the REST API. 
-
-Additionally, the `Stormpath Administrator` directory's automated workflows cannot be altered.
-{% enddocs %}
+Account's password strength policy is available on cloud directories and configurable using the Stormpath Admin Console and REST by modifying the [Password Strength Policy for the Directory](#password-strength-policy-for-directory)
 
 <a class="anchor" name="directories-reg"></a>
 ### Register A New Account
@@ -2334,6 +2328,116 @@ After getting the email template resource, you can update properties its propert
         .setFromEmailAddress("support@application.com")
         .setSubject("Welcome to application.com");
     emailTemplate.save();
+
+### Directory Password Policy
+
+A Directory's `Password Policy` resource contains data that controls how strong passwords need to be for account in the directory and how they are reset.  By modifying this information, you can modify the behavior of the account's that are apart of the directory.
+
+The password policy can be retrieved by interacting with the directory resource.  The directory resource has a `passwordPolicy` link to the directory's `Password Policy`.
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`href` | The href location of the passwordPolicy | String | --
+`resetEmailStatus` | The status of the reset email workflow.  If this is set to ENABLED, then Stormpath will allow for passwords to be reset through the email workflow and will use the template that is stored in the passwordPolicy's `resetEmailTemplates`| String | `"ENABLED"` or `"DISABLED"`
+`resetEmailTemplates` | A collection of email templates that can be used for sending password reset email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
+`resetSuccessEmailStatus` | The status of the reset success email.  If this is set to ENABLED, then Stormpath will send the a email when an account's password is reset using the email workflow and it is successful.  The email template that is sent is defined in the passwordPolicy's `resetSuccessEmailTemplates` | String | `"ENABLED"` or `"DISABLED"`
+`resetSuccessEmailTemplates` | A collection of email templates that can be used for sending password reset success email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
+`resetTokenTtl` | An integer that defines how long the password reset token is valid for during the password reset email workflow. | Integer |  A positive integer, less than 169 (0 < i < 169). Default is 24
+`strength` |  A link to the password strength requirements for the directory | Link | --
+
+**Directory Password Policy Resource**
+
+    PasswordPolicy passwordPolicy = directory.getPasswordPolicy();
+
+For password policies, you can modify:
+
++ Password Reset Workflow for Directory's Accounts
++ Password Strength Policy for Directory's Accounts
+
+#### Password Reset Workflow for Directory's Accounts
+
+The Password Reset Email is configurable for a directory.  There is a set of properties that define its behavior.  This includes the `resetEmailStatus` and the `resetEmailTemplates` for the initial password reset email that sends an email to the account's email address with a link to reset the account's password and `resetSuccessEmailStatus` and the `resetSuccessEmailTemplates` for the resulting email that is sent when the password reset is successful through the email workflow.
+
+To enable or disable the ability to send a password reset email just set it to `Disabled`. 
+
+**Example Request**
+
+    passwordPolicy.setResetEmailStatus(EmailStatus.DISABLED);
+    passwordPolicy.save();
+
+To enable or disable the ability to send a password success reset email, set the desired status for the `resetSuccessEmailStatus`.  This email will only be set if both `resetEmailStatus` and `resetSuccessEmailStatus` are set to `ENABLED`
+
+**Example Request**
+
+    passwordPolicy.setResetSuccessEmailStatus(EmailStatus.ENABLED);
+    passwordPolicy.save();
+
+To modify the emails that get sent during the password reset workflow, let's take a look at the email templates for the password reset.  Email templates in Stormpath have common properties that can be modified to change the appearance of the emails.  The properties below apply to both email templates that reside in the password policy (resetEmailTemplate and resetSuccessEmailTemplate).
+
+**Resource Attribute for Email Templates**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`fromEmailAddress` | The address that appears in the email's from field. | String | A valid email address
+`fromName` | The name that appears in the email's from field | String | A string
+`subject` | The subject that appears in the email's subject field | String | A string
+`htmlBody` | The body of the email in HTML format.  This body is only sent when the `mimeType` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`textBody` | The body of the email is plain text format.  This body is only sent when the `mimeType` for the template is set to `text/plain` | String | A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`mimeType` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
+`defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String
+
+To update an email template, first you must get the email template's resource.  This is done by working with the resetEmailTemplates and resetSuccessEmailTemplates collection.  These collections hold only one email template, but in the future may hold multiple templates.
+
+**Example Request**
+
+    ResetEmailTemplateList emailTemplateList = passwordPolicy.getResetEmailTemplates();
+    ResetEmailTemplate emailTemplate = emailTemplateList.iterator().next();
+
+After getting the resource for the email template, you can update its properties:
+
+**Example Request**
+
+    emailTemplate.setFromName("Application Support")
+                .setFromEmailAddress("support@application.com")
+                .setSubject("Reset your Password for application.com")
+                .setLinkBaseUrl("https://application.com/password-reset");
+    emailTemplate.save();
+
+<a class="anchor" name="password-strength-policy-for-directory"></a>
+#### Password Strength Policy for Directory's Accounts
+
+The `Password Strength Policy` for a Directory can be modified through the Administrator Console and through the REST API.  Password Strength Policy is part of the Directory's Password Policy and can be accessed through the `Strength` resource.
+
+**Resource Attribute for Password Strength**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`maxLength` |  Represents the maximum length for a password.  For example maxLength of 10 requires that a password has no more than 10 characters | Integer | Valid Integer, default is 100
+`minLength` | Represents the minimum length for a password.  For example minLength of 5 requires that a password has no less than 5 characters | Integer | Valid Integer, default is 8
+`minLowerCase` | Represents the minimum number of lower case characters required for the password.  For example, minLowerCase of 3 requires the password have 3 lower case characters | Integer | Valid Integer, default is 1
+`minNumeric` | Represents the minimum number of number characters required for the password.  For example, minNumeric of 3 requires the password have 3 numbers | Integer | Valid Integer, default is 1
+`minSymbol` | Represents the minimum number of symbol characters required for the password.  For example, minSymbol of 3 requires the password have 3 symbols | Integer | Valid Integer, default is 0
+`minUpperCase` | Represents the minimum number of upper case characters required for the password.  For example, minUpperCase of 3 requires the password have 3 upper case characters | Integer | Valid Integer, default is 1
+`minDiacritic` | Represents the minimum number of diacritic characters required for the password.  For example, minDiacritic of 3 requires the password have 3 symbols | Integer | Valid Integer, default is 0
+
+To retrieve the `Password Strength` requirements for a directory:
+
+**Example Request**
+
+    Strength strength = passwordPolicy.getStrength();
+
+Setting new `Password Strength` requirement for a directory modifies the requirement for new accounts and also password changes on existing account's in a directory.  To update `Password Strength`, simple specify the desired values via its setters methods:
+
+**Example Request**
+
+    strength.setMinLength(1)
+                .setMaxLength(24)
+                .setMinSymbol(1);
+    strength.save();
+
+***
 
 <a class="anchor" name="groups"></a>
 ## Groups
@@ -2877,12 +2981,9 @@ For example, if you want to find an account with the username "test" across an a
 
 **Example Request**
 
-	AccountCriteria criteria = Accounts.where(Accounts.username().eqIgnoreCase("test"));
-    AccountList accounts = application.getAccounts(criteria);
-    Account account;
-    for(Account acc : accounts) {
-    	account = acc;
-    }
+    AccountCriteria criteria = Accounts.where(Accounts.username().eqIgnoreCase("test"));
+    Account account = application.getAccounts(criteria).single(); // single() will throw if this list contains zero or more than one element
+    String accountHref = account.getHref();
 
 If you only know a small part of the username, you can use the `containsIgnoreCase` method (e.g., `Accounts.username().containsIgnoreCase("test")`) to narrow down the selection.
 
@@ -3300,7 +3401,7 @@ For this reason, both the account and group resources support a linked `CustomDa
 
 The `CustomData` resource is a schema-less JSON object (aka 'map', 'associative array', or 'dictionary') that allows you to specify whatever name/value pairs you wish.
 
-The `CustomData` resource is always conected to an account or group and you can always reach it  by calling the `getCustomData()` method on the account or group resource instance:
+The `CustomData` resource is always connected to an account or group and you can always reach it  by calling the `getCustomData()` method on the account or group resource instance:
 
 <a class="anchor" name="account-custom-data-resource-uri"></a>
 **Account Custom Data Resource URI**
@@ -3425,7 +3526,6 @@ Sometimes it is helpful to update an account or group's `CustomData` as part of 
 
 	account.setStatus(AccountStatus.ENABLED);
     CustomData customData = account.getCustomData();
-    customData.put("aaa", "aaaNEW");
     customData.put("favoriteColor", "blue");
 	customData.put("favoriteMovie", "Star Wars");
     account.save();

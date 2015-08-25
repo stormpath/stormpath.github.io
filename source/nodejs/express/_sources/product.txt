@@ -33,6 +33,11 @@ could define the following variables::
     $ export STORMPATH_SECRET_KEY=blah
     $ export STORMPATH_ENABLE_HTTPS=false
 
+.. note::
+    If you're on Windows, that will look like::
+
+        set STORMPATH_SECRET_KEY=blah
+
 Then, when defining my middleware, I could simply write::
 
     var stormpath = require('express-stormpath');
@@ -198,7 +203,7 @@ You can easily change the default session / cookie expiration by modifying the
       sessionDuration: 1000 * 60 * 15, // Make sessions expire after 15 minutes.
     }));
 
-By default, sessions will not expire for one month (*out of convenience*).
+By default, sessions will not expire for 30 minutes (*a secure default*).
 
 .. note::
     The ``sessionDuration`` setting expects an integer, which must be the number
@@ -297,7 +302,7 @@ do this::
     var stormpath = require('express-stormpath');
 
     app.get('/email', stormpath.loginRequired, function(req, res) {
-      res.send('Your email address is:', req.user.email);
+      res.send('Your email address is: ' + req.user.email);
     });
 
 The ``req.user`` context allows you to directly interact with the current
@@ -331,6 +336,51 @@ This means you can run your own custom code when a specific event happens.
 All supported events are listed below.
 
 
+Post Login
+..........
+
+Want to run some custom code after a user logs into your site?  If so, this
+is the event you want to handle!
+
+By defining a ``postLoginHandler`` you're able to do stuff like:
+
+- Refresh a user's third-party services.
+- Calculate the last login time of a user.
+- Prompt a user to complete their profile, or setup billing.
+- etc.
+
+To use a ``postLoginHandler``, you need to define your handler function
+in the Stormpath middleware setup::
+
+    app.use(stormpath.init(app, {
+      postLoginHandler: function(account, req, res, next) {
+        console.log('User:', account.email, 'just logged in!');
+        next();
+      },
+    }));
+
+As you can see in the example above, the ``postLoginHandler`` function
+takes in four parameters:
+
+- ``account``: The new, successfully logged in, user account.
+- ``req``: The Express request object.  This can be used to modify the incoming
+  request directly.
+- ``res``: The Express response object.  This can be used to modify the HTTP
+  response directly.
+- ``next``: The callback to call when you're done doing whatever it is you want
+  to do.  If you call this, execution will continue on normally.  If you don't
+  call this, you're responsible for handling the response.
+
+In the example below, we'll use the ``postLoginHandler`` to redirect the
+user to a special page (*instead of the normal login flow*)::
+
+    app.use(stormpath.init(app, {
+      postLoginHandler: function(account, req, res, next) {
+        res.redirect(302, '/secretpage').end();
+      },
+    }));
+
+
 Post Registration
 .................
 
@@ -348,16 +398,18 @@ To use a ``postRegistrationHandler``, you need to define your handler function
 in the Stormpath middleware setup::
 
     app.use(stormpath.init(app, {
-      postRegistrationHandler: function(account, res, next) {
+      postRegistrationHandler: function(account, req, res, next) {
         console.log('User:', account.email, 'just registered!');
         next();
       },
     }));
 
 As you can see in the example above, the ``postRegistrationHandler`` function
-takes in three parameters:
+takes in four parameters:
 
 - ``account``: The new, successfully created, user account.
+- ``req``: The Express request object.  This can be used to modify the incoming
+  request directly.
 - ``res``: The Express response object.  This can be used to modify the HTTP
   response directly.
 - ``next``: The callback to call when you're done doing whatever it is you want
@@ -368,7 +420,7 @@ In the example below, we'll use the ``postRegistrationHandler`` to redirect the
 user to a special page (*instead of the normal registration flow*)::
 
     app.use(stormpath.init(app, {
-      postRegistrationHandler: function(account, res, next) {
+      postRegistrationHandler: function(account, req, res, next) {
         res.redirect(302, '/secretpage').end();
       },
     }));
@@ -407,7 +459,7 @@ As you can see above -- storing custom information on a ``user`` account is
 extremely simple!
 
 Extra Context For Templates
-------------------------------------
+---------------------------
 
 Your app might need to add custom data like analytics code to the templates. This
 data will most likely change depending of the environment you are running on and you
