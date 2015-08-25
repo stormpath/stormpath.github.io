@@ -5,21 +5,21 @@
 </h1>
 <div><h2 id="description">Description</h2>
 <div class="description"><div class="stormpath-userservice-user-page"><p>Use this service to get the current user and do access control checks
-on the user</p>
+on the user.</p>
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_create">create(accountData)</h3>
-<div class="create"><div class="stormpath-userservice-user-create-page"><p>Attemps to create a new user by submitting the given <code>accountData</code> as
+<div class="create"><div class="create-page"><p>Attempts to create a new user by submitting the given <code>accountData</code> as
 JSON to <code>/api/users</code>.  The POST endpoint can be modified via the
 <a href="#/api/stormpath.config#user_collection_uri">USER_COLLECTION_URI</a> config option.</p>
 <p>This method expects a <code>201</code> response if the account does NOT require email
 verification.</p>
 <p>If email verification is enabled, you should send a <code>202</code> response instead.</p>
-<p> If you are using our Express.JS SDK you can simply attach the
+<p>If you are using our Express.JS SDK, you can simply attach the
  <a href="https://github.com/stormpath/stormpath-sdk-express#register" target="_blank"><code>register</code></a> middleware
 to your application and these responses will be handled automatically for you.</p>
-</div><h5 id="methods_create_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>accountData</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-userservice-user-create-page"><p>An object literal for passing the data
-for the new account.</p>
+</div><h5 id="methods_create_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>accountData</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="create-page"><p>An object literal for passing the data
+to the new account.</p>
 <p>Required fields:</p>
 <ul>
 <li><code>givenName</code> - the user&#39;s first name</li>
@@ -29,23 +29,21 @@ for the new account.</p>
 account.  Must meet the password requirements that you have specified
 on the directory that this account will be created in.</li>
 </ul>
-</div></td></tr></tbody></table><h5 id="methods_create_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="stormpath-userservice-user-create-page"><p>A promise representing the operation to create a
-new user.  If an error occurs (duplicate email, weak password) the
+</div></td></tr></tbody></table><h5 id="methods_create_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="create-page"><p>A promise representing the operation to create a
+new user.  If an error occurs (duplicate email, weak password), the
 promise will be rejected and the http response will be passed.
-If the operation is successful the promise
+If the operation is successful, the promise
 will be resolved with a boolean <code>enabled</code> value.</p>
 <ul>
-<li><p>If <code>true</code>, the
-account&#39;s status is Enabled and you can proceed with authenticating the user.</p>
+<li><p>If <code>true</code>, the account&#39;s status is Enabled and you can proceed with authenticating the user.</p>
 </li>
 <li><p>If <code>false</code>, the account&#39;s status is Unverified.
-This will be the case when you have
-enabled the email verification workflow on the directory of this
+This will be the case when you have enabled the email verification workflow on the directory of this
 account.</p>
 </li>
 </ul>
 </div></td></tr></table><h4 id="methods_create_example">Example</h4>
-<div class="example"><div class="stormpath-userservice-user-create-page"><pre class="prettyprint linenums">
+<div class="example"><div class="create-page"><pre class="prettyprint linenums">
 $user.create(accountData)
   .then(function(created){
     if(created){
@@ -63,19 +61,19 @@ $user.create(accountData)
 </div>
 </li>
 <li><h3 id="methods_get">get()</h3>
-<div class="get"><div class="stormpath-userservice-user-get-page"><p>Attempt to get the current user.  Returns a promise.  If the user
-is authenticated the promise will be resolved with the user object.
-If the user is not authenticated the promise will be rejected and
+<div class="get"><div class="get-page"><p>Attempt to get the current user.  Returns a promise.  If the user
+is authenticated, the promise will be resolved with the user object.
+If the user is not authenticated, the promise will be rejected and
 passed the error response from the $http service.</p>
-<p>If you cannot make use of the promise you can also obseve the
+<p>If you cannot make use of the promise, you can also observe the
 <a href="#/api/$notLoggedin">$notLoggedin</a> or <a href="#/api/$currentUser">$currentUser</a>
 events.  They are emitted when this method has a success or failure.</p>
 <p>The user object is a Stormpath Account
-object which is wrapped by by a <a href="#/api/eh">User</a> type</p>
-</div><h5 id="methods_get_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="stormpath-userservice-user-get-page"><p>A promise representing the operation to get the current user data</p>
+object, which is wrapped by a <a href="#/api/eh">User</a> type.</p>
+</div><h5 id="methods_get_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="get-page"><p>A promise representing the operation to get the current user data.</p>
 </div></td></tr></table><h4 id="methods_get_example">Example</h4>
-<div class="example"><div class="stormpath-userservice-user-get-page"><pre class="prettyprint linenums">
-var myApp = angular.module('myApp', ['stormmpath']);
+<div class="example"><div class="get-page"><pre class="prettyprint linenums">
+var myApp = angular.module('myApp', ['stormpath']);
 
 myApp.controller('MyAppCtrl', function ($scope, $user) {
   $user.get()
@@ -90,14 +88,89 @@ myApp.controller('MyAppCtrl', function ($scope, $user) {
 </div></div>
 </div>
 </li>
+<li><h3 id="methods_passwordresetrequest">passwordResetRequest(data)</h3>
+<div class="passwordresetrequest"><div class="passwordresetrequest-page"><p>Triggers a password reset email to the given username or email address.</p>
+</div><h5 id="methods_passwordresetrequest_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="passwordresetrequest-page"><p>An object literal for passing the username or email.</p>
+<pre><code>{
+  username: &#39;email address or username&#39;
+}
+</code></pre></div></td></tr></tbody></table><h5 id="methods_passwordresetrequest_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="passwordresetrequest-page"><p>An $http promise representing the operation to generate a password
+reset token for the given email address.  Will resolve, even if the
+email address does not exist.  If rejected there was a network error.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_resendverificationemail">resendVerificationEmail(data)</h3>
+<div class="resendverificationemail"><div class="resendverificationemail-page"><p>Re-sends the verification email to the account specified by the
+username or email address.</p>
+</div><h5 id="methods_resendverificationemail_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="resendverificationemail-page"><p>An object literal for passing the username or email.</p>
+<pre><code>{
+  username: &#39;email address or username&#39;
+}
+</code></pre></div></td></tr></tbody></table><h5 id="methods_resendverificationemail_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="resendverificationemail-page"><p>An $http promise representing the operation to resend a verification token
+to the given email address.  Will resolve, even if the email address
+does not exist.  If rejected there was a network error.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_resetpassword">resetPassword(token, data)</h3>
+<div class="resetpassword"><div class="resetpassword-page"><p>Resets a user&#39;s password, using a token that was emailed to the user.</p>
+</div><h5 id="methods_resetpassword_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>token</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="resetpassword-page"><p>The <code>sptoken</code> that was sent to the user via email.</p>
+</div></td></tr><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="resetpassword-page"><p>An object literal for passing the new password.  Must follow this
+format:</p>
+<pre><code>{
+  password: &#39;the new password&#39;
+}
+</code></pre></div></td></tr></tbody></table><h5 id="methods_resetpassword_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="resetpassword-page"><p>An $http promise representing the operation to reset the password and
+consume the token.  If resolved the password was successfully changed,
+if rejected the token is invalid or the posted password does not meet
+the password strength rules of the directory.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_verify">verify(data)</h3>
+<div class="verify"><div class="verify-page"><p>Verifies a new account, using the <code>sptoken</code> that was sent to the user
+by email.</p>
+</div><h5 id="methods_verify_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="verify-page"><p>Data object</p>
+<p>An object literal for passing the email verification token.
+Must follow this format:</p>
+<pre><code>{
+  sptoken: &#39;&lt;token from email&gt;&#39;
+}
+</code></pre></div></td></tr></tbody></table><h5 id="methods_verify_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="verify-page"><p>An $http promise representing the operation to verify the given
+email verification token token.  If resolved the account has been
+verified and can be used for login.  If rejected the token is expired
+or has already been used.</p>
+</div></td></tr></table></div>
+</li>
+<li><h3 id="methods_verifypasswordresettoken">verifyPasswordResetToken(sptoken)</h3>
+<div class="verifypasswordresettoken"><div class="verifypasswordresettoken-page"><p>Verifies a password reset token that was sent to the user by email.
+If valid, the token can be used to reset the user&#39;s password.  If not
+valid it means that the token has expired or has already been used.</p>
+<p>Use this method to verify the token, before asking the user to specify
+a new password.  If the token is invalid the user must ask for another.</p>
+</div><h5 id="methods_verifypasswordresettoken_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>sptoken</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="verifypasswordresettoken-page"><p>The <code>sptoken</code> that was delivered to the user by email</p>
+</div></td></tr></tbody></table><h5 id="methods_verifypasswordresettoken_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="verifypasswordresettoken-page"><p>A $http promise representing the operation to verify the given password
+reset token token.  If resolved, the token can be used.  If rejected
+the token cannot be used.</p>
+</div></td></tr></table></div>
+</li>
+</ul>
+</div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_currentuser">currentUser</h3>
+<div class="currentuser"><div class="currentuser-page"><p>Retains the account object of the currently logged in user.</p>
+<p>If the user state is unknown, this value is <code>null</code>.</p>
+<p>If the user state is known and the user is not logged in
+(<a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a> has
+been called, and rejected) then this value will be <code>false</code>.</p>
+</div></div>
+</li>
 </ul>
 </div>
 <div class="member event"><h2 id="events">Events</h2>
 <ul class="events"><li><h3 id="events_$currentuser">$currentUser</h3>
 <div class="$currentuser"><div class="stormpath-userservice-user-currentuser-page"><p>This event is broadcast when a call to
 <a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a>
-results in a <a href="#/api/User">User</a> object</p>
-<p>See the next section, the $notLoggeInEvent, for example usage</p>
+and provides the user object as the second parameter.</p>
+<p>See the next section, the $notLoggeInEvent, for example usage.</p>
 </div><div class="inline"><h4 id="events_$currentuser_type">Type:</h4>
 <div class="type">broadcast</div>
 </div>
@@ -105,17 +178,17 @@ results in a <a href="#/api/User">User</a> object</p>
 <div class="target">root scope</div>
 </div>
 <h5 id="events_$currentuser_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>event</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-userservice-user-currentuser-page"><p>Angular event object.</p>
-</div></td></tr><tr><td>user</td><td><a href="" class="label type-hint type-hint-user">User</a></td><td><div class="stormpath-userservice-user-currentuser-page"><p>The current user object</p>
+</div></td></tr><tr><td>user</td><td><a href="" class="label type-hint type-hint-user">User</a></td><td><div class="stormpath-userservice-user-currentuser-page"><p>The current user object.</p>
 </div></td></tr></tbody></table></div>
 </li>
 <li><h3 id="events_$notloggedin">$notLoggedIn</h3>
 <div class="$notloggedin"><div class="stormpath-userservice-user-notloggedin-page"><p>This event is broadcast when a call to
 <a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a>
-results in an authentication failure</p>
+results in an authentication failure.</p>
 <p>This event is useful for situations where you want to trigger
 the call to get the current user, but need to respond to it
-from some other place in your application.  An example could be
-during application bootstrap: you make a single call to get the current
+from some other place in your application.  An example could be,
+during application bootstrap, you make a single call to get the current
 user from the run function, then react to it inside your
 application controller.</p>
 </div><div class="inline"><h4 id="events_$notloggedin_type">Type:</h4>
@@ -127,7 +200,7 @@ application controller.</p>
 <h5 id="events_$notloggedin_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>event</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-userservice-user-notloggedin-page"><p>Angular event object.</p>
 </div></td></tr></tbody></table><h4 id="events_$notloggedin_example">Example</h4>
 <div class="example"><div class="stormpath-userservice-user-notloggedin-page"><pre class="prettyprint linenums">
-var myApp = angular.module('myApp', ['stormmpath']);
+var myApp = angular.module('myApp', ['stormpath']);
 myApp.run(function($user){
   //
   // Once our app is ready to run, trigger a call to $user.get()
@@ -135,6 +208,7 @@ myApp.run(function($user){
   //
   $user.get();
 });
+
 myApp.controller('MyAppCtrl', function ($scope, $rootScope) {
   $scope.isVisible = false; // Wait for authentication
   $rootScope.$on('$notLoggedIn',function(){

@@ -33,7 +33,7 @@ Once trooperapp.com is rendered by the browser, login and registration buttons a
 
 On the ID Site, the user will enter their data and complete the appropriate action, like login.  ID Site will automatically detect any Workflow or Social Login configurations set in Stormpath and show the appropriate buttons, messaging, and behavior.
 
-After the user has logged in successfully, they will be redirected back to your application's `Callback URI`.  For illustration purposes, this could be `http://trooperapp.com/handle-id-site-redirect`.  When the ID Site redirects back to your application, it will pass a secure JWT that represents the account in Stormpath.  Using the Stormpath SDK, your application will handle the request to `/handle-id-site-redirect`, validate that the JWT is correct, and return an `Account Result`. The `Account Result` will include the Stormpath `Account` object and additional information, such as any state that was passed by your application or if the account returned is newly created.
+After the user has logged in successfully, they will be redirected back to your application's `Callback URI`.  For illustration purposes, this could be `http://trooperapp.com/handle-id-site-redirect`.  When the ID Site redirects back to your application, it will pass a secure JWT that represents the account in Stormpath.  Using the Stormpath SDK, your application will handle the request to `/handle-id-site-redirect`, validate that the JWT is correct, and return an `ID Site Account Result`. The `ID Site Account Result` will include the Stormpath `Account` object and additional information, such as any state that was passed by your application or if the account returned is newly created.
 
 <!-- When a user wants to login to or register for your application, your application will redirect them to your ID Site.  On your ID Site, the user will enter their data and complete the appropriate action, like login.  ID Site will automatically detect any Workflow or Social Login configurations you have set in Stormpath and show the appropriate buttons, messaging, and behavior.
 
@@ -284,7 +284,8 @@ Communication between ID site and Stormpath is using one time use tokens.  So no
 
 Info being sent from ID site back to your app is being signed that only your app and id site have shared secret.  All of this is transparent to the developer its all handled by the sdk.
 
-ALl comm is over SSL.  Host their SSL -->
+All comm is over SSL.  -->
+
 ### Single Sign On for Multiple Applications
 
 ID Site supports single-sign-on (SSO) for multiple applications.  SSO allows your user to log into ID Site once, and allows ID Site to make send a cryptographically signed JSON Web Token (JWT) to other applications.
@@ -330,6 +331,31 @@ url = app.build_id_site_redirect_url("http://darksidecentral.com/id-site-sso")
 
 When redirecting the user to the URL that the `ID Site URL Builder` generates, the user if the user has a valid session based on the `Session Max Age` and `Session Idle Time`, they will be automatically redirected to the callbackUri, which is `http://darksidecentral.com/id-site-sso`.  Darksidecentral can then use the [Stormpath SDK to consume the response](#consuming-responses-from-the-id-site-to-your-application) from the ID Site to get the authenticated account and its properties.
 
+### Logging out of ID Site
+
+Since ID Site keeps a session for a user if the `Session Max Age` and `Session Idle Time` is configured, ID Site also gives you the ability to log the user out.  This will ultimately remove the session from ID Site.  
+
+{% codetab id:id-site-builder langs:java node python%}
+------
+Application application = client.getResource(trooperAppStormpathHref, Application.class);
+
+IdSiteUrlBuilder idSiteBuilder = application.newIdSiteUrlBuilder();
+idSiteBuilder.setCallbackUri('http://darksidecentral.com/id-site-callback');
+idSiteBuilder.forLogout();
+
+------
+client.getApplication(trooperAppStormpathHref, function(err, application) {
+  var url = application.createIdSiteUrl({
+    'callbackUri': 'http://darksidecentral.com/id-site-callback',
+    'logout': true
+  });
+});
+------
+url = application.build_id_site_redirect_url(callback_uri='http://darksidecentral.com/id-site-callback', logout=True)
+------
+{% endcodetab %}
+
+Once the user is logged out of ID Site, they are automatically redirected to the `callbackUri` which was specified using the `ID Site URL Builder`.  Your application will know that the user logged out because the resulting `ID Site Account Result` will contain a status claim of `LOGOUT`.  From here, your application can let the user know they have successfully logged out or show them a homepage.
 
 ## Customizing the Default ID Site
 
@@ -374,9 +400,10 @@ Once Github forks the repository, you can clone it locally by running this comma
 
 Once you have a local clone of a fork of the ID Site source repository, you need to install the dependencies required to build and run the ID Site.  To accomplish this, in your terminal:
 
-1. Navigate to the local idsite-src folder
-2. Run: `npm install`
-3. Run: `bower install`
+1. Install grunt if necessary `npm install -g grunt-cli`
+1. Navigate to the local idsite-src folder 
+1. Run: `npm install`
+1. Run: `bower install`
 
 After installing the dependencies, you can build the site by running:
 
@@ -663,8 +690,20 @@ Claim Name  | Description
 `iat`       | The created at time for the JWT in seconds since epoch
 `jti`       | A one-time-use-token for the JWT.  The Stormpath SDKs automatically validate the `jti`. If you require additional security around the validation of the token, you can store the `jti` in your application to validate it only has one time use
 `state`     | The state of the application that you need to pass through the ID Site back to your application through the callback, once the user makes an action on the ID Site.  It is up to the developer to serialize/deserialize this value
-`status`    | The status of the JWT.  This will let you know the status of the request from ID Site.  Valid values are `AUTHENTICATED` and `LOGOUT`
+`status`    | The status of the JWT.  This will let you know the status of the request from ID Site.  Valid values are `AUTHENTICATED`, `LOGOUT`, `REGISTERED`
 
+### Logging out of ID Site with REST
+
+ID Site will keep a configurable session for authenticated users.  When a user is sent from your application to ID Site, if ID Site can confirm that the session is still valid for the user, they will be automatically redirected to the `callbackUri`.  This `callbackUri` can be the originating application or any application supported by a Stormpath SDK.
+
+To log the user out and remove the session that ID Site creates, you must create a [JWT similar to how you get the user to ID Site](#getting-a-user-to-id-site), but instead of redirecting to the `/sso` endpoint, you redirect the user to `/sso/logout`.
+
+So, once the JWT is generated by your server, you must respond with or send the browser to:
+
+    HTTP/1.1 302 Found
+    Location: https://api.stormpath.com/sso/logout?jwtRequest=%GENERATED_JWT%
+
+Once the user is logged out of ID Site, they are automatically redirected to the `callbackUri` which was specified in the JWT.  Your application will know that the user logged out because the `jwtResponse` will contain a status claim of `LOGOUT`.
 
 ##  Wrapping up
 
