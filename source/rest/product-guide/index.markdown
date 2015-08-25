@@ -148,9 +148,9 @@ We recommend using digest authentication whenever possible because it is inheren
 
 All Stormpath SDKs (currently [Java](/java/product_guide), [Ruby](/ruby/product_guide), [PHP](/php/product_guide), and [Python](/python/product_guide)) use this more secure digest authentication so we recommend that you use the SDKs whenever possible. However, if we do not yet have an SDK for your programming language, you should use basic authentication over HTTPS.
 
-Finally, if you would like to use Stormpath digest authentication in a programming language that Stormpath does not yet support, you can attempt to port the algorithm to that language. You can try to replicate the algorithm and use Stormpath existing code as examples to help:
+Finally, if you would like to use Stormpath digest authentication in a programming language that Stormpath does not yet support, you can attempt to port the algorithm to that language. You can try to replicate the algorithm and use Stormpath existing code as examples or the [documented algorithm](https://github.com/stormpath/stormpath-sdk-spec/blob/master/specifications/algorithms/sauthc1.md):
 
-* Java: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-java/blob/master/impl/src/main/java/com/stormpath/sdk/impl/http/authc/Sauthc1Signer.java) (the **sign** method)
+* Java: [SAuthc1RequestAuthenticator](https://github.com/stormpath/stormpath-sdk-java/blob/master/impl/src/main/java/com/stormpath/sdk/impl/http/authc/SAuthc1RequestAuthenticator.java) (the **authenticate** method)
 * Ruby: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-ruby/blob/master/lib/stormpath-sdk/http/authc/sauthc1_signer.rb) (the **sign_request** method)
 * PHP: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-php/blob/master/src/Stormpath/Http/Authc/Sauthc1Signer.php) (the **signRequest** method)
 * Python: [Sauthc1Signer](https://github.com/stormpath/stormpath-sdk-python/blob/master/stormpath/auth.py) (the **__call__** method)
@@ -689,6 +689,7 @@ This returns all accounts where:
 For resources with a `status` attribute, status query values **must be the exact value**. For example, `enabled` or `disabled` must be passed and fragments such as `ena`, `dis`, `bled` are not acceptable.
 {% enddocs %}
 
+<a class="anchor" name="datetime-search"></a>
 #### Datetime Search
 
 Stormpath exposes properties on all resources that will give you information about when the resource was created or modified.  This includes, but isn't exclusive to common resources like `Account`, `Group`, `Directory`, `Application`.  For example, an `Account` resource will have the `createdAt` and `modifiedAt` properties:
@@ -2166,15 +2167,15 @@ If the password reset token creation fails, a `400 Bad Request` is returned with
 
 **Example Password Reset Token Creation Failure Response**
 
-    HTTP/1.1 404 Not Found
+    HTTP/1.1 400 Bad Request
     Content-Type: application/json;charset=UTF-8;
 
     {
-      status: 404,
-      code: 404,
-      message: "The requested resource does not exist.",
-      developerMessage: "The requested resource does not exist.",
-      moreInfo: "mailto:support@stormpath.com"
+      status: 400,
+      code: 2016,
+      message: "The email property value 'dontexist@stormpath.com' does not match a known resource.",
+      developerMessage: "The email property value 'dontexist@stormpath.com' does not match a known resource.",
+      moreInfo: "http://docs.stormpath.com/errors/2016"
     }
 
 At this point, an email will be built using the [password reset base URL](#password-reset-base-URL) specified in the Stormpath Admin Console.
@@ -4829,7 +4830,8 @@ Here are some account creation examples:
 
 * [Simple Create Account Example](#account-create-simple)
 * [Create an Account with Custom Data](#account-create-with-custom-data)
-* [Create an Account and suppress registration emails](#account-create-no-email)
+* [Create an Account and Suppress Registration Emails](#account-create-no-email)
+* [Create an Account with an Existing Password Hash](#create-an-account-with-an-existing-password-hash)
 
 <a class="anchor" name="account-create-simple"></a>
 Simple creation request:
@@ -4926,6 +4928,82 @@ If you want to create a directory account and you want to override the directory
                "status" : "ENABLED",
              }' \
          "https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts?registrationWorkflowEnabled=false"
+
+<a class="anchor" name="create-an-account-with-an-existing-password-hash"></a>
+#### Create an Account with an Existing Password Hash
+
+If you are moving from an existing user repository to Stormpath, you may have existing password hashes that you want to reuse to provide a seamless upgrade path for your end users.
+
+Stormpath allows for account creation with a password hash instead of a plain text password.  This works as follows:
+
++ Create the account specifying the password hash instead of a plain text password
++ Stormpath will use the password hash to authenticate the account's login attempt
++ If the login attempt is successful, Stormpath will recreate the password hash using a secure HMAC algorithm.
+
+Stormpath does not allow for account creation with ANY password hash, the password hash must follow [modular crypt format](https://pythonhosted.org/passlib/modular_crypt_format.html)(MCF), which is a `$` delimited string.  Stormpath only supports password hashes that use the following algorithms:
+
++ [bcrypt](https://en.wikipedia.org/wiki/Bcrypt): These password hashes have the identifier `$2a$`, `$2b$`, `$2x$`, `$2a$`
++ `stormpath2`: A Stormpath specific password hash format that can be generated with common password hash information, such as algorithm, iterations, salt, and the derived cryptographic hash
+
+`stormpath2` has format allows for you to derive a MCF hash that Stormpath can read to understand how to recreate the password hash to use during a login attempt. `stormpath2` hash format is formatted as:
+
+    $stormpath2$ALGORITHM_NAME$ITERATION_COUNT$BASE64_SALT$BASE64_PASSWORD_HASH
+
+Property | Description | Valid Values
+:---- | :---- | :---- 
+`ALGORITHM_NAME` | The name of the hashing algorithm used to generate the `BASE64_PASSWORD_HASH`. | `MD5`, `SHA-1`, `SHA-256`, `SHA-384`, `SHA-512`
+`ITERATION_COUNT` | The number of iterations executed when generating the `BASE64_PASSWORD_HASH` | Integer greater than 0 (1 or more)
+`BASE64_SALT` | The salt byte array used to salt the first hash iteration, formatted as a Base64 string. | Base64 String, if your password hashes do you have salt, you can leave it blank ($stormpath2$ALGORITHM_NAME$ITERATION_COUNT$$BASE64_PASSWORD_HASH)
+`BASE64_PASSWORD_HASH` | The computed hash byte array formatted as a Base64 string | Base64 String
+
+Once you have a `bcrypt` or `stormpath2` MCF password hash, you can create the account in Stormpath with the password hash by `POST`ing the account information to the `Directory` or `Application` accounts endpoint and specifying `passwordFormat=mcf` as a query parameter.
+
+**Example Request**
+
+    POST https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts?passwordFormat=mcf
+    
+    {
+      "username" : "jlpicard",
+      "email" : "capt@enterprise.com",
+      "givenName" : "Jean-Luc",
+      "surname" : "Picard",
+      "password" : "$stormpath2$MD5$1$NzEyN2ZhYzdkZTAyMjJlMGQyMWYxMWRmZmY2YjA1MWI=$K18Ak0YikAFrqgglhIaY5g=="
+    }
+
+**Example Response**
+
+    HTTP/1.1 201 Created
+    Location: https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA
+    Content-Type: application/json;charset=UTF-8;
+
+    {
+      "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
+      "username" : "jlpicard",
+      "email" : "capt@enterprise.com",
+      "fullName" : "Jean-Luc Picard",
+      "givenName" : "Jean-Luc",
+      "middleName" : "",
+      "surname" : "Picard",
+      "status" : "UNVERIFIED",
+      "customData": {
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+      },
+      "groups" : {
+        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
+      },
+      "groupMemberships" : {
+        "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groupMemberships"
+      },
+      "directory" : {
+        "href" : "https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA"
+      },
+      "tenant" : {
+        "href" : "https://api.stormpath.com/v1/tenants/Ad8mIcavSty7XzD-xZdP3g"
+      },
+      "emailVerificationToken" : {
+        "href" : "https://api.stormpath.com/v1/accounts/emailVerificationTokens/4VQxTP5I7Xio03QJTOwQy1"
+      }
+    }
 
 <a class="anchor" name="account-retrieve"></a>
 ### Retrieve an Account

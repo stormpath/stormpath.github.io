@@ -1,0 +1,60 @@
+{% capture root_url %}{{ site.root | strip_slash }}{% endcapture %}
+{% include head.html %}
+<body {% if page.body_id %} id="{{ page.body_id }}" {% endif %} class="not-front {% if page.classes_array %} {% for class in page.classes_array %}{{ class }}{% endfor %} {% endif %} {% unless page.has_docs_menu %} no-sidebars {% endunless %}">
+{% include page_top.html %}
+
+<div id="page">
+
+    <div id="wrap">
+      {% include custom/header.html %}
+    </div>
+  
+  {% if page.content_top %}
+    <div id="content-top-wrapper">
+      <div class="region region-content-top">
+        {% include_array content_top %}
+      </div>
+    </div>
+  {% endif %}
+
+  
+  <div id="main-wrapper" class="landingpage">
+    <div id="content" class="column landingpage" role="main">
+      <a id="main-content"></a>
+      {% if page.title %}
+        <h1 class="title" id="page-title">{{ page.title }}</h1>
+      {% endif %}
+    	{{ content | expand_urls: root_url }}
+    </div>
+
+
+{% if page.has_docs_menu %}
+<aside class="sidebars">
+  {% if page.left_sidebars %}
+    <section class="region region-sidebar-first column sidebar">
+      {% include_array left_sidebars %}
+    </section>
+  {% endif %}
+
+  {% if page.right_sidebars %}
+    <section class="region region-sidebar-second column sidebar">
+      {% include_array right_sidebars %}
+    </section>
+  {% endif %}
+</aside>
+{% endif %}
+
+  </div>
+  {% if page.hide_footer != true %}
+      <div id="footer-wrapper">
+        {% include footer.html %}
+      </div>
+
+      <div id="bottom-wrapper">
+        {% include bottom.html %}
+      </div>
+  {% endif %}
+</div>
+  {% include after_footer.html %}
+</body>
+</html>

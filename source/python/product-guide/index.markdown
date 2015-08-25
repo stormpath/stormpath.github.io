@@ -245,6 +245,14 @@ For example, using the SDK Communication Flow diagram in the [high-level overvie
 
 This retrieves the account at the specified `href` location using an HTTP `GET` request.
 
+It is also possible to provide partial `href`, which will be resolved using the `base_url` parameter specified on `Client` instance creation. For example:
+
+    client = Client(base_url='https://enterprise.stormpath.io/v1')
+    account_href = '/accounts/ACCOUNT_UID_HERE'
+    account = client.accounts.get(account_href)
+
+This retrieves the account at https://enterprise.stormpath.io/v1/accounts/ACCOUNT_UID_HERE using an HTTP `GET` request. 
+
 If you also want information about the `directory` owning that account, every account has a reference to the parent directory location in the JSON representation. For example:
 
     {
@@ -522,6 +530,63 @@ This returns all accounts where:
 {% docs note %}
 For resources with a `status` attribute, status query values **must be the exact value**. For example, `enabled` or `disabled` must be passed and fragments such as `ena`, `dis`, `bled` are not acceptable.
 {% enddocs %}
+
+#### Datetime Search
+
+Stormpath Python SDK exposes attributes on all resources that will give you information about when the resource was created or modified.  This includes, but isn't exclusive to common resources like `Account`, `Group`, `Directory`, `Application`.  For example, an `Account` resource will have the `created_at` and `modified_at` attributes:
+
+    account.created_at
+    account.modified_at
+
+These attributes are timezone aware datetimes parsed from `ISO 8601` formatted string.  The timezone is coordinated universal time (UTC).  Both of these parameters can be queried from collection.
+
+`created_at` and `modified_at` query parameters are a type of [Attribute Search](#search-attribute) that allow you to filter or search collections that were created or modified at a particular time.  The query parameters are supported for all collections.  This includes `Account`, `Group`, `Directory`, `Application`. As an example, if you want wanted to get all accounts created between Jan 12, 2015 and Jan 14, 2015 you would request:
+
+    application.accounts.search({'created_at': '[2015-01-12, 2015-01-14]'})
+
+The response would be a [collection](#collection-resources) of accounts created between the two days.  The datetime range is denoted as:
+
+    created_at|modified_at=[ISO-8601-BEGIN-DATETIME, ISO-8601-END-DATETIME]
+
+{% docs note %}
+ Omitting the beginning or ending date is valid for requests.  Omitting the begin datetime range [,ISO-8601-END-DATETIME] would include all resources created or modified before the end datetime.  Omitting the end datetime range [ISO-8601-BEGIN-DATETIME,] would include all resources created or modified after the the begin datetime.
+{% enddocs %}
+
+**Exclusion vs Inclusion**
+
+The brackets `[]` denote inclusion, but `created_at` and `modified_at` also support exclusion with parentheses `()`.  For example, if you wanted to get all accounts created between Jan 12, 2015 and Jan 14, 2015 not including the 14th, you would request:
+
+    application.accounts.search({'created_at': '[2015-01-12, 2015-01-14)'})
+
+**Precision**
+
+Precision of datetime for this request is controlled by the granularity of the ISO-8601 Datetime you specify.  For example, if you need precision in seconds:
+
+    application.accounts.search({'created_at': '[2015-01-12T12:00:00, 2015-01-12T12:00:05]'})
+
+And, if you need precision in years:
+
+    application.accounts.search({'created_at': '[2014, 2015]'})
+
+**Shorthand**
+
+`created_at` and `modified_at` can use shorthand for the range to simplify the query parameter.  This is useful for queries where the range can be encapsulated in a particular year, month, day, hour, minute or second.  
+
+For example if you wanted all accounts created in Jan 2015 :
+
+    application.accounts.search({'created_at': '2015-01'})
+
+is shorthand for:
+
+    application.accounts.search({'created_at': '[2015-01-01T00:00:00.000Z,2015-02-01T00:00:00.000)'})
+
+If you wanted all accounts modified at in the 12th hour UTC on Feb 03, 2015:
+
+    application.accounts.search({'modified_at': '2015-02-03T12'})
+
+is shorthand for:
+
+    application.accounts.search({'modified_at': '[2015-02-03T12:00:00.000Z, 2015-02-04T13:00:00.000)'})
 
 
 <a class="anchor" name="links-expansion"></a>
@@ -1826,6 +1891,7 @@ For directories, you can:
     * [Reset An Account's Password](#directories-password-reset)
 * [Work with directory groups](#directory-groups)
 * [Work with directory accounts](#directory-accounts)
+* [Update a directory's Password Policy](#directory-password-policy)
 
 <a class="anchor" name="locate-a-directorys-rest-url"></a>
 ### Locate a Directory's REST URL
@@ -2141,6 +2207,228 @@ In addition to the [search query parameters](#search), you may also use [paginat
 #### Working With Directory Accounts
 
 Account resources support the full suite of CRUD commands and other interactions. Please see the [Accounts section](#accounts) for more information.
+
+***
+
+### Directory Account Creation Policy
+
+A Directory's `Account Creation Policy` resource contains data and properties that control what Stormpath does when an `Account` is created.  This includes email verification and welcome emails.
+
+The `Account Creation Policy` can be retrieved by interacting with the directory resource.  The directory resource has a `account_creation_policy` attribute to the `Account Creation Policy`.
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`verification_email_status` | The status of the verification email workflow.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account to have them verify their email.  The email sent is configurable through `verification_email_templates` property | String | `ENABLED` or `DISABLED`
+`verification_email_templates` | A collection of email templates that can be used for sending the 'email verification' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | -- 
+`verification_success_email_status` | The status of the verification success email.  If this is set to `ENABLED`, Stormpath will send an email to a newly verified account to let them know that they have successfully verified their email.  The email sent is configurable through `verification_success_email_templates` property | String | `ENABLED` or `DISABLED`
+`verification_success_email_templates`| A collection of email templates that can be used for sending 'email verification success' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | -- 
+`welcome_email_status` | The status of the welcome email.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account (if `verification_email_status` is set to disabled) or a newly verified account (if `verification_email_status` is set to enabled).  The email sent is configurable through `welcome_email_templates` property | String | `ENABLED` or `DISABLED`
+`welcome_email_templates` | A collection of email templates that can be used for sending a welcome email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | -- 
+`created_at` | A Datetime value that represents when this resource was created | Datetime | <span>--</span>
+`modified_at` | A Datetime value that represents when this resource's properties were last modified | Datetime | <span>--</span>
+
+**Directory Account Creation Policy Class**
+
+    \stormpath\resources\account_creation_policy
+
+An account creation policy resource can be obtained by accessing the directory’s account_creation_policy attribute:
+
+**Example**
+
+    d = client.directories[0]
+    print d.account_creation_policy.href
+
+Using the `Account Creation Policy` for a directory you can:
+
++ [Enable or Disable the Verification, Verification Success, or Welcome Email](#enable-verification-welcome-email-status)
++ [Modify the Email Templates Used for Verification and Welcome Emails](#modify-account-creation-email-templates)
+
+<a class="anchor" name="enable-verification-welcome-email-status"></a>
+#### Enable or Disable the Verification, Verification Success, or Welcome Email
+
+To enable or disable an email from being sent associated with verifying email or a welcome email, use the `save` method to set the desired status for correct status properties.
+
+The `Account Creation Policy` has three separate statuses for the emails:
+
++ `verification_email_status` - Denotes if the verification email will be sent to verify the email the end user used to create the account.  When this is set to a status of `ENABLED`, the new `Account` resources in the `Directory` will be created with the status of `UNVERIFIED` and an email will be sent to verify the address.  More information for verifying accounts can be found [here](#account-verify-email)  The email properties are configurable through `verification_email_templates`
++ `verification_success_email_status` - Denotes if a success email will be sent to the end user when the email has been [verified through the email verification workflow](#account-verify-email).  The email properties are configurabel through `verification_success_email_templates`
++ `welcome_email_status` - Denotes if a welcome email will be sent to the end user when the account has been registered (with email verification turned off by verification_email_status == DISABLED) or verified (with email verification turn on by verification_email_status == ENABLED)
+
+By default, all of the `Account Creation Policy` email status are set to `DISABLED`.  To modify the policy, use the `save` method on the `AccountCreationPolicy` resource:
+
+**Example**
+    
+    account_creation_policy.account_creation_policy = 'ENABLED'
+    account_creation_policy.save()
+
+<a class="anchor" name="modify-account-creation-email-templates"></a>
+#### Modify the Email Templates Used for Verification and Welcome Emails
+
+To modify the emails that get sent during the email verification and registration, let's take a look at the email templates for the account creation policy.  Email templates in Stormpath have common properties that can be modified to change the appearance of the emails.  The properties below apply to both email templates that reside in the account creation policy (verification_email_templates, verification_success_email_templates, and welcome_email_templates).
+
+**Resource Attribute for Email Templates**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`from_email_address` | The address that appears in the email's from field. | String | A valid email address
+`from_name` | The name that appears in the email's from field | String | A string
+`subject` | The subject that appears in the email's subject field | String | A string
+`html_body` | The body of the email in HTML format.  This body is only sent when the `mime_type` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the reset_email_template it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`text_body` | The body of the email is plain text format.  This body is only sent when the `mime_type` for the template is set to `text/plain` | String | A string.  For the reset_email_template it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`mime_type` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html` 
+`default_model` | A dict that defines the model of the email template.  The default_model currently holds one item, which has the key linkBaseUrl.  The value of linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl value and the sptoken used in password reset workflows | dict | dict that includes one item with key linkBaseUrl and value that is a String
+`created_at` | A Datetime value that represents when this resource was created | Datetime | <span>--</span>
+`modified_at` | A Datetime value that represents when this resource's properties were last modified | Datetime | <span>--</span>
+
+To update an email template, first you must get the email template object. This is done by working with the verification_email_templates, verification_success_email_templates and welcome_email_templates collection. These collections hold only one email template, but in the future may hold multiple templates.
+
+**Example**
+
+    verification_email_template = account_creation_policy.verification_email_templates[0]
+
+After getting the email template object, you can update by using the `save` method:
+         
+**Example**
+
+    verification_email_template.from_name = "Application Support"
+    verification_email_template.from_email = "support@application.com"
+    verification_email_template.subject = "Welcome to application.com"
+    verification_email_template.save()
+    
+***
+
+### Directory Password Policy
+
+A Directory's `Password Policy` resource contains data that controls how strong passwords need to be for account in the directory and how they are reset.  By modifying this information, you can modify the behavior of the account's that are apart of the directory.
+
+The password policy can be retrieved by interacting with the directory resource.  The directory resource has a `password_policy` attribute which is the directory's `Password Policy` resource.
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`href` | The href location of the password_policy | String | --
+`reset_email_status` | The status of the reset email workflow.  If this is set to ENABLED, then Stormpath will allow for passwords to be reset through the email workflow and will use the template that is stored in the password_policy's `reset_email_templates`| String | `"ENABLED"` or `"DISABLED"`
+`reset_email_templates` | A collection of email templates that can be used for sending password reset email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates. | CollectionResource | --
+`reset_success_email_status` | The status of the reset success email.  If this is set to ENABLED, then Stormpath will send the a email when an account's password is reset using the email workflow and it is successful.  The email template that is sent is defined in the password_policy's `reset_success_email_templates` | String | `"ENABLED"` or `"DISABLED"`
+`reset_success_email_templates` | A collection of email templates that can be used for sending password reset success email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates. | CollectionResource | --
+`reset_token_ttl` | An integer that defines how long the password reset token is valid for during the password reset email workflow. | Integer |  A positive integer, less than 169 (0 < i < 169). Default is 24
+`strength` |  The password strength requirements for the directory | Resource | --
+
+**Directory Password Policy Class**
+
+    \stormpath\resources\password_policy
+
+A password policy resource can be obtained by accessing the directory’s password_policy attribute:
+
+**Example**
+
+    d = client.directories[0]
+    print d.password_policy.href
+
+For password policies, you can modify:
+
++ Password Reset Workflow for Directory's Accounts
++ Password Strength Policy for Directory's Accounts
+
+#### Password Reset Workflow for Directory's Accounts
+
+The Password Reset Email is configurable for a directory.  There is a set of properties that define its behavior.  This includes the `reset_email_status` and the `reset_email_templates` for the initial password reset email that sends an email to the account's email address with a link to reset the account's password and `reset_success_email_status` and the `reset_success_email_templates` for the resulting email that is sent when the password reset is successful through the email workflow.
+
+To enable or disable the ability to send a password success reset email, use the `save` method to set the `reset_success_email_status` to either `ENABLED` or `DISABLED`. This email will only be set if both `reset_email_status` and `reset_success_email_status` are set to `ENABLED`
+
+**Example**
+
+    password_policy.reset_success_email_status = 'ENABLED'
+    password_policy.save()
+
+To modify the emails that get sent during the password reset workflow, let's take a look at the email templates for the password reset.  Email templates in Stormpath have common properties that can be modified to change the appearance of the emails.  The properties below apply to both email templates that reside in the password policy (reset_email_templates and reset_success_email_templates).
+
+**Resource Attribute for Email Templates**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`from_email_address` | The address that appears in the email's from field. | String | A valid email address
+`from_name` | The name that appears in the email's from field | String | A string
+`subject` | The subject that appears in the email's subject field | String | A string
+`html_body` | The body of the email in HTML format.  This body is only sent when the `mime_type` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the reset_email_templates it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`text_body` | The body of the email is plain text format.  This body is only sent when the `mime_type` for the template is set to `text/plain` | String | A string.  For the reset_email_templates it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`mime_type` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
+`default_model` | A dict that defines the model of the email template.  The default_model currently holds one item, which has the key linkBaseUrl.  The value of linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl value and the sptoken used in password reset workflows | dict | dict that includes one item with key linkBaseUrl and value that is a String 
+
+To update an email template, first you must get the email template object.  This is done by working with the reset_email_templates and reset_success_email_templates collection.  These collections hold only one email template, but in the future may hold multiple templates.
+
+**Example**
+
+    reset_email_template = password_policy.reset_email_templates[0]
+
+After getting the email template object, you can update by using the `save` method:
+
+**Example**
+
+    reset_email_template.from_name = "Application Support"
+    reset_email_template.from_email = "support@application.com"
+    reset_email_template.subject = "Reset your Password for application.com"
+    reset_email_template.default_model = {
+        "linkBaseUrl": "https://application.com/password-reset"
+    }
+    reset_email_template.save()
+
+You can also use convenience methods `reset_email_template.get_link_base_url()` and `reset_email_template.set_link_base_url()` to get or set the value for linkBaseUrl in the default_model dict:
+
+**Example**
+
+    reset_email_template.set_link_base_url("https://application.com/another-password-reset")
+    reset_email_template.save()
+    print reset_email_template.get_link_base_url()  # Will output: https://application.com/another-password-reset
+
+<a class="anchor" name="password-strength-policy-for-directory"></a>
+#### Password Strength Policy for Directory's Accounts
+
+The `Password Strength Policy` for a Directory can be modified through the `strength` property of the Directory's Password Policy.
+
+**Resource Attribute for Password Strength**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`max_length` |  Represents the maximum length for a password.  For example max_length of 10 requires that a password has no more than 10 characters | Integer | Valid Integer, default is 100
+`min_length` | Represents the minimum length for a password.  For example min_length of 5 requires that a password has no less than 5 characters | Integer | Valid Integer, default is 8
+`min_lower_case` | Represents the minimum number of lower case characters required for the password.  For example, min_lower_case of 3 requires the password have 3 lower case characters | Integer | Valid Integer, default is 1
+`min_numeric` | Represents the minimum number of number characters required for the password.  For example, min_numeric of 3 requires the password have 3 numbers | Integer | Valid Integer, default is 1
+`min_symbol` | Represents the minimum number of symbol characters required for the password.  For example, min_symbol of 3 requires the password have 3 symbols | Integer | Valid Integer, default is 0
+`min_upper_case` | Represents the minimum number of upper case characters required for the password.  For example, min_upper_case of 3 requires the password have 3 upper case characters | Integer | Valid Integer, default is 1
+`min_diacritic` | Represents the minimum number of diacritic characters required for the password.  For example, min_diacritic of 3 requires the password have 3 symbols | Integer | Valid Integer, default is 0
+
+To retrieve the `Password Strength` requirements for a directory:
+
+**Example**
+
+    strength = directory.password_policy.strength
+    strength.min_length
+    print dict(strength)
+    # Will output:
+    # {
+    #   "href": "https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID/strength",
+    #   "max_length": 100,
+    #   "min_diacritic": 0,
+    #   "min_length": 8,
+    #   "min_lower_case": 1,
+    #   "min_numeric": 1,
+    #   "min_symbol": 0,
+    #   "min_upper_case": 1
+    # }
+
+Setting new `Password Strength` requirement for a directory modifies the requirement for new accounts and also password changes on existing account's in a directory.  To update `Password Strength`, simple `save` the resource with the changes necessary.
+
+**Example**
+
+    strength = directory.password_policy.strength
+    strength.min_length = 1
+    strength.max_length = 24
+    strength.min_symbol = 1
+    strength.save()
 
 ***
 
@@ -2813,6 +3101,45 @@ If you want to create a directory account and you want to override the directory
         'password': '4P@$$w0rd!'
     }, registration_workflow_enabled=False)
 
+<a class="anchor" name="create-an-account-with-an-existing-password-hash"></a>
+#### Create an Account with an Existing Password Hash
+
+If you are moving from an existing user repository to Stormpath, you may have existing password hashes that you want to reuse to provide a seamless upgrade path for your end users.
+
+Stormpath allows for account creation with a password hash instead of a plain text password.  This works as follows:
+
++ Create the account specifying the password hash instead of a plain text password
++ Stormpath will use the password hash to authenticate the account's login attempt
++ If the login attempt is successful, Stormpath will recreate the password hash using a secure HMAC algorithm.
+
+Stormpath does not allow for account creation with ANY password hash, the password hash must follow [modular crypt format](https://pythonhosted.org/passlib/modular_crypt_format.html)(MCF), which is a `$` delimited string.  Stormpath only supports password hashes that use the following algorithms:
+
++ [bcrypt](https://en.wikipedia.org/wiki/Bcrypt): These password hashes have the identifier `$2a$`, `$2b$`, `$2x$`, `$2a$`
++ `stormpath2`: A Stormpath specific password hash format that can be generated with common password hash information, such as algorithm, iterations, salt, and the derived cryptographic hash
+
+`stormpath2` has format allows for you to derive a MCF hash that Stormpath can read to understand how to recreate the password hash to use during a login attempt. `stormpath2` hash format is formatted as:
+
+    $stormpath2$ALGORITHM_NAME$ITERATION_COUNT$BASE64_SALT$BASE64_PASSWORD_HASH
+
+Property | Description | Valid Values
+:---- | :---- | :---- 
+`ALGORITHM_NAME` | The name of the hashing algorithm used to generate the `BASE64_PASSWORD_HASH`. | `MD5`, `SHA-1`, `SHA-256`, `SHA-384`, `SHA-512`
+`ITERATION_COUNT` | The number of iterations executed when generating the `BASE64_PASSWORD_HASH` | Integer greater than 0 (1 or more)
+`BASE64_SALT` | The salt byte array used to salt the first hash iteration, formatted as a Base64 string. | Base64 String, if your password hashes do you have salt, you can leave it blank ($stormpath2$ALGORITHM_NAME$ITERATION_COUNT$$BASE64_PASSWORD_HASH)
+`BASE64_PASSWORD_HASH` | The computed hash byte array formatted as a Base64 string | Base64 String
+
+Once you have a `bcrypt` or `stormpath2` MCF password hash, you can create the account in Stormpath with the password hash by calling the `create` method on the `AccountList` instance and specifying `password_format='mcf'`.
+
+**Example Request**
+
+    account = directory.accounts.create({
+        'given_name': 'Jean-Luc',
+        'surname': 'Picard',
+        'username': 'jlpicard',
+        'email': 'capt@enterprise.com',
+        'password': '$stormpath2$MD5$1$NzEyN2ZhYzdkZTAyMjJlMGQyMWYxMWRmZmY2YjA1MWI=$K18Ak0YikAFrqgglhIaY5g=='
+    }, password_format='mcf')
+    
 <a class="anchor" name="account-retrieve"></a>
 ### Retrieve an Account
 

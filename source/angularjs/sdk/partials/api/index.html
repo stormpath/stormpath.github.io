@@ -2,50 +2,64 @@
 <div><span class="hint"></span>
 </div>
 </h1>
-<div><div class="api-documentation-page"><h2 id="-module-for-angularjs-[beta]"><code>stormpath-sdk-angularjs</code> module for AngularJS [BETA]</h2>
-<h3 id="-module-for-angularjs-[beta]_welcome-lets-get-started">Welcome!  Let&#39;s get started</h3>
-<p>You are reading the API documentation for the Stormpath AngularJS SDK,
-you are moments away from adding user login features to your Angular application :)</p>
-<p>If you&#39;re ready to dive in with code, see the <a href="#quickstart">Getting Started</a> section.</p>
-<p>If you want a walkthrough tutorial, see the <a href="https://docs.stormpath.com/angularjs/guide/">In-Depth Guide</a></p>
-<h3 id="-module-for-angularjs-[beta]_overview">Overview</h3>
-<p>Used in conjuction with Stormpath on your backend, this module provides
-Angular services which allow you to:</p>
+<div><div class="api-documentation-page"><h2 id="-module-for-angularjs"><code>stormpath-sdk-angularjs</code> module for AngularJS</h2>
+<p><span class="label label-warning">BETA</span></p>
+<h3 id="-module-for-angularjs_welcome-lets-get-started">Welcome!  Let&#39;s get started</h3>
+<p>You are reading the API documentation for the Stormpath AngularJS SDK and are
+moments away from adding user login features to your Angular application! Used
+in conjunction with Stormpath on your backend, this module provides Angular
+services which allow you to:</p>
 <ul>
 <li>Authenticate username &amp; password and get the Account object</li>
 <li>Use tokens (JWTs) as a stateless session mechanism</li>
 <li>Show or hide parts of your UI in response to the current user state</li>
-<li>Use <a href="https://github.com/angular-ui/ui-router"><code>ui-router</code></a> to declare rules at the UI-state level</li>
+<li>Use [<code>ui-router</code>][ui-router] to declare rules at the UI-state level</li>
 </ul>
-<h3 id="-module-for-angularjs-[beta]_backed-integration">Backed Integration</h3>
-<p>This module is intended to be used with a Stormpath SDK on your server.  Our
-<a href="https://github.com/stormpath/stormpath-sdk-express" title="Stormpath Express SDK">Stormpath Express SDK</a> is specifically designed for this.
-We support many other langues as well, please see <a href="https://docs.stormpath.com">docs.stormpath.com</a></p>
-<p>By default the Angular application expects to find the <code>/oauth/token</code> and
-<code>/api/users/current</code> endpoints.  If you need to use alternate URLs you can
-configure them using the <a href="#/api/$stormpath">$stormpath</a> provider.</p>
-<h3 id="-module-for-angularjs-[beta]_using-with-expressjs">Using with Express.js</h3>
-<p>We have an Express-based example application in the github repo for
-this project, see the <a href="#example">Example</a></p>
-<h3 id="-module-for-angularjs-[beta]_how-token-authentication-works">How token authentication works</h3>
-<p>We have written a comprehensive article about token authentication for
-Single Page Applications (SPAs).  Please find it here:</p>
-<p><a href="https://stormpath.com/blog/token-auth-spa" target="_blank">https://stormpath.com/blog/token-auth-spa</a></p>
-<h4 id="-module-for-angularjs-[beta]_how-token-authentication-works_token-creation-and-storage">Token creation and storage</h4>
-<p>When a user logs in the server will issue an access token in the form of a
-JWT.  This access token will be stored in an HTTP-only cookie, and will also
-set the Secure flag (so that it is only sent over HTTPS) in your production
-environment.</p>
-<p>You may have heard that cookie are insecure, but that is a vague statement.
-The truth is that HTTP-only cookies, espeically Secure-only cookies, are the
-most secure place to store authentication information becuase the Javascript
-environment cannot access them.  This is the best way to protect yourself
-from XSS attacks.</p>
-<h4 id="-module-for-angularjs-[beta]_how-token-authentication-works_token-expiration-and-revocation">Token expiration and revocation</h4>
-<p>Access tokens are valid until they expire.  You should set an expiration (TTL) that
-makes sense for your application.  The TTL is controlled on your server.  If you
-are using the <a href="https://github.com/stormpath/stormpath-sdk-express" title="Stormpath Express SDK">Stormpath Express SDK</a> you want to
-configure the <code>accessTokenTtl</code> options.</p>
-<p>If you need the ability to revoke specific tokens you can maintain a cache of issued
-tokens on your server.  All tokens have a <code>jti</code> field which is a unique nonce for each token.</p>
+<h3 id="-module-for-angularjs_sever-integration">Sever Integration</h3>
+<p>This module is intended to be used with a Stormpath SDK on your server.
+Please see the <a href="#/server">Sever Integration Guide</a> for information about
+adding Stormpath to your server and supporting your Angular application.</p>
+<h3 id="-module-for-angularjs_installation---bower">Installation - Bower</h3>
+<p> If you are using <a href="https://bower.io">Bower</a> you can simply install
+ our package:</p>
+<pre><code> bower install --save stormpath-sdk-angularjs
+</code></pre><h3 id="-module-for-angularjs_installation---manual">Installation - Manual</h3>
+<p> If you would like to add the scripts manually, simply get the latest files from
+ the <a href="https://github.com/stormpath/stormpath-sdk-angularjs/tree/master/dist">dist folder on github</a>.
+ Then add them to the <code>&lt;head&gt;</code> section of your document:</p>
+<p> <pre class="prettyprint linenums">
+ &lt;script src="stormpath-sdk-angularjs.min.js"&gt;&lt;/script&gt;
+ &lt;script src="stormpath-sdk-angularjs.tpls.min.js"&gt;&lt;/script&gt;
+ </pre>
+<h3 id="-module-for-angularjs_configuration">Configuration</h3>
+<p> You will need to add <code>stormpath</code> as a dependency of your Angular application
+ and the templates if you will be using those:</p>
+<p> <pre class="prettyprint linenums">
+ &lt;script&gt;
+   var myApp = angular.module('myApp', ['stormpath','stormpath.templates']);
+ &lt;/script&gt;
+ </pre>
+<h3 id="-module-for-angularjs_templates-are-optional">Templates are optional</h3>
+<p> This library includes some default view templates for forms, such as
+ registration and login.  You have the option to specify your own templates
+ for those directives.  If you are using your own templates it does not make
+ sense to include our defaults.</p>
+<p> If you are using the manual installation: simply remove the file
+ <code>stormpath-sdk-angularjs.tpls.min.js</code></p>
+<p> If you are using Bower, you can specify an override for this module
+ and only include the core javascript.  This is done inside your
+ <code>bower.json</code> file:</p>
+<p> <pre class="prettyprint linenums">
+ {
+     // .. the rest of your bower.json ..
+
+  "overrides":{
+    "stormpath-sdk-angularjs":{
+      "main":[
+        "dist/stormpath-sdk-angularjs.min.js"
+      ]
+    }
+  }
+ }
+ </pre>
 </div></div>

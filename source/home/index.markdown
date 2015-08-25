@@ -1,119 +1,96 @@
 ---
-layout: default
+layout: landingpage
 classes_array: [page-docs]
 description: Stormpath User Management official documentation. API docs in REST, Node.js, Java and Python plus feature guides.
 title: Documentation
 content_top: [docs_top.html]
 alias: [/index.html]
 ---
+<div class="homepage">
 
-<div class="panel-display panel-3col-33-stacked  clearfix">
-  <div class="panel-panel panel-col-top">
-    <div class="inside"><div class="panel-pane pane-custom pane-1">
-      <h2 class="pane-title">Documentation</h2>
-      <div class="pane-content">
-       <p>Need more details? Check out in-depth documentation guides below.</p>   </div>
-     </div>
-   </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <h1>Integrations</h1>
+        <p>It’s easy to get started with Stormpath using one of our language libraries or framework integrations. Check out one of the official SDKs or community repos below.  If your platform isn't listed, you can always use the core REST API with any platform.</p>
+        <div class="row">
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="/nodejs"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-node.jpg"></a>
+          </div>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="/java"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-java.jpg"></a>
+          </div>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="/angularjs/guide"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-angular.jpg"></a>
+          </div>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="/python"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-python.jpg"></a>
+          </div>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="/ruby/quickstart"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-ruby.jpg"></a>
+          </div>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="/php/quickstart"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-php.jpg"></a>
+          </div>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="https://github.com/jarias/stormpath-sdk-go"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-go.jpg"></a>
+          </div>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="https://github.com/stormpath/stormpath-mod-authnz-external"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-apache.jpg"></a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="center-wrapper">
-    <div class="panel-panel panel-col-first">
-      <div class="inside">
-        <div class="panel-pane pane-block pane-menu-menu-docs-guides">
-          <h2 class="pane-title">Stormpath Guides</h2>
-          <div class="pane-content">
-            <ul class="menu">
-              <li class="first leaf"><a href="/guides/multi-tenant" title="">Multi-Tenant SaaS Guide</a></li>
-              <li class="leaf"><a href="/guides/using-id-site" title="">ID Site Guide</a></li>
-              <li class="leaf"><a href="/guides/social-integrations" title="">Social Integration Guide</a></li>
-              <li class="leaf"><a href="/guides/api-key-management" title="">API Authentication Guide</a></li>
-              <li class="leaf"><a href="/guides/ad-ldap" title="">Active Directory / LDAP Guide</a></li>
-              <li class="last leaf"><a href="/guides/dev-test-prod-environments" title="">Development and Production Environments Guide</a></li>
-            </ul>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>REST Documentation</h1>
+        <p>Connect to the Stormpath API in minutes with the REST quickstart or find comprehensive documentation in the REST Product Guide.</p>
+        <div class="row">
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="/rest/quickstart"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-quick.jpg"></a>
           </div>
-        </div>
-        <div class="panel-separator">
-        </div>
-        <div class="panel-pane pane-block pane-menu-menu-docs-restapi">
-          <h2 class="pane-title">Rest API Docs</h2>
-          <div class="pane-content">
-            <ul class="menu">
-              <li class="first leaf"><a href="/rest/quickstart" title="">Quickstart</a></li>
-              <li class="leaf"><a href="/rest/product-guide" title="">Product Guide</a></li>
-              <hr />
-              <li class="leaf"><a href="/how-do-i" title="">How do I...</a></li>
-              <li class="last leaf"><a href="/errors" title="">Error Codes</a></li>
-            </ul>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="/rest/product-guide"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-product.jpg"></a>
           </div>
-        </div>
-        <div class="panel-separator">
-        </div>
-      </div>
-    </div>
-    <!-- -->
-    <div class="panel-panel panel-col">
-      <div class="inside">
-        <div class="panel-pane pane-block pane-menu-menu-docs-node">
-          <h2 class="pane-title">Node.js Docs</h2>
-          <div class="pane-content">
-            <ul class="menu">
-              <li class="first leaf"><a href="/nodejs/quickstart" title="">Quickstart</a></li>
-        <li class="leaf"><a href="/nodejs/api" title="">API Docs</a></li>
-              <li class="leaf"><a href="/nodejs/express/" title="">Express.js Integration</a></li>
-              <li class="leaf"><a href="https://github.com/stormpath/stormpath-restify" title="">Restify Integration</a></li>
-              <li class="leaf"><a href="/nodejs/passport/" title="">Passport.js Strategy</a></li>
-        <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-node" title="">SDK on GitHub</a></li>
-              <li class="leaf"><a href="https://www.npmjs.org/package/stormpath" title="">npm Package Info</a></li>
-        <li class="last leaf"><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/" title="">Express Sample App</a></li>
-              <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-node/archive/master.zip">Download SDK</a></li>
-            </ul>  
-          </div>
-        </div>
-        <div class="panel-separator">
-        </div>
-         <div class="panel-pane pane-block pane-menu-menu-docs-python">
-          <h2 class="pane-title">Python Docs</h2>
-          <div class="pane-content">
-            <ul class="menu"><li class="first leaf"><a href="/python/quickstart" title="">Quickstart</a></li>
-              <li class="leaf"><a href="/python/product-guide" title="">Product Guide</a></li>
-              <li class="leaf"><a href="/python/apidocs/" title="">API Docs (Sphinx)</a></li>
-              <li class="leaf"><a href="http://flask-stormpath.readthedocs.org/en/latest" title="">Flask Integration</a></li>
-              <li class="leaf"><a href="https://github.com/stormpath/stormpath-django" title="">Django Integration</a></li>
-        <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-python" title="">SDK on GitHub</a></li>
-        <li class="last leaf"><a href="https://docs.stormpath.com/sample-apps/" title="">Sample Apps</a></li>
-              <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-python/archive/master.zip">Download SDK</a></li>
-            </ul>  
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="/errors"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-error.jpg"></a>
           </div>
         </div>
       </div>
     </div>
-    <div class="panel-panel panel-col-last">
-      <div class="inside">
-        <div class="panel-pane pane-block pane-menu-menu-docs-java">
-          <h2 class="pane-title">Java Docs</h2>
-          <div class="pane-content">
-            <ul class="menu">
-              <li class="first leaf"><a href="/java/quickstart" title="">Quickstart</a></li>
-              <li class="leaf"><a href="/java/servlet-plugin/quickstart.html" title="">Web App Quickstart</a></li>
-              <li class="leaf"><a href="/java/product-guide" title="">Product Guide</a></li>
-              <li class="leaf"><a href="/java/servlet-plugin/" title="Stormpath Servlet Plugin Guide">Web App Plugin Guide</a></li>
-              <li class="leaf"><a href="/java/apidocs/" title="">JavaDocs</a></li>
-              <li class="leaf"><a href="/integrations/#sample-apps-java-container-jump" title="">Framework Integrations</a></li>
-        <li class="leaf"><a href="https://github.com/stormpath/stormpath-sdk-java" title="">SDK on GitHub</a></li>
-              <li class="last leaf"><a href="/sample-apps/#sample-apps-java-container-jump" title="">Sample Apps</a></li>
-              <li class="leaf download-sdk"><a href="https://github.com/stormpath/stormpath-sdk-java/archive/master.zip">Download SDK</a></li>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1>Stormpath Guides</h1>
+        <p>Implement sophisticated user management with detailed best-practice guides and code samples on a variety of Stormpath topics.</p>
+        <div class="row">
+          <div class="col-xs-12 visible-xs">
+            <ul class="fa-ul">
+              <li><i class="fa-li fa fa-users"></i><a href="/guides/multi-tenant/">Multi-Tenant SaaS Guide</a></li>
+              <li><i class="fa-li fa fa-user"></i><a href="/guides/using-id-site/">ID Site Guide</a></li>
+              <li><i class="fa-li fa fa-facebook"></i><a href="/guides/social-integrations/">Social Integration Guide</a></li>
+              <li><i class="fa-li fa fa-folder-open"></i><a href="/guides/api-key-management/">API Authentication Guide</a></li>
+              <li><i class="fa-li fa fa-sitemap"></i><a href="/guides/ad-ldap/">Active Directory / LDAP Guide</a></li>
+              <li><i class="fa-li fa fa-wrench"></i><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
             </ul>
           </div>
-        </div>
-        <div class="panel-separator">
-        </div>
-        <div class="panel-pane pane-block pane-menu-menu-docs-angularjs">
-          <h2 class="pane-title">AngularJS</h2>
-          <div class="pane-content">
-            <ul class="menu">
-              <li class="first leaf"><a href="/angularjs/sdk/" title="">AngularJS SDK Documentation</a></li>
-              <li class="leaf"><a href="/angularjs/guide/" title="">AngularJS + ExpressJS Guide</a></li>
-              <li class="last leaf"><a href="https://github.com/stormpath/stormpath-sdk-angularjs">SDK on Github</a></li>
+          <div class="col-sm-4 hidden-xs">
+            <ul class="fa-ul">
+              <li><i class="fa-li fa fa-users"></i><a href="/guides/multi-tenant/">Multi-Tenant SaaS Guide</a></li>
+              <li><i class="fa-li fa fa-user"></i><a href="/guides/using-id-site/">ID Site Guide</a></li>
+              <li><i class="fa-li fa fa-facebook"></i><a href="/guides/social-integrations/">Social Integration Guide</a></li>
+              <li><i class="fa-li fa fa-folder-open"></i><a href="/guides/api-key-management/">API Authentication Guide</a></li>
+            </ul>
+          </div>
+          <div class="col-sm-6 hidden-xs">
+            <ul class="fa-ul">
+              <li><i class="fa-li fa fa-sitemap"></i><a href="/guides/ad-ldap/">Active Directory / LDAP Guide</a></li>
+              <li><i class="fa-li fa fa-wrench"></i><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
             </ul>
           </div>
         </div>

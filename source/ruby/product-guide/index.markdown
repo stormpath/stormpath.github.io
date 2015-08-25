@@ -1201,8 +1201,8 @@ When you create an application account, in addition to Stormpath's account attri
 
 **Example Request**
 
-    auth_request =
-      Stormpath::Authentication::UsernamePasswordRequest.new 'johnsmith', 'badPassword!'
+    auth_request =  
+        Stormpath::Authentication::UsernamePasswordRequest.new 'johnsmith', 'badPassword!', {:account_store => account_store}
 
     auth_result = application.authenticate_account auth_request, account_store
 
