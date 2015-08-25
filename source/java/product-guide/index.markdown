@@ -2913,12 +2913,9 @@ For example, if you want to find an account with the username "test" across an a
 
 **Example Request**
 
-	AccountCriteria criteria = Accounts.where(Accounts.username().eqIgnoreCase("test"));
-    AccountList accounts = application.getAccounts(criteria);
-    Account account;
-    for(Account acc : accounts) {
-    	account = acc;
-    }
+    AccountCriteria criteria = Accounts.where(Accounts.username().eqIgnoreCase("test"));
+    Account account = application.getAccounts(criteria).single(); // single() will throw if this list contains zero or more than one element
+    String accountHref = account.getHref();
 
 If you only know a small part of the username, you can use the `containsIgnoreCase` method (e.g., `Accounts.username().containsIgnoreCase("test")`) to narrow down the selection.
 
