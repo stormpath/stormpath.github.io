@@ -1,0 +1,1495 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Multi-Tenant SaaS Applications with Stormpath - Stormpath</title>
+  <meta name="author" content="Stormpath, Inc.">
+
+  
+  <meta name="description" content="Learn how to design and implement multi-tenant user models and secure data partitions with Stormpath for SaaS">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stormpath.github.io/guides/multi-tenant">
+  <link href="/favicon.ico" rel="icon">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style>
+@import url("/stylesheets/normalize.css?mrrrji");
+@import url("/stylesheets/wireframes.css?mrrrji");
+@import url("/stylesheets/html-elements.css?mrrrji");
+@import url("/stylesheets/tabs.css?mrrrji");
+@import url("/stylesheets/tinybox2.css?mrrrji");
+@import url("/stylesheets/flexnav.css?mrrrji");
+@import url("/stylesheets/pages.css?mrrrji");
+@import url("/stylesheets/docs.css?mrrrji");
+@import url("/stylesheets/blocks.css?mrrrji");
+@import url("/stylesheets/navigation.css?mrrrji");
+@import url("/stylesheets/views-styles.css?mrrrji");
+@import url("/stylesheets/nodes.css?mrrrji");
+@import url("/stylesheets/comments.css?mrrrji");
+@import url("/stylesheets/forms.css?mrrrji");
+@import url("/stylesheets/fields.css?mrrrji");
+@import url("/stylesheets/layouts/responsive-sidebars.css?mrrrji");
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/atom.xml" rel="alternate" title="Stormpath" type="application/atom+xml">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Covered+By+Your+Grace|Open+Sans:300italic,400italic,600italic,700italic,800italic,300,400,600,700,800" media="all" />
+
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/cupertino/jquery-ui.css" />
+<link rel="stylesheet" href="/stylesheets/mono-blue.min.css" />
+
+<!--[if lt IE 9]>
+<script src="/javascripts/html5-respond.js"></script>
+<![endif]-->
+
+<link rel="publisher" href="https://plus.google.com/117307959654441669381" />
+<!-- twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="goStormpath">
+<meta name="twitter:title" content="Multi-Tenant SaaS Applications with Stormpath - Stormpath">
+<meta name="twitter:description" content="Learn how to design and implement multi-tenant user models and secure data partitions with Stormpath for SaaS">
+<meta name="twitter:image:src" content="https://docs.stormpath.com/images/icons/twitter-stormpath-icon.jpg">
+<!-- opengraph -->
+<meta property="og:title" content="Multi-Tenant SaaS Applications with Stormpath - Stormpath" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://stormpath.github.io/guides/multi-tenant" />
+<meta property="og:image" content="https://docs.stormpath.com/images/icons/og-stormpath-icon.jpg" />
+<meta property="og:description" content="Learn how to design and implement multi-tenant user models and secure data partitions with Stormpath for SaaS" />
+<meta property="og:site_name" content="Stormpath" />
+<meta property="fb:admins" content="3230401" />
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-29159574-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+<!-- kissmetrics -->
+<script type="text/javascript">
+  var _kmq = _kmq || [];
+  var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+  function _kms(u){
+    setTimeout(function(){
+      var d = document, f = d.getElementsByTagName('script')[0],
+      s = d.createElement('script');
+      s.type = 'text/javascript'; s.async = true; s.src = u;
+      f.parentNode.insertBefore(s, f);
+    }, 1);
+  }
+  _kms('//i.kissmetrics.com/i.js');
+  _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+</script>
+
+<!-- Optimizely -->
+<script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+  
+
+</head>
+
+<body  class="not-front  node-type-documentation  ">
+<!-- Qualaroo for stormpath.com -->
+<script type="text/javascript">var _kiq = _kiq || [];</script>
+<script type="text/javascript" src="//s3.amazonaws.com/ki.js/47725/9JM.js" async="true"></script>
+      
+<script type="text/javascript" src="//assets.zendesk.com/external/zenbox/v2.6/zenbox.js"></script>
+<style type="text/css" media="screen, projection">
+  @import url(//assets.zendesk.com/external/zenbox/v2.6/zenbox.css);
+</style>
+<script type="text/javascript">
+  if (typeof(Zenbox) !== "undefined") {
+    Zenbox.init({
+      dropboxID:   "20184231",
+      url:         "https://stormpath.zendesk.com",
+      tabTooltip:  "Get Help",
+      tabImageURL: "/images/tab_questions_black_right.png",
+      tabColor:    "689ed0",
+      tabPosition: "Right"
+    });
+  }
+</script>
+
+
+<script src="/javascripts/stormpath_docs.js"></script>
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+		sp_docs_menu['wizard'] = [];
+		
+	
+</script>
+
+<div id="page">
+    <div class="fixed-header" id="wrap">
+      
+
+<nav class="navbar navbar-storm" role="navigation">
+  <div class="navbar-container">
+
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://stormpath.com/">
+        <img src="/images/template/logo_nav.png"/>
+      </a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="main-nav">
+      <a type="button" class="btn navbar-btn button-primary-bordered button-signup navbar-right" href="https://api.stormpath.com/register" onClick="ga('send', 'event', { eventCategory: 'sign up', eventAction: 'sign up button click', eventLabel: 'www', eventValue: 1});">Sign Up Now</a>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="http://docs.stormpath.com/">Docs</a></li>
+        <li><a href="https://stormpath.com/tutorial">Tutorial</a></li>
+        <li><a href="https://stormpath.com/product" class="arrow_box">Product</a></li>
+        <li><a href="https://stormpath.com/pricing">Pricing</a></li>
+        <li><a href="https://stormpath.com/about">About</a></li>
+        <li><a href="https://api.stormpath.com/login">Login</a></li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</nav>
+
+
+
+    </div>
+<!--
+  <div id="header-wrapper">
+  	<header id="header" role="banner" class="container">
+      
+    </header>
+  </div>-->
+  <div id="main-wrapper">
+    <div id="main">
+      <div id="main-inner">
+        <div id="main-inner-inner">
+          <div id="content" class="column" role="main">
+            <a id="main-content"></a>
+            
+              <h1 class="title" id="page-title">Multi-Tenant SaaS Applications with Stormpath</h1>
+            
+            
+<div class="sharing" style="height:22px">
+    <div class="addthis_sharing_toolbox"></div>
+</div>
+
+          	<p>In this guide, we discuss what a multi-tenant SaaS application is and how to model user data for SaaS apps serving many organizations. We will also show how to build a multi-tenant SaaS application faster and more securely with Stormpath, a cloud-hosted user management service, that easily supports multi-tenant user models.</p>
+
+<h2><a id="what-is-stormpath"></a>What is Stormpath?</h2>
+
+<p>Stormpath is a user management API that makes it easy for developers to launch applications with secure, scalable user infrastructure. It automates:</p>
+
+<ul>
+<li>User Account registration and login</li>
+<li>Authentication and authorization</li>
+<li>Flexible, secure user profile data</li>
+<li>Group and role management, including pre-built Role-Based Access Control (RBAC)</li>
+<li>Best-practice password security and data storage</li>
+<li>Integration with on-premise LDAP and Active Directory servers</li>
+</ul>
+
+
+<p>You access Stormpath via a <a href="http://stormpath.com/blog/designing-rest-json-apis">beautiful</a> REST+JSON API or our <a href="https://docs.stormpath.com">language-specific SDKs</a>.</p>
+
+<p>While Stormpath is a great choice for any application, it excels for multi-tenant use cases.</p>
+
+<h2><a id="what-is-a-multi-tenant-saas-application"></a>What is a Multi-Tenant SaaS Application?</h2>
+
+<p>Most web applications are designed to support only one user base or &lsquo;organization&rsquo;: typically the organization installs and maintains the application. This traditional software architecture usually has an application codebase that uses a primary database.  For example:</p>
+
+<pre><code>  Application
+       |
+       |
+      \/
+ -- Database --
+|     data     |
+ --------------
+</code></pre>
+
+<p>A multi-tenant SaaS application by contrast is a single application that can service <em>multiple</em> organizations <em>simultaneously</em>.  In these applications, each organization is referred to as a <strong>tenant</strong>.</p>
+
+<p>Just like in an apartment building, although there is a single building, there may be multiple <em>tenants</em>, each with their own apartment in the building. Similarly, a multi-tenant SaaS application needs to ensure that each Tenant or customer organization has its own private space that cannot be seen or interfered with by other Tenants/Organizations: when Organization A&rsquo;s users access the application, they cannot see Organization B&rsquo;s data, and vice versa. In this guide &ndash; and elsewhere in Stormpath documentation &ndash; &ldquo;tenant&rdquo; refers to the data partition specific to a customer organization.</p>
+
+<p>To ensure data separation, a multi-tenant SaaS application typically partitions each tenant&rsquo;s data virtually, so that the data is cleanly segmented in the data store.  This means a multi-tenant SaaS application architecture looks something like this:</p>
+
+<pre><code>        Application
+             |
+             |
+            \/
+ ------- Database ----------
+| org1 | org2 | ... | orgN |
+ --------------------------
+</code></pre>
+
+<p>The application still uses a single (logical) database, but it now needs to know how to access only Tenant A&rsquo;s data when supporting Tenant A&rsquo;s users.</p>
+
+<p>This poses a challenge: very few modern databases natively support tenant data partitioning. The application developer must figure out how to do this in application code. We&rsquo;ll talk about techniques for doing this this a little later.</p>
+
+<h2><a id="why-build-a-multi-tenant-saas-application"></a>Why Build a Multi-Tenant SaaS Application?</h2>
+
+<p>Given the extra &lsquo;data partitioning&rsquo; burden when building a multi-tenant SaaS application, why would you want to go through the effort?</p>
+
+<p>The reality of today&rsquo;s technology landscape is that more and more organizations use web applications and no longer want to install, host, and maintain applications on their own servers. Maintaining local applications can be difficult, time consuming and frustrating, and requires additional in-house reseources.</p>
+
+<p>Increasingly, companies that build web applications offer their applications as a Software-as-a-Service, or SaaS &ndash; they host and maintain their applications themselves, giving customer organizations access to the software over the internet. This has great appeal to customers: they can sign up for a service and start using it right away, and the maintenance burden goes away.</p>
+
+<h2><a id="multi-tenant-design"></a>Multi-Tenant Design</h2>
+
+<p>There are a lot of ways to build multi-tenant SaaS applications. For the purpose of this article, we&rsquo;re going to focus on approaches to support the significant majority of multi-tenant SaaS apps:</p>
+
+<p>A public (Internet-facing) multi-tenant web application with per-organization data partitioning. For example:</p>
+
+<pre><code>https://myapplication.io
+</code></pre>
+
+<p>When an organization registers with <code>myapplication.io</code> a new <code>tenant</code> (partitioned data space) is created for them.  When users from that organization log in to the application, they will access and see only their own tenant/organization data, and the application must know which tenant/organization the user is attempting to access. This is almost always done by the user specifying a tenant identifier when accessing the application.</p>
+
+<h3><a id="tenant-identifier"></a>Tenant Identifier</h3>
+
+<p>When a new organization signs up and their tenant is created, a globally-unique name identifier is almost always assigned to that tenant/organization. This identifier (unique across all tenants) is typically represented in some way on every request to the application.</p>
+
+<p>The application then uses this identifier to restrict which (virtual) data partition is accessed during a request.</p>
+
+<p>For example, let&rsquo;s say we have a multi-tenant e-commerce SaaS application that shows purchase history. If a user requests the <code>/purchases</code> view, they should only be able to see the purchases specific to their tenant/organization.  This means that instead of executing a query like this to a database:</p>
+
+<pre><code>SELECT * from purchases;
+</code></pre>
+
+<p>The application needs to know the request user&rsquo;s tenant identifier so they can show <em>only</em> the purchases for that tenant.  The application might instead execute the following query:</p>
+
+<pre><code>SELECT * from purchases where tenant_id = ?;
+</code></pre>
+
+<p>where <code>?</code> is the tenant_id value obtained by inspecting the request.</p>
+
+<p>So if an application needs this identifier with every request, how do you ensure it is transmitted to the application in the easiest possible way for your end users?  The three most common ways are to use one or more of the following:</p>
+
+<ol>
+<li><a href="subdomainName">Subdomain Name</a></li>
+<li><a href="#selectionAfterLogin">Tenant Selection After Login</a></li>
+<li><a href="#loginFormField">Login Form Field</a></li>
+</ol>
+
+
+<p>More than one of these may be supported if you wish to give your customers convenience options.  We&rsquo;ll cover each one next.</p>
+
+<h4>1. Subdomain Name <a name="subdomainName"></a></h4>
+
+<p>When generating or assigning the tenant&rsquo;s name identifier, ensure it is a valid unique subdomain name.  This could allow users from an organization to access your application via a unique subdomain URL for all of their needs, for example:</p>
+
+<p><a href="https://organizationA.myapplication.io">https://organizationA.myapplication.io</a></p>
+
+<p>This approach is really nice: the application never needs to ask the user for the tenant identifier, because it is inherently part of every request in the <code>HOST</code> header.</p>
+
+<p>This is the most intuitive and convenient tenant identifier convention we&rsquo;ve seen &ndash; we recommend this approach.</p>
+
+<h5>Subdomain Name Specification</h5>
+
+<p>This approach requires your name identifiers to be compliant with the <a href="http://en.wikipedia.org/wiki/Subdomain">subdomain</a> naming specification.  The name must:</p>
+
+<ul>
+<li>Be between 1 and 63 characters long (64 or more is too long)</li>
+<li>Not contain any whitespace at all</li>
+<li>Contain only <em>lowercase</em>** characters <code>a-z</code> or the dash character <code>-</code></li>
+<li>Not start with or end with a dash <code>-</code></li>
+</ul>
+
+
+<p>** Techically, subdomain names are case insensitive, but if you force them to be all lowercase in your application, you&rsquo;ll guarantee uniqueness and prevent unexpected collisions.</p>
+
+<h5>Subdomain Tips</h5>
+
+<ul>
+<li><p>Keep your customer organization subdomains space <em>completely separate</em> from your company&rsquo;s subdomain space by using a different top-level (aka &lsquo;apex&rsquo;) domain name for your SaaS application.</p>
+
+<p>  Let&rsquo;s say your company&rsquo;s website url is <code>http://mycompany.com</code>.</p>
+
+<p>  <em>We do NOT recommend</em> supporting customer subdomains like this:</p>
+
+<p>  <code>http://customerA.mycompany.com</code>
+  <code>http://customerB.mycompany.com</code></p>
+
+<p>  In this scenario, it is possible that a customer&rsquo;s chosen subdomain can conflict with a subdomain your company might need, either now or in the future. For example, what if a customer chose the subdomain name of <code>docs</code>? This would mean that your own company couldn&rsquo;t use <code>http://docs.mycompany.com</code> later, because it is &lsquo;taken&rsquo; by one of your customers.  It is also a difficult and unnecessarily time-consuming exercise to try to determine which domains you might use for your company in the future and block them off in your application. Even then, you may still have conflicts later.</p>
+
+<p>  Instead, we believe it is better to have a separate top-level domain for the product.  For example:</p>
+
+<p>  <code>http://mycompany.io</code></p>
+
+<p>  Then you can have as many subdomains for customers as necessary, and they will never conflict with your company&rsquo;s own subdomain needs.</p>
+
+<p>  If you didn&rsquo;t want to use a separate top-level domain, you could also use <em>sub</em>-subdomains.  For example, the app could be accessible here:</p>
+
+<p>  <code>http://myapp.mycompany.com</code></p>
+
+<p>  And customer organization subdomains for that app would be accessible via:</p>
+
+<p>  <code>http://customerA.myapp.mycompany.com</code></p>
+
+<p>  <code>http://customerB.myapp.mycompany.com</code></p>
+
+<p>  etc.</p>
+
+<p>  It is our opinion that the separate top-level domain, e.g. <code>http://mycompany.io</code> is the nicer alternative: it is shorter, easier to remember and type, and looks better.</p></li>
+<li><p>If a user from a customer organization ever accesses your app directly (<code>https://mycompany.io</code>) instead of using their subdomain (<code>https://customerA.mycompany.io</code>), you still might need to provide a tenant-aware login form (described below).  After login, you can redirect them to their tenant-specific url for all subsequent requests.</p></li>
+<li><p>Subdomain names that you expose to users should be easy to read and remember. <code>customerA</code> is <em>much</em> easier for a user to remember than a UUID like <code>19C2C28D-0CC6-4FD1-B5BC-84F8E7A8E92D</code>.  You can (and should) still use UUIDs or <code>long</code> primary keys in your code, but your users shouldn&rsquo;t have to remember them.</p></li>
+<li><p>Ensure that you (or your customers) can change a tenant&rsquo;s subdomain identifier at any time.  It should not be permanent, and no part of the system should rely on it beyond initial request-to-tenant association logic.</p>
+
+<p>  This means the application&rsquo;s tenant records <em>should</em> have a globally unique immutable tenant <em>primary key</em> that is not necessarily human-friendly, like a <code>long</code> number or <code>UUID</code>, for the application&rsquo;s own needs.  This type of key is called a <a href="http://en.wikipedia.org/wiki/Surrogate_key"><em>surrogate</em></a> key.</p>
+
+<p>  In addition, a tenant should <em>also</em> have globally unique, <em>mutable</em>, and human-readable subdomain name (like <code>customerA</code>) that gets used when executing requests to your application. This is known a <a href="http://en.wikipedia.org/wiki/Natural_key"><em>natural</em></a> key.</p>
+
+<p>  After a request enters the application, the surrogate primary key identifier is used for all further data queries.  For example:</p>
+
+<ol>
+<li> Request is received referencing a human-readable tenant name &ndash; the natural key.</li>
+<li> The human-readable tenant name (natural key) is used to look up a tenant record, with that tenant&rsquo;s immutable <code>long</code> or <code>UUID</code> surrogate primary key.</li>
+<li> The surrogate key <code>long</code> or <code>UUID</code> is used for all subsequent data queries.  <strong>This surrogate primary key is used for all data partitioning schemes and queries</strong>, <em>not</em> the human-friendly natural key.</li>
+</ol>
+
+
+<p>  Why would you do this?</p>
+
+<p>  If your application&rsquo;s tenant primary key is a permanent, immutable identifier like a <code>long</code> number or a <code>UUID</code>, and your software uses that id for all of its own needs (data inserts, queries), you (or your customers) can change their human-readable subdomain name <em>at any time</em>.</p>
+
+<p>  This is so much nicer than telling your customers they are forced to create a new tenant with a new name if they want to change their tenant name. We promise: they <em>will</em> ask.</p></li>
+</ul>
+
+
+<h4>2. Selection After Login <a name="selectionAfterLogin"></a></h4>
+
+<p>If a user visits your web application directly without specifying a subdomain tenant name, and you have globally unique user identities across all tenants, you can simplify tenant association after login.</p>
+
+<p>For example, let&rsquo;s assume a user visits your application&rsquo;s top-level (<em>apex</em>) domain directly, without specifying a subdomain:</p>
+
+<pre><code>https://myapplication.io
+</code></pre>
+
+<p>and they are presented with a login form:</p>
+
+<pre><code>Email   : ________________________
+Password: ________________________
+
+                            Submit
+</code></pre>
+
+<p>After they login successfully, you can perform some checks:</p>
+
+<ul>
+<li><p>If the authenticated user is only assigned to a single tenant, you can immediately redirect them to their tenant URL for all future requests. For example, send an HTTP <code>302 Redirect</code> to <code>https://theirCustomerId.myapplication.io</code>.</p></li>
+<li><p>If you allow a user Account (user identity) to exist in more than one tenant (an advanced use case), you can allow them to choose the tenant they wish to use during their current session.  For example, You might show the user a secondary screen immediately after login:</p>
+
+<pre><code>  Please choose your organization for this session:
+
+  * https://organizationA.myapplication.io
+
+  * https://organizationB.myapplication.io
+</code></pre>
+
+<p>  The user selects the tenant (s)he wants to use, and all subsequent requests are handled based on the subdomain name as explained above.</p></li>
+</ul>
+
+
+<h4>3. Login Form Field <a name="loginFormField"></a></h4>
+
+<p>Finally, if your application does not support subdomains or tenant selection after login, your customers will need to specify their tenant identifier when they login.</p>
+
+<p>For example, when visiting:</p>
+
+<pre><code>https://myapplication.io
+</code></pre>
+
+<p>The login form, instead of looking like this:</p>
+
+<pre><code>Email   : ________________________
+Password: ________________________
+
+                            Submit
+</code></pre>
+
+<p>will now need to look something perhaps like this:</p>
+
+<pre><code>Organization: ________________________
+Email       : ________________________
+Password    : ________________________
+
+                                Submit
+</code></pre>
+
+<p>Then, when the customer logs in successfully, you can store their tenant id (represented to the end-user as an &lsquo;Organization&rsquo; field) in their HTTP Session.  Then, for all subsequent requests to your application, you can:</p>
+
+<ol>
+<li>Inspect the session</li>
+<li>Look up the tenant id</li>
+<li>Customize data views and queries based on the session&rsquo;s tenant id</li>
+</ol>
+
+
+<h5>Login Form Field Tips</h5>
+
+<ul>
+<li><p>We <strong>STRONGLY</strong> advise that, even if you do not support subdomains today, that your human-readable tenant identifiers <em>still</em> adhere to the domain name specification.  This allows you to support subdomains at any point in the future, as soon as you&rsquo;re able to setup network infrastructure to do so.  Do this in the beginning and you will likely eliminate many problems later.</p></li>
+<li><p>We advise that you auto-remember the login form tenant id value in a cookie so that field is pre-populated whenever a user returns to log in.  Users don&rsquo;t like having to remember and type that value in every time they log in.</p></li>
+</ul>
+
+
+<p><strong>We strongly advise you start with the subdomain naming approach.  Although you can start with the Login Form-based approach, it can be a pain to retrofit the application for subdomains later.</strong>  We speak from experience!</p>
+
+<h2><a id="multi-tenant-user-management"></a>Multi-Tenant User Management</h2>
+
+<p>Once you decide on a tenant id mechanism, probably the <strong>first thing</strong> you need to support in your application will be user management, so you can at least log in.  Once you can log in to the application, everything else can be associated with a user and customized from there.</p>
+
+<p>Multi-tenant applications come with special user management considerations:</p>
+
+<ul>
+<li>How will tenants be represented?</li>
+<li>How will users be created?</li>
+<li>How will user data in one tenant be kept secure and separate from other tenant partitions?</li>
+</ul>
+
+
+<p>As you might have guessed, you can plug in Stormpath and have immediate user support in your SaaS application.  Our data model <em>natively</em> supports multi-tenant user management out-of-the-box.  You don&rsquo;t have to worry about building or managing this yourself, and you can move on to building your app&rsquo;s <em>real</em> features.</p>
+
+<h2><a id="why-use-stormpath-for-multi-tenant-saas-applications"></a>Why use Stormpath for Multi-Tenant SaaS Applications?</h2>
+
+<p>As we mentioned, database partitioning for can be quite challenging, especially <em>user data</em> partitioning and all the security issues that implies. Large-scale security breaches in hosted web services <a href="http://www.bankinfosecurity.com/interviews/data-breach-i-1953/op-1">costing</a> millions of <a href="http://www.bloomberg.com/news/2011-03-08/security-breach-costs-climb-7-to-7-2-million-per-incident.html">dollars</a> are a risk that development teams shouldn&rsquo;t have to worry about.</p>
+
+<p>Aside from security, setting up partitioning schemes and data models any application <em>takes time</em>. Very few, if any, development frameworks support multi-tenant use cases, so developer teams have to to build out multi-tenant user management themselves. That&rsquo;s custom code you need to secure, support and maintain &ndash; that isn&rsquo;t a core part of your product.</p>
+
+<p>Stormpath&rsquo;s data model supports two different approaches for multi-tenant user partitioning, and we&rsquo;ll explain both approaches in just a second.  But first, let&rsquo;s quickly review Stormpath&rsquo;s data model.</p>
+
+<h3><a id="stormpath-data-model-overview"></a>Stormpath Data Model Overview</h3>
+
+<p>Most application data models assign user Accounts and groups <em>directly</em> to the application.  For example:</p>
+
+<p><strong>Traditional Application User Management Model:</strong></p>
+
+<pre><code>                     +---------+
+              +-----&gt;| Account |
+              | 1..* +---------+
++-------------+
+| Application |
++-------------+
+              | 1..* +-------+
+              +-----&gt;| Group |
+                     +-------+
+</code></pre>
+
+<p>But this isn&rsquo;t very flexible and can cause problems over time &ndash; especially if you need to support more applications or services in the future.</p>
+
+<p>Stormpath is more powerful and flexible.  Instead of tightly coupling Accounts and Groups directly to a single Application, Accounts and Groups are &lsquo;owned&rsquo; instead by a <code>Directory</code>, and an <code>Application</code> can reference one or more <code>Directory</code>s dynamically:</p>
+
+<p><strong>Stormpath User Management Model:</strong></p>
+
+<pre><code>                                        +---------+
+                                 +-----&gt;| Account |
+                                 | 1..* +---------+
++-------------+ 1..* +-----------+
+| Application |-----&gt;| Directory |
++-------------+      +-----------+
+                                 | 1..* +-------+
+                                 +-----&gt;| Group |
+                                        +-------+
+</code></pre>
+
+<p>A <code>Directory</code> isn&rsquo;t anything complicated &ndash; think of it just as a &lsquo;top level bucket for Accounts and Groups&rsquo;.</p>
+
+<p>This model gives you many benefits:</p>
+
+<ul>
+<li>Multiple applications can reference the same Directory and share users.</li>
+<li>You can segment user populations into multiple directories.</li>
+<li>An application can &lsquo;plug in&rsquo; to multiple directories, so multiple user populations can access the same application.</li>
+<li>You can disassociate directories or groups from applications, preventing those users from logging in.</li>
+<li>Security policies for Accounts are configured at the Directory level, giving you tighter control over security requirements.</li>
+<li>It works perfectly well for single application uses cases too, allowing flexibility for future apps.</li>
+<li>And <a href="https://docs.stormpath.com">more&hellip;</a>.</li>
+</ul>
+
+
+<p>And, most importantly, you can configure changes to <em>all</em> of this without changing your application code!</p>
+
+<p>This model gives us two approaches to easily support multi-tenant applications:</p>
+
+<ol>
+<li>Single Directory with a Group-per-Tenant (recommended)</li>
+<li>Directory-per-Tenant (advanced)</li>
+</ol>
+
+
+<h3><a id="approach-1-single-directory-with-a-group-per-tenant"></a>Approach 1: Single Directory with a Group-per-Tenant</h3>
+
+<p><strong>We recommend this approach for most multi-tenant applications.</strong></p>
+
+<p>This design approach uses a single <code>Directory</code>, which guarantees Account and Group uniqueness:</p>
+
+<ul>
+<li><p>A user <code>Account</code> is guaranteed to have a unique email address (and username) compared to any other Account within the same Directory.</p></li>
+<li><p>A <code>Group</code> is guaranteed to have a unique name compared to any other Group within the same Directory.</p></li>
+</ul>
+
+
+<p>Knowing this, we can model multi-tenant SaaS applications so a Tenant is represented as a <code>Group</code> within a Directory, and you would have (at least) a Group per Tenant.</p>
+
+<p>For example, let&rsquo;s assume <code>jsmith@customerA.com</code> signs up for your application by filling out a signup form.  Upon submit you would:</p>
+
+<ol>
+<li><p>Insert a new <code>Account</code> in your designated <code>Directory</code>.  This guarantees that there is &ndash; and only ever will be &ndash; a single <code>jsmith@customerA.com</code> <code>Account</code> record.</p></li>
+<li><p>Either generate a compatible subdomain name (or allow the user to specify one) and create a new <code>Group</code> in your designated <code>Directory</code> with the name of this subdomain.  This guarantees that there will only ever be a single <code>Group</code> named that subdomain.  Your &lsquo;Tenant&rsquo; record is simply a <code>Group</code> in a Stormpath Directory.</p></li>
+<li><p>Assign the just-created <code>jsmith@customerA.com</code> <code>Account</code> to the new <code>Group</code>.  Any other Accounts added over time to this Group will also immediately be recognized as users for that Tenant.</p></li>
+</ol>
+
+
+<p>This approach has the following benefits:</p>
+
+<ul>
+<li><p>All Accounts are guaranteed to be unique across all tenants, and there is no possibility of Account duplication.</p></li>
+<li><p>Unique Accounts ensure a single unified user identity no matter how many applications or services you bring online &ndash; this is a <em>huge</em> benefit to your users if/when you have multiple applications and you want to support Single Sign On (SSO) across your applications.  SSO is outside the scope of this guide, but will be available in the future.</p></li>
+<li><p>Using a Group to represent a Tenant/Organization guarantees subdomain uniqueness across all tenants/organizations because group names must be unique within a Directory.</p></li>
+<li><p>Using a Group to represent a Tenant allows you to associate multiple Accounts to a single tenant easily: just add them to the tenant Group.  You can find all users in a tenant just by requesting the Group, or, you can search across all users in a tenant just by searching in that Group only.</p></li>
+<li><p>You can store Tenant-specific data without having to roll your own database/tables, by assigning any ad-hoc data you want to a Stormpath Group as <a href="https://docs.stormpath.com/rest/product-guide/#custom-data">custom data</a>.</p></li>
+<li><p>Group <a href="https://docs.stormpath.com/rest/product-guide/#custom-data">custom data</a> can be used to store tenant-specific <a href="https://stormpath.com/blog/fine-grained-permissions-with-customData">permisions or Access Control Lists</a>, so you can control what each users of each tenant are allowed to do in your application by simply assigning or removing specific values from their Tenant Group&rsquo;s <code>customData</code>.</p></li>
+<li><p>You could share Accounts across Tenants by adding an Account to more than one Tenant Group. This can be highly beneficial in certain use cases, where you might want to temporarily grant a user access to a tenant, but then revoke the access later, all the while not impacting their own tenant.</p></li>
+<li><p>Because all Accounts and Groups are in a single Directory, you can do a global search across all Accounts by querying the Directory&rsquo;s Accounts or all Tenants by querying the Directory&rsquo;s groups.</p></li>
+<li><p>You can create additional Directory groups that contain Accounts from multiple tenants.  This can be used for modeling hierarchical tenants or for more powerful permission schemes.</p></li>
+<li><p>Because Stormpath does not distinguish between a Group and a Role (they are the same thing to Stormpath), you can reference any tenant Group as a &lsquo;Role&rsquo; for Role Based Access Control checks.</p></li>
+</ul>
+
+
+<p>In summary, the Single Directory, Group-per-Tenant approach is the simplest model, easiest to understand, and provides many desirable features suitable for most multi-tenant SaaS applications.</p>
+
+<p>Next, let&rsquo;s discuss how actual groups and roles are handled in this model.</p>
+
+<h4>Groups of Accounts Within Tenants</h4>
+
+<p>With the Group-per-Tenant approach, we&rsquo;re often asked, &ldquo;How do I also represent regular groups of users <em>within</em> a tenant?&rdquo;</p>
+
+<p>An immediate concern is that, because Group names must be entirely unique within a Directory, there is the potential for conflict: if <code>customerA</code> created an <code>administrators</code> group, then <code>customerB</code> would not be able to create their own <code>administrators</code> group.  At a cursory look, this <em>is</em> true: group names cannot be identical in the same Directory.</p>
+
+<p>What we&rsquo;ve seen work well in practice is to use a group naming convention to guarantee uniqueness. Here is how it works:</p>
+
+<ol>
+<li><p>When creating a Group to represent the Tenant within your Directory, that Group will have a <em>surrogate</em> key &ndash; permanent, immutable, and globally-unique identifier  &ndash; embedded in its <code>href</code>.  For example, in this REST JSON representation of the Tenant Group&hellip;</p>
+
+<pre><code> {
+   "href": "https://api.stormpath.com/v1/groups/2gdhVFEQMXpaUMAPzLXen4"
+   "name": "customerA"
+   ... remaining fields omitted for brevity ...
+ }
+</code></pre>
+
+<p> &hellip;the immutable globally-unique identifier is <strong><code>2gdhVFEQMXpaUMAPzLXen4</code></strong>.</p></li>
+<li><p>Using this surrogate key, create any tenant-specific subgroup by prefixing the new Group name with the Tenant Group UID.</p>
+
+<p> For example, if a tenant end-user creates an <code>administrators</code> group, before saving to Stormpath, you would prefix that name with the Tenant Group UID and a delimiter, and create a group within the Stormpath Directory with that new name:</p>
+
+<pre><code> POST https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups
+
+ {
+   "name": "2gdhVFEQMXpaUMAPzLXen4_administrators"
+ }
+</code></pre>
+
+<p> As you can see, the new tenant &lsquo;sub&rsquo; group is concatenated:</p>
+
+<p> <code>tenant group UID</code> + <code>_</code> + <code>administrators</code></p>
+
+<p> This guarantees that tenant subgroups never collide with other tenants.</p>
+
+<p> In this example, we used the underscore character <code>_</code> as the delimiter, but you can  also use a perod <code>.</code> or dash <code>-</code>.  To keep querying simple we recommend you use URL safe characters.</p></li>
+<li><p>When retrieving a tenant subgroup, you just strip off the tenant group id and delimiter prefix and display just the remaining name to the application end-users (pseudo-code example):</p>
+
+<pre><code>underscore_index = stormpath_group.name.last_index_of('_')
+display_name = stormpath_group.name.substring(underscore_index)
+print("You are a member of the " + display_name + "group")
+</code></pre></li>
+</ol>
+
+
+<h5>Why Use the Surrogate Key for Names?</h5>
+
+<p>By using the Tenant Group&rsquo;s UID, you guarantee that no matter what the tenant name is or if it ever changes, all of the tenant&rsquo;s subgroups will all still be relevant.</p>
+
+<p><strong>Note:</strong> You can use the tenant group&rsquo;s human-friendly name as the prefix if you like, but if you ever change the tenant name, you must ensure that all groups that are prefixed with the old name are renamed at the same time.</p>
+
+<h5>Querying</h5>
+
+<p>A nice side effect of this naming scheme is that it becomes very easy to find all subgroups &lsquo;owned&rsquo; by a particular tenant.  Just query all for all groups in the Directory that start with the Tenant Group&rsquo;s UID.  For example:</p>
+
+<pre><code>    GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=2gdhVFEQMXpaUMAPzLXen4_*
+</code></pre>
+
+<p>Notice the asterisk at the end of the query? Stormpath&rsquo;s <a href="https://docs.stormpath.com/rest/product-guide/#Directory-groups">query support</a> supports starts-with matching, so the above query will return all groups that start with our ID + underscore prefix.</p>
+
+<p>If you wanted to retrieve the tenant group and all of its subgroups, make the query a little less restrictive by removing the underscore:</p>
+
+<pre><code>    GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=2gdhVFEQMXpaUMAPzLXen4*
+</code></pre>
+
+<h3><a id="approach-2-directory-per-tenant"></a>Approach 2: Directory-per-Tenant</h3>
+
+<p>In Stormpath, an Account is guaranteed to be unique only <em>within a Directory</em>.  This means:</p>
+
+<div class='docs-note'><p>Account <code>jsmith@gmail.com</code> in Directory A is <strong><em>not</em></strong> the same as Account <code>jsmith@gmail.com</code> in Directory B.</p>
+</div>
+
+
+<p>As a result, you could create a Directory in Stormpath for each of your tenants, and your user Account identities will be 100% separate. With this Directory-per-Tenant approach, your application&rsquo;s user Accounts are guaranteed to be unique within a tenant (Directory) &ndash; but can exist independently in multiple directories.</p>
+
+<p>Directory-per-Tenant is an advanced data model that offers more flexibility, but at the expense of complexity. It is the model that Stormpath itself uses and it is only recommended for more advanced applications or those with special requirements. As a result, we don&rsquo;t cover the approach in further detail here. If you feel the Directory-per-Tenant approach might be appropriate for your project, and you&rsquo;d like some advice, please contact <a href="mailto:support@stormpath.com">support@stormpath.com</a>. We are happy to help you model out your user data, whether or not Stormpath is the right option for your application.</p>
+
+<h2><a id="were-always-here-to-help"></a>We&rsquo;re Always Here to Help</h2>
+
+<p>Whether you&rsquo;re trying to figure out multi-tenant approaches for your SaaS application or have questions about how to use     Stormpath, we&rsquo;re always here to help. Please feel free to contact us at <a href="mailto:support@stormpath.com">support@stormpath.com</a>.</p>
+
+            <div id="spread-word">
+<hr>
+
+<h2> Help Us Spread the Word </h2>
+
+<p>Did you find this valuable?  If you've enjoyed playing with Stormpath or are excited about what we've built, please help us spread the world with a quick tweet or by just telling a friend.  Thank you!</p>
+
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout Stormpath, it helps you set up complete user management in your application in minutes."
+addthis:url="https://stormpath.com" >
+  <a class="addthis_button_twitter"></a>
+  <a class="addthis_button_preferred_2"></a>
+  <a class="addthis_button_preferred_3"></a>
+  <a class="addthis_button_preferred_4"></a>
+  <a class="addthis_button_compact"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+<!-- AddThis Button END -->
+<p>
+</div>
+            <div id="bottom-wrapper">
+             <div class="region">
+
+	<div class="credits">
+	  <div class="container">
+	    <ul class="list-unstyled list-inline">
+	      <li>Copyright &copy; 2015 Stormpath, Inc.</li>
+	      <li class="divider-vertical"></li>
+	      <li>All rights reserved</li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/privacy_policy">Privacy policy</a></li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/terms_of_service">Terms of service</a></li>
+	    </ul>
+	  </div>
+	</div>
+	
+</div><!-- /.region -->
+
+            </div>          	
+    	  </div>
+
+
+
+<aside class="sidebars">
+  
+    <section class="region region-sidebar-first column sidebar">
+      
+<div id="block-stormpath-docs-languages" class="block block-stormpath-docs first odd">
+ <form class="stormpath-docs-select-language" action="/docs/java/product-guide" method="post" id="stormpath-docs-language-form" accept-charset="UTF-8"><div><div class="form-item form-type-select form-item-language">
+  <label for="edit-language">Language: </label>
+ <select id="edit-language" name="language" class="form-select">
+  
+  
+ 	
+    <option value="rest">REST API</option>
+ 	
+    <option value="java">Java</option>
+ 	
+    <option value="nodejs">Node.js</option>
+ 	
+    <option value="python">Python</option>
+ 	
+    <option value="ruby">Ruby</option>
+ 	
+    <option value="php">PHP</option>
+ 	
+    <option value="guides" selected>Guides</option>
+ 	
+    <option value="console">Admin Console</option>
+ 	
+ </select>
+</div>
+<input type="hidden" name="form_id" value="stormpath_docs_language_form">
+</div></form>
+</div>
+
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+		sp_docs_menu['wizard'] = [];
+		
+	
+</script>
+
+
+<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
+  
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf active-trail">
+			
+				<a href="/guides/multi-tenant">Multi-Tenant SaaS Applications with Stormpath</a>
+			
+			
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"></ul></li><li class="leaf"><a href="#what-is-a-multi-tenant-saas-application" data-level="0" class="fragment">What is a Multi-Tenant SaaS Application?</a><ul class="menu"></ul></li><li class="leaf"><a href="#why-build-a-multi-tenant-saas-application" data-level="0" class="fragment">Why Build a Multi-Tenant SaaS Application?</a><ul class="menu"></ul></li><li class="leaf"><a href="#multi-tenant-design" data-level="0" class="fragment">Multi-Tenant Design</a><ul class="menu"><li class="leaf"><a href="#tenant-identifier" data-level="1" class="fragment">Tenant Identifier</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#multi-tenant-user-management" data-level="0" class="fragment">Multi-Tenant User Management</a><ul class="menu"></ul></li><li class="leaf"><a href="#why-use-stormpath-for-multi-tenant-saas-applications" data-level="0" class="fragment">Why use Stormpath for Multi-Tenant SaaS Applications?</a><ul class="menu"><li class="leaf"><a href="#stormpath-data-model-overview" data-level="1" class="fragment">Stormpath Data Model Overview</a><ul class="menu"></ul></li><li class="leaf"><a href="#approach-1-single-directory-with-a-group-per-tenant" data-level="1" class="fragment">Approach 1: Single Directory with a Group-per-Tenant</a><ul class="menu"></ul></li><li class="leaf"><a href="#approach-2-directory-per-tenant" data-level="1" class="fragment">Approach 2: Directory-per-Tenant</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#were-always-here-to-help" data-level="0" class="fragment">We’re Always Here to Help</a><ul class="menu"></ul></li></ul>
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/using-id-site">Using ID Site</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/social-integrations">Integrating Stormpath with Facebook and Google</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/ad-ldap">Integrating Stormpath with Active Directory and LDAP</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/dev-test-prod-environments">Setting up Development and Production Environments</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/api-key-management">Using Stormpath for API Authentication</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/token-management">Using Stormpath for OAuth 2.0 and Access/Refresh Token Management</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+        
+  	
+                
+                       <div class="menu-divider"></div> 
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/how-do-i">How Do I..?</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/errors">Stormpath Error Codes</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+</div>
+    </section>
+  
+
+  
+</aside>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script src="/javascripts/highlight.min.js"></script>
+
+<script>
+$(function() {
+   hljs.initHighlightingOnLoad();
+
+   /* javascript for codetab to stop the page from shifting when changing tabs (tab sync) */
+   var currentEventTab;
+   var initialObjectTopOffset;
+   var initialPageYOffset;
+
+   $('.tabs').tabs({
+		activate: function(event ,ui){
+
+			//if the dom event, grab the hotness 
+			if(event.cancelable){
+				currentEventTab = event.target;
+				initialObjectTopOffset = $(currentEventTab).offset().top;
+				initialPageYOffset = window.pageYOffset;
+			}
+			//change ze tab
+			$('.tabs').tabs('option', 'active', ui.newTab.index());
+
+			//grab the new offsets
+			var afterChangeOffset = $(currentEventTab).offset().top;
+			var afterPageYOffset = window.pageYOffset;
+
+			//do ze scroll
+			$('body').scrollTop(initialPageYOffset - (initialObjectTopOffset - afterChangeOffset));
+		}
+	});
+});
+</script>
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<!-- Google Code for Remarketing tag -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1002663385;
+var google_conversion_label = "wSRZCLfkjQQQ2duN3gM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1002663385/?value=0&amp;label=wSRZCLfkjQQQ2duN3gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<!-- AdRoll Code -->
+<script type="text/javascript">
+adroll_adv_id = "RVWGHIV3GJCLHIUDNFIMNY";
+adroll_pix_id = "L2WE5KAWDRDBVP46PZZBQJ";
+(function () {
+var oldonload = window.onload;
+window.onload = function(){
+__adroll_loaded=true;
+var scr = document.createElement("script");
+var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+scr.setAttribute('async', 'true');
+scr.type = "text/javascript";
+scr.src = host + "/j/roundtrip.js";
+((document.getElementsByTagName('head') || [null])[0] ||
+document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+if(oldonload){oldonload()}};
+}());
+</script>
+
+<!-- HubSpot Analytics Code -->
+<script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+</script>
+<!-- End HubSpot Analytics Code -->
+
+<!-- CrazyEgg -->
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0017/1602.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+
+<!-- Perfect Audience -->
+<script type="text/javascript">
+(function() {
+window._pa = window._pa || {};
+// _pa.orderId = "";
+// _pa.revenue = "";
+var pa = document.createElement('script'); pa.type = 'text/javascript'; pa.async = true;
+pa.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + "//tag.perfectaudience.com/serve/51fc2c6f1b440adfcc000099.js";
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pa, s);
+})();
+</script>
+
+
+</body>
+</html>
