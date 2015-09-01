@@ -2292,13 +2292,13 @@ To enable the ability to send verification or welcome emails for newly created a
 
     accountCreationPolicy.setWelcomeEmailStatus(EmailStatus.ENABLED)
         .setVerificationEmailStatus(EmailStatus.ENABLED)
-        .setVerificationSuccessEmailStatus();        
+        .setVerificationSuccessEmailStatus(EmailStatus.ENABLED);
     accountCreationPolicy.save();
 
 <a class="anchor" name="modify-account-creation-email-templates"></a>
 #### Modify the Email Templates Used for Verification and Welcome Emails
 
-To modify the emails that get sent during the email verification and registration, let's take a look at the email templates for the account creation policy.  Email templates in Stormpath have common properties that can be modified to change the appearance of the emails.  The properties below apply to both email templates that reside in the account creation policy (verificationEmailTemplates, verificationSuccessEmailTemplates, and welcomeEmailTemplates).
+To modify the emails that get sent during the email verification and registration, let's take a look at the email templates for the account creation policy.  Email templates in Stormpath have common properties that can be modified to change the appearance of the emails.  The properties below apply to all of the email templates that reside in the account creation policy (verificationEmailTemplates, verificationSuccessEmailTemplates, and welcomeEmailTemplates).
 
 **Resource Attribute for Email Templates**
 
@@ -2308,7 +2308,7 @@ Attribute | Description | Type | Valid Value
 `fromName` | The name that appears in the email's from field | String | A string
 `subject` | The subject that appears in the email's subject field | String | A string
 `htmlBody` | The body of the email in HTML format.  This body is only sent when the `mimeType` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
-`textBody` | The body of the email is plain text format.  This body is only sent when the `mimeType` for the template is set to `text/plain` | String | A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`textBody` | The body of the email in plain text format.  This body is only sent when the `mimeType` for the template is set to `text/plain` | String | A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `mimeType` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
 `defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String 
 
