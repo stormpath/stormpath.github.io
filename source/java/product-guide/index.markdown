@@ -1899,6 +1899,7 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="directory-resource-accounts"></a>`accounts` | A link to the accounts owned by the directory. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-groups"></a>`groups` | A link to the groups owned by the directory. | Link | <span>--</span>
 <a class="anchor" name="directory-resource-tenant"></a>`tenant` | A link to the owning tenant. | Link | <span>--</span>
+<a class="anchor" name="directory-resource-account-creation-policy"></a>`accountCreationPolicy` | A link to the directory's Account Creation Policy | Link | <span>--</span>
 `passwordPolicy` | A link to the directory's Password Policy | Link | <span>--</span>
 
 For directories, you can:
@@ -1922,6 +1923,7 @@ For directories, you can:
     * [Reset An Account's Password](#directories-password-reset)
 * [Work with directory groups](#directory-groups)
 * [Work with directory accounts](#directory-accounts)
+* [Update a directory's Account Creation Policy](#directory-account-creation-policy)
 * [Update a directory's Password Policy](#directory-password-policy)
 
 <a class="anchor" name="locate-a-directorys-rest-url"></a>
@@ -2242,6 +2244,90 @@ In addition to the [search query parameters](#search), you may also use [paginat
 #### Working With Directory Accounts
 
 Account resources support the full suite of CRUD commands and other interactions. Please see the [Accounts section](#accounts) for more information.
+
+<a class="anchor" name="directory-account-creation-policy"></a>
+### Directory Account Creation Policy
+
+A Directory’s `Account Creation Policy` resource contains data and properties that control what Stormpath does when an `Account` is created. This includes email verification and welcome emails.
+
+The `Account Creation Policy` can be retrieved by interacting with the directory resource. The directory resource has a `accountCreationPolicy` link to the  directory's `Account Creation Policy`.
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`verificationEmailStatus` | The status of the verification email workflow.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account to have them verify their email.  The email sent is configurable through `verificationEmailTemplates` property | String | `ENABLED` or `DISABLED`
+`verificationEmailTemplates` | A collection of email templates that can be used for sending the 'email verification' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+`verificationSuccessEmailStatus` | The status of the verification success email.  If this is set to `ENABLED`, Stormpath will send an email to a newly verified account to let them know that they have successfully verified their email.  The email sent is configurable through `verificationSuccessEmailTemplates` property | String | `ENABLED` or `DISABLED`
+`verificationSuccessEmailTemplates`| A collection of email templates that can be used for sending 'email verification success' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+`welcomeEmailStatus` | The status of the welcome email.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account (if `verificationEmailStatus` is set to disabled) or a newly verified account (if `verificationEmailStatus` is set to enabled).  The email sent is configurable through `welcomeEmailTemplates` property | String | `ENABLED` or `DISABLED`
+`welcomeEmailTemplates` | A collection of email templates that can be used for sending a welcome email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+
+**Directory Account Creation Policy Resource**
+
+    AccountCreationPolicy accountCreationPolicy = directory.getAccountCreationPolicy();
+
+
+Using the `Account Creation Policy` for a directory you can:
+
++ [Enable or Disable the Verification, Verification Success, or Welcome Email](#enable-verification-welcome-email-status)
++ [Modify the Email Templates Used for Verification and Welcome Emails](#modify-account-creation-email-templates)
+
+<a class="anchor" name="enable-verification-welcome-email-status"></a>
+#### Enable or Disable the Verification, Verification Success, or Welcome Email
+
+To enable or disable an email from being sent associated with verifying email or a welcome email, just set the desired status to the corresponding status property.
+
+The `Account Creation Policy` has three separate statuses for the emails:
+
++ `verificationEmailStatus` - Denotes if the verification email will be sent to verify the email the end user used to create the account.  When this is set to a status of `ENABLED`, the new `Account` resources in the `Directory` will be created with the status of `UNVERIFIED` and an email will be sent to verify the address.  More information for verifying accounts can be found [here](#account-verify-email)  The email properties are configurable through `verificationEmailTemplates`
++ `verificationSuccessEmailStatus` - Denotes if a success email will be sent to the end user when the email has been [verified through the email verification workflow](#account-verify-email).  The email properties are configurabel through `verificationSuccessEmailTemplates`
++ `welcomeEmailStatus` - Denotes if a welcome email will be sent to the end user when the account has been registered (with email verification turned off by verificationEmailStatus == DISABLED) or verified (with email verification turn on by verificationEmailStatus == ENABLED)
+
+By default, all of the `Account Creation Policy` email status are set to `DISABLED`.  To modify the policy, just set the desired status to the property that you want to modify:
+
+To enable the ability to send verification or welcome emails for newly created accounts, just set it to `Enabled`.
+
+**Example Request**
+
+    accountCreationPolicy.setWelcomeEmailStatus(EmailStatus.ENABLED)
+        .setVerificationEmailStatus(EmailStatus.ENABLED)
+        .setVerificationSuccessEmailStatus(EmailStatus.ENABLED);
+    accountCreationPolicy.save();
+
+<a class="anchor" name="modify-account-creation-email-templates"></a>
+#### Modify the Email Templates Used for Verification and Welcome Emails
+
+To modify the emails that get sent during the email verification and registration, let's take a look at the email templates for the account creation policy.  Email templates in Stormpath have common properties that can be modified to change the appearance of the emails.  The properties below apply to all of the email templates that reside in the account creation policy (verificationEmailTemplates, verificationSuccessEmailTemplates, and welcomeEmailTemplates).
+
+**Resource Attribute for Email Templates**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`fromEmailAddress` | The address that appears in the email's from field. | String | A valid email address
+`fromName` | The name that appears in the email's from field | String | A string
+`subject` | The subject that appears in the email's subject field | String | A string
+`htmlBody` | The body of the email in HTML format.  This body is only sent when the `mimeType` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`textBody` | The body of the email in plain text format.  This body is only sent when the `mimeType` for the template is set to `text/plain` | String | A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
+`mimeType` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
+`defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String 
+
+To update an email template, first you must get the email template's resource. This is done by working with the verificationEmailTemplates, verificationSuccessEmailTemplates and welcomeEmailTemplates collections. 
+These collections hold only one email template, but in the future they may hold multiple templates. 
+
+**Example Request**
+
+    WelcomeEmailTemplateList welcomeEmailTemplates = accountCreationPolicy.getWelcomeEmailTemplates();
+    WelcomeEmailTemplate emailTemplate = welcomeEmailTemplates.iterator().next();
+
+After getting the email template resource, you can update properties its properties:
+
+**Example Request**
+
+    emailTemplate.setFromName("Application Support")
+        .setFromEmailAddress("support@application.com")
+        .setSubject("Welcome to application.com");
+    emailTemplate.save();
 
 ### Directory Password Policy
 
