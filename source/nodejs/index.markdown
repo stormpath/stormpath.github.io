@@ -36,7 +36,6 @@ content_top: [docs_top.html]
             <div class="row">
               <div class="col-sm-12 visible-sm">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="/nodejs/express/quickstart.html">Quickstart</a></li>
                   <li><i class="fa-li fa fa-book"></i><a href="/nodejs/express/index.html">Documentation</a></li>
                   <li><i class="fa-li fa fa-code"></i><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/">Example Application</a></li>
                   {% comment %}<li><i class="fa-li fa fa-file-text"></i><a href="#">API Reference</a></li>{% endcomment %}
@@ -47,7 +46,6 @@ content_top: [docs_top.html]
               </div>
               <div class="col-md-6 hidden-sm">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="/nodejs/express/quickstart.html">Quickstart</a></li>
                   <li><i class="fa-li fa fa-book"></i><a href="/nodejs/express/index.html">Documentation</a></li>
                   <li><i class="fa-li fa fa-code"></i><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/">Example Application</a></li>
                   {% comment %}<li><i class="fa-li fa fa-file-text"></i><a href="#">API Reference</a></li>{% endcomment %}
