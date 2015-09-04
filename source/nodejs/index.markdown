@@ -36,18 +36,18 @@ content_top: [docs_top.html]
             <div class="row">
               <div class="col-sm-12 visible-sm">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="/nodejs/express/quickstart.html">Quickstart</a></li>
+                  <li><i class="fa-li fa fa-car"></i><a href="/nodejs/express/latest/setup.html">Quickstart</a></li>
                   <li><i class="fa-li fa fa-book"></i><a href="/nodejs/express/index.html">Documentation</a></li>
                   <li><i class="fa-li fa fa-code"></i><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/">Example Application</a></li>
                   {% comment %}<li><i class="fa-li fa fa-file-text"></i><a href="#">API Reference</a></li>{% endcomment %}
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-express">Project on GitHub</a></li>
                   <li><i class="fa-li fa fa-pencil"></i><a href="https://stormpath.com/blog/build-nodejs-express-stormpath-app/">Webapp Tutorial</a></li>
-                  <li><i class="fa-li fa fa-pencil"></i><a href="/nodejs/express/product.html#api-authentication">API Authentication Tutorial</a></li>
+                  <li><i class="fa-li fa fa-pencil"></i><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
                 </ul>
               </div>
               <div class="col-md-6 hidden-sm">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="/nodejs/express/quickstart.html">Quickstart</a></li>
+                  <li><i class="fa-li fa fa-car"></i><a href="/nodejs/express/latest/setup.html">Quickstart</a></li>
                   <li><i class="fa-li fa fa-book"></i><a href="/nodejs/express/index.html">Documentation</a></li>
                   <li><i class="fa-li fa fa-code"></i><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/">Example Application</a></li>
                   {% comment %}<li><i class="fa-li fa fa-file-text"></i><a href="#">API Reference</a></li>{% endcomment %}
@@ -57,7 +57,7 @@ content_top: [docs_top.html]
                 <ul class="fa-ul">
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-express">Project on GitHub</a></li>
                   <li><i class="fa-li fa fa-pencil"></i><a href="https://stormpath.com/blog/build-nodejs-express-stormpath-app/">Webapp Tutorial</a></li>
-                  <li><i class="fa-li fa fa-pencil"></i><a href="/nodejs/express/product.html#api-authentication">API Authentication Tutorial</a></li>
+                  <li><i class="fa-li fa fa-pencil"></i><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
                 </ul>
               </div>
             </div>
