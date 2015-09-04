@@ -1260,7 +1260,7 @@ account = client.accounts.get(href, expansion)
 
 <p>For example, it would not be possible to return an account with its directory expanded and also the directory&rsquo;s groups expanded as well. Link expansion is currently only possible one level &lsquo;deep&rsquo;.</p>
 
-<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#109;&#97;&#x69;&#108;&#x74;&#111;&#58;&#x73;&#x75;&#x70;&#x70;&#x6f;&#x72;&#116;&#64;&#x73;&#x74;&#111;&#114;&#x6d;&#x70;&#x61;&#x74;&#104;&#x2e;&#99;&#x6f;&#x6d;">&#115;&#x75;&#112;&#x70;&#x6f;&#114;&#x74;&#64;&#115;&#x74;&#x6f;&#x72;&#x6d;&#112;&#97;&#116;&#x68;&#46;&#x63;&#111;&#x6d;</a> and submit a feature request.</p>
+<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#58;&#115;&#x75;&#x70;&#x70;&#111;&#x72;&#116;&#64;&#x73;&#116;&#111;&#114;&#x6d;&#x70;&#97;&#116;&#x68;&#46;&#x63;&#111;&#x6d;">&#x73;&#117;&#112;&#112;&#x6f;&#x72;&#116;&#x40;&#x73;&#116;&#x6f;&#114;&#x6d;&#112;&#97;&#116;&#104;&#x2e;&#x63;&#111;&#x6d;</a> and submit a feature request.</p>
 
 <h4>Expanding Multiple Resources</h4>
 
@@ -1378,7 +1378,7 @@ account = client.accounts.get(href, expansion)
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
 
-<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#115;&#x75;&#112;&#x70;&#111;&#x72;&#116;&#64;&#x73;&#x74;&#111;&#x72;&#109;&#112;&#97;&#x74;&#104;&#x2e;&#x63;&#x6f;&#x6d;">&#115;&#x75;&#112;&#112;&#x6f;&#114;&#116;&#x40;&#115;&#116;&#111;&#x72;&#109;&#x70;&#97;&#x74;&#x68;&#46;&#99;&#111;&#109;</a> and request it.</p>
+<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#58;&#x73;&#117;&#x70;&#112;&#111;&#114;&#116;&#x40;&#x73;&#116;&#111;&#114;&#109;&#x70;&#97;&#x74;&#104;&#x2e;&#99;&#111;&#109;">&#x73;&#x75;&#x70;&#x70;&#x6f;&#114;&#x74;&#x40;&#x73;&#x74;&#x6f;&#x72;&#109;&#x70;&#x61;&#116;&#104;&#46;&#x63;&#111;&#109;</a> and request it.</p>
 
 <p><a class="anchor" name="tenant-retrieve"></a></p>
 
@@ -5763,7 +5763,7 @@ print acc.provider_data.access_token
 
 <h2><a id="using-stormpath-to-secure-and-manage-api-services"></a>Using Stormpath to Secure and Manage API Services</h2>
 
-<p><strong>This Feature is currently in beta</strong>. If you have any questions, bug reports, or enhancement requests please email <a href="&#x6d;&#97;&#105;&#108;&#116;&#x6f;&#x3a;&#x73;&#117;&#112;&#112;&#111;&#x72;&#116;&#x40;&#x73;&#116;&#111;&#114;&#109;&#112;&#x61;&#x74;&#x68;&#x2e;&#99;&#111;&#x6d;&#x2e;">&#115;&#117;&#112;&#x70;&#111;&#114;&#x74;&#x40;&#x73;&#116;&#111;&#114;&#109;&#112;&#x61;&#116;&#x68;&#46;&#x63;&#x6f;&#109;&#x2e;</a></p>
+<p><strong>This Feature is currently in beta</strong>. If you have any questions, bug reports, or enhancement requests please email <a href="&#x6d;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#115;&#117;&#x70;&#112;&#x6f;&#114;&#x74;&#64;&#115;&#116;&#111;&#114;&#x6d;&#x70;&#x61;&#x74;&#104;&#x2e;&#99;&#111;&#x6d;&#x2e;">&#x73;&#117;&#x70;&#112;&#111;&#x72;&#116;&#64;&#115;&#x74;&#111;&#x72;&#x6d;&#112;&#x61;&#116;&#104;&#46;&#99;&#111;&#109;&#x2e;</a></p>
 
 <p>With a few lines of code, you can quickly and easily lock down your own APIs with OAuth-based authentication and secure API key management.
 Stormpath offers a complete solution that securely and easily helps you manage developer accounts, create and manage API Keys, and generate OAuth 2.0 bearer tokens to support Access Token authentication.</p>
@@ -5891,7 +5891,7 @@ api_key.delete()
 
 <p>Specifically, Stormpath supports two HTTP <code>Authorization</code> methods, Basic and Bearer (OAuth 2.0 client-credentials grant type). In this section we will discuss the strategies and best practices using these authorization methods.</p>
 
-<p>All authentication attempts in Stormpath start with the <code>Application</code> object in the SDK.  You will likely have initialized the <code>Application</code> during startup.</p>
+<p>All authentication attempts in Stormpath start with instance of one of <code>RequestAuthenticator</code> subclasses in the SDK.  They are all initialized with the <code>Application</code> object you will likely have initialized during startup.</p>
 
 <p>To demonstrate how the SDK works, we&rsquo;ll use an example.  We are building a Stormtrooper API for managing Stormtrooper equipment &mdash; like awesome helmets and blasters.  In order to secure our API, a developer must base64 encode their API Key and Secret and then pass the encoded data in the authorization header.</p>
 
@@ -5912,16 +5912,20 @@ api_key.delete()
 
 <p>In the simplest form, the Stormpath Python SDK would authenticate the above request (Basic or Bearer) as follows:</p>
 
-<pre><code>uri = 'https://api.trooperapp.com'
+<pre><code>from stormpath.api_auth import ApiRequestAuthenticator
+
+uri = 'https://api.trooperapp.com'
 http_method = 'GET'
-body = {}
 headers = {
     'Authorization': 'Basic BASE64ENCODEDAPIKEYANDSECRET'
 }
 # Used only for Bearer auth
 allowed_scopes = []
 
-result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+authenticator = ApiRequestAuthenticator(application)
+result = authenticator.authenticate(
+    headers=headers, http_method=http_method, uri=uri)
+
 if result:
     print result.api_key
     print result.account
@@ -5932,6 +5936,8 @@ else:
 <p>The SDK provides a caching layer to ensure fast response times in your API by reducing network traffic to the Stormpath service. The caching layer will cache the API Key securely. Stormpath will use the cache entry for API Key and Secret authentication when possible.</p>
 
 <p><strong>Note</strong> When doing Basic auth the result returned will have no token attached to it, ie. <code>result.token</code> will be <code>None</code>.</p>
+
+<p><strong>Note</strong> When doing Basic auth you can use <code>BasicRequestAuthenticator</code> class that authenticates HTTP Basic auth requests only.</p>
 
 <h4>Exchanging API Keys for OAuth 2.0 Bearer Tokens</h4>
 
@@ -5969,9 +5975,9 @@ Host: api.trooperapp.com
 
 <p>The request will need to explicitly state the grant type for the OAuth Access Token Request. Stormpath only supports client credential grant type for exchanging API Keys for Access Tokens.</p>
 
-<p>Below is sample code to show how you would handle the request with the Stormpath PythonSDK and return an access token to the client:</p>
+<p>Below is sample code to show how you would handle the request with the Stormpath Python SDK and return an access token to the client:</p>
 
-<pre><code>result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+<pre><code>result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes)
 if result:
     print result.token
     print result.token.to_json()
@@ -5989,11 +5995,14 @@ Content-Type: application/json
 }
 </code></pre>
 
-<p>Notice that we used the same <code>app.authenticate</code> method for Basic auth and for getting the Bearer token. This works because the SDK will
+<p>Notice that we used the same <code>authenticator.authenticate</code> method for Basic auth and for getting the Bearer token. This works because the SDK will
 check the body of the request while doing Basic auth and if it finds the correct <code>grant_type</code> it will authenticate the request and
-attach the <code>token</code> to the result in one go.</p>
+attach the <code>token</code> to the result in one go. Instead of <code>ApiRequestAuthenticator</code>, you can also use <code>OAuthRequestAuthenticator</code> or
+<code>OAuthClientCredentialsRequestAuthenticator</code> for getting the Bearer token. <code>OAuthRequestAuthenticator</code> handles API key for access token exchanges
+and authenticates OAuth2 access tokens. <code>OAuthClientCredentialsRequestAuthenticator</code> authenticates a request based on API key credentials, and if
+valid returns an access token. These two authenticators cannot be used for Basic auth.</p>
 
-<p>The <code>allowed_scopes</code> parameter has a twofold meaning here, for token generation it represents all the scopes that the developer can request, ie.
+<p>The <code>scopes</code> parameter has a twofold meaning here, for token generation it represents all the scopes that the developer can request, ie.
 all the valid scopes for that particular Stormpath Application. The second use-case is documented below.</p>
 
 <h4>Using OAuth as Authentication for your REST API</h4>
@@ -6015,14 +6024,14 @@ Host: api.trooperapp.com
 <p>The Access Token needs to be passed to your API in the Authorization header, using the Bearer method.
 We can then proceed to authenticate the request with the same method as we did before:</p>
 
-<pre><code>result = app.authenticate(allowed_scopes, http_method, uri, body, headers)
+<pre><code>result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes)
 if result:
     print result.account
 else:
     "Invalid or expired Token"
 </code></pre>
 
-<p>Notice the <code>allowed_scopes</code> parameter has a different meaning here than it did above. We can use it to specify allowed scopes
+<p>Notice the <code>scopes</code> parameter has a different meaning here than it did above. We can use it to specify allowed scopes
 for the specific endpoint the user is accessing (in this case /troopers/tk421/equipment). If the Access Token was not generated
 with all the scopes that this endpoint requires, the authentication will fail and the <code>result</code> variable will be empty.</p>
 
@@ -6049,6 +6058,10 @@ just attached for convenience, ie. to check <code>result.token.scopes</code> and
 
 <p><strong>Note</strong> Token validity/ttl is in seconds and the default is 3600 (1 hour). If you wish to change this while generating tokens:
 use the optional <code>ttl</code> parameter with the  <code>authenticate</code> method.</p>
+
+<p><strong>Note</strong> When doing Bearer auth you can use <code>OAuthRequestAuthenticator</code> or <code>OAuthBearerRequestAuthenticator</code> instead of <code>ApiRequestAuthenticator</code>.
+<code>OAuthRequestAuthenticator</code> handles API key for access token exchanges and authenticates OAuth2 access tokens. <code>OAuthBearerRequestAuthenticator</code> authenticates
+OAuth2 bearer token requests only.</p>
 
 <hr />
 
