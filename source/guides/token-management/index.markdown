@@ -61,10 +61,18 @@ Each `Application` in Stormpath has an `oAuthPolicy` link where the TTLs for the
         }
     }
 
-The values are stored and set as [`ISO 8601` durations](https://en.wikipedia.org/wiki/ISO_8601#Durationshttps://en.wikipedia.org/wiki/ISO_8601#Durations). By default, an `Application` has a the following TTLs:
+The values are stored and set as [`ISO 8601` durations](https://en.wikipedia.org/wiki/ISO_8601#Durationshttps://en.wikipedia.org/wiki/ISO_8601#Durations). The following durations are supported:
 
-+ Access Token: 1 hour
-+ Refresh Token: 60 days
++ Seconds, for example `PT300S`
++ Minutes, for example `PT60M`
++ Hours, for example `PT24H`
++ Days, for example `P7D`
++ Weeks, for example `P4W`
+
+By default, an `Application` has a the following TTLs:
+
++ Access Token: 1 hour (`PT1H`)
++ Refresh Token: 60 days (`PT60D`)
 
 To get these values, you can query the `OAuth Policy` for an Application:
 
