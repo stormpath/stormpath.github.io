@@ -9,11 +9,14 @@
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_authenticate">authenticate(credentialData)</h3>
-<div class="authenticate"><div class="stormpath-authservice-auth-authenticate-page"><p>Sends the provided credential data to your backend server. The server
-handler should verify the credentials and return an access token, which is
-stored in an HTTP-only cookie.</p>
-</div><h5 id="methods_authenticate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>credentialData</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-authservice-auth-authenticate-page"><p>An object literal for passing username &amp; password, or social provider token.</p>
-</div></td></tr></tbody></table><h5 id="methods_authenticate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="stormpath-authservice-auth-authenticate-page"><p>A promise that is resolved with the authentication response or error response (both are response objects from the $http service).</p>
+<div class="authenticate"><div class="stormpath-authservice-auth-authenticate-page"><p>Logs the user in.</p>
+<p>Sends the provided credential data to your backend server. The server
+handler should verify the credentials and return an access token,
+which is stored in an HTTP-only cookie.</p>
+</div><h5 id="methods_authenticate_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>credentialData</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-authservice-auth-authenticate-page"><p>An object literal for passing username &amp; password, or social provider
+token.</p>
+</div></td></tr></tbody></table><h5 id="methods_authenticate_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="stormpath-authservice-auth-authenticate-page"><p>A promise that is resolved with the authentication response or error
+response (both are response objects from the $http service).</p>
 </div></td></tr></table><h4 id="methods_authenticate_example">Example</h4>
 <div class="example"><div class="stormpath-authservice-auth-authenticate-page"><h6 id="methods_authenticate_example_username-&amp;-password-example">Username &amp; Password example</h6>
 <pre class="prettyprint linenums">
@@ -22,6 +25,29 @@ myApp.controller('LoginCtrl', function ($scope, $auth, $state) {
   $scope.formData = {
     username: '',         // Expose to user as email/username field
     password: '',
+  };
+
+  // Use this method with ng-submit on your form
+  $scope.login = function login(formData){
+    $auth.authenticate(formData)
+     .then(function(){
+       console.log('login success');
+       $state.go('home');
+     })
+     .catch(function(httpResponse){
+       $scope.errorMessage = response.data.message;
+     });
+  }
+
+});
+</pre>
+<h6 id="methods_authenticate_example_social-login-example">Social Login example</h6>
+<pre class="prettyprint linenums">
+myApp.controller('LoginCtrl', function ($scope, $auth, $state) {
+  $scope.errorMessage = null;
+  $scope.formData = {
+    providerId: 'facebook',         // Get access token from FB sdk login
+    accessToken: 'CABTmZxAZBxBADbr1l7ZCwHpjivBt9T0GZBqjQdTmgyO0OkUq37HYaBi4F23f49f5',
   };
 
   // Use this method with ng-submit on your form
