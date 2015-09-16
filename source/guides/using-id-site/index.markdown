@@ -51,7 +51,7 @@ Your ID Site uses a default configuration for testing purposes, but can be fully
 To set up your ID Site, log into the [Administrator Console](https://api.stormpath.com) and:
 
 1. Click on the `ID Site` Tab
-2. Add your application URLs that will be allowed process the callbacks from the ID Site to the `Authorized Redirect URIs` property.  These URLs will be hosted by your application and will use the Stormpath SDK to process the security assertions about the user that ID Site sends back.
+2. Add your application URLs that will be allowed to process the callbacks from the ID Site to the `Authorized Redirect URIs` property.  These URLs will be hosted by your application and will use the Stormpath SDK to process the security assertions about the user that ID Site sends back.
 3. Click the `Update` button at the bottom of the page
 
 <!-- I feel like we really need to better explain Authorized Redirect URIs.  With an example perhaps. -->
@@ -356,6 +356,45 @@ url = application.build_id_site_redirect_url(callback_uri='http://darksidecentra
 {% endcodetab %}
 
 Once the user is logged out of ID Site, they are automatically redirected to the `callbackUri` which was specified using the `ID Site URL Builder`.  Your application will know that the user logged out because the resulting `ID Site Account Result` will contain a status claim of `LOGOUT`.  From here, your application can let the user know they have successfully logged out or show them a homepage.
+
+### Using ID Site for Multitenancy
+
+When a user wants to login to your application, you may want to specify an organization for the user to login to.  Stormpath ID Site is configurable to support multitenancy with `Organization` resources.  An `Organization` in Stormpath is a resource used to group together `Account Stores` for an `Application` and can represent a tenant for your application.  These `Organization` resources can be mapped to your `Application` as account stores
+
+To imagine how this works, take the following example.  You are building a trooper application, `trooperapp.com` where you have three different tenants:
+
++ Stormtroopers
++ Snowtroopers
++ Sandtroopers
+ 
+Each of these types of troopers can only access their own tenant, so you set up individual sub domains for these tenants:
+
++ stormtrooper.trooperapp.com
++ snowtrooper.trooperapp.com
++ sandtrooper.trooperapp.com
+
+To be able to support this, you create three `Organization` resources in Stormpath, specifying the `nameKey` that matches the subdomain.
+
+For example:
+
+
+
+
+#### Specifying the Organization 
+
+```javascript
+application.createIdSiteUrl({
+    'callbackUri': 'https://www.mysite.com/dashboard',
+    'organizationNameKey': 'home-depot',
+    'useSubDomain': true, //default true, only usable when organizationNameKey is specified
+    'showOrganizationField': true  //default will be base on heuristics
+});
+```
+
+
+#### Allowing the User to Specify their Organization on ID Site
+
+
 
 ## Customizing the Default ID Site
 
