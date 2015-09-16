@@ -38,7 +38,7 @@ NG_DOCS={
       "type": "object",
       "moduleName": "stormpath.authService",
       "shortDescription": "The auth service provides methods for authenticating a user, aka",
-      "keywords": "$auth $http $scope $state access aka api authenticate authenticating authentication authservice backend catch console controller cookie credential credentialdata credentials data email error errormessage example expose field form formdata function handler http-only literal log logging login loginctrl message method methods myapp ng-submit null object objects passing password promise provided provider resolved response return sends server service social stored stormpath success token user username verify"
+      "keywords": "$auth $http $scope $state access accesstoken aka api authenticate authenticating authentication authservice backend cabtmzxazbxbadbr1l7zcwhpjivbt9t0gzbqjqdtmgyo0okuq37hyabi4f23f49f5 catch console controller cookie credential credentialdata credentials data email error errormessage example expose facebook fb field form formdata function handler http-only literal log logging login loginctrl logs message method methods myapp ng-submit null object objects passing password promise provided provider providerid resolved response return sdk sends server service social stored stormpath success token user username verify"
     },
     {
       "section": "api",
