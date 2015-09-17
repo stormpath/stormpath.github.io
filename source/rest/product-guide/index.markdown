@@ -4679,7 +4679,316 @@ HTTP `GET` returns a paginated list of the group memberships where the group is 
     }
 
 ***
+<a class="anchor" name="organizations"></a>
 
+## Organizations
+
+A `Organization` is a top-level container for `Account Stores`.  You can think of an `Organization` as a tenant for your multi-tenant application.  This is different than your Stormpath `Tenant`, which represents your tenant in the Stormpath system.  Organizations are powerful because you can group together account stores that represent a tenant.
+
+For example, imagine you have customers in your multi-tenant application. When a customer signs up, may have a very simple user model (one `Cloud Directory`) or may have a complex user model (multiple directories, for example, one `Cloud Directory`, one `Google App Directory`, and a `LDAP Directory`).  You can model these separate customers in Stormpath to represent their needs for a tenant in your application.
+
+You can think of an `Organization` as a 'virtual' AccountStore that 'wraps' other `Account Stores`.  Like other `Account Stores`, an `Organization` can be mapped to an `Application` so that users in the `Organization` can login to that application.
+
+<a class="anchor" name="organization"></a>
+### Organization Resource
+
+**Resource URI**
+
+    /v1/organizations/:organizationId
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`accounts` | A link to all accounts that may login to the organization. This is an aggregate view of all accounts in the organization's assigned account stores. | Link | --
+`accountStoreMappings` | A link to the collection of all account store mappings that represent the organization. The accounts and groups within the mapped account stores are obtainable by the accounts and groups links respectively. | Link | --
+`createdAt` | A read-only ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | --
+`customData` | A link to the organization's [customData](#custom-data) resource that you can use to store your own organization-specific custom fields. | Link | --
+`defaultAccountStoreMapping` | A link to the account store mapping that reflects the default account store where the organization will store newly created accounts. (A POST to /v1/organization/:organizationId/accounts will result in storing the new account in the default account store). A null value disables the organization from directly creating new accounts. | link | `null` or link
+`defaultGroupStoreMapping` | A link to the account store mapping that reflects the default group store where the organization will store newly created groups. (A POST to /v1/organizations/:organizationId/groups will result in storing the new group in the default group store). A null value disables the organization from directly creating new groups. | link | `null` or link
+`description` | A description of the organization to allow you to put additional information about the organizations | String | 0 <= N <= 4000 chars
+`groups` | A link to all groups that are accessible to the organization. This is an aggregate view of all groups in the organization’s assigned account stores. | Link | --
+`href` | The read-only organization's fully qualified URL. | String | -- 
+`modifiedAt` | A read-only ISO-8601 Datetime value that represents when this resource’s properties were last modified | ISO-8601 Datetime | --
+`name` | The name of the organization. Must be unique across all organizations within your Stormpath [tenant](#tenants). | String | 1 <= N <= 255 characters. Unique within a tenant
+`nameKey` | A name key that represents the organization. Must be unique across all organizations within your Stormpath [tenant](#tenants) and must follow DNS label rules.  | String | 1 <= N <= 63 characters.  Must consist of only a-z, A-Z, 0-9, and `-`.  Must not start or end with a hyphen.  Unique constraint is case insensitive (STORMPATH
+`status` | Enabled organizations can be used as account stores for applications. Disabled organizations cannot be used for login. | Enum | `ENABLED`, `DISABLED`
+`tenant` | A link to the organization's Stormpath tenant | Link | --
+
+
++ [Locate an organization's REST URL](#organization-url)
++ [Create an organization](#create-an-organization)
++ [Retrieve an organization](#retrieve-an-organization)
++ [Update an organization](#update-an-organization)
++ [Delete an organization](#delete-an-organization)
++ [Adding an account store to an organization](#adding-an-account-store-to-an-organization)
++ [Adding an Organization to an Application as an Account Store](#adding-an-organization-to-an-application-as-an-account-store)
+
+<a class="anchor" name="organization-url"></a>
+### Locate an Organization's REST URL
+
+When communicating with the Stormpath REST API, you might need to reference an organization using its REST URL or href.
+
+In order to locate an organization’s href, you’ll need to first search for the tenant for the specific organization using some information that you have available.
+
+For example, if you want to find the href for an organization named “Finance Organization”, you’ll need to search the tenant for the “Finance Organization” organization resource:
+
+**Example Request**
+
+    curl -u $API_KEY_ID:$API_KEY_SECRET \
+         -H "Accept: application/json" \
+         "https://api.stormpath.com/v1/tenants/23mq7BPIxNgPUPZDwj04SZ/organization?name=Finance%20Organization"
+
+**Example Response**
+
+    {
+        "href": "https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbu0KAFKR/organizations", 
+        "items": [{
+                "accountStoreMappings": {
+                    "href": "https://api.stormpath.com/v1/organizations/1vE9nmaFevbe9OhHSe4PEL/accountStoreMappings"
+                }, 
+                "createdAt": "2015-09-11T22:20:02.608Z", 
+                "customData": {
+                    "href": "https://api.stormpath.com/v1/organizations/1vE9nmaFevbe9OhHSe4PEL/customData"
+                }, 
+                "defaultAccountStoreMapping": null, 
+                "defaultGroupStoreMapping": null, 
+                "description": null, 
+                "href": "https://api.stormpath.com/v1/organizations/1vE9nmaFevbe9OhHSe4PEL", 
+                "modifiedAt": "2015-09-11T22:20:02.608Z", 
+                "name": "Finance Organization", 
+                "nameKey": "finance-organization", 
+                "status": "ENABLED", 
+                "tenant": {
+                    "href": "https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbu0KAFKR"
+                }
+            }
+        ], 
+        "limit": 25, 
+        "offset": 0, 
+        "size": 3
+    }
+
+### Create an Organization
+
+For an organization to be an `Account Store` for an application, you must first create it in Stormpath.  You can create an organization in Stormpath by simply performing an HTTP `POST`  request to the `/v1/organizations` endpoint.  This will create a new `Organization` resource within your Stormpath `Tenant`.
+
+When you submit the `POST`, the following attributes are required and must be unique within your `Tenant`:
+
++ `name`
++ `nameKey`
+
+Optional attribute include:
+
++ `status`
++ `description`
++ `customData`
+
+**Example Request**
+
+    HTTP/1.1 POST 
+    https://api.stormpath.com/v1/organizations
+    Content-Type: application/json;charset=UTF-8
+  
+    {
+      "name": "Finance Organization",
+      "nameKey": "finance",
+      "status": "ENABLED"
+    }
+
+**Example Response**
+
+    HTTP/1.1 201 Created
+    Location: https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "accountStoreMappings": {
+          "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/accountStoreMappings"
+      }, 
+      "createdAt": "2015-09-16T17:45:53.737Z", 
+      "customData": {
+          "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/customData"
+      }, 
+      "defaultAccountStoreMapping": null, 
+      "defaultGroupStoreMapping": null, 
+      "description": null, 
+      "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD", 
+      "modifiedAt": "2015-09-16T17:45:53.737Z", 
+      "name": "Finance Organization", 
+      "nameKey": "finance", 
+      "status": "ENABLED", 
+      "tenant": {
+          "href": "https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbu0KAFKR"
+      }
+    }
+
+### Retrieve an organization
+
+After you have created an organization, you may retrieve its contents by sending a `GET` request to the organization's URL returned in the Location header or href attribute.
+
+If you don’t have the organization’s URL, you can find it by looking it up in the Stormpath Admin Console or by searching your tenant’s organizations (`/v1/tenants/:tenantId/organizations` for the organization and then using its href.
+
+**Example Request**
+
+  HTTP/1.1 GET
+  https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD
+
+**Example Response**
+  
+  HTTP/1.1 200 OK
+  Content-Type: application/json;charset=UTF-8
+
+    {
+      "accountStoreMappings": {
+          "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/accountStoreMappings"
+      }, 
+      "createdAt": "2015-09-16T17:45:53.737Z", 
+      "customData": {
+          "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/customData"
+      }, 
+      "defaultAccountStoreMapping": null, 
+      "defaultGroupStoreMapping": null, 
+      "description": null, 
+      "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD", 
+      "modifiedAt": "2015-09-16T17:45:53.737Z", 
+      "name": "Finance Organization", 
+      "nameKey": "finance", 
+      "status": "ENABLED", 
+      "tenant": {
+          "href": "https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbu0KAFKR"
+      }
+    }
+
+### Update an Organization
+
+Submit an HTTP `POST` to an organization's href when you want to change one or more specific organization's attributes. Unspecified attributes are not changed, but at least one attribute must be specified.
+
+**Updatable Organization Attributes**
+
++ name
++ nameKey
++ description
++ status
++ customData
+
+**Example Request**
+
+    HTTP/1.1 POST
+    https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD
+    Content-Type: application/json;charset=UTF-8
+  
+    {
+    "description": "A new description"
+    }
+
+**Example Response**
+  
+  HTTP/1.1 200 OK
+    {
+      "accountStoreMappings": {
+          "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/accountStoreMappings"
+      }, 
+      "createdAt": "2015-09-16T17:45:53.737Z", 
+      "customData": {
+          "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/customData"
+      }, 
+      "defaultAccountStoreMapping": null, 
+      "defaultGroupStoreMapping": null, 
+      "description": "A new description", 
+      "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD", 
+      "modifiedAt": "2015-09-16T17:45:53.737Z", 
+      "name": "Finance Organization", 
+      "nameKey": "finance", 
+      "status": "ENABLED", 
+      "tenant": {
+          "href": "https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbu0KAFKR"
+      }
+    }
+
+### Delete an Organization
+
+You can delete an organization by sending an HTTP `DELETE` request to the organization's `href` URL.
+
+{% docs warning %}
+Deleting an organization completely erases the organization and any of its related data from Stormpath.  Account Stores mapped to the organization are untouched.
+{% enddocs %}
+
+We recommend that you disable the organization instead of deleting it if you anticipate that you might use the organization again or if you want to retain its data for historical reference.  To disable an organization, you can [update the organization](#update-an-organization) and set the `status` attribute to `DISABLED`
+
+If you wish to delete an organization:
+
+**Example Request**
+
+    HTTP/1.1 DELETE 
+    https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD
+
+**Example Response**
+
+    HTTP/1.1 204 No Content
+
+### Adding an Account Store to an Organization
+
+You can think of an `Organization` as a 'virtual' AccountStore that 'wraps' other `Account Stores`.  Like other `Account Stores`, an `Organization` can be mapped to an `Application` so that users in the `Organization` can login to that application.  Before you add an `Organization` to an `Application` as an `Account Store`, you need to add the relevant account stores to your organization.
+
+The object that represents the mapping between an `Organization` and `Account Store` is called an `Organization Account Store Mapping`.
+
+To create an `Organization Account Store Mapping`, you need to collection a `Directory` or `Group` href and the organization's href.   You can create a mapping by `POST`ing a new AccountStoreMapping resource to the /v1/accountStoreMappings URI. You must specify the application and the account store via their respective hrefs.
+
+**Required Attributes**
+
++ `organization`:  an object with a `href` property specifying the organization's href
++ `accountStore`: an object with a `href` property specifying the directory or group's href
+
+**Optional Attributes**
+
++ `listIndex`: The order when the associated accountStore will be consulted by the organization during an authentication attempt. This is a zero-based index; an account store at listIndex of 0 will be consulted first, followed the account store at listIndex 1, etc. Setting a negative value will default the value to 0, placing it first in the list. A listIndex of larger than the current list size will place the mapping at the end of the list and then default the value to (list size - 1).
++ `isDefaultAccountStore`: A true value indicates that new accounts created by the organization's accounts endpoint will be automatically saved this mapping's `Directory` or `Group`
++ `isDefaultGroupStore`: A true value indicates that new groups created by the application will be automatically saved to the mapping’s accountStore.  This may only be set true for if the accountStore is a `Directory`
+
+**Example Request**
+
+  HTTP/1.1 POST 
+  https://api.stormpath.com/v1/organizationAccountStoreMappings
+  Content-Type: application/json
+  
+    {
+      "accountStore": {
+          "href": "https://api.stormpath.com/v1/directories/HoYnVyb1fyzfGhoKyXf8Y"
+      }, 
+      "organization": {
+          "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD"
+      }
+    }
+
+**Example Response**
+  
+    HTTP/1.1 201 Created
+    Location: https://api.stormpath.com/v1/organizationAccountStoreMappings/2FM1LaTAXBHa5rCZOaPJxs
+    Content-Type: application/json;charset=UTF-8
+  
+    {
+      "accountStore": {
+          "href": "https://api.stormpath.com/v1/directories/HoYnVyb1fyzfGhoKyXf8Y"
+      }, 
+      "href": "https://api.stormpath.com/v1/organizationAccountStoreMappings/2FM1LaTAXBHa5rCZOaPJxs", 
+      "isDefaultAccountStore": false, 
+      "isDefaultGroupStore": false, 
+      "listIndex": 0, 
+      "organization": {
+          "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD"
+      }
+    }
+
+You may use the response’s `Location` header or the top-level href attribute to further interact with your new `Organization Account Store Mapping` resource.
+
+### Adding an Organization to an Application as an Account Store
+
+In order for accounts in a `Organization` to be able to login to an application, you must associate or ‘map’ the `Organization` to the Application. You do this by creating a new `AccountStoreMapping`resource that references both the `Organization` and `Application`.
+
+Information about how to map an Organization to an Application as an AccountStoreMapping can be found [here](#create-an-account-store-mapping)
+
+***
 <a class="anchor" name="accounts"></a>
 ## Accounts
 

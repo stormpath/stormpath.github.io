@@ -359,23 +359,26 @@ Once the user is logged out of ID Site, they are automatically redirected to the
 
 ### Using ID Site for Multitenancy
 
-When a user wants to login to your application, you may want to specify an organization for the user to login to.  Stormpath ID Site is configurable to support multitenancy with `Organization` resources.  An `Organization` in Stormpath is a resource used to group together `Account Stores` for an `Application` and can represent a tenant for your application.  These `Organization` resources can be mapped to your `Application` as account stores
+When a user wants to login to your application, you may want to specify an organization for the user to login to.  Stormpath ID Site is configurable to support multitenancy with [`Organization` resources.  An [`Organization`](#/rest/product-guide#organizations) in Stormpath is a resource used to group together `Account Stores` for an `Application` and can represent a tenant for your application.  These `Organization` resources can be mapped to your `Application` as account stores
 
-To imagine how this works, take the following example.  You are building a trooper application, `trooperapp.com` where you have three different tenants:
+To imagine how this works, take the following example.  You are building a trooper application, `trooperapp.com` where you have three different `Organizations`:
 
 + Stormtroopers
 + Snowtroopers
 + Sandtroopers
  
-Each of these types of troopers can only access their own tenant, so you set up individual sub domains for these tenants:
+Each of these types of troopers can only access their own `Organization`, so you set up individual sub domains:
 
 + stormtrooper.trooperapp.com
 + snowtrooper.trooperapp.com
 + sandtrooper.trooperapp.com
 
-To be able to support this, you create three `Organization` resources in Stormpath, specifying the `nameKey` that matches the subdomain.
+To be able to support this, you create three [`Organization`](/rest/product-guide#organizations) resources in Stormpath, specifying the `nameKey` that matches the subdomain.
 
 For example:
+
+ + [REST](/rest/product-guide#create-an-organization)
+ + 
 
 
 
