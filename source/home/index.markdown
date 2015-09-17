@@ -77,6 +77,7 @@ alias: [/index.html]
               <li><i class="fa-li fa fa-folder-open"></i><a href="/guides/api-key-management/">API Authentication Guide</a></li>
               <li><i class="fa-li fa fa-sitemap"></i><a href="/guides/ad-ldap/">Active Directory / LDAP Guide</a></li>
               <li><i class="fa-li fa fa-wrench"></i><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
+              <li><i class="fa-li fa fa-user"></i><a href="/guides/token-management/">Token Authentication Guide</a></li>
             </ul>
           </div>
           <div class="col-sm-4 hidden-xs">

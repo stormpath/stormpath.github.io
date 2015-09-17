@@ -173,10 +173,6 @@ A typical set of steps in your application are as follows:
 3. Your server will use the Stormpath SDK to get the redirection URL for the ID Site
 4. Your server responds with an HTTP 302 which redirects the user to the ID Site URL 
 
-{% docs notes %}
-The Stormpath SDK forwards information to the ID Site including a
-{% enddocs %}
-
 To build an ID Site URL for redirection, you must ask the Stormpath `Application` object for an `ID Site URL Builder`.  From the builder, you can set important properties to pass information and make sure the ID Site can call back to your application.
 
 To get an `ID Site URL Builder`:
@@ -274,17 +270,17 @@ The `AccountResult` will be able to give your application the ability to underst
 
 Once the account is retrieved, you can get access to additional account properties that are important to your application, such as `Groups` or `CustomData`
 
-<!-- 
-## Notes on security
-A major feature of ID Site is security.  With ID Site:
+#### Handling Errors from ID Site
 
-All user authentication is handled on a Stormpath hosted ID Site to Stormpath directly.  So there are no additional hops to secure
+During communication from your application to ID Site, there are specific errors that can occur.  These errors will redirect back to your application through the specified `callbackUri`.  Your application has the ability to handle these errors or even send the user back to ID Site.
 
-Communication between ID site and Stormpath is using one time use tokens.  So no replay attacks.  
-
-Info being sent from ID site back to your app is being signed that only your app and id site have shared secret.  All of this is transparent to the developer its all handled by the sdk.
-
-All comm is over SSL.  -->
+Error Code | Message | Developer Message | Explanation 
+:----- | :----- | :---- | :----
+`10011` | Token is invalid | Token is no longer valid because it has expired | Stormpath uses a token with signed information to take the user from your application to ID Site, if the redirect takes too long, the token will expire.  This usually can occur if your user experiencing severe internet connectivity problems.
+`11001` | Token is invalid | Token is invalid because the specified organization name key does not exist in your Stormpath Tenant | When using ID Site for [multitenancy](#using-id-site-for-multitenancy), if you specify an `organizationNameKey` for an organization that does not exist, this error will occur.
+`11002` | Token is invalid | Token is invalid because the specified organization is disabled | When using ID Site for [multitenancy](#using-id-site-for-multitenancy), if you specify an `organizationNameKey` for an organization that is disabled, this error will occur.  Disabled organizations can not be logged into.
+`11003` | Token is invalid | Token is invalid because the specified organization nameKey is not one of the application's assigned account stores | When using ID Site for [multitenancy](#using-id-site-for-multitenancy), if you specify an `organizationNameKey` for an organization that isn't an account store for the application, this error will occur.
+`12001` | The session on ID Site has timed out. | The session on ID Site has timed out. This can occur if the user stays on ID Site without logging in, registering, or resetting a password. | When your user arrives to ID Site, there is a 5 minute session where they need to take an action (login, register, or reset their password), if they timeout, the next action will redirect to your `callbackUri` with this error
 
 ### Single Sign On for Multiple Applications
 
@@ -359,7 +355,7 @@ Once the user is logged out of ID Site, they are automatically redirected to the
 
 ### Using ID Site for Multitenancy
 
-When a user wants to login to your application, you may want to specify an organization for the user to login to.  Stormpath ID Site is configurable to support multitenancy with [`Organization` resources.  An [`Organization`](#/rest/product-guide#organizations) in Stormpath is a resource used to group together `Account Stores` for an `Application` and can represent a tenant for your application.  These `Organization` resources can be mapped to your `Application` as account stores
+When a user wants to login to your application, you may want to specify an organization for the user to login to.  Stormpath ID Site is configurable to support multitenancy with `Organization` resources.  An [`Organization`](#/rest/product-guide#organizations) in Stormpath is a resource used to group together `Account Stores` for an `Application` and can represent a tenant for your application.  These `Organization` resources can be mapped to your `Application` as account stores
 
 To imagine how this works, take the following example.  You are building a trooper application, `trooperapp.com` where you have three different `Organizations`:
 
@@ -367,37 +363,78 @@ To imagine how this works, take the following example.  You are building a troop
 + Snowtroopers
 + Sandtroopers
  
-Each of these types of troopers can only access their own `Organization`, so you set up individual sub domains:
-
-+ stormtrooper.trooperapp.com
-+ snowtrooper.trooperapp.com
-+ sandtrooper.trooperapp.com
-
-To be able to support this, you create three [`Organization`](/rest/product-guide#organizations) resources in Stormpath, specifying the `nameKey` that matches the subdomain.
+Each of these types of troopers can only access their own `Organization`. To be able to support this, you create three [`Organization`](/rest/product-guide#organizations) resources in Stormpath, specifying the `nameKey` that matches the subdomain.
 
 For example:
 
  + [REST](/rest/product-guide#create-an-organization)
- + 
+
+Once these organizations are mapped to your application as an account store, you can use ID Site in a multitenant fashion.  Including:
+
++ [Specifying the organization](#specifying-the-organization), which forcing the user to log into a particular organization in the application.
++ [Allowing the user to specify their organization](#allow-the-user-to-specify-organization), which gives an additional login form field for the user to fill out while logging in or resetting their password. 
 
 
-
-
+<a class="anchor" name="specifying-the-organization"></a>
 #### Specifying the Organization 
 
-```javascript
+In the case where you are using a subdomain to designate the organization, you can tell ID Site which organization the user is logging into to.  For example, when the user is logging into the subdomain of `stormtropper.trooperapp.com`, they would be logging into the `Organization` with the `nameKey` of `stormtrooper`.
+
+To specify which organization to log into: 
+
+{% codetab id:id-site-specify-an-org langs:node %}
+------
 application.createIdSiteUrl({
-    'callbackUri': 'https://www.mysite.com/dashboard',
-    'organizationNameKey': 'home-depot',
-    'useSubDomain': true, //default true, only usable when organizationNameKey is specified
-    'showOrganizationField': true  //default will be base on heuristics
+    'callbackUri': 'https://trooperapp.com/callback',
+    'organizationNameKey': 'stormtrooper',
+    'showOrganizationField': true
 });
-```
+------
+{% endcodetab %}
 
+<br />
 
+This will display the organization field, with the organization name:
+
+![](/images/organizationfield.png)
+
+When the user logs in, they will be logging into the specified organization.  If the account does not exist, exists in another organization, or account store, the authentication attempt will not be successful.
+
+`showOrganizationField` is an optional boolean field that controls if the organization field on the login form will be present. If `showOrganizationField` is false when the `organizationNameKey` is specified, the user will still be logging into a particular organization.
+
+<a class="anchor" name="allow-the-user-to-specify-organization"></a>
 #### Allowing the User to Specify their Organization on ID Site
 
+In some cases, you may want your users to specify the organization when they are on ID Site.  This will require that your users know their organization name key when logging into ID Site. To achieve this, your application will specify to show the organization field:
 
+{% codetab id:allow-user-to-specify-org langs:node %}
+------
+application.createIdSiteUrl({
+    'callbackUri': 'https://trooperapp.com/callback',
+    'showOrganizationField': true
+});
+------
+{% endcodetab %}
+
+{% docs note %}
+Stormpath will only show the organization field when you have at least one organization as an account store for your application.
+{% enddocs %}
+
+#### Using Subdomains
+
+In some cases, you may want to show the organization that the user is logging into as a subdomain instead of an form field.  To configuring this, you need to use a [wildcard certificate](https://en.wikipedia.org/wiki/Wildcard_certificate) when setting up your [custom domain with ID Site](#setting-your-own-custom-domain-name-and-ssl-certificate).  Otherwise, the Stormpath infrastructure will cause browser SSL errors.
+
+Once a wildcard certificate is configured on your domain, you can tell ID Site to use a subdomain to represent the organization:
+
+{% codetab id:id-site-builder langs:node %}
+------
+application.createIdSiteUrl({
+    'callbackUri': 'https://trooperapp.com/callback',
+    'organizationNameKey': 'stormtrooper',
+    'useSubDomain': true
+});
+------
+{% endcodetab %}
 
 ## Customizing the Default ID Site
 
