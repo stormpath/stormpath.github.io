@@ -91,6 +91,7 @@ alias: [/index.html]
             <ul class="fa-ul">
               <li><i class="fa-li fa fa-sitemap"></i><a href="/guides/ad-ldap/">Active Directory / LDAP Guide</a></li>
               <li><i class="fa-li fa fa-wrench"></i><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
+              <li><i class="fa-li fa fa-user"></i><a href="/guides/token-management/">Token Authentication Guide</a></li>
             </ul>
           </div>
         </div>
