@@ -514,23 +514,38 @@
 }
 </code></pre>
 
-<p>The values are stored and set as <a href="https://en.wikipedia.org/wiki/ISO_8601#Durationshttps://en.wikipedia.org/wiki/ISO_8601#Durations"><code>ISO 8601</code> durations</a>. By default, an <code>Application</code> has a the following TTLs:</p>
+<p>The values are stored and set as <a href="https://en.wikipedia.org/wiki/ISO_8601#Durationshttps://en.wikipedia.org/wiki/ISO_8601#Durations"><code>ISO 8601</code> durations</a>. The following durations are supported:</p>
 
 <ul>
-<li>Access Token: 1 hour</li>
-<li>Refresh Token: 60 days</li>
+<li>Seconds, for example <code>PT300S</code></li>
+<li>Minutes, for example <code>PT60M</code></li>
+<li>Hours, for example <code>PT24H</code></li>
+<li>Days, for example <code>P7D</code></li>
+<li>Weeks, for example <code>P4W</code></li>
+</ul>
+
+
+<p>By default, an <code>Application</code> has a the following TTLs:</p>
+
+<ul>
+<li>Access Token: 1 hour (<code>PT1H</code>)</li>
+<li>Refresh Token: 60 days (<code>PT60D</code>)</li>
 </ul>
 
 
 <p>To get these values, you can query the <code>OAuth Policy</code> for an Application:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-oauth-policy-curl">curl</a></li></ul><div id="tabs-get-oauth-policy-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-oauth-policy-curl">curl</a></li><li><a href="#tabs-get-oauth-policy-node">node</a></li></ul><div id="tabs-get-oauth-policy-curl"><pre lang="curl"><code>
 curl -X GET \
      -u $API_KEY_ID:$API_KEY_SECRET \
      -H "Accept: application/json" \
      -H "Content-Type: application/json;charset=UTF-8" \
      "https://api.stormpath.com/v1/oAuthPolicies/5r0klomitodnOCuvESIP5z"
 
+</code> </pre> </div><div id="tabs-get-oauth-policy-node"><pre lang="node"><code>
+application.getOAuthPolicy(function(err, policy) {
+  console.log('policy:', policy);
+});
 </code> </pre> </div></div>
 
 
@@ -548,7 +563,7 @@ curl -X GET \
 
 <p>To update the <code>Access Token</code> and <code>Refresh Token</code> TTL, making a <code>POST</code> request to the application&rsquo;s oAuthPolicy with the updated values.  The valid valueFor example, if your application needs to have an shorter lived access and refresh token:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-set-oauth-policy-curl">curl</a></li></ul><div id="tabs-set-oauth-policy-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-set-oauth-policy-curl">curl</a></li><li><a href="#tabs-set-oauth-policy-node">node</a></li></ul><div id="tabs-set-oauth-policy-curl"><pre lang="curl"><code>
 curl -X GET \
      -u $API_KEY_ID:$API_KEY_SECRET \
      -H "Accept: application/json" \
@@ -559,6 +574,13 @@ curl -X GET \
         }' \
      "https://api.stormpath.com/v1/oAuthPolicies/5r0klomitodnOCuvESIP5z"
 
+</code> </pre> </div><div id="tabs-set-oauth-policy-node"><pre lang="node"><code>
+application.getOAuthPolicy(function(err, policy) {
+  policy.accessTokenTtl = 'PT30M';
+  policy.refreshTokenTtl = 'P7D';
+  policy.save(function(err, updatedPolicy) {
+    console.log(updatedPolicy);
+  });
 </code> </pre> </div></div>
 
 
@@ -602,11 +624,22 @@ curl -X GET \
 
 <p>Request:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-access-token-curl">curl</a></li></ul><div id="tabs-get-access-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-curl">curl</a></li><li><a href="#tabs-get-access-token-node">node</a></li></ul><div id="tabs-get-access-token-curl"><pre lang="curl"><code>
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -d "grant_type=password&username=tom@stormpath.com&password=Secret1"
     https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
+</code> </pre> </div><div id="tabs-get-access-token-node"><pre lang="node"><code>
+var authenticator = new stormpath.OAuthAuthenticator(application);
+  authenticator.authenticate({
+    body: {
+      grant_type: 'password',
+      username: 'user@someemaildomain.com',
+      password: '0wootIFY0!'
+    }
+  }, function(err, result){
+    console.log(result.accessTokenResponse);
+  });
 </code> </pre> </div></div>
 
 
@@ -737,9 +770,18 @@ Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg
 
 <p>Request:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-validate-token-curl">curl</a></li></ul><div id="tabs-validate-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-validate-token-curl">curl</a></li><li><a href="#tabs-validate-token-node">node</a></li></ul><div id="tabs-validate-token-curl"><pre lang="curl"><code>
 curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \    
     https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
+</code> </pre> </div><div id="tabs-validate-token-node"><pre lang="node"><code>
+var authenticator = new stormpath.OAuthAuthenticator(application);
+authenticator.authenticate({
+  headers: { authorization: 'Bearer: ' + token }
+}, function(err, result) {
+  result.getAccount(function(err, account) {
+    console.log(account);
+  });
+});
 </code> </pre> </div></div>
 
 
@@ -920,11 +962,21 @@ nJwt.verify(bearerToken, "$STORMPATH_API_KEY_SECRET", function(err, verifiedJwt)
 
 <p>Once your application has a <code>Refresh Token</code>, you can pass the token to your Stormpath Application&rsquo;s <code>tokenEndpoint</code> using the <code>refresh_token</code> OAuth 2.0 grant type.</p>
 
-<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-curl">curl</a></li></ul><div id="tabs-refresh-access-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-curl">curl</a></li><li><a href="#tabs-refresh-access-token-node">node</a></li></ul><div id="tabs-refresh-access-token-curl"><pre lang="curl"><code>
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -d "grant_type=refresh_token&refresh_token=$REFRESH_TOKEN"
     https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
+</code> </pre> </div><div id="tabs-refresh-access-token-node"><pre lang="node"><code>
+var authenticator = new stormpath.OAuthAuthenticator(application);
+authenticator.authenticate({
+  body: {
+    grant_type: 'refresh_token',
+    refresh_token: 'YOUR_REFRESH_TOKEN_JWT'
+  }
+}, function(err, result) {
+  console.log(result.accessTokenResponse);
+});
 </code> </pre> </div></div>
 
 
@@ -1061,9 +1113,11 @@ curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 
 <p>For example:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-curl">curl</a></li></ul><div id="tabs-refresh-access-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-curl">curl</a></li><li><a href="#tabs-refresh-access-token-node">node</a></li></ul><div id="tabs-refresh-access-token-curl"><pre lang="curl"><code>
 curl -X DELETE --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7
+</code> </pre> </div><div id="tabs-refresh-access-token-node"><pre lang="node"><code>
+token.delete(function(err) { console.log('deleted token'); });
 </code> </pre> </div></div>
 
 
@@ -1084,7 +1138,7 @@ curl -X DELETE --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 
 <h2><a id="wrapping-it-up"></a>Wrapping it up</h2>
 
-<p>In this guide, we discussed how to set up and use Stormpath to generate and manage OAuth 2.0 Access Tokens and Refresh Tokens. If you have any questions, bug reports, or enhancement requests please email <a href="&#x6d;&#97;&#105;&#108;&#x74;&#111;&#x3a;&#x73;&#x75;&#112;&#112;&#x6f;&#x72;&#x74;&#x40;&#x73;&#x74;&#x6f;&#114;&#x6d;&#112;&#x61;&#116;&#104;&#x2e;&#x63;&#111;&#x6d;&#x2e;">&#115;&#x75;&#112;&#112;&#111;&#x72;&#x74;&#64;&#115;&#x74;&#x6f;&#114;&#x6d;&#112;&#x61;&#116;&#104;&#46;&#x63;&#x6f;&#109;&#46;</a></p>
+<p>In this guide, we discussed how to set up and use Stormpath to generate and manage OAuth 2.0 Access Tokens and Refresh Tokens. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#x73;&#x75;&#x70;&#112;&#x6f;&#114;&#116;&#x40;&#x73;&#116;&#x6f;&#114;&#x6d;&#x70;&#x61;&#x74;&#104;&#x2e;&#x63;&#x6f;&#x6d;&#x2e;">&#115;&#x75;&#x70;&#x70;&#111;&#x72;&#116;&#64;&#x73;&#x74;&#x6f;&#114;&#x6d;&#112;&#x61;&#x74;&#x68;&#46;&#99;&#111;&#109;&#x2e;</a></p>
 
             <div id="spread-word">
 <hr>
