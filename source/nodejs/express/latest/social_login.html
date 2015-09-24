@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Social Login &mdash; Express Library Guide 2.0.3 documentation</title>
+  <title>Social Login &mdash; Express Library Guide 2.0.6 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Express Library Guide 2.0.3 documentation" href="index.html"/>
+    <link rel="top" title="Express Library Guide 2.0.6 documentation" href="index.html"/>
         <link rel="next" title="Logout" href="logout.html"/>
         <link rel="prev" title="Login" href="login.html"/> 
 
@@ -119,6 +119,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">Social Login</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#facebook-login">Facebook Login</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#google-login">Google Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#linkedin-login">LinkedIn Login</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
@@ -148,6 +149,9 @@
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-6">Version 2.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-5">Version 2.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-4">Version 2.0.4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-3">Version 2.0.3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-2">Version 2.0.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-1">Version 2.0.1</a></li>
@@ -216,6 +220,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-5-version-2-0-6">Version 2.0.5 -&gt; Version 2.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-4-version-2-0-5">Version 2.0.4 -&gt; Version 2.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-3-version-2-0-4">Version 2.0.3 -&gt; Version 2.0.4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-2-version-2-0-3">Version 2.0.2 -&gt; Version 2.0.3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-1-version-2-0-2">Version 2.0.1 -&gt; Version 2.0.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-0-version-2-0-1">Version 2.0.0 -&gt; Version 2.0.1</a></li>
@@ -327,8 +334,8 @@ Stormpath provides integration with the following services:</p>
 <li>Google</li>
 <li>Linkedin</li>
 </ul>
-<p>In this guide we will cover Facebook and Google.  Github and Linkedin have very
-similar flows, and this guide will show you by example.</p>
+<p>In this guide we will cover Facebook, Google, and LinkedIn. GitHub has a very
+similar flow, and this guide will show you by example.</p>
 <div class="section" id="facebook-login">
 <h2>Facebook Login<a class="headerlink" href="#facebook-login" title="Permalink to this headline">¶</a></h2>
 <p>To use Facebook Login you must create a Facebook Application, this is done
@@ -501,6 +508,81 @@ then immediately redirected back to your website at the URL specified by
 <p>Simple, right?!</p>
 </div>
 </div>
+<div class="section" id="linkedin-login">
+<h2>LinkedIn Login<a class="headerlink" href="#linkedin-login" title="Permalink to this headline">¶</a></h2>
+<p>Integrating LinkedIn Login is very similar to Google. You must create an application
+in the LinkedIn Console, then create a Directory in Stormpath which holds
+settings for the LinkedIn application that you created.</p>
+<div class="section" id="create-a-linkedin-application">
+<h3>Create a LinkedIn Application<a class="headerlink" href="#create-a-linkedin-application" title="Permalink to this headline">¶</a></h3>
+<p>The first thing you need to do is log into the <a class="reference external" href="https://www.linkedin.com/developer/apps">LinkedIn Developer Console</a> and
+create a new LinkedIn Application.</p>
+<p>You can do this by visiting the <a class="reference external" href="https://www.linkedin.com/developer/apps">LinkedIn Developer Console</a> and clicking the &#8220;Create
+Application&#8221; button.  You should see something like the following:</p>
+<img alt="_images/linkedin-new-application.gif" src="_images/linkedin-new-application.gif" />
+<p>Continue by filling out all the required fields.</p>
+</div>
+<div class="section" id="enable-linkedin-permissions">
+<h3>Enable LinkedIn Permissions<a class="headerlink" href="#enable-linkedin-permissions" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve got a LinkedIn Application &#8211; let&#8217;s enable LinkedIn permissions.  The way
+LinkedIn Applications work is that you have to selectively enable what permissions
+each Application requires.</p>
+<p>Under the &#8220;Default Application Permissions&#8221; section, be sure to enable the &#8220;r_basicprofile&#8221;
+and the &#8220;r_emailaddress&#8221; permissions. These permissions allow Stormpath to access the basic
+profile properties (first, middle, and last name) and email (<em>these permissions are required</em>).</p>
+<img alt="_images/linkedin-add-permissions.gif" src="_images/linkedin-add-permissions.gif" />
+<p>The next thing we need to do is add in all of the allowed Redirect URLs for our application.  Well do this by
+entering all of our absolute redirect URLs under the &#8220;OAuth 2.0&#8221; section.  For instance, if I was running
+my site locally on port 3000, as well as under the &#8220;www.example.com&#8221; domain, I&#8217;d add two redirect URIs:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://localhost:3000/callbacks/linkedin">http://localhost:3000/callbacks/linkedin</a></li>
+<li><a class="reference external" href="https://www.example.com/callbacks/linkedin">https://www.example.com/callbacks/linkedin</a></li>
+</ul>
+<img alt="_images/linkedin-add-authorized-urls.gif" src="_images/linkedin-add-authorized-urls.gif" />
+</div>
+<div class="section" id="create-a-linkedin-directory">
+<h3>Create a LinkedIn Directory<a class="headerlink" href="#create-a-linkedin-directory" title="Permalink to this headline">¶</a></h3>
+<p>Next, we need to input the LinkedIn Application credentials into Stormpath.  This allows
+Stormpath to interact with the LinkedIn API on your behalf, which automates all
+OAuth flows.</p>
+<p>To do this, you need to visit the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a> and create a new
+directory from the Directories section.  When you click &#8220;Create Directory&#8221;,
+choose &#8220;LinkedIn&#8221; as the provider, and enter the following information about your
+LinkedIn Application:</p>
+<ul class="simple">
+<li>For the &#8220;Name&#8221; field, you can insert whatever name you want.</li>
+<li>For the &#8220;LinkedIn Client ID&#8221; field, insert your LinkedIn Client ID which you got
+in the previous steps.</li>
+<li>For the &#8220;LinkedIn Client Secret&#8221; field, insert your LinkedIn Client Secret
+which you got in the previous steps.</li>
+</ul>
+<p>Lastly, be sure to click the &#8220;Save&#8221; button at the bottom of the page.</p>
+<p>Next, you need to hook your new LinkedIn Directory up to your Stormpath
+Application.  To do this, visit the Applications section and select your
+application from the list.</p>
+<p>On your application page, click the &#8220;Account Stores&#8221; tab, then click the &#8220;Add
+Account Store&#8221; button.  From the drop down list, select your newly created
+LinkedIn Directory, then save your changes.</p>
+<p>That&#8217;s it!</p>
+</div>
+<div class="section" id="id2">
+<h3>Test it Out<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve plugged your LinkedIn credentials into express-stormpath, social
+login should already be working!</p>
+<p>Open your Express app in a browser, and try logging in by visiting the login page
+(<code class="docutils literal"><span class="pre">/login</span></code>).  If you&#8217;re using the default login page included with this
+library, you should see the following:</p>
+<img alt="_images/login-page-linkedin.png" src="_images/login-page-linkedin.png" />
+<p>You now have a fancy new LinkedIn enabled login button!  Try logging in!  When you
+click the new LinkedIn button you&#8217;ll be redirected to LinkedIn, and prompted to
+select your LinkedIn account:</p>
+<img alt="_images/linkedin-permissions-page.png" src="_images/linkedin-permissions-page.png" />
+<p>After selecting your account you&#8217;ll then be prompted to accept any permissions,
+then immediately redirected back to your website at the URL specified by
+<code class="docutils literal"><span class="pre">redirectUrl</span></code> in your app&#8217;s settings.</p>
+<p>Simple, right?!</p>
+</div>
+</div>
 </div>
 
 
@@ -541,7 +623,7 @@ then immediately redirected back to your website at the URL specified by
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'2.0.3',
+            VERSION:'2.0.6',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
