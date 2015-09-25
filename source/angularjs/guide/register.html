@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Create the Registration Form &mdash; Stormpath AngularJS Guide 0.0.2 documentation</title>
+  <title>Create the Registration Form &mdash; Stormpath AngularJS + Yeoman Guide 0.0.2 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Stormpath AngularJS Guide 0.0.2 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath AngularJS + Yeoman Guide 0.0.2 documentation" href="index.html"/>
         <link rel="next" title="Create the Profile View" href="user_profile.html"/>
         <link rel="prev" title="Create the Login Form" href="login.html"/> 
 
@@ -44,7 +44,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <a href="index.html" class="fa fa-home"> Stormpath AngularJS Guide</a>
+        <a href="index.html" class="fa fa-home"> Stormpath AngularJS + Yeoman Guide</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -69,6 +69,7 @@
 <li class="toctree-l2"><a class="reference internal" href="create_new_project.html#create-an-angular-fullstack-project">Create an Angular-Fullstack Project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_new_project.html#install-the-stormpath-packages">Install the Stormpath Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_new_project.html#upgrade-express">Upgrade Express</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_new_project.html#git-tracking">Git Tracking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="create_tenant.html">Create a Stormpath Tenant</a><ul>
@@ -79,7 +80,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="protect_api.html">Configure the Server</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="protect_api.html#setting-environment-variables">Setting Environment Variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="protect_api.html#add-the-stormpath-middleware">Add the Stormpath Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="protect_api.html#require-the-stormpath-module">Require the Stormpath Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="protect_api.html#reload-the-app">Reload the App</a></li>
 </ul>
 </li>
@@ -100,7 +101,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">Create the Registration Form</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#generate-the-register-route">Generate the /register Route</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#add-the-registration-form-directive">Add the Registration Form Directive</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#generate-the-register-verify-route">Generate the /register/verify Route</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#generate-the-verify-route">Generate the /verify Route</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#add-the-sptoken-parameter">Add the sptoken Parameter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#use-the-email-verification-directive">Use the Email Verification Directive</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configure-the-directory">Configure the Directory</a></li>
@@ -146,7 +147,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Stormpath AngularJS Guide</a>
+        <a href="index.html">Stormpath AngularJS + Yeoman Guide</a>
       </nav>
 
 
@@ -195,9 +196,6 @@ create client/app/register/register.css
 create client/app/register/register.html
 </pre></div>
 </div>
-<p>Start the server and then click on the Register link in the menu bar in your
-browser. You will see that the default view was created:</p>
-<img alt="_images/default-register-view.png" src="_images/default-register-view.png" />
 </div>
 <div class="section" id="add-the-registration-form-directive">
 <h2>Add the Registration Form Directive<a class="headerlink" href="#add-the-registration-form-directive" title="Permalink to this headline">¶</a></h2>
@@ -231,24 +229,26 @@ please see the API documentation for the
 <a class="reference external" href="https://docs.stormpath.com/angularjs/sdk/#/api/stormpath.spRegistrationForm:spRegistrationForm">spRegistrationForm</a> directive.
 The most useful feature is the ability to specify your own template.</p>
 </div>
-<div class="section" id="generate-the-register-verify-route">
-<h2>Generate the /register/verify Route<a class="headerlink" href="#generate-the-register-verify-route" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="generate-the-verify-route">
+<h2>Generate the /verify Route<a class="headerlink" href="#generate-the-verify-route" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference external" href="http://docs.stormpath.com/rest/product-guide/#verify-an-email-address">Stormpath Email Verification</a> feature will allow you to confirm a user&#8217;s
 identity by sending them a link that they must click on.
 We handle all the email and links for you!  (If you don&#8217;t want to use this
 feature, you can skip this section.)</p>
-<p>However, we must decide where the user should go when they click on that
+<p>However, we must have a place for the user to land when they click on that
 link in their email.  We will implement a default view for this in our application
 and configure the Stormpath Directory accordingly.</p>
 <p>The first thing is to generate another route.  In this situation, we will
-call the controller <tt class="docutils literal"><span class="pre">emailVerification</span></tt>, but use the URL of <tt class="docutils literal"><span class="pre">/register/verify</span></tt>:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>yo angular-fullstack:route emailVerification
-? Where would you like to create this route? client/app/
+call the controller <tt class="docutils literal"><span class="pre">verify</span></tt>:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>yo angular-fullstack:route verify
+</pre></div>
+</div>
+<div class="highlight-bash"><div class="highlight"><pre>? Where would you like to create this route? client/app/
 ? What will the url of your route be? /register/verify
-   create client/app/emailVerification/emailVerification.js
-   create client/app/emailVerification/emailVerification.controller.js
-   create client/app/emailVerification/emailVerification.controller.spec.js
-   create client/app/emailVerification/emailVerification.css
+   create client/app/verify/verify.js
+   create client/app/verify/verify.controller.js
+   create client/app/verify/verify.controller.spec.js
+   create client/app/verify/verify.css
 </pre></div>
 </div>
 </div>
@@ -256,24 +256,21 @@ call the controller <tt class="docutils literal"><span class="pre">emailVerifica
 <h2>Add the sptoken Parameter<a class="headerlink" href="#add-the-sptoken-parameter" title="Permalink to this headline">¶</a></h2>
 <p>When the user clicks on the link in their email, they will be sent to your
 application with a url parameter called <tt class="docutils literal"><span class="pre">sptoken</span></tt> - we need to let the UI
-router know about this.  Open the file
-<tt class="docutils literal"><span class="pre">client/app/emailVerification/emailVerification.js</span></tt> and modify the <tt class="docutils literal"><span class="pre">url</span></tt>
-string to include this parameter:
-:</p>
-<div class="highlight-js"><div class="highlight"><pre><span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/register/verify?sptoken&#39;</span><span class="p">,</span>
+router know about this.  Open the file <tt class="docutils literal"><span class="pre">client/app/verify/verify.js</span></tt> and
+modify the <tt class="docutils literal"><span class="pre">url</span></tt> string to include this parameter:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;/verify?sptoken&#39;</span><span class="p">,</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="use-the-email-verification-directive">
 <h2>Use the Email Verification Directive<a class="headerlink" href="#use-the-email-verification-directive" title="Permalink to this headline">¶</a></h2>
-<p>We have a pre-built view that shows the necessary informational
-messages when someone is trying to complete the email verification process.
-It will:</p>
+<p>We have a pre-built view that shows the necessary informational messages when
+someone is trying to complete the email verification process. It will:</p>
 <ul class="simple">
 <li>Show a success message and prompt them to login.</li>
 <li>Allow them to request another email if the link has expired.</li>
 </ul>
-<p>Open the file <tt class="docutils literal"><span class="pre">client/app/emailVerification/emailVerification.html</span></tt> and
+<p>Open the file <tt class="docutils literal"><span class="pre">client/app/verify/verify.html</span></tt> and
 replace its contents with the following:</p>
 <div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">ng-include=</span><span class="s">&quot;&#39;components/navbar/navbar.html&#39;&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
 
@@ -298,7 +295,7 @@ Directory that was automatically created for the Application.  Click into it,
 find the Workflows tab, and then enable the email verification workflow.</p>
 <p>You should also modify the <strong>Link Base URL</strong> to point
 to your application.  At the moment, that URL will be:</p>
-<div class="highlight-html"><div class="highlight"><pre>http://localhost:9000/register/verify
+<div class="highlight-html"><div class="highlight"><pre>http://localhost:9000/verify
 </pre></div>
 </div>
 <p>Don&#8217;t forget to press save!</p>
@@ -338,8 +335,8 @@ will go into the <tt class="docutils literal"><span class="pre">customData</span
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>You need to ensure that your server-side framework is decoding complex form
-objects.  In our Yeoman example, you will need to open <tt class="docutils literal"><span class="pre">sever/config/express.js</span></tt>
-and modify this line to enable that option:</p>
+objects in POST bodies.  If you are using the common <tt class="docutils literal"><span class="pre">body-parser</span></tt> library, you can
+enable that with the <tt class="docutils literal"><span class="pre">extended</span></tt> option:</p>
 <div class="last highlight-js"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">bodyParser</span><span class="p">.</span><span class="nx">urlencoded</span><span class="p">({</span> <span class="nx">extended</span><span class="o">:</span> <span class="kc">true</span> <span class="p">}));</span>
 </pre></div>
 </div>
