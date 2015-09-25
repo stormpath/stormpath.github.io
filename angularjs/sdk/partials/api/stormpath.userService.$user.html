@@ -10,14 +10,9 @@ on the user.</p>
 <div class="member method"><h2 id="methods">Methods</h2>
 <ul class="methods"><li><h3 id="methods_create">create(accountData)</h3>
 <div class="create"><div class="create-page"><p>Attempts to create a new user by submitting the given <code>accountData</code> as
-JSON to <code>/api/users</code>.  The POST endpoint can be modified via the
-<a href="#/api/stormpath.config#user_collection_uri">USER_COLLECTION_URI</a> config option.</p>
-<p>This method expects a <code>201</code> response if the account does NOT require email
-verification.</p>
-<p>If email verification is enabled, you should send a <code>202</code> response instead.</p>
-<p>If you are using our Express.JS SDK, you can simply attach the
- <a href="https://github.com/stormpath/stormpath-sdk-express#register" target="_blank"><code>register</code></a> middleware
-to your application and these responses will be handled automatically for you.</p>
+JSON to <code>/register</code>.  The POST endpoint can be modified via the
+<a href="#/api/stormpath.STORMPATH_CONFIG:STORMPATH_CONFIG#properties_register_uri">REGISTER_URI</a>
+config option.</p>
 </div><h5 id="methods_create_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>accountData</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="create-page"><p>An object literal for passing the data
 to the new account.</p>
 <p>Required fields:</p>
@@ -45,16 +40,16 @@ account.</p>
 </div></td></tr></table><h4 id="methods_create_example">Example</h4>
 <div class="example"><div class="create-page"><pre class="prettyprint linenums">
 $user.create(accountData)
-  .then(function(created){
-    if(created){
+  .then(function(account){
+    if(account.status === 'ENABLED'){
       // The account is enabled and ready to use
-    }else{
+    }else if(account.status === 'UNVERIFIED'){
       // The account requires email verification
     }
   })
   .catch(function(response){
     // Show the error message to the user
-    $scope.error = response.data.errorMessage;
+    $scope.error = response.data.error;
   });
 </pre>
 </div></div>
@@ -222,6 +217,21 @@ myApp.controller('MyAppCtrl', function ($scope, $rootScope) {
 </pre>
 </div></div>
 </div>
+</li>
+<li><h3 id="events_$registered">$registered</h3>
+<div class="$registered"><div class="stormpath-userservice-user-registered-page"><p>This event is broadcast when a call to
+<a href="#/api/stormpath.userService.$user#methods_create">$user.create()</a>
+is successful.  The account object is returned, and you can inspec
+the account&#39;s status to know if email verification is required.</p>
+</div><div class="inline"><h4 id="events_$registered_type">Type:</h4>
+<div class="type">broadcast</div>
+</div>
+<div class="inline"><h4 id="events_$registered_target">Target:</h4>
+<div class="target">root scope</div>
+</div>
+<h5 id="events_$registered_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>event</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-userservice-user-registered-page"><p>Angular event object.</p>
+</div></td></tr><tr><td>account</td><td><a href="" class="label type-hint type-hint-account">account</a></td><td><div class="stormpath-userservice-user-registered-page"><p>The object of the account that was created.</p>
+</div></td></tr></tbody></table></div>
 </li>
 </ul>
 </div>

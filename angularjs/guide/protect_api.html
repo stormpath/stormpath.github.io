@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Configure the Server &mdash; Stormpath AngularJS Guide 0.0.2 documentation</title>
+  <title>Configure the Server &mdash; Stormpath AngularJS + Yeoman Guide 0.0.2 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   
 
   
-    <link rel="top" title="Stormpath AngularJS Guide 0.0.2 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath AngularJS + Yeoman Guide 0.0.2 documentation" href="index.html"/>
         <link rel="next" title="Configure the Angular App" href="configure_angular.html"/>
         <link rel="prev" title="Create a Stormpath Tenant" href="create_tenant.html"/> 
 
@@ -44,7 +44,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <a href="index.html" class="fa fa-home"> Stormpath AngularJS Guide</a>
+        <a href="index.html" class="fa fa-home"> Stormpath AngularJS + Yeoman Guide</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -69,6 +69,7 @@
 <li class="toctree-l2"><a class="reference internal" href="create_new_project.html#create-an-angular-fullstack-project">Create an Angular-Fullstack Project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_new_project.html#install-the-stormpath-packages">Install the Stormpath Packages</a></li>
 <li class="toctree-l2"><a class="reference internal" href="create_new_project.html#upgrade-express">Upgrade Express</a></li>
+<li class="toctree-l2"><a class="reference internal" href="create_new_project.html#git-tracking">Git Tracking</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="create_tenant.html">Create a Stormpath Tenant</a><ul>
@@ -79,7 +80,7 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Configure the Server</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#setting-environment-variables">Setting Environment Variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#add-the-stormpath-middleware">Add the Stormpath Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#require-the-stormpath-module">Require the Stormpath Module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reload-the-app">Reload the App</a></li>
 </ul>
 </li>
@@ -100,7 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="register.html">Create the Registration Form</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="register.html#generate-the-register-route">Generate the /register Route</a></li>
 <li class="toctree-l2"><a class="reference internal" href="register.html#add-the-registration-form-directive">Add the Registration Form Directive</a></li>
-<li class="toctree-l2"><a class="reference internal" href="register.html#generate-the-register-verify-route">Generate the /register/verify Route</a></li>
+<li class="toctree-l2"><a class="reference internal" href="register.html#generate-the-verify-route">Generate the /verify Route</a></li>
 <li class="toctree-l2"><a class="reference internal" href="register.html#add-the-sptoken-parameter">Add the sptoken Parameter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="register.html#use-the-email-verification-directive">Use the Email Verification Directive</a></li>
 <li class="toctree-l2"><a class="reference internal" href="register.html#configure-the-directory">Configure the Directory</a></li>
@@ -146,7 +147,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Stormpath AngularJS Guide</a>
+        <a href="index.html">Stormpath AngularJS + Yeoman Guide</a>
       </nav>
 
 
@@ -171,87 +172,66 @@
   <div class="section" id="configure-the-server">
 <span id="protect-api"></span><h1>Configure the Server<a class="headerlink" href="#configure-the-server" title="Permalink to this headline">¶</a></h1>
 <p>In the previous section, <a class="reference internal" href="create_new_project.html#create-new-project"><em>Creating a Fullstack Project</em></a>, we created a simple
-Express.js and installed the <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-express">Stormpath Express SDK</a>.  We are going to use that
+Express.js and installed the <a class="reference external" href="https://github.com/stormpath/stormpath-express">Stormpath Express Module</a>.  We are going to use that
 SDK to secure the API endpoints in the Express server.</p>
 <div class="section" id="setting-environment-variables">
 <h2>Setting Environment Variables<a class="headerlink" href="#setting-environment-variables" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-express">Stormpath Express SDK</a> needs the API Key and Application information that
+<p>The <a class="reference external" href="https://github.com/stormpath/stormpath-express">Stormpath Express Module</a> needs the API Key and Application information that
 we collected in the section <a class="reference internal" href="create_tenant.html#create-tenant"><em>Create a Stormpath Tenant</em></a>.  We will provide this
 information to the SDK by exporting it to the environment.</p>
-<p>The <tt class="docutils literal"><span class="pre">Gruntfile</span></tt> of this project has a task that will automatically export the
-properties that are added to <tt class="docutils literal"><span class="pre">server/config/local.env.js</span></tt>.  Open that file,
-add these properties to the export block, and fill in your values:</p>
-<div class="highlight-js"><div class="highlight"><pre><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">DOMAIN</span><span class="o">:</span> <span class="s1">&#39;http://localhost:9000&#39;</span><span class="p">,</span>
-  <span class="nx">SESSION_SECRET</span><span class="o">:</span> <span class="s2">&quot;dashboard-secret&quot;</span><span class="p">,</span>
-  <span class="c1">// Control debug level for modules using visionmedia/debug</span>
-  <span class="nx">DEBUG</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
-  <span class="nx">STORMPATH_API_KEY_ID</span><span class="o">:</span> <span class="s1">&#39;YOUR_KEY_ID&#39;</span><span class="p">,</span>
-  <span class="nx">STORMPATH_API_KEY_SECRET</span><span class="o">:</span> <span class="s1">&#39;YOUR_KEY_SECRET&#39;</span><span class="p">,</span>
-  <span class="nx">STORMPATH_APP_HREF</span><span class="o">:</span> <span class="s1">&#39;YOUR_APP_HREF&#39;</span>
-<span class="p">};</span>
-</pre></div>
-</div>
-<p>Grunt will automatically export these values to the environment, and the
-<a class="reference external" href="https://github.com/stormpath/stormpath-sdk-express">Stormpath Express SDK</a> will pick them up automatically.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">This file will be hidden from Git and never checked into your repo, this
-is for security purposes.  When you deploy your application to production
-you should use the features of your deployment system to export these
-variables to your environment.  For example if you are using Herkou, you
-would use the <a class="reference external" href="https://devcenter.heroku.com/articles/config-vars">Configuration and Config Vars</a> feature.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
 <p>You can manually export the values to the environment by using the <tt class="docutils literal"><span class="pre">export</span></tt>
 or <tt class="docutils literal"><span class="pre">set</span></tt> commands in your terminal.</p>
 <p><strong>Unix/Linux/Mac</strong>:</p>
-<div class="highlight-js"><div class="highlight"><pre><span class="kr">export</span> <span class="nx">STORMPATH_API_KEY_ID</span><span class="o">=</span><span class="nx">YOUR_STORMPATH_API_KEY_ID</span>
-<span class="kr">export</span> <span class="nx">STORMPATH_API_KEY_SECRET</span><span class="o">=</span><span class="nx">YOUR_STORMPATH_API_KEY_SECRET</span>
-<span class="kr">export</span> <span class="nx">STORMPATH_APP_HREF</span><span class="o">=</span><span class="nx">YOUR_STORMPATH_APP_HREF</span>
+<div class="highlight-js"><div class="highlight"><pre><span class="kr">export</span> <span class="nx">STORMPATH_CLIENT_APIKEY_ID</span><span class="o">=</span><span class="nx">xxxx</span>
+<span class="kr">export</span> <span class="nx">STORMPATH_CLIENT_APIKEY_SECRET</span><span class="o">=</span><span class="nx">xxxx</span>
+<span class="kr">export</span> <span class="nx">STORMPATH_APPLICATION_HREF</span><span class="o">=</span><span class="nx">xxxx</span>
 </pre></div>
 </div>
 <p><strong>Windows</strong>:</p>
-<div class="last highlight-js"><div class="highlight"><pre><span class="nx">set</span> <span class="nx">STORMPATH_API_KEY_ID</span><span class="o">=</span><span class="nx">YOUR_STORMPATH_API_KEY_ID</span>
-<span class="nx">set</span> <span class="nx">STORMPATH_API_KEY_SECRET</span><span class="o">=</span><span class="nx">YOUR_STORMPATH_API_KEY_SECRET</span>
-<span class="nx">set</span> <span class="nx">STORMPATH_APP_HREF</span><span class="o">=</span><span class="nx">YOUR_STORMPATH_APP_HREF</span>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">set</span> <span class="nx">STORMPATH_CLIENT_APIKEY_ID</span><span class="o">=</span><span class="nx">xxxx</span>
+<span class="nx">set</span> <span class="nx">STORMPATH_CLIENT_APIKEY_SECRET</span><span class="o">=</span><span class="nx">xxxx</span>
+<span class="nx">set</span> <span class="nx">STORMPATH_APPLICATION_HREF</span><span class="o">=</span><span class="nx">xxxx</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="add-the-stormpath-middleware">
-<h2>Add the Stormpath Middleware<a class="headerlink" href="#add-the-stormpath-middleware" title="Permalink to this headline">¶</a></h2>
-<p>Find the file <tt class="docutils literal"><span class="pre">server/routes.js</span></tt>.</p>
-<p>This file is attaching some routes to the Express application that is setup in
-<tt class="docutils literal"><span class="pre">server/app.js</span></tt>.</p>
+<div class="section" id="require-the-stormpath-module">
+<h2>Require the Stormpath Module<a class="headerlink" href="#require-the-stormpath-module" title="Permalink to this headline">¶</a></h2>
+<p>Open the file <tt class="docutils literal"><span class="pre">server/app.js</span></tt>.  This file is the entry point for our API
+server, it will run the server.</p>
 <p>We want to initialize the Stormpath middleware and add it before our API
 declaration, so that the API will be automatically protected.</p>
 <p>First things first, you need to require the SDK - place this at the top of the
-file:</p>
-<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpathExpressSdk</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;stormpath-sdk-express&#39;</span><span class="p">);</span>
+file, under the other require statements:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ExpressStormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>We&#8217;re also going to use the <tt class="docutils literal"><span class="pre">path</span></tt>, so you should require that as well:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Then you want to create an instance of the Stormpath middleware.  You can pass
 options, but in our case, we are just going to make a simple call and use all
-the default options.  Add this line before the <tt class="docutils literal"><span class="pre">module.exports</span></tt> statement:</p>
-<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">spMiddleware</span> <span class="o">=</span> <span class="nx">stormpathExpressSdk</span><span class="p">.</span><span class="nx">createMiddleware</span><span class="p">();</span>
+the default options.  Add this line after the <tt class="docutils literal"><span class="pre">var</span> <span class="pre">app</span> <span class="pre">=</span> <span class="pre">express();</span></tt> statement:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">ExpressStormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,{</span>
+  <span class="nx">website</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">web</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">spaRoot</span><span class="o">:</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;..&#39;</span><span class="p">,</span><span class="s1">&#39;client&#39;</span><span class="p">,</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}));</span>
 </pre></div>
 </div>
-<p>Then inside the module.exports, before any other <cite>app</cite> statements:</p>
-<div class="highlight-js"><div class="highlight"><pre><span class="nx">spMiddleware</span><span class="p">.</span><span class="nx">attachDefaults</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>This will attach the following route handlers to your Express app:</p>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">POST</span> <span class="pre">/oauth/token</span></tt> (accepts the login form POST, returns an access token)</li>
-<li><tt class="docutils literal"><span class="pre">POST</span> <span class="pre">/api/users</span></tt> (for creating new users)</li>
-<li><tt class="docutils literal"><span class="pre">GET</span> <span class="pre">/api/users/current</span></tt> (for getting info about the current user, as permitted by the access token)</li>
-<li><tt class="docutils literal"><span class="pre">GET</span> <span class="pre">/logout</span></tt> (for ending the current session, the access token is destroyed)</li>
-</ul>
-<p>The last thing we need to do is secure the things endpoint.  Modify that line
-to use the authenticate middleware:</p>
-<div class="highlight-js"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/api/things&#39;</span><span class="p">,</span> <span class="nx">spMiddleware</span><span class="p">.</span><span class="nx">authenticate</span><span class="p">,</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./api/thing&#39;</span><span class="p">));</span>
+<p>That block of code will attach Stormpath to your Express application, and let
+Stormpath know where the root of your Angular application is (the folder
+where all of the Angular assets live)</p>
+<p>Open the file <tt class="docutils literal"><span class="pre">server/routes.js</span></tt>.</p>
+<p>This file is attaching some routes to the Express application that is setup in
+<tt class="docutils literal"><span class="pre">server/app.js</span></tt>.  You&#8217;ll want to require <tt class="docutils literal"><span class="pre">express-stormpath</span></tt> again, and then
+use it to secure your API:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ExpressStormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+<span class="c1">// ..</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="s1">&#39;/api/things&#39;</span><span class="p">,</span> <span class="nx">ExpressStormpath</span><span class="p">.</span><span class="nx">apiAuthenticationRequired</span><span class="p">,</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./api/thing&#39;</span><span class="p">));</span>
 </pre></div>
 </div>
 </div>

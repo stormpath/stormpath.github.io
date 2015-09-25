@@ -17,7 +17,7 @@ must be modified within a config block.</p>
 </div></div>
 <div class="member property"><h2 id="properties">Properties</h2>
 <ul class="properties"><li><h3 id="properties_authentication_endpoint">AUTHENTICATION_ENDPOINT</h3>
-<div class="authentication_endpoint"><div class="authentication-endpoint-page"><p>Default: <code>/oauth/token</code></p>
+<div class="authentication_endpoint"><div class="authentication-endpoint-page"><p>Default: <code>/login</code></p>
 <p>The URI that the login form will post to.  The endpoint MUST accept data
 in the following format:</p>
 <pre><code>{
@@ -44,8 +44,16 @@ successfully submitting the login form.</p>
 service name that you inject.</p>
 </div></div>
 </li>
+<li><h3 id="properties_change_password_endpoint">CHANGE_PASSWORD_ENDPOINT</h3>
+<div class="change_password_endpoint"><div class="change-password-endpoint-page"><p>Default: <code>/change</code></p>
+<p>The endpoint that is used by
+<a href="#/api/stormpath.userService.$user#methods_verifypasswordresettoken">$user.verifyPasswordResetToken()</a> and
+<a href="#/api/stormpath.userService.$user#methods_resetpassword">$user.resetPassword()</a>
+to verify and consume password reset tokens (change a user&#39;s password with the token).</p>
+</div></div>
+</li>
 <li><h3 id="properties_current_user_uri">CURRENT_USER_URI</h3>
-<div class="current_user_uri"><div class="current-user-uri-page"><p>Default: <code>/api/users/current</code></p>
+<div class="current_user_uri"><div class="current-user-uri-page"><p>Default: <code>/me</code></p>
 <p>The URI that is used to fetch the account object of
 the currently logged in user.  This endpoint MUST:</p>
 <ul>
@@ -64,7 +72,7 @@ session.</p>
 </div></div>
 </li>
 <li><h3 id="properties_email_verification_endpoint">EMAIL_VERIFICATION_ENDPOINT</h3>
-<div class="email_verification_endpoint"><div class="email-verification-endpoint-page"><p>Default: <code>/api/emailVerificationTokens</code></p>
+<div class="email_verification_endpoint"><div class="email-verification-endpoint-page"><p>Default: <code>/verify</code></p>
 <p>The endpoint that is used for verifying an account that requires email
 verification.  Used by
 <a href="#/api/stormpath.userService.$user#methods_verify">$user.verify()</a> to POST
@@ -93,6 +101,13 @@ Express SDK see
 </pre>
 </div></div>
 </li>
+<li><h3 id="properties_forgot_password_endpoint">FORGOT_PASSWORD_ENDPOINT</h3>
+<div class="forgot_password_endpoint"><div class="forgot-password-endpoint-page"><p>Default: <code>/forgot</code></p>
+<p>The endpoint that is used by
+<a href="#/api/stormpath.userService.$user#methods_passwordresetrequest">$user.passwordResetRequest()</a>
+to create password reset tokens.</p>
+</div></div>
+</li>
 <li><h3 id="properties_form_content_type">FORM_CONTENT_TYPE</h3>
 <div class="form_content_type"><div class="form-content-type-page"><p>Default: <code>&#39;application/x-www-form-urlencoded&#39;</code></p>
 <p>The content type that is used for form posts.</p>
@@ -112,25 +127,20 @@ is resolved with a user object.</p>
 is rejected without a user.</p>
 </div></div>
 </li>
-<li><h3 id="properties_password_reset_token_collection_endpoint">PASSWORD_RESET_TOKEN_COLLECTION_ENDPOINT</h3>
-<div class="password_reset_token_collection_endpoint"><div class="password-reset-token-collection-endpoint-page"><p>Default: <code>/api/passwordResetTokens</code></p>
-<p>The endpoint that is used by
-<a href="#/api/stormpath.userService.$user#methods_verifypasswordresettoken">$user.verifyPasswordResetToken()</a> and
-<a href="#/api/stormpath.userService.$user#methods_passwordresetrequest">$user.passwordResetRequest()</a> and
-<a href="#/api/stormpath.userService.$user#methods_resetpassword">$user.resetPassword()</a>
-to create, verify, and consume password reset tokens.</p>
+<li><h3 id="properties_registered_event_name">REGISTERED_EVENT_NAME</h3>
+<div class="registered_event_name"><div class="registered-event-name-page"><p>Default: <code>$registered</code></p>
+<p>The name of the event that is fired when
+<a href="#/api/stormpath.userService.$user#methods_create">$user.create()</a>
+is resolved with an account that was successfully created</p>
 </div></div>
 </li>
-<li><h3 id="properties_resend_email_verification_endpoint">RESEND_EMAIL_VERIFICATION_ENDPOINT</h3>
-<div class="resend_email_verification_endpoint"><div class="resend-email-verification-endpoint-page"><p>Default: <code>/api/verificationEmails</code></p>
+<li><h3 id="properties_register_uri">REGISTER_URI</h3>
+<div class="register_uri"><div class="register-uri-page"><p>Default: <code>/register</code></p>
 <p>The endpoint that is used by
-<a href="#/api/stormpath.userService.$user#methods_resendverificationemail">$user.resendVerificationEmail()</a>
-to re-send a verification email to a user.</p>
-<p>This endpoint MUST accept a POST request with the following format:</p>
-<pre><code>{
-  username: &#39;email or username&#39;
-}
-</code></pre></div></div>
+<a href="#/api/stormpath.userService.$user#methods_create">$user.create()</a>
+to POST new users.  This endpoint MUST accept a stormpath account object
+and use Stormpath to create the new user.</p>
+</div></div>
 </li>
 <li><h3 id="properties_session_end_event">SESSION_END_EVENT</h3>
 <div class="session_end_event"><div class="session-end-event-page"><p>Default: <code>$sessionEnd</code></p>
@@ -151,14 +161,6 @@ authenticated.</p>
 <p>The name of the event that is fired when the user attempts to visit a
 UI Router state that has an access control rule which the user does not
 meet (such as not being in a specified group)</p>
-</div></div>
-</li>
-<li><h3 id="properties_user_collection_uri">USER_COLLECTION_URI</h3>
-<div class="user_collection_uri"><div class="user-collection-uri-page"><p>Default: <code>/api/users</code></p>
-<p>The endpoint that is used by
-<a href="#/api/stormpath.userService.$user#methods_create">$user.create()</a>
-to POST new users.  This endpoint MUST accept a stormpath account object
-and use Stormpath to create the new user.</p>
 </div></div>
 </li>
 </ul>
