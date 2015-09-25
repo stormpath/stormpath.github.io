@@ -21,7 +21,7 @@ alias: [/index.html]
             <a href="/java"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-java.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/angularjs/guide"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-angular.jpg"></a>
+            <a href="https://github.com/stormpath/stormpath-sdk-angularjs"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-angular.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="/python"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-python.jpg"></a>
