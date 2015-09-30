@@ -1897,7 +1897,7 @@ In some cases, it may be needed to resend the verification email.  This could be
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `login` | Either the email or username for the account that needs an email verification resent | String | A email or user name for an account
-`accountStore`| An optional link to the application's accountStore (directory or group) that you are certain contains the account attempting to resend the verification email to. | link | --
+`accountStore.href`| An optional link to the application's accountStore (directory or group) that you are certain contains the account attempting to resend the verification email to. | link | --
 
 **Execute Email Verification Resend**
 
@@ -2129,7 +2129,7 @@ Attribute | Description | Type | Valid Value
 <a class="anchor" name="password-reset-url"></a>`href` | Fully qualified URL of the password reset token resource. | String | <span>--</span>
 <a class="anchor" name="password-reset-email"></a>`email` | Email address of the account for which the password reset will occur. | String | Valid email address. Required.
 <a class="anchor" name="password-reset-acount"></a>`account` | A link to the account for which the password reset will occur. | Link | Cannot set in a request. Returned in a response only.
-`accountStore` | An optional link to the application's `Account Store` that you are certain contains the account attempting for the password reset | Link | --
+`accountStore.href` | An optional link to the application's `Account Store` that you are certain contains the account attempting for the password reset | Link | --
 `createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
 `modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
