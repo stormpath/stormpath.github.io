@@ -5262,7 +5262,7 @@ Property | Description | Valid Values
 :---- | :---- | :---- 
 `ALGORITHM_NAME` | The name of the hashing algorithm used to generate the `BASE64_PASSWORD_HASH`. | `MD5`, `SHA-1`, `SHA-256`, `SHA-384`, `SHA-512`
 `ITERATION_COUNT` | The number of iterations executed when generating the `BASE64_PASSWORD_HASH` | Integer greater than 0 (1 or more)
-`BASE64_SALT` | The salt byte array used to salt the first hash iteration, formatted as a Base64 string. | Base64 String, if your password hashes do you have salt, you can leave it blank ($stormpath2$ALGORITHM_NAME$ITERATION_COUNT$$BASE64_PASSWORD_HASH)
+`BASE64_SALT` | The salt byte array used to salt the first hash iteration, formatted as a Base64 string. | Base64 String, if your password hashes do not have salt, you can leave it blank ($stormpath2$ALGORITHM_NAME$ITERATION_COUNT$$BASE64_PASSWORD_HASH)
 `BASE64_PASSWORD_HASH` | The computed hash byte array formatted as a Base64 string | Base64 String
 
 Once you have a `bcrypt` or `stormpath2` MCF password hash, you can create the account in Stormpath with the password hash by `POST`ing the account information to the `Directory` or `Application` accounts endpoint and specifying `passwordFormat=mcf` as a query parameter.
