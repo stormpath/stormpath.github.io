@@ -39,7 +39,7 @@ Let's get started!
 express-stormpath only works with Express 4.x currently.
 {% enddocs %}
 
-You can install [express-stormpath](https://github.com/stormpath/stormpath-express) using [npm](https://www.npmjs.org/):
+You can install [express-stormpath](https://github.com/stormpath/express-stormpath) using [npm](https://www.npmjs.org/):
 
     $ npm install express
     $ npm install express-stormpath

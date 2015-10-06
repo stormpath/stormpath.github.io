@@ -107,8 +107,8 @@ body_id: [sample-apps-page]
           </ul>
         </div>
         <div class="panel-buttons">
-          <a class="btn-download" href="https://github.com/stormpath/stormpath-express-api-auth-sample/archive/master.zip">Download ZIP</a>
-          <a class="btn-github" href="https://github.com/stormpath/stormpath-express-api-auth-sample">View on GitHub</a>
+          <a class="btn-download" href="https://github.com/stormpath/express-stormpath-api-auth-sample/archive/master.zip">Download ZIP</a>
+          <a class="btn-github" href="https://github.com/stormpath/express-stormpath-api-auth-sample">View on GitHub</a>
         </div>
       </div>
     </div>
