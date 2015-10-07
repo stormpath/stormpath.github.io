@@ -2921,6 +2921,159 @@ A request returns a paginated list of the group memberships where the group is i
         print(ams.group.name)
 
 ***
+<a class="anchor" name="organizations"></a>
+
+## Organizations
+
+An `Organization` is a top-level container for account stores.  You can think of an `Organization` as a tenant for your multi-tenant application.  This is different than your Stormpath `Tenant`, which represents your tenant in the Stormpath system.  Organizations are powerful because you can group together account stores that represent a tenant.
+
+For example, imagine you have customers in your multi-tenant application. When a customer signs up, may have a very simple user model (one `Cloud Directory`) or may have a complex user model (multiple directories, for example, one `Cloud Directory`, one `Google App Directory`, and a `LDAP Directory`).  You can model these separate customers in Stormpath to represent their needs for a tenant in your application.
+
+You can think of an `Organization` as a 'virtual' `AccountStore` that 'wraps' other account atores.  Like other account stores, an `Organization` can be mapped to an `Application` so that users in the `Organization` can login to that application.
+
+<a class="anchor" name="organization"></a>
+### Organization Resource
+
+**Resource Class**
+
+    \stormpath\resources\organization
+
+**Resource Attributes**
+
+Attribute | Description | Type | Valid Value
+:----- | :----- | :---- | :----
+`accounts` | All accounts that may login to the organization. This is an aggregate view of all accounts in the organization's assigned account stores. | CollectionResource | --
+`account_store_mappings` | The collection of all account store mappings that represent the organization. The accounts and groups within the mapped account stores are obtainable by the accounts and groups resources respectively. | CollectionResource | --
+`created_at` | CollectionResource | Datetime | --
+`custom_data` | The organization's [customData](#custom-data) resource that you can use to store your own organization-specific custom fields. | Resource | --
+`default_account_store_mapping` | The account store mapping that reflects the default account store where the organization will store newly created accounts. (A request to the `create` method on `organization.accounts` will result in storing the new account in the default account store). A `None` value disables the organization from directly creating new accounts. | Resource | `None` or Resource
+`default_group_store_mapping` | The account store mapping that reflects the default group store where the organization will store newly created groups. (A request to the `create` method on `organization.groups` will result in storing the new group in the default group store). A `None` value disables the organization from directly creating new groups. | Resource | `None` or Resource
+`description` | A description of the organization to allow you to put additional information about the organizations | String | 0 <= N <= 4000 chars
+`groups` | All groups that are accessible to the organization. This is an aggregate view of all groups in the organization’s assigned account stores. | CollectionResource | --
+`href` | The read-only organization's fully qualified URL. | String | --
+`modified_at` | A Datetime value that represents when this resource’s properties were last modified | Datetime | --
+`name` | The name of the organization. Must be unique across all organizations within your Stormpath [tenant](#tenants). | String | 1 <= N <= 255 characters. Unique within a tenant
+`name_key` | A name key that represents the organization. Must be unique across all organizations within your Stormpath [tenant](#tenants) and must follow DNS label rules.  | String | 1 <= N <= 63 characters.  Must consist of only a-z, A-Z, 0-9, and `-`.  Must not start or end with a hyphen.  Unique constraint is case insensitive (STORMPATH
+`status` | `enabled` organizations can be used as account stores for applications. `disabled` organizations cannot be used for login. | String | `enabled`, `disabled`
+`tenant` | The organization's Stormpath tenant | Resource | --
+
+
++ [Locate an organization](#organization-url)
++ [Create an organization](#create-an-organization)
++ [Retrieve an organization](#retrieve-an-organization)
++ [Update an organization](#update-an-organization)
++ [Delete an organization](#delete-an-organization)
++ [Adding an account store to an organization](#adding-an-account-store-to-an-organization)
++ [Adding an Organization to an Application as an Account Store](#adding-an-organization-to-an-application-as-an-account-store)
+
+<a class="anchor" name="organization-url"></a>
+### Locate an Organization
+
+In order to locate an organization, you’ll need to first search for the tenant for the specific organization using some information that you have available.
+
+For example, if you want to find an organization named “Finance Organization”, you’ll need to search the tenant for the “Finance Organization” organization resource:
+
+    organizations = tenant.organizations.query(name='Finance Organization')
+
+    for org in organizations:
+        print(org.name)
+
+### Create an Organization
+
+For an organization to be an `AccountStore` for an application, you must first create it in Stormpath.  You can create an organization in Stormpath by simply calling `create` method on client's `organizations` instance.  This will create a new `Organization` resource within your Stormpath `Tenant`.
+
+When you call the `create`, the following attributes are required and must be unique within your `Tenant`:
+
++ `name`
++ `name_key`
+
+Optional attribute include:
+
++ `status`
++ `description`
++ `custom_data`
+
+**Example**
+
+    organization = tenant.organizations.create(
+    {
+        'name': name,
+        'description': 'Finance Organization',
+        'name_key': 'finance',
+        'status': 'ENABLED'
+    })
+
+### Retrieve an organization
+
+A call to the `get` method of the `organizations` collections resource class returns a representation of an `Organization` resource that includes the attributes.
+
+    href = 'https://api.stormpath.com/v1/organizations/ORGANIZATION_ID'
+    organization = client.tenant.organizations.get(href)
+
+### Update an Organization
+
+Use the `save` method when you want to change one or more specific attributes of an `organization` resource. Unspecified attributes will not be changed, but at least one attribute must be specified.
+
+**Updatable Organization Attributes**
+
++ name
++ name_key
++ description
++ status
++ custom_data
+
+**Example**
+    organization.description = 'A new description'
+    organization.save()
+
+### Delete an Organization
+
+{% docs warning %}
+Deleting an organization completely erases the organization and any of its related data from Stormpath.  Account Stores mapped to the organization are untouched.
+{% enddocs %}
+
+We recommend that you disable the organization instead of deleting it if you anticipate that you might use the organization again or if you want to retain its data for historical reference.  To disable an organization, you can [update the organization](#update-an-organization) and set the `status` attribute to `disabled`
+
+If you wish to delete an organization:
+
+**Example**
+
+    organization.delete()
+
+### Adding an Account Store to an Organization
+
+You can think of an `Organization` as a 'virtual' AccountStore that 'wraps' other account stores.  Like other account stores, an `Organization` can be mapped to an `Application` so that users in the `Organization` can login to that application.  Before you add an `Organization` to an `Application` as an account store, you need to add the relevant account stores to your organization.
+
+The object that represents the mapping between an `Organization` and `AccountStore` is called an `OrganizationAccountStoreMapping`.
+
+To create an `OrganizationAccountStoreMapping`, you need to collection a `Directory` or `Group` and the organization.   You can create a mapping by calling `create` on OrganizationAccountStoreMapping resource. You must specify the application and the account store.
+
+
+**Required Attributes**
+
+* [organization](#account-store-application) (an instance)
+* [account_store](#account-store-accountStore) (an instance)
+
+**Optional Attributes**
+
+* [list_index] - The order when the associated account_store will be consulted by the organization during an authentication attempt. This is a zero-based index; an account store at list_index of 0 will be consulted first, followed the account store at list_index 1, etc. Setting a negative value will default the value to 0, placing it first in the list. A list_index of larger than the current list size will place the mapping at the end of the list and then default the value to (list size - 1).
+* [is_default_account_store] - A True value indicates that new accounts created by the organization's accounts endpoint will be automatically saved this mapping's `Directory` or `Group`
+* [is_default_group_store] - A True value indicates that new groups created by the application will be automatically saved to the mapping’s account_store.  This may only be set True for if the account_store is a `Directory`
+
+**Example Request**
+
+    organization_account_store_mapping = client.organization_account_store_mappings.create({
+        'organization': organization,
+        'account_store': directory
+    })
+
+### Adding an Organization to an Application as an Account Store
+
+In order for accounts in a `Organization` to be able to login to an application, you must associate or ‘map’ the `Organization` to the Application. You do this by creating a new `AccountStoreMapping`resource that references both the `Organization` and `Application`.
+
+Information about how to map an Organization to an Application as an AccountStoreMapping can be found [here](#create-an-account-store-mapping)
+
+***
 
 <a class="anchor" name="accounts"></a>
 ## Accounts
