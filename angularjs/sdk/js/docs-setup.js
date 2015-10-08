@@ -155,7 +155,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "This directive will render a pre-built user registration form with the following",
-      "keywords": "$auth $authenticated $user _blank account add alternate api application authenticate authservice autologin automatically call check class container copy create created creation custom customdata customize customizing data default directive directory email enabled event events_ false field fields file fit form formmodel href html https inputs interaction login main making message method methods_authenticate methods_create middlename modify ng-model option optionally options password point post post-login-state postloginstate pre-built ready redirect redirected registered registration render server set sp-registration-form spregistrationform stormpath target telling template template-url tpl trigger ui url user userservice verification view workflow"
+      "keywords": "$auth $authenticated $user _blank account alternate api application authenticate authservice autologin automatically call check class code container copy create created creation customa customize customizing data default directive directory email enabled event events_ false field fields file fit form formmodel href html https interaction login main making message method methods_authenticate methods_create middlename modify ng-model object option optionally options password point post post-login-state postloginstate pre-built ready redirect redirected registered registration render server set sp-registration-form spregistrationform stormpath supply target telling template template-url tpl trigger ui url user userservice verification view workflow"
     },
     {
       "section": "api",
