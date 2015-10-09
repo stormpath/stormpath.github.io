@@ -74,7 +74,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "Use this directive to conditionally show an element if the user is logged in",
-      "keywords": "$scope administrator admins api attribute conditionally create directive element equivalent evaluated example expression expressions fullname function group hello if-user-in-group ifuseringroup literal logged match matchgroup member mozilla ng-controller org pass property prototype quotes reference referencing regexp regular scope somecontroller stormpath string surrounded syntax test text type user wrapping"
+      "keywords": "$scope account administrator admins api attribute automatic-expansion conditionally create current_user_uri data depends directive element equivalent evaluated example expand expansion expression expressions feature fullname function group groups hello html if-user-in-group ifuseringroup literal logged match matchgroup member mozilla ng-controller org pass properties_current_user_uri property prototype quotes reference referencing regexp regular returned returning scope server simply somecontroller stormpath stormpath_config string surrounded syntax test text type user wrapping"
     },
     {
       "section": "api",
@@ -83,7 +83,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "Use this directive to conditionally show an element if the user is logged in",
-      "keywords": "access administrator admins api class conditionally container directive element expression full fullname group hello if-user-not-in-group ifuseringroup ifusernotingroup inverse logged member refer request stormpath usage user"
+      "keywords": "access account administrator admins api automatic-expansion class conditionally container current_user_uri data depends directive element expand expansion expression feature full fullname group groups hello html if-user-not-in-group ifuseringroup ifusernotingroup inverse logged member properties_current_user_uri refer request returned returning server simply stormpath stormpath_config usage user"
     },
     {
       "section": "api",

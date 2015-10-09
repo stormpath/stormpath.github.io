@@ -81,6 +81,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">Configure the Server</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#setting-environment-variables">Setting Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#require-the-stormpath-module">Require the Stormpath Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#protect-your-api-routes">Protect Your API Routes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reload-the-app">Reload the App</a></li>
 </ul>
 </li>
@@ -222,11 +223,26 @@ the default options.  Add this line after the <tt class="docutils literal"><span
 </div>
 <p>That block of code will attach Stormpath to your Express application, and let
 Stormpath know where the root of your Angular application is (the folder
-where all of the Angular assets live)</p>
-<p>Open the file <tt class="docutils literal"><span class="pre">server/routes.js</span></tt>.</p>
-<p>This file is attaching some routes to the Express application that is setup in
-<tt class="docutils literal"><span class="pre">server/app.js</span></tt>.  You&#8217;ll want to require <tt class="docutils literal"><span class="pre">express-stormpath</span></tt> again, and then
-use it to secure your API:</p>
+where all of the Angular assets live).</p>
+<p>We also need to instruct Express to wait for Stormpath to be initialized.  Our
+module makes several requests to our API in order to fetch the information that
+it needs to correctly configure your Express application.  Find
+<tt class="docutils literal"><span class="pre">server.listen</span></tt> statement at the end of the file, and wrap it in an event
+handler for <tt class="docutils literal"><span class="pre">stormpath.ready</span></tt>, like so:</p>
+<div class="highlight-js"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;stormpath.ready&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// Start server</span>
+  <span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span> <span class="nx">config</span><span class="p">.</span><span class="nx">ip</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Express server listening on %d, in %s mode&#39;</span><span class="p">,</span> <span class="nx">config</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span> <span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;env&#39;</span><span class="p">));</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="protect-your-api-routes">
+<h2>Protect Your API Routes<a class="headerlink" href="#protect-your-api-routes" title="Permalink to this headline">¶</a></h2>
+<p>Open the file <tt class="docutils literal"><span class="pre">server/routes.js</span></tt>. This file is attaching some routes to the
+Express application that is setup in <tt class="docutils literal"><span class="pre">server/app.js</span></tt>.  You&#8217;ll want to require
+<tt class="docutils literal"><span class="pre">express-stormpath</span></tt> again, and then use it to secure your API:</p>
 <div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ExpressStormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
 
 <span class="c1">// ..</span>
