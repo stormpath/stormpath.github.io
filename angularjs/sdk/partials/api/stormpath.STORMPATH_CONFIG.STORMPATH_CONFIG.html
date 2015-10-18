@@ -1,0 +1,168 @@
+<h1><code ng:non-bindable="">STORMPATH_CONFIG</code>
+<div><span class="hint">object in module <code ng:non-bindable="">stormpath</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="stormpath-stormpath-config-page stormpath-stormpath-config-stormpath-config-page"><p>This constant allows you to configure the internal settings of the module,
+such as authentication endpoints and the names of events. These properties
+must be modified within a config block.</p>
+<p><strong>Example:</strong>
+<pre class="prettyprint linenums">
+    angular.module('myapp')
+      .config(function(STORMPATH_CONFIG){
+          STORMPATH_CONFIG.ENDPOINT_PREFIX = 'http://api.mydomain.com';
+      });
+</pre>
+</div></div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_authentication_endpoint">AUTHENTICATION_ENDPOINT</h3>
+<div class="authentication_endpoint"><div class="authentication-endpoint-page"><p>Default: <code>/login</code></p>
+<p>The URI that the login form will post to.  The endpoint MUST accept data
+in the following format:</p>
+<pre><code>{
+    username: &#39;&#39;,
+    password: &#39;&#39;
+}
+</code></pre></div></div>
+</li>
+<li><h3 id="properties_authentication_failure_event_name">AUTHENTICATION_FAILURE_EVENT_NAME</h3>
+<div class="authentication_failure_event_name"><div class="authentication-failure-event-name-page"><p>Default: <code>$authenticationFailure</code></p>
+<p>The name of the event that is fired when the user posts
+invalid login credentials to the login form.</p>
+</div></div>
+</li>
+<li><h3 id="properties_authentication_success_event_name">AUTHENTICATION_SUCCESS_EVENT_NAME</h3>
+<div class="authentication_success_event_name"><div class="authentication-success-event-name-page"><p>Default: <code>$authenticated</code></p>
+<p>The name of the event that is fired when a user logs in, after
+successfully submitting the login form.</p>
+</div></div>
+</li>
+<li><h3 id="properties_auth_service_name">AUTH_SERVICE_NAME</h3>
+<div class="auth_service_name"><div class="auth-service-name-page"><p>Default: <code>$auth</code></p>
+<p>The name of the authentication service, this changes the
+service name that you inject.</p>
+</div></div>
+</li>
+<li><h3 id="properties_change_password_endpoint">CHANGE_PASSWORD_ENDPOINT</h3>
+<div class="change_password_endpoint"><div class="change-password-endpoint-page"><p>Default: <code>/change</code></p>
+<p>The endpoint that is used by
+<a href="#/api/stormpath.userService.$user#methods_verifypasswordresettoken">$user.verifyPasswordResetToken()</a> and
+<a href="#/api/stormpath.userService.$user#methods_resetpassword">$user.resetPassword()</a>
+to verify and consume password reset tokens (change a user&#39;s password with the token).</p>
+</div></div>
+</li>
+<li><h3 id="properties_current_user_uri">CURRENT_USER_URI</h3>
+<div class="current_user_uri"><div class="current-user-uri-page"><p>Default: <code>/me</code></p>
+<p>The URI that is used to fetch the account object of
+the currently logged in user.  This endpoint MUST:</p>
+<ul>
+<li>Respond with a JSON object that is the Stormpath account object,
+if the user has an active session.</li>
+<li>Respond with <code>401 Unauthorized</code> if the user has no session.</li>
+</ul>
+</div></div>
+</li>
+<li><h3 id="properties_destroy_session_endpoint">DESTROY_SESSION_ENDPOINT</h3>
+<div class="destroy_session_endpoint"><div class="destroy-session-endpoint-page"><p>Default: <code>/logout</code></p>
+<p>The URL that the <a href="#/api/stormpath.spLogout:spLogout">spLogout</a> directive
+will make a GET request to, this endpoint MUST delete the access token
+cookie, XSRF token cookie, and any other cookies that relate to the user
+session.</p>
+</div></div>
+</li>
+<li><h3 id="properties_email_verification_endpoint">EMAIL_VERIFICATION_ENDPOINT</h3>
+<div class="email_verification_endpoint"><div class="email-verification-endpoint-page"><p>Default: <code>/verify</code></p>
+<p>The endpoint that is used for verifying an account that requires email
+verification.  Used by
+<a href="#/api/stormpath.userService.$user#methods_verify">$user.verify()</a> to POST
+the <code>sptoken</code> that was delivered to the user by email.</p>
+<p>This endpoint MUST accept a POST request with the following format and
+use Stormpath to verify the token:</p>
+<pre><code>{
+  sptoken: &#39;&lt;token from email sent to user&gt;&#39;
+}
+</code></pre></div></div>
+</li>
+<li><h3 id="properties_endpoint_prefix">ENDPOINT_PREFIX</h3>
+<div class="endpoint_prefix"><div class="endpoint-prefix-page"><p>Default: <em>none</em></p>
+<p>A prefix, e.g. &quot;base URL&quot; to add to all endpoints that are used by this SDK.
+Use this if your backend API is running on a different port or domain than
+your Angular application.  Omit the trailing forward slash.</p>
+<p><strong>NOTE:</strong> This may trigger
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">CORS</a>
+behaviour in the browser, and your server
+will need to respond to requests accordingly.  If you are using our
+Express SDK see
+<a href="https://github.com/stormpath/stormpath-sdk-express#allowedOrigins">allowedOrigins</a></p>
+<p><strong>Example:</strong>
+<pre class="prettyprint linenums">
+  ENDPOINT_PREFIX = 'http://api.mydomain.com'
+</pre>
+</div></div>
+</li>
+<li><h3 id="properties_forgot_password_endpoint">FORGOT_PASSWORD_ENDPOINT</h3>
+<div class="forgot_password_endpoint"><div class="forgot-password-endpoint-page"><p>Default: <code>/forgot</code></p>
+<p>The endpoint that is used by
+<a href="#/api/stormpath.userService.$user#methods_passwordresetrequest">$user.passwordResetRequest()</a>
+to create password reset tokens.</p>
+</div></div>
+</li>
+<li><h3 id="properties_form_content_type">FORM_CONTENT_TYPE</h3>
+<div class="form_content_type"><div class="form-content-type-page"><p>Default: <code>&#39;application/x-www-form-urlencoded&#39;</code></p>
+<p>The content type that is used for form posts.</p>
+</div></div>
+</li>
+<li><h3 id="properties_get_user_event">GET_USER_EVENT</h3>
+<div class="get_user_event"><div class="get-user-event-page"><p>Default: <code>$currentUser</code></p>
+<p>The name of the event that is fired when
+<a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a>
+is resolved with a user object.</p>
+</div></div>
+</li>
+<li><h3 id="properties_not_logged_in_event">NOT_LOGGED_IN_EVENT</h3>
+<div class="not_logged_in_event"><div class="not-logged-in-event-page"><p>Default: <code>$notLoggedin</code></p>
+<p>The name of the event that is fired when
+<a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a>
+is rejected without a user.</p>
+</div></div>
+</li>
+<li><h3 id="properties_registered_event_name">REGISTERED_EVENT_NAME</h3>
+<div class="registered_event_name"><div class="registered-event-name-page"><p>Default: <code>$registered</code></p>
+<p>The name of the event that is fired when
+<a href="#/api/stormpath.userService.$user#methods_create">$user.create()</a>
+is resolved with an account that was successfully created</p>
+</div></div>
+</li>
+<li><h3 id="properties_register_uri">REGISTER_URI</h3>
+<div class="register_uri"><div class="register-uri-page"><p>Default: <code>/register</code></p>
+<p>The endpoint that is used by
+<a href="#/api/stormpath.userService.$user#methods_create">$user.create()</a>
+to POST new users.  This endpoint MUST accept a stormpath account object
+and use Stormpath to create the new user.</p>
+</div></div>
+</li>
+<li><h3 id="properties_session_end_event">SESSION_END_EVENT</h3>
+<div class="session_end_event"><div class="session-end-event-page"><p>Default: <code>$sessionEnd</code></p>
+<p>The name of the event that is fired when the user logs out via the
+<a href="#/api/stormpath.spLogout:spLogout">spLogout</a>
+directive</p>
+</div></div>
+</li>
+<li><h3 id="properties_state_change_unauthenticated">STATE_CHANGE_UNAUTHENTICATED</h3>
+<div class="state_change_unauthenticated"><div class="state-change-unauthenticated-page"><p>Default: <code>$stateChangeUnauthenticated</code></p>
+<p>The name of the event that is fired when the user attempts to visit a
+UI Router state that requires authentication, but the user is not
+authenticated.</p>
+</div></div>
+</li>
+<li><h3 id="properties_state_change_unauthorized">STATE_CHANGE_UNAUTHORIZED</h3>
+<div class="state_change_unauthorized"><div class="state-change-unauthorized-page"><p>Default: <code>$stateChangeUnauthorized</code></p>
+<p>The name of the event that is fired when the user attempts to visit a
+UI Router state that has an access control rule which the user does not
+meet (such as not being in a specified group)</p>
+</div></div>
+</li>
+</ul>
+</div>
+</div>
