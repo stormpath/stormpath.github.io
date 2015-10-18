@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 group :development do
   gem 'nokogiri', '~> 1.6.6.2'
-  gem 'rake', '~> 0.9.6'
+  gem 'rake', '~> 10.2.2'
   gem 'jekyll', '~> 0.12'
   gem 'rdiscount', '~> 2.0.7'
   gem 'pygments.rb', '~> 0.3.4'
