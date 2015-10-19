@@ -1,0 +1,1233 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Stormpath Ruby Quickstart - Stormpath</title>
+  <meta name="author" content="Stormpath, Inc.">
+
+  
+  <meta name="description" content="7-minute Stormpath Tutorial for Ruby. Get connected to the Stormpath API in minutes.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stormpath.github.io/ruby/quickstart">
+  <link href="/favicon.ico" rel="icon">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style>
+@import url("/stylesheets/normalize.css?mrrrji");
+@import url("/stylesheets/wireframes.css?mrrrji");
+@import url("/stylesheets/html-elements.css?mrrrji");
+@import url("/stylesheets/tabs.css?mrrrji");
+@import url("/stylesheets/tinybox2.css?mrrrji");
+@import url("/stylesheets/flexnav.css?mrrrji");
+@import url("/stylesheets/pages.css?mrrrji");
+@import url("/stylesheets/docs.css?mrrrji");
+@import url("/stylesheets/blocks.css?mrrrji");
+@import url("/stylesheets/navigation.css?mrrrji");
+@import url("/stylesheets/views-styles.css?mrrrji");
+@import url("/stylesheets/nodes.css?mrrrji");
+@import url("/stylesheets/comments.css?mrrrji");
+@import url("/stylesheets/forms.css?mrrrji");
+@import url("/stylesheets/fields.css?mrrrji");
+@import url("/stylesheets/layouts/responsive-sidebars.css?mrrrji");
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/atom.xml" rel="alternate" title="Stormpath" type="application/atom+xml">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Covered+By+Your+Grace|Open+Sans:300italic,400italic,600italic,700italic,800italic,300,400,600,700,800" media="all" />
+
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/cupertino/jquery-ui.css" />
+<link rel="stylesheet" href="/stylesheets/mono-blue.min.css" />
+
+<!--[if lt IE 9]>
+<script src="/javascripts/html5-respond.js"></script>
+<![endif]-->
+
+<link rel="publisher" href="https://plus.google.com/117307959654441669381" />
+<!-- twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="goStormpath">
+<meta name="twitter:title" content="Stormpath Ruby Quickstart - Stormpath">
+<meta name="twitter:description" content="7-minute Stormpath Tutorial for Ruby. Get connected to the Stormpath API in minutes.">
+<meta name="twitter:image:src" content="https://stormpath.com/images/tutorial/ruby.png">
+<!-- opengraph -->
+<meta property="og:title" content="Stormpath Ruby Quickstart - Stormpath" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://stormpath.github.io/ruby/quickstart" />
+<meta property="og:image" content="https://stormpath.com/images/tutorial/ruby.png" />
+<meta property="og:description" content="7-minute Stormpath Tutorial for Ruby. Get connected to the Stormpath API in minutes." />
+<meta property="og:site_name" content="Stormpath" />
+<meta property="fb:admins" content="3230401" />
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-29159574-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
+
+<!-- kissmetrics -->
+<script type="text/javascript">
+  var _kmq = _kmq || [];
+  var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+  function _kms(u){
+    setTimeout(function(){
+      var d = document, f = d.getElementsByTagName('script')[0],
+      s = d.createElement('script');
+      s.type = 'text/javascript'; s.async = true; s.src = u;
+      f.parentNode.insertBefore(s, f);
+    }, 1);
+  }
+  _kms('//i.kissmetrics.com/i.js');
+  _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+</script>
+
+<!-- Optimizely -->
+<script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+  
+
+</head>
+
+<body  class="not-front  node-type-documentation  ">
+<!-- Qualaroo for stormpath.com -->
+<script type="text/javascript">var _kiq = _kiq || [];</script>
+<script type="text/javascript" src="//s3.amazonaws.com/ki.js/47725/9JM.js" async="true"></script>
+      
+<script type="text/javascript" src="//assets.zendesk.com/external/zenbox/v2.6/zenbox.js"></script>
+<style type="text/css" media="screen, projection">
+  @import url(//assets.zendesk.com/external/zenbox/v2.6/zenbox.css);
+</style>
+<script type="text/javascript">
+  if (typeof(Zenbox) !== "undefined") {
+    Zenbox.init({
+      dropboxID:   "20184231",
+      url:         "https://stormpath.zendesk.com",
+      tabTooltip:  "Get Help",
+      tabImageURL: "/images/tab_questions_black_right.png",
+      tabColor:    "689ed0",
+      tabPosition: "Right"
+    });
+  }
+</script>
+
+
+<script src="/javascripts/stormpath_docs.js"></script>
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+</script>
+
+<div id="page">
+    <div class="fixed-header" id="wrap">
+      
+
+<nav class="navbar navbar-storm" role="navigation">
+  <div class="navbar-container">
+
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://stormpath.com/">
+        <img src="/images/template/logo_nav.png"/>
+      </a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="main-nav">
+      <a type="button" class="btn navbar-btn button-primary-bordered button-signup navbar-right" href="https://api.stormpath.com/register" onClick="ga('send', 'event', { eventCategory: 'sign up', eventAction: 'sign up button click', eventLabel: 'www', eventValue: 1});">Sign Up Now</a>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="http://docs.stormpath.com/">Docs</a></li>
+        <li><a href="https://stormpath.com/tutorial">Tutorial</a></li>
+        <li><a href="https://stormpath.com/product" class="arrow_box">Product</a></li>
+        <li><a href="https://stormpath.com/pricing">Pricing</a></li>
+        <li><a href="https://stormpath.com/about">About</a></li>
+        <li><a href="https://api.stormpath.com/login">Login</a></li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</nav>
+
+
+
+    </div>
+<!--
+  <div id="header-wrapper">
+  	<header id="header" role="banner" class="container">
+      
+    </header>
+  </div>-->
+  <div id="main-wrapper">
+    <div id="main">
+      <div id="main-inner">
+        <div id="main-inner-inner">
+          <div id="content" class="column" role="main">
+            <a id="main-content"></a>
+            
+              <h1 class="title" id="page-title">Stormpath Ruby Quickstart</h1>
+            
+            
+<div class="sharing" style="height:22px">
+    <div class="addthis_sharing_toolbox"></div>
+</div>
+
+          	<p>Welcome to Stormpath&rsquo;s Ruby Quickstart!</p>
+
+<p>This quickstart will get you up and running with Stormpath in about 7 minutes
+and give you a good initial feel for the Stormpath Ruby library.  During this
+quickstart, you will do the following:</p>
+
+<ul>
+<li>Install the Stormpath library.</li>
+<li>Create an API Key that allows you to make REST API calls with Stormpath.</li>
+<li>Register an Application.</li>
+<li>Create a User Account.</li>
+<li>Authenticate a User Account.</li>
+</ul>
+
+
+<p>Stormpath also can do a lot more (<em>like Groups, Multitenancy, Social
+Integration, and Security workflows</em>) which you can learn more about at the end
+of this quickstart.</p>
+
+<p>Let&rsquo;s get started!</p>
+
+<hr />
+
+<h2><a id="install-the-stormpath-gem"></a>Install the Stormpath Gem</h2>
+
+<div class='docs-note'><p>The Ruby SDK is compatible with Ruby <em>1.9.3</em> and higher.</p>
+</div>
+
+
+<p>You can install <a href="https://github.com/stormpath/stormpath-sdk-ruby">Stormpath</a>
+using <a href="https://rubygems.org/">RubyGems</a>:</p>
+
+<pre><code>$ gem install stormpath-sdk --pre
+</code></pre>
+
+<div class='docs-note'><p>The Stormpath SDK for Ruby is in beta and requires the use of the gem  <code>--pre</code> flag.</p>
+</div>
+
+
+<hr />
+
+<h2><a id="get-an-api-key"></a>Get an API Key</h2>
+
+<p>All requests to Stormpath must be authenticated with an API Key.</p>
+
+<ol>
+<li><p>If you haven&rsquo;t already,
+<a href="https://api.stormpath.com/register">Sign up for Stormpath here</a>.  You&rsquo;ll
+be sent a verification email.</p></li>
+<li><p>Click the link in the verification email.</p></li>
+<li><p>Log in to the <a href="https://api.stormpath.com">Stormpath Admin Console</a> using
+the email address and password you used to register with Stormpath.</p></li>
+<li><p>Click the <strong>Create API Key</strong> or <strong>Manage Existing Keys</strong> button in the middle of the page.</p></li>
+<li><p>Under <strong>Security Credentials</strong>, click <strong>Create API Key</strong>.</p>
+
+<p>This will generate your API Key and download it to your computer as an
+<code>apiKey.properties</code> file.  If you open the file in a text editor, you will
+see something similar to the following:</p>
+
+<pre><code> apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
+ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
+</code></pre></li>
+<li><p>Save this file in a secure location, such as your home directory, in a
+hidden <code>.stormpath</code> directory. For example:</p>
+
+<pre><code> $ mkdir ~/.stormpath
+ $ mv ~/Downloads/apiKey.properties ~/.stormpath/
+</code></pre></li>
+<li><p>Change the file permissions to ensure only you can read this file.  For
+example:</p>
+
+<pre><code> $ chmod go-rwx ~/.stormpath/apiKey.properties
+</code></pre></li>
+</ol>
+
+
+<p>The <code>apiKey.properties</code> file holds your API key information, and can be used to
+easily authenticate with the Stormpath library.</p>
+
+<hr />
+
+<h2><a id="create-a-client"></a>Create a Client</h2>
+
+<p>The first step to working with Stormpath is creating a Stormpath
+<a href="/ruby/product-guide#client">Client</a> using your <code>apiKey.properties</code> file.
+The <code>Client</code> object is what allows you to communicate with Stormpath.</p>
+
+<p>First, open the Ruby shell by running:</p>
+
+<pre><code>$ irb
+</code></pre>
+
+<p>Then, create a new Stormpath <code>Client</code> with the following code:</p>
+
+<pre><code>require "stormpath-sdk"
+client = Stormpath::Client.new api_key_file_location: File.join(ENV['HOME'], '.stormpath', 'apiKey.properties')
+</code></pre>
+
+<p>The <code>Client</code> instance is intended to be an application singleton.  You should
+reuse this instance throughout your application code.  You <em>should not</em>
+create multiple <code>Client</code> instances as it could negatively affect caching.</p>
+
+<hr />
+
+<h2><a id="retrieve-your-application"></a>Retrieve your Application</h2>
+
+<p>Before you can create user Accounts you&rsquo;ll need to retrieve your Stormpath
+Application.  An Application in Stormpath is the same thing as a project. If
+you&rsquo;re building a web app named &ldquo;Lightsabers Galore&rdquo;, you&rsquo;d want to name your
+Stormpath Application &ldquo;Lightsabers Galore&rdquo; as well.  By default, your Stormpath account will have an application already created for you to use.  We will use this application for the quickstart.</p>
+
+<p>You can retrieve your example <code>Application</code> using the client you created in the previous step:</p>
+
+<pre><code>applications = client.applications.search name: 'My Application'
+application = applications.each.next
+</code></pre>
+
+<p>The code above will retrieve your example <code>Application</code>, which we can use later to do stuff like:</p>
+
+<ul>
+<li>Create user accounts.</li>
+<li>Log users into their account.</li>
+<li>etc.</li>
+</ul>
+
+
+<hr />
+
+<h2><a id="create-a-user-account"></a>Create a User Account</h2>
+
+<p>Now that we&rsquo;ve created an <code>Application</code>, let&rsquo;s create a user <code>Account</code>!  To do
+this, you&rsquo;ll need to use your <code>Application</code> (<em>created in the previous step</em>):</p>
+
+<pre><code>account = application.accounts.create({
+    given_name: 'Joe',
+    surname: 'Stormtrooper',
+    username: 'tk421',
+    email: 'tk421@stormpath.com',
+    password: 'Changeme1',
+    custom_data: {
+        favorite_color: 'white',
+    },
+})
+</code></pre>
+
+<p>Stormpath accounts have several basic fields (<code>given_name</code>, <code>surname</code>, <code>email</code>,
+etc&hellip;), but also support storing schema-less JSON data through the <code>custom_data</code>
+field.  <code>custom_data</code> allows you to store any user profile information (<em>up to
+10MB per user!</em>).</p>
+
+<div class='docs-note'><p>The required fields are: <code>given_name</code>, <code>surname</code>, <code>email</code>, and <code>password</code>.</p>
+</div>
+
+
+<p>Once you&rsquo;ve created an <code>Account</code>, you can access the account&rsquo;s data by
+referencing the attribute names, for instance:</p>
+
+<pre><code>account.given_name
+account.custom_data['favorite_color']
+</code></pre>
+
+<hr />
+
+<h2><a id="authenticate-a-user-account"></a>Authenticate a User Account</h2>
+
+<p>Authenticating users is equally simple &mdash; you can specify either a <code>username</code> or
+<code>email</code> address, along with a <code>password</code>:</p>
+
+<pre><code>auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421@stormpath.com', 'Changeme1'
+auth_result = application.authenticate_account auth_request
+account = auth_result.account
+puts account.given_name + " successfully authenticated!"
+
+auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421', 'Changeme1'
+auth_result = application.authenticate_account auth_request
+account = auth_result.account
+puts account.given_name + " successfully authenticated!"
+</code></pre>
+
+<p>If the authentication request is successful, an <code>Account</code> resource will be
+returned.</p>
+
+<div class='docs-note'><p>This is typically only done when a user logs into a web app &#8211; we&#8217;re just
+showing this example to illustrate how it works.</p>
+</div>
+
+
+<hr />
+
+<h2><a id="other-things-you-can-do-with-stormpath"></a>Other Things You Can Do with Stormpath</h2>
+
+<p>In addition to user registration and login, Stormpath can do a lot more!</p>
+
+<ul>
+<li>Create and manage user groups.</li>
+<li>Partition multi-tenant SaaS account data.</li>
+<li>Simplify social login with providers like Google and Facebook.</li>
+<li>Manage developer API keys and access tokens.</li>
+<li>Verify new users via email.</li>
+<li>Automatically provide secure password reset functionality.</li>
+<li>Centralize your user store across multiple applications.</li>
+</ul>
+
+
+<hr />
+
+<h2><a id="next-steps"></a>Next Steps</h2>
+
+<p>We hope you found this Quickstart helpful!</p>
+
+<p>You&rsquo;ve just scratched the surface of what you can do with Stormpath.  Want to
+learn more?  Here are a few other helpful resources you can jump into.</p>
+
+<ul>
+<li>Dig in deeper with the <a href="/ruby/product-guide">Official Ruby Product Guide</a>.</li>
+<li>Learn to easily partition user data with our <a href="/guides/multi-tenant/">Guide to Building Multitenant SaaS Applications</a>.</li>
+</ul>
+
+
+            <div id="spread-word">
+<hr>
+
+<h2> Help Us Spread the Word </h2>
+
+<p>Did you find this valuable?  If you've enjoyed playing with Stormpath or are excited about what we've built, please help us spread the world with a quick tweet or by just telling a friend.  Thank you!</p>
+
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout Stormpath, it helps you set up complete user management in your application in minutes."
+addthis:url="https://stormpath.com" >
+  <a class="addthis_button_twitter"></a>
+  <a class="addthis_button_preferred_2"></a>
+  <a class="addthis_button_preferred_3"></a>
+  <a class="addthis_button_preferred_4"></a>
+  <a class="addthis_button_compact"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+<!-- AddThis Button END -->
+<p>
+</div>
+
+            <div id="bottom-wrapper">
+             <div class="region">
+
+	<div class="credits">
+	  <div class="container">
+	    <ul class="list-unstyled list-inline">
+	      <li>Copyright &copy; 2015 Stormpath, Inc.</li>
+	      <li class="divider-vertical"></li>
+	      <li>All rights reserved</li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/privacy_policy">Privacy policy</a></li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/terms_of_service">Terms of service</a></li>
+	    </ul>
+	  </div>
+	</div>
+	
+</div><!-- /.region -->
+
+            </div>          	
+    	  </div>
+
+
+
+<aside class="sidebars">
+  
+    <section class="region region-sidebar-first column sidebar">
+      
+<div id="block-stormpath-docs-languages" class="block block-stormpath-docs first odd">
+ <form class="stormpath-docs-select-language" action="/docs/java/product-guide" method="post" id="stormpath-docs-language-form" accept-charset="UTF-8"><div><div class="form-item form-type-select form-item-language">
+  <label for="edit-language">Language: </label>
+ <select id="edit-language" name="language" class="form-select">
+  
+  
+ 	
+    <option value="rest">REST API</option>
+ 	
+    <option value="java">Java</option>
+ 	
+    <option value="nodejs">Node.js</option>
+ 	
+    <option value="python">Python</option>
+ 	
+    <option value="ruby" selected>Ruby</option>
+ 	
+    <option value="php">PHP</option>
+ 	
+    <option value="guides">Guides</option>
+ 	
+    <option value="console">Admin Console</option>
+ 	
+ </select>
+</div>
+<input type="hidden" name="form_id" value="stormpath_docs_language_form">
+</div></form>
+</div>
+
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+</script>
+
+
+<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
+  
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf active-trail">
+			
+				<a href="/ruby/quickstart">Quickstart</a>
+			
+			
+				<ul class="menu"><li class="leaf"><a href="#install-the-stormpath-gem" data-level="0" class="fragment">Install the Stormpath Gem</a><ul class="menu"></ul></li><li class="leaf"><a href="#get-an-api-key" data-level="0" class="fragment">Get an API Key</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-client" data-level="0" class="fragment">Create a Client</a><ul class="menu"></ul></li><li class="leaf"><a href="#retrieve-your-application" data-level="0" class="fragment">Retrieve your Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-a-user-account" data-level="0" class="fragment">Create a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#authenticate-a-user-account" data-level="0" class="fragment">Authenticate a User Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#other-things-you-can-do-with-stormpath" data-level="0" class="fragment">Other Things You Can Do with Stormpath</a><ul class="menu"></ul></li><li class="leaf"><a href="#next-steps" data-level="0" class="fragment">Next Steps</a><ul class="menu"></ul></li></ul>
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/ruby/product-guide">Product Guide</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="https://github.com/stormpath/stormpath-sdk-ruby" target="_blank"><span>SDK on Github</span></a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/sample-apps/#sample-apps-ruby-container-jump">Sample App</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/integrations/#sample-apps-ruby-container-jump">Ruby Integrations</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+                
+                       <div class="menu-divider"></div> 
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/how-do-i">How Do I..?</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/errors">Stormpath Error Codes</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+</div>
+
+    </section>
+  
+
+  
+</aside>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script src="/javascripts/highlight.min.js"></script>
+
+<script>
+$(function() {
+   hljs.initHighlightingOnLoad();
+
+   /* javascript for codetab to stop the page from shifting when changing tabs (tab sync) */
+   var currentEventTab;
+   var initialObjectTopOffset;
+   var initialPageYOffset;
+
+   $('.tabs').tabs({
+		activate: function(event ,ui){
+
+			//if the dom event, grab the hotness 
+			if(event.cancelable){
+				currentEventTab = event.target;
+				initialObjectTopOffset = $(currentEventTab).offset().top;
+				initialPageYOffset = window.pageYOffset;
+			}
+			//change ze tab
+			$('.tabs').tabs('option', 'active', ui.newTab.index());
+
+			//grab the new offsets
+			var afterChangeOffset = $(currentEventTab).offset().top;
+			var afterPageYOffset = window.pageYOffset;
+
+			//do ze scroll
+			$('body').scrollTop(initialPageYOffset - (initialObjectTopOffset - afterChangeOffset));
+		}
+	});
+});
+</script>
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<!-- Google Code for Remarketing tag -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1002663385;
+var google_conversion_label = "wSRZCLfkjQQQ2duN3gM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1002663385/?value=0&amp;label=wSRZCLfkjQQQ2duN3gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<!-- AdRoll Code -->
+<script type="text/javascript">
+adroll_adv_id = "RVWGHIV3GJCLHIUDNFIMNY";
+adroll_pix_id = "L2WE5KAWDRDBVP46PZZBQJ";
+(function () {
+var oldonload = window.onload;
+window.onload = function(){
+__adroll_loaded=true;
+var scr = document.createElement("script");
+var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+scr.setAttribute('async', 'true');
+scr.type = "text/javascript";
+scr.src = host + "/j/roundtrip.js";
+((document.getElementsByTagName('head') || [null])[0] ||
+document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+if(oldonload){oldonload()}};
+}());
+</script>
+
+<!-- HubSpot Analytics Code -->
+<script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+</script>
+<!-- End HubSpot Analytics Code -->
+
+<!-- CrazyEgg -->
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0017/1602.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+
+<!-- Perfect Audience -->
+<script type="text/javascript">
+(function() {
+window._pa = window._pa || {};
+// _pa.orderId = "";
+// _pa.revenue = "";
+var pa = document.createElement('script'); pa.type = 'text/javascript'; pa.async = true;
+pa.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + "//tag.perfectaudience.com/serve/51fc2c6f1b440adfcc000099.js";
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pa, s);
+})();
+</script>
+
+
+</body>
+</html>
