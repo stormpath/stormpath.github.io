@@ -1936,7 +1936,7 @@ Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 <a class="anchor" name="login-attempt-type"></a>`type` | The type of the login attempt. The only currently supported type is `basic`. Additional types will likely be supported in the future. | Enum | basic
 <a class="anchor" name="login-attempt-value"></a>`value` | The Base64 encoded username:plaintextPassword pair. For example, for username `jsmith` or email `jsmith@email.com` and plaintext password `mySecretPassword` this `value` attribute would be set to the following computed result: `base64_encode("jsmith:mySecretPassword");` </p> The `base64_encode` method call is only an example. You will need to use the Base64 encoding method is available to you in your chosen programming language and/or software frameworks. | String | Base64 encoded String
-<a class="anchor" name="login-attempt-accountStore"></a>`accountStore` | An optional link to the application's accountStore (directory or group) that you are certain contains the account attempting to login.  <p>Specifying this attribute can speed up logins if you know exactly which of the application's assigned account stores contains the account: Stormpath will not have to [iterate over the assigned account stores](#workflow-login-attempt) to find the account to authenticate it.  This can speed up logins significantly if you have many account stores (> 15) assigned to the application.</p> This is an optional attribute. | link | --
+<a class="anchor" name="login-attempt-accountStore"></a>`accountStore` | An optional link to the application's accountStore (directory or group) or the [Organization `nameKey`](#organization-resource). Specifying this attribute can speed up logins if you know exactly which of the application's assigned account stores contains the account: Stormpath will not have to [iterate over the assigned account stores](#workflow-login-attempt) to find the account to authenticate it.  This can speed up logins significantly if you have many account stores (> 15) assigned to the application. This is an optional attribute. | -- | --
 
 **Execute Account Login Attempt (HTTP POST)**
 
@@ -2000,6 +2000,8 @@ If you desire to target a specific accountStore, then include the reference in t
 
 **Example Request with AccountStore**
 
+Specifying the `AccountStore` href:
+
     curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
      -H "Accept: application/json" \
      -H "Content-Type: application/json" \
@@ -2008,6 +2010,20 @@ If you desire to target a specific accountStore, then include the reference in t
            "value": "anNtaXRoOmNoYW5nZW1l",
            "accountStore": {
                  "href": "https://api.stormpath.com/v1/groups/$YOUR_GROUP_ID"
+           }
+         }' \
+     "https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/loginAttempts"
+
+Specifying the [Organization `nameKey`](#organization-resource):
+
+    curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d '{
+           "type": "basic",
+           "value": "anNtaXRoOmNoYW5nZW1l",
+           "accountStore": {
+                 "nameKey": "stormtroopers"
            }
          }' \
      "https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/loginAttempts"
