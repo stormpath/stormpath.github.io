@@ -30,7 +30,7 @@ module Jekyll
     def initialize(tag_name, markup, tokens)
       @tag_name = tag_name
       id = /(?<=id:)\S*/i
-      langs = /(?<=langs:)*(java|rest|python|node|ruby|curl)/i
+      langs = /(?<=langs:)*(java|rest|python|node|ruby|curl|php)/i
       if markup =~ /(?<=id:)\S*/i
       	@id = $~
       end
