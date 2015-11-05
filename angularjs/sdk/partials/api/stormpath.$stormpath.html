@@ -1,0 +1,114 @@
+<h1><code ng:non-bindable="">$stormpath</code>
+<div><span class="hint">service in module <code ng:non-bindable="">stormpath</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="stormpath-stormpath-page"><p>This service allows you to enable application-wide features of the library.</p>
+<p>At the moment the only feature is the UI Router integration, which is
+documented below.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><h3 id="methods_uirouter">uiRouter(config)</h3>
+<div class="uirouter"><div class="stormpath-uirouter-page"><p>Call this method to enable the integration with the UI Router module.</p>
+<p>When enabled, you can define <a href="#/api/stormpath.SpStateConfig:SpStateConfig">Stormpath State Configurations</a> on your UI states.
+This object allows you to define access control for the state.</p>
+<p>You can pass config options to this integration, the options control the
+default behavior around &quot;need to login&quot; and &quot;forbidden&quot; situations.
+If you wish to implement your own logic for these situations, simply
+omit the options and use the events (documented below) to know
+what is happening in the application.</p>
+</div><h5 id="methods_uirouter_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>config</td><td><a href="" class="label type-hint type-hint-object">object</a></td><td><div class="stormpath-uirouter-page"><ul>
+<li><p><strong><code>autoRedirect</code></strong> - Defaults to true.  After the user logs in at
+the state defined by <code>loginState</code>, they will be redirected back to the
+state that was originally requested.</p>
+</li>
+<li><p><strong><code>defaultPostLoginState</code></strong>  - Where the user should be sent, after login,
+if they have visited the login page directly.  If you do not define a value,
+nothing will happen at the login state.  You can alternatively use the
+<a href="#/api/stormpath.authService.$auth#events_$authenticated">$authenticated</a> event to know
+that login is successful.</p>
+</li>
+<li><p><strong><code>forbiddenState</code></strong> - The UI state name that we should send the user
+to if they try to an access a view that they are not authorized to view.
+This happens in response to an <code>authorize</code> rule in one of your
+<a href="#/api/stormpath.SpStateConfig:SpStateConfig">Stormpath State Configurations</a></p>
+</li>
+<li><p><strong><code>loginState</code></strong> - The UI state name that we should send the user
+to if they need to login.  You&#39;ll probably use <code>login</code> for this value.</p>
+</li>
+</ul>
+</div></td></tr></tbody></table><h4 id="methods_uirouter_example">Example</h4>
+<div class="example"><div class="stormpath-uirouter-page"><pre class="prettyprint linenums">
+angular.module('myApp')
+  .run(function($stormpath){
+    $stormpath.uiRouter({
+      forbiddenState: 'forbidden',
+      defaultPostLoginState: 'main',
+      loginState: 'login'
+    });
+  });
+</pre>
+</div></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="member event"><h2 id="events">Events</h2>
+<ul class="events"><li><h3 id="events_$statechangeunauthenticated">$stateChangeUnauthenticated</h3>
+<div class="$statechangeunauthenticated"><div class="stormpath-stormpath-statechangeunauthenticated-page"><p>This event is broadcast when a UI state change is prevented,
+because the user is not logged in.</p>
+<p>Use this event if you want to implement your own strategy for
+presenting the user with a login form.</p>
+<p>To receive this event, you must be using the UI Router integration.</p>
+</div><div class="inline"><h4 id="events_$statechangeunauthenticated_type">Type:</h4>
+<div class="type">broadcast</div>
+</div>
+<div class="inline"><h4 id="events_$statechangeunauthenticated_target">Target:</h4>
+<div class="target">root scope</div>
+</div>
+<h5 id="events_$statechangeunauthenticated_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>event</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-stormpath-statechangeunauthenticated-page"><p>Angular event object.</p>
+</div></td></tr><tr><td>toState</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-stormpath-statechangeunauthenticated-page"><p>The state that the user attempted to access.</p>
+</div></td></tr><tr><td>toParams</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-stormpath-statechangeunauthenticated-page"><p>The state params of the state that the user
+attempted to access.</p>
+</div></td></tr></tbody></table><h4 id="events_$statechangeunauthenticated_example">Example</h4>
+<div class="example"><div class="stormpath-stormpath-statechangeunauthenticated-page"><pre class="prettyprint linenums">
+$rootScope.$on('$stateChangeUnauthenticated',function(e,toState,toParams){
+  // Your custom logic for deciding how the user should login, and
+  // if you want to redirect them to the desired state afterwards
+});
+</pre>
+</div></div>
+</div>
+</li>
+<li><h3 id="events_$statechangeunauthorized">$stateChangeUnauthorized</h3>
+<div class="$statechangeunauthorized"><div class="stormpath-stormpath-statechangeunauthorized-page"><p>This event is broadcast when a UI state change is prevented,
+because the user is not authorized by the rules defined in the
+<a href="#/api/stormpath.SpStateConfig:SpStateConfig">Stormpath State Configuration</a>
+for the requested state.</p>
+<p>Use this event if you want to implement your own strategy for telling
+the user that they are forbidden from viewing that state.</p>
+<p>To receive this event, you must be using the UI Router integration.</p>
+</div><div class="inline"><h4 id="events_$statechangeunauthorized_type">Type:</h4>
+<div class="type">broadcast</div>
+</div>
+<div class="inline"><h4 id="events_$statechangeunauthorized_target">Target:</h4>
+<div class="target">root scope</div>
+</div>
+<h5 id="events_$statechangeunauthorized_target_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>event</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-stormpath-statechangeunauthorized-page"><p>Angular event object.</p>
+</div></td></tr><tr><td>toState</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-stormpath-statechangeunauthorized-page"><p>The state that the user attempted to access.</p>
+</div></td></tr><tr><td>toParams</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="stormpath-stormpath-statechangeunauthorized-page"><p>The state params of the state that the user
+attempted to access.</p>
+</div></td></tr></tbody></table><h4 id="events_$statechangeunauthorized_example">Example</h4>
+<div class="example"><div class="stormpath-stormpath-statechangeunauthorized-page"><pre class="prettyprint linenums">
+$rootScope.$on('$stateChangeUnauthorized',function(e,toState,toParams){
+  // Your custom logic for deciding how the user should be
+  // notified that they are forbidden from this state
+});
+</pre>
+</div></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
