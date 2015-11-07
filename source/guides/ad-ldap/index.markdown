@@ -5,10 +5,6 @@ description: Use Stormpath to give users in existing Active Directory/LDAP serve
 title: Integrating Stormpath with Active Directory and LDAP
 ---
 
-{% docs info %}
- **This feature is currently in Beta.**  If you have any questions, bug reports, or enhancement requests please email support@stormpath.com. 
-{% enddocs %}
-
 {% docs note %}
 AD/LDAP integration is only available to customers with a [Lite subscription plan or higher](https://stormpath.com/pricing)
 {% enddocs %}
