@@ -38,6 +38,9 @@ alias: [/index.html]
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="https://github.com/stormpath/stormpath-mod-authnz-external"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-apache.jpg"></a>
           </div>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="https://github.com/stormpath/stormpath-sdk-dotnet"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-dotnet.png"></a>
+          </div>
         </div>
       </div>
     </div>
