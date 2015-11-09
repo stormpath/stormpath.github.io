@@ -3486,7 +3486,7 @@ This request would remove the `favoriteColor` field entirely from the customData
 <a class="anchor" name="integration-google"></a>
 ## Integrating with Google
 
-Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codea (or access tokens) to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codes (or access tokens) to return an `Account` for a given code. 
 
 The steps to enable this functionality into your application include:
 
@@ -3541,8 +3541,8 @@ Creating a Google Directory is very similar to [creating a directory](#create-a-
     directory.setName("my-google-directory");
     directory.setDescription("A Google directory");
 
-    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
-                forProvider(Providers.GOOGLE.builder()
+    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory)
+                .forProvider(Providers.GOOGLE.builder()
                         .setClientId("857385-m8vk0fn2r7jmjo.apps.googleusercontent.com")
                         .setClientSecret("ehs7_-bA7OWQSQ4")
                         .setRedirectUri("https://myapplication.com/authenticate")
@@ -3611,7 +3611,7 @@ The `refreshToken` will only be present if your application asked for offline ac
 <a class="anchor" name="integration-facebook"></a>
 ## Integrating with Facebook
 
-Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an `Account` for a given code. 
 
 The steps to enable this functionality into your application include:
 
@@ -3664,8 +3664,8 @@ Creating a Facebook Directory is very similar to [creating a directory](#create-
     directory.setName("my-facebook-directory");
     directory.setDescription("A Facebook directory");
 
-    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
-                forProvider(Providers.FACEBOOK.builder()
+    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory)
+                .forProvider(Providers.FACEBOOK.builder()
                         .setClientId("857385m8vk0fn2r7jmjo")
                         .setClientSecret("ehs7bA7OWQSQ4")
                         .build()
@@ -3721,7 +3721,7 @@ The returned `FacebookProviderData` will include:
 <a class="anchor" name="integration-github"></a>
 ## Integrating with Github
 
-Stormpath supports accessing accounts from a number of different locations including Github.  Github uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including Github.  Github uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an `Account` for a given code. 
 
 The steps to enable this functionality into your application include:
 
@@ -3774,8 +3774,8 @@ Creating a Github Directory is very similar to [creating a directory](#create-a-
     directory.setName("my-github-directory")
              .setDescription("A Github directory");
 
-    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
-                forProvider(Providers.GITHUB.builder()
+    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory)
+                .forProvider(Providers.GITHUB.builder()
                         .setClientId("966ha2c75t1706f3f34e")
                         .setClientSecret("12o26d5eybab2384ca8b4341d7eu5bf1e3dc8df6")
                         .build()
@@ -3827,7 +3827,7 @@ The returned `GithubProviderData` will include:
 <a class="anchor" name="integration-linkedin"></a>
 ## Integrating with LinkedIn
 
-Stormpath supports accessing accounts from a number of different locations including LinkedIn.  LinkedIn uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including LinkedIn.  LinkedIn uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an `Account` for a given code. 
 
 The steps to enable this functionality into your application include:
 
@@ -3880,8 +3880,8 @@ Creating a LinkedIn Directory is very similar to [creating a directory](#create-
     directory.setName("my-linkedin-directory")
              .setDescription("A LinkedIn directory");
 
-    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
-                forProvider(Providers.LINKEDIN.builder()
+    CreateDirectoryRequest request = Directories.newCreateRequestFor(directory)
+                .forProvider(Providers.LINKEDIN.builder()
                         .setClientId("25u1dw2frl02v2")
                         .setClientSecret("tJhYc92lq3jCOr23")
                         .build()
@@ -3898,7 +3898,6 @@ After the LinkedIn Directory has been created, it needs to be [mapped with an ap
 To access or create an account in an already created LinkedIn Directory, it is required to gather the `User Access Token` on behalf of the user.
 
 Once the Authorization Code is gathered, you can get or create the `Account` by means of the `Application` and specifying its `ProviderData`. The following example shows how you use `ProviderData` to get an `Account` for a given authorization code:
-
 
 **Example Request**
 
