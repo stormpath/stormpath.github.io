@@ -382,13 +382,19 @@ In the case where you are using a subdomain to designate the organization, you c
 
 To specify which organization to log into: 
 
-{% codetab id:id-site-specify-an-org langs:node %}
+{% codetab id:id-site-specify-an-org langs:node php %}
 ------
 application.createIdSiteUrl({
     'callbackUri': 'https://trooperapp.com/callback',
     'organizationNameKey': 'stormtrooper',
     'showOrganizationField': true
 });
+------
+$application->createIdSiteUrl([
+    'callbackUri': 'https://trooperapp.com/callback',
+    'organizationNameKey': 'stormtrooper',
+    'showOrganizationField': true
+]);
 ------
 {% endcodetab %}
 
@@ -407,12 +413,17 @@ When the user logs in, they will be logging into the specified organization.  If
 
 In some cases, you may want your users to specify the organization when they are on ID Site.  This will require that your users know their organization name key when logging into ID Site. To achieve this, your application will specify to show the organization field:
 
-{% codetab id:allow-user-to-specify-org langs:node %}
+{% codetab id:allow-user-to-specify-org langs:node php %}
 ------
 application.createIdSiteUrl({
     'callbackUri': 'https://trooperapp.com/callback',
     'showOrganizationField': true
 });
+------
+$application->createIdSiteUrl([
+    'callbackUri': 'https://trooperapp.com/callback',
+    'showOrganizationField': true
+]);
 ------
 {% endcodetab %}
 
@@ -426,13 +437,19 @@ In some cases, you may want to show the organization that the user is logging in
 
 Once a wildcard certificate is configured on your domain, you can tell ID Site to use a subdomain to represent the organization:
 
-{% codetab id:id-site-builder langs:node %}
+{% codetab id:id-site-builder langs:node php %}
 ------
 application.createIdSiteUrl({
     'callbackUri': 'https://trooperapp.com/callback',
     'organizationNameKey': 'stormtrooper',
     'useSubDomain': true
 });
+------
+$application->createIdSiteUrl([
+    'callbackUri': 'https://trooperapp.com/callback',
+    'organizationNameKey': 'stormtrooper',
+    'useSubDomain': true
+]);
 ------
 {% endcodetab %}
 
