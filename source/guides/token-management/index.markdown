@@ -614,7 +614,7 @@ token.delete(function(err) { console.log('deleted token'); });
 $token = AccessToken::get($tokenHref);
 $token->delete();
 ------
-AccessToken accessToken = oauthGrantAuthenticationResult.getAccessToken()
+AccessToken accessToken = oauthGrantAuthenticationResult.getAccessToken();
 accessToken.delete();
 ------
 {% endcodetab %}
