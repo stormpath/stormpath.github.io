@@ -38,7 +38,7 @@ NG_DOCS={
       "type": "object",
       "moduleName": "stormpath.authService",
       "shortDescription": "The auth service provides methods for authenticating a user, aka",
-      "keywords": "$auth $http $scope $state access accesstoken aka api authenticate authenticating authentication authservice backend cabtmzxazbxbadbr1l7zcwhpjivbt9t0gzbqjqdtmgyo0okuq37hyabi4f23f49f5 catch console controller cookie credential credentialdata credentials data email error errormessage example expose facebook fb field form formdata function handler http-only literal log logging login loginctrl logs message method methods myapp ng-submit null object objects passing password promise provided provider providerid resolved response return sdk sends server service social stored stormpath success token user username verify"
+      "keywords": "$auth $http $scope $sessionend $state access accesstoken aka api authenticate authenticating authentication authservice backend cabtmzxazbxbadbr1l7zcwhpjivbt9t0gzbqjqdtmgyo0okuq37hyabi4f23f49f5 catch complete console controller cookie cookies credential credentialdata credentials data delete email emitted endpoint endsession error errormessage event events_ example expose facebook fb field form formdata function handler http-only literal log logging login loginctrl logout logs message method methods myapp ng-submit null object objects passing password promise provided provider providerid request resolved response return sdk sends server service social stored stormpath success successful token triggers user username verify"
     },
     {
       "section": "api",
@@ -105,6 +105,42 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "stormpath.socialLoginService",
+      "shortName": "stormpath.socialLoginService",
+      "type": "overview",
+      "moduleName": "stormpath.socialLoginService",
+      "shortDescription": "This module provides the $socialLogin service.",
+      "keywords": "$sociallogin api configuration currently methods module overview provider service socialloginservice stormpath"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.socialLoginService.$socialLogin",
+      "shortName": "stormpath.socialLoginService.$socialLogin",
+      "type": "object",
+      "moduleName": "stormpath.socialLoginService",
+      "shortDescription": "The social login service provides methods for letting users logging in with Facebook, Google, etc.",
+      "keywords": "$sociallogin api endpoint facebook function getproviders google letting list logging login methods object promise provided providers resolved returns service social socialloginservice stormpath users"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.socialLoginService.$socialLoginProvider",
+      "shortName": "stormpath.socialLoginService.$socialLoginProvider",
+      "type": "object",
+      "moduleName": "stormpath.socialLoginService",
+      "shortDescription": "Provides the $socialLogin service.",
+      "keywords": "$sociallogin $socialloginprovider api configuration currently methods object provider service socialloginservice stormpath"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.socialLoginService.$spJsLoader",
+      "shortName": "stormpath.socialLoginService.$spJsLoader",
+      "type": "object",
+      "moduleName": "stormpath.socialLoginService",
+      "shortDescription": "The $spJsLoader provides a method for loading scripts during runtime.",
+      "keywords": "$spjsloader api load loading method object provider runtime scripts sdks services social socialloginservice stormpath"
+    },
+    {
+      "section": "api",
       "id": "stormpath.spEmailVerification:spEmailVerification",
       "shortName": "spEmailVerification",
       "type": "directive",
@@ -128,7 +164,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "This directive adds a click handler to the element.  When clicked, the user will be logged out.",
-      "keywords": "adds api click clicked directive element handler logged main sp-logout splogout stormpath ui-sref user"
+      "keywords": "$auth $on $rootscope $sessionend $state action adds api authentication authservice automatically click clicked common control deletes directive element event events_ example function handler javascript leave logged login logout main observing redirect request router server sp-logout splogout stormpath transitionto triggers ui ui-sref use-case user users view"
     },
     {
       "section": "api",
@@ -159,6 +195,15 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "stormpath.spSocialLogin:spSocialLogin",
+      "shortName": "spSocialLogin",
+      "type": "directive",
+      "moduleName": "stormpath",
+      "shortDescription": "Add this directive to a button or link in order to authenticate using a social provider.",
+      "keywords": "add api apps authenticate authorized blank button class console container creating developer directive directory email facebook field google http leave link order postmessage provider public_profile recommends redirect server-side set sign-in social sp-scope sp-social-login spsociallogin stormpath uri"
+    },
+    {
+      "section": "api",
       "id": "stormpath.SpStateConfig:SpStateConfig",
       "shortName": "SpStateConfig",
       "type": "object",
@@ -173,7 +218,7 @@ NG_DOCS={
       "type": "object",
       "moduleName": "stormpath",
       "shortDescription": "This constant allows you to configure the internal settings of the module,",
-      "keywords": "$auth $authenticated $authenticationfailure $currentuser $notloggedin $registered $sessionend $statechangeunauthenticated $statechangeunauthorized $user accept access account active add allowedorigins allows angular api application attempts auth_service_name authenticated authentication authentication_endpoint authentication_failure_event_name authentication_success_event_name backend base behaviour block browser change_password_endpoint changes config configure constant consume content control cookie cookies create created credentials current_user_uri currently data default delete delivered destroy_session_endpoint directive domain email email_verification_endpoint endpoint endpoint_prefix endpoints event events express fetch fired forgot_password_endpoint form form_content_type format forward get_user_event group http inject internal invalid json logged login logs meet methods_create methods_get methods_passwordresetrequest methods_resetpassword methods_verify methods_verifypasswordresettoken modified module mozilla myapp mydomain names not_logged_in_event object omit org password passwordresetrequest port post posts prefix properties property register_uri registered_event_name rejected relate request requests requires reset resetpassword resolved respond router rule running sdk server service session session_end_event settings slash splogout sptoken state_change_unauthenticated state_change_unauthorized stormpath stormpath_config submitting token tokens trailing trigger type ui unauthorized uri url user username users userservice verification verify verifying verifypasswordresettoken visit xsrf"
+      "keywords": "$auth $authenticated $authenticationfailure $currentuser $notloggedin $registered $sessionend $sociallogin $statechangeunauthenticated $statechangeunauthorized $user accept access account active add allowedorigins allows angular api app application attempts auth_service_name authenticated authentication authentication_endpoint authentication_failure_event_name authentication_success_event_name backend base behaviour block browser change_password_endpoint changes config configuration configure constant consume content control cookie cookies create created credentials current_user_uri currently data default delete delivered destroy_session_endpoint directive domain email email_verification_endpoint endpoint endpoint_prefix endpoints event events example express fetch fired forgot_password_endpoint form form_content_type format forward get_user_event getproviders group http inject internal invalid json list logged login logs meet methods_create methods_get methods_passwordresetrequest methods_resetpassword methods_verify methods_verifypasswordresettoken modified module mozilla myapp mydomain names not_logged_in_event object omit org password passwordresetrequest port post posts prefix properties property providers register_uri registered_event_name rejected relate request requests requires reset resetpassword resolved respond router rule running sdk server service session session_end_event settings slash social social_login_service_name socialloginservice spa_config_endpoint splogout sptoken state_change_unauthenticated state_change_unauthorized stormpath stormpath_config submitting token tokens trailing trigger type ui unauthorized uri url user username users userservice verification verify verifying verifypasswordresettoken visit xsrf"
     },
     {
       "section": "api",

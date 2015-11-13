@@ -85,7 +85,7 @@
 <li class="toctree-l2"><a class="reference internal" href="protect_api.html#reload-the-app">Reload the App</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="configure_angular.html">Configure the Angular App</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="configure_angular.html">Configure the Angular Application</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="configure_angular.html#add-stormpath-to-the-angular-application">Add Stormpath to the Angular Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configure_angular.html#configure-the-ui-router-integration">Configure the UI Router Integration</a></li>
 </ul>
@@ -126,6 +126,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="access_control.html">Access Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="access_control.html#server-configuration">Server Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="access_control.html#ui-state-control">UI State Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="access_control.html#helper-directives">Helper Directives</a></li>
 <li class="toctree-l2"><a class="reference internal" href="access_control.html#api-security">API Security</a></li>
@@ -175,16 +176,16 @@
 <p>This part of the guide will walk you through the creation of an AngularJS
 project from scratch.  We will use <a class="reference external" href="http://gruntjs.com/">Grunt</a> as a build tool, and <a class="reference external" href="http://yeoman.io/">Yeoman</a> as
 a scaffolding tool.</p>
-<p>We will use <a class="reference external" href="http://nodejs.org/">Node.JS</a> as our backend server, with the Stormpath Express SDK.</p>
+<p>We will use <a class="reference external" href="http://nodejs.org/">Node.JS</a> as our backend server with the Stormpath Express SDK.</p>
 <div class="section" id="installing-node-grunt-bower-and-yeoman">
 <h2>Installing Node, Grunt, Bower and Yeoman<a class="headerlink" href="#installing-node-grunt-bower-and-yeoman" title="Permalink to this headline">¶</a></h2>
-<p>If you haven&#8217;t installed Node.js on your system you can get it from <a class="reference external" href="https://nodejs.org">https://nodejs.org</a>.</p>
+<p>If you haven&#8217;t installed Node.js on your system, you can download it at <a class="reference external" href="https://nodejs.org">https://nodejs.org</a>.</p>
 <p>Then you need to install <a class="reference external" href="http://gruntjs.com/">Grunt</a>, a tool for helping you build your
 project.  This must be installed as a global npm package:</p>
 <div class="highlight-js"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">npm</span> <span class="nx">install</span> <span class="o">-</span><span class="nx">g</span> <span class="nx">grunt</span><span class="o">-</span><span class="nx">cli</span>
 </pre></div>
 </div>
-<p>The next tool you need is <a class="reference external" href="http://yeoman.io/">Yeoman</a>, a is a &#8220;scaffolding&#8221; tool (it makes it easy to create
+<p>The next tool you need is <a class="reference external" href="http://yeoman.io/">Yeoman</a>, a &#8220;scaffolding&#8221; tool (it makes it easy to create
 repeatable boilerplate code).  This must also be installed as a global NPM package:</p>
 <div class="highlight-js"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">npm</span> <span class="nx">install</span> <span class="o">-</span><span class="nx">g</span> <span class="nx">yo</span>
 </pre></div>
@@ -197,8 +198,8 @@ repeatable boilerplate code).  This must also be installed as a global NPM packa
 <div class="section" id="create-an-angular-fullstack-project">
 <h2>Create an Angular-Fullstack Project<a class="headerlink" href="#create-an-angular-fullstack-project" title="Permalink to this headline">¶</a></h2>
 <p>We are going to use the <a class="reference external" href="https://github.com/DaftMonk/generator-angular-fullstack">Angular Fullstack Generator</a>.
-It&#8217;s going to create a LOT of files for us; essentially, our entire development environment
-and the seed files for the client AND server.  This is really amazing!</p>
+It&#8217;s going to create _**a lot**_ of files for us; essentially, our entire development environment
+and the seed files for the client and the server.  This is really amazing!</p>
 <p>To use the generator, you need to first install it as a global node module:</p>
 <div class="highlight-js"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">npm</span> <span class="nx">install</span> <span class="o">-</span><span class="nx">g</span> <span class="nx">generator</span><span class="o">-</span><span class="nx">angular</span><span class="o">-</span><span class="nx">fullstack</span>
 </pre></div>
@@ -231,11 +232,11 @@ Here are the choices that we made:</p>
 ? Would you like to use mongoDB with Mongoose for data modeling? No
 </pre></div>
 </div>
-<p>Assuming everything installs OK, you should now have the default project ready to go.  Use this grunt command to start the development server and see the application:</p>
+<p>Assuming everything installs OK, you should now have the default project ready to go.  Use this grunt command to start the development server and view the application:</p>
 <div class="highlight-js"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">grunt</span> <span class="nx">serve</span>
 </pre></div>
 </div>
-<p>It should automatically open this page in your browser:</p>
+<p>It should automatically open the following page in your browser:</p>
 <img alt="_images/fullstack-new-project.png" src="_images/fullstack-new-project.png" />
 </div>
 <div class="section" id="install-the-stormpath-packages">
@@ -251,20 +252,20 @@ Because the Angular SDK is a front-end application, it is managed with <a class=
 <div class="section" id="upgrade-express">
 <h2>Upgrade Express<a class="headerlink" href="#upgrade-express" title="Permalink to this headline">¶</a></h2>
 <p>We also want to make sure that we are using the latest version of Express. Run
-this command to get the latest:</p>
+the following command to get the latest:</p>
 <div class="highlight-js"><div class="highlight"><pre>$ npm i express@latest --save
 </pre></div>
 </div>
-<p>In the next section, we will get your Stormpath Tenant information, so that we can
+<p>In the next section, we will get your Stormpath Tenant information so that we can
 continue with the latter sections.</p>
 </div>
 <div class="section" id="git-tracking">
 <h2>Git Tracking<a class="headerlink" href="#git-tracking" title="Permalink to this headline">¶</a></h2>
 <p>Now would be a good time to start using Git with your project. You can
-stop the server by pressing <tt class="docutils literal"><span class="pre">Ctrl+C</span></tt> - then use these git commands:</p>
+stop the server by pressing <tt class="docutils literal"><span class="pre">Ctrl+C</span></tt> then use the following git commands:</p>
 <div class="highlight-js"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">git</span> <span class="nx">init</span>
 <span class="nx">$</span> <span class="nx">git</span> <span class="nx">add</span> <span class="p">.</span>
-<span class="nx">$</span> <span class="nx">git</span> <span class="nx">commit</span> <span class="o">-</span><span class="nx">m</span> <span class="s2">&quot;Begin dasbhoard app project&quot;</span>
+<span class="nx">$</span> <span class="nx">git</span> <span class="nx">commit</span> <span class="o">-</span><span class="nx">m</span> <span class="s2">&quot;Begin dashboard app project&quot;</span>
 </pre></div>
 </div>
 </div>
