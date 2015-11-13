@@ -2959,7 +2959,6 @@ String organizationHref = organization.getHref();
 
 If you only know a small part of the name, you can use the `containsIgnoreCase` method (e.g., Organizations.name().`containsIgnoreCase("Finance")`) to narrow down the selection.
 
-
 ### Create an Organization
 
 For an organization to be an `Account Store` for an application, you must first create it in Stormpath.  The new `Organization` will be a resource within your Stormpath `Tenant`.
