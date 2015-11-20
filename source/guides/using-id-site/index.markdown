@@ -176,7 +176,7 @@ A typical set of steps in your application are as follows:
 To build an ID Site URL for redirection, you must ask the Stormpath `Application` object for an `ID Site URL Builder`.  From the builder, you can set important properties to pass information and make sure the ID Site can call back to your application.
 
 To get an `ID Site URL Builder`:
-{% codetab id:id-site-builder langs:java node python%}
+{% codetab id:id-site-builder langs:java node python php%}
 ------
 Application application = client.getResource(applicationRestUrl, Application.class);
 
@@ -189,6 +189,12 @@ client.getApplication(applicationRestUrl, function(err, application) {
 });
 ------
 url = app.build_id_site_redirect_url("https://www.mysite.com/dashboard")
+------
+$application = \Stormpath\Resource\Application::get($applicationHref);
+
+$application->createIdSiteUrl([
+    'callbackUri' => 'https://trooperapp.com/callback'
+]);
 ------
 {% endcodetab %}
 
@@ -233,7 +239,7 @@ To demonstrate how the SDK works, we’ll use an example. Imagine you are  build
 Once the user has logged in, created an account, or verified an account, the ID Site will redirect the user along with a security assertion back to your application.  ID Site will use the `Callback URI` you included when you first redirected the user to ID Site.  The Stormpath SDK will verify the cryptographic signature on the assertion and and unpacks the user information. 
 
 For example:
-{% codetab id:handle-response langs:java node python%}
+{% codetab id:handle-response langs:java node python php%}
 ------
 public void dashboard(HttpServletRequest request, HttpServletResponse response) {
      Application application = client.getResource(applicationRestUrl, Application.class);
@@ -259,6 +265,11 @@ if result is not None:
     print result.account
     print result.account.is_new_account # if the user came to the callback uri from the register screen
     print result.state # if any state was set during the creation of the redirect URI
+    
+------
+$response = $application->handleIdSiteCallback($requestUri);
+
+$account = $response->account;
 ------
 {% endcodetab %}
 
@@ -307,7 +318,7 @@ To show how you would configure a couple application for SSO, let's use two samp
 
 To get a user from `trooperapp.com` to `darksidecentral.com`, we can use the `ID Site URL Builder`
 
-{% codetab id:id-site-builder langs:java node python%}
+{% codetab id:id-site-builder langs:java node python php%}
 ------
 Application application = client.getResource(trooperAppStormpathHref, Application.class);
 
@@ -323,6 +334,12 @@ client.getApplication(trooperAppStormpathHref, function(err, application) {
 ------
 url = app.build_id_site_redirect_url("http://darksidecentral.com/id-site-sso")
 ------
+$application = \Stormpath\Resource\Application::get($applicationHref);
+
+$application->createIdSiteUrl([
+    'callbackUri' => 'http://darksidecentral.com/id-site-sso'
+]);
+------
 {% endcodetab %}
 
 When redirecting the user to the URL that the `ID Site URL Builder` generates, the user if the user has a valid session based on the `Session Max Age` and `Session Idle Time`, they will be automatically redirected to the callbackUri, which is `http://darksidecentral.com/id-site-sso`.  Darksidecentral can then use the [Stormpath SDK to consume the response](#consuming-responses-from-the-id-site-to-your-application) from the ID Site to get the authenticated account and its properties.
@@ -331,7 +348,7 @@ When redirecting the user to the URL that the `ID Site URL Builder` generates, t
 
 Since ID Site keeps a session for a user if the `Session Max Age` and `Session Idle Time` is configured, ID Site also gives you the ability to log the user out.  This will ultimately remove the session from ID Site.  
 
-{% codetab id:id-site-builder langs:java node python%}
+{% codetab id:id-site-builder langs:java node python php%}
 ------
 Application application = client.getResource(trooperAppStormpathHref, Application.class);
 
@@ -348,6 +365,13 @@ client.getApplication(trooperAppStormpathHref, function(err, application) {
 });
 ------
 url = application.build_id_site_redirect_url(callback_uri='http://darksidecentral.com/id-site-callback', logout=True)
+------
+$application = \Stormpath\Resource\Application::get($applicationHref);
+
+$application->createIdSiteUrl([
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'logout' => true
+]);
 ------
 {% endcodetab %}
 
@@ -391,9 +415,9 @@ application.createIdSiteUrl({
 });
 ------
 $application->createIdSiteUrl([
-    'callbackUri': 'https://trooperapp.com/callback',
-    'organizationNameKey': 'stormtrooper',
-    'showOrganizationField': true
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'organizationNameKey' => 'stormtrooper',
+    'showOrganizationField' => true
 ]);
 ------
 {% endcodetab %}
@@ -421,8 +445,8 @@ application.createIdSiteUrl({
 });
 ------
 $application->createIdSiteUrl([
-    'callbackUri': 'https://trooperapp.com/callback',
-    'showOrganizationField': true
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'showOrganizationField' => true
 ]);
 ------
 {% endcodetab %}
@@ -446,9 +470,9 @@ application.createIdSiteUrl({
 });
 ------
 $application->createIdSiteUrl([
-    'callbackUri': 'https://trooperapp.com/callback',
-    'organizationNameKey': 'stormtrooper',
-    'useSubDomain': true
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'organizationNameKey' => 'stormtrooper',
+    'useSubDomain' => true
 ]);
 ------
 {% endcodetab %}
