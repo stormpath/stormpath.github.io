@@ -29,7 +29,7 @@
 
   
     <link rel="top" title="Stormpath AngularJS + Yeoman Guide 0.0.2 documentation" href="index.html"/>
-        <link rel="next" title="Configure the Angular App" href="configure_angular.html"/>
+        <link rel="next" title="Configure the Angular Application" href="configure_angular.html"/>
         <link rel="prev" title="Create a Stormpath Tenant" href="create_tenant.html"/> 
 
   
@@ -85,7 +85,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#reload-the-app">Reload the App</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="configure_angular.html">Configure the Angular App</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="configure_angular.html">Configure the Angular Application</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="configure_angular.html#add-stormpath-to-the-angular-application">Add Stormpath to the Angular Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configure_angular.html#configure-the-ui-router-integration">Configure the UI Router Integration</a></li>
 </ul>
@@ -126,6 +126,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="access_control.html">Access Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="access_control.html#server-configuration">Server Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="access_control.html#ui-state-control">UI State Control</a></li>
 <li class="toctree-l2"><a class="reference internal" href="access_control.html#helper-directives">Helper Directives</a></li>
 <li class="toctree-l2"><a class="reference internal" href="access_control.html#api-security">API Security</a></li>
@@ -173,7 +174,7 @@
   <div class="section" id="configure-the-server">
 <span id="protect-api"></span><h1>Configure the Server<a class="headerlink" href="#configure-the-server" title="Permalink to this headline">¶</a></h1>
 <p>In the previous section, <a class="reference internal" href="create_new_project.html#create-new-project"><em>Creating a Fullstack Project</em></a>, we created a simple
-Express.js and installed the <a class="reference external" href="https://github.com/stormpath/express-stormpath">Stormpath Express Module</a>.  We are going to use that
+Express.js server and installed the <a class="reference external" href="https://github.com/stormpath/express-stormpath">Stormpath Express Module</a>.  We are going to use that
 SDK to secure the API endpoints in the Express server.</p>
 <div class="section" id="setting-environment-variables">
 <h2>Setting Environment Variables<a class="headerlink" href="#setting-environment-variables" title="Permalink to this headline">¶</a></h2>
@@ -198,21 +199,21 @@ or <tt class="docutils literal"><span class="pre">set</span></tt> commands in yo
 <div class="section" id="require-the-stormpath-module">
 <h2>Require the Stormpath Module<a class="headerlink" href="#require-the-stormpath-module" title="Permalink to this headline">¶</a></h2>
 <p>Open the file <tt class="docutils literal"><span class="pre">server/app.js</span></tt>.  This file is the entry point for our API
-server, it will run the server.</p>
+server and it will run the server.</p>
 <p>We want to initialize the Stormpath middleware and add it before our API
-declaration, so that the API will be automatically protected.</p>
-<p>First things first, you need to require the SDK - place this at the top of the
-file, under the other require statements:</p>
+declaration so that the API will be automatically protected.</p>
+<p>First things first, you need to require the SDK; place the following at the top of the
+file under the other require statements:</p>
 <div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ExpressStormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>We&#8217;re also going to use the <tt class="docutils literal"><span class="pre">path</span></tt>, so you should require that as well:</p>
+<p>We&#8217;re also going to use the <tt class="docutils literal"><span class="pre">path</span></tt>, so you should require the following as well:</p>
 <div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Then you want to create an instance of the Stormpath middleware.  You can pass
+<p>Then you want to create an instance of the Stormpath middleware.  You can pass in
 options, but in our case, we are just going to make a simple call and use all
-the default options.  Add this line after the <tt class="docutils literal"><span class="pre">var</span> <span class="pre">app</span> <span class="pre">=</span> <span class="pre">express();</span></tt> statement:</p>
+the default options.  Add the following after the <tt class="docutils literal"><span class="pre">var</span> <span class="pre">app</span> <span class="pre">=</span> <span class="pre">express();</span></tt> statement:</p>
 <div class="highlight-js"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">ExpressStormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,{</span>
   <span class="nx">website</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
   <span class="nx">web</span><span class="o">:</span> <span class="p">{</span>
@@ -221,14 +222,14 @@ the default options.  Add this line after the <tt class="docutils literal"><span
 <span class="p">}));</span>
 </pre></div>
 </div>
-<p>That block of code will attach Stormpath to your Express application, and let
+<p>This block of code will attach Stormpath to your Express application, and let
 Stormpath know where the root of your Angular application is (the folder
 where all of the Angular assets live).</p>
 <p>We also need to instruct Express to wait for Stormpath to be initialized.  Our
 module makes several requests to our API in order to fetch the information that
-it needs to correctly configure your Express application.  Find
+it needs to correctly configure your Express application.  Find the
 <tt class="docutils literal"><span class="pre">server.listen</span></tt> statement at the end of the file, and wrap it in an event
-handler for <tt class="docutils literal"><span class="pre">stormpath.ready</span></tt>, like so:</p>
+handler for <tt class="docutils literal"><span class="pre">stormpath.ready</span></tt> like so:</p>
 <div class="highlight-js"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;stormpath.ready&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
   <span class="c1">// Start server</span>
   <span class="nx">server</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">port</span><span class="p">,</span> <span class="nx">config</span><span class="p">.</span><span class="nx">ip</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
@@ -242,7 +243,7 @@ handler for <tt class="docutils literal"><span class="pre">stormpath.ready</span
 <h2>Protect Your API Routes<a class="headerlink" href="#protect-your-api-routes" title="Permalink to this headline">¶</a></h2>
 <p>Open the file <tt class="docutils literal"><span class="pre">server/routes.js</span></tt>. This file is attaching some routes to the
 Express application that is setup in <tt class="docutils literal"><span class="pre">server/app.js</span></tt>.  You&#8217;ll want to require
-<tt class="docutils literal"><span class="pre">express-stormpath</span></tt> again, and then use it to secure your API:</p>
+<tt class="docutils literal"><span class="pre">express-stormpath</span></tt> again and then use it to secure your API:</p>
 <div class="highlight-js"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ExpressStormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
 
 <span class="c1">// ..</span>
@@ -254,8 +255,8 @@ Express application that is setup in <tt class="docutils literal"><span class="p
 <div class="section" id="reload-the-app">
 <h2>Reload the App<a class="headerlink" href="#reload-the-app" title="Permalink to this headline">¶</a></h2>
 <p>Restart the server by running <tt class="docutils literal"><span class="pre">grunt</span> <span class="pre">serve</span></tt> again.  You should now see that
-the features are no longer listed - this is because the endpoint fails to load
-with a <tt class="docutils literal"><span class="pre">401</span> <span class="pre">Unauthorized</span></tt> - you can see this by looking inside the web console
+the features are no longer listed. This is because the endpoint fails to load
+with a <tt class="docutils literal"><span class="pre">401</span> <span class="pre">Unauthorized</span></tt>. You can see this by looking inside the web console
 in your browser:</p>
 <img alt="_images/features-unauthorized.png" src="_images/features-unauthorized.png" />
 <p>Our API is now protected from unauthorized, anonymous access.  In the next two
@@ -270,7 +271,7 @@ At that point, you will be able to login and have access to the API.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="configure_angular.html" class="btn btn-neutral float-right" title="Configure the Angular App">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="configure_angular.html" class="btn btn-neutral float-right" title="Configure the Angular Application">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="create_tenant.html" class="btn btn-neutral" title="Create a Stormpath Tenant"><span class="fa fa-arrow-circle-left"></span> Previous</a>

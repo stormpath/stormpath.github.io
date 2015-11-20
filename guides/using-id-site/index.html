@@ -674,11 +674,11 @@ Once your application receives the security assertion, your application will use
 <p>To get an <code>ID Site URL Builder</code>:</p>
 
 <div class="tabs"><ul><li><a href="#tabs-id-site-builder-java">java</a></li><li><a href="#tabs-id-site-builder-node">node</a></li><li><a href="#tabs-id-site-builder-python">python</a></li><li><a href="#tabs-id-site-builder-php">php</a></li></ul><div id="tabs-id-site-builder-java"><pre lang="java"><code>
-Application application = client.getResource(applicationHref, Application.class);
+Application application = client.getResource(applicationRestUrl, Application.class);
 
 IdSiteUrlBuilder idSiteBuilder = application.newIdSiteUrlBuilder();
 </code> </pre> </div><div id="tabs-id-site-builder-node"><pre lang="node"><code>
-client.getApplication(applicationHref, function(err, application) {
+client.getApplication(applicationRestUrl, function(err, application) {
   var url = application.createIdSiteUrl({
     callbackUri: 'https://www.mysite.com/dashboard'
   });
@@ -686,8 +686,11 @@ client.getApplication(applicationHref, function(err, application) {
 </code> </pre> </div><div id="tabs-id-site-builder-python"><pre lang="python"><code>
 url = app.build_id_site_redirect_url("https://www.mysite.com/dashboard")
 </code> </pre> </div><div id="tabs-id-site-builder-php"><pre lang="php"><code>
-$application = \Stormpath\Resource\Application::get(applicationHref);    
-$loginLink = $application->createIdSiteUrl(['callbackUri'=>'https://www.mysite.com/dashboard'])
+$application = \Stormpath\Resource\Application::get($applicationHref);
+
+$application->createIdSiteUrl([
+    'callbackUri' => 'https://trooperapp.com/callback'
+]);
 </code> </pre> </div></div>
 
 
@@ -772,8 +775,11 @@ if result is not None:
     print result.account
     print result.account.is_new_account # if the user came to the callback uri from the register screen
     print result.state # if any state was set during the creation of the redirect URI
+    
 </code> </pre> </div><div id="tabs-handle-response-php"><pre lang="php"><code>
-$response = $application->handleIdSiteCallback($_SERVER['REQUEST_URI']);    
+$response = $application->handleIdSiteCallback($requestUri);
+
+$account = $response->account;
 </code> </pre> </div></div>
 
 
@@ -885,8 +891,11 @@ client.getApplication(trooperAppStormpathHref, function(err, application) {
 </code> </pre> </div><div id="tabs-id-site-builder-python"><pre lang="python"><code>
 url = app.build_id_site_redirect_url("http://darksidecentral.com/id-site-sso")
 </code> </pre> </div><div id="tabs-id-site-builder-php"><pre lang="php"><code>
-$application = \Stormpath\Resource\Application::get(trooperAppStormpathHref);
-$loginLink = $application->createIdSiteUrl(['callbackUri'=>'http://darksidecentral.com/id-site-sso']);
+$application = \Stormpath\Resource\Application::get($applicationHref);
+
+$application->createIdSiteUrl([
+    'callbackUri' => 'http://darksidecentral.com/id-site-sso'
+]);
 </code> </pre> </div></div>
 
 
@@ -913,8 +922,12 @@ client.getApplication(trooperAppStormpathHref, function(err, application) {
 </code> </pre> </div><div id="tabs-id-site-builder-python"><pre lang="python"><code>
 url = application.build_id_site_redirect_url(callback_uri='http://darksidecentral.com/id-site-callback', logout=True)
 </code> </pre> </div><div id="tabs-id-site-builder-php"><pre lang="php"><code>
-$application = \Stormpath\Resource\Application::get(trooperAppStormpathHref);
-$logoutLink = $application->createIdSiteUrl(['logout'=>true, 'callbackUri'=>'http://darksidecentral.com/id-site-callback']);
+$application = \Stormpath\Resource\Application::get($applicationHref);
+
+$application->createIdSiteUrl([
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'logout' => true
+]);
 </code> </pre> </div></div>
 
 
@@ -966,9 +979,9 @@ application.createIdSiteUrl({
 });
 </code> </pre> </div><div id="tabs-id-site-specify-an-org-php"><pre lang="php"><code>
 $application->createIdSiteUrl([
-    'callbackUri': 'https://trooperapp.com/callback',
-    'organizationNameKey': 'stormtrooper',
-    'showOrganizationField': true
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'organizationNameKey' => 'stormtrooper',
+    'showOrganizationField' => true
 ]);
 </code> </pre> </div></div>
 
@@ -999,8 +1012,8 @@ application.createIdSiteUrl({
 });
 </code> </pre> </div><div id="tabs-allow-user-to-specify-org-php"><pre lang="php"><code>
 $application->createIdSiteUrl([
-    'callbackUri': 'https://trooperapp.com/callback',
-    'showOrganizationField': true
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'showOrganizationField' => true
 ]);
 </code> </pre> </div></div>
 
@@ -1025,9 +1038,9 @@ application.createIdSiteUrl({
 });
 </code> </pre> </div><div id="tabs-id-site-builder-php"><pre lang="php"><code>
 $application->createIdSiteUrl([
-    'callbackUri': 'https://trooperapp.com/callback',
-    'organizationNameKey': 'stormtrooper',
-    'useSubDomain': true
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'organizationNameKey' => 'stormtrooper',
+    'useSubDomain' => true
 ]);
 </code> </pre> </div></div>
 
@@ -1542,7 +1555,7 @@ Location: https://api.stormpath.com/sso/logout?jwtRequest=%GENERATED_JWT%
 
 <h2><a id="wrapping-up"></a>Wrapping up</h2>
 
-<p>In this guide, we discussed how to set up a Stormpath ID Site as well as how your application can leverage your ID Site to provide common application workflows around user login and registration. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#x69;&#x6c;&#x74;&#111;&#58;&#115;&#x75;&#x70;&#112;&#111;&#x72;&#116;&#x40;&#x73;&#116;&#111;&#x72;&#109;&#112;&#97;&#x74;&#104;&#x2e;&#x63;&#111;&#x6d;&#x2e;">&#115;&#117;&#112;&#112;&#x6f;&#x72;&#x74;&#x40;&#115;&#x74;&#111;&#x72;&#109;&#112;&#x61;&#116;&#104;&#46;&#99;&#111;&#x6d;&#46;</a></p>
+<p>In this guide, we discussed how to set up a Stormpath ID Site as well as how your application can leverage your ID Site to provide common application workflows around user login and registration. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#x73;&#117;&#112;&#x70;&#111;&#114;&#x74;&#64;&#x73;&#x74;&#111;&#x72;&#109;&#112;&#97;&#116;&#x68;&#x2e;&#99;&#x6f;&#x6d;&#x2e;">&#x73;&#x75;&#x70;&#112;&#x6f;&#x72;&#x74;&#x40;&#115;&#116;&#111;&#114;&#x6d;&#112;&#97;&#116;&#104;&#x2e;&#x63;&#111;&#109;&#46;</a></p>
 
             <div id="spread-word">
 <hr>
