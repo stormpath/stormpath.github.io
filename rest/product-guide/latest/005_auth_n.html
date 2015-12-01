@@ -1,0 +1,1092 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5. Authenticating Accounts with Stormpath &mdash; Stormpath 0.0.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+    <link rel="top" title="Stormpath 0.0.1 documentation" href="index.html"/>
+        <link rel="next" title="6. Authorization With Stormpath" href="006_auth_z.html"/>
+        <link rel="prev" title="4. Account Management" href="004_accnt_mgmt.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> Stormpath</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="001_about.html">1. About Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="001_about.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="001_about.html#the-stormpath-data-model">The Stormpath Data Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="002_setup.html">2. First-Time Set-Up</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="002_setup.html#a-sign-up-for-stormpath">a. Sign-up for Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="002_setup.html#b-create-an-api-key-pair">b. Create an API Key Pair</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="003_quickstart.html">3. Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#retrieve-your-application">Retrieve your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#create-a-user-account">Create a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#authenticate-a-user-account">Authenticate a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="004_accnt_mgmt.html">4. Account Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="004_accnt_mgmt.html#a-modeling-your-user-base">a. Modeling Your User Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="004_accnt_mgmt.html#b-how-to-store-accounts-in-stormpath">b. How to Store Accounts in Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="004_accnt_mgmt.html#c-how-to-search-accounts">c. How to Search Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="004_accnt_mgmt.html#d-how-to-manage-an-account-s-password">d. How to Manage an Account&#8217;s Password</a></li>
+<li class="toctree-l2"><a class="reference internal" href="004_accnt_mgmt.html#e-how-to-verify-an-account-s-email">e. How to Verify an Account&#8217;s Email</a></li>
+<li class="toctree-l2"><a class="reference internal" href="004_accnt_mgmt.html#f-customizing-stormpath-emails-via-rest">f. Customizing Stormpath Emails via REST</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">5. Authenticating Accounts with Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#a-how-password-authentication-works-in-stormpath">a. How Password Authentication Works in Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#b-how-token-based-authentication-works">b. How Token-Based Authentication Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#c-how-social-authentication-works">c. How Social Authentication Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#d-authenticating-against-a-mirrored-ldap-directory">d. Authenticating Against a Mirrored LDAP Directory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="006_auth_z.html">6. Authorization With Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="006_auth_z.html#a-what-is-authorization">a. What is Authorization?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="006_auth_z.html#b-modeling-authorization-in-stormpath">b. Modeling Authorization in Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="007_multitenancy.html">7. Multi-Tenancy with Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="007_multitenancy.html#a-what-is-a-multi-tenant-application">a. What Is a Multi-Tenant Application?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="007_multitenancy.html#b-modeling-tenants-in-stormpath">b. Modeling Tenants in Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="007_multitenancy.html#c-authenticating-an-account-against-an-organization">c. Authenticating an Account against an Organization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="008_idsite.html">8. Using ID Site</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="008_idsite.html#a-what-is-an-id-site">a. What is an ID Site?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="008_idsite.html#b-how-does-id-site-work">b. How does ID Site Work?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="008_idsite.html#c-id-site-set-up">c. ID Site Set Up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="008_idsite.html#using-id-site-without-an-sdk">Using ID Site Without an SDK</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">REST API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#rest-api-core-concepts">REST API Core Concepts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#tenant">Tenant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#application">Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#account-store-mapping">Account Store Mapping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#directory">Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#group">Group</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#group-membership">Group Membership</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#organization">Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#account">Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference.html#custom-data">Custom Data</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Stormpath</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>5. Authenticating Accounts with Stormpath</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/005_auth_n.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="authenticating-accounts-with-stormpath">
+<span id="authn"></span><h1>5. Authenticating Accounts with Stormpath<a class="headerlink" href="#authenticating-accounts-with-stormpath" title="Permalink to this headline">¶</a></h1>
+<p>Authentication is the process by which a system identifies that someone is who they say they are. Perhaps the most accessible example of this process is at the airport, where you must present your passport and your plane ticket. The passport is used to authenticate you, that you are who you present yourself to be, and the plane ticket represents your authorization to board a specific flight.</p>
+<p>In this chapter we will cover three of the ways that Stormpath allows you to authenticate users: <a class="reference internal" href="#password-authn"><span>password authentication</span></a>, <a class="reference internal" href="#token-authn"><span>token authentication</span></a>, and <a class="reference internal" href="#social-authn"><span>social authentication</span></a>.</p>
+<div class="section" id="a-how-password-authentication-works-in-stormpath">
+<span id="password-authn"></span><h2>a. How Password Authentication Works in Stormpath<a class="headerlink" href="#a-how-password-authentication-works-in-stormpath" title="Permalink to this headline">¶</a></h2>
+<p>Probably the single most common way of authenticating a user is to ask them for their account credentials. When a user creates an account in Stormpath, it is required that they provide a username (or email) and a password. Those credentials can then be provided in order to authenticate an account.</p>
+<div class="section" id="authenticating-an-account">
+<h3>Authenticating An Account<a class="headerlink" href="#authenticating-an-account" title="Permalink to this headline">¶</a></h3>
+<p>After an Account resource has been created, you can authenticate it given an input of a <code class="docutils literal"><span class="pre">username</span></code> or <code class="docutils literal"><span class="pre">email</span></code> and a <code class="docutils literal"><span class="pre">password</span></code> from the end-user. When authentication occurs, you are authenticating an Account within a specific Application against that Application’s Organizations, Directories and Groups (more on that <a class="reference internal" href="#how-login-works"><span>below</span></a>). The key point is that the <a class="reference internal" href="reference.html#ref-application"><span>Application resource</span></a> is the starting point for authentication attempts.</p>
+<p>Once you have the Application resource you may attempt authentication by sending a POST request to the Application’s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint and providing a base64 encoded <code class="docutils literal"><span class="pre">username</span></code>/<code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code> pair that is separated with a colon (for example <code class="docutils literal"><span class="pre">testuser</span></code>:<code class="docutils literal"><span class="pre">testpassword</span></code>). Stormpath requires that the <code class="docutils literal"><span class="pre">username</span></code>/<code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code> are base64 encoded so that these values are not passed as clear text. For more information about the <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint please see the <a class="reference internal" href="reference.html#ref-loginattempts"><span>Reference Chapter</span></a>.</p>
+<p>So, if we had a user Account &#8220;Han Solo&#8221; in the &#8220;Captains&#8221; Directory, and we wanted to log him in, we would first need to take the combination of his <code class="docutils literal"><span class="pre">username</span></code> and <code class="docutils literal"><span class="pre">password</span></code> (&#8220;first2shoot:Change+me1&#8221;) and then Base64 encode them: <code class="docutils literal"><span class="pre">Zmlyc3Qyc2hvb3Q6Q2hhbmdlK21lMQ==</span></code>.</p>
+<p>We would issue the following POST to our Application with ID <code class="docutils literal"><span class="pre">1gk4Dxzi6o4PbdleXaMPLE</span></code>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4PbdleXaMPLE/loginAttempts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;basic&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Zmlyc3Qyc2hvb3Q6Q2hhbmdlK21lMQ==&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
+         <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/2SKhstu8Plaekcai8lghrp&quot;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We are using the Base64 encoded <code class="docutils literal"><span class="pre">value</span></code> from above, and specifying that the Account can be found in the &#8220;Captains&#8221; Directory from <a class="reference internal" href="004_accnt_mgmt.html#about-cloud-dir"><span>earlier</span></a>.</p>
+<p>On success we would get back the <code class="docutils literal"><span class="pre">href</span></code> for the &#8220;Han Solo&#8221; Account:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/accounts/72EaYgOaq8lwTFHILydAid</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/72EaYgOaq8lwTFHILydAid&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The reason this succeeds is because there is an existing <strong>Account Store Mapping</strong> between the &#8220;Han Solo&#8221; Account&#8217;s &#8220;Captains&#8221; Directory and our Application. This mapping is what allows this Account to log in to the Application.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Instead of just receiving an Account&#8217;s <code class="docutils literal"><span class="pre">href</span></code> after successful authentication, it is possible to receive the full Account resource in the JSON response body. To do this, simply add the <strong>expand=account</strong> parameter to the end of your authentication query:</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/loginAttempts?expand=account</span></code></div></blockquote>
+<p class="last">For more information about link expansion, please see <a class="reference internal" href="reference.html#about-links"><span>the Reference chapter</span></a>.</p>
+</div>
+<div class="section" id="how-login-attempts-work-in-stormpath">
+<span id="how-login-works"></span><h4>How Login Attempts Work in Stormpath<a class="headerlink" href="#how-login-attempts-work-in-stormpath" title="Permalink to this headline">¶</a></h4>
+<p>When the &#8220;Han Solo&#8221; Account tries to log in to the Application, the user submits a request to the Application’s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint. Stormpath then consults the Application’s assigned <strong>Account Stores</strong> (Organizations, Directories, and Groups) in the order that they are assigned to the Application. When a matching Account is discovered in a mapped Account Store, it is used to verify the authentication attempt and all subsequent Account Stores are ignored. In other words, Accounts are matched for Application login based on a &#8220;first match wins&#8221; policy.</p>
+<p>Let&#8217;s look at an example to illustrate this behavior. Assume that two Account Stores, a &#8220;Customers&#8221; Directory and an &#8220;Employees&#8221; Directory, have been assigned (mapped) to a &#8220;Foo&#8221; application. &#8220;Customers&#8221; was assigned first, and &#8220;Employees&#8221; was assigned next, and this will dictate the order in which they are checked.</p>
+<p>The following flow chart shows what happens when an Account attempts to log in to the Foo application:</p>
+<div class="figure align-center" id="id1">
+<a class="reference internal image-reference" href="_images/LoginAttemptFlow.png"><img alt="Login Attempt Flow" src="_images/LoginAttemptFlow.png" /></a>
+<p class="caption"><span class="caption-text"><em>The Login Attempt Flow</em></span></p>
+</div>
+<p>As you can see, Stormpath tries to find the Account in the &#8220;Customers&#8221; Directory first because it has a higher priority than the &#8220;Employees&#8221; directory. If not found, the &#8220;Employees&#8221; Directory is tried next as it has a lower priority.</p>
+<p>You can map multiple Account Stores to an Application, but only one is required to enable login for an Application. Mapping multiple Account Stores to an Application, as well as configuring their priority, allows you precise control over the Account populations that may log in to your Application.</p>
+</div>
+<div class="section" id="how-login-works-with-mirrored-and-social-directories">
+<span id="non-cloud-login"></span><h4>How Login Works with Mirrored and Social Directories<a class="headerlink" href="#how-login-works-with-mirrored-and-social-directories" title="Permalink to this headline">¶</a></h4>
+<p>For both <a class="reference internal" href="004_accnt_mgmt.html#about-mirror-dir"><span>Mirrored</span></a> and <a class="reference internal" href="004_accnt_mgmt.html#about-social-dir"><span>Social</span></a> Directories, Stormpath has a default behavior that links the Mirror/Social Directories with corresponding &#8220;master&#8221; Directories.</p>
+<p>The default Stormpath behavior is as a follows: a new user visits your site, and chooses something to log-in with their LDAP credentials, or social login like &#8220;Sign-in with Google&#8221;. Once they log in using their social or LDAP credentials, if it doesn&#8217;t already exist, a new user Account is created in your Mirror/Social Directory. After this Account is created, a search is performed inside the Application&#8217;s master Directory for their email address, to see if they already exist in there. If the user Account is already in the master Directory, no action is taken. If the user Account is not found, a new one is created in the master Directory, and populated with the information pulled from the Google account. The customData resource for that Account is then used to store an <code class="docutils literal"><span class="pre">href</span></code> link to their Account in the Mirror/Social Directory.</p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;accountLink&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3fLduLKlQu&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the user then chooses at some point to &#8220;Sign in with Facebook&#8221;, then a similar process will occur, but this time with a link created to the user Account in the Facebook Directory.</p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;accountLinks&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;Link1&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3fLduLKlQu&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;Link2&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/X3rjfa4Ljd&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;Link3&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/a05Ghpjd30&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This approach has two major benefits: It allows for a user to have one unified identity in your Application, regardless of how many social or LDAP identities they choose to log in with; this central identity can also be the central point that all authorization permissions (whether they be implicit or explicit) are then applied to.</p>
+</div>
+<div class="section" id="manage-who-can-log-into-your-application">
+<span id="managing-login"></span><h4>Manage Who Can Log Into Your Application<a class="headerlink" href="#manage-who-can-log-into-your-application" title="Permalink to this headline">¶</a></h4>
+<p>As is hopefully evident by now, controlling which Accounts can log in to your Application is largely a matter of manipulating the Application&#8217;s Account Store Mappings. For more detailed information about this resource, please see the <a class="reference internal" href="reference.html#ref-account-store-mapping"><span>Account Store Mapping</span></a> section of the Reference chapter.</p>
+<p>The reason why our user &#8220;Han Solo&#8221; was able to log in to our application is because the Application resource that represents our Application: <code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE</span></code>, and our &#8220;Captains&#8221; Directory: <code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp</span></code> are mapped to one another by an <strong>Account Store Mapping</strong>.</p>
+<p>We can find this Mapping by sending a <code class="docutils literal"><span class="pre">GET</span></code> to our Application&#8217;s <code class="docutils literal"><span class="pre">/accountStoreMappings</span></code> endpoint, which would yield the following response:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE/accountStoreMappings&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;offset&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="mi">25</span><span class="p">,</span>
+  <span class="nt">&quot;size&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;items&quot;</span><span class="p">:[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accountStoreMappings/5WKhSDXNR8Wiksjv808XHp&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;listIndex&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+      <span class="nt">&quot;isDefaultAccountStore&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+      <span class="nt">&quot;isDefaultGroupStore&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+      <span class="nt">&quot;application&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;accountStore&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Any new Accounts and Groups added to this Application via it&#8217;s <cite>/accounts</cite> and <cite>/groups</cite> endpoints will be added to this Directory by default, since <code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code> and <code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code> are both set to <code class="docutils literal"><span class="pre">true</span></code>.</p>
+</div>
+<div class="section" id="mapping-a-new-account-store">
+<span id="create-asm"></span><h5>Mapping a new Account Store<a class="headerlink" href="#mapping-a-new-account-store" title="Permalink to this headline">¶</a></h5>
+<p>We would now like to map a new Account Store that will have the following characteristics:</p>
+<ol class="arabic simple">
+<li>It will have the highest login priority. This means that it will be consulted first during <a class="reference internal" href="#how-login-works"><span>the login process</span></a>, before any other Account Stores.</li>
+<li>It will be the default Account Store for any new Accounts.</li>
+<li>It will be the default Group Store for any new Groups.</li>
+</ol>
+<p>To accomplish this, we will send a <code class="docutils literal"><span class="pre">POST</span></code>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">v1/accountStoreMappings</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;listIndex&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;isDefaultAccountStore&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;isDefaultGroupStore&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;application&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/2jw4Kslj97zYjYRXEh2KYf&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We are mapping the Application (id: <code class="docutils literal"><span class="pre">1gk4Dxzi6o4PbdleXaMPLE</span></code>) to a new Directory (id: <code class="docutils literal"><span class="pre">2jw4Kslj97zYjYRXEh2KYf</span></code>). Additionally, we are setting</p>
+<ol class="arabic simple">
+<li>the login priority to the highest priority, by sending a <code class="docutils literal"><span class="pre">listIndex</span></code> of <code class="docutils literal"><span class="pre">0</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code> to <code class="docutils literal"><span class="pre">true</span></code> and</li>
+<li><code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code> to <code class="docutils literal"><span class="pre">true</span></code> as well.</li>
+</ol>
+<p>So by sending a <code class="docutils literal"><span class="pre">POST</span></code> with these contents, we are able to create a new Account Store Mapping that supersedes the old one.</p>
+</div>
+<div class="section" id="updating-an-existing-account-store">
+<h5>Updating an Existing Account Store<a class="headerlink" href="#updating-an-existing-account-store" title="Permalink to this headline">¶</a></h5>
+<p>Updating an existing Account Store simply involves sending a <code class="docutils literal"><span class="pre">POST</span></code> to the <code class="docutils literal"><span class="pre">v1/accountStoreMappings/$ACCOUNT_STORE_MAPPING_ID</span></code> endpoint with the attributes that you would like to update.</p>
+<p><strong>Changing Login Priority</strong></p>
+<p>For example, if you want to update an existing Account Store to now have highest login priority, simple send a <code class="docutils literal"><span class="pre">POST</span></code> with &#8220;listIndex&#8221;: 0 in the body, and the accountStoreMapping resource will be updated. Additionally, all of the other Account Stores will have their <code class="docutils literal"><span class="pre">listIndex</span></code> incremented up by 1.</p>
+<p><strong>Changing the Default Account or Group Store</strong></p>
+<p>Sending <code class="docutils literal"><span class="pre">&quot;isDefaultAccountStore&quot;:</span> <span class="pre">true</span></code> and/or <code class="docutils literal"><span class="pre">&quot;isDefaultAccountStore&quot;:</span> <span class="pre">true</span></code> in the JSON body to a <code class="docutils literal"><span class="pre">v1/accountStoreMappings/$ACCOUNT_STORE_MAPPING_ID</span></code> endpoint would result in those values being updated on the target resource, and whichever resource had those values as <code class="docutils literal"><span class="pre">true</span></code> would have them changed to <code class="docutils literal"><span class="pre">false</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Setting an AccountStoreMapping’s <code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code> or <code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code> to <code class="docutils literal"><span class="pre">false</span></code> will <strong>not</strong> automatically set another AccountStoreMapping’s <code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code> or <code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code> to <code class="docutils literal"><span class="pre">true</span></code>. You are responsible for setting this yourself if you would like your Application to create new Accounts/Groups.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="b-how-token-based-authentication-works">
+<span id="token-authn"></span><h2>b. How Token-Based Authentication Works<a class="headerlink" href="#b-how-token-based-authentication-works" title="Permalink to this headline">¶</a></h2>
+<p>In this section, we will discuss how to use Stormpath to use Stormpath to generate and manage OAuth 2.0 Access Token.</p>
+<div class="section" id="introduction-to-token-based-authentication">
+<h3>Introduction to Token-Based Authentication<a class="headerlink" href="#introduction-to-token-based-authentication" title="Permalink to this headline">¶</a></h3>
+<p>Since HTTP is considered a stateless protocol, if your application authenticates a user for one HTTP request, a problem arises when the next request is sent and your application doesn&#8217;t know who the user is. This is why many applications today pass some information to tie the request to a user. Traditionally, this requires <strong>Server-based authentication</strong>, where state is stored on the server and only a session identifier is stored on the client.</p>
+<p><strong>Token-based authentication</strong> is a alternate, stateless strategy. With token-based authentication, you secure an application based on a security token that is generated for the user on authentication and then stored on the client-side. Token-based Authentication is all about removing the need to store information on the server while giving extra security to keep the token secure on the client. This helps you as a developer build stateless and scalable applications.</p>
+<p>Stormpath&#8217;s approach to token-based authentication has two elements: JSON Web Tokens (JWTs) for authentication, and OAuth 2.0 for authorization.</p>
+<div class="section" id="why-oauth-2-0">
+<h4>Why OAuth 2.0?<a class="headerlink" href="#why-oauth-2-0" title="Permalink to this headline">¶</a></h4>
+<p>OAuth 2.0 is an authorization framework and provides a protocol to interact with a service that can delegate authentication or provide authorization. Its primary advantage as a standard is its wide adoption rate across many mobile and web applications today. If you have ever logged-in to a website using Facebook or Google, you have used one of OAuth 2.0&#8217;s many authorization flows. You can read more about the different OAuth 2.0 authorization flows or grant types in depth on <a class="reference external" href="https://stormpath.com/blog/what-the-heck-is-oauth/">Stormpath’s blog</a>.</p>
+<p>Even though OAuth 2.0 has many authorization modes or &#8220;grant types&#8221;, Stormpath currently supports three of them:</p>
+<ul class="simple">
+<li><strong>Password Grant Type</strong>: Provides the ability to get an Access Token based on a login and password.</li>
+<li><strong>Refresh Grant Type</strong>: Provides the ability to generate another Access Token based on a special Refresh Token.</li>
+<li><strong>Client Credentials Grant Type</strong>: Provides the ability to exchange an API Key for the Access Token. This is supported through the API Key Management feature.</li>
+</ul>
+<p>To understand how to use Token-based Authentication, we need to talk about the different types of tokens that are available.</p>
+</div>
+<div class="section" id="what-tokens-are-available-for-token-based-authentication">
+<h4>What Tokens Are Available for Token-Based Authentication?<a class="headerlink" href="#what-tokens-are-available-for-token-based-authentication" title="Permalink to this headline">¶</a></h4>
+<p>For Token Based Authentication, there are a two different types of tokens that need to be managed. These are:</p>
+<ul class="simple">
+<li>Access Token</li>
+<li>Refresh Token</li>
+</ul>
+<p>The <strong>Access Token</strong> is what grants access to a protected resource. The Access Token that Stormpath generates for Accounts on authentication is a <strong>JSON Web Token</strong>, or JWT. The JWT has security built-in to make sure that the Access Token is not tampered with on the client, and is only valid for a specified duration.</p>
+<p>The <strong>Refresh Token</strong> is a special token that is used to generate additional Access Tokens. This allows you to have an short-lived Access Token without having to collect credentials every single time you need a new Access Token.</p>
+<p>When using OAuth 2.0, the Access Token and Refresh Token are returned in the same response during the token exchange, this is called an <strong>Access Token Response</strong>.</p>
+</div>
+</div>
+<div class="section" id="using-stormpath-for-token-based-authentication">
+<span id="token-authn-config"></span><h3>Using Stormpath for Token-Based Authentication<a class="headerlink" href="#using-stormpath-for-token-based-authentication" title="Permalink to this headline">¶</a></h3>
+<p>Stormpath can be used to generate, manage, check, and revoke both Access and Refresh Tokens. Before diving in, let&#8217;s talk about configuration.</p>
+<div class="section" id="configuring-token-based-authentication">
+<h4>Configuring Token-Based Authentication<a class="headerlink" href="#configuring-token-based-authentication" title="Permalink to this headline">¶</a></h4>
+<p>Stormpath is configurable so you can set the time to live (TTL) for both the Access and Refresh tokens. This is important for many applications because it gives the ability to define how the tokens expire. For example, you could decide that your application requires a user to log in daily, but the access should only live for 10 minutes. Or, you could decide that for your application, users should be able to stay logged-in for two months and the access token expires in an hour.</p>
+<p>Each Application resource in Stormpath has an associated <a class="reference internal" href="reference.html#ref-oauth-policy"><span>OAuth Policy resource</span></a> where the TTLs for a particular Application&#8217;s tokens are stored inside properties called <code class="docutils literal"><span class="pre">accessTokenTtl</span></code> and <code class="docutils literal"><span class="pre">refreshTokenTtl</span></code>:</p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;accessTokenTtl&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1H&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;refreshTokenTtl&quot;</span><span class="p">:</span> <span class="s2">&quot;P60D&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;comment&quot;</span><span class="p">:</span><span class="s2">&quot; // This JSON has been truncated for readability&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The values for both properties are stored as <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Durations</a>. By <strong>default</strong>, the TTL <code class="docutils literal"><span class="pre">duration</span></code> for the Access Token is 1 hour and the Refresh Token&#8217;s is 60 days, while the <strong>maximum</strong> <code class="docutils literal"><span class="pre">duration</span></code> is 180 days.</p>
+<p>If we wanted to change the TTL for the Access Token to 30 minutes and the Refresh Token to 7 days, we could simply make a POST request to the <code class="docutils literal"><span class="pre">/oAuthPolicies/$APPLICATION_ID</span></code> endpoint with the following payload:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;accessTokenTtl&quot;</span><span class="p">:</span> <span class="s2">&quot;PT30M&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;refreshTokenTtl&quot;</span><span class="p">:</span> <span class="s2">&quot;P7D&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>And we would get the following response:</p>
+<div class="highlight-HTTP"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;accessTokenTtl&quot;</span><span class="p">:</span> <span class="s2">&quot;PT30M&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;refreshTokenTtl&quot;</span><span class="p">:</span> <span class="s2">&quot;P7D&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;comment&quot;</span><span class="p">:</span><span class="s2">&quot; // This JSON has been truncated for readability&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Refresh Tokens are optional. If you would like to disable the Refresh Token from being generated, set a <code class="docutils literal"><span class="pre">duration</span></code> value of 0 (e.g. PT0M).</p>
+</div>
+</div>
+<div class="section" id="generating-an-oauth-2-0-access-token">
+<h4>Generating an OAuth 2.0 Access Token<a class="headerlink" href="#generating-an-oauth-2-0-access-token" title="Permalink to this headline">¶</a></h4>
+<p>Stormpath can generate Access Tokens using the above-mentioned OAuth 2.0 <strong>Password Grant</strong> flow. Stormpath exposes an endpoint for each Application resource to support the OAuth 2.0 protocol:</p>
+<div class="highlight-python"><div class="highlight"><pre>https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
+</pre></div>
+</div>
+<p>This endpoint is used to generate an OAuth token for any valid Account associated with the specified Application. It uses the same validation as the <code class="docutils literal"><span class="pre">/loginAttempt</span></code> endpoint, as described in <a class="reference internal" href="#how-login-works"><span>How Login Attempts Work in Stormpath</span></a>.</p>
+<p>Your application will act as a proxy to the Stormpath API. For example:</p>
+<ul class="simple">
+<li>The user inputs their credentials (e.g. <code class="docutils literal"><span class="pre">username</span></code> and <code class="docutils literal"><span class="pre">password</span></code>) into a form and submits them.</li>
+<li>Your application in turn takes the credentials and formulates the OAuth 2.0 Access Token request to Stormpath.</li>
+<li>When Stormpath returns with the Access Token Response, you can then return the Access Token and/or the Refresh Token to the client.</li>
+</ul>
+<p>So you would send the following API call:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+
+grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
+</pre></div>
+</div>
+<p>This would result in this response:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;access_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIxdkhJMGpCWERybW12UHFBRmYyWHNWIiwiaWF0IjoxNDQxMTE4Nzk2LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxMTIwNTk2LCJydGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2In0.xlCXL7UUVnMoBKj0p0bXM_cnraWo5Io-TvUt2WBOl3k&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;refresh_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2IiwiaWF0IjoxNDQxMTE4Nzk2LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxNzIzNTk2fQ.xUjcxTZhWx74aa6adnUXjuvUgqjC8TvvrB7cBEmNF_g&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;token_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;expires_in&quot;</span><span class="p">:</span> <span class="mi">1800</span><span class="p">,</span>
+  <span class="nt">&quot;stormpath_access_token_href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accessTokens/1vHI0jBXDrmmvPqAFf2XsV&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This is an <strong>OAuth 2.0 Access Token Response</strong> and includes the following:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="12%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>access_token</td>
+<td>String (JSON Web Token)</td>
+<td>The access token for the response.</td>
+</tr>
+<tr class="row-odd"><td>refresh_token</td>
+<td>String (JSON Web Token)</td>
+<td>The refresh token that can be used to get refreshed Access Tokens.</td>
+</tr>
+<tr class="row-even"><td>token_type</td>
+<td>String</td>
+<td>The type of token returned.</td>
+</tr>
+<tr class="row-odd"><td>expires_in</td>
+<td>Number</td>
+<td>The time in seconds before the token expires.</td>
+</tr>
+<tr class="row-even"><td>stormpath_access_token_href</td>
+<td>String</td>
+<td>The href location of the token in Stormpath.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Just like with logging-in a user, it is possible to generate a token against a particular Application&#8217;s Account Store resource. To do so, specify the Account Store&#8217;s <code class="docutils literal"><span class="pre">href</span></code> as a parameter in the body:</p>
+<div class="last highlight-python"><div class="highlight"><pre>grant_type=password&amp;username=tom@stormpath.com&amp;password=Secret1&amp;accountStore=https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="validating-an-access-token">
+<h4>Validating an Access Token<a class="headerlink" href="#validating-an-access-token" title="Permalink to this headline">¶</a></h4>
+<p>Once an <code class="docutils literal"><span class="pre">access_token</span></code> has been generated, we have taken care of the Authentication part of our workflow. Now, the OAuth token can be used to authorize individual requests that the user makes. To do this, the client will need to pass it to your application.</p>
+<p>For example, if you have a route <code class="docutils literal"><span class="pre">https://yourapplication.com/secure-resource</span></code>, the client would request authorization to access the resource by passing the access token as follows:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">https://yourapplication.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIxdkhJMGpCWERybW12UHFBRmYyWHNWIiwiaWF0IjoxNDQxMTE4Nzk2LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxMTIwNTk2LCJydGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2In0.xlCXL7UUVnMoBKj0p0bXM_cnraWo5Io-TvUt2WBOl3k</span>
+</pre></div>
+</div>
+<p>Once your application receives the request, the first thing to do is to validate the token, either using Stormpath, or using local application-side logic. The benefit of using Stormpath to validate the token through the REST API (or an SDK that is using the REST API) is that Stormpath can validate the token against the state of your Application and Account resources. To illustrate the difference:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="67%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Validation Criteria</th>
+<th class="head">Locally</th>
+<th class="head">Stormpath</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Token hasn&#8217;t been tampered with</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>Token hasn&#8217;t expired</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="row-even"><td>Token hasn&#8217;t been revoked</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>Account hasn&#8217;t been disabled or deleted</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr class="row-even"><td>Issuer is Stormpath</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="row-odd"><td>Issuing Application is still enabled, and hasn&#8217;t been deleted</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr class="row-even"><td>Account is still in an Account Store for the issuing Application</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p>It is up to you to determine which kind of validation is important for your application. If you need to validate the state of the Account and/or Application resources, or if you need to use token revocation, then using Stormpath to validate the token is the obvious choice. If you only require that the token has not expired and has not been tampered with, you can validate the token locally and minimize the network requests to Stormpath.</p>
+<div class="section" id="using-stormpath-to-validate-tokens">
+<span id="about-token-validation"></span><h5>Using Stormpath to Validate Tokens<a class="headerlink" href="#using-stormpath-to-validate-tokens" title="Permalink to this headline">¶</a></h5>
+<p>To see how to validate tokens with the Stormpath REST API, let&#8217;s go back to the example where a user has already generated an access token.</p>
+<p>To recap, we have done the following:</p>
+<ol class="arabic simple">
+<li>Sent a POST to <code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span></code> with a body that included information about the OAuth Grant Type we wanted, as well as our user&#8217;s username and password.</li>
+<li>Received back an <strong>Access Token Response</strong>, which contained - among other things - an <strong>Access Token</strong> in JWT format.</li>
+</ol>
+<p>The user now attempts to access a secured resource by passing the <code class="docutils literal"><span class="pre">access_token</span></code> JWT value from the Access Token Response in the <code class="docutils literal"><span class="pre">Authorization</span></code> header:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">https://yourapplication.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJraWQiOiIyWkZNVjRXV[...]</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">Authorization</span></code> header contains the Access Token. To validate this Token with Stormpath, you can issue an HTTP GET to your Stormpath Application’s <code class="docutils literal"><span class="pre">/authTokens/</span></code> endpoint with the JWT token:</p>
+<div class="highlight-python"><div class="highlight"><pre>https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/eyJraWQiOiIyWkZNVjRXV[...]
+</pre></div>
+</div>
+<p>If the access token can be validated, Stormpath will return a 302 to the Access Token resource:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Location Found</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/accessTokens/6zVrviSEIf26ggXdJG097f</span>
+</pre></div>
+</div>
+<p>With the confirmation that the token is valid, you can now allow the user access to the secured resource that they requested.</p>
+</div>
+<div class="section" id="validating-the-token-locally">
+<h5>Validating the Token Locally<a class="headerlink" href="#validating-the-token-locally" title="Permalink to this headline">¶</a></h5>
+<p>Local validation would also begin at the point of the request to a secure resource:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">https://yourapplication.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJraWQiOiIyWkZNVjRXV[...]</span>
+</pre></div>
+</div>
+<p>The token specified in the Authorization header has been digitally signed with the Stormpath API Key Secret that was used to generate the token. This means that you can use a JWT library for your specific language to validate the token locally if necessary. For more information, please see one of our <a class="reference external" href="https://docs.stormpath.com/home/">Integration Guides</a>.</p>
+</div>
+</div>
+<div class="section" id="refreshing-access-tokens">
+<h4>Refreshing Access Tokens<a class="headerlink" href="#refreshing-access-tokens" title="Permalink to this headline">¶</a></h4>
+<p>In the event that the Access Token expires, the user can generate a new one using the Refresh Token without re-entering their credentials. To use this Refresh Token, simply make an HTTP POST to your Applications <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint with it and you will get a new token back.</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+
+grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2IiwiaWF0IjoxNDQxMTE4Nzk2LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxNzIzNTk2fQ.xUjcxTZhWx74aa6adnUXjuvUgqjC8TvvrB7cBEmNF_g
+</pre></div>
+</div>
+<p>This would be the response:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+
+{
+  &quot;access_token&quot;: &quot;eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI2TnJXSXM1aWttSVBWSkNuMnA0bnJyIiwiaWF0IjoxNDQxMTMzNjQ1LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxMTM1NDQ1LCJydGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2In0.SbSmuPz0-v4J2BO9-lpyz_2_T62mSB1ql_0IMrftpgg&quot;,
+  &quot;refresh_token&quot;: &quot;eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2IiwiaWF0IjoxNDQxMTE4Nzk2LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxNzIzNTk2fQ.xUjcxTZhWx74aa6adnUXjuvUgqjC8TvvrB7cBEmNF_g&quot;,
+  &quot;token_type&quot;: &quot;Bearer&quot;,
+  &quot;expires_in&quot;: 1800,
+  &quot;stormpath_access_token_href&quot;: &quot;https://api.stormpath.com/v1/accessTokens/6NrWIs5ikmIPVJCn2p4nrr&quot;
+}
+</pre></div>
+</div>
+<p>Note that this response contains the same Refresh Token as was in the request. This is because when Stormpath generates a new Access Token for a Refresh Token it does not generate a new Refresh token, nor does it modify its expiration time. This means that once the Refresh Token expires, the user must authenticate again to get a new Access and Refresh Tokens.</p>
+</div>
+<div class="section" id="revoking-access-and-refresh-tokens">
+<h4>Revoking Access and Refresh Tokens<a class="headerlink" href="#revoking-access-and-refresh-tokens" title="Permalink to this headline">¶</a></h4>
+<p>There are cases where you might want to revoke the Access and Refresh Tokens that you have generated for a user. For example:</p>
+<ul class="simple">
+<li>The user has explicitly logged out, and your application needs to revoke their access, requiring re-authentication.</li>
+<li>The application, device, and/or client has been compromised and you need to revoke tokens for an Account.</li>
+</ul>
+<p>To revoke the tokens, simply delete the Account&#8217;s <code class="docutils literal"><span class="pre">/accessTokens/:accessTokenId</span></code> resource.</p>
+<p>To retrieve an Account&#8217;s Access and Refresh tokens, make an HTTP GET calls for the Account information, then you will find the tokens inside the <code class="docutils literal"><span class="pre">/accessTokens</span></code> and <code class="docutils literal"><span class="pre">/refreshTokens</span></code> collections:</p>
+<div class="highlight-json"><div class="highlight"><pre>{
+  &quot;href&quot;: &quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey&quot;,
+  &quot;username&quot;: &quot;jlpicard&quot;,
+
+  [...]
+
+  &quot;accessTokens&quot;: {
+    &quot;href&quot;: &quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/accessTokens&quot;
+  },
+  &quot;refreshTokens&quot;: {
+    &quot;href&quot;: &quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/refreshTokens&quot;
+  }
+}
+</pre></div>
+</div>
+<p>If you then perform a GET on the <code class="docutils literal"><span class="pre">accessTokens</span></code> link, you will get back the individual tokens:</p>
+<div class="highlight-json"><div class="highlight"><pre>{
+  &quot;href&quot;: &quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/accessTokens&quot;,
+  &quot;offset&quot;: 0,
+  &quot;limit&quot;: 25,
+  &quot;size&quot;: 1,
+  &quot;items&quot;: [
+    {
+      &quot;href&quot;: &quot;https://api.stormpath.com/v1/accessTokens/6NrWIs5ikmIPVJCn2p4nrr&quot;,
+      [...]
+    }
+  ]
+}
+</pre></div>
+</div>
+<p>To revoke the token, simply issue an HTTP Delete:</p>
+<div class="highlight-python"><div class="highlight"><pre>DELETE https://api.stormpath.com/v1/accessTokens/6NrWIs5ikmIPVJCn2p4nrr
+</pre></div>
+</div>
+<p>You will get back a <code class="docutils literal"><span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></code> response back from Stormpath when the call succeeds.</p>
+</div>
+</div>
+</div>
+<div class="section" id="c-how-social-authentication-works">
+<span id="social-authn"></span><h2>c. How Social Authentication Works<a class="headerlink" href="#c-how-social-authentication-works" title="Permalink to this headline">¶</a></h2>
+<p>Social authentication essentially means using the &#8220;Log in with x&#8221; button in your application, where &#8220;x&#8221; is a Social Login Provider of some kind. The Social Login Providers currently supported by Stormpath are:</p>
+<ul class="simple">
+<li>Google</li>
+<li>Facebook</li>
+<li>Github,</li>
+<li>LinkedIn</li>
+</ul>
+<p>In general, the social login process works as follows:</p>
+<ol class="arabic simple">
+<li>The user who wishes to authenticate will click a &#8220;Log in with x&#8221; link.</li>
+<li>The user will be asked by the Provider to accept the permissions required by your app.</li>
+<li>The Provider will return the user to your application with an access token.</li>
+<li>Stormpath will take this access token and use it to query the provider for:<ul>
+<li>an email address</li>
+<li>a first name</li>
+<li>a last name.</li>
+</ul>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If Stormpath is unable to retrieve the user&#8217;s first and last name, it will populate those attributes with a default value: <code class="docutils literal"><span class="pre">NOT_PROVIDED</span></code>.</p>
+</div>
+<ol class="arabic simple" start="5">
+<li>Stormpath will first search for a Directory that matches the provider of the access token. If one is not found, an error will return.</li>
+<li>Once the Directory is located, Stormpath will look for an Account in your application&#8217;s Directories that matches this information.<ol class="loweralpha">
+<li>If a matching Account is found, Stormpath will return the existing Account&#8217;s <code class="docutils literal"><span class="pre">href</span></code>.</li>
+<li>If a matching Account is not found, Stormpath will create one and return the new Account&#8217;s <code class="docutils literal"><span class="pre">href</span></code>.</li>
+</ol>
+</li>
+<li>At this point, a language/framework-specific integration would use this <code class="docutils literal"><span class="pre">href</span></code> to create a Session for the user.</li>
+</ol>
+<p>As a developer, integrating Social Login into your application with Stormpath only requires three steps:</p>
+<ol class="arabic simple">
+<li>Create a Social Directory for your Provider.</li>
+<li>Map the Directory as an Account Store to an Application resource. When an Account Store (in this case a Directory) is mapped to an Application, the Accounts in the AccountStore are considered the Application’s users and they can log in to it.</li>
+<li>Include the provider-specific logic that will access the social account (e.g. embed the appropriate link in your site that will send an authentication request to the social provider)</li>
+</ol>
+<div class="section" id="i-google">
+<h3>i. Google<a class="headerlink" href="#i-google" title="Permalink to this headline">¶</a></h3>
+<p>Before you integrate Google Login with Stormpath, you must complete the following steps:</p>
+<ul class="simple">
+<li>Create an application in the <a class="reference external" href="https://console.developers.google.com/start">Google Developer Console</a></li>
+<li>Enable Google Login for your Google application</li>
+<li>Retrieve the OAuth Credentials (Client ID and Secret) for your Google application</li>
+<li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Be sure to only enter the Redirect URL you are currently using. So, if you are running your app in development mode, set it to your local URL, and if you&#8217;re running your app in production mode, set it to your production URL.</p>
+</div>
+<p>For more information, please see the <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">Google OAuth 2.0 documentation</a>.</p>
+<div class="section" id="step-1-create-a-social-directory-for-google">
+<h4>Step 1: Create a Social Directory for Google<a class="headerlink" href="#step-1-create-a-social-directory-for-google" title="Permalink to this headline">¶</a></h4>
+<p>Creating this Directory for Google requires that you provide information from Google as a Provider resource. This can be accomplished by sending an HTTP POST:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;my-google-directory&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;A Google directory&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;provider&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;google&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;clientId&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_GOOGLE_CLIENT_ID&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_GOOGLE_CLIENT_SECRET&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;redirectUri&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_GOOGLE_REDIRECT_URI&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you are using <a class="reference external" href="https://developers.google.com/identity/sign-in/web/server-side-flow">Google+ Sign-In for server-side apps</a>, Google recommends that you leave the &#8220;Authorized Redirect URI&#8221; field blank in the Google Developer Console. In Stormpath, when creating the Google Directory, you must set the redirect URI to <code class="docutils literal"><span class="pre">postmessage</span></code>.</p>
+</div>
+</div>
+<div class="section" id="step-2-map-the-google-directory-as-an-account-store-for-your-application">
+<h4>Step 2: Map the Google Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-google-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<p>Creating an Account Store Mapping between your new Google Directory and your Stormpath Application can be done through the REST API, as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
+</div>
+<div class="section" id="step-3-access-an-account-with-google-tokens">
+<h4>Step 3: Access an Account with Google Tokens<a class="headerlink" href="#step-3-access-an-account-with-google-tokens" title="Permalink to this headline">¶</a></h4>
+<p>To access or create an Account in your new Google Directory, you must gather a Google <strong>Authorization Code</strong> on behalf of the user. This requires leveraging <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">Google’s OAuth 2.0 protocol</a> and the user’s consent for your application’s permissions.</p>
+<p>Generally, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the <strong>Authorization Code</strong> or <strong>Access Token</strong>. This is documented in detail here: <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2WebServer">Using OAuth 2.0 for Web Server Applications</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is required that your Google application requests the <code class="docutils literal"><span class="pre">email</span></code> scope from Google. If the authorization code or access token does not grant <code class="docutils literal"><span class="pre">email</span></code> scope, you will not be able to get an Account. For more information about scopes please see <a class="reference external" href="https://developers.google.com/+/web/api/rest/oauth#login-scopes">Google&#8217;s OAuth Login Scopes documentation</a>.</p>
+</div>
+<p>Once the Authorization Code is gathered, you send an HTTP POST:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;providerData&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;google&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;code&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_GOOGLE_AUTH_CODE&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If you have already exchanged an Authorization Code for an Access Token, this can be passed to Stormpath in a similar fashion:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;providerData&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;google&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;%ACCESS_TOKEN_FROM_GOOGLE%&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Either way, Stormpath will use the <code class="docutils literal"><span class="pre">code</span></code> or <code class="docutils literal"><span class="pre">accessToken</span></code> provided to retrieve information about your Google Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).</p>
+</div>
+</div>
+<div class="section" id="ii-facebook">
+<h3>ii. Facebook<a class="headerlink" href="#ii-facebook" title="Permalink to this headline">¶</a></h3>
+<p>Before you integrate Facebook Login with Stormpath, you must complete the following steps:</p>
+<ul class="simple">
+<li>Create an application on the <a class="reference external" href="https://developers.facebook.com/">Facebook Developer Site</a></li>
+<li>Retrieve your OAuth credentials (App ID and App Secret)</li>
+<li>Add your application&#8217;s private and public root URLs</li>
+</ul>
+<p>For more information, please see the <a class="reference external" href="https://developers.facebook.com/docs/apps/register">Facebook documentation</a>.</p>
+<div class="section" id="step-1-create-a-social-directory-for-facebook">
+<h4>Step 1: Create a Social Directory for Facebook<a class="headerlink" href="#step-1-create-a-social-directory-for-facebook" title="Permalink to this headline">¶</a></h4>
+<p>Creating this Directory requires that you provide information from Facebook as a Provider resource. This can be accomplished by sending an HTTP POST:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;my-facebook-directory&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;A Facebook directory&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;provider&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;facebook&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;clientId&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_FACEBOOK_APP_ID&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_FACEBOOK_APP_SECRET&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-map-the-facebook-directory-as-an-account-store-for-your-application">
+<h4>Step 2: Map the Facebook Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-facebook-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<p>Creating an Account Store Mapping between your new Facebook Directory and your Stormpath Application can be done through the REST API, as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
+</div>
+<div class="section" id="step-3-access-an-account-with-facebook-tokens">
+<h4>Step 3: Access an Account with Facebook Tokens<a class="headerlink" href="#step-3-access-an-account-with-facebook-tokens" title="Permalink to this headline">¶</a></h4>
+<p>To access or create an Account in your new Facebook Directory, you need to gather a <strong>User Access Token</strong> from Facebook before submitting it to Stormpath. This is possible either by using a <a class="reference external" href="https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens">Facebook SDK Library</a>, or <a class="reference external" href="https://developers.facebook.com/tools/explorer">Facebook’s Graph Explorer</a> for testing.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is required that your Facebook application requests the <code class="docutils literal"><span class="pre">email</span></code> scope from Facebook. If the access token does not grant <code class="docutils literal"><span class="pre">email</span></code> scope, you will not be able to get an Account with an access token. For more information about scopes please see <a class="reference external" href="https://developers.facebook.com/docs/facebook-login/permissions/">Permissions with Facebook Login</a>.</p>
+</div>
+<p>Once the User Access Token is gathered, you send an HTTP POST:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;providerData&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;facebook&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;USER_ACCESS_TOKEN_FROM_FACEBOOK&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Stormpath will use the <code class="docutils literal"><span class="pre">accessToken</span></code> provided to retrieve information about your Facebook Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).</p>
+</div>
+</div>
+<div class="section" id="iii-github">
+<h3>iii. Github<a class="headerlink" href="#iii-github" title="Permalink to this headline">¶</a></h3>
+<p>Before you integrate GitHub Login with Stormpath, you must complete the following steps:</p>
+<ul class="simple">
+<li>Create an application in the <a class="reference external" href="https://developer.github.com/">GitHub Developer Site</a></li>
+<li>Retrieve OAuth Credentials (Client ID and Secret) for your GitHub application</li>
+<li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication.</li>
+</ul>
+<p>For more information, please see the <a class="reference external" href="https://developer.github.com/guides/basics-of-authentication/#registering-your-app">GitHub documentation on registering your app</a>.</p>
+<div class="section" id="step-1-create-a-social-directory-for-github">
+<h4>Step 1: Create a Social Directory for GitHub<a class="headerlink" href="#step-1-create-a-social-directory-for-github" title="Permalink to this headline">¶</a></h4>
+<p>Creating this Directory requires that you provide information from GitHub as a Provider resource. This can be accomplished by sending an HTTP POST:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;my-github-directory&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;A GitHub directory&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;provider&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;github&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;clientId&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_GITHUB_CLIENT_ID&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_GITHUB_CLIENT_SECRET&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-map-the-github-directory-as-an-account-store-for-your-application">
+<h4>Step 2: Map the GitHub Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-github-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<p>Creating an Account Store Mapping between your new GitHub Directory and your Stormpath Application can be done through the REST API, as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
+</div>
+<div class="section" id="step-3-access-an-account-with-github-tokens">
+<h4>Step 3: Access an Account with GitHub Tokens<a class="headerlink" href="#step-3-access-an-account-with-github-tokens" title="Permalink to this headline">¶</a></h4>
+<p>To access or create an Account in your new Github Directory, you must gather a Github <strong>Authorization Code</strong> on behalf of the user. This requires leveraging <a class="reference external" href="https://developer.github.com/v3/oauth">Github&#8217;s OAuth 2.0 protocol</a> and the user’s consent for your application’s permissions.</p>
+<p>Generally, this will include embedding a link in your site that will send an authentication request to Github. Once the user has authenticated, Github will redirect the response to your application, including the <strong>Authorization Code</strong>. This is documented in detail <a class="reference external" href="https://developer.github.com/v3/oauth/#web-application-flow">here</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is required that your GitHub application requests the <code class="docutils literal"><span class="pre">user:email</span></code> scope from GitHub. If the access token does not grant <code class="docutils literal"><span class="pre">user:email</span></code> scope, you will not be able to get an Account with an access token. For more information about see <a class="reference external" href="https://developer.github.com/v3/oauth/#scopes">Github&#8217;s documentation on OAuth scopes</a>.</p>
+</div>
+<p>Once the Authorization Code is gathered, you can send an HTTP POST:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;providerData&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;github&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;code&quot;</span><span class="p">:</span> <span class="s2">&quot;AUTH_CODE_FROM_GITHUB&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Stormpath will use the <code class="docutils literal"><span class="pre">code</span></code> provided to retrieve information about your GitHub Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).</p>
+</div>
+</div>
+<div class="section" id="iv-linkedin">
+<h3>iv. LinkedIn<a class="headerlink" href="#iv-linkedin" title="Permalink to this headline">¶</a></h3>
+<p>Before you integrate LinkedIn Login with Stormpath, you must complete the following steps:</p>
+<ul class="simple">
+<li>Create an application in the <a class="reference external" href="https://www.linkedin.com/secure/developer?newapp=">LinkedIn Developer Site</a></li>
+<li>Add your application&#8217;s redirect URLs, which are the URL the user will be returned to after successful authentication.</li>
+<li>Retrieve OAuth Credentials (Client ID and Secret) for your LinkedIn application</li>
+</ul>
+<p>For more information, please see <a class="reference external" href="https://developer.linkedin.com/docs/oauth2">LinkedIn&#8217;s OAuth documentation</a>.</p>
+<div class="section" id="step-1-create-a-social-directory-for-linkedin">
+<h4>Step 1: Create a Social Directory for LinkedIn<a class="headerlink" href="#step-1-create-a-social-directory-for-linkedin" title="Permalink to this headline">¶</a></h4>
+<p>Creating this Directory requires that you provide information from LinkedIn as a Provider resource. This can be accomplished by sending an HTTP POST:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;my-linkedin-directory&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;A LinkedIn Directory&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;provider&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;linkedin&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;clientId&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_LINKEDIN_APP_ID&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span><span class="s2">&quot;YOUR_LINKEDIN_APP_SECRET&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-map-the-linkedin-directory-as-an-account-store-for-your-application">
+<h4>Step 2: Map the LinkedIn Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-linkedin-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<p>Creating an Account Store Mapping between your new LinkedIn Directory and your Stormpath Application can be done through the REST API, as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
+</div>
+<div class="section" id="step-3-access-an-account-with-linkedin-tokens">
+<h4>Step 3: Access an Account with LinkedIn Tokens<a class="headerlink" href="#step-3-access-an-account-with-linkedin-tokens" title="Permalink to this headline">¶</a></h4>
+<p>To access or create an Account in your new LinkedIn Directory, you must gather a LinkedIn <strong>Access Token</strong> on behalf of the user. This requires leveraging <a class="reference external" href="https://developer.linkedin.com/docs/oauth2">LinkedIn&#8217;s OAuth 2.0 protocol</a> and the user’s consent for your application’s permissions.</p>
+<p>Generally, this will include embedding a link in your site that will send an authentication request to LinkedIn. Once the user has authenticated, LinkedIn will redirect the response to your application, including the Authorization Code that you will exchange for the Access Token. This is documented in detail in LinkedIn&#8217;s <a class="reference external" href="https://developer.linkedin.com/docs/oauth2#hero-par_longformtext_3_longform-text-content-par_resourceparagraph_3">Authenticating with OAuth 2.0 page</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is required that your LinkedIn application requests the <code class="docutils literal"><span class="pre">r_basicprofile</span></code> and <code class="docutils literal"><span class="pre">r_emailaddress</span></code> scopes from LinkedIn. If the access token does not grant these scopes, you will not be able to get an Account with an access token. For more information about LinkedIn scopes, see <a class="reference external" href="https://developer.linkedin.com/docs/fields">LinkedIn&#8217;s &#8220;Profile Fields&#8221; documentation</a>.</p>
+</div>
+<p>Once the Access Token is gathered, you can send an HTTP POST:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;providerData&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;linkedin&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;TOKEN_FROM_LINKEDIN&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Stormpath will use the <code class="docutils literal"><span class="pre">accessToken</span></code> provided to retrieve information about your LinkedIn Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).</p>
+</div>
+</div>
+</div>
+<div class="section" id="d-authenticating-against-a-mirrored-ldap-directory">
+<span id="mirror-dir-authn"></span><h2>d. Authenticating Against a Mirrored LDAP Directory<a class="headerlink" href="#d-authenticating-against-a-mirrored-ldap-directory" title="Permalink to this headline">¶</a></h2>
+<p>This section assumes that you are already familiar both with <a class="reference internal" href="#how-login-works"><span>How Login Attempts Work in Stormpath</span></a> and the concept of Stormpath <a class="reference internal" href="004_accnt_mgmt.html#about-mirror-dir"><span>Mirror Directories</span></a> as well as how they are <a class="reference internal" href="004_accnt_mgmt.html#modeling-mirror-dirs"><span>modeled</span></a>.</p>
+<div class="section" id="mirror-directories-and-ldap">
+<h3>Mirror Directories and LDAP<a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
+<p>To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory, so it is recommended that you maintain a &#8220;master&#8221; Directory alongside your Mirror Directory. Furthermore, a successful user login is the recommended time to provision, link, and synchronize an Account in the Mirror Directory to your master Directory.</p>
+<div class="section" id="step-1-create-a-mirror-directory">
+<h4>Step 1: Create a Mirror Directory<a class="headerlink" href="#step-1-create-a-mirror-directory" title="Permalink to this headline">¶</a></h4>
+<p>HTTP POST a new Directory resource to the <code class="docutils literal"><span class="pre">/directories</span></code> endpoint. This Directory will contain a <a class="reference internal" href="reference.html#ref-provider"><span>Provider</span></a> resource with <code class="docutils literal"><span class="pre">providerId</span></code> set to <code class="docutils literal"><span class="pre">&quot;ldap&quot;</span></code>. This Provider resource will in turn contain an <a class="reference internal" href="reference.html#ref-ldap-agent"><span>LDAP Agent</span></a> object:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;My LDAP Directory&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;An LDAP Directory created with the Stormpath API&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;provider&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;ldap&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;agent&quot;</span><span class="p">:{</span>
+      <span class="nt">&quot;config&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;directoryHost&quot;</span><span class="p">:</span><span class="s2">&quot;ldap.local&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;directoryPort&quot;</span><span class="p">:</span><span class="s2">&quot;636&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;sslRequired&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;agentUserDn&quot;</span><span class="p">:</span><span class="s2">&quot;tom@stormpath.com&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;agentUserDnPassword&quot;</span><span class="p">:</span><span class="s2">&quot;StormpathRulez&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;baseDn&quot;</span><span class="p">:</span><span class="s2">&quot;dc=example,dc=com&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;pollInterval&quot;</span><span class="p">:</span><span class="mi">60</span><span class="p">,</span>
+        <span class="nt">&quot;referralMode&quot;</span><span class="p">:</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;ignoreReferralIssues&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&quot;accountConfig&quot;</span><span class="p">:{</span>
+          <span class="nt">&quot;dnSuffix&quot;</span><span class="p">:</span><span class="s2">&quot;ou=employees&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;objectClass&quot;</span><span class="p">:</span><span class="s2">&quot;person&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;objectFilter&quot;</span><span class="p">:</span><span class="s2">&quot;(cn=finance)&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;emailRdn&quot;</span><span class="p">:</span><span class="s2">&quot;email&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;givenNameRdn&quot;</span><span class="p">:</span><span class="s2">&quot;givenName&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;middleNameRdn&quot;</span><span class="p">:</span><span class="s2">&quot;middleName&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;surnameRdn&quot;</span><span class="p">:</span><span class="s2">&quot;sn&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;usernameRdn&quot;</span><span class="p">:</span><span class="s2">&quot;uid&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;passwordRdn&quot;</span><span class="p">:</span><span class="s2">&quot;userPassword&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;groupConfig&quot;</span><span class="p">:{</span>
+          <span class="nt">&quot;dnSuffix&quot;</span><span class="p">:</span><span class="s2">&quot;ou=groups&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;objectClass&quot;</span><span class="p">:</span><span class="s2">&quot;groupOfUniqueNames&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;objectFilter&quot;</span><span class="p">:</span><span class="s2">&quot;(ou=*-group)&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;nameRdn&quot;</span><span class="p">:</span><span class="s2">&quot;cn&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;descriptionRdn&quot;</span><span class="p">:</span><span class="s2">&quot;description&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;membersRdn&quot;</span><span class="p">:</span><span class="s2">&quot;uniqueMember&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For more information about all of these values, please see the Reference chapter <a class="reference internal" href="reference.html#ref-directory"><span>Directory</span></a> section.</p>
+</div>
+<div class="section" id="step-2-install-your-ldap-agent">
+<h4>Step 2: Install your LDAP Agent<a class="headerlink" href="#step-2-install-your-ldap-agent" title="Permalink to this headline">¶</a></h4>
+<p>Installing your Agent is done in three steps.</p>
+<p><strong>1. Download</strong></p>
+<p>Download your Agent by following the Download link on the Agent page in the Admin Console.</p>
+<p><strong>2. Configure</strong></p>
+<p><em>a.</em> Make sure Java 1.8 is installed</p>
+<p><em>b.</em> Unzip to a location in your file system, for example <code class="docutils literal"><span class="pre">C:\stormpath\agent</span></code> in Windows or <code class="docutils literal"><span class="pre">/opt/stormpath/agent</span></code> in Unix.</p>
+<p>In the same location, open the file <code class="docutils literal"><span class="pre">dapper.properties</span></code> from the config folder and replace this line:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">agent</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">PutAgentSpecificIdHere</span>
+</pre></div>
+</div>
+<p>With this line:</p>
+<div class="highlight-python"><div class="highlight"><pre>agent.id  = 72MlbWz6C4dLo1oBhgjjTt
+</pre></div>
+</div>
+<p>Follow the instructions in the <code class="docutils literal"><span class="pre">dapper.properties</span></code> file to reference your account&#8217;s API authentication.</p>
+<p><strong>3. Start</strong></p>
+<p>In Windows:</p>
+<p>(cd to your agent directory, for example C:stormpathagent)</p>
+<div class="highlight-powershell"><div class="highlight"><pre>C:\stormpath\agent&gt;cd bin
+C:\stormpath\agent\bin&gt;startup.bat
+</pre></div>
+</div>
+<p>In Unix:</p>
+<p>cd to your agent directory, for example /opt/stormpath/agent</p>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>bin
+<span class="nv">$ </span>startup.sh
+</pre></div>
+</div>
+<p>The Agent will start synchronizing immediately, pushing the configured data to Stormpath. You will see the synchronized user Accounts and Groups appear in the Stormpath Directory, and the Accounts will be able to log in to any Stormpath-enabled application that you assign. When the Agent detects local changes, additions or deletions to the mirrored Accounts or Groups, it will automatically propagate those changes to Stormpath.</p>
+</div>
+<div class="section" id="step-3-map-the-mirror-directory-as-an-account-store-for-your-application">
+<h4>Step 3: Map the Mirror Directory as an Account Store for Your Application<a class="headerlink" href="#step-3-map-the-mirror-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<p>Creating an Account Store Mapping between your new Mirror Directory and your Stormpath Application can be done through the REST API, as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
+<p>From this point on, any time a user logs in to your Application, their Account will be provisioned into Stormpath, as detailed above in <a class="reference internal" href="#non-cloud-login"><span>How Login Works with Mirrored and Social Directories</span></a>.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="006_auth_z.html" class="btn btn-neutral float-right" title="6. Authorization With Stormpath">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="004_accnt_mgmt.html" class="btn btn-neutral" title="4. Account Management"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Stormpath, Inc..
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
