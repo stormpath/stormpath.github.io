@@ -398,6 +398,9 @@
 		sp_docs_menu['stylesheets'] = [];
 		
 	
+		sp_docs_menu['wizard'] = [];
+		
+	
 </script>
 
 <div id="page">
@@ -553,7 +556,7 @@
 
 <p>To get these values, you can query the <code>OAuth Policy</code> for an Application:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-oauth-policy-curl">curl</a></li><li><a href="#tabs-get-oauth-policy-node">node</a></li><li><a href="#tabs-get-oauth-policy-php">php</a></li></ul><div id="tabs-get-oauth-policy-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-oauth-policy-curl">curl</a></li><li><a href="#tabs-get-oauth-policy-node">node</a></li><li><a href="#tabs-get-oauth-policy-php">php</a></li><li><a href="#tabs-get-oauth-policy-ruby">ruby</a></li></ul><div id="tabs-get-oauth-policy-curl"><pre lang="curl"><code>
 curl -X GET \
      -u $API_KEY_ID:$API_KEY_SECRET \
      -H "Accept: application/json" \
@@ -568,6 +571,9 @@ application.getOAuthPolicy(function(err, policy) {
 $oauthPolicy = $application->oauthPolicy;
 
 //Return Type: Stormpath\Resource\OauthPolicy
+</code> </pre> </div><div id="tabs-get-oauth-policy-ruby"><pre lang="ruby"><code>
+oauth_policy = application.auth_policy
+# returns Stormpath::Resource::OauthPolicy instance
 </code> </pre> </div></div>
 
 
@@ -585,7 +591,7 @@ $oauthPolicy = $application->oauthPolicy;
 
 <p>To update the <code>Access Token</code> and <code>Refresh Token</code> TTL, making a <code>POST</code> request to the application&rsquo;s oAuthPolicy with the updated values.  The valid valueFor example, if your application needs to have an shorter lived access and refresh token:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-set-oauth-policy-curl">curl</a></li><li><a href="#tabs-set-oauth-policy-node">node</a></li><li><a href="#tabs-set-oauth-policy-php">php</a></li></ul><div id="tabs-set-oauth-policy-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-set-oauth-policy-curl">curl</a></li><li><a href="#tabs-set-oauth-policy-node">node</a></li><li><a href="#tabs-set-oauth-policy-php">php</a></li><li><a href="#tabs-set-oauth-policy-ruby">ruby</a></li></ul><div id="tabs-set-oauth-policy-curl"><pre lang="curl"><code>
 curl -X GET \
      -u $API_KEY_ID:$API_KEY_SECRET \
      -H "Accept: application/json" \
@@ -608,6 +614,11 @@ $oauthPolicy = $application->oauthPolicy;
 $oauthPolicy->accessTokenTtl = 'PT1H';
 $oauthPolicy->refreshTokenTtl = 'P7D';
 $oauthPolicy->save();
+</code> </pre> </div><div id="tabs-set-oauth-policy-ruby"><pre lang="ruby"><code>
+oauth_policy = application.oauth_policy
+oauth_policy.access_token_ttl = 'PT1H'
+oauth_policy.refresh_token_ttl = "P60D"
+oauth_policy.save
 </code> </pre> </div></div>
 
 
@@ -651,7 +662,7 @@ $oauthPolicy->save();
 
 <p>Request:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-access-token-curl">curl</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li></ul><div id="tabs-get-access-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-curl">curl</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li><li><a href="#tabs-get-access-token-ruby">ruby</a></li></ul><div id="tabs-get-access-token-curl"><pre lang="curl"><code>
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -d "grant_type=password&username=tom@stormpath.com&password=Secret1"
@@ -674,6 +685,10 @@ $auth = new \Stormpath\Oauth\PasswordGrantAuthenticator($application);
 $result = $auth->authenticate($passwordGrant);
 
 //Return Type: Stormpath\Oauth\OauthGrantAuthenticationResult
+</code> </pre> </div><div id="tabs-get-access-token-ruby"><pre lang="ruby"><code>
+pasword_grant = Stormpath::Oauth::PasswordGrantRequest.new(username, password)
+result = application.authenticate_oauth(password_grant)
+# returns Stormpath::Oauth::AccessToken instance
 </code> </pre> </div></div>
 
 
@@ -804,7 +819,7 @@ Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg
 
 <p>Request:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-validate-token-curl">curl</a></li><li><a href="#tabs-validate-token-node">node</a></li><li><a href="#tabs-validate-token-php">php</a></li></ul><div id="tabs-validate-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-validate-token-curl">curl</a></li><li><a href="#tabs-validate-token-node">node</a></li><li><a href="#tabs-validate-token-php">php</a></li><li><a href="#tabs-validate-token-ruby">ruby</a></li></ul><div id="tabs-validate-token-curl"><pre lang="curl"><code>
 curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \    
     https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
 </code> </pre> </div><div id="tabs-validate-token-node"><pre lang="node"><code>
@@ -822,6 +837,9 @@ authenticator.authenticate({
 $result = (new \Stormpath\Oauth\VerifyAccessToken($application))->verify();
 
 // Return Type: Stormpath\Resource\AccessToken
+</code> </pre> </div><div id="tabs-validate-token-ruby"><pre lang="ruby"><code>
+Stormpath::Oauth::VerifyAccessToken.new(application).verify(authorization_token)
+# returns Stormpath::Oauth::VerifyToken instance
 </code> </pre> </div></div>
 
 
@@ -951,7 +969,7 @@ Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg
 
 <p>To use a JWT library to validate the token:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li><li><a href="#tabs-get-access-token-ruby">ruby</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
 /* This sample uses JJWT a Java JWT Library (https://github.com/jwtk/jjwt) */
 
 import io.jsonwebtoken.Jwts;
@@ -989,6 +1007,14 @@ nJwt.verify(bearerToken, "$STORMPATH_API_KEY_SECRET", function(err, verifiedJwt)
 // You can pass in a JWT into the `verify` method as a string.  If not, it will look in the HTTP_AUTHORIZATION header for one, and then COOKIE with a name of access_token
 
 $result = (new \Stormpath\Oauth\VerifyAccessToken($application))->withLocalValidation->verify();
+</code> </pre> </div><div id="tabs-get-access-token-ruby"><pre lang="ruby"><code>
+require(‘jwt’)
+
+begin
+    verified_jwt = JWT.decode(token, stormpath_api_key_secret)
+rescue JWT::InvalidJtiError => error
+    # handle error
+end
 </code> </pre> </div></div>
 
 
@@ -1004,7 +1030,7 @@ $result = (new \Stormpath\Oauth\VerifyAccessToken($application))->withLocalValid
 
 <p>Once your application has a <code>Refresh Token</code>, you can pass the token to your Stormpath Application&rsquo;s <code>tokenEndpoint</code> using the <code>refresh_token</code> OAuth 2.0 grant type.</p>
 
-<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-curl">curl</a></li><li><a href="#tabs-refresh-access-token-node">node</a></li><li><a href="#tabs-refresh-access-token-php">php</a></li></ul><div id="tabs-refresh-access-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-curl">curl</a></li><li><a href="#tabs-refresh-access-token-node">node</a></li><li><a href="#tabs-refresh-access-token-php">php</a></li><li><a href="#tabs-refresh-access-token-ruby">ruby</a></li></ul><div id="tabs-refresh-access-token-curl"><pre lang="curl"><code>
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -d "grant_type=refresh_token&refresh_token=$REFRESH_TOKEN"
@@ -1026,6 +1052,10 @@ $auth = new \Stormpath\Oauth\RefreshGrantAuthenticator($application);
 $result = $auth->authenticate($refreshGrant);
 
 // Return Type: Stormpath\Oauth\OauthGrantAuthenticationResult
+</code> </pre> </div><div id="tabs-refresh-access-token-ruby"><pre lang="ruby"><code>
+refresh_grant = Stormpath::Oauth::RefreshGrantRequest.new(refresh_token)
+result = application.authenticate_oauth(refresh_grant)
+# returns Stormpath::Oauth::AccessToken instance
 </code> </pre> </div></div>
 
 
@@ -1162,7 +1192,7 @@ curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 
 <p>For example:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-delete-access-token-curl">curl</a></li><li><a href="#tabs-delete-access-token-node">node</a></li><li><a href="#tabs-delete-access-token-php">php</a></li></ul><div id="tabs-delete-access-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-delete-access-token-curl">curl</a></li><li><a href="#tabs-delete-access-token-node">node</a></li><li><a href="#tabs-delete-access-token-php">php</a></li><li><a href="#tabs-delete-access-token-ruby">ruby</a></li></ul><div id="tabs-delete-access-token-curl"><pre lang="curl"><code>
 curl -X DELETE --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7
 </code> </pre> </div><div id="tabs-delete-access-token-node"><pre lang="node"><code>
@@ -1170,6 +1200,9 @@ token.delete(function(err) { console.log('deleted token'); });
 </code> </pre> </div><div id="tabs-delete-access-token-php"><pre lang="php"><code>
 $token = AccessToken::get($tokenHref);
 $token->delete();
+</code> </pre> </div><div id="tabs-delete-access-token-ruby"><pre lang="ruby"><code>
+Stormpath::Resource::AccessToken.get href
+access_token.delete
 </code> </pre> </div></div>
 
 
@@ -1190,7 +1223,7 @@ $token->delete();
 
 <h2><a id="wrapping-it-up"></a>Wrapping it up</h2>
 
-<p>In this guide, we discussed how to set up and use Stormpath to generate and manage OAuth 2.0 Access Tokens and Refresh Tokens. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#x69;&#108;&#x74;&#x6f;&#58;&#x73;&#117;&#x70;&#x70;&#x6f;&#114;&#116;&#x40;&#x73;&#116;&#111;&#114;&#x6d;&#112;&#x61;&#116;&#104;&#46;&#99;&#x6f;&#109;&#46;">&#115;&#x75;&#112;&#x70;&#111;&#x72;&#x74;&#x40;&#x73;&#116;&#111;&#114;&#x6d;&#x70;&#97;&#x74;&#104;&#x2e;&#x63;&#111;&#x6d;&#46;</a></p>
+<p>In this guide, we discussed how to set up and use Stormpath to generate and manage OAuth 2.0 Access Tokens and Refresh Tokens. If you have any questions, bug reports, or enhancement requests please email <a href="&#x6d;&#97;&#x69;&#108;&#x74;&#x6f;&#x3a;&#x73;&#117;&#x70;&#112;&#111;&#x72;&#x74;&#64;&#115;&#116;&#111;&#x72;&#109;&#x70;&#97;&#x74;&#x68;&#x2e;&#99;&#111;&#109;&#46;">&#115;&#x75;&#x70;&#112;&#111;&#114;&#x74;&#x40;&#x73;&#116;&#x6f;&#114;&#109;&#112;&#x61;&#116;&#104;&#46;&#99;&#111;&#x6d;&#46;</a></p>
 
               <div id="spread-word">
 <hr>
@@ -1521,6 +1554,9 @@ addthis:url="https://stormpath.com" >
 		
 	
 		sp_docs_menu['stylesheets'] = [];
+		
+	
+		sp_docs_menu['wizard'] = [];
 		
 	
 </script>
