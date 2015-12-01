@@ -76,7 +76,7 @@ By default, an `Application` has a the following TTLs:
 
 To get these values, you can query the `OAuth Policy` for an Application:
 
-{% codetab id:get-oauth-policy langs:curl node php%}
+{% codetab id:get-oauth-policy langs:curl node php ruby%}
 ------
 curl -X GET \
      -u $API_KEY_ID:$API_KEY_SECRET \
@@ -93,6 +93,9 @@ $oauthPolicy = $application->oauthPolicy;
 
 //Return Type: Stormpath\Resource\OauthPolicy
 ------
+oauth_policy = application.auth_policy
+# returns Stormpath::Resource::OauthPolicy instance
+------
 {% endcodetab %}
 
 Response:
@@ -108,7 +111,7 @@ Response:
 
 To update the `Access Token` and `Refresh Token` TTL, making a `POST` request to the application's oAuthPolicy with the updated values.  The valid valueFor example, if your application needs to have an shorter lived access and refresh token:
 
-{% codetab id:set-oauth-policy langs:curl node php%}
+{% codetab id:set-oauth-policy langs:curl node php ruby%}
 ------
 curl -X GET \
      -u $API_KEY_ID:$API_KEY_SECRET \
@@ -132,6 +135,11 @@ $oauthPolicy = $application->oauthPolicy;
 $oauthPolicy->accessTokenTtl = 'PT1H';
 $oauthPolicy->refreshTokenTtl = 'P7D';
 $oauthPolicy->save();
+------
+oauth_policy = application.oauth_policy
+oauth_policy.access_token_ttl = 'PT1H'
+oauth_policy.refresh_token_ttl = "P60D"
+oauth_policy.save
 ------
 {% endcodetab %}
 
@@ -172,7 +180,7 @@ Once your application receives the username and password for the user, you can r
 
 Request:
 
-{% codetab id:get-access-token langs:curl node php%}
+{% codetab id:get-access-token langs:curl node php ruby%}
 ------
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     -H "Content-Type: application/x-www-form-urlencoded" \
@@ -196,6 +204,10 @@ $auth = new \Stormpath\Oauth\PasswordGrantAuthenticator($application);
 $result = $auth->authenticate($passwordGrant);
 
 //Return Type: Stormpath\Oauth\OauthGrantAuthenticationResult
+------
+pasword_grant = Stormpath::Oauth::PasswordGrantRequest.new(username, password)
+result = application.authenticate_oauth(password_grant)
+# returns Stormpath::Oauth::AccessToken instance
 ------
 {% endcodetab %}
 
@@ -274,7 +286,7 @@ The `Authorization` header specifies the `Bearer` token.  This token can be vali
 
 Request:
 
-{% codetab id:validate-token langs:curl node php%}
+{% codetab id:validate-token langs:curl node php ruby%}
 ------
 curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \    
     https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
@@ -293,6 +305,9 @@ authenticator.authenticate({
 $result = (new \Stormpath\Oauth\VerifyAccessToken($application))->verify();
 
 // Return Type: Stormpath\Resource\AccessToken
+------
+Stormpath::Oauth::VerifyAccessToken.new(application).verify(authorization_token)
+# returns Stormpath::Oauth::VerifyToken instance
 ------
 {% endcodetab %}
 
@@ -378,7 +393,7 @@ The `Authorization` header specifies the `Bearer` token.  This token is a JSON W
 
 To use a JWT library to validate the token:
 
-{% codetab id:get-access-token langs:java node php%}
+{% codetab id:get-access-token langs:java node php ruby%}
 ------
 /* This sample uses JJWT a Java JWT Library (https://github.com/jwtk/jjwt) */
 
@@ -418,6 +433,14 @@ nJwt.verify(bearerToken, "$STORMPATH_API_KEY_SECRET", function(err, verifiedJwt)
 
 $result = (new \Stormpath\Oauth\VerifyAccessToken($application))->withLocalValidation->verify();
 ------
+require(‘jwt’)
+
+begin
+    verified_jwt = JWT.decode(token, stormpath_api_key_secret)
+rescue JWT::InvalidJtiError => error
+    # handle error
+end
+------
 {% endcodetab %}
 
 ### Refreshing Access Tokens
@@ -432,7 +455,7 @@ To get a new `Access Token` to for a `Refresh Token`, you must first make sure t
 
 Once your application has a `Refresh Token`, you can pass the token to your Stormpath Application's `tokenEndpoint` using the `refresh_token` OAuth 2.0 grant type.
 
-{% codetab id:refresh-access-token langs:curl node php%}
+{% codetab id:refresh-access-token langs:curl node php ruby%}
 ------
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     -H "Content-Type: application/x-www-form-urlencoded" \
@@ -455,6 +478,10 @@ $auth = new \Stormpath\Oauth\RefreshGrantAuthenticator($application);
 $result = $auth->authenticate($refreshGrant);
 
 // Return Type: Stormpath\Oauth\OauthGrantAuthenticationResult
+------
+refresh_grant = Stormpath::Oauth::RefreshGrantRequest.new(refresh_token)
+result = application.authenticate_oauth(refresh_grant)
+# returns Stormpath::Oauth::AccessToken instance
 ------
 {% endcodetab %}
 
@@ -586,7 +613,7 @@ To revoke the tokens, you iterate over the collection, collect the href for the 
 
 For example:
 
-{% codetab id:delete-access-token langs:curl node php%}
+{% codetab id:delete-access-token langs:curl node php ruby%}
 ------
 curl -X DELETE --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7
@@ -595,6 +622,9 @@ token.delete(function(err) { console.log('deleted token'); });
 ------
 $token = AccessToken::get($tokenHref);
 $token->delete();
+------
+Stormpath::Resource::AccessToken.get href
+access_token.delete
 ------
 {% endcodetab %}
 
