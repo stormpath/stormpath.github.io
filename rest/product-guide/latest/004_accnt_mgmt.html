@@ -567,7 +567,149 @@ This works as follows:</p>
 </div>
 <div class="section" id="c-how-to-search-accounts">
 <h2>c. How to Search Accounts<a class="headerlink" href="#c-how-to-search-accounts" title="Permalink to this headline">¶</a></h2>
-<p>You can search Stormpath Accounts, just like all Resource Collections, using Filter, Attribute, and Datetime search. For more information about how search works in Stormpath, please see the <a class="reference internal" href="reference.html#about-search"><span>Search section</span></a> of the Reference chapter.</p>
+<p>You can search Stormpath Accounts, just like all Resource collections, using Filter, Attribute, and Datetime search. For more information about how search works in Stormpath, please see the <a class="reference internal" href="reference.html#about-search"><span>Search section</span></a> of the Reference chapter.</p>
+<p>Search can be performed against one of the collections of Accounts associated with other entities:</p>
+<p><code class="docutils literal"><span class="pre">/v1/applications/$APPLICATION_ID/accounts</span></code></p>
+<p><code class="docutils literal"><span class="pre">/v1/directories/$DIRECTORY_ID/accounts</span></code></p>
+<p><code class="docutils literal"><span class="pre">/v1/groups/$GROUP_ID/accounts</span></code></p>
+<p><code class="docutils literal"><span class="pre">/v1/organizations/$ORGANIZATION_ID/accounts</span></code></p>
+<p>As mentioned in the <a class="reference internal" href="reference.html#about-search"><span>Search section</span></a> of the Reference chapter, the Account resource&#8217;s <strong>searchable attributes</strong> are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">givenName</span></code></li>
+<li><code class="docutils literal"><span class="pre">middleName</span></code></li>
+<li><code class="docutils literal"><span class="pre">surname</span></code></li>
+<li><code class="docutils literal"><span class="pre">username</span></code></li>
+<li><code class="docutils literal"><span class="pre">email</span></code></li>
+<li><code class="docutils literal"><span class="pre">status</span></code></li>
+</ul>
+<div class="section" id="example-account-searches">
+<h3>Example Account Searches<a class="headerlink" href="#example-account-searches" title="Permalink to this headline">¶</a></h3>
+<p>Below are some examples of different kinds of searches that can be performed to find Accounts.</p>
+<div class="section" id="search-an-application-s-accounts-for-a-particular-word">
+<h4>Search an Application&#8217;s Accounts for a Particular Word<a class="headerlink" href="#search-an-application-s-accounts-for-a-particular-word" title="Permalink to this headline">¶</a></h4>
+<p>A simple <a class="reference internal" href="reference.html#search-filter"><span>Filter Search</span></a> using the <code class="docutils literal"><span class="pre">?q=</span></code> parameter to the Application&#8217;s <code class="docutils literal"><span class="pre">/accounts</span></code> collection will find us any Account associated with this Application that has the filter query string as part of any of its searchable attributes.</p>
+<p><strong>Query</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/v1/application/1gk4Dxzi6o4Pbdlexample/accounts?q=luc</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Matching is case-insensitive. So <code class="docutils literal"><span class="pre">?q=luc</span></code> and <code class="docutils literal"><span class="pre">?q=Luc</span></code> will return the same results.</p>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/applications/1gk4Dxzi6o4Pbdlexample/accounts</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4Pbdlexample/accounts&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spexAmple&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;jlpicard&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;capt@enterprise.com&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Jean-Luc&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+          <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Picard&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;Jean-Luc Picard&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;...&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+      <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="find-all-the-disabled-accounts-in-a-directory">
+<h4>Find All the Disabled Accounts in a Directory<a class="headerlink" href="#find-all-the-disabled-accounts-in-a-directory" title="Permalink to this headline">¶</a></h4>
+<p>An <a class="reference internal" href="reference.html#search-attribute"><span>Attribute Search</span></a> can be used on a Directory&#8217;s Accounts collection in order to find all of the Accounts that contain a certain value in the specified attribute. This could be used to find all the Accounts that are disabled (i.e. that have their <code class="docutils literal"><span class="pre">status</span></code> set to <code class="docutils literal"><span class="pre">disabled</span></code>).</p>
+<p><strong>Query</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/v1/directories/accounts?status=DISABLED</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/2SKhstu8PlaekcaEXampLE/accounts&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/72EaYgOaq8lwTFHexAmple&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;first2shoot&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;han@newrepublic.gov&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Han&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Solo&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;Han Solo&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;...&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="find-all-accounts-in-a-directory-that-were-created-on-a-particular-day">
+<h4>Find All Accounts in a Directory That Were Created on a Particular Day<a class="headerlink" href="#find-all-accounts-in-a-directory-that-were-created-on-a-particular-day" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference internal" href="reference.html#search-datetime"><span>Datetime Search</span></a> is used when you want to search for Accounts that have a certain point or period in time that interests you. So we could search for all of the Accounts in a Directory that were modified on Dec 1, 2015.</p>
+<p><strong>Query</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/accounts?modifiedAt=2015-12-01</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The parameter can be written in many different ways. The following are all equivalent:</p>
+<ul class="simple">
+<li>?modifiedAt=2015-12-01</li>
+<li>?modifiedAt=[2015-12-01T00:00, 2015-12-02T00:00]</li>
+<li>?modifiedAt=[2015-12-01T00:00:00, 2015-12-02T00:00:00]</li>
+</ul>
+<p class="last">For more information see <a class="reference internal" href="reference.html#search-datetime"><span>Datetime Search</span></a>.</p>
+</div>
+<p><strong>Response</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp/accounts&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/72EaYgOaq8lwTFHILydAid&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;first2shoot&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;han@newrepublic.gov&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Han&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+            <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Solo&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;Han Solo&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-08-28T16:07:38.347Z&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-12-01T21:22:56.608Z&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;...&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
 </div>
 <div class="section" id="d-how-to-manage-an-account-s-password">
 <span id="managing-account-pwd"></span><h2>d. How to Manage an Account&#8217;s Password<a class="headerlink" href="#d-how-to-manage-an-account-s-password" title="Permalink to this headline">¶</a></h2>
