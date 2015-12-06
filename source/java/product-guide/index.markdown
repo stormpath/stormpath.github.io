@@ -2849,13 +2849,18 @@ In all cases, the process is fundamentally the same. Consider the first case as 
 <a class="anchor" name="group-membership-create"></a>
 ### Create a Group Membership
 
-To create a group membership you need the account and the group.
+To create a group membership from the Account, you need the group, the group href or the group name. In the example below, all the uses of addGroup() method are valid and equivalent:
 
     account.addGroup(group);
+    account.addGroup(group.getHref());
+    account.addGroup(group.getName());
 
-Or, from the group
+In a similar way, to add an account membership from the Group, you need the account, its href, username or email. The following calls are valid and equivalent:
 
     group.addAccount(account);
+    group.addAccount(account.getHref());
+    group.addAccount(account.getEmail());
+    group.addAccount(account.getUsername());
 
 <a class="anchor" name="group-membership-retrieve"></a>
 ### Retrieve a Group Membership
@@ -2885,6 +2890,19 @@ Deleting a group membership completely erases the `groupMembership` resource fro
 **Example Request**
 
     groupMembership.delete();
+
+This operation can also be performed from the Account or the Group. When deleting a group membership from the Account, you need the group, its href or name. In the example below, all calls are valid and equivalent:
+
+    account.removeGroup(group);
+    account.removeGroup(group.getHref());
+    account.removeGroup(group.getName());
+
+When deleting an account membership from the Group, you need the account, its href, username or email. In the example below, all calls are equivalent:
+
+    group.removeAccount(account);
+    group.removeAccount(account.getHref());
+    group.removeAccount(account.getEmail());
+    group.removeAccount(account.getUsername());
 
 <a class="anchor" name="group-memberships-list"></a>
 ### List Group Memberships
@@ -3133,7 +3151,7 @@ To assign an account to a group:
 
     account.addGroup(group);
 
-Both the account and the group must exist and contain a valid `href` property.
+Both the account and the group must exist and contain a valid `href` property. For more information about assigning accounts to groups, see the <a href="#group-membership-create">Create a Group Membership section</a>.
 
 <a class="anchor" name="account-remove-group"></a>
 #### Remove an Account from a Group
@@ -3143,6 +3161,14 @@ If the account is the member of a group within a directory, you can remove the a
 **Example Request**
 
     groupMembership.delete();
+
+If instead of the groupMembership, you have the group, you can remove the account from the group:
+
+**Example Request**
+
+    account.removeGroup(group);
+
+For more information about removing accounts from groups, see the <a href="#group-membership-delete">Delete a Group Membership section</a>.
 
 <a class="anchor" name="account-enable"></a>
 #### Enable or Disable an Account
