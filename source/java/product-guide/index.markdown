@@ -1279,7 +1279,10 @@ You may authenticate an account by calling the `authenticateAccount` method of a
 
 **Example Request**
 
-	UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("usernameOrEmail", "password");
+    AuthenticationRequest authenticationRequest = UsernamePasswordRequest.builder()
+                .setUsernameOrEmail("usernameOrEmail")
+                .setPassword("password")
+                .build();
     AuthenticationResult result = application.authenticateAccount(authenticationRequest);
 
 If the login attempt is successful, an `AuthenticationResult` object is returned with a reference to the successfully authenticated account:
@@ -1291,7 +1294,10 @@ If the login attempt fails, a `400 Bad Request` is returned with an [error paylo
 **Example Login Attempt Failure Handling**
 
 	try {
-    	UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("johnsmith", "badPassword");
+	    AuthenticationRequest authenticationRequest = UsernamePasswordRequest.builder()
+                .setUsernameOrEmail("johnsmith")
+                .setPassword("badPassword")
+                .build();
         application.authenticateAccount(authenticationRequest);
 	} catch (ResourceException ex) {
     	System.out.println(ex.getStatus()); // Will output: 400
@@ -1310,8 +1316,26 @@ At the time you create the request, it is likely that you may know the account s
 **Example Request**
 	
 	AccountStore accountStore = anAccountStoreMapping.getAccountStore();
-	UsernamePasswordRequest authenticationRequest = new UsernamePasswordRequest("usernameOrEmail", "password", accountStore);
+	AuthenticationRequest authenticationRequest = UsernamePasswordRequest.builder()
+                .setUsernameOrEmail("usernameOrEmail")
+                .setPassword("password")
+                .inAccountStore(accountStore)
+                .build();
     AuthenticationResult result = application.authenticateAccount(authenticationRequest);
+    
+#### Authentication Expansion 
+
+If you want the actual account object returned from a successful authentication attempt, then you can [expand the account in-line](#links-expansion) using `AuthenticationOptions`.  For example:
+
+    BasicAuthenticationOptions options = UsernamePasswordRequest.options().withAccount();
+    AuthenticationRequest request = UsernamePasswordRequest.builder()
+                .setUsernameOrEmail(username)
+                .setPassword(submittedRawPlaintextPassword)
+                .withResponseOptions(options)
+                .build();
+    AuthenticationResult authenticated = application.authenticateAccount(request);
+
+If the login attempt is successful, the `Account` in the `AuthenticationResult` will be already expanded, therefore the following operation will not hit the server since the account is already locally available: `Account account = result.getAccount();`
 
 <a class="anchor" name="application-password-reset"></a>
 #### Reset An Account's Password
