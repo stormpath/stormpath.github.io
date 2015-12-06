@@ -1,0 +1,380 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Setup &mdash; Express-Stormpath 0.4.3 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="about.html"/>
+    <link rel="top" title="Express-Stormpath 0.4.3 documentation" href="index.html"/>
+        <link rel="next" title="Quickstart" href="quickstart.html"/>
+        <link rel="prev" title="About" href="about.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> Express-Stormpath</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#who-should-use-stormpath">Who Should Use Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-stormpath-account">Create a Stormpath Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-an-api-key-pair">Create an API Key Pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-stormpath-application">Create a Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bonus-create-a-directory">Bonus: Create a Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-the-package">Install the Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#initialize-express-stormpath">Initialize Express-Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#testing-it-out">Testing It Out</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="product.html">Product Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="product.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#enforce-user-authentication">Enforce User Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#enforce-user-authorization">Enforce User Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#session-management">Session Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#restrict-session-duration-expiration">Restrict Session Duration / Expiration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#enable-caching">Enable Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#access-user-data">Access User Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#handling-events">Handling Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#working-with-custom-user-data">Working With Custom User Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#automatic-expansion">Automatic Expansion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#api-authentication">API Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#customize-redirect-logic">Customize Redirect Logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#customize-user-registration-fields">Customize User Registration Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#customize-user-login-fields">Customize User Login Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#customize-user-registration-login-and-logout-routes">Customize User Registration, Login, and Logout Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#customize-the-views">Customize the Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#disable-the-built-in-views">Disable the Built-in Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#use-account-verification">Use Account Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#use-password-reset">Use Password Reset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#use-facebook-login">Use Facebook Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#use-google-login">Use Google Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="product.html#use-hosted-login">Use Hosted Login</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Getting Help</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-3">Version 0.4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-2">Version 0.4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-1">Version 0.4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-0">Version 0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-4">Version 0.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-3">Version 0.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-2">Version 0.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-1">Version 0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-0">Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-9">Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-8">Version 0.2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-7">Version 0.2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-6">Version 0.2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-5">Version 0.2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-4">Version 0.2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-3">Version 0.2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-2">Version 0.2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-1">Version 0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-0">Version 0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-9">Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-8">Version 0.1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-7">Version 0.1.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-6">Version 0.1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-5">Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-4">Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-3">Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-2">Version 0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-0">Version 0.1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-2-version-0-4-3">Version 0.4.2 -&gt; Version 0.4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-1-version-0-4-2">Version 0.4.1 -&gt; Version 0.4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-0-version-0-4-1">Version 0.4.0 -&gt; Version 0.4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-4-version-0-4-0">Version 0.3.4 -&gt; Version 0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-3-version-0-3-4">Version 0.3.3 -&gt; Version 0.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-2-version-0-3-3">Version 0.3.2 -&gt; Version 0.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-1-version-0-3-2">Version 0.3.1 -&gt; Version 0.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-0-version-0-3-1">Version 0.3.0 -&gt; Version 0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-9-version-0-3-0">Version 0.2.9 -&gt; Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-8-version-0-2-9">Version 0.2.8 -&gt; Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-7-version-0-2-8">Version 0.2.7 -&gt; Version 0.2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-6-version-0-2-7">Version 0.2.6 -&gt; Version 0.2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-5-version-0-2-6">Version 0.2.5 -&gt; Version 0.2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-4-version-0-2-5">Version 0.2.4 -&gt; Version 0.2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-3-version-0-2-4">Version 0.2.3 -&gt; Version 0.2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-2-version-0-2-3">Version 0.2.2 -&gt; Version 0.2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-1-version-0-2-2">Version 0.2.1 -&gt; Version 0.2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-0-version-0-2-1">Version 0.2.0 -&gt; Version 0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-9-version-0-2-0">Version 0.1.9 -&gt; Version 0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-8-version-0-1-9">Version 0.1.8 -&gt; Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-7-version-0-1-8">Version 0.1.7 -&gt; Version 0.1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-6-version-0-1-7">Version 0.1.6 -&gt; Version 0.1.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-5-version-0-1-6">Version 0.1.5 -&gt; Version 0.1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-4-version-0-1-5">Version 0.1.4 -&gt; Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-3-version-0-1-4">Version 0.1.3 -&gt; Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-2-version-0-1-3">Version 0.1.2 -&gt; Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-0-version-0-1-2">Version 0.1.0 -&gt; Version 0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-0-0-version-0-1-0">Version 0.0.0 -&gt; Version 0.1.0</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Express-Stormpath</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Setup</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/setup.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="setup">
+<span id="id1"></span><h1>Setup<a class="headerlink" href="#setup" title="Permalink to this headline">¶</a></h1>
+<p>This section covers the basic setup you need to perform in order to get started
+with Express-Stormpath.</p>
+<div class="section" id="create-a-stormpath-account">
+<h2>Create a Stormpath Account<a class="headerlink" href="#create-a-stormpath-account" title="Permalink to this headline">¶</a></h2>
+<p>Now that you&#8217;ve decided to use Stormpath, the first thing you&#8217;ll want to use is
+create a new Stormpath account: <a class="reference external" href="https://api.stormpath.com/register">https://api.stormpath.com/register</a></p>
+</div>
+<div class="section" id="create-an-api-key-pair">
+<h2>Create an API Key Pair<a class="headerlink" href="#create-an-api-key-pair" title="Permalink to this headline">¶</a></h2>
+<p>Once you&#8217;ve created a new account, create a new API key pair by logging into
+your dashboard and clicking the &#8220;Create an API Key&#8221; button.  This will generate
+a new API key for you, and prompt you to download your keypair.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please keep the API key pair file you just downloaded safe!  These two keys
+allow you to make Stormpath API requests, and should be properly protected,
+backed up, etc.</p>
+</div>
+<p>Once you&#8217;ve downloaded your <cite>apiKey.properties</cite> file, save it in your home
+directory in a file named <cite>~/.stormpath/apiKey.properties</cite>.  To ensure no other
+users on your system can access the file, you&#8217;ll also want to change the file&#8217;s
+permissions.  You can do this by running:</p>
+<div class="highlight-javascript"><div class="highlight"><pre>$ chmod go-rwx ~/.stormpath/apiKey.properties
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-a-stormpath-application">
+<h2>Create a Stormpath Application<a class="headerlink" href="#create-a-stormpath-application" title="Permalink to this headline">¶</a></h2>
+<p>Next, you&#8217;ll want to create a new Stormpath Application.</p>
+<p>Stormpath allows you to provision any number of &#8220;Applications&#8221;.  An
+&#8220;Application&#8221; is just Stormpath&#8217;s term for a project.</p>
+<p>Let&#8217;s say you want to build a few separate websites.  One site named
+&#8220;dronewars.com&#8221;, and another named &#8220;carswap.com&#8221;.  In this case, you&#8217;d want to
+create two separate Stormpath Applications, one named &#8220;dronewars&#8221; and another
+named &#8220;carswap&#8221;.  Each Stormpath Application should represent a real life
+application of some sort.</p>
+<p>The general rule is that you should create one Application per website (or
+project).  Since we&#8217;re just getting set up, you&#8217;ll want to create a single
+Application.</p>
+<p>To do this, click the &#8220;Applications&#8221; tab in the Stormpath dashboard, then click
+&#8220;Register an Application&#8221; and follow the on-screen instructions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Use the default options when creating an Application, this way you&#8217;ll be
+able to create users in your new Application without issue.</p>
+</div>
+<p>Now that you&#8217;ve created an Application, you&#8217;re ready to plug Express-Stormpath
+into your project!</p>
+</div>
+<div class="section" id="bonus-create-a-directory">
+<h2>Bonus: Create a Directory<a class="headerlink" href="#bonus-create-a-directory" title="Permalink to this headline">¶</a></h2>
+<p>As you might have noticed, Stormpath also has something called &#8220;Directories&#8221;.
+When you created an Application in the previous step, Stormpath automatically
+created a new Directory for you.</p>
+<p>You can think of Directories in Stormpath as buckets of user accounts.  Every
+user account that you create on Stormpath will belong to a Directory.
+Directories hold unique groups of users.</p>
+<p>In most situations, your Stormpath Application will have a single Directory
+associated with it which is where all of your users will go.  In some
+situations, however, you might want to create additional Directories (or share a
+Directory between multiple Applications).</p>
+<p>Let&#8217;s say you have two separate websites (<em>and therefore, two separate Stormpath
+Applications</em>): &#8220;dronewars.com&#8221; and &#8220;carswap.com&#8221;.  If you wanted both of your
+websites to share the same user accounts (<em>so that if a user signs up on
+dronewars.com they can use their same login on carswap.com</em>), you could
+accomplish that by having a single Directory, and mapping it to both of your
+Stormpath Applications.</p>
+<p>Directories are useful for sharing and segmenting users in more complex
+authentication scenarios.</p>
+<p>You can read more about Stormpath Directories here:
+<a class="reference external" href="http://docs.stormpath.com/rest/product-guide/#directories">http://docs.stormpath.com/rest/product-guide/#directories</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Stormpath has multiple types of &#8220;Directories&#8221;.  There are: &#8220;Cloud
+Directories&#8221;, &#8220;Mirror Directories&#8221;, &#8220;Facebook Directories&#8221; and &#8220;Google
+Directories&#8221;.</p>
+<p>Cloud Directories hold <em>typical</em> user accounts.</p>
+<p>Facebook and Google Directories allow you to automatically create Stormpath
+user accounts for both Facebook and Google users (<em>using social login</em>).
+Social login will be covered in detail later on.</p>
+<p class="last">Mirror Directories are used for syncing with <a class="reference external" href="http://en.wikipedia.org/wiki/Active_Directory">Active Directory</a> and
+<a class="reference external" href="http://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol">LDAP</a> services (most people don&#8217;t ever need these).</p>
+</div>
+</div>
+<div class="section" id="install-the-package">
+<h2>Install the Package<a class="headerlink" href="#install-the-package" title="Permalink to this headline">¶</a></h2>
+<p>Now that you&#8217;ve got a Stormpath account all setup and ready to go, all that&#8217;s
+left to do before we can dive into the code is install the <a class="reference external" href="https://www.npmjs.org/package/express-stormpath">Express-Stormpath</a>
+package from <a class="reference external" href="https://www.npmjs.org/">NPM</a>.</p>
+<p>To install Express-Stormpath, you&#8217;ll need <code class="docutils literal"><span class="pre">npm</span></code>.  You can install the latest
+version of Express-Stormpath by running:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">npm</span> <span class="nx">install</span> <span class="nx">express</span><span class="o">-</span><span class="nx">stormpath</span>
+</pre></div>
+</div>
+<p>If you&#8217;d like to upgrade to the latest version of Express-Stormpath (<em>maybe you
+have an old version installed</em>), you can run:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">npm</span> <span class="nx">update</span> <span class="nx">express</span><span class="o">-</span><span class="nx">stormpath</span>
+</pre></div>
+</div>
+<p>To force an upgrade.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Express-Stormpath is currently <em>only</em> compatible with Express 4.x.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="quickstart.html" class="btn btn-neutral float-right" title="Quickstart">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="about.html" class="btn btn-neutral" title="About"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Stormpath, Inc..
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.4.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+  <script type="text/javascript">var _gaq = _gaq || [];   _gaq.push(['_setAccount', 'UA-29159574-1']);   _gaq.push(['_setDomainName', 'stormpath.com']);   _gaq.push(['_trackPageview']);    (function() {     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;     ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);   })();</script><script type="text/javascript">var _kmq = _kmq || [];   var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';   function _kms(u){     setTimeout(function(){       var d = document, f = d.getElementsByTagName('script')[0],       s = d.createElement('script');       s.type = 'text/javascript'; s.async = true; s.src = u;       f.parentNode.insertBefore(s, f);     }, 1);   }   _kms('//i.kissmetrics.com/i.js');   _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');</script><script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+</body>
+</html>
