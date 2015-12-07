@@ -1,0 +1,1242 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Integrating Stormpath with Active Directory and LDAP - Stormpath</title>
+  <meta name="author" content="Stormpath, Inc.">
+
+  
+  <meta name="description" content="Use Stormpath to give users in existing Active Directory/LDAP servers access to your new web applications.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stormpath.github.io/guides/ad-ldap">
+  <link href="/favicon.ico" rel="icon">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style>
+@import url("/stylesheets/normalize.css?mrrrji");
+@import url("/stylesheets/wireframes.css?mrrrji");
+@import url("/stylesheets/html-elements.css?mrrrji");
+@import url("/stylesheets/tabs.css?mrrrji");
+@import url("/stylesheets/tinybox2.css?mrrrji");
+@import url("/stylesheets/flexnav.css?mrrrji");
+@import url("/stylesheets/pages.css?mrrrji");
+@import url("/stylesheets/docs.css?mrrrji");
+@import url("/stylesheets/blocks.css?mrrrji");
+@import url("/stylesheets/navigation.css?mrrrji");
+@import url("/stylesheets/views-styles.css?mrrrji");
+@import url("/stylesheets/nodes.css?mrrrji");
+@import url("/stylesheets/comments.css?mrrrji");
+@import url("/stylesheets/forms.css?mrrrji");
+@import url("/stylesheets/fields.css?mrrrji");
+@import url("/stylesheets/layouts/responsive-sidebars.css?mrrrji");
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/atom.xml" rel="alternate" title="Stormpath" type="application/atom+xml">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Covered+By+Your+Grace|Open+Sans:300italic,400italic,600italic,700italic,800italic,300,400,600,700,800" media="all" />
+
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/cupertino/jquery-ui.css" />
+<link rel="stylesheet" href="/stylesheets/mono-blue.min.css" />
+
+<!--[if lt IE 9]>
+<script src="/javascripts/html5-respond.js"></script>
+<![endif]-->
+
+<link rel="publisher" href="https://plus.google.com/117307959654441669381" />
+<!-- twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="goStormpath">
+<meta name="twitter:title" content="Integrating Stormpath with Active Directory and LDAP - Stormpath">
+<meta name="twitter:description" content="Use Stormpath to give users in existing Active Directory/LDAP servers access to your new web applications.">
+<meta name="twitter:image:src" content="https://docs.stormpath.com/images/icons/twitter-stormpath-icon.jpg">
+<!-- opengraph -->
+<meta property="og:title" content="Integrating Stormpath with Active Directory and LDAP - Stormpath" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://stormpath.github.io/guides/ad-ldap" />
+<meta property="og:image" content="https://docs.stormpath.com/images/icons/og-stormpath-icon.jpg" />
+<meta property="og:description" content="Use Stormpath to give users in existing Active Directory/LDAP servers access to your new web applications." />
+<meta property="og:site_name" content="Stormpath" />
+<meta property="fb:admins" content="3230401" />
+
+
+<!-- kissmetrics -->
+<script type="text/javascript">
+  var _kmq = _kmq || [];
+  var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+  function _kms(u){
+    setTimeout(function(){
+      var d = document, f = d.getElementsByTagName('script')[0],
+      s = d.createElement('script');
+      s.type = 'text/javascript'; s.async = true; s.src = u;
+      f.parentNode.insertBefore(s, f);
+    }, 1);
+  }
+  _kms('//i.kissmetrics.com/i.js');
+  _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+</script>
+
+<!-- Optimizely -->
+<script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-29159574-1', 'auto');
+  // Optimizely Universal Analytics Integration
+  //https://help.optimizely.com/hc/en-us/articles/200039995-Integrating-Optimizely-with-Google-Analytics
+  window.optimizely = window.optimizely || [];
+  window.optimizely.push("activateUniversalAnalytics");
+    ga('send', 'pageview');
+
+</script>
+
+
+  
+
+</head>
+
+<body  class="not-front  node-type-documentation  ">
+<!-- Qualaroo for stormpath.com -->
+<script type="text/javascript">var _kiq = _kiq || [];</script>
+<script type="text/javascript" src="//s3.amazonaws.com/ki.js/47725/9JM.js" async="true"></script>
+      
+<script type="text/javascript" src="//assets.zendesk.com/external/zenbox/v2.6/zenbox.js"></script>
+<style type="text/css" media="screen, projection">
+  @import url(//assets.zendesk.com/external/zenbox/v2.6/zenbox.css);
+</style>
+<script type="text/javascript">
+  if (typeof(Zenbox) !== "undefined") {
+    Zenbox.init({
+      dropboxID:   "20184231",
+      url:         "https://stormpath.zendesk.com",
+      tabTooltip:  "Get Help",
+      tabImageURL: "/images/tab_questions_black_right.png",
+      tabColor:    "689ed0",
+      tabPosition: "Right"
+    });
+  }
+</script>
+
+
+<script src="/javascripts/stormpath_docs.js"></script>
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('authorization-guide');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+		sp_docs_menu['wizard'] = [];
+		
+	
+</script>
+
+<div id="page">
+    <div class="fixed-header" id="wrap">
+      
+
+<nav class="navbar navbar-storm" role="navigation">
+  <div class="navbar-container">
+
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://stormpath.com/">
+        <img src="/images/template/logo_nav.png"/>
+      </a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="main-nav">
+      <a type="button" class="btn navbar-btn button-primary-bordered button-signup navbar-right" href="https://api.stormpath.com/register" onClick="ga('send', 'event', { eventCategory: 'sign up', eventAction: 'sign up button click', eventLabel: 'www', eventValue: 1});">Sign Up Now</a>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="http://docs.stormpath.com/">Docs</a></li>
+        <li><a href="https://stormpath.com/product">Product</a></li>
+        <li><a href="https://stormpath.com/pricing">Pricing</a></li>
+        <li><a href="https://stormpath.com/customers">Customers</a></li>
+        <li><a href="https://boards.greenhouse.io/stormpath">Jobs</a></li>
+        <li><a href="https://api.stormpath.com/login">Login</a></li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</nav>
+
+
+
+    </div>
+<!--
+  <div id="header-wrapper">
+  	<header id="header" role="banner" class="container">
+      
+    </header>
+  </div>-->
+  <div id="main-wrapper">
+    <div id="main">
+      <div id="main-inner">
+        <div id="main-inner-inner">
+          <div id="content" class="column" role="main">
+            <div class="col-md-11">
+              <a id="main-content"></a>
+              
+                <h1 class="title" id="page-title">Integrating Stormpath with Active Directory and LDAP</h1>
+              
+              <div class="sharing">
+
+  <!-- AddThis Button BEGIN -->
+  <div class="addthis_toolbox addthis_default_style addthis_16x16_style">
+    <a class="addthis_button_twitter"></a>
+    <a class="addthis_button_reddit"></a>
+    <a class="addthis_button_hackernews"></a>
+    <a class="addthis_button_google_plusone_share"></a>
+    <a class="addthis_button_linkedin"></a>
+    <a class="addthis_button_facebook"></a>
+    <a class="addthis_button_email"></a>
+  </div>
+  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+  <!-- AddThis Button END -->
+
+</div>
+            	<div class='docs-note'><p>AD/LDAP integration is only available to customers with a <a href="https://stormpath.com/pricing">Lite subscription plan or higher</a></p>
+</div>
+
+
+<p>In this guide we discuss how to set up Stormpath to manage and authenticate users that are synchronized from existing Active Directory (AD) and LDAP servers. Stormpath offers a firewall-friendly approach that&rsquo;s perfect for internal applications trying to sync to their own AD/LDAP servers and for SaaS applications trying to sync with their customers&#8217; AD/LDAP servers.</p>
+
+<h2><a id="what-is-stormpath"></a>What is Stormpath?</h2>
+
+<p>Stormpath is a user management API that makes it easy for developers to launch applications and APIs with secure, scalable user infrastructure. It automates:</p>
+
+<ul>
+<li>User Account registration and login</li>
+<li>Authentication and authorization</li>
+<li>Flexible, secure user profile data</li>
+<li>Group and role management, including pre-built Role-Based Access Control (RBAC)</li>
+<li>Best-practice password security and data storage</li>
+</ul>
+
+
+<p>You access Stormpath via a <a href="http://stormpath.com/blog/designing-rest-json-apis">beautiful</a> REST+JSON API or our <a href="https://docs.stormpath.com">language-specific SDKs</a>.</p>
+
+<h2><a id="why-use-stormpath-to-integrate-with-existing-active-directory-and-ldap-servers"></a>Why use Stormpath to integrate with existing Active Directory and LDAP servers?</h2>
+
+<p>Many organizations use Active Directory (AD) or LDAP for identity services. But connecting new web and mobile applications outside the firewall to on-premise Active Directory or LDAP servers is difficult, time-consuming and sometimes impossible. With Stormpath, you can seamlessly connect your web or mobile applications to existing Active Directory/LDAP servers.</p>
+
+<p><img src="https://stormpath.com/images/landingpage/ldap/ldap2.png" alt="" /></p>
+
+<p>It’s an elegant solution for organizations transitioning to the cloud and the simplest tool for developers wrestling with Active Directory/LDAP.</p>
+
+<p>Stormpath is fully configurable to import objects and map attributes for both <code>Accounts</code> and <code>Groups</code>.  Stormpath will also delegate user management to Active Directory / LDAP servers. This means that password policies around strength / expiration are managed externally, and a developer does not need to understand the complexity of those systems.</p>
+
+<p>In the following sections, we will outline considerations and best practices for using this functionality.</p>
+
+<h2><a id="setting-up-the-stormpath-active-directory--ldap-agent"></a>Setting up the Stormpath Active Directory / LDAP Agent</h2>
+
+<div class='docs-note'><p>  Configuration of AD/LDAP directories is currently only available through the <a href="https://api.stormpath.com">Administrator Console</a>.  It&#8217;s not <em>yet</em> available via API and SDK.</p>
+</div>
+
+
+<p>In order to synchronize Stormpath with an Active Directory or LDAP server, you create a <code>Directory</code> in Stormpath, specifically a <code>Mirror Directory</code></p>
+
+<p>A <code>Directory</code> in Stormpath is a top-level storage container of <code>Accounts</code> and <code>Groups</code>. Directories resemble real world repositories of user accounts that can be mapped to an <code>Application</code>.  Once a <code>Directory</code> is mapped to an <code>Application</code>, all of the directory&rsquo;s <code>Accounts</code> are able to log into the app.</p>
+
+<p>A <code>Mirror Directory</code> is a special <code>Directory</code> used for AD/LDAP synchronization. And each <code>Mirror Directory</code> is paired with a synchronization <code>Agent</code> that is installed alongside the AD/LDAP server.</p>
+
+<p>To configure a <code>Mirror Directory</code> and its <code>Agent</code>, you first log in to the <a href="https://api.stormpath.com">Administrator Console</a>, and follow these steps:</p>
+
+<ol>
+<li>Click on the <code>Directories</code> tab</li>
+<li>Click on the <code>Create Directory</code> button</li>
+<li>Click the <code>Mirror</code> button</li>
+</ol>
+
+
+<p>This will start the directory creation wizard for AD / LDAP.  After configuring the Mirrored Directory, you will be able to input Agent configuration information related to the AD / LDAP server:</p>
+
+<ol>
+<li>Agent User DN</li>
+<li>Agent User Password</li>
+<li>Directory connection parameters such as Host and Port</li>
+<li>Attribute Configuration</li>
+</ol>
+
+
+<p>Once the creation wizard is completed, you can download the <code>Agent</code> to deploy on the same network as the AD / LDAP server.<code>Agent</code> installation instructions are provided in the console as the last step of the wizard.</p>
+
+<div class='docs-note'><p>The Stormpath <code>Agent</code> requires Java 1.7 or Java 1.8.</p>
+</div>
+
+
+<p>After the agent is deployed and started, the agent will reports its status, pull down its configuration data, and then begin synchronization.  The agent can be monitored directly from the Stormpath Administrator Console in the Agents tab <em>(visible for Premium subscribers and above)</em>.</p>
+
+<h2><a id="authentication-considerations-for-multiple-directories"></a>Authentication Considerations for Multiple Directories</h2>
+
+<p>If you are mapping multiple directories to an Application in Stormpath, you need to make special considerations regarding user authentication.</p>
+
+<h3><a id="understanding-stormpath-default-login-flow"></a>Understanding Stormpath Default Login Flow</h3>
+
+<p>First, let&rsquo;s explain how a login attempt flows in Stormpath.</p>
+
+<p>When a <code>Directory</code> or <code>Group</code> is associated with an <code>Application</code>, it is referred to as an <code>AccountStore</code>.  The aggregate of an application&rsquo;s account stores make up its userbase&mdash; the collection of users who are able to access and log into that application.</p>
+
+<p>During a typical login attempt, Stormpath will cycle through the application&rsquo;s account stores in the order they are configured and search for the target user account.  Accounts are matched on a &lsquo;first match wins&rsquo; policy.</p>
+
+<p>Let&rsquo;s look at an example to illustrate this behavior.  Assume that two account stores, a &lsquo;Customers&rsquo; directory and an &lsquo;Employees&rsquo; directory, have been assigned (mapped) to a &lsquo;Foo&rsquo; application, in that order.</p>
+
+<p>The following flow chart shows what happens when an account attempts to login to the Foo application:</p>
+
+<p><img src="/images/docs/LoginAttemptFlow.png" alt="Login Attempt Flow" title="Login Attempt Flow" width="650" height="500"></p>
+
+<p>As you can see, Stormpath tries to find the account in the &lsquo;Customers&rsquo; directory first because it has a higher <em>priority</em> than the &lsquo;Employees&rsquo; directory.  If not found, the &lsquo;Employees&rsquo; directory is tried next as it has a lower priority.</p>
+
+<h3><a id="best-practices-for-multiple-directories"></a>Best Practices for Multiple Directories.</h3>
+
+<p>For applications with a small number of mapped directories (aka <code>AccountStores</code>) you will need to determine the login priority of your <code>AccountStores</code>.  The order will depend on your use case.  If one <code>Account Store</code> is considered to be &ldquo;cleaner&rdquo; or have &ldquo;more trusted&rdquo; user data, you might put it first.  Alternatively, you might put your most important user population first.</p>
+
+<p>For applications that have a master user <code>Directory</code> that is supplemented by AD/LDAP directories for authentication, we recommend all AD/LDAP based <code>AccountStores</code> take a higher priority over the master user <code>Directory</code>.  Once the user is authenticated, you could follow a link to their master record in your master <code>Directory</code>.  More on this scenario in the next section.</p>
+
+<p>For certain applications that have large numbers of <code>AccountStores</code>, collision of usernames and email addresses can become a problem.  In these less common scenarios, it is recommended that you specify the target <code>AccountStore</code> during the login attempt.</p>
+
+<!--
+To illustrate, take the following example.  A SaaS vendor, Acme, lets its customers connect their AD/LDAP servers for easy user provisioning. Within Stormpath, Acme now has a `Mirror Directory` for each customer with AD/LDAP.  In turn, each `Mirror Directory` is set as an `AccountStore` for their core application and each can be used to login into their core application.  
+
+It's easy to do in code:
+
+####Python:
+
+    account_store = client.directories.get(directoryhref)
+    application.authenticate_account('tk421@stormpath.com', 'Password1!', account_store)
+
+####Java
+
+    AccountStore accountStore = client.getResource(directoryHref, Directory.class);
+    
+    AuthenticationRequest authRequest = new
+        UsernamePasswordRequest("tk421@stormpath.com", "Password1!", accountStore);
+
+    AuthenticationResult result = application.authenticateAccount(authRequest);
+
+How you determine which `AccountStore` to target will depend on your use case.  For multi-tenant or SaaS applications, Stormpath recommends subdomains for each tenant 
+
+        //Multi-tenant application allow you to log into multiple sub-domains 
+
+        //Sub-domain #1
+        http://customer-a.mysite.com/login
+
+        //Sub-domain #2
+        http://customer-b.mysite.com/login
+
+The application during the login attempt will be able to route each login attempt to the correct `Account Store` based on the sub-domain.
+-->
+
+
+<h2><a id="supplementing-a-master-user-directory-with-adldap-directories"></a>Supplementing a Master User Directory with AD/LDAP directories</h2>
+
+<p>For many applications there will likely be a master <code>Directory</code> for all users in order to keep the user base simple, enforce uniqueness of emails/usernames across all users, and maintain one canonical identity per user.  In fact, this is a recommended approach for most multi-tenant or SaaS applications.  Check out our <a href="/guides/multi-tenant">multi-tenancy guide</a> for more info.</p>
+
+<p>However, when supporting Active Directory or LDAP integration, your application will now need to support multiple directories&mdash; one <code>Mirror Directory</code> for each AD/LDAP integration.</p>
+
+<p>In this scenario, we recommend linking each <code>Account</code> in a AD/LDAP <code>Mirror Directory</code> with a master <code>Account</code> in the master user <code>Directory</code>.  This offers a few benefits:</p>
+
+<ol>
+<li><p>You can maintain one <code>Directory</code> that has <em>all</em> your user accounts, retaining globally unique canonical identities across your application</p></li>
+<li><p>You are able to leverage your own <code>Groups</code> in the master user directory. Remember, most data in a <code>Mirror Directory</code> is read-only meaning you cannot create your own <code>Groups</code> in it, only read the <code>Groups</code> synchronized from Active Directory and LDAP</p></li>
+<li><p>Keep a user&rsquo;s identity alive even after they&rsquo;ve left your customer&rsquo;s organization and been deprovisioned in AD/LDAP.  This is valuable in a SaaS model where the user is loosely coupled to an organization.  Contractors and temporary workers are good examples</p></li>
+</ol>
+
+
+<h3><a id="provisioning-linking-and-syncing-the-account-in-the-master-directory"></a>Provisioning, Linking, and Syncing the Account in the Master Directory</h3>
+
+<p>The Stormpath <code>Agent</code> is regularly updating its <code>Mirror Directory</code> and sometimes adding new user <code>Accounts</code>.  Because this data can be quite fluid, we recommend initiating all provisioning, linking, and synchronization on a successful login attempt of the <code>Account</code> in the <code>Mirror Directory</code>.</p>
+
+<p>On a successful login attempt, you would search your master <code>Directory</code> for a matching user.  This is often done by searching for a matching email address.</p>
+
+<p>If the <code>Account</code> does not exist, you would create it.  You would then create a link between the two accounts using <code>customData</code> on the <code>Mirror Directory</code> <code>Account</code>.  The link should be the Stormpath <code>href</code> for the <code>Account</code> in the master <code>Directory</code>.</p>
+
+<pre><code>"customData": {
+    "accountLink": "https://api.stormpath.com/v1/accounts/3fLduLKlQu"
+}
+</code></pre>
+
+<div class='docs-tip'><p>The <code>customData</code> resource is a schemaless JSON object (aka ‘map’, ‘associative array’, or ‘dictionary’) that allows you to specify whatever name/value pairs you wish.</p>
+
+<p>Even though most <code>Mirror Directory</code> data is read-only, you can still write your own <code>customData</code> to the <code>Account</code> and <code>Group</code> resources.  That data, however, will NOT be written back to AD/LDAP.</p>
+</div>
+
+
+<p>In some cases where a user could be in many directories at once, you may need links to multiple <code>Accounts</code>, perhaps from the master <code>Account</code>. A common strategy is to store a collections of account links (again, account&rsquo;s <code>href</code> property).  Using <code>customData</code>; this could be a JSON map.</p>
+
+<pre><code>"customData": {
+    "accountLinks": {
+        "Link1": "https://api.stormpath.com/v1/accounts/3fLduLKlQu",
+        "Link2": "https://api.stormpath.com/v1/accounts/X3rjfa4Ljd", 
+        "Link3": "https://api.stormpath.com/v1/accounts/a05Ghpjd30"
+    }
+}
+</code></pre>
+
+<p>If the <code>Account</code> does already exist, then you can sync any data you like or just follow the <code>href</code> in the link to then work with the master <code>Account</code> for the rest of the user&rsquo;s session.</p>
+
+              <div id="spread-word">
+<hr>
+
+<h2> Help Us Spread the Word </h2>
+
+<p>Did you find this valuable?  If you've enjoyed playing with Stormpath or are excited about what we've built, please help us spread the world with a quick tweet or by just telling a friend.  Thank you!</p>
+
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout Stormpath, it helps you set up complete user management in your application in minutes."
+addthis:url="https://stormpath.com" >
+  <a class="addthis_button_twitter"></a>
+  <a class="addthis_button_reddit"></a>
+  <a class="addthis_button_hackernews"></a>
+  <a class="addthis_button_google_plusone_share"></a>
+  <a class="addthis_button_linkedin"></a>
+  <a class="addthis_button_facebook"></a>
+  <a class="addthis_button_email"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+<!-- AddThis Button END -->
+<p>
+</div>
+
+            </div>
+            <div class="col-md-12">
+              <div id="bottom-wrapper">
+               <div class="region">
+
+	<div class="credits">
+	  <div class="container">
+	    <ul class="list-unstyled list-inline">
+	      <li>Copyright &copy; 2015 Stormpath, Inc.</li>
+	      <li class="divider-vertical"></li>
+	      <li>All rights reserved</li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/privacy_policy">Privacy policy</a></li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/terms_of_service">Terms of service</a></li>
+	    </ul>
+	  </div>
+	</div>
+	
+</div><!-- /.region -->
+
+              </div>
+            </div>
+          </div>
+
+
+
+<aside class="sidebars">
+  
+    <section class="region region-sidebar-first column sidebar">
+      
+<div id="block-stormpath-docs-languages" class="block block-stormpath-docs first odd">
+ <form class="stormpath-docs-select-language" action="/docs/java/product-guide" method="post" id="stormpath-docs-language-form" accept-charset="UTF-8"><div><div class="form-item form-type-select form-item-language">
+  <label for="edit-language">Language: </label>
+ <select id="edit-language" name="language" class="form-select">
+  
+  
+ 	
+    <option value="rest">REST API</option>
+ 	
+    <option value="java">Java</option>
+ 	
+    <option value="nodejs">Node.js</option>
+ 	
+    <option value="python">Python</option>
+ 	
+    <option value="ruby">Ruby</option>
+ 	
+    <option value="php">PHP</option>
+ 	
+    <option value="guides" selected>Guides</option>
+ 	
+    <option value="console">Admin Console</option>
+ 	
+ </select>
+</div>
+<input type="hidden" name="form_id" value="stormpath_docs_language_form">
+</div></form>
+</div>
+
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('authorization-guide');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+		sp_docs_menu['wizard'] = [];
+		
+	
+</script>
+
+
+<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
+  
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/guides/multi-tenant">Multi-Tenant SaaS Applications with Stormpath</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/using-id-site">Using ID Site</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/social-integrations">Integrating Stormpath with Facebook and Google</a>
+			
+			
+			</li>
+		
+			<li class="leaf active-trail">
+			
+				<a href="/guides/ad-ldap">Integrating Stormpath with Active Directory and LDAP</a>
+			
+			
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"></ul></li><li class="leaf"><a href="#why-use-stormpath-to-integrate-with-existing-active-directory-and-ldap-servers" data-level="0" class="fragment">Why use Stormpath to integrate with existing Active Directory and LDAP servers?</a><ul class="menu"></ul></li><li class="leaf"><a href="#setting-up-the-stormpath-active-directory--ldap-agent" data-level="0" class="fragment">Setting up the Stormpath Active Directory / LDAP Agent</a><ul class="menu"></ul></li><li class="leaf"><a href="#authentication-considerations-for-multiple-directories" data-level="0" class="fragment">Authentication Considerations for Multiple Directories</a><ul class="menu"><li class="leaf"><a href="#understanding-stormpath-default-login-flow" data-level="1" class="fragment">Understanding Stormpath Default Login Flow</a><ul class="menu"></ul></li><li class="leaf"><a href="#best-practices-for-multiple-directories" data-level="1" class="fragment">Best Practices for Multiple Directories.</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#supplementing-a-master-user-directory-with-adldap-directories" data-level="0" class="fragment">Supplementing a Master User Directory with AD/LDAP directories</a><ul class="menu"><li class="leaf"><a href="#provisioning-linking-and-syncing-the-account-in-the-master-directory" data-level="1" class="fragment">Provisioning, Linking, and Syncing the Account in the Master Directory</a><ul class="menu"></ul></li></ul></li></ul>
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/dev-test-prod-environments">Setting up Development and Production Environments</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/api-key-management">Using Stormpath for API Authentication</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/token-management">Using Stormpath for OAuth 2.0 and Access/Refresh Token Management</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+        
+  	
+                
+                       <div class="menu-divider"></div> 
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/how-do-i">How Do I..?</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/errors">Stormpath Error Codes</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+</div>
+
+    </section>
+  
+
+  
+</aside>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script src="/javascripts/highlight.min.js"></script>
+
+<script>
+$(function() {
+   hljs.initHighlightingOnLoad();
+
+   /* javascript for codetab to stop the page from shifting when changing tabs (tab sync) */
+   var currentEventTab;
+   var initialObjectTopOffset;
+   var initialPageYOffset;
+
+   $('.tabs').tabs({
+		activate: function(event ,ui){
+
+			//if the dom event, grab the hotness 
+			if(event.cancelable){
+				currentEventTab = event.target;
+				initialObjectTopOffset = $(currentEventTab).offset().top;
+				initialPageYOffset = window.pageYOffset;
+			}
+			//change ze tab
+			$('.tabs').tabs('option', 'active', ui.newTab.index());
+
+			//grab the new offsets
+			var afterChangeOffset = $(currentEventTab).offset().top;
+			var afterPageYOffset = window.pageYOffset;
+
+			//do ze scroll
+			$('body').scrollTop(initialPageYOffset - (initialObjectTopOffset - afterChangeOffset));
+		}
+	});
+});
+</script>
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<!-- Google Code for Remarketing tag -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1002663385;
+var google_conversion_label = "wSRZCLfkjQQQ2duN3gM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1002663385/?value=0&amp;label=wSRZCLfkjQQQ2duN3gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<!-- AdRoll Code -->
+<script type="text/javascript">
+adroll_adv_id = "RVWGHIV3GJCLHIUDNFIMNY";
+adroll_pix_id = "L2WE5KAWDRDBVP46PZZBQJ";
+(function () {
+var oldonload = window.onload;
+window.onload = function(){
+__adroll_loaded=true;
+var scr = document.createElement("script");
+var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+scr.setAttribute('async', 'true');
+scr.type = "text/javascript";
+scr.src = host + "/j/roundtrip.js";
+((document.getElementsByTagName('head') || [null])[0] ||
+document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+if(oldonload){oldonload()}};
+}());
+</script>
+
+<!-- HubSpot Analytics Code -->
+<script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+</script>
+<!-- End HubSpot Analytics Code -->
+
+<!-- CrazyEgg -->
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0017/1602.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+
+<!-- Perfect Audience -->
+<script type="text/javascript">
+(function() {
+window._pa = window._pa || {};
+// _pa.orderId = "";
+// _pa.revenue = "";
+var pa = document.createElement('script'); pa.type = 'text/javascript'; pa.async = true;
+pa.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + "//tag.perfectaudience.com/serve/51fc2c6f1b440adfcc000099.js";
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pa, s);
+})();
+</script>
+
+
+</body>
+</html>
