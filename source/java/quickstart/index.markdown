@@ -39,12 +39,12 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-api</artifactId>
-        <version>1.0.RC6</version>
+        <version>1.0.RC7.2</version>
     </dependency>
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-httpclient</artifactId>
-        <version>1.0.RC6</version>
+        <version>1.0.RC7.2</version>
         <scope>runtime</scope>
     </dependency>
     <!-- This next runtime dependency is only necessary if you have
@@ -52,7 +52,7 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-oauth</artifactId>
-        <version>1.0.RC6</version>
+        <version>1.0.RC7.2</version>
         <scope>runtime</scope>
     </dependency>
 
