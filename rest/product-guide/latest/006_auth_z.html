@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>6. Authorization With Stormpath &mdash; Stormpath 0.0.1 documentation</title>
+  <title>6. Authorization With Stormpath &mdash; Stormpath REST API V1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
     <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
   
-    <link rel="top" title="Stormpath 0.0.1 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath REST API V1 documentation" href="index.html"/>
         <link rel="next" title="7. Multi-Tenancy with Stormpath" href="007_multitenancy.html"/>
         <link rel="prev" title="5. Authenticating Accounts with Stormpath" href="005_auth_n.html"/> 
 
@@ -46,7 +46,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <a href="index.html" class="fa fa-home"> Stormpath</a>
+        <a href="index.html" class="fa fa-home"> Stormpath REST API</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -71,10 +71,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="003_quickstart.html">3. Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#retrieve-your-application">Retrieve Your Application</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#create-a-user-account">Create a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#authenticate-a-user-account">Authenticate a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#a-retrieve-your-application">a. Retrieve Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#b-create-a-user-account">b. Create a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#c-authenticate-a-user-account">c. Authenticate a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#d-next-steps">d. Next Steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="004_accnt_mgmt.html">4. Account Management</a><ul>
@@ -91,6 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#b-how-token-based-authentication-works">b. How Token-Based Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#c-how-social-authentication-works">c. How Social Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#d-authenticating-against-a-mirrored-ldap-directory">d. Authenticating Against a Mirrored LDAP Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#e-authenticating-against-a-saml-directory">e. Authenticating Against a SAML Directory</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">6. Authorization With Stormpath</a><ul>
@@ -136,7 +137,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Stormpath</a>
+        <a href="index.html">Stormpath REST API</a>
       </nav>
 
 
@@ -237,29 +238,29 @@
 </pre></div>
 </div>
 <p>This will return the Account resource along with the expanded customData:</p>
-<div class="highlight-json"><div class="highlight"><pre>HTTP/1.1 200 OK
-Location: https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe
-Content-Type: application/json;charset=UTF-8
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
-{
-  &quot;href&quot;: &quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe&quot;,
-  &quot;username&quot; : &quot;jlpicard&quot;,
-  &quot;email&quot; : &quot;capt@enterprise.com&quot;,
-  &quot;givenName&quot; : &quot;Jean-Luc&quot;,
-  &quot;surname&quot; : &quot;Picard&quot;,
-  &quot;customData&quot;: {
-    &quot;permissions&quot;: {
-      &quot;crew_quarters&quot;: &quot;&amp;nbsp;9-3601&quot;,
-      &quot;lock_override&quot;: &quot;all&quot;,
-      &quot;command_bridge&quot;: {
-        &quot;type&quot;: &quot;vessel:bridge&quot;,
-        &quot;identifier&quot;: &quot;NCC-1701-D&quot;,
-        &quot;action&quot;: &quot;lockout&quot;,
-        &quot;control_key&quot;: &quot;173467321476C32789777643T732V73117888732476789764376&quot;
-      }
-    }
-  }
-}
+<span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;username&quot;</span> <span class="p">:</span> <span class="s2">&quot;jlpicard&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;email&quot;</span> <span class="p">:</span> <span class="s2">&quot;capt@enterprise.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;givenName&quot;</span> <span class="p">:</span> <span class="s2">&quot;Jean-Luc&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;surname&quot;</span> <span class="p">:</span> <span class="s2">&quot;Picard&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;permissions&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;crew_quarters&quot;</span><span class="p">:</span> <span class="s2">&quot;&amp;nbsp;9-3601&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;lock_override&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;command_bridge&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;vessel:bridge&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;identifier&quot;</span><span class="p">:</span> <span class="s2">&quot;NCC-1701-D&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;lockout&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;control_key&quot;</span><span class="p">:</span> <span class="s2">&quot;173467321476C32789777643T732V73117888732476789764376&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Or you can retrieve only the customData by sending a GET to:</p>
@@ -267,23 +268,23 @@ Content-Type: application/json;charset=UTF-8
 </pre></div>
 </div>
 <p>Which would return only the customData:</p>
-<div class="highlight-json"><div class="highlight"><pre>HTTP/1.1 200 OK
-Location: https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe/customData
-Content-Type: application/json;charset=UTF-8
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe/customData</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
-{
-  &quot;href&quot;: &quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe/customData&quot;
-  &quot;permissions&quot;: {
-    &quot;crew_quarters&quot;: &quot;&amp;nbsp;9-3601&quot;,
-    &quot;lock_override&quot;: &quot;all&quot;,
-    &quot;command_bridge&quot;: {
-      &quot;type&quot;: &quot;vessel:bridge&quot;,
-      &quot;identifier&quot;: &quot;NCC-1701-D&quot;,
-      &quot;action&quot;: &quot;lockout&quot;,
-      &quot;control_key&quot;: &quot;173467321476C32789777643T732V73117888732476789764376&quot;
-    }
-  }
-}
+<span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe/customData&quot;</span>
+  <span class="s2">&quot;permissions&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;crew_quarters&quot;</span><span class="p">:</span> <span class="s2">&quot;&amp;nbsp;9-3601&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;lock_override&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;command_bridge&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;vessel:bridge&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;identifier&quot;</span><span class="p">:</span> <span class="s2">&quot;NCC-1701-D&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;lockout&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;control_key&quot;</span><span class="p">:</span> <span class="s2">&quot;173467321476C32789777643T732V73117888732476789764376&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -338,7 +339,7 @@ Content-Type: application/json;charset=UTF-8
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.1',
+            VERSION:'V1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

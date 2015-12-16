@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5. Authenticating Accounts with Stormpath &mdash; Stormpath 0.0.1 documentation</title>
+  <title>5. Authenticating Accounts with Stormpath &mdash; Stormpath REST API V1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
     <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
   
-    <link rel="top" title="Stormpath 0.0.1 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath REST API V1 documentation" href="index.html"/>
         <link rel="next" title="6. Authorization With Stormpath" href="006_auth_z.html"/>
         <link rel="prev" title="4. Account Management" href="004_accnt_mgmt.html"/> 
 
@@ -46,7 +46,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <a href="index.html" class="fa fa-home"> Stormpath</a>
+        <a href="index.html" class="fa fa-home"> Stormpath REST API</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -71,10 +71,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="003_quickstart.html">3. Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#retrieve-your-application">Retrieve Your Application</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#create-a-user-account">Create a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#authenticate-a-user-account">Authenticate a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#a-retrieve-your-application">a. Retrieve Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#b-create-a-user-account">b. Create a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#c-authenticate-a-user-account">c. Authenticate a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#d-next-steps">d. Next Steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="004_accnt_mgmt.html">4. Account Management</a><ul>
@@ -91,6 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#b-how-token-based-authentication-works">b. How Token-Based Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#c-how-social-authentication-works">c. How Social Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#d-authenticating-against-a-mirrored-ldap-directory">d. Authenticating Against a Mirrored LDAP Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#e-authenticating-against-a-saml-directory">e. Authenticating Against a SAML Directory</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="006_auth_z.html">6. Authorization With Stormpath</a><ul>
@@ -136,7 +137,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Stormpath</a>
+        <a href="index.html">Stormpath REST API</a>
       </nav>
 
 
@@ -164,9 +165,23 @@
 <p>In this chapter we will cover three of the ways that Stormpath allows you to authenticate users: <a class="reference internal" href="#password-authn"><span>password authentication</span></a>, <a class="reference internal" href="#token-authn"><span>token authentication</span></a>, and <a class="reference internal" href="#social-authn"><span>social authentication</span></a>.</p>
 <div class="section" id="a-how-password-authentication-works-in-stormpath">
 <span id="password-authn"></span><h2>a. How Password Authentication Works in Stormpath<a class="headerlink" href="#a-how-password-authentication-works-in-stormpath" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#authenticating-an-account" id="id7">Authenticating An Account</a><ul>
+<li><a class="reference internal" href="#how-login-attempts-work-in-stormpath" id="id8">How Login Attempts Work in Stormpath</a></li>
+<li><a class="reference internal" href="#how-login-works-with-mirrored-and-social-directories" id="id9">How Login Works with Mirrored and Social Directories</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manage-who-can-log-into-your-application" id="id10">Manage Who Can Log Into Your Application</a><ul>
+<li><a class="reference internal" href="#mapping-a-new-account-store" id="id11">Mapping a new Account Store</a></li>
+<li><a class="reference internal" href="#updating-an-existing-account-store" id="id12">Updating an Existing Account Store</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <p>Probably the single most common way of authenticating a user is to ask them for their account credentials. When a user creates an account in Stormpath, it is required that they provide a username (or email) and a password. Those credentials can then be provided in order to authenticate an account.</p>
 <div class="section" id="authenticating-an-account">
-<h3>Authenticating An Account<a class="headerlink" href="#authenticating-an-account" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id7">Authenticating An Account</a><a class="headerlink" href="#authenticating-an-account" title="Permalink to this headline">¶</a></h3>
 <p>After an Account resource has been created, you can authenticate it given an input of a <code class="docutils literal"><span class="pre">username</span></code> or <code class="docutils literal"><span class="pre">email</span></code> and a <code class="docutils literal"><span class="pre">password</span></code> from the end-user. When authentication occurs, you are authenticating an Account within a specific Application against that Application’s Organizations, Directories and Groups (more on that <a class="reference internal" href="#how-login-works"><span>below</span></a>). The key point is that the <a class="reference internal" href="reference.html#ref-application"><span>Application resource</span></a> is the starting point for authentication attempts.</p>
 <p>Once you have the Application resource you may attempt authentication by sending a POST request to the Application’s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint and providing a base64 encoded <code class="docutils literal"><span class="pre">username</span></code>/<code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code> pair that is separated with a colon (for example <code class="docutils literal"><span class="pre">testuser</span></code>:<code class="docutils literal"><span class="pre">testpassword</span></code>). Stormpath requires that the <code class="docutils literal"><span class="pre">username</span></code>/<code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code> are base64 encoded so that these values are not passed as clear text. For more information about the <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint please see the <a class="reference internal" href="reference.html#ref-loginattempts"><span>Reference Chapter</span></a>.</p>
 <p>So, if we had a user Account &#8220;Han Solo&#8221; in the &#8220;Captains&#8221; Directory, and we wanted to log him in, we would first need to take the combination of his <code class="docutils literal"><span class="pre">username</span></code> and <code class="docutils literal"><span class="pre">password</span></code> (&#8220;first2shoot:Change+me1&#8221;) and then Base64 encode them: <code class="docutils literal"><span class="pre">Zmlyc3Qyc2hvb3Q6Q2hhbmdlK21lMQ==</span></code>.</p>
@@ -179,7 +194,7 @@
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;basic&quot;</span><span class="p">,</span>
   <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Zmlyc3Qyc2hvb3Q6Q2hhbmdlK21lMQ==&quot;</span><span class="p">,</span>
   <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
-         <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/2SKhstu8Plaekcai8lghrp&quot;</span>
+     <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/2SKhstu8Plaekcai8lghrp&quot;</span>
    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -206,11 +221,11 @@
 <p class="last">For more information about link expansion, please see <a class="reference internal" href="reference.html#about-links"><span>the Reference chapter</span></a>.</p>
 </div>
 <div class="section" id="how-login-attempts-work-in-stormpath">
-<span id="how-login-works"></span><h4>How Login Attempts Work in Stormpath<a class="headerlink" href="#how-login-attempts-work-in-stormpath" title="Permalink to this headline">¶</a></h4>
+<span id="how-login-works"></span><h4><a class="toc-backref" href="#id8">How Login Attempts Work in Stormpath</a><a class="headerlink" href="#how-login-attempts-work-in-stormpath" title="Permalink to this headline">¶</a></h4>
 <p>When the &#8220;Han Solo&#8221; Account tries to log in to the Application, the user submits a request to the Application’s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint. Stormpath then consults the Application’s assigned <strong>Account Stores</strong> (Organizations, Directories, and Groups) in the order that they are assigned to the Application. When a matching Account is discovered in a mapped Account Store, it is used to verify the authentication attempt and all subsequent Account Stores are ignored. In other words, Accounts are matched for Application login based on a &#8220;first match wins&#8221; policy.</p>
 <p>Let&#8217;s look at an example to illustrate this behavior. Assume that two Account Stores, a &#8220;Customers&#8221; Directory and an &#8220;Employees&#8221; Directory, have been assigned (mapped) to a &#8220;Foo&#8221; application. &#8220;Customers&#8221; was assigned first, and &#8220;Employees&#8221; was assigned next, and this will dictate the order in which they are checked.</p>
 <p>The following flow chart shows what happens when an Account attempts to log in to the Foo application:</p>
-<div class="figure align-center" id="id1">
+<div class="figure align-center" id="id5">
 <a class="reference internal image-reference" href="_images/LoginAttemptFlow.png"><img alt="Login Attempt Flow" src="_images/LoginAttemptFlow.png" /></a>
 <p class="caption"><span class="caption-text"><em>The Login Attempt Flow</em></span></p>
 </div>
@@ -218,7 +233,7 @@
 <p>You can map multiple Account Stores to an Application, but only one is required to enable login for an Application. Mapping multiple Account Stores to an Application, as well as configuring their priority, allows you precise control over the Account populations that may log in to your Application.</p>
 </div>
 <div class="section" id="how-login-works-with-mirrored-and-social-directories">
-<span id="non-cloud-login"></span><h4>How Login Works with Mirrored and Social Directories<a class="headerlink" href="#how-login-works-with-mirrored-and-social-directories" title="Permalink to this headline">¶</a></h4>
+<span id="non-cloud-login"></span><h4><a class="toc-backref" href="#id9">How Login Works with Mirrored and Social Directories</a><a class="headerlink" href="#how-login-works-with-mirrored-and-social-directories" title="Permalink to this headline">¶</a></h4>
 <p>For both <a class="reference internal" href="004_accnt_mgmt.html#about-mirror-dir"><span>Mirrored</span></a> and <a class="reference internal" href="004_accnt_mgmt.html#about-social-dir"><span>Social</span></a> Directories, Stormpath has a default behavior that links the Mirror/Social Directories with corresponding &#8220;master&#8221; Directories.</p>
 <p>The default Stormpath behavior is as a follows: a new user visits your site, and chooses something to log-in with their LDAP credentials, or social login like &#8220;Sign-in with Google&#8221;. Once they log in using their social or LDAP credentials, if it doesn&#8217;t already exist, a new user Account is created in your Mirror/Social Directory. After this Account is created, a search is performed inside the Application&#8217;s master Directory for their email address, to see if they already exist in there. If the user Account is already in the master Directory, no action is taken. If the user Account is not found, a new one is created in the master Directory, and populated with the information pulled from the Google account. The customData resource for that Account is then used to store an <code class="docutils literal"><span class="pre">href</span></code> link to their Account in the Mirror/Social Directory.</p>
 <div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
@@ -241,8 +256,9 @@
 </div>
 <p>This approach has two major benefits: It allows for a user to have one unified identity in your Application, regardless of how many social or LDAP identities they choose to log in with; this central identity can also be the central point that all authorization permissions (whether they be implicit or explicit) are then applied to.</p>
 </div>
+</div>
 <div class="section" id="manage-who-can-log-into-your-application">
-<span id="managing-login"></span><h4>Manage Who Can Log Into Your Application<a class="headerlink" href="#manage-who-can-log-into-your-application" title="Permalink to this headline">¶</a></h4>
+<span id="managing-login"></span><h3><a class="toc-backref" href="#id10">Manage Who Can Log Into Your Application</a><a class="headerlink" href="#manage-who-can-log-into-your-application" title="Permalink to this headline">¶</a></h3>
 <p>As is hopefully evident by now, controlling which Accounts can log in to your Application is largely a matter of manipulating the Application&#8217;s Account Store Mappings. For more detailed information about this resource, please see the <a class="reference internal" href="reference.html#ref-account-store-mapping"><span>Account Store Mapping</span></a> section of the Reference chapter.</p>
 <p>The reason why our user &#8220;Han Solo&#8221; was able to log in to our application is because the Application resource that represents our Application: <code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE</span></code>, and our &#8220;Captains&#8221; Directory: <code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp</span></code> are mapped to one another by an <strong>Account Store Mapping</strong>.</p>
 <p>We can find this Mapping by sending a <code class="docutils literal"><span class="pre">GET</span></code> to our Application&#8217;s <code class="docutils literal"><span class="pre">/accountStoreMappings</span></code> endpoint, which would yield the following response:</p>
@@ -276,7 +292,7 @@
 <p class="last">Any new Accounts and Groups added to this Application via it&#8217;s <cite>/accounts</cite> and <cite>/groups</cite> endpoints will be added to this Directory by default, since <code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code> and <code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code> are both set to <code class="docutils literal"><span class="pre">true</span></code>.</p>
 </div>
 <div class="section" id="mapping-a-new-account-store">
-<span id="create-asm"></span><h5>Mapping a new Account Store<a class="headerlink" href="#mapping-a-new-account-store" title="Permalink to this headline">¶</a></h5>
+<span id="create-asm"></span><h4><a class="toc-backref" href="#id11">Mapping a new Account Store</a><a class="headerlink" href="#mapping-a-new-account-store" title="Permalink to this headline">¶</a></h4>
 <p>We would now like to map a new Account Store that will have the following characteristics:</p>
 <ol class="arabic simple">
 <li>It will have the highest login priority. This means that it will be consulted first during <a class="reference internal" href="#how-login-works"><span>the login process</span></a>, before any other Account Stores.</li>
@@ -310,7 +326,7 @@
 <p>So by sending a <code class="docutils literal"><span class="pre">POST</span></code> with these contents, we are able to create a new Account Store Mapping that supersedes the old one.</p>
 </div>
 <div class="section" id="updating-an-existing-account-store">
-<h5>Updating an Existing Account Store<a class="headerlink" href="#updating-an-existing-account-store" title="Permalink to this headline">¶</a></h5>
+<h4><a class="toc-backref" href="#id12">Updating an Existing Account Store</a><a class="headerlink" href="#updating-an-existing-account-store" title="Permalink to this headline">¶</a></h4>
 <p>Updating an existing Account Store simply involves sending a <code class="docutils literal"><span class="pre">POST</span></code> to the <code class="docutils literal"><span class="pre">v1/accountStoreMappings/$ACCOUNT_STORE_MAPPING_ID</span></code> endpoint with the attributes that you would like to update.</p>
 <p><strong>Changing Login Priority</strong></p>
 <p>For example, if you want to update an existing Account Store to now have highest login priority, simple send a <code class="docutils literal"><span class="pre">POST</span></code> with &#8220;listIndex&#8221;: 0 in the body, and the accountStoreMapping resource will be updated. Additionally, all of the other Account Stores will have their <code class="docutils literal"><span class="pre">listIndex</span></code> incremented up by 1.</p>
@@ -323,17 +339,38 @@
 </div>
 </div>
 </div>
-</div>
 <div class="section" id="b-how-token-based-authentication-works">
 <span id="token-authn"></span><h2>b. How Token-Based Authentication Works<a class="headerlink" href="#b-how-token-based-authentication-works" title="Permalink to this headline">¶</a></h2>
-<p>In this section, we will discuss how to use Stormpath to use Stormpath to generate and manage OAuth 2.0 Access Token.</p>
+<div class="contents local topic" id="id1">
+<ul class="simple">
+<li><a class="reference internal" href="#introduction-to-token-based-authentication" id="id13">Introduction to Token-Based Authentication</a><ul>
+<li><a class="reference internal" href="#why-oauth-2-0" id="id14">Why OAuth 2.0?</a></li>
+<li><a class="reference internal" href="#what-tokens-are-available-for-token-based-authentication" id="id15">What Tokens Are Available for Token-Based Authentication?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#using-stormpath-for-token-based-authentication" id="id16">Using Stormpath for Token-Based Authentication</a><ul>
+<li><a class="reference internal" href="#configuring-token-based-authentication" id="id17">Configuring Token-Based Authentication</a></li>
+<li><a class="reference internal" href="#generating-an-oauth-2-0-access-token" id="id18">Generating an OAuth 2.0 Access Token</a></li>
+<li><a class="reference internal" href="#validating-an-access-token" id="id19">Validating an Access Token</a></li>
+<li><a class="reference internal" href="#refreshing-access-tokens" id="id20">Refreshing Access Tokens</a></li>
+<li><a class="reference internal" href="#revoking-access-and-refresh-tokens" id="id21">Revoking Access and Refresh Tokens</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#json-web-tokens" id="id22">JSON Web Tokens</a><ul>
+<li><a class="reference internal" href="#generating-the-jwt" id="id23">Generating the JWT</a></li>
+<li><a class="reference internal" href="#jwt-claims" id="id24">JWT Claims</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>In this section, we will discuss how to use Stormpath to generate and manage OAuth 2.0 Access Token.</p>
 <div class="section" id="introduction-to-token-based-authentication">
-<h3>Introduction to Token-Based Authentication<a class="headerlink" href="#introduction-to-token-based-authentication" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id13">Introduction to Token-Based Authentication</a><a class="headerlink" href="#introduction-to-token-based-authentication" title="Permalink to this headline">¶</a></h3>
 <p>Since HTTP is considered a stateless protocol, if your application authenticates a user for one HTTP request, a problem arises when the next request is sent and your application doesn&#8217;t know who the user is. This is why many applications today pass some information to tie the request to a user. Traditionally, this requires <strong>Server-based authentication</strong>, where state is stored on the server and only a session identifier is stored on the client.</p>
 <p><strong>Token-based authentication</strong> is a alternate, stateless strategy. With token-based authentication, you secure an application based on a security token that is generated for the user on authentication and then stored on the client-side. Token-based Authentication is all about removing the need to store information on the server while giving extra security to keep the token secure on the client. This helps you as a developer build stateless and scalable applications.</p>
 <p>Stormpath&#8217;s approach to token-based authentication has two elements: JSON Web Tokens (JWTs) for authentication, and OAuth 2.0 for authorization.</p>
 <div class="section" id="why-oauth-2-0">
-<h4>Why OAuth 2.0?<a class="headerlink" href="#why-oauth-2-0" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id14">Why OAuth 2.0?</a><a class="headerlink" href="#why-oauth-2-0" title="Permalink to this headline">¶</a></h4>
 <p>OAuth 2.0 is an authorization framework and provides a protocol to interact with a service that can delegate authentication or provide authorization. Its primary advantage as a standard is its wide adoption rate across many mobile and web applications today. If you have ever logged-in to a website using Facebook or Google, you have used one of OAuth 2.0&#8217;s many authorization flows. You can read more about the different OAuth 2.0 authorization flows or grant types in depth on <a class="reference external" href="https://stormpath.com/blog/what-the-heck-is-oauth/">Stormpath’s blog</a>.</p>
 <p>Even though OAuth 2.0 has many authorization modes or &#8220;grant types&#8221;, Stormpath currently supports three of them:</p>
 <ul class="simple">
@@ -344,7 +381,7 @@
 <p>To understand how to use Token-based Authentication, we need to talk about the different types of tokens that are available.</p>
 </div>
 <div class="section" id="what-tokens-are-available-for-token-based-authentication">
-<h4>What Tokens Are Available for Token-Based Authentication?<a class="headerlink" href="#what-tokens-are-available-for-token-based-authentication" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id15">What Tokens Are Available for Token-Based Authentication?</a><a class="headerlink" href="#what-tokens-are-available-for-token-based-authentication" title="Permalink to this headline">¶</a></h4>
 <p>For Token Based Authentication, there are a two different types of tokens that need to be managed. These are:</p>
 <ul class="simple">
 <li>Access Token</li>
@@ -356,10 +393,10 @@
 </div>
 </div>
 <div class="section" id="using-stormpath-for-token-based-authentication">
-<span id="token-authn-config"></span><h3>Using Stormpath for Token-Based Authentication<a class="headerlink" href="#using-stormpath-for-token-based-authentication" title="Permalink to this headline">¶</a></h3>
+<span id="token-authn-config"></span><h3><a class="toc-backref" href="#id16">Using Stormpath for Token-Based Authentication</a><a class="headerlink" href="#using-stormpath-for-token-based-authentication" title="Permalink to this headline">¶</a></h3>
 <p>Stormpath can be used to generate, manage, check, and revoke both Access and Refresh Tokens. Before diving in, let&#8217;s talk about configuration.</p>
 <div class="section" id="configuring-token-based-authentication">
-<h4>Configuring Token-Based Authentication<a class="headerlink" href="#configuring-token-based-authentication" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id17">Configuring Token-Based Authentication</a><a class="headerlink" href="#configuring-token-based-authentication" title="Permalink to this headline">¶</a></h4>
 <p>Stormpath is configurable so you can set the time to live (TTL) for both the Access and Refresh tokens. This is important for many applications because it gives the ability to define how the tokens expire. For example, you could decide that your application requires a user to log in daily, but the access should only live for 10 minutes. Or, you could decide that for your application, users should be able to stay logged-in for two months and the access token expires in an hour.</p>
 <p>Each Application resource in Stormpath has an associated <a class="reference internal" href="reference.html#ref-oauth-policy"><span>OAuth Policy resource</span></a> where the TTLs for a particular Application&#8217;s tokens are stored inside properties called <code class="docutils literal"><span class="pre">accessTokenTtl</span></code> and <code class="docutils literal"><span class="pre">refreshTokenTtl</span></code>:</p>
 <div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
@@ -401,7 +438,7 @@
 </div>
 </div>
 <div class="section" id="generating-an-oauth-2-0-access-token">
-<span id="generate-oauth-token"></span><h4>Generating an OAuth 2.0 Access Token<a class="headerlink" href="#generating-an-oauth-2-0-access-token" title="Permalink to this headline">¶</a></h4>
+<span id="generate-oauth-token"></span><h4><a class="toc-backref" href="#id18">Generating an OAuth 2.0 Access Token</a><a class="headerlink" href="#generating-an-oauth-2-0-access-token" title="Permalink to this headline">¶</a></h4>
 <p>Stormpath can generate Access Tokens using the above-mentioned OAuth 2.0 <strong>Password Grant</strong> flow. Stormpath exposes an endpoint for each Application resource to support the OAuth 2.0 protocol:</p>
 <div class="highlight-python"><div class="highlight"><pre>https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
 </pre></div>
@@ -479,7 +516,7 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 </div>
 </div>
 <div class="section" id="validating-an-access-token">
-<h4>Validating an Access Token<a class="headerlink" href="#validating-an-access-token" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id19">Validating an Access Token</a><a class="headerlink" href="#validating-an-access-token" title="Permalink to this headline">¶</a></h4>
 <p>Once an <code class="docutils literal"><span class="pre">access_token</span></code> has been generated, we have taken care of the Authentication part of our workflow. Now, the OAuth token can be used to authorize individual requests that the user makes. To do this, the client will need to pass it to your application.</p>
 <p>For example, if you have a route <code class="docutils literal"><span class="pre">https://yourapplication.com/secure-resource</span></code>, the client would request authorization to access the resource by passing the access token as follows:</p>
 <div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
@@ -569,7 +606,7 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 </div>
 </div>
 <div class="section" id="refreshing-access-tokens">
-<h4>Refreshing Access Tokens<a class="headerlink" href="#refreshing-access-tokens" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id20">Refreshing Access Tokens</a><a class="headerlink" href="#refreshing-access-tokens" title="Permalink to this headline">¶</a></h4>
 <p>In the event that the Access Token expires, the user can generate a new one using the Refresh Token without re-entering their credentials. To use this Refresh Token, simply make an HTTP POST to your Applications <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint with it and you will get a new token back.</p>
 <div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
@@ -594,7 +631,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p>Note that this response contains the same Refresh Token as was in the request. This is because when Stormpath generates a new Access Token for a Refresh Token it does not generate a new Refresh token, nor does it modify its expiration time. This means that once the Refresh Token expires, the user must authenticate again to get a new Access and Refresh Tokens.</p>
 </div>
 <div class="section" id="revoking-access-and-refresh-tokens">
-<h4>Revoking Access and Refresh Tokens<a class="headerlink" href="#revoking-access-and-refresh-tokens" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id21">Revoking Access and Refresh Tokens</a><a class="headerlink" href="#revoking-access-and-refresh-tokens" title="Permalink to this headline">¶</a></h4>
 <p>There are cases where you might want to revoke the Access and Refresh Tokens that you have generated for a user. For example:</p>
 <ul class="simple">
 <li>The user has explicitly logged out, and your application needs to revoke their access, requiring re-authentication.</li>
@@ -639,9 +676,134 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p>You will get back a <code class="docutils literal"><span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></code> response back from Stormpath when the call succeeds.</p>
 </div>
 </div>
+<div class="section" id="json-web-tokens">
+<span id="about-jwt"></span><h3><a class="toc-backref" href="#id22">JSON Web Tokens</a><a class="headerlink" href="#json-web-tokens" title="Permalink to this headline">¶</a></h3>
+<p>JSON Web Tokens (JWTs) are a crucial part of many authentication flows in Stormpath, including <a class="reference internal" href="008_idsite.html#idsite-with-rest"><span>ID Site</span></a> and <a class="reference internal" href="#saml-authn"><span>SAML</span></a> authentication.</p>
+<div class="section" id="generating-the-jwt">
+<h4><a class="toc-backref" href="#id23">Generating the JWT</a><a class="headerlink" href="#generating-the-jwt" title="Permalink to this headline">¶</a></h4>
+<p>Below are language specific JWT libraries that Stormpath has sanity tested with ID Site.</p>
+<ul class="simple">
+<li>.NET JWT - <a class="reference external" href="https://github.com/jwt-dotnet/jwt">https://github.com/jwt-dotnet/jwt</a></li>
+<li>Ruby JWT - <a class="reference external" href="https://github.com/jwt/ruby-jwt">https://github.com/jwt/ruby-jwt</a></li>
+<li>Go JWT - <a class="reference external" href="https://github.com/dgrijalva/jwt-go">https://github.com/dgrijalva/jwt-go</a></li>
+<li>PHP JWT - <a class="reference external" href="https://github.com/firebase/php-jwt">https://github.com/firebase/php-jwt</a></li>
+<li>Python JWT - <a class="reference external" href="https://github.com/jpadilla/pyjwt">https://github.com/jpadilla/pyjwt</a></li>
+<li>Java JWT - <a class="reference external" href="https://github.com/jwtk/jjwt">https://github.com/jwtk/jjwt</a></li>
+<li>Node JWT - <a class="reference external" href="https://github.com/jwtk/njwt">https://github.com/jwtk/njwt</a></li>
+</ul>
+</div>
+<div class="section" id="jwt-claims">
+<h4><a class="toc-backref" href="#id24">JWT Claims</a><a class="headerlink" href="#jwt-claims" title="Permalink to this headline">¶</a></h4>
+<p>There are two kinds of JWTs that you will deal with: the ones being sent to Stormpath at the beginning of an authentication flow, and the ones that are returned back after the user has authenticated (e.g. with ID Site).</p>
+<div class="section" id="authentication-jwt">
+<span id="init-jwt"></span><h5>Authentication JWT<a class="headerlink" href="#authentication-jwt" title="Permalink to this headline">¶</a></h5>
+<p>This is the JWT that is sent along with the first request that launches the authorization flow, for example as part of ID Site login, or SAML Authentication. The <a class="reference external" href="https://tools.ietf.org/html/rfc7519#section-4.1">claims</a> for the JWT are as follows:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="12%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Claim Name</th>
+<th class="head">Required?</th>
+<th class="head">Valid Value(s)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">iat</span></code></td>
+<td>Yes</td>
+<td>The &#8220;Issued At Time&#8221;, which is the time the token was issued, expressed in Unix time.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">iss</span></code></td>
+<td>Yes</td>
+<td>The issuer of the token. You should put your Stormpath API Key ID here.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">sub</span></code></td>
+<td>Yes</td>
+<td>The subject of the token. You should put your Stormpath Application resource&#8217;s href here.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cb_uri</span></code></td>
+<td>Yes</td>
+<td>The callback URI to use once the user takes an action on the ID Site or Identity provider. This must match a Authorized Callback URI on Application resource.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">jti</span></code></td>
+<td>Yes</td>
+<td>A universally unique identifier for the token. This can be generated using a GUID or UUID function of your choice.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">path</span></code></td>
+<td>No</td>
+<td>(ID Site only) The path on the ID Site that you want the user to land on. Use <code class="docutils literal"><span class="pre">/</span></code> for login page, <code class="docutils literal"><span class="pre">/#/register</span></code> for the sign up page, <code class="docutils literal"><span class="pre">/#/forgot</span></code> for the forgot password page, <code class="docutils literal"><span class="pre">/#/reset</span></code> for the password reset page.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">state</span></code></td>
+<td>No</td>
+<td>The state of the application that you need to pass through ID Site or the IdP back to your application through the callback. It is up to the developer to serialize/deserialize this value</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">organizationNameKey</span></code></td>
+<td>No</td>
+<td>The string representing the <code class="docutils literal"><span class="pre">nameKey</span></code> for an Organization that is an Account Store for your application. This is used for multitenant applications that use ID Site or SAML.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">showOrganizationField</span></code></td>
+<td>No</td>
+<td>(ID Site only) A boolean representing if the &#8220;Organization&#8221; field should show on the forms that ID Site renders.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="account-assertion-jwt">
+<span id="post-auth-jwt"></span><h5>Account Assertion JWT<a class="headerlink" href="#account-assertion-jwt" title="Permalink to this headline">¶</a></h5>
+<p>Once the user has been authenticated by ID Site or the SAML IdP, you will receive back a JWT response. The JWT contains the following information:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Claim Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">iss</span></code></td>
+<td>The issuer of the JWT. This will match your ID Site domain and can be used for additional validation of the JWT.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">sub</span></code></td>
+<td>The subject of the JWT. This will be an <code class="docutils literal"><span class="pre">href</span></code> for the Stormpath Account that signed up or logged into the ID Site / SAML IdP. This <code class="docutils literal"><span class="pre">href</span></code> can be queried by using the REST API to get more information about the Account.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">aud</span></code></td>
+<td>The audience of the JWT. This will match your API Key ID from Stormpath.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">exp</span></code></td>
+<td>The expiration time for the JWT in Unix time.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">iat</span></code></td>
+<td>The time at which the JWT was created, in Unix time.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">jti</span></code></td>
+<td>A one-time-use-token for the JWT. If you require additional security around the validation of the token, you can store the <code class="docutils literal"><span class="pre">jti</span></code> in your application to validate that a particular JWT has only been used once.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">state</span></code></td>
+<td>The state of your application, if you have chosen to have this passed back.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">status</span></code></td>
+<td>The status of the request from ID Site. Valid values for ID SIte are <code class="docutils literal"><span class="pre">AUTHENTICATED</span></code>, <code class="docutils literal"><span class="pre">LOGOUT</span></code>, or <code class="docutils literal"><span class="pre">REGISTERED</span></code>. For a SAML IdP the only possible <code class="docutils literal"><span class="pre">status</span></code> is <code class="docutils literal"><span class="pre">AUTHENTICATED</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </div>
 <div class="section" id="c-how-social-authentication-works">
 <span id="social-authn"></span><h2>c. How Social Authentication Works<a class="headerlink" href="#c-how-social-authentication-works" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="id2">
+<ul class="simple">
+<li><a class="reference internal" href="#i-google" id="id25">i. Google</a></li>
+<li><a class="reference internal" href="#ii-facebook" id="id26">ii. Facebook</a></li>
+<li><a class="reference internal" href="#iii-github" id="id27">iii. Github</a></li>
+<li><a class="reference internal" href="#iv-linkedin" id="id28">iv. LinkedIn</a></li>
+</ul>
+</div>
 <p>Social authentication essentially means using the &#8220;Log in with x&#8221; button in your application, where &#8220;x&#8221; is a Social Login Provider of some kind. The Social Login Providers currently supported by Stormpath are:</p>
 <ul class="simple">
 <li>Google</li>
@@ -681,7 +843,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <li>Include the provider-specific logic that will access the social account (e.g. embed the appropriate link in your site that will send an authentication request to the social provider)</li>
 </ol>
 <div class="section" id="i-google">
-<h3>i. Google<a class="headerlink" href="#i-google" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id25">i. Google</a><a class="headerlink" href="#i-google" title="Permalink to this headline">¶</a></h3>
 <p>Before you integrate Google Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application in the <a class="reference external" href="https://console.developers.google.com/start">Google Developer Console</a></li>
@@ -760,7 +922,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </div>
 </div>
 <div class="section" id="ii-facebook">
-<h3>ii. Facebook<a class="headerlink" href="#ii-facebook" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id26">ii. Facebook</a><a class="headerlink" href="#ii-facebook" title="Permalink to this headline">¶</a></h3>
 <p>Before you integrate Facebook Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application on the <a class="reference external" href="https://developers.facebook.com/">Facebook Developer Site</a></li>
@@ -793,7 +955,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </div>
 <div class="section" id="step-3-access-an-account-with-facebook-tokens">
 <h4>Step 3: Access an Account with Facebook Tokens<a class="headerlink" href="#step-3-access-an-account-with-facebook-tokens" title="Permalink to this headline">¶</a></h4>
-<p>To access or create an Account in your new Facebook Directory, you need to gather a <strong>User Access Token</strong> from Facebook before submitting it to Stormpath. This is possible either by using a <a class="reference external" href="https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens">Facebook SDK Library</a>, or <a class="reference external" href="https://developers.facebook.com/tools/explorer">Facebook’s Graph Explorer</a> for testing.</p>
+<p>To access or create an Account in your new Facebook Directory, you need to gather a <strong>User Access Token</strong> from Facebook before submitting it to Stormpath. This is possible either by using a <a class="reference external" href="https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens">Facebook SDK Library</a>, or <a class="reference external" href="https://developers.facebook.com/tools/explorer/">Facebook’s Graph Explorer</a> for testing.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">It is required that your Facebook application requests the <code class="docutils literal"><span class="pre">email</span></code> scope from Facebook. If the access token does not grant <code class="docutils literal"><span class="pre">email</span></code> scope, you will not be able to get an Account with an access token. For more information about scopes please see <a class="reference external" href="https://developers.facebook.com/docs/facebook-login/permissions/">Permissions with Facebook Login</a>.</p>
@@ -815,7 +977,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </div>
 </div>
 <div class="section" id="iii-github">
-<h3>iii. Github<a class="headerlink" href="#iii-github" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id27">iii. Github</a><a class="headerlink" href="#iii-github" title="Permalink to this headline">¶</a></h3>
 <p>Before you integrate GitHub Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application in the <a class="reference external" href="https://developer.github.com/">GitHub Developer Site</a></li>
@@ -871,7 +1033,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </div>
 </div>
 <div class="section" id="iv-linkedin">
-<h3>iv. LinkedIn<a class="headerlink" href="#iv-linkedin" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id28">iv. LinkedIn</a><a class="headerlink" href="#iv-linkedin" title="Permalink to this headline">¶</a></h3>
 <p>Before you integrate LinkedIn Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application in the <a class="reference external" href="https://www.linkedin.com/secure/developer?newapp=">LinkedIn Developer Site</a></li>
@@ -929,12 +1091,22 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </div>
 <div class="section" id="d-authenticating-against-a-mirrored-ldap-directory">
 <span id="mirror-dir-authn"></span><h2>d. Authenticating Against a Mirrored LDAP Directory<a class="headerlink" href="#d-authenticating-against-a-mirrored-ldap-directory" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="id3">
+<ul class="simple">
+<li><a class="reference internal" href="#mirror-directories-and-ldap" id="id29">Mirror Directories and LDAP</a><ul>
+<li><a class="reference internal" href="#step-1-create-a-mirror-directory" id="id30">Step 1: Create a Mirror Directory</a></li>
+<li><a class="reference internal" href="#step-2-install-your-ldap-agent" id="id31">Step 2: Install your LDAP Agent</a></li>
+<li><a class="reference internal" href="#step-3-map-the-mirror-directory-as-an-account-store-for-your-application" id="id32">Step 3: Map the Mirror Directory as an Account Store for Your Application</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <p>This section assumes that you are already familiar both with <a class="reference internal" href="#how-login-works"><span>How Login Attempts Work in Stormpath</span></a> and the concept of Stormpath <a class="reference internal" href="004_accnt_mgmt.html#about-mirror-dir"><span>Mirror Directories</span></a> as well as how they are <a class="reference internal" href="004_accnt_mgmt.html#modeling-mirror-dirs"><span>modeled</span></a>.</p>
 <div class="section" id="mirror-directories-and-ldap">
-<h3>Mirror Directories and LDAP<a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id29">Mirror Directories and LDAP</a><a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
 <p>To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory, so it is recommended that you maintain a &#8220;master&#8221; Directory alongside your Mirror Directory. Furthermore, a successful user login is the recommended time to provision, link, and synchronize an Account in the Mirror Directory to your master Directory.</p>
 <div class="section" id="step-1-create-a-mirror-directory">
-<h4>Step 1: Create a Mirror Directory<a class="headerlink" href="#step-1-create-a-mirror-directory" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id30">Step 1: Create a Mirror Directory</a><a class="headerlink" href="#step-1-create-a-mirror-directory" title="Permalink to this headline">¶</a></h4>
 <p>HTTP POST a new Directory resource to the <code class="docutils literal"><span class="pre">/directories</span></code> endpoint. This Directory will contain a <a class="reference internal" href="reference.html#ref-provider"><span>Provider</span></a> resource with <code class="docutils literal"><span class="pre">providerId</span></code> set to <code class="docutils literal"><span class="pre">&quot;ldap&quot;</span></code>. This Provider resource will in turn contain an <a class="reference internal" href="reference.html#ref-ldap-agent"><span>LDAP Agent</span></a> object:</p>
 <div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
@@ -984,7 +1156,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p>For more information about all of these values, please see the Reference chapter <a class="reference internal" href="reference.html#ref-directory"><span>Directory</span></a> section.</p>
 </div>
 <div class="section" id="step-2-install-your-ldap-agent">
-<h4>Step 2: Install your LDAP Agent<a class="headerlink" href="#step-2-install-your-ldap-agent" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id31">Step 2: Install your LDAP Agent</a><a class="headerlink" href="#step-2-install-your-ldap-agent" title="Permalink to this headline">¶</a></h4>
 <p>Installing your Agent is done in three steps.</p>
 <p><strong>1. Download</strong></p>
 <p>Download your Agent by following the Download link on the Agent page in the Admin Console.</p>
@@ -1016,9 +1188,294 @@ C:\stormpath\agent\bin&gt;startup.bat
 <p>The Agent will start synchronizing immediately, pushing the configured data to Stormpath. You will see the synchronized user Accounts and Groups appear in the Stormpath Directory, and the Accounts will be able to log in to any Stormpath-enabled application that you assign. When the Agent detects local changes, additions or deletions to the mirrored Accounts or Groups, it will automatically propagate those changes to Stormpath.</p>
 </div>
 <div class="section" id="step-3-map-the-mirror-directory-as-an-account-store-for-your-application">
-<h4>Step 3: Map the Mirror Directory as an Account Store for Your Application<a class="headerlink" href="#step-3-map-the-mirror-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id32">Step 3: Map the Mirror Directory as an Account Store for Your Application</a><a class="headerlink" href="#step-3-map-the-mirror-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
 <p>Creating an Account Store Mapping between your new Mirror Directory and your Stormpath Application can be done through the REST API, as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
 <p>From this point on, any time a user logs in to your Application, their Account will be provisioned into Stormpath, as detailed above in <a class="reference internal" href="#non-cloud-login"><span>How Login Works with Mirrored and Social Directories</span></a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="e-authenticating-against-a-saml-directory">
+<span id="saml-authn"></span><h2>e. Authenticating Against a SAML Directory<a class="headerlink" href="#e-authenticating-against-a-saml-directory" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="id4">
+<ul class="simple">
+<li><a class="reference internal" href="#stormpath-as-a-service-provider" id="id33">Stormpath as a Service Provider</a></li>
+<li><a class="reference internal" href="#configuring-stormpath-as-a-service-provider" id="id34">Configuring Stormpath as a Service Provider</a></li>
+<li><a class="reference internal" href="#configure-saml-assertion-mapping" id="id35">Configure SAML Assertion Mapping</a></li>
+<li><a class="reference internal" href="#the-stormpath-saml-flow" id="id36">The Stormpath SAML Flow</a></li>
+</ul>
+</div>
+<p>SAML is an XML-based standard for exchanging authentication and authorization data between security domains. Stormpath enables you to allow customers to log-in by authenticating with an external SAML Identity Provider.</p>
+<div class="section" id="stormpath-as-a-service-provider">
+<h3><a class="toc-backref" href="#id33">Stormpath as a Service Provider</a><a class="headerlink" href="#stormpath-as-a-service-provider" title="Permalink to this headline">¶</a></h3>
+<p>The specific use case that Stormpath supports is user-initiated single sign-on. In this scenario, a user requests a protected resource (e.g. your application). Your application, with the help of Stormpath, then confirms the users identity in order to determine whether they are able to access the resource. In SAML terminology, the user is the <strong>User Agent</strong>, your application (along with Stormpath) is the <strong>Service Provider</strong>, and the third-party SAML authentication site is the <strong>Identity Provider</strong> or <strong>IdP</strong>.</p>
+<p>The broad strokes of the process are as follows:</p>
+<ol class="arabic simple">
+<li>User Agent requests access from Service Provider</li>
+<li>Service Provider responds with redirect to Identity Provider</li>
+<li>Identity Provider authenticates the user</li>
+<li>Identity provider redirects user back to Service Provider along with SAML assertions.</li>
+<li>Service Provider receives SAML assertions and either creates or retrieves Account information</li>
+</ol>
+<p>Just like with Mirror and Social Directories, the user information that is returned from the IdP is used by Stormpath to either identify an existing Account resource, or create a new one. In the case of new Account creation, Stormpath will map the information in the response onto its own resources. In this section we will walk you through the process of configuring your SAML Directory, as well as giving you an overview of how the SAML Authentication process works.</p>
+</div>
+<div class="section" id="configuring-stormpath-as-a-service-provider">
+<span id="saml-configuration"></span><h3><a class="toc-backref" href="#id34">Configuring Stormpath as a Service Provider</a><a class="headerlink" href="#configuring-stormpath-as-a-service-provider" title="Permalink to this headline">¶</a></h3>
+<p>Configuration is stored in the Directory&#8217;s <a class="reference internal" href="reference.html#ref-provider"><span>Provider resource</span></a> as well as in the <a class="reference internal" href="reference.html#ref-application"><span>Application</span></a>. Both of these resources must also be linked with an <a class="reference internal" href="reference.html#ref-account-store-mapping"><span>Account Store Mapping</span></a>. Here we will explain to you the steps that are required to configure Stormpath as a SAML Service Provider.</p>
+<div class="section" id="step-1-gather-idp-data">
+<h4>Step 1: Gather IDP Data<a class="headerlink" href="#step-1-gather-idp-data" title="Permalink to this headline">¶</a></h4>
+<p>You will need the following information from your IdP:</p>
+<ul class="simple">
+<li><strong>SSO Login URL</strong> - The URL at the IdP to which SAML authentication requests should be sent. This is often called an &#8220;SSO URL&#8221;, &#8220;Login URL&#8221; or &#8220;Sign-in URL&#8221;.</li>
+<li><strong>SSO Logout URL</strong> - The URL at the IdP to which SAML logout requests should be sent. This is often called a &#8220;Logout URL&#8221;, &#8220;Global Logout URL&#8221; or &#8220;Single Logout URL&#8221;.</li>
+<li><strong>Signing Cert</strong> - The IdP will digitally sign auth assertions and Stormpath will need to validate the signature.  This will usually be in .pem or .crt format, but Stormpath requires the text value.</li>
+<li><strong>Signing Algorithm</strong> - You will need the name of the signing algorithm that your IdP uses. It will be either &#8220;RSA-SHA256&#8221; or &#8220;RSA-SHA1&#8221;.</li>
+</ul>
+</div>
+<div class="section" id="step-2-configure-your-saml-directory">
+<h4>Step 2: Configure Your SAML Directory<a class="headerlink" href="#step-2-configure-your-saml-directory" title="Permalink to this headline">¶</a></h4>
+<p>Input the data you gathered in Step 1 above into your Directory&#8217;s Provider resource:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories/$DIRECTORY_ID/provider</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;ssoLoginUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;https://yourIdp.com/saml2/sso/login&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ssoLogoutUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;https://yourIdp.com/saml2/sso/logout&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;encodedX509SigningCert&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;-----BEGIN CERTIFICATE-----</span>
+<span class="nt">           ...Certificate goes here...</span>
+<span class="nt">           -----END CERTIFICATE-----</span>
+<span class="nt">          &quot;</span>
+      <span class="p">},</span>
+  <span class="nt">&quot;requestSignatureAlgorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;RSA-SHA256&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-3-configure-your-service-provider-in-your-identity-provider">
+<span id="configure-sp-in-idp"></span><h4>Step 3: Configure Your Service Provider in Your Identity Provider<a class="headerlink" href="#step-3-configure-your-service-provider-in-your-identity-provider" title="Permalink to this headline">¶</a></h4>
+<p>Next you will have to configure your Stormpath-powered application as a Service Provider in your Identity Provider. In order to retrieve the required values, simply send a GET to the <code class="docutils literal"><span class="pre">serviceProviderMetadata</span></code> link found in your Directory&#8217;s Provider object.</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/v1/samlServiceProviderMetadatas/$METADATA_ID&quot;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/xml</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This will return XML by default, but you can also specify <code class="docutils literal"><span class="pre">application/json</span></code> if you&#8217;d like to receive JSON instead.</p>
+</div>
+<p><strong>Example XML</strong></p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span>
+<span class="nt">&lt;md:EntityDescriptor</span> <span class="na">xmlns:md=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:metadata&quot;</span> <span class="na">entityID=</span><span class="s">&quot;urn:stormpath:directory:5rHYCSu9IjzKz5pkyId5eR:provider:sp&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;md:SPSSODescriptor</span> <span class="na">protocolSupportEnumeration=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:protocol&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;md:KeyDescriptor</span> <span class="na">use=</span><span class="s">&quot;signing&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;ds:KeyInfo</span> <span class="na">xmlns:ds=</span><span class="s">&quot;http://www.w3.org/2000/09/xmldsig#&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;ds:X509Data&gt;</span>
+                    <span class="nt">&lt;ds:X509Certificate&gt;</span>MIIC2DCCAcCgAwIBAgIRAMExAMPLE<span class="nt">&lt;/ds:X509Certificate&gt;</span>
+                <span class="nt">&lt;/ds:X509Data&gt;</span>
+            <span class="nt">&lt;/ds:KeyInfo&gt;</span>
+        <span class="nt">&lt;/md:KeyDescriptor&gt;</span>
+        <span class="nt">&lt;md:NameIDFormat&gt;</span>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress<span class="nt">&lt;/md:NameIDFormat&gt;</span>
+        <span class="nt">&lt;md:AssertionConsumerService</span> <span class="na">Binding=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST&quot;</span> <span class="na">Location=</span><span class="s">&quot;http://yourapp.com/v1/directories/5rHYCSu9IjzKz5pkyId5eR/saml/sso/post&quot;</span> <span class="na">index=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/md:SPSSODescriptor&gt;</span>
+<span class="nt">&lt;/md:EntityDescriptor&gt;</span>
+</pre></div>
+</div>
+<p><strong>Example JSON</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;http://yourapp.com/v1/samlServiceProviderMetadatas/173pHdbJ96DpPeuMqaOMQZ&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-12-09T19:22:10.033Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-12-09T19:22:10.033Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;entityId&quot;</span><span class="p">:</span><span class="s2">&quot;urn:stormpath:directory:15iM83Y77qIIviKlTzGqjX:provider:sp&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;assertionConsumerServicePostEndpoint&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;http://yourapp.com/v1/directories/15iM83Y77qIIviKlTzGqjX/saml/sso/post&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;x509SigningCert&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;http://yourapp.com/v1/x509certificates/1712LVrz0fNSMk2y20EzfL&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>From this metadata, you will need two values:</p>
+<ul class="simple">
+<li><strong>Assertion Consumer Service URL</strong>: This is the location the IdP will send its response to.</li>
+<li><strong>X509 Signing Certificate</strong>: The certificate that is used to sign the requests sent to the IdP. If you retrieve XML, the certificate will be embedded. If you retrieve JSON, you&#8217;ll have to follow a further <code class="docutils literal"><span class="pre">/x509certificates</span></code> link to retrieve it.</li>
+</ul>
+<p>You will also need two other values, which will always be the same:</p>
+<ul class="simple">
+<li><strong>SAML Request Binding:</strong> Set to <code class="docutils literal"><span class="pre">HTTP-Redirect</span></code>.</li>
+<li><strong>SAML Response Binding:</strong> Set to <code class="docutils literal"><span class="pre">HTTP-Post</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="step-4-configure-your-application">
+<h4>Step 4: Configure Your Application<a class="headerlink" href="#step-4-configure-your-application" title="Permalink to this headline">¶</a></h4>
+<p>The Stormpath <a class="reference internal" href="reference.html#ref-application"><span>Application</span></a> Resource has two parts that are relevant to SAML:</p>
+<ul class="simple">
+<li>an <code class="docutils literal"><span class="pre">authorizedCallbackUri</span></code> Array that defines the authorized URIs that the IdP can return your user to. These should be URIs that you host yourself.</li>
+<li>an embedded <code class="docutils literal"><span class="pre">samlPolicy</span></code> object that contains information about the SAML flow configuration and endpoints.</li>
+</ul>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories/$DIRECTORY_ID/provider</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;authorizedCallbackUris&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;https://myapplication.com/whatever/callback&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;https://myapplication.com/whatever/callback2&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-5-add-the-saml-directory-as-an-account-store">
+<h4>Step 5: Add the SAML Directory as an Account Store<a class="headerlink" href="#step-5-add-the-saml-directory-as-an-account-store" title="Permalink to this headline">¶</a></h4>
+<p>Now you last thing you have to do is map the new Directory to your Application with an Account Store Mapping as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
+</div>
+</div>
+<div class="section" id="configure-saml-assertion-mapping">
+<span id="saml-mapping"></span><h3><a class="toc-backref" href="#id35">Configure SAML Assertion Mapping</a><a class="headerlink" href="#configure-saml-assertion-mapping" title="Permalink to this headline">¶</a></h3>
+<p>The Identity Provider&#8217;s SAML response contains assertions about the user&#8217;s identity, which Stormpath can use to create and populate a new Account resource.</p>
+<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;saml:AttributeStatement&gt;</span>
+  <span class="nt">&lt;saml:Attribute</span> <span class="na">Name=</span><span class="s">&quot;uid&quot;</span> <span class="na">NameFormat=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:basic&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;saml:AttributeValue</span> <span class="na">xsi:type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>test<span class="nt">&lt;/saml:AttributeValue&gt;</span>
+  <span class="nt">&lt;/saml:Attribute&gt;</span>
+  <span class="nt">&lt;saml:Attribute</span> <span class="na">Name=</span><span class="s">&quot;mail&quot;</span> <span class="na">NameFormat=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:basic&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;saml:AttributeValue</span> <span class="na">xsi:type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>jane@example.com<span class="nt">&lt;/saml:AttributeValue&gt;</span>
+  <span class="nt">&lt;/saml:Attribute&gt;</span>
+    <span class="nt">&lt;saml:Attribute</span> <span class="na">Name=</span><span class="s">&quot;location&quot;</span> <span class="na">NameFormat=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:basic&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;saml:AttributeValue</span> <span class="na">xsi:type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>Tampa, FL<span class="nt">&lt;/saml:AttributeValue&gt;</span>
+  <span class="nt">&lt;/saml:Attribute&gt;</span>
+<span class="nt">&lt;/saml:AttributeStatement&gt;</span>
+</pre></div>
+</div>
+<p>The Attribute Assertions (<code class="docutils literal"><span class="pre">&lt;saml:AttributeStatement&gt;</span></code>) are brought into Stormpath and become Account and customData attributes.</p>
+<p>SAML Assertion mapping is defined in an <strong>attributeStatementMappingRules</strong> object found inside the Directory&#8217;s Provider object, or directly: <code class="docutils literal"><span class="pre">/v1/attributeStatementMappingRules/$RULES_ID</span></code>.</p>
+<div class="section" id="mapping-rules">
+<h4>Mapping Rules<a class="headerlink" href="#mapping-rules" title="Permalink to this headline">¶</a></h4>
+<p>The rules have three different components:</p>
+<ul class="simple">
+<li><strong>name</strong>: The SAML Attribute name</li>
+<li><strong>nameFormat</strong>: The name format for this SAML Attribute, expressed as a Uniform Resource Name (URN).</li>
+<li><strong>accountAttributes</strong>: This is an array of Stormpath Account or customData (<code class="docutils literal"><span class="pre">customData.$KEY_NAME</span></code>) attributes that will map to this SAML Attribute.</li>
+</ul>
+<p><strong>Example Rule</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;uid&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;nameFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:basic&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:[</span>
+    <span class="s2">&quot;username&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The rule expressed here is as follows:</p>
+<ul class="simple">
+<li>A SAML Assertion with the name <code class="docutils literal"><span class="pre">uid</span></code> AND</li>
+<li>the name format <code class="docutils literal"><span class="pre">someurn</span></code></li>
+<li>maps to the Account Attribute <code class="docutils literal"><span class="pre">username</span></code>.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is possible to specify only a <code class="docutils literal"><span class="pre">name</span></code> or <code class="docutils literal"><span class="pre">nameFormat</span></code> in your rule, instead of both.</p>
+</div>
+<p>In order to create the mapping rules, we simply send the following POST:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories/$DIRECTORY_ID/provider</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;attributeStatementMappingRules&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;uid&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;username&quot;</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;mail&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;email&quot;</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;location&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;customData.location&quot;</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now that we&#8217;ve configured everything, we can take a look at what the actual SAML authentication flow looks like.</p>
+</div>
+</div>
+<div class="section" id="the-stormpath-saml-flow">
+<h3><a class="toc-backref" href="#id36">The Stormpath SAML Flow</a><a class="headerlink" href="#the-stormpath-saml-flow" title="Permalink to this headline">¶</a></h3>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="_images/SamlFlow.png"><img alt="SAML Flow" src="_images/SamlFlow.png" /></a>
+<p class="caption"><span class="caption-text"><em>The SAML Flow</em></span></p>
+</div>
+<div class="section" id="step-0-generate-a-jwt">
+<h4>Step 0: Generate a JWT<a class="headerlink" href="#step-0-generate-a-jwt" title="Permalink to this headline">¶</a></h4>
+<p>The user agent will request to login with SAML. You will need to generate a JWT using <a class="reference internal" href="#about-jwt"><span>an approved JWT library</span></a>.</p>
+</div>
+<div class="section" id="step-1-initiate-the-flow">
+<h4>Step 1: Initiate the flow<a class="headerlink" href="#step-1-initiate-the-flow" title="Permalink to this headline">¶</a></h4>
+<p>Once the JWT is generated by your server, you initiate the SAML flow by sending a GET to the value found in the <code class="docutils literal"><span class="pre">ssoInitiationEndpoint</span></code>, which is <code class="docutils literal"><span class="pre">/v1/applications/$APPLICATION_ID/saml/sso/idpRedirect</span></code>. To this you add a JWT Access Token, so the full request looks like this:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/v1/applications/$APPLICATION_ID/saml/sso/idpRedirect?accessToken=$GENERATED_JWT</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+</pre></div>
+</div>
+<p>Additionally, you can specify some optional parameters to allow for greater control over which Account Store you would like to authenticate.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Parameter</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">accountStore.href</span></code></td>
+<td>Specifies a link to an Account Store to attempt to authenticate against.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">accountStore.nameKey</span></code></td>
+<td>Specifies the Name Key of an Account Store to try to authenticate against.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">callbackUri</span></code></td>
+<td>Specifies one of the Application&#8217;s Authorized Callback URIs to use. Otherwise the flow will default to the first Callback URI that does not contain a wildcard.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">state</span></code></td>
+<td>Any state that the developer would like persisted through the request. It is up to the developer to serialize and deserialize this state.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="step-2-redirection">
+<h4>Step 2: Redirection<a class="headerlink" href="#step-2-redirection" title="Permalink to this headline">¶</a></h4>
+<p>The GET sent to the Application&#8217;s <code class="docutils literal"><span class="pre">/saml/sso/idpRedirect</span></code> endpoint will result in a redirection to the IdP Login URL that you specified during configuration:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Redirect</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://idp.whatever.com/saml2/sso/login?SAMLRequest=fZFfa8IwFMXfBb9DyXvaJtZ1BqsURRC2Mabbw95ivc5Am3TJrXPffmmLY3%2F...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-3-identity-provider-login">
+<h4>Step 3: Identity Provider Login<a class="headerlink" href="#step-3-identity-provider-login" title="Permalink to this headline">¶</a></h4>
+<p>At this point the IdP will render their login page, and the user will authenticate. Once authentication is successful, the IdP will respond to Stormpath. At this point, an Account will either be retrieved (if it already exists) or created (if it doesn&#8217;t exist already).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Account matching is done on the basis of the returned email address.</p>
+</div>
+<p>The user will now be directed back to your Application along with a JSON Web Token.</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Redirect</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://myapplication.com/whatever/callback?jwtResponse=$RESPONSE_JWT</span>
+</pre></div>
+</div>
+<p>At this point your user is authenticated and able to use your app.</p>
 </div>
 </div>
 </div>
@@ -1062,7 +1519,7 @@ C:\stormpath\agent\bin&gt;startup.bat
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.1',
+            VERSION:'V1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
