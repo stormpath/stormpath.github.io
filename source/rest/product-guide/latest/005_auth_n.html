@@ -194,7 +194,7 @@
   <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;basic&quot;</span><span class="p">,</span>
   <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Zmlyc3Qyc2hvb3Q6Q2hhbmdlK21lMQ==&quot;</span><span class="p">,</span>
   <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
-     <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/2SKhstu8Plaekcai8lghrp&quot;</span>
+     <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/2SKhstu8Plaekcaexample&quot;</span>
    <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -1233,21 +1233,20 @@ C:\stormpath\agent\bin&gt;startup.bat
 </div>
 <div class="section" id="step-2-configure-your-saml-directory">
 <h4>Step 2: Configure Your SAML Directory<a class="headerlink" href="#step-2-configure-your-saml-directory" title="Permalink to this headline">¶</a></h4>
-<p>Input the data you gathered in Step 1 above into your Directory&#8217;s Provider resource:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories/$DIRECTORY_ID/provider</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<p>Input the data you gathered in Step 1 above into your Directory&#8217;s Provider resource, and then pass that along as part of the Directory creation HTTP POST:</p>
+<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
-  <span class="nt">&quot;ssoLoginUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;https://yourIdp.com/saml2/sso/login&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;ssoLogoutUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;https://yourIdp.com/saml2/sso/logout&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;encodedX509SigningCert&quot;</span><span class="p">:</span> <span class="p">{</span>
-          <span class="nt">&quot;-----BEGIN CERTIFICATE-----</span>
-<span class="nt">           ...Certificate goes here...</span>
-<span class="nt">           -----END CERTIFICATE-----</span>
-<span class="nt">          &quot;</span>
-      <span class="p">},</span>
-  <span class="nt">&quot;requestSignatureAlgorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;RSA-SHA256&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;My SAML Directory&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;A Directory used for SAML Authorization&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;provider&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;ssoLoginUrl&quot;</span><span class="p">:</span><span class="s2">&quot;https://yourIdp.com/saml2/sso/login&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ssoLogoutUrl&quot;</span><span class="p">:</span><span class="s2">&quot;https://yourIdp.com/saml2/sso/logout&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;encodedX509SigningCert&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN CERTIFICATE-----\n...Certificate goes here...\n-----END CERTIFICATE-----&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;requestSignatureAlgorithm&quot;</span><span class="p">:</span><span class="s2">&quot;RSA-SHA256&quot;</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
