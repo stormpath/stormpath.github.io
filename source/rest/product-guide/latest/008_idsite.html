@@ -271,7 +271,7 @@
 </div>
 <div class="section" id="d-using-id-site-via-rest-api">
 <span id="idsite-with-rest"></span><h2>d. Using ID Site Via REST API<a class="headerlink" href="#d-using-id-site-via-rest-api" title="Permalink to this headline">¶</a></h2>
-<p>The Stormpath SDKs help developers quickly integrate communication from Stormpath&#8217;s ID Site to their application. However, it is possible to use ID Site without an Stormpath SDK using the REST API. To use ID Site with the REST API, it is required to understand how to <a class="reference internal" href="005_auth_n.html#about-jwt"><span>generate and sign JSON Web Tokens (JWT)</span></a>.</p>
+<p>The Stormpath SDKs help developers quickly integrate communication from Stormpath&#8217;s ID Site to their application. However, it is possible to use ID Site without an Stormpath SDK using the REST API.</p>
 <p>To use ID Site without an Stormpath SDK there are two flows that need to be implemented:</p>
 <ol class="arabic simple">
 <li>Getting a user to ID Site</li>
@@ -289,12 +289,107 @@
 <li>Your server responds with an HTTP 302 which redirects the user to the ID Site SSO endpoint</li>
 <li>Stormpath will redirect the user to your ID Site</li>
 </ol>
+<div class="section" id="idsite-auth-jwt">
+<span id="id-site-authentication-jwt"></span><h4>ID Site Authentication JWT<a class="headerlink" href="#idsite-auth-jwt" title="Permalink to this headline">¶</a></h4>
+<p>First you will have to generate a JWT. Below are language specific JWT libraries that Stormpath has sanity tested with ID Site.</p>
+<ul class="simple">
+<li>.NET JWT - <a class="reference external" href="https://github.com/jwt-dotnet/jwt">https://github.com/jwt-dotnet/jwt</a></li>
+<li>Ruby JWT - <a class="reference external" href="https://github.com/jwt/ruby-jwt">https://github.com/jwt/ruby-jwt</a></li>
+<li>Go JWT - <a class="reference external" href="https://github.com/dgrijalva/jwt-go">https://github.com/dgrijalva/jwt-go</a></li>
+<li>PHP JWT - <a class="reference external" href="https://github.com/firebase/php-jwt">https://github.com/firebase/php-jwt</a></li>
+<li>Python JWT - <a class="reference external" href="https://github.com/jpadilla/pyjwt">https://github.com/jpadilla/pyjwt</a></li>
+<li>Java JWT - <a class="reference external" href="https://github.com/jwtk/jjwt">https://github.com/jwtk/jjwt</a></li>
+<li>Node JWT - <a class="reference external" href="https://github.com/jwtk/njwt">https://github.com/jwtk/njwt</a></li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This key must be signed with your API Key Secret.</p>
+</div>
+<p>The token itself will contain two parts, a Header and a Body that itself contains claims. You will have to add all of these into the JWT that you generate:</p>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="12%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Header Name</th>
+<th class="head">Required?</th>
+<th class="head">Valid Value(s)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">kid</span></code></td>
+<td>Yes</td>
+<td>Your Stormpath API Key ID.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">alg</span></code></td>
+<td>Yes</td>
+<td>The algorithm that was used to sign this key. The only valid value is <code class="docutils literal"><span class="pre">HS256</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<p>The <a class="reference external" href="https://tools.ietf.org/html/rfc7519#section-4.1">claims</a> for the JWT body are as follows:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="12%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Claim Name</th>
+<th class="head">Required?</th>
+<th class="head">Valid Value(s)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">iat</span></code></td>
+<td>Yes</td>
+<td>The &#8220;Issued At Time&#8221;, which is the time the token was issued, expressed in Unix time.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">iss</span></code></td>
+<td>Yes</td>
+<td>The issuer of the token. You should put your Stormpath API Key ID here.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">sub</span></code></td>
+<td>Yes</td>
+<td>The subject of the token. You should put your Stormpath Application resource&#8217;s href here.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">cb_uri</span></code></td>
+<td>Yes</td>
+<td>The callback URI to use once the user takes an action on the ID Site. This must match a Authorized Callback URI on Application resource.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">jti</span></code></td>
+<td>Yes</td>
+<td>A universally unique identifier for the token. This can be generated using a GUID or UUID function of your choice.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">path</span></code></td>
+<td>No</td>
+<td>The path on the ID Site that you want the user to land on. Use <code class="docutils literal"><span class="pre">/</span></code> for login page, <code class="docutils literal"><span class="pre">/#/register</span></code> for the sign up page, <code class="docutils literal"><span class="pre">/#/forgot</span></code> for the forgot password page, <code class="docutils literal"><span class="pre">/#/reset</span></code> for the password reset page.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">state</span></code></td>
+<td>No</td>
+<td>The state of the application that you need to pass through ID Site back to your application through the callback. It is up to the developer to serialize/deserialize this value</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">organizationNameKey</span></code></td>
+<td>No</td>
+<td>The string representing the <code class="docutils literal"><span class="pre">nameKey</span></code> for an Organization that is an Account Store for your application. This is used for multitenant applications that use ID Site.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">showOrganizationField</span></code></td>
+<td>No</td>
+<td>A boolean representing if the &#8220;Organization&#8221; field should show on the forms that ID Site renders.</td>
+</tr>
+</tbody>
+</table>
 <p>Once the JWT is generated by your server, you must respond with or send the browser to:</p>
 <div class="highlight-python"><div class="highlight"><pre>HTTP/1.1 302 Found
 Location: https://api.stormpath.com/sso?jwtRequest=$GENERATED_JWT
 </pre></div>
 </div>
 <p>The Stormpath <code class="docutils literal"><span class="pre">/sso</span></code> endpoint will validate the JWT, and redirect the user to your ID Site.</p>
+</div>
 </div>
 <div class="section" id="handling-the-callback-to-your-application-from-id-site">
 <h3>2. Handling the Callback to your Application from ID Site<a class="headerlink" href="#handling-the-callback-to-your-application-from-id-site" title="Permalink to this headline">¶</a></h3>
@@ -303,6 +398,8 @@ Location: https://api.stormpath.com/sso?jwtRequest=$GENERATED_JWT
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">jwtResponse</span></code> represents a JWT that provides a signed security assertion about who the user is and what they did on ID Site.</p>
+<div class="section" id="id-site-assertion-jwt">
+<h4>ID Site Assertion JWT<a class="headerlink" href="#id-site-assertion-jwt" title="Permalink to this headline">¶</a></h4>
 <p>Before you trust any of the information in the JWT, you MUST:</p>
 <ul class="simple">
 <li>Validate the signature with your API Key Secret from Stormpath. This will prove that the information stored in the JWT has not been tampered with during transit.</li>
@@ -312,7 +409,72 @@ Location: https://api.stormpath.com/sso?jwtRequest=$GENERATED_JWT
 <p class="first admonition-title">Note</p>
 <p class="last">If you are using a library to generate a JWT, these usually have methods to help you validate the JWT. Some libraries will only validate the signature, but not the expiration time. Please review your JWT library to verify its capabilities.</p>
 </div>
+<p>The Header and Body claims found in this JWT are as follows:</p>
+<p><strong>Header</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="12%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Claim Name</th>
+<th class="head">Required?</th>
+<th class="head">Valid Value(s)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">typ</span></code></td>
+<td>Yes</td>
+<td>The type of token, which will be <code class="docutils literal"><span class="pre">JWT</span></code></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">alg</span></code></td>
+<td>Yes</td>
+<td>The algorithm that was used to sign this key. The only possible value is <code class="docutils literal"><span class="pre">HS256</span></code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Body</strong></p>
+<p>Once the user has been authenticated by ID Site or the SAML IdP, you will receive back a JWT response. The JWT contains the following information:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Claim Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">iss</span></code></td>
+<td>This will match your ID Site domain and can be used for additional validation of the JWT.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">sub</span></code></td>
+<td>The subject of the JWT. This will be an <code class="docutils literal"><span class="pre">href</span></code> for the Stormpath Account that signed up or logged into the ID Site / SAML IdP. This <code class="docutils literal"><span class="pre">href</span></code> can be queried by using the REST API to get more information about the Account.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">aud</span></code></td>
+<td>The audience of the JWT. This will match your API Key ID from Stormpath.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">exp</span></code></td>
+<td>The expiration time for the JWT in Unix time.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">iat</span></code></td>
+<td>The time at which the JWT was created, in Unix time.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">jti</span></code></td>
+<td>A one-time-use-token for the JWT. If you require additional security around the validation of the token, you can store the <code class="docutils literal"><span class="pre">jti</span></code> in your application to validate that a particular JWT has only been used once.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">state</span></code></td>
+<td>The state of your application, if you have chosen to have this passed back.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">status</span></code></td>
+<td>The status of the request. Valid values for ID Site are <code class="docutils literal"><span class="pre">AUTHENTICATED</span></code>, <code class="docutils literal"><span class="pre">LOGOUT</span></code>, or <code class="docutils literal"><span class="pre">REGISTERED</span></code>.</td>
+</tr>
+</tbody>
+</table>
 <p>Once the JWT is validated, you can read information about the user from the JWT. In some cases you may wish to exchange this JWT for a Stormpath OAuth 2.0 token.</p>
+</div>
 <div class="section" id="exchanging-the-id-site-jwt-for-an-oauth-token">
 <span id="idsite-jwt-to-oauth"></span><h4>Exchanging the ID Site JWT for an OAuth Token<a class="headerlink" href="#exchanging-the-id-site-jwt-for-an-oauth-token" title="Permalink to this headline">¶</a></h4>
 <p>For background information, please see <a class="reference internal" href="005_auth_n.html#token-authn"><span>b. How Token-Based Authentication Works</span></a>. In this situation, after the user has been authenticated via ID Site, a developer may want to control their authorization with an OAuth 2.0 Token. This is done by passing the JWT similar to the way we passed the user&#8217;s credentials as described in <a class="reference internal" href="005_auth_n.html#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token</span></a>. The difference is that instead of using the <code class="docutils literal"><span class="pre">password</span></code> grant type and passing credentials, we will use the <code class="docutils literal"><span class="pre">id_site_token</span></code> type and pass the JWT we got from the ID Site.</p>
@@ -353,7 +515,7 @@ Location: https://api.stormpath.com/sso/logout?jwtRequest=%GENERATED_JWT%
 <div class="section" id="resetting-your-password-with-id-site">
 <span id="idsite-password-reset"></span><h3>Resetting Your Password with ID Site<a class="headerlink" href="#resetting-your-password-with-id-site" title="Permalink to this headline">¶</a></h3>
 <p>The Account Management chapter has an overview of <a class="reference internal" href="004_accnt_mgmt.html#password-reset-flow"><span>Password Reset</span></a> in Stormpath. In that flow, a user chooses to reset their password, then receives an email with a link to a page on your application that allows them to set a new password. If you are using ID Site for login, then it stands to reason that you would want them to land on your ID Site for password reset as well. The issue here, however, is bridging the Password Reset Flow and the ID Site flow.</p>
-<p>Using a JWT library, you have to generate a new JWT, with all of <a class="reference internal" href="005_auth_n.html#init-jwt"><span>the usual required claims</span></a>. The <code class="docutils literal"><span class="pre">path</span></code> claim should be set to <code class="docutils literal"><span class="pre">/#/reset</span></code> and you will also have to include an additional claim: <code class="docutils literal"><span class="pre">sp_token</span></code>. This is the <code class="docutils literal"><span class="pre">sp_token</span></code> value that you will have received from the link that the user clicked in their password reset email. This JWT is then passed to the <code class="docutils literal"><span class="pre">/sso</span></code> endpoint (as described in Step 1 above), and the user is taken to the Password Reset page on your ID Site.</p>
+<p>Using a JWT library, you have to generate a new JWT, with all of <a class="reference internal" href="#idsite-auth-jwt"><span>the usual required claims</span></a>. The <code class="docutils literal"><span class="pre">path</span></code> claim should be set to <code class="docutils literal"><span class="pre">/#/reset</span></code> and you will also have to include an additional claim: <code class="docutils literal"><span class="pre">sp_token</span></code>. This is the <code class="docutils literal"><span class="pre">sp_token</span></code> value that you will have received from the link that the user clicked in their password reset email. This JWT is then passed to the <code class="docutils literal"><span class="pre">/sso</span></code> endpoint (as described in Step 1 above), and the user is taken to the Password Reset page on your ID Site.</p>
 </div>
 </div>
 </div>
