@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>6. Authorization With Stormpath &mdash; Stormpath 0.0.1 documentation</title>
+  <title>6. Authorization With Stormpath &mdash; Stormpath REST API V1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
     <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
   
-    <link rel="top" title="Stormpath 0.0.1 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath REST API V1 documentation" href="index.html"/>
         <link rel="next" title="7. Multi-Tenancy with Stormpath" href="007_multitenancy.html"/>
         <link rel="prev" title="5. Authenticating Accounts with Stormpath" href="005_auth_n.html"/> 
 
@@ -46,7 +46,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <a href="index.html" class="fa fa-home"> Stormpath</a>
+        <a href="index.html" class="fa fa-home"> Stormpath REST API</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -71,10 +71,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="003_quickstart.html">3. Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#retrieve-your-application">Retrieve Your Application</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#create-a-user-account">Create a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#authenticate-a-user-account">Authenticate a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#a-retrieve-your-application">a. Retrieve Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#b-create-a-user-account">b. Create a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#c-authenticate-a-user-account">c. Authenticate a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#d-next-steps">d. Next Steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="004_accnt_mgmt.html">4. Account Management</a><ul>
@@ -91,6 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#b-how-token-based-authentication-works">b. How Token-Based Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#c-how-social-authentication-works">c. How Social Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#d-authenticating-against-a-mirrored-ldap-directory">d. Authenticating Against a Mirrored LDAP Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#e-authenticating-against-a-saml-directory">e. Authenticating Against a SAML Directory</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">6. Authorization With Stormpath</a><ul>
@@ -136,7 +137,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Stormpath</a>
+        <a href="index.html">Stormpath REST API</a>
       </nav>
 
 
@@ -189,17 +190,23 @@
 <p>Now that we have some understanding of authorization roles in Stormpath, we can discussion another powerful use of Stormpath&#8217;s flexible data model.</p>
 <div class="section" id="application-wide-roles">
 <h4>Application-Wide Roles<a class="headerlink" href="#application-wide-roles" title="Permalink to this headline">¶</a></h4>
-<p>In a multi-tenant SaaS application, it is easy to imagine a scenario where you might want to have user Accounts segregated based upon the tenant that they belong to, while at the same time defining authorization based on broader, application-wide roles. In Stormpath, we recommended that you model every tenant that uses your Application using the <strong>Organization</strong> resource. The Organization resource is a container for Directory resources that makes it easier to model user bases with multiple tenants. For more information about this, please see the <a class="reference internal" href="007_multitenancy.html#multitenancy"><span>multi-tenancy chapter</span></a>.</p>
-<p>Alongside these Organizations, it is also possible to define application-wide Groups that allow for roles that span across Organizations, regardless of where a user&#8217;s Account is found.</p>
-<p>An example: So let&#8217;s assume that your &#8220;InterGalactic Banking&#8221; application must support multiple tenants for each of the bank&#8217;s subsidiaries (&#8220;Bank of Aargau&#8221;, &#8220;InterGalactic Bank of Kuat&#8221;, etc), each modeled as an Organization resource. Each of those subsidiaries, in turn, could contain a Directory resource for each of its branches, and each branch could have departmental Groups. However, you can still define roles that span the entire &#8220;InterGalactic Banking&#8221; application, regardless of which tenant (Organization), branch (Directory), or department (Group) the Account is associated with.</p>
-<p>For example, your Application could have &#8220;Teller&#8221; and &#8220;Bank Administrator&#8221; roles for all of your Application&#8217;s users. All this requires is that you create two Groups and assign the users you want to those Groups. Any Account, regardless of the Organization, Directory, or Group that they are assigned to, can also be assigned to the &#8220;Teller&#8221; or &#8220;Bank Administrator&#8221; Group.</p>
+<p>In a multi-tenant SaaS application, it is easy to imagine a scenario where you might want to have user Accounts segregated based upon the tenant that they belong to, while at the same time defining authorization based on broader, application-wide roles. In Stormpath, we recommended that you model every tenant that uses your Application using the <strong>Organization</strong> resource. The Organization resource is a container for Directory and Group resources that makes it easier to model user bases with multiple tenants. For more information about this, please see the <a class="reference internal" href="007_multitenancy.html#multitenancy"><span>multi-tenancy chapter</span></a>.</p>
+<p>Alongside these Organizations and their Account Stores, it is also possible to define application-wide Groups that allow for roles that span across Organizations, regardless of which tenant a user belongs to. We can illustrate this with an example.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This just one possible way of modeling a multi-tenant app with application-wide roles. Your approach may vary. If you need help with modeling your user base, feel free to contact us at <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a> and we will help as best as we can.</p>
+</div>
+<p>Let&#8217;s assume that your &#8220;InterGalactic Banking&#8221; application must support multiple tenants for each of the bank&#8217;s subsidiaries (&#8220;Bank of Aargau&#8221;, &#8220;InterGalactic Bank of Kuat&#8221;, etc), each modeled as an Organization resource.</p>
+<p>Each of these Organization resources has a Group as its Account Store. This means that all of the users for that Tenant will be represented by Account resources that are mapped to that subsidiary&#8217;s Organization as well as its Group.</p>
+<p>So we could have a user &#8220;Shmi&#8221;. This user is modeled inside Stormpath by an Account resource. She is an employee Bank of Aargau, so her Account resource is associated with the &#8220;Bank of Aargau&#8221; Organization and Group resources.</p>
+<p>Now our banking application has roles that we want applied across all of its tenants, such as &#8220;Employee&#8221;, &#8220;Customer&#8221;, and &#8220;System Administrator&#8221;. Modeling these can be accomplished by creating Groups for them, and then associating the appropriate Accounts with them. Since our Shmi user is a bank teller at the Bank of Aargau, we can associated her with the &#8220;Bank of Aargau&#8221; Group, as well as the &#8220;Bank Employee&#8221; Group. Each of these Groups could have its own defined permissions, and Shmi would inherit all of them.</p>
 <p>The actual authorization checks that you do here are irrelevant, so you can still use what we have called &#8220;simple authorization&#8221; with these roles, or you can use permission-based authorization checks.</p>
-<p>More information about the APIs that allow you to create, retrieve and search an Application&#8217;s groups can be found in the the <a class="reference internal" href="004_accnt_mgmt.html#group-mgmt"><span>Account Management section</span></a>, while more information about multi-Tenancy can be found <a class="reference internal" href="007_multitenancy.html#multitenancy"><span>in the multi-tenancy section</span></a>.</p>
+<p>More information about the APIs that allow you to create, retrieve and search an Application&#8217;s Groups can be found in the the <a class="reference internal" href="004_accnt_mgmt.html#group-mgmt"><span>Account Management section</span></a>, while more information about multi-Tenancy can be found <a class="reference internal" href="007_multitenancy.html#multitenancy"><span>in the multi-tenancy section</span></a>.</p>
 </div>
 </div>
 <div class="section" id="ii-using-permissions">
 <h3>ii. Using Permissions<a class="headerlink" href="#ii-using-permissions" title="Permalink to this headline">¶</a></h3>
-<p>If you have decided that your application requires the more advanced authorization modelling possible with permissions, then the first question with every permission is whether it will be tied to an Account or a Group.</p>
+<p>If you have decided that your application requires the more advanced authorization modeling possible with permissions, then the first question with every permission is whether it will be tied to an Account or a Group.</p>
 <p><strong>User-unique permissions:</strong> Any permissions that are are unique to a user should be tied to that user&#8217;s Account resource.</p>
 <p><strong>Role permissions:</strong> Permissions that will be shared among a number of users are better bundled together in roles, that is Groups, which many individual Accounts while be associated to.</p>
 <p>The next question is: what will your permissions look like?</p>
@@ -237,29 +244,29 @@
 </pre></div>
 </div>
 <p>This will return the Account resource along with the expanded customData:</p>
-<div class="highlight-json"><div class="highlight"><pre>HTTP/1.1 200 OK
-Location: https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe
-Content-Type: application/json;charset=UTF-8
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
-{
-  &quot;href&quot;: &quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe&quot;,
-  &quot;username&quot; : &quot;jlpicard&quot;,
-  &quot;email&quot; : &quot;capt@enterprise.com&quot;,
-  &quot;givenName&quot; : &quot;Jean-Luc&quot;,
-  &quot;surname&quot; : &quot;Picard&quot;,
-  &quot;customData&quot;: {
-    &quot;permissions&quot;: {
-      &quot;crew_quarters&quot;: &quot;&amp;nbsp;9-3601&quot;,
-      &quot;lock_override&quot;: &quot;all&quot;,
-      &quot;command_bridge&quot;: {
-        &quot;type&quot;: &quot;vessel:bridge&quot;,
-        &quot;identifier&quot;: &quot;NCC-1701-D&quot;,
-        &quot;action&quot;: &quot;lockout&quot;,
-        &quot;control_key&quot;: &quot;173467321476C32789777643T732V73117888732476789764376&quot;
-      }
-    }
-  }
-}
+<span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;username&quot;</span> <span class="p">:</span> <span class="s2">&quot;jlpicard&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;email&quot;</span> <span class="p">:</span> <span class="s2">&quot;capt@enterprise.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;givenName&quot;</span> <span class="p">:</span> <span class="s2">&quot;Jean-Luc&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;surname&quot;</span> <span class="p">:</span> <span class="s2">&quot;Picard&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;permissions&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;crew_quarters&quot;</span><span class="p">:</span> <span class="s2">&quot;&amp;nbsp;9-3601&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;lock_override&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;command_bridge&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;vessel:bridge&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;identifier&quot;</span><span class="p">:</span> <span class="s2">&quot;NCC-1701-D&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;lockout&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;control_key&quot;</span><span class="p">:</span> <span class="s2">&quot;173467321476C32789777643T732V73117888732476789764376&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>Or you can retrieve only the customData by sending a GET to:</p>
@@ -267,23 +274,23 @@ Content-Type: application/json;charset=UTF-8
 </pre></div>
 </div>
 <p>Which would return only the customData:</p>
-<div class="highlight-json"><div class="highlight"><pre>HTTP/1.1 200 OK
-Location: https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe/customData
-Content-Type: application/json;charset=UTF-8
+<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe/customData</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
-{
-  &quot;href&quot;: &quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe/customData&quot;
-  &quot;permissions&quot;: {
-    &quot;crew_quarters&quot;: &quot;&amp;nbsp;9-3601&quot;,
-    &quot;lock_override&quot;: &quot;all&quot;,
-    &quot;command_bridge&quot;: {
-      &quot;type&quot;: &quot;vessel:bridge&quot;,
-      &quot;identifier&quot;: &quot;NCC-1701-D&quot;,
-      &quot;action&quot;: &quot;lockout&quot;,
-      &quot;control_key&quot;: &quot;173467321476C32789777643T732V73117888732476789764376&quot;
-    }
-  }
-}
+<span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spExAMpLe/customData&quot;</span>
+  <span class="s2">&quot;permissions&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;crew_quarters&quot;</span><span class="p">:</span> <span class="s2">&quot;&amp;nbsp;9-3601&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;lock_override&quot;</span><span class="p">:</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;command_bridge&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;vessel:bridge&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;identifier&quot;</span><span class="p">:</span> <span class="s2">&quot;NCC-1701-D&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;action&quot;</span><span class="p">:</span> <span class="s2">&quot;lockout&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;control_key&quot;</span><span class="p">:</span> <span class="s2">&quot;173467321476C32789777643T732V73117888732476789764376&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -338,7 +345,7 @@ Content-Type: application/json;charset=UTF-8
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.1',
+            VERSION:'V1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

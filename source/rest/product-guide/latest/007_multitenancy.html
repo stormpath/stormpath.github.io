@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>7. Multi-Tenancy with Stormpath &mdash; Stormpath 0.0.1 documentation</title>
+  <title>7. Multi-Tenancy with Stormpath &mdash; Stormpath REST API V1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
     <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
   
-    <link rel="top" title="Stormpath 0.0.1 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath REST API V1 documentation" href="index.html"/>
         <link rel="next" title="8. Using ID Site" href="008_idsite.html"/>
         <link rel="prev" title="6. Authorization With Stormpath" href="006_auth_z.html"/> 
 
@@ -46,7 +46,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <a href="index.html" class="fa fa-home"> Stormpath</a>
+        <a href="index.html" class="fa fa-home"> Stormpath REST API</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -71,10 +71,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="003_quickstart.html">3. Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#retrieve-your-application">Retrieve Your Application</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#create-a-user-account">Create a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#authenticate-a-user-account">Authenticate a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#a-retrieve-your-application">a. Retrieve Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#b-create-a-user-account">b. Create a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#c-authenticate-a-user-account">c. Authenticate a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#d-next-steps">d. Next Steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="004_accnt_mgmt.html">4. Account Management</a><ul>
@@ -91,6 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#b-how-token-based-authentication-works">b. How Token-Based Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#c-how-social-authentication-works">c. How Social Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#d-authenticating-against-a-mirrored-ldap-directory">d. Authenticating Against a Mirrored LDAP Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#e-authenticating-against-a-saml-directory">e. Authenticating Against a SAML Directory</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="006_auth_z.html">6. Authorization With Stormpath</a><ul>
@@ -136,7 +137,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Stormpath</a>
+        <a href="index.html">Stormpath REST API</a>
       </nav>
 
 
@@ -178,14 +179,14 @@
 <div class="section" id="how-to-create-an-organization">
 <h4>How to Create an Organization<a class="headerlink" href="#how-to-create-an-organization" title="Permalink to this headline">¶</a></h4>
 <p>You can create an Organization in Stormpath by simply performing an HTTP POST to the <code class="docutils literal"><span class="pre">/v1/organizations</span></code> endpoint.</p>
-<p>So, if for example one of our application&#8217;s tenants was the Royal Bank of Canada, we could send the following POST:</p>
+<p>So, if for example one of our application&#8217;s tenants was the Bank of Aargau, we could send the following POST:</p>
 <div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/organizations</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
-  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Royal Bank of Canada&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;rbc&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bank of Aargau&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;boa&quot;</span><span class="p">,</span>
   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span>
 <span class="p">}</span>
 </pre></div>
@@ -199,8 +200,8 @@
   <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE&quot;</span><span class="p">,</span>
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-10-02T15:27:01.658Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-10-02T15:27:01.658Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Royal Bank of Canada&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;rbc&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bank of Aargau&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;boa&quot;</span><span class="p">,</span>
   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
   <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
   <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -218,12 +219,12 @@
     <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE/accounts&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;tenant&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgDn9R91R&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgexAMPLE&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Notice here that both the Default Account Store and Group Store are blank which means that Groups and Accounts added to the Organization (e.g. A POST to <code class="docutils literal"><span class="pre">/v1/organizations/$ORGANIZATION_ID/groups</span></code>) would fail until a default Account Store is added.</p>
+<p>Notice here that both the Default Account Store and Group Store are <code class="docutils literal"><span class="pre">null</span></code> which means that Groups and Accounts added to the Organization (e.g. A POST to <code class="docutils literal"><span class="pre">/v1/organizations/$ORGANIZATION_ID/groups</span></code>) would fail until a default Account Store is added.</p>
 </div>
 <div class="section" id="adding-an-account-store-to-an-organization">
 <h4>Adding an Account Store to an Organization<a class="headerlink" href="#adding-an-account-store-to-an-organization" title="Permalink to this headline">¶</a></h4>
@@ -238,14 +239,14 @@
     <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/2jw4Kslj97zYjYREXaMPLe&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/2SKhstu8Plaekcaexample&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>These two attributes, <code class="docutils literal"><span class="pre">organization</span></code> and <code class="docutils literal"><span class="pre">accountStore</span></code> are required, though you may add some optional attributes as well:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">listIndex</span></code>: Represents the priority in whicch this accountStore will be consulted by the Organization during an authentication attempt. This is a zero-based index, meaning that an Account Store at <code class="docutils literal"><span class="pre">listIndex</span></code> of 0 will be consulted first, followed by the Account Store at listIndex 1, etc. Setting a negative value will default the value to 0, placing it first in the list. A listIndex of larger than the current list size will place the mapping at the end of the list and then default the value to (list size – 1).</li>
+<li><code class="docutils literal"><span class="pre">listIndex</span></code>: Represents the priority in which this accountStore will be consulted by the Organization during an authentication attempt. This is a zero-based index, meaning that an Account Store at <code class="docutils literal"><span class="pre">listIndex</span></code> of 0 will be consulted first, followed by the Account Store at listIndex 1, etc. Setting a negative value will default the value to 0, placing it first in the list. A listIndex of larger than the current list size will place the mapping at the end of the list and then default the value to (list size – 1).</li>
 <li><code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code>: A <code class="docutils literal"><span class="pre">true</span></code> value indicates that new Accounts created by the Organization’s <code class="docutils literal"><span class="pre">/accounts</span></code> endpoint will be automatically saved to this mapping’s Directory or Group.</li>
 <li><code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code>: A <code class="docutils literal"><span class="pre">true</span></code> value indicates that new Groups created by the Organization’s <code class="docutils literal"><span class="pre">/groups</span></code> endpoint will be automatically saved to this mapping’s Directory. Note that a <code class="docutils literal"><span class="pre">true</span></code> value will only be valid here if the accountStore is a Directory.</li>
 </ul>
@@ -259,7 +260,7 @@
     <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/2jw4Kslj97zYjYREXaMPLe&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/2SKhstu8Plaekcaexample&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;isDefaultAccountStore&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
   <span class="nt">&quot;isDefaultGroupStore&quot;</span><span class="p">:</span><span class="kc">true</span>
@@ -267,22 +268,22 @@
 </pre></div>
 </div>
 <p>Which would result in the following <code class="docutils literal"><span class="pre">201</span> <span class="pre">Created</span></code> response:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
-<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/organizationAccountStoreMappings/3e9cNxhX8abxmPWexAMPle&quot;</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+<div class="highlight-http"><div class="highlight"><pre>HTTP/1.1 201 Created
+Location: https://api.stormpath.com/v1/organizationAccountStoreMappings/3e9cNxhX8abxmPWexAMPle&quot;
+Content-Type: application/json;charset=UTF-8
 
-<span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizationAccountStoreMappings/3e9cNxhX8abxmPWexAMPle&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;listIndex&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nt">&quot;isDefaultAccountStore&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-  <span class="nt">&quot;isDefaultGroupStore&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-  <span class="nt">&quot;organization&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/7Fg2qiGIv8vEjTKHddd0mT&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+{
+  &quot;href&quot;: &quot;https://api.stormpath.com/v1/organizationAccountStoreMappings/3e9cNxhX8abxmPWexAMPle&quot;,
+  &quot;listIndex&quot;: 0,
+  &quot;isDefaultAccountStore&quot;: true,
+  &quot;isDefaultGroupStore&quot;: true,
+  &quot;organization&quot;: {
+    &quot;href&quot;: &quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE&quot;
+  },
+  &quot;accountStore&quot;: {
+    &quot;href&quot;: &quot;https://api.stormpath.com/v1/groups/2SKhstu8Plaekcaexample
+  }
+}
 </pre></div>
 </div>
 <p>So our Organization now has an associated Directory which can be used as an Account Store to add new Accounts and Groups. To enable login for the Accounts in this Organization, we must now map the Organization to an Application.</p>
@@ -350,7 +351,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.1',
+            VERSION:'V1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

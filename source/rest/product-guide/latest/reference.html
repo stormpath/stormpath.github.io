@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>REST API Reference &mdash; Stormpath 0.0.1 documentation</title>
+  <title>REST API Reference &mdash; Stormpath REST API V1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
     <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
   
-    <link rel="top" title="Stormpath 0.0.1 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath REST API V1 documentation" href="index.html"/>
         <link rel="prev" title="8. Using ID Site" href="008_idsite.html"/> 
 
   
@@ -45,7 +45,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-nav-search">
-        <a href="index.html" class="fa fa-home"> Stormpath</a>
+        <a href="index.html" class="fa fa-home"> Stormpath REST API</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -70,10 +70,10 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="003_quickstart.html">3. Quickstart</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#retrieve-your-application">Retrieve Your Application</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#create-a-user-account">Create a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#authenticate-a-user-account">Authenticate a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#next-steps">Next Steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#a-retrieve-your-application">a. Retrieve Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#b-create-a-user-account">b. Create a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#c-authenticate-a-user-account">c. Authenticate a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#d-next-steps">d. Next Steps</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="004_accnt_mgmt.html">4. Account Management</a><ul>
@@ -90,6 +90,7 @@
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#b-how-token-based-authentication-works">b. How Token-Based Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#c-how-social-authentication-works">c. How Social Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#d-authenticating-against-a-mirrored-ldap-directory">d. Authenticating Against a Mirrored LDAP Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#e-authenticating-against-a-saml-directory">e. Authenticating Against a SAML Directory</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="006_auth_z.html">6. Authorization With Stormpath</a><ul>
@@ -135,7 +136,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">Stormpath</a>
+        <a href="index.html">Stormpath REST API</a>
       </nav>
 
 
@@ -180,7 +181,7 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#rest-error-responses" id="id47">REST Error Responses</a></li>
-<li><a class="reference internal" href="#collection-resources" id="id48">Collection Resources</a><ul>
+<li><a class="reference internal" href="#collection-resource" id="id48">Collection Resource</a><ul>
 <li><a class="reference internal" href="#pagination" id="id49">Pagination</a></li>
 <li><a class="reference internal" href="#sorting" id="id50">Sorting</a></li>
 <li><a class="reference internal" href="#search" id="id51">Search</a></li>
@@ -192,9 +193,14 @@
 <div class="section" id="base-url">
 <h3><a class="toc-backref" href="#id37">Base URL</a><a class="headerlink" href="#base-url" title="Permalink to this headline">¶</a></h3>
 <p>All URLs referenced in the API documentation begin with the following base URL:</p>
-<div class="highlight-python"><div class="highlight"><pre>https://api.stormpath.com/v1
-</pre></div>
-</div>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/</span></code></div></blockquote>
+<p>This is the base URL for Stormpath&#8217;s public API. If you are using an Enterprise deployment, your base URL will instead be:</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">https://enterprise.stormpath.io/v1/</span></code></div></blockquote>
+<p>And if you have a private Stormpath deployment, the base URL could be a completely custom URL, or simply:</p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">https://yourOrganization.stormpath.io/v1/</span></code></div></blockquote>
 </div>
 <div class="section" id="resource-format">
 <h3><a class="toc-backref" href="#id38">Resource Format</a><a class="headerlink" href="#resource-format" title="Permalink to this headline">¶</a></h3>
@@ -216,8 +222,10 @@
 <h4><a class="toc-backref" href="#id40">Basic Authentication over HTTPS</a><a class="headerlink" href="#basic-authentication-over-https" title="Permalink to this headline">¶</a></h4>
 <p>Most clients (including web browsers) show a dialog or prompt for you to provide a username and password for HTTP Basic authentication.</p>
 <p>When using an API key with Basic authentication, the API key ID is the username and the API key secret is the password:</p>
-<p><strong>HTTP basic username:</strong> apiKey.id value
-<strong>HTTP basic password:</strong> apiKey.secret value</p>
+<ul class="simple">
+<li><strong>HTTP basic username:</strong> apiKey.id value</li>
+<li><strong>HTTP basic password:</strong> apiKey.secret value</li>
+</ul>
 <p>For example, if using cUrl:</p>
 <div class="highlight-bash"><div class="highlight"><pre>curl --request GET <span class="se">\</span>
 --user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
@@ -507,8 +515,8 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="collection-resources">
-<span id="about-collections"></span><h3><a class="toc-backref" href="#id48">Collection Resources</a><a class="headerlink" href="#collection-resources" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="collection-resource">
+<span id="about-collections"></span><h3><a class="toc-backref" href="#id48">Collection Resource</a><a class="headerlink" href="#collection-resource" title="Permalink to this headline">¶</a></h3>
 <p>A <strong>Collection</strong> Resource is a resource containing other resources. It is known as a Collection Resource because it is itself a first class resource – it has its own attributes in addition to the resources it contains.</p>
 <p>If you want to interact with multiple resources, you must do so with a Collection Resource. Collection Resources also support additional behavior specific to collections, such as <a class="reference internal" href="#about-pagination"><span>pagination</span></a>, <a class="reference internal" href="#about-sorting"><span>sorting</span></a>, and <a class="reference internal" href="#about-search"><span>searching</span></a>.</p>
 <div class="section" id="pagination">
@@ -649,7 +657,7 @@
 <p>It may help to think about each attribute comparison as similar to a ‘like’ operation in a traditional relational database context. For example, if SQL was used to execute the query, it might look like this:</p>
 <div class="highlight-python"><div class="highlight"><pre>select * from my_tenant_accounts where
     (lower(givenName) like &#39;%joe%&#39; OR
-     lower(surname) like &#39;%joe%&#39; OR
+     lower(middlename) like &#39;%joe%&#39; OR
      lower(email) like &#39;%joe%&#39; OR ... );
 </pre></div>
 </div>
@@ -868,7 +876,7 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">href</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>The resource&#8217;s fully qualified location URL</td>
 </tr>
@@ -893,42 +901,42 @@
 <td>Indicates when this resource’s attributes were last modified.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">customData</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Tenant&#8217;s customData resource that you can use to store your own custom fields.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">organizations</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a Collection of all the Organizations mapped to this Tenant.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">applications</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a Collection of all the Applications mapped to this Tenant.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">directories</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a Collection of all the Directories mapped to this Tenant.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">accounts</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a Collection of the Accounts mapped to this Tenant.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">agents</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a Collection of all the Agents configured for this Tenant.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">groups</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a Collection of all the Groups configured for this Tenant.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">idSites</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a Collection of all the ID Sites configured for this Tenant.</td>
 </tr>
@@ -1073,7 +1081,7 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">href</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>The resource&#8217;s fully qualified location URL.</td>
 </tr>
@@ -1191,6 +1199,7 @@
 <li><a class="reference internal" href="#other-resources-associated-with-an-application" id="id70">Other Resources Associated with an Application</a><ul>
 <li><a class="reference internal" href="#application-api-keys" id="id71">Application API Keys</a></li>
 <li><a class="reference internal" href="#oauth-policy" id="id72">OAuth Policy</a></li>
+<li><a class="reference internal" href="#saml-policy-resource" id="id73">SAML Policy Resource</a></li>
 </ul>
 </li>
 </ul>
@@ -1216,7 +1225,7 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">href</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>The resource&#8217;s fully qualified location URL.</td>
 </tr>
@@ -1246,69 +1255,79 @@
 <td>Indicates when this resource’s attributes were last modified.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">tenant</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Tenant that owns this Application.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">defaultAccountStoreMapping</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>Could be <code class="docutils literal"><span class="pre">null</span></code></td>
 <td>A link to the Account Store Mapping that reflects the default Account Store where the application will store newly created Accounts. A <code class="docutils literal"><span class="pre">null</span></code> value disables the application from directly creating new Accounts.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">defaultGroupStoreMapping</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>Could be <code class="docutils literal"><span class="pre">null</span></code></td>
 <td>A link to the Account Store Mapping that reflects the default Group Store where the application will store newly created Groups. A <code class="docutils literal"><span class="pre">null</span></code> value disables the application from directly creating new Groups.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">customData</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Tenant&#8217;s customData resource that you can use to store your own custom fields.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">oAuthPolicy</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>&nbsp;</td>
 <td>A link to this Application OAuth policy. For more information, see <a class="reference internal" href="005_auth_n.html#token-authn-config"><span>Using Stormpath for Token-Based Authentication</span></a>.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">accounts</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a Collection of all the <a class="reference internal" href="#ref-account"><span>Accounts</span></a> mapped to this Application. (see note <a class="reference internal" href="#application-accounts-note"><span>below</span></a>)</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">groups</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a Collection of all the <a class="reference internal" href="#ref-group"><span>Groups</span></a> mapped to this Application.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">accountStoreMappings</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the collection of all <a class="reference internal" href="#ref-account-store-mapping"><span>Account Store Mappings</span></a> for this Application.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">loginAttempts</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>The endpoint for <a class="reference internal" href="#ref-loginattempts"><span>Login Attempts</span></a> for this Application.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">passwordResetTokens</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>The endpoint for <a class="reference internal" href="#ref-password-reset-token"><span>Password Reset Tokens</span></a>, used in <a class="reference internal" href="004_accnt_mgmt.html#password-reset-flow"><span>password reset workflows</span></a>.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">apiKeys</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A collection of all the API Keys for this Application.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">verificationEmails</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>The endpoint for Verification Emails for this Application.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">authTokens</span></code></td>
-<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A collection of Auth Tokens for this Application. For more information, see <a class="reference internal" href="005_auth_n.html#about-token-validation"><span>Using Stormpath to Validate Tokens</span></a>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">authorizedCallbackUris</span></code></td>
+<td>String</td>
+<td>N/A</td>
+<td>Authorized callback URIs for the purposes of <a class="reference internal" href="005_auth_n.html#saml-authn"><span>SAML authentication flows</span></a>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">samlPolicy</span></code></td>
+<td>Object</td>
+<td>N/A</td>
+<td>An embedded object that contains information about the Directory&#8217;s SAML Policy (if any). For more information, see <a class="reference internal" href="#ref-samlpolicy"><span>the Authentication chapter</span></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -1366,6 +1385,9 @@
   <span class="p">},</span>
   <span class="nt">&quot;authTokens&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlexaMple/authTokens&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;samlPolicy&quot;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span> <span class="p">:</span> <span class="s2">&quot;http://localhost:9191/v1/samlPolicies/QONHxosYAWIwIvZnFA85E&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -1374,15 +1396,15 @@
 <h3><a class="toc-backref" href="#id58">Application Operations</a><a class="headerlink" href="#application-operations" title="Permalink to this headline">¶</a></h3>
 <div class="contents local topic" id="id6">
 <ul class="simple">
-<li><a class="reference internal" href="#create-an-application" id="id73">Create An Application</a></li>
-<li><a class="reference internal" href="#retrieve-an-application" id="id74">Retrieve an Application</a></li>
-<li><a class="reference internal" href="#update-an-application" id="id75">Update an Application</a></li>
-<li><a class="reference internal" href="#delete-an-application" id="id76">Delete an Application</a></li>
-<li><a class="reference internal" href="#using-an-application-for-look-up" id="id77">Using an Application for Look-Up</a></li>
+<li><a class="reference internal" href="#create-an-application" id="id74">Create An Application</a></li>
+<li><a class="reference internal" href="#retrieve-an-application" id="id75">Retrieve an Application</a></li>
+<li><a class="reference internal" href="#update-an-application" id="id76">Update an Application</a></li>
+<li><a class="reference internal" href="#delete-an-application" id="id77">Delete an Application</a></li>
+<li><a class="reference internal" href="#using-an-application-for-look-up" id="id78">Using an Application for Look-Up</a></li>
 </ul>
 </div>
 <div class="section" id="create-an-application">
-<h4><a class="toc-backref" href="#id73">Create An Application</a><a class="headerlink" href="#create-an-application" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id74">Create An Application</a><a class="headerlink" href="#create-an-application" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="30%" />
@@ -1411,7 +1433,7 @@
 </div>
 </div>
 <div class="section" id="retrieve-an-application">
-<h4><a class="toc-backref" href="#id74">Retrieve an Application</a><a class="headerlink" href="#retrieve-an-application" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id75">Retrieve an Application</a><a class="headerlink" href="#retrieve-an-application" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -1433,7 +1455,7 @@
 </table>
 </div>
 <div class="section" id="update-an-application">
-<h4><a class="toc-backref" href="#id75">Update an Application</a><a class="headerlink" href="#update-an-application" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id76">Update an Application</a><a class="headerlink" href="#update-an-application" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -1455,7 +1477,7 @@
 </table>
 </div>
 <div class="section" id="delete-an-application">
-<h4><a class="toc-backref" href="#id76">Delete an Application</a><a class="headerlink" href="#delete-an-application" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id77">Delete an Application</a><a class="headerlink" href="#delete-an-application" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -1501,7 +1523,7 @@
 </div>
 </div>
 <div class="section" id="using-an-application-for-look-up">
-<span id="get-refs-via-app"></span><h4><a class="toc-backref" href="#id77">Using an Application for Look-Up</a><a class="headerlink" href="#using-an-application-for-look-up" title="Permalink to this headline">¶</a></h4>
+<span id="get-refs-via-app"></span><h4><a class="toc-backref" href="#id78">Using an Application for Look-Up</a><a class="headerlink" href="#using-an-application-for-look-up" title="Permalink to this headline">¶</a></h4>
 <p>It is possible to retrieve other, independent, resources using the Application for look-up.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -1743,17 +1765,63 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="saml-policy-resource">
+<span id="ref-samlpolicy"></span><h4><a class="toc-backref" href="#id73">SAML Policy Resource</a><a class="headerlink" href="#saml-policy-resource" title="Permalink to this headline">¶</a></h4>
+<p>This resource contains information about the Application&#8217;s SAML policy. For more information about this, please see <a class="reference internal" href="005_auth_n.html#saml-authn"><span>e. Authenticating Against a SAML Directory</span></a>.</p>
+<p><strong>samlPolicy URL</strong></p>
+<p><code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/applicationSamlPolicies/$POLICY_ID</span></code></p>
+<p><strong>samlPolicy Attributes</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="10%" />
+<col width="19%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Type</th>
+<th class="head">Valid Value(s)</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">href</span></code></td>
+<td>String (<a class="reference internal" href="#about-links"><span>Link</span></a>)</td>
+<td>N/A</td>
+<td>The resource&#8217;s fully qualified location URL.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">serviceProvider</span></code></td>
+<td>Object</td>
+<td>N/A</td>
+<td>The embedded Service Provider resource. This contains the <code class="docutils literal"><span class="pre">ssoInitiationEndpoint</span></code> URL that is used to initiate the SAML flow.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>samlPolicy Example</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applicationSamlPolicies/$POLICY_ID&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;serviceProvider&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/samlServiceProviders/$SERVICE_PROVIDER_ID&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;ssoInitiationEndpoint&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/applications/$APPLICATION_ID/saml/sso/idpRedirect&quot;</span>
+      <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="account-store-mapping">
 <span id="ref-account-store-mapping"></span><h2>Account Store Mapping<a class="headerlink" href="#account-store-mapping" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id10">
 <ul class="simple">
-<li><a class="reference internal" href="#account-store-mapping-operations" id="id78">Account Store Mapping Operations</a><ul>
-<li><a class="reference internal" href="#create-an-account-store-mapping" id="id79">Create an Account Store Mapping</a></li>
-<li><a class="reference internal" href="#retrieve-an-account-store-mapping" id="id80">Retrieve an Account Store Mapping</a></li>
-<li><a class="reference internal" href="#update-an-account-store-mapping" id="id81">Update an Account Store Mapping</a></li>
-<li><a class="reference internal" href="#delete-an-account-store-mapping" id="id82">Delete an Account Store Mapping</a></li>
+<li><a class="reference internal" href="#account-store-mapping-operations" id="id79">Account Store Mapping Operations</a><ul>
+<li><a class="reference internal" href="#create-an-account-store-mapping" id="id80">Create an Account Store Mapping</a></li>
+<li><a class="reference internal" href="#retrieve-an-account-store-mapping" id="id81">Retrieve an Account Store Mapping</a></li>
+<li><a class="reference internal" href="#update-an-account-store-mapping" id="id82">Update an Account Store Mapping</a></li>
+<li><a class="reference internal" href="#delete-an-account-store-mapping" id="id83">Delete an Account Store Mapping</a></li>
 </ul>
 </li>
 </ul>
@@ -1767,7 +1835,7 @@
 </ul>
 <p>An individual Account Store Mapping resource may be accessed via its Resource URL:</p>
 <p><strong>accountStoreMapping URL</strong></p>
-<p><code class="docutils literal"><span class="pre">/v1/accountStoreMappings/:accountStoreMappingId</span></code></p>
+<p><code class="docutils literal"><span class="pre">/v1/accountStoreMappings/$ACCOUNT_STORE_MAPPING_ID</span></code></p>
 <p><strong>accountStoreMapping Attributes</strong></p>
 <table border="1" class="docutils">
 <colgroup>
@@ -1805,12 +1873,12 @@
 <td>A <code class="docutils literal"><span class="pre">true</span></code> value indicates that new Groups created by the Application will be automatically saved to the mapped Account Store, while a <code class="docutils literal"><span class="pre">false</span></code> value indicates that they won&#8217;t. <strong>This may only be set to true if the Account Store is a Directory. Stormpath does not currently support Groups storing other Groups</strong>.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">application</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the mapping’s Application. <strong>Required.</strong></td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">accountStore</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the mapping&#8217;s Account Store (Group, Directory or Organization) containing Accounts that may log in to the application. <strong>Required.</strong></td>
 </tr>
@@ -1842,17 +1910,17 @@
 </pre></div>
 </div>
 <div class="section" id="account-store-mapping-operations">
-<span id="asm-operations"></span><h3><a class="toc-backref" href="#id78">Account Store Mapping Operations</a><a class="headerlink" href="#account-store-mapping-operations" title="Permalink to this headline">¶</a></h3>
+<span id="asm-operations"></span><h3><a class="toc-backref" href="#id79">Account Store Mapping Operations</a><a class="headerlink" href="#account-store-mapping-operations" title="Permalink to this headline">¶</a></h3>
 <div class="contents local topic" id="id11">
 <ul class="simple">
-<li><a class="reference internal" href="#create-an-account-store-mapping" id="id83">Create an Account Store Mapping</a></li>
-<li><a class="reference internal" href="#retrieve-an-account-store-mapping" id="id84">Retrieve an Account Store Mapping</a></li>
-<li><a class="reference internal" href="#update-an-account-store-mapping" id="id85">Update an Account Store Mapping</a></li>
-<li><a class="reference internal" href="#delete-an-account-store-mapping" id="id86">Delete an Account Store Mapping</a></li>
+<li><a class="reference internal" href="#create-an-account-store-mapping" id="id84">Create an Account Store Mapping</a></li>
+<li><a class="reference internal" href="#retrieve-an-account-store-mapping" id="id85">Retrieve an Account Store Mapping</a></li>
+<li><a class="reference internal" href="#update-an-account-store-mapping" id="id86">Update an Account Store Mapping</a></li>
+<li><a class="reference internal" href="#delete-an-account-store-mapping" id="id87">Delete an Account Store Mapping</a></li>
 </ul>
 </div>
 <div class="section" id="create-an-account-store-mapping">
-<h4><a class="toc-backref" href="#id83">Create an Account Store Mapping</a><a class="headerlink" href="#create-an-account-store-mapping" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id84">Create an Account Store Mapping</a><a class="headerlink" href="#create-an-account-store-mapping" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="30%" />
@@ -1877,7 +1945,7 @@
 </table>
 </div>
 <div class="section" id="retrieve-an-account-store-mapping">
-<h4><a class="toc-backref" href="#id84">Retrieve an Account Store Mapping</a><a class="headerlink" href="#retrieve-an-account-store-mapping" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id85">Retrieve an Account Store Mapping</a><a class="headerlink" href="#retrieve-an-account-store-mapping" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -1899,7 +1967,7 @@
 </table>
 </div>
 <div class="section" id="update-an-account-store-mapping">
-<h4><a class="toc-backref" href="#id85">Update an Account Store Mapping</a><a class="headerlink" href="#update-an-account-store-mapping" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id86">Update an Account Store Mapping</a><a class="headerlink" href="#update-an-account-store-mapping" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -1921,7 +1989,7 @@
 </table>
 </div>
 <div class="section" id="delete-an-account-store-mapping">
-<h4><a class="toc-backref" href="#id86">Delete an Account Store Mapping</a><a class="headerlink" href="#delete-an-account-store-mapping" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id87">Delete an Account Store Mapping</a><a class="headerlink" href="#delete-an-account-store-mapping" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -1970,26 +2038,26 @@
 <span id="ref-directory"></span><h2>Directory<a class="headerlink" href="#directory" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id13">
 <ul class="simple">
-<li><a class="reference internal" href="#directory-operations" id="id87">Directory Operations</a><ul>
-<li><a class="reference internal" href="#create-a-directory" id="id88">Create a Directory</a></li>
-<li><a class="reference internal" href="#retrieve-a-directory" id="id89">Retrieve a Directory</a></li>
-<li><a class="reference internal" href="#update-a-directory" id="id90">Update a Directory</a></li>
-<li><a class="reference internal" href="#delete-a-directory" id="id91">Delete a Directory</a></li>
-<li><a class="reference internal" href="#using-a-directory-for-look-up" id="id92">Using A Directory for Look-Up</a></li>
+<li><a class="reference internal" href="#directory-operations" id="id88">Directory Operations</a><ul>
+<li><a class="reference internal" href="#create-a-directory" id="id89">Create a Directory</a></li>
+<li><a class="reference internal" href="#retrieve-a-directory" id="id90">Retrieve a Directory</a></li>
+<li><a class="reference internal" href="#update-a-directory" id="id91">Update a Directory</a></li>
+<li><a class="reference internal" href="#delete-a-directory" id="id92">Delete a Directory</a></li>
+<li><a class="reference internal" href="#using-a-directory-for-look-up" id="id93">Using A Directory for Look-Up</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#id17" id="id93">Other Resources Associated with a Tenant</a><ul>
-<li><a class="reference internal" href="#account-creation-policy" id="id94">Account Creation Policy</a></li>
-<li><a class="reference internal" href="#password-policy" id="id95">Password Policy</a></li>
-<li><a class="reference internal" href="#email-templates" id="id96">Email Templates</a></li>
-<li><a class="reference internal" href="#password-strength" id="id97">Password Strength</a></li>
-<li><a class="reference internal" href="#provider" id="id98">Provider</a></li>
+<li><a class="reference internal" href="#id17" id="id94">Other Resources Associated with a Tenant</a><ul>
+<li><a class="reference internal" href="#account-creation-policy" id="id95">Account Creation Policy</a></li>
+<li><a class="reference internal" href="#password-policy" id="id96">Password Policy</a></li>
+<li><a class="reference internal" href="#email-templates" id="id97">Email Templates</a></li>
+<li><a class="reference internal" href="#password-strength" id="id98">Password Strength</a></li>
+<li><a class="reference internal" href="#provider" id="id99">Provider</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <p><strong>Description</strong></p>
-<p>The <strong>Directory</strong> resource is a top-level container for Account and Group resources. A Directory also manages secURLty policies (like password strength) for the Accounts it contains. Directories can be used to cleanly manage segmented user Account populations. For example, you might use one Directory for company employees and another Directory for customers, each with its own secURLty policies.</p>
+<p>The <strong>Directory</strong> resource is a top-level container for Account and Group resources. A Directory also manages security policies (like password strength) for the Accounts it contains. Directories can be used to cleanly manage segmented user Account populations. For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.</p>
 <p>Additionally:</p>
 <ul class="simple">
 <li>All Account resources within a Directory have a unique <code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">username</span></code>.</li>
@@ -2045,47 +2113,47 @@
 <td>Indicates when this resource’s attributes were last modified.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">tenant</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the owning <a class="reference internal" href="#ref-tenant"><span>Tenant</span></a>.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">provider</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Directory&#8217;s Provider.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">customData</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Directory&#8217;s customData resource that you can use to store your own Directory-specific custom fields.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">passwordPolicy</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Directory’s <a class="reference internal" href="#ref-password-policy"><span>Password Policy</span></a>.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">accountCreationPolicy</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Directory’s <a class="reference internal" href="#ref-accnt-creation-policy"><span>Account Creation Policy</span></a>.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">accounts</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Accounts owned by this Directory.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">applicationMappings</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a collection of any accountStoreMapping resources that include this Directory.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">applications</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a collection of all the <a class="reference internal" href="#ref-application"><span>Applications</span></a> mapped to this Directory.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">groups</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a collection of the Groups mapped to this Directory.</td>
 </tr>
@@ -2130,18 +2198,18 @@
 </pre></div>
 </div>
 <div class="section" id="directory-operations">
-<span id="id14"></span><h3><a class="toc-backref" href="#id87">Directory Operations</a><a class="headerlink" href="#directory-operations" title="Permalink to this headline">¶</a></h3>
+<span id="id14"></span><h3><a class="toc-backref" href="#id88">Directory Operations</a><a class="headerlink" href="#directory-operations" title="Permalink to this headline">¶</a></h3>
 <div class="contents local topic" id="id15">
 <ul class="simple">
-<li><a class="reference internal" href="#create-a-directory" id="id99">Create a Directory</a></li>
-<li><a class="reference internal" href="#retrieve-a-directory" id="id100">Retrieve a Directory</a></li>
-<li><a class="reference internal" href="#update-a-directory" id="id101">Update a Directory</a></li>
-<li><a class="reference internal" href="#delete-a-directory" id="id102">Delete a Directory</a></li>
-<li><a class="reference internal" href="#using-a-directory-for-look-up" id="id103">Using A Directory for Look-Up</a></li>
+<li><a class="reference internal" href="#create-a-directory" id="id100">Create a Directory</a></li>
+<li><a class="reference internal" href="#retrieve-a-directory" id="id101">Retrieve a Directory</a></li>
+<li><a class="reference internal" href="#update-a-directory" id="id102">Update a Directory</a></li>
+<li><a class="reference internal" href="#delete-a-directory" id="id103">Delete a Directory</a></li>
+<li><a class="reference internal" href="#using-a-directory-for-look-up" id="id104">Using A Directory for Look-Up</a></li>
 </ul>
 </div>
 <div class="section" id="create-a-directory">
-<h4><a class="toc-backref" href="#id99">Create a Directory</a><a class="headerlink" href="#create-a-directory" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id100">Create a Directory</a><a class="headerlink" href="#create-a-directory" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="30%" />
@@ -2164,13 +2232,9 @@
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Currently it is only possible to make a Cloud or Social Directories via the REST API. To make a Mirror Directory you will need to use the <a class="reference external" href="http://docs.stormpath.com/console/product-guide/#create-a-directory">Admin Console</a>.</p>
-</div>
 </div>
 <div class="section" id="retrieve-a-directory">
-<h4><a class="toc-backref" href="#id100">Retrieve a Directory</a><a class="headerlink" href="#retrieve-a-directory" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id101">Retrieve a Directory</a><a class="headerlink" href="#retrieve-a-directory" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -2192,7 +2256,7 @@
 </table>
 </div>
 <div class="section" id="update-a-directory">
-<h4><a class="toc-backref" href="#id101">Update a Directory</a><a class="headerlink" href="#update-a-directory" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id102">Update a Directory</a><a class="headerlink" href="#update-a-directory" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -2214,7 +2278,7 @@
 </table>
 </div>
 <div class="section" id="delete-a-directory">
-<h4><a class="toc-backref" href="#id102">Delete a Directory</a><a class="headerlink" href="#delete-a-directory" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id103">Delete a Directory</a><a class="headerlink" href="#delete-a-directory" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -2262,7 +2326,7 @@
 </div>
 </div>
 <div class="section" id="using-a-directory-for-look-up">
-<h4><a class="toc-backref" href="#id103">Using A Directory for Look-Up</a><a class="headerlink" href="#using-a-directory-for-look-up" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id104">Using A Directory for Look-Up</a><a class="headerlink" href="#using-a-directory-for-look-up" title="Permalink to this headline">¶</a></h4>
 <p>It is possible to retrieve other, independent, resources using the Directory for look-up.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -2290,9 +2354,9 @@
 </div>
 </div>
 <div class="section" id="id17">
-<h3><a class="toc-backref" href="#id93">Other Resources Associated with a Tenant</a><a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id94">Other Resources Associated with a Tenant</a><a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="account-creation-policy">
-<span id="ref-accnt-creation-policy"></span><h4><a class="toc-backref" href="#id94">Account Creation Policy</a><a class="headerlink" href="#account-creation-policy" title="Permalink to this headline">¶</a></h4>
+<span id="ref-accnt-creation-policy"></span><h4><a class="toc-backref" href="#id95">Account Creation Policy</a><a class="headerlink" href="#account-creation-policy" title="Permalink to this headline">¶</a></h4>
 <p>A Directory’s Account Creation Policy resource contains data and attributes that control what Stormpath does when an Account is created. This includes email verification and welcome emails.</p>
 <p><strong>Account Creation Policy URL</strong></p>
 <p><code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/accountCreationPolicies/$DIRECTORY_ID</span></code></p>
@@ -2369,7 +2433,7 @@
 </div>
 </div>
 <div class="section" id="password-policy">
-<span id="ref-password-policy"></span><h4><a class="toc-backref" href="#id95">Password Policy</a><a class="headerlink" href="#password-policy" title="Permalink to this headline">¶</a></h4>
+<span id="ref-password-policy"></span><h4><a class="toc-backref" href="#id96">Password Policy</a><a class="headerlink" href="#password-policy" title="Permalink to this headline">¶</a></h4>
 <p>The Directory&#8217;s Password Policy is configured inside the passwordPolicy resource. Specifically, this resource contains information about how passwords are reset and links to further information about the strength requirements for a user&#8217;s password. The Account Management chapter has more information about the <a class="reference internal" href="004_accnt_mgmt.html#password-reset-flow"><span>Password Reset Flow</span></a>.</p>
 <p><strong>Password Policy URL</strong></p>
 <p><code class="docutils literal"><span class="pre">/v1/passwordPolicies/$DIRECTORY_ID</span></code></p>
@@ -2405,12 +2469,12 @@
 <td>The status of the reset email workflow. If this is set to <code class="docutils literal"><span class="pre">ENABLED</span></code>, then Stormpath will allow for passwords to be reset through the email workflow and will use the template that is stored in the passwordPolicy’s <code class="docutils literal"><span class="pre">resetEmailTemplates</span></code>.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">strength</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the password strength requirements for the Directory.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">resetEmailTemplates</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A collection of <a class="reference internal" href="#ref-emailtemplates"><span>email templates</span></a> that can be used for sending the password reset email. A template stores all relevant attributes  needed for an email. This is a collection but currently only allows one value. It is not possible to create new <code class="docutils literal"><span class="pre">resetEmailTemplates</span></code> with a POST.</td>
 </tr>
@@ -2420,7 +2484,7 @@
 <td>The status of the reset success email. If this is set to <code class="docutils literal"><span class="pre">ENABLED</span></code>, then Stormpath will send the email when an Account’s password reset email workflow is successful. The email template that is sent is defined in the passwordPolicy’s <code class="docutils literal"><span class="pre">resetSuccessEmailTemplates</span></code>.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">resetSuccessEmailTemplates</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A collection of <a class="reference internal" href="#ref-emailtemplates"><span>email templates</span></a> that can be used for sending password reset success emails. A template stores all relevant attributes needed for an email. This is a collection but currently only allows one value. It is not possible to create new <code class="docutils literal"><span class="pre">resetEmailTemplates</span></code> with a POST.</td>
 </tr>
@@ -2438,7 +2502,7 @@
 </table>
 </div>
 <div class="section" id="email-templates">
-<span id="ref-emailtemplates"></span><h4><a class="toc-backref" href="#id96">Email Templates</a><a class="headerlink" href="#email-templates" title="Permalink to this headline">¶</a></h4>
+<span id="ref-emailtemplates"></span><h4><a class="toc-backref" href="#id97">Email Templates</a><a class="headerlink" href="#email-templates" title="Permalink to this headline">¶</a></h4>
 <p>This resource defines the contents of emails that are sent as part of the account creation and password reset flows.</p>
 <p><strong>EmailTemplate URL</strong></p>
 <p><code class="docutils literal"><span class="pre">/v1/emailTemplates/$EMAILTEMPLATE_ID&quot;</span></code></p>
@@ -2557,7 +2621,7 @@
 </div>
 </div>
 <div class="section" id="password-strength">
-<span id="ref-password-strength"></span><h4><a class="toc-backref" href="#id97">Password Strength</a><a class="headerlink" href="#password-strength" title="Permalink to this headline">¶</a></h4>
+<span id="ref-password-strength"></span><h4><a class="toc-backref" href="#id98">Password Strength</a><a class="headerlink" href="#password-strength" title="Permalink to this headline">¶</a></h4>
 <p>The Password Strength Policy for a Directory can be modified through the Administrator Console and through the REST API. Password Strength Policy is part of the Directory’s Password Policy and can be accessed through the <code class="docutils literal"><span class="pre">strength</span></code> attribute.</p>
 <p><strong>Strength URL</strong></p>
 <p><code class="docutils literal"><span class="pre">/v1/passwordPolicies/$DIRECTORY_ID/strength</span></code></p>
@@ -2616,11 +2680,11 @@
 </table>
 </div>
 <div class="section" id="provider">
-<span id="ref-provider"></span><h4><a class="toc-backref" href="#id98">Provider</a><a class="headerlink" href="#provider" title="Permalink to this headline">¶</a></h4>
+<span id="ref-provider"></span><h4><a class="toc-backref" href="#id99">Provider</a><a class="headerlink" href="#provider" title="Permalink to this headline">¶</a></h4>
 <p>The Provider resource contains information about the source of the information found in its associated Directory resource.</p>
 <p>For example, a Social Directory could be created for GitHub. This Directory would contain Accounts created using &#8220;Log In With Github&#8221;, and its Provider resource would contain information about your Github login integration (e.g. the OAuth Client and Secret required for Github login). An individual Provider resource may be accessed via its Resource URL:</p>
 <p><strong>Provider URL</strong></p>
-<p><code class="docutils literal"><span class="pre">/v1/directories/:directoryId/provider</span></code></p>
+<p><code class="docutils literal"><span class="pre">/v1/directories/$DIRECTORY_ID/provider</span></code></p>
 <p><strong>Provider Attributes</strong></p>
 <table border="1" class="docutils">
 <colgroup>
@@ -2654,39 +2718,70 @@
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">providerId</span></code></td>
 <td>String</td>
-<td><code class="docutils literal"><span class="pre">stormpath</span></code> (for a Cloud Directory), <code class="docutils literal"><span class="pre">ad</span></code> or <code class="docutils literal"><span class="pre">ldap</span></code> (for Mirror Directories), <code class="docutils literal"><span class="pre">facebook</span></code>, <code class="docutils literal"><span class="pre">google</span></code>, <code class="docutils literal"><span class="pre">github</span></code> or <code class="docutils literal"><span class="pre">linkedin</span></code> (for Social Directories)</td>
+<td><code class="docutils literal"><span class="pre">stormpath</span></code> (for a Cloud Directory); <code class="docutils literal"><span class="pre">ad</span></code> or <code class="docutils literal"><span class="pre">ldap</span></code> (for Mirror Directories); <code class="docutils literal"><span class="pre">facebook</span></code>, <code class="docutils literal"><span class="pre">google</span></code>, <code class="docutils literal"><span class="pre">github</span></code> or <code class="docutils literal"><span class="pre">linkedin</span></code> (for Social Directories); <code class="docutils literal"><span class="pre">saml</span></code> (for SAML Directories)</td>
 <td>Specifies the type of Provider for the associated Directory.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">clientId</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>The OAuth 2.0 Client ID for this Provider. Only used for Social providers.</td>
+<td>(Social only) The OAuth 2.0 Client ID for this Provider.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">clientSecret</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>The OAuth 2.0 Client Secret for this Provider. Only used for Social providers.</td>
+<td>(Social only) The OAuth 2.0 Client Secret for this Provider.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">redirectURL</span></code></td>
 <td>String</td>
 <td>A valid URL</td>
-<td>The URL to redirect to after the user has authenticated. Currently only used for the Google providers.</td>
+<td>(Social only) The URL to redirect to after the user has authenticated. Currently only used for the Google providers.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">agent</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
-<td>A link to the Provider&#8217;s Agent. Currently only used for LDAP providers. For more information see <a class="reference internal" href="#ref-ldap-agent"><span>below</span></a>.</td>
+<td>(LDAP only) A link to the Provider&#8217;s Agent. For more information see <a class="reference internal" href="#ref-ldap-agent"><span>below</span></a>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ssoLoginUrl</span></code></td>
+<td>String</td>
+<td>N/A</td>
+<td>(SAML only) The URL for the IdP&#8217;s SSO URL. For more information see <a class="reference internal" href="005_auth_n.html#saml-configuration"><span>Configuring Stormpath as a Service Provider</span></a>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ssoLogoutUrl</span></code></td>
+<td>String</td>
+<td>N/A</td>
+<td>(SAML only) The URL for the IdP&#8217;s SSO logout endpoint. For more information see <a class="reference internal" href="005_auth_n.html#saml-configuration"><span>Configuring Stormpath as a Service Provider</span></a>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">encodedX509SigningCert</span></code></td>
+<td>Object</td>
+<td>N/A</td>
+<td>(SAML only) The public key from the SAML Identity Provider used to sign the assertions that are returned to Stormpath. For more information see <a class="reference internal" href="005_auth_n.html#saml-configuration"><span>Configuring Stormpath as a Service Provider</span></a>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">requestSignatureAlgorithm</span></code></td>
+<td>String</td>
+<td><code class="docutils literal"><span class="pre">RSA-SHA256</span></code> (Default), <code class="docutils literal"><span class="pre">RSA-SHA1</span></code></td>
+<td>(SAML only) The algorithm used by the SAML Identity Provider to sign SAML assertions that are returned to Stormpath. For more information see <a class="reference internal" href="005_auth_n.html#saml-configuration"><span>Configuring Stormpath as a Service Provider</span></a>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">attributeStatementMappingRules</span></code></td>
+<td>Object</td>
+<td>N/A</td>
+<td>(SAML only) This object contains the rules that map SAML assertions to Stormpath resource attributes.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">serviceProviderMetadata</span></code></td>
+<td>Link</td>
+<td>N/A</td>
+<td>(SAML only) This object contains metadata related to your Service Provider. For more information, please see <a class="reference internal" href="005_auth_n.html#configure-sp-in-idp"><span>Step 3 of the SAML configuration section</span></a>.</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Provider Example</strong></p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/3S8qv2u78JzwSXzEXAMplE/provider&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;ldap&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;agent&quot;</span><span class="p">:{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/agents/3S8vF6CIUET9R4PEXAMplE&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-json"><div class="highlight"><pre>{
+  href: &quot;https://api.stormpath.com/v1/directories/2TL06yrJ05EAM9gEXAMpLe/provider&quot;,
+  createdAt: &quot;2014-03-28T22:21:32.937Z&quot;,
+  modifiedAt: &quot;2014-03-28T22:21:32.949Z&quot;,
+  clientId: &quot;5014174166example&quot;,
+  clientSecret: &quot;e7c1274966b0844913953281example&quot;,
+  providerId: &quot;facebook&quot;
+}
 </pre></div>
 </div>
 <div class="section" id="ldap-agent">
@@ -2694,7 +2789,7 @@
 <p><a class="reference internal" href="004_accnt_mgmt.html#about-mirror-dir"><span>Mirror Directories</span></a> have an associated <a class="reference internal" href="#ref-provider"><span>Provider resource</span></a> with either the <code class="docutils literal"><span class="pre">ldap</span></code> or <code class="docutils literal"><span class="pre">ad</span></code> <code class="docutils literal"><span class="pre">providerId</span></code>. That Provider in turn contains an <strong>Agent</strong> resource. This Agent is what will scan your LDAP directory and map the accounts and groups in that directory to Stormpath Accounts and Groups.</p>
 <p>An Agents collection may be accessed via its Resource URL:</p>
 <p><strong>Agent URL</strong></p>
-<p><code class="docutils literal"><span class="pre">/v1/agents/:directoryId</span></code></p>
+<p><code class="docutils literal"><span class="pre">/v1/agents/$DIRECTORY_ID</span></code></p>
 <p><strong>Agent Attributes</strong></p>
 <table border="1" class="docutils">
 <colgroup>
@@ -2742,17 +2837,17 @@
 <td>Indicates when this resource’s attributes were last modified.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">directory</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Directory resource that the Agent belongs to.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">download</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link that allows this Agent to be downloaded for installation.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">tenant</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Tenant that owns the Directory this Agent belongs to.</td>
 </tr>
@@ -2997,12 +3092,12 @@
 <span id="ref-group"></span><h2>Group<a class="headerlink" href="#group" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id18">
 <ul class="simple">
-<li><a class="reference internal" href="#group-operations" id="id104">Group Operations</a><ul>
-<li><a class="reference internal" href="#create-a-group" id="id105">Create a Group</a></li>
-<li><a class="reference internal" href="#retrieve-a-group" id="id106">Retrieve a Group</a></li>
-<li><a class="reference internal" href="#update-a-group" id="id107">Update a Group</a></li>
-<li><a class="reference internal" href="#delete-a-group" id="id108">Delete a Group</a></li>
-<li><a class="reference internal" href="#using-a-group-for-look-up" id="id109">Using a Group for Look-Up</a></li>
+<li><a class="reference internal" href="#group-operations" id="id105">Group Operations</a><ul>
+<li><a class="reference internal" href="#create-a-group" id="id106">Create a Group</a></li>
+<li><a class="reference internal" href="#retrieve-a-group" id="id107">Retrieve a Group</a></li>
+<li><a class="reference internal" href="#update-a-group" id="id108">Update a Group</a></li>
+<li><a class="reference internal" href="#delete-a-group" id="id109">Delete a Group</a></li>
+<li><a class="reference internal" href="#using-a-group-for-look-up" id="id110">Using a Group for Look-Up</a></li>
 </ul>
 </li>
 </ul>
@@ -3010,7 +3105,7 @@
 <p><strong>Groups</strong> are collections of Accounts found within a Directory. They can be thought of as labels applied to Accounts. Aside from the relatively simple task of grouping together Accounts, Groups can also be used to implement &#8220;roles&#8221; for authorization purposes. For more information about this, please see <a class="reference internal" href="006_auth_z.html#role-groups"><span>i. How to Use Groups to Model Authorization Roles</span></a>.</p>
 <p>An individual Group resource may be accessed via its Resource URL:</p>
 <p><strong>Group URL</strong></p>
-<p><code class="docutils literal"><span class="pre">/v1/groups/:groupId</span></code></p>
+<p><code class="docutils literal"><span class="pre">/v1/groups/$GROUP_ID</span></code></p>
 <p><strong>Group Attributes</strong></p>
 <table border="1" class="docutils">
 <colgroup>
@@ -3058,32 +3153,32 @@
 <td>Indicates when this resource’s attributes were last modified.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">customData</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Group’s customData resource that you can use to store your own Group-specific custom fields.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">directory</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Directory resource that the Group belongs to.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">tenant</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Tenant that owns the Directory containing this Group.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">accounts</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a collection of the Accounts that are contained within this Group.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">accountMemberships</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a collection of groupMemberships that this Group is found in.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">applications</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to any Applications associated with this Group.</td>
 </tr>
@@ -3119,18 +3214,18 @@
 </pre></div>
 </div>
 <div class="section" id="group-operations">
-<span id="id19"></span><h3><a class="toc-backref" href="#id104">Group Operations</a><a class="headerlink" href="#group-operations" title="Permalink to this headline">¶</a></h3>
+<span id="id19"></span><h3><a class="toc-backref" href="#id105">Group Operations</a><a class="headerlink" href="#group-operations" title="Permalink to this headline">¶</a></h3>
 <div class="contents local topic" id="id20">
 <ul class="simple">
-<li><a class="reference internal" href="#create-a-group" id="id110">Create a Group</a></li>
-<li><a class="reference internal" href="#retrieve-a-group" id="id111">Retrieve a Group</a></li>
-<li><a class="reference internal" href="#update-a-group" id="id112">Update a Group</a></li>
-<li><a class="reference internal" href="#delete-a-group" id="id113">Delete a Group</a></li>
-<li><a class="reference internal" href="#using-a-group-for-look-up" id="id114">Using a Group for Look-Up</a></li>
+<li><a class="reference internal" href="#create-a-group" id="id111">Create a Group</a></li>
+<li><a class="reference internal" href="#retrieve-a-group" id="id112">Retrieve a Group</a></li>
+<li><a class="reference internal" href="#update-a-group" id="id113">Update a Group</a></li>
+<li><a class="reference internal" href="#delete-a-group" id="id114">Delete a Group</a></li>
+<li><a class="reference internal" href="#using-a-group-for-look-up" id="id115">Using a Group for Look-Up</a></li>
 </ul>
 </div>
 <div class="section" id="create-a-group">
-<h4><a class="toc-backref" href="#id110">Create a Group</a><a class="headerlink" href="#create-a-group" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id111">Create a Group</a><a class="headerlink" href="#create-a-group" title="Permalink to this headline">¶</a></h4>
 <p>Groups must be created under a specified Directory resource.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -3156,7 +3251,7 @@
 </table>
 </div>
 <div class="section" id="retrieve-a-group">
-<h4><a class="toc-backref" href="#id111">Retrieve a Group</a><a class="headerlink" href="#retrieve-a-group" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id112">Retrieve a Group</a><a class="headerlink" href="#retrieve-a-group" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -3178,7 +3273,7 @@
 </table>
 </div>
 <div class="section" id="update-a-group">
-<h4><a class="toc-backref" href="#id112">Update a Group</a><a class="headerlink" href="#update-a-group" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id113">Update a Group</a><a class="headerlink" href="#update-a-group" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -3200,7 +3295,7 @@
 </table>
 </div>
 <div class="section" id="delete-a-group">
-<h4><a class="toc-backref" href="#id113">Delete a Group</a><a class="headerlink" href="#delete-a-group" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id114">Delete a Group</a><a class="headerlink" href="#delete-a-group" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -3244,7 +3339,7 @@
 </div>
 </div>
 <div class="section" id="using-a-group-for-look-up">
-<h4><a class="toc-backref" href="#id114">Using a Group for Look-Up</a><a class="headerlink" href="#using-a-group-for-look-up" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id115">Using a Group for Look-Up</a><a class="headerlink" href="#using-a-group-for-look-up" title="Permalink to this headline">¶</a></h4>
 <p>It is possible to retrieve other, associated resources using the Group for look-up.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -3276,11 +3371,11 @@
 <span id="ref-groupmembership"></span><h2>Group Membership<a class="headerlink" href="#group-membership" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id22">
 <ul class="simple">
-<li><a class="reference internal" href="#group-membership-operations" id="id115">Group Membership Operations</a><ul>
-<li><a class="reference internal" href="#create-a-group-membership" id="id116">Create a Group Membership</a></li>
-<li><a class="reference internal" href="#retrieve-a-group-membership" id="id117">Retrieve a Group Membership</a></li>
-<li><a class="reference internal" href="#update-a-group-membership" id="id118">Update a Group Membership</a></li>
-<li><a class="reference internal" href="#delete-a-group-membership" id="id119">Delete a Group Membership</a></li>
+<li><a class="reference internal" href="#group-membership-operations" id="id116">Group Membership Operations</a><ul>
+<li><a class="reference internal" href="#create-a-group-membership" id="id117">Create a Group Membership</a></li>
+<li><a class="reference internal" href="#retrieve-a-group-membership" id="id118">Retrieve a Group Membership</a></li>
+<li><a class="reference internal" href="#update-a-group-membership" id="id119">Update a Group Membership</a></li>
+<li><a class="reference internal" href="#delete-a-group-membership" id="id120">Delete a Group Membership</a></li>
 </ul>
 </li>
 </ul>
@@ -3310,12 +3405,12 @@
 <td>The resource&#8217;s fully qualified location URL.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">account</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Account for this Group Membership.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">group</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Group for this Group Membership.</td>
 </tr>
@@ -3352,17 +3447,17 @@
 </pre></div>
 </div>
 <div class="section" id="group-membership-operations">
-<span id="groupmembership-operations"></span><h3><a class="toc-backref" href="#id115">Group Membership Operations</a><a class="headerlink" href="#group-membership-operations" title="Permalink to this headline">¶</a></h3>
+<span id="groupmembership-operations"></span><h3><a class="toc-backref" href="#id116">Group Membership Operations</a><a class="headerlink" href="#group-membership-operations" title="Permalink to this headline">¶</a></h3>
 <div class="contents local topic" id="id23">
 <ul class="simple">
-<li><a class="reference internal" href="#create-a-group-membership" id="id120">Create a Group Membership</a></li>
-<li><a class="reference internal" href="#retrieve-a-group-membership" id="id121">Retrieve a Group Membership</a></li>
-<li><a class="reference internal" href="#update-a-group-membership" id="id122">Update a Group Membership</a></li>
-<li><a class="reference internal" href="#delete-a-group-membership" id="id123">Delete a Group Membership</a></li>
+<li><a class="reference internal" href="#create-a-group-membership" id="id121">Create a Group Membership</a></li>
+<li><a class="reference internal" href="#retrieve-a-group-membership" id="id122">Retrieve a Group Membership</a></li>
+<li><a class="reference internal" href="#update-a-group-membership" id="id123">Update a Group Membership</a></li>
+<li><a class="reference internal" href="#delete-a-group-membership" id="id124">Delete a Group Membership</a></li>
 </ul>
 </div>
 <div class="section" id="create-a-group-membership">
-<h4><a class="toc-backref" href="#id120">Create a Group Membership</a><a class="headerlink" href="#create-a-group-membership" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id121">Create a Group Membership</a><a class="headerlink" href="#create-a-group-membership" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="30%" />
@@ -3387,7 +3482,7 @@
 </table>
 </div>
 <div class="section" id="retrieve-a-group-membership">
-<h4><a class="toc-backref" href="#id121">Retrieve a Group Membership</a><a class="headerlink" href="#retrieve-a-group-membership" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id122">Retrieve a Group Membership</a><a class="headerlink" href="#retrieve-a-group-membership" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -3409,11 +3504,11 @@
 </table>
 </div>
 <div class="section" id="update-a-group-membership">
-<h4><a class="toc-backref" href="#id122">Update a Group Membership</a><a class="headerlink" href="#update-a-group-membership" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id123">Update a Group Membership</a><a class="headerlink" href="#update-a-group-membership" title="Permalink to this headline">¶</a></h4>
 <p>A groupMembership resource cannot be updated once it has been created.</p>
 </div>
 <div class="section" id="delete-a-group-membership">
-<h4><a class="toc-backref" href="#id123">Delete a Group Membership</a><a class="headerlink" href="#delete-a-group-membership" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id124">Delete a Group Membership</a><a class="headerlink" href="#delete-a-group-membership" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -3459,12 +3554,12 @@
 <span id="ref-organization"></span><h2>Organization<a class="headerlink" href="#organization" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id25">
 <ul class="simple">
-<li><a class="reference internal" href="#organization-operations" id="id124">Organization Operations</a><ul>
-<li><a class="reference internal" href="#create-an-organization" id="id125">Create an Organization</a></li>
-<li><a class="reference internal" href="#retrieve-an-organization" id="id126">Retrieve an Organization</a></li>
-<li><a class="reference internal" href="#update-an-organization" id="id127">Update an Organization</a></li>
-<li><a class="reference internal" href="#delete-an-organization" id="id128">Delete an Organization</a></li>
-<li><a class="reference internal" href="#using-an-organization-for-look-up" id="id129">Using an Organization for Look-Up</a></li>
+<li><a class="reference internal" href="#organization-operations" id="id125">Organization Operations</a><ul>
+<li><a class="reference internal" href="#create-an-organization" id="id126">Create an Organization</a></li>
+<li><a class="reference internal" href="#retrieve-an-organization" id="id127">Retrieve an Organization</a></li>
+<li><a class="reference internal" href="#update-an-organization" id="id128">Update an Organization</a></li>
+<li><a class="reference internal" href="#delete-an-organization" id="id129">Delete an Organization</a></li>
+<li><a class="reference internal" href="#using-an-organization-for-look-up" id="id130">Using an Organization for Look-Up</a></li>
 </ul>
 </li>
 </ul>
@@ -3523,7 +3618,7 @@
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">status</span></code></td>
 <td>String (Enum)</td>
 <td><code class="docutils literal"><span class="pre">ENABLED</span></code>, <code class="docutils literal"><span class="pre">DISABLED</span></code></td>
-<td>Indicates whether the Organization is enabled or not. Enabled Organizations can be used as Account Stores for applications, disabled Organizations cannot.</td>
+<td>Indicates whether the Organization is enabled or not. Enabled Organizations can be used as Account Stores for applications; disabled Organizations cannot.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">description</span></code></td>
 <td>String</td>
@@ -3531,37 +3626,37 @@
 <td>The description of the Organization.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">customData</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Organization&#8217;s customData resource that you can use to store your own Organization-specific custom fields.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">defaultAccountStoreMapping</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td><code class="docutils literal"><span class="pre">null</span></code> or Link</td>
-<td>A link to this Organization&#8217;s default Account Store Mapping where the organization will store newly created Accounts. A null value disables the ability to add Groups to the Organization via the <code class="docutils literal"><span class="pre">organizations/:organizationId/accounts</span></code> endpoint.</td>
+<td>A link to this Organization&#8217;s default Account Store Mapping where the organization will store newly created Accounts. A <code class="docutils literal"><span class="pre">null</span></code> value disables the ability to add Groups to the Organization via the <code class="docutils literal"><span class="pre">organizations/$ORGANIZATION_ID/accounts</span></code> endpoint.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">defaultGroupStoreMapping</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td><code class="docutils literal"><span class="pre">null</span></code> or Link</td>
-<td>A link to this Organization&#8217;s default Account Store Mapping where the organization will store newly created Groups. A null value disables the ability to add Groups to the Organization via the <code class="docutils literal"><span class="pre">organizations/:organizationId/groups</span></code> endpoint.</td>
+<td>A link to this Organization&#8217;s default Account Store Mapping where the organization will store newly created Groups. A <code class="docutils literal"><span class="pre">null</span></code> value disables the ability to add Groups to the Organization via the <code class="docutils literal"><span class="pre">organizations/$ORGANIZATION_ID/groups</span></code> endpoint.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">accountStoreMappings</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the collection of all Account Store Mappings that represent the Organization. The Accounts and Groups within the mapped Account Stores are obtainable from the <code class="docutils literal"><span class="pre">accounts</span></code> and <code class="docutils literal"><span class="pre">groups</span></code> links, respectively.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">groups</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a collection of the Groups wrapped by this Organization.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">accounts</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a collection of the Accounts wrapped by this Organization. All of the Accounts in this collection can log-in to the Organization.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">tenant</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Stormpath Tenant that owns this Organization.</td>
 </tr>
@@ -3597,18 +3692,18 @@
 </pre></div>
 </div>
 <div class="section" id="organization-operations">
-<span id="id26"></span><h3><a class="toc-backref" href="#id124">Organization Operations</a><a class="headerlink" href="#organization-operations" title="Permalink to this headline">¶</a></h3>
+<span id="id26"></span><h3><a class="toc-backref" href="#id125">Organization Operations</a><a class="headerlink" href="#organization-operations" title="Permalink to this headline">¶</a></h3>
 <div class="contents local topic" id="id27">
 <ul class="simple">
-<li><a class="reference internal" href="#create-an-organization" id="id130">Create an Organization</a></li>
-<li><a class="reference internal" href="#retrieve-an-organization" id="id131">Retrieve an Organization</a></li>
-<li><a class="reference internal" href="#update-an-organization" id="id132">Update an Organization</a></li>
-<li><a class="reference internal" href="#delete-an-organization" id="id133">Delete an Organization</a></li>
-<li><a class="reference internal" href="#using-an-organization-for-look-up" id="id134">Using an Organization for Look-Up</a></li>
+<li><a class="reference internal" href="#create-an-organization" id="id131">Create an Organization</a></li>
+<li><a class="reference internal" href="#retrieve-an-organization" id="id132">Retrieve an Organization</a></li>
+<li><a class="reference internal" href="#update-an-organization" id="id133">Update an Organization</a></li>
+<li><a class="reference internal" href="#delete-an-organization" id="id134">Delete an Organization</a></li>
+<li><a class="reference internal" href="#using-an-organization-for-look-up" id="id135">Using an Organization for Look-Up</a></li>
 </ul>
 </div>
 <div class="section" id="create-an-organization">
-<h4><a class="toc-backref" href="#id130">Create an Organization</a><a class="headerlink" href="#create-an-organization" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id131">Create an Organization</a><a class="headerlink" href="#create-an-organization" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="30%" />
@@ -3633,7 +3728,7 @@
 </table>
 </div>
 <div class="section" id="retrieve-an-organization">
-<h4><a class="toc-backref" href="#id131">Retrieve an Organization</a><a class="headerlink" href="#retrieve-an-organization" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id132">Retrieve an Organization</a><a class="headerlink" href="#retrieve-an-organization" title="Permalink to this headline">¶</a></h4>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you don’t have the Organization&#8217;s URL, you can find it by looking it up in the Stormpath Admin Console or by searching your Tenant’s Organizations by sending a GET to <code class="docutils literal"><span class="pre">/v1/tenants/$TENANT_ID/organizations</span></code>.</p>
@@ -3659,7 +3754,7 @@
 </table>
 </div>
 <div class="section" id="update-an-organization">
-<h4><a class="toc-backref" href="#id132">Update an Organization</a><a class="headerlink" href="#update-an-organization" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id133">Update an Organization</a><a class="headerlink" href="#update-an-organization" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -3681,7 +3776,7 @@
 </table>
 </div>
 <div class="section" id="delete-an-organization">
-<h4><a class="toc-backref" href="#id133">Delete an Organization</a><a class="headerlink" href="#delete-an-organization" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id134">Delete an Organization</a><a class="headerlink" href="#delete-an-organization" title="Permalink to this headline">¶</a></h4>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">Deleting an Organization completely erases it and any of its related data from Stormpath. We recommend that you disable the Organization instead of deleting it if you anticipate that you might use it again or if you want to retain its data for historical reference. To disable an Organization, you can update the Organization and set the <code class="docutils literal"><span class="pre">status</span></code> attribute to <code class="docutils literal"><span class="pre">DISABLED</span></code>.</p>
@@ -3734,7 +3829,7 @@
 </div>
 </div>
 <div class="section" id="using-an-organization-for-look-up">
-<h4><a class="toc-backref" href="#id134">Using an Organization for Look-Up</a><a class="headerlink" href="#using-an-organization-for-look-up" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id135">Using an Organization for Look-Up</a><a class="headerlink" href="#using-an-organization-for-look-up" title="Permalink to this headline">¶</a></h4>
 <p>It is possible to retrieve other, associated resources using the Organization for look-up.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -3766,19 +3861,19 @@
 <span id="ref-account"></span><h2>Account<a class="headerlink" href="#account" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id29">
 <ul class="simple">
-<li><a class="reference internal" href="#account-operations" id="id135">Account Operations</a><ul>
-<li><a class="reference internal" href="#create-an-account" id="id136">Create an Account</a></li>
-<li><a class="reference internal" href="#retrieve-an-account" id="id137">Retrieve an Account</a></li>
-<li><a class="reference internal" href="#update-an-account" id="id138">Update an Account</a></li>
-<li><a class="reference internal" href="#delete-an-account" id="id139">Delete an Account</a></li>
-<li><a class="reference internal" href="#using-an-account-for-look-up" id="id140">Using an Account for Look-Up</a></li>
+<li><a class="reference internal" href="#account-operations" id="id136">Account Operations</a><ul>
+<li><a class="reference internal" href="#create-an-account" id="id137">Create an Account</a></li>
+<li><a class="reference internal" href="#retrieve-an-account" id="id138">Retrieve an Account</a></li>
+<li><a class="reference internal" href="#update-an-account" id="id139">Update an Account</a></li>
+<li><a class="reference internal" href="#delete-an-account" id="id140">Delete an Account</a></li>
+<li><a class="reference internal" href="#using-an-account-for-look-up" id="id141">Using an Account for Look-Up</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#other-resources-associated-with-an-account" id="id141">Other Resources Associated with an Account</a><ul>
-<li><a class="reference internal" href="#account-api-keys" id="id142">Account API Keys</a></li>
-<li><a class="reference internal" href="#access-tokens" id="id143">Access Tokens</a></li>
-<li><a class="reference internal" href="#refresh-tokens" id="id144">Refresh Tokens</a></li>
-<li><a class="reference internal" href="#expanded-json-web-token" id="id145">Expanded JSON Web Token</a></li>
+<li><a class="reference internal" href="#other-resources-associated-with-an-account" id="id142">Other Resources Associated with an Account</a><ul>
+<li><a class="reference internal" href="#account-api-keys" id="id143">Account API Keys</a></li>
+<li><a class="reference internal" href="#access-tokens" id="id144">Access Tokens</a></li>
+<li><a class="reference internal" href="#refresh-tokens" id="id145">Refresh Tokens</a></li>
+<li><a class="reference internal" href="#expanded-json-web-token" id="id146">Expanded JSON Web Token</a></li>
 </ul>
 </li>
 </ul>
@@ -3792,7 +3887,7 @@
 <p>An Account can log in to an Application using either the <code class="docutils literal"><span class="pre">email</span></code> or <code class="docutils literal"><span class="pre">username</span></code>. Accounts can represent your end users (people), but they can also be used to represent services, daemons, processes, or any “entity” that needs to log in to a Stormpath-enabled application. Additionally, an Account may only exist in a single Directory but may be in multiple Groups owned by that Directory.</p>
 <p>An individual Account resource may be accessed via its Resource URL:</p>
 <p><strong>Account URL</strong></p>
-<p><code class="docutils literal"><span class="pre">/v1/accounts/:accountId</span></code></p>
+<p><code class="docutils literal"><span class="pre">/v1/accounts/$ACCOUNT_ID</span></code></p>
 <p><strong>Account Attributes</strong></p>
 <table border="1" class="docutils">
 <colgroup>
@@ -3865,57 +3960,57 @@
 <td>Indicates when this resource’s attributes were last modified.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">emailVerificationToken</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Account’s email verification token. This will only be set if the Account needs to be verified.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">customData</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Account’s customData resource that you can use to store your own Account-specific custom fields.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">providerData</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the information from the owner Directory&#8217;s Provider.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">directory</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Account&#8217;s Directory.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">tenant</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Tenant that owns the Account’s Directory.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">groups</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to a collection of the Groups that the Account belongs to.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">groupMemberships</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the <a class="reference internal" href="#ref-groupmembership"><span>Group Memberships</span></a> that the Account is in.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">applications</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the Applications that the Account belongs to.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">apiKeys</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A link to the apiKeys for this Account.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">accessTokens</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A collection of valid JSON Web Tokens associated with this Account, used for token-based authentication.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">refreshTokens</span></code></td>
-<td>String (Link)</td>
+<td>Link</td>
 <td>N/A</td>
 <td>A collection of valid JSON Web Tokens associated with this Account, used to generate additional <code class="docutils literal"><span class="pre">accessTokens</span></code> for token-based authentication.</td>
 </tr>
@@ -3968,18 +4063,18 @@
 </pre></div>
 </div>
 <div class="section" id="account-operations">
-<span id="id30"></span><h3><a class="toc-backref" href="#id135">Account Operations</a><a class="headerlink" href="#account-operations" title="Permalink to this headline">¶</a></h3>
+<span id="id30"></span><h3><a class="toc-backref" href="#id136">Account Operations</a><a class="headerlink" href="#account-operations" title="Permalink to this headline">¶</a></h3>
 <div class="contents local topic" id="id31">
 <ul class="simple">
-<li><a class="reference internal" href="#create-an-account" id="id146">Create an Account</a></li>
-<li><a class="reference internal" href="#retrieve-an-account" id="id147">Retrieve an Account</a></li>
-<li><a class="reference internal" href="#update-an-account" id="id148">Update an Account</a></li>
-<li><a class="reference internal" href="#delete-an-account" id="id149">Delete an Account</a></li>
-<li><a class="reference internal" href="#using-an-account-for-look-up" id="id150">Using an Account for Look-Up</a></li>
+<li><a class="reference internal" href="#create-an-account" id="id147">Create an Account</a></li>
+<li><a class="reference internal" href="#retrieve-an-account" id="id148">Retrieve an Account</a></li>
+<li><a class="reference internal" href="#update-an-account" id="id149">Update an Account</a></li>
+<li><a class="reference internal" href="#delete-an-account" id="id150">Delete an Account</a></li>
+<li><a class="reference internal" href="#using-an-account-for-look-up" id="id151">Using an Account for Look-Up</a></li>
 </ul>
 </div>
 <div class="section" id="create-an-account">
-<h4><a class="toc-backref" href="#id146">Create an Account</a><a class="headerlink" href="#create-an-account" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id147">Create an Account</a><a class="headerlink" href="#create-an-account" title="Permalink to this headline">¶</a></h4>
 <p>Because an Account is &#8220;owned&#8221; by a Directory, you can add it either directly through the Directory that owns it, or indirectly via an Application that has that Directory as an Account Store:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -4009,7 +4104,7 @@
 </div>
 </div>
 <div class="section" id="retrieve-an-account">
-<h4><a class="toc-backref" href="#id147">Retrieve an Account</a><a class="headerlink" href="#retrieve-an-account" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id148">Retrieve an Account</a><a class="headerlink" href="#retrieve-an-account" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -4031,7 +4126,7 @@
 </table>
 </div>
 <div class="section" id="update-an-account">
-<h4><a class="toc-backref" href="#id148">Update an Account</a><a class="headerlink" href="#update-an-account" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id149">Update an Account</a><a class="headerlink" href="#update-an-account" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -4053,7 +4148,7 @@
 </table>
 </div>
 <div class="section" id="delete-an-account">
-<h4><a class="toc-backref" href="#id149">Delete an Account</a><a class="headerlink" href="#delete-an-account" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id150">Delete an Account</a><a class="headerlink" href="#delete-an-account" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -4080,19 +4175,19 @@
 <div class="section" id="id32">
 <h5>Example Queries<a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h5>
 <p><strong>Create an Account while suppressing the registration email</strong></p>
-<div class="highlight-bash"><div class="highlight"><pre>curl --request GET \
---user $API_KEY_ID:$API_KEY_SECRET \
---header &#39;content-type: application/json&#39; \
---url &quot;https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbexaMPLE/accounts?registrationWorkflowEnabled=false&quot;
---data &#39;{
-         &quot;username&quot; : &quot;jlpicard&quot;,
-         &quot;email&quot; : &quot;capt@enterprise.com&quot;,
-         &quot;givenName&quot; : &quot;Jean-Luc&quot;,
-         &quot;middleName&quot; : &quot;&quot;,
-         &quot;surname&quot; : &quot;Picard&quot;,
-         &quot;password&quot; : &quot;uGhd%a8Kl!&quot;
-         &quot;status&quot; : &quot;ENABLED&quot;,
-}
+<div class="highlight-bash"><div class="highlight"><pre>curl --request GET <span class="se">\</span>
+--user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
+--header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
+--url <span class="s2">&quot;https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbexaMPLE/accounts?registrationWorkflowEnabled=false&quot;</span>
+--data <span class="s1">&#39;{</span>
+<span class="s1">         &quot;username&quot; : &quot;jlpicard&quot;,</span>
+<span class="s1">         &quot;email&quot; : &quot;capt@enterprise.com&quot;,</span>
+<span class="s1">         &quot;givenName&quot; : &quot;Jean-Luc&quot;,</span>
+<span class="s1">         &quot;middleName&quot; : &quot;&quot;,</span>
+<span class="s1">         &quot;surname&quot; : &quot;Picard&quot;,</span>
+<span class="s1">         &quot;password&quot; : &quot;uGhd%a8Kl!&quot;</span>
+<span class="s1">         &quot;status&quot; : &quot;ENABLED&quot;,</span>
+<span class="s1">}&#39;</span>
 </pre></div>
 </div>
 <p>This query would create an Account with the specified attributes, while also suppressing the configured <a class="reference external" href="http://docs.stormpath.com/console/product-guide/#directory-workflows">Registration Workflow</a>.</p>
@@ -4113,7 +4208,7 @@
 </div>
 </div>
 <div class="section" id="using-an-account-for-look-up">
-<h4><a class="toc-backref" href="#id150">Using an Account for Look-Up</a><a class="headerlink" href="#using-an-account-for-look-up" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id151">Using an Account for Look-Up</a><a class="headerlink" href="#using-an-account-for-look-up" title="Permalink to this headline">¶</a></h4>
 <p>It is possible to retrieve other, associated resources using the Account for look-up.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -4141,9 +4236,9 @@
 </div>
 </div>
 <div class="section" id="other-resources-associated-with-an-account">
-<h3><a class="toc-backref" href="#id141">Other Resources Associated with an Account</a><a class="headerlink" href="#other-resources-associated-with-an-account" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id142">Other Resources Associated with an Account</a><a class="headerlink" href="#other-resources-associated-with-an-account" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="account-api-keys">
-<span id="ref-account-apikeys"></span><h4><a class="toc-backref" href="#id142">Account API Keys</a><a class="headerlink" href="#account-api-keys" title="Permalink to this headline">¶</a></h4>
+<span id="ref-account-apikeys"></span><h4><a class="toc-backref" href="#id143">Account API Keys</a><a class="headerlink" href="#account-api-keys" title="Permalink to this headline">¶</a></h4>
 <p>This collection stores any API Keys that have been generated for this Account.</p>
 <p><strong>apiKeys URL</strong></p>
 <p><code class="docutils literal"><span class="pre">/v1/accounts/$ACCOUNT_ID/apiKeys</span></code></p>
@@ -4316,7 +4411,7 @@
 </div>
 </div>
 <div class="section" id="access-tokens">
-<span id="id33"></span><h4><a class="toc-backref" href="#id143">Access Tokens</a><a class="headerlink" href="#access-tokens" title="Permalink to this headline">¶</a></h4>
+<span id="id33"></span><h4><a class="toc-backref" href="#id144">Access Tokens</a><a class="headerlink" href="#access-tokens" title="Permalink to this headline">¶</a></h4>
 <p>This collection stores any OAuth 2.0 Access Tokens that have been generated for this Account.</p>
 <p><strong>accessTokens URL</strong></p>
 <p><code class="docutils literal"><span class="pre">/v1/accessTokens/$ACCESS_TOKEN_ID</span></code></p>
@@ -4405,9 +4500,39 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<div class="section" id="access-token-operations">
+<h5>Access Token Operations<a class="headerlink" href="#access-token-operations" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="creating-access-tokens">
+<h6>Creating Access Tokens<a class="headerlink" href="#creating-access-tokens" title="Permalink to this headline">¶</a></h6>
+<p>You can create an Access Token off of the Application&#8217;s <code class="docutils literal"><span class="pre">oauth/token</span></code> endpoint as described in <a class="reference internal" href="005_auth_n.html#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token</span></a>.</p>
+</div>
+<div class="section" id="retrieving-access-tokens">
+<h6>Retrieving Access Tokens<a class="headerlink" href="#retrieving-access-tokens" title="Permalink to this headline">¶</a></h6>
+<p>An Account&#8217;s Access Tokens can be retrieved manually. It is also possible to specify an Application and only retrieve the Access Tokens that the Account has for that particular Application.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="20%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Operation</th>
+<th class="head">Optional Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>GET /v1/accounts/$ACCOUNT_ID/accessTokens</td>
+<td><code class="docutils literal"><span class="pre">application.href</span></code></td>
+<td>Retrieves the specified Account&#8217;s Access Tokens.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div class="section" id="refresh-tokens">
-<span id="ref-refresh-token"></span><h4><a class="toc-backref" href="#id144">Refresh Tokens</a><a class="headerlink" href="#refresh-tokens" title="Permalink to this headline">¶</a></h4>
+<span id="ref-refresh-token"></span><h4><a class="toc-backref" href="#id145">Refresh Tokens</a><a class="headerlink" href="#refresh-tokens" title="Permalink to this headline">¶</a></h4>
 <p>This collection stores any OAuth 2.0 Refresh Tokens that have been generated for this Account.</p>
 <p><strong>refreshTokens URL</strong></p>
 <p><code class="docutils literal"><span class="pre">/v1/refreshTokens/$REFRESH_TOKEN_ID</span></code></p>
@@ -4495,9 +4620,39 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<div class="section" id="refresh-token-operations">
+<h5>Refresh Token Operations<a class="headerlink" href="#refresh-token-operations" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="creating-refresh-tokens">
+<h6>Creating Refresh Tokens<a class="headerlink" href="#creating-refresh-tokens" title="Permalink to this headline">¶</a></h6>
+<p>You can create a Refresh Token off of the Application&#8217;s <code class="docutils literal"><span class="pre">oauth/token</span></code> endpoint as described in <a class="reference internal" href="005_auth_n.html#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token</span></a>.</p>
+</div>
+<div class="section" id="retrieving-refresh-tokens">
+<h6>Retrieving Refresh Tokens<a class="headerlink" href="#retrieving-refresh-tokens" title="Permalink to this headline">¶</a></h6>
+<p>An Account&#8217;s Refresh Tokens can be retrieved manually. It is also possible to specify an Application and only retrieve the Refresh Tokens that the Account has for that particular Application.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="20%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Operation</th>
+<th class="head">Optional Parameters</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>GET /v1/accounts/$ACCOUNT_ID/refreshTokens</td>
+<td><code class="docutils literal"><span class="pre">application.href</span></code></td>
+<td>Retrieves the specified Account&#8217;s Refresh Tokens.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div class="section" id="expanded-json-web-token">
-<span id="ref-jwt"></span><h4><a class="toc-backref" href="#id145">Expanded JSON Web Token</a><a class="headerlink" href="#expanded-json-web-token" title="Permalink to this headline">¶</a></h4>
+<span id="ref-jwt"></span><h4><a class="toc-backref" href="#id146">Expanded JSON Web Token</a><a class="headerlink" href="#expanded-json-web-token" title="Permalink to this headline">¶</a></h4>
 <p><strong>expandedJwt Attributes</strong></p>
 <p><em>Header</em></p>
 <table border="1" class="docutils">
@@ -4617,11 +4772,11 @@
 <span id="ref-customdata"></span><h2>Custom Data<a class="headerlink" href="#custom-data" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id34">
 <ul class="simple">
-<li><a class="reference internal" href="#custom-data-operations" id="id151">Custom Data Operations</a><ul>
-<li><a class="reference internal" href="#create-a-customdata" id="id152">Create a customData</a></li>
-<li><a class="reference internal" href="#retrieve-a-customdata" id="id153">Retrieve a customData</a></li>
-<li><a class="reference internal" href="#update-a-customdata" id="id154">Update a customData</a></li>
-<li><a class="reference internal" href="#delete-a-customdata" id="id155">Delete a customData</a></li>
+<li><a class="reference internal" href="#custom-data-operations" id="id152">Custom Data Operations</a><ul>
+<li><a class="reference internal" href="#create-a-customdata" id="id153">Create a customData</a></li>
+<li><a class="reference internal" href="#retrieve-a-customdata" id="id154">Retrieve a customData</a></li>
+<li><a class="reference internal" href="#update-a-customdata" id="id155">Update a customData</a></li>
+<li><a class="reference internal" href="#delete-a-customdata" id="id156">Delete a customData</a></li>
 </ul>
 </li>
 </ul>
@@ -4694,22 +4849,22 @@
 </pre></div>
 </div>
 <div class="section" id="custom-data-operations">
-<span id="customdata-operations"></span><h3><a class="toc-backref" href="#id151">Custom Data Operations</a><a class="headerlink" href="#custom-data-operations" title="Permalink to this headline">¶</a></h3>
+<span id="customdata-operations"></span><h3><a class="toc-backref" href="#id152">Custom Data Operations</a><a class="headerlink" href="#custom-data-operations" title="Permalink to this headline">¶</a></h3>
 <div class="contents local topic" id="id35">
 <ul class="simple">
-<li><a class="reference internal" href="#create-a-customdata" id="id156">Create a customData</a></li>
-<li><a class="reference internal" href="#retrieve-a-customdata" id="id157">Retrieve a customData</a></li>
-<li><a class="reference internal" href="#update-a-customdata" id="id158">Update a customData</a></li>
-<li><a class="reference internal" href="#delete-a-customdata" id="id159">Delete a customData</a></li>
+<li><a class="reference internal" href="#create-a-customdata" id="id157">Create a customData</a></li>
+<li><a class="reference internal" href="#retrieve-a-customdata" id="id158">Retrieve a customData</a></li>
+<li><a class="reference internal" href="#update-a-customdata" id="id159">Update a customData</a></li>
+<li><a class="reference internal" href="#delete-a-customdata" id="id160">Delete a customData</a></li>
 </ul>
 </div>
 <div class="section" id="create-a-customdata">
-<h4><a class="toc-backref" href="#id156">Create a customData</a><a class="headerlink" href="#create-a-customdata" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id157">Create a customData</a><a class="headerlink" href="#create-a-customdata" title="Permalink to this headline">¶</a></h4>
 <p>Whenever you create an Stormpath resource, an empty customData resource is created for that resource automatically – you do not need to explicitly execute a request to create it.</p>
 <p>However, it is often useful to populate custom data at the same time you create a resource. You can do this by embedding the customData directly in the resource. For an example, see <a class="reference internal" href="#accnt-create-with-customdata"><span>below</span></a>.</p>
 </div>
 <div class="section" id="retrieve-a-customdata">
-<h4><a class="toc-backref" href="#id157">Retrieve a customData</a><a class="headerlink" href="#retrieve-a-customdata" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id158">Retrieve a customData</a><a class="headerlink" href="#retrieve-a-customdata" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -4731,7 +4886,7 @@
 </table>
 </div>
 <div class="section" id="update-a-customdata">
-<h4><a class="toc-backref" href="#id158">Update a customData</a><a class="headerlink" href="#update-a-customdata" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id159">Update a customData</a><a class="headerlink" href="#update-a-customdata" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -4753,7 +4908,7 @@
 </table>
 </div>
 <div class="section" id="delete-a-customdata">
-<h4><a class="toc-backref" href="#id159">Delete a customData</a><a class="headerlink" href="#delete-a-customdata" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id160">Delete a customData</a><a class="headerlink" href="#delete-a-customdata" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -4860,7 +5015,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.1',
+            VERSION:'V1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
