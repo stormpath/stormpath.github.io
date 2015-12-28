@@ -6,7 +6,6 @@ image: https://stormpath.com/images/tutorial/ruby.png
 title: Stormpath Ruby Quickstart
 ---
 
-
 Welcome to Stormpath's Ruby Quickstart!
 
 This quickstart will get you up and running with Stormpath in about 7 minutes
