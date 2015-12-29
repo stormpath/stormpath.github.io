@@ -401,9 +401,6 @@
 		sp_docs_menu['stylesheets'] = [];
 		
 	
-		sp_docs_menu['wizard'] = [];
-		
-	
 </script>
 
 <div id="page">
@@ -514,12 +511,12 @@ This is a generic Java quickstart.  If you are building a web app deployed to a 
 <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;com.stormpath.sdk&lt;/groupId&gt;
     &lt;artifactId&gt;stormpath-sdk-api&lt;/artifactId&gt;
-    &lt;version&gt;1.0.RC7.6&lt;/version&gt;
+    &lt;version&gt;###latest_version###&lt;/version&gt;
 &lt;/dependency&gt;
 &lt;dependency&gt;
     &lt;groupId&gt;com.stormpath.sdk&lt;/groupId&gt;
     &lt;artifactId&gt;stormpath-sdk-httpclient&lt;/artifactId&gt;
-    &lt;version&gt;1.0.RC7.6&lt;/version&gt;
+    &lt;version&gt;###latest_version###&lt;/version&gt;
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;
 &lt;!-- This next runtime dependency is only necessary if you have
@@ -527,7 +524,7 @@ This is a generic Java quickstart.  If you are building a web app deployed to a 
 &lt;dependency&gt;
     &lt;groupId&gt;com.stormpath.sdk&lt;/groupId&gt;
     &lt;artifactId&gt;stormpath-sdk-oauth&lt;/artifactId&gt;
-    &lt;version&gt;1.0.RC7.6&lt;/version&gt;
+    &lt;version&gt;###latest_version###&lt;/version&gt;
     &lt;scope&gt;runtime&lt;/scope&gt;
 &lt;/dependency&gt;
 </code></pre>
@@ -755,6 +752,22 @@ learn more?  Here are a few other helpful resources you can jump into.</p>
 <li>Learn to easily partition user data with our <a href="/guides/multi-tenant/">Guide to Building Multitenant SaaS Applications</a>.</li>
 <li>Easily support Social Login with <a href="/java/product-guide/#integrating-with-google">Google</a> and <a href="/java/product-guide#integrating-with-facebook">Facebook</a> integrations in Java.</li>
 </ul>
+
+
+<script>
+$(document).ready(function () {
+  $.ajax({
+    url: 'http://search.maven.org/solrsearch/select', 
+    data: { q: 'stormpath-sdk-root', wt: 'json' }, 
+    dataType: 'jsonp',
+    jsonp: 'json.wrf',
+    success: function (json) {
+      var version = json.response.docs[0].latestVersion;
+      $('pre').text(function (index, text) { return text.replace(/###latest_version###/g, version); });
+    }
+  });
+});
+</script>
 
 
               <div id="spread-word">
@@ -1089,9 +1102,6 @@ addthis:url="https://stormpath.com" >
 		
 	
 		sp_docs_menu['stylesheets'] = [];
-		
-	
-		sp_docs_menu['wizard'] = [];
 		
 	
 </script>
