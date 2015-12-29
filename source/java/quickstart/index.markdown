@@ -287,7 +287,7 @@ $(document).ready(function () {
     jsonp: 'json.wrf',
     success: function (json) {
       var version = json.response.docs[0].latestVersion;
-      $('pre').first().text(function (index, text) { return text.replace(/###latest_version###/g, version); });
+      $('pre').text(function (index, text) { return text.replace(/###latest_version###/g, version); });
     }
   });
 });
