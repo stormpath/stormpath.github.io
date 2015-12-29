@@ -39,12 +39,12 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-api</artifactId>
-        <version>1.0.RC7.6</version>
+        <version>###latest_version###</version>
     </dependency>
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-httpclient</artifactId>
-        <version>1.0.RC7.6</version>
+        <version>###latest_version###</version>
         <scope>runtime</scope>
     </dependency>
     <!-- This next runtime dependency is only necessary if you have
@@ -52,7 +52,7 @@ Add the [Stormpath Java SDK](https://github.com/stormpath/stormpath-sdk-java) .j
     <dependency>
         <groupId>com.stormpath.sdk</groupId>
         <artifactId>stormpath-sdk-oauth</artifactId>
-        <version>1.0.RC7.6</version>
+        <version>###latest_version###</version>
         <scope>runtime</scope>
     </dependency>
 
@@ -277,3 +277,18 @@ learn more?  Here are a few other helpful resources you can jump into.
 * Checkout our integrations to [Apache Shiro](/integrations/#sample-apps-java-container-jump) or [Spring Security](/integrations/#sample-apps-java-container-jump).
 * Learn to easily partition user data with our [Guide to Building Multitenant SaaS Applications](/guides/multi-tenant/).
 * Easily support Social Login with [Google](/java/product-guide/#integrating-with-google) and [Facebook](/java/product-guide#integrating-with-facebook) integrations in Java.
+
+<script>
+$(document).ready(function () {
+  $.ajax({
+    url: 'http://search.maven.org/solrsearch/select', 
+    data: { q: 'stormpath-sdk-root', wt: 'json' }, 
+    dataType: 'jsonp',
+    jsonp: 'json.wrf',
+    success: function (json) {
+      var version = json.response.docs[0].latestVersion;
+      $('pre').text(function (index, text) { return text.replace(/###latest_version###/g, version); });
+    }
+  });
+});
+</script>
