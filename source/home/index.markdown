@@ -15,31 +15,31 @@ alias: [/index.html]
         <p>It’s easy to get started with Stormpath using one of our language libraries or framework integrations. Check out one of the official SDKs or community repos below.  If your platform isn't listed, you can always use the core REST API with any platform.</p>
         <div class="row">
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/nodejs"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-node.jpg"></a>
+            <a href="/nodejs/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-node.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/java"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-java.jpg"></a>
+            <a href="/java/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-java.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="https://github.com/stormpath/stormpath-sdk-angularjs"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-angular.jpg"></a>
+            <a href="https://github.com/stormpath/stormpath-sdk-angularjs/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-angular.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/python"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-python.jpg"></a>
+            <a href="/python/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-python.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/ruby/quickstart"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-ruby.jpg"></a>
+            <a href="/ruby/quickstart/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-ruby.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="https://github.com/stormpath/stormpath-sdk-php"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-php.jpg"></a>
+            <a href="https://github.com/stormpath/stormpath-sdk-php/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-php.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="https://github.com/jarias/stormpath-sdk-go"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-go.jpg"></a>
+            <a href="https://github.com/jarias/stormpath-sdk-go/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-go.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="https://github.com/stormpath/stormpath-mod-authnz-external"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-apache.jpg"></a>
+            <a href="https://github.com/stormpath/stormpath-mod-authnz-external/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-apache.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="https://github.com/stormpath/stormpath-sdk-dotnet"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-dotnet.jpg"></a>
+            <a href="/net/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-dotnet.jpg"></a>
           </div>
         </div>
       </div>
@@ -53,13 +53,13 @@ alias: [/index.html]
         <p>Connect to the Stormpath API in minutes with the REST quickstart or find comprehensive documentation in the REST Product Guide.</p>
         <div class="row">
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/rest/quickstart"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-quick.jpg"></a>
+            <a href="/rest/quickstart/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-quick.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="/rest/product-guide/latest/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-product.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/errors"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-error.jpg"></a>
+            <a href="/errors/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-error.jpg"></a>
           </div>
         </div>
       </div>
