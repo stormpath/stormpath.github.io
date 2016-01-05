@@ -622,7 +622,7 @@
 <div class="section" id="filter-search">
 <span id="search-filter"></span><h5>Filter Search<a class="headerlink" href="#filter-search" title="Permalink to this headline">¶</a></h5>
 <p>A filter search consists of specifying a query parameter <code class="docutils literal"><span class="pre">q</span></code> and a corresponding search value on a Collection Resource URL:</p>
-<div class="highlight-python"><div class="highlight"><pre>/v1/RESOURCE_TYPE?q=some+criteria
+<div class="highlight-python"><div class="highlight"><pre>/v1/$CONTAINER_TYPE/$CONTAINER_ID/$RESOURCE_TYPE?q=some+criteria
 </pre></div>
 </div>
 <p>For example, to search across an Application’s Accounts for any Account that has a <a class="reference internal" href="#searchable-attributes"><span>searchable attribute</span></a> containing the text &#8220;Joe&#8221;:</p>
@@ -642,13 +642,13 @@
 <div><div class="highlight-bash"><div class="highlight"><pre>curl --request GET <span class="se">\</span>
 --user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
 --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
---url <span class="s2">&quot;https://api.stormpath.com/v1/accounts?q=Joe&quot;</span>
+--url <span class="s2">&quot;https://api.stormpath.com/v1/groups/1ORBsz2iCNpV8yJExaMPLe/accounts?q=Joe&quot;</span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>Returns all Accounts where:</p>
 <ul class="simple">
-<li>Each Account is owned by the caller’s Tenant AND</li>
+<li>Each Account is associated to the specified Group</li>
 <li>The Account&#8217;s <code class="docutils literal"><span class="pre">givenName</span></code> equals or contains &#8220;joe&#8221; (case insensitive) OR</li>
 <li>The Account&#8217;s <code class="docutils literal"><span class="pre">middlename</span></code> equals or contains &#8220;joe&#8221; (case insensitive) OR</li>
 <li>The Account&#8217;s <code class="docutils literal"><span class="pre">email</span></code> equals or contains &#8220;joe&#8221; (case insensitive) OR</li>
@@ -714,31 +714,35 @@
 <li><p class="first">A query parameter value triggers one of four types of matching criteria:</p>
 <blockquote>
 <div><ol class="arabic simple">
-<li>No asterisk at the beginning or end of the value indicates a direct case-insensitive match.</li>
-<li>An asterisk only at the beginning of the value indicates that the case-insensitive value is at the end.</li>
-<li>An asterisk only at the end of the value indicates that the case-insensitive value is at the beginning.</li>
+<li>No asterisk at the beginning or end of the value indicates a direct match.</li>
+<li>An asterisk only at the beginning of the value indicates that value is at the end.</li>
+<li>An asterisk only at the end of the value indicates that the value is at the beginning.</li>
 <li>An asterisk at the end AND at the beginning of the value indicates the value is contained in the string.</li>
 </ol>
 </div></blockquote>
 </li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Just like with Filter search, queries are case-insensitive.</p>
+</div>
 <p>So the following query:</p>
 <blockquote>
 <div><div class="highlight-bash"><div class="highlight"><pre>curl --request GET <span class="se">\</span>
 --user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
 --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
---url <span class="s2">&quot;https://api.stormpath.com/v1/accounts?givenName=Joe&amp;middleName=*aul&amp;surname=*mit*&amp;email=joePaul*&amp;status=disabled&quot;</span>
+--url <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlexaMple/accounts?givenName=Joe&amp;middleName=*aul&amp;surname=*mit*&amp;email=joePaul*&amp;status=disabled&quot;</span>
 </pre></div>
 </div>
 </div></blockquote>
 <p>Returns all accounts where:</p>
 <ul class="simple">
-<li>Each Account is owned by the caller Tenant.</li>
-<li>The Account&#8217;s <code class="docutils literal"><span class="pre">givenName</span></code> is equal to &#8220;Joe&#8221; (case insensitive) AND</li>
-<li>The Account&#8217;s <code class="docutils literal"><span class="pre">middleName</span></code> ends with &#8220;aul&#8221; (case insensitive) AND</li>
-<li>The Account&#8217;s <code class="docutils literal"><span class="pre">surname</span></code> equals or contains &#8220;mit&#8221; (case insensitive) AND</li>
-<li>The Account&#8217;s <code class="docutils literal"><span class="pre">email</span></code> starts with with &#8220;joePaul&#8221; (case insensitive) AND</li>
-<li>The Account&#8217;s <code class="docutils literal"><span class="pre">status</span></code> equals &#8220;disabled&#8221; (case insensitive).</li>
+<li>Each Account belongs to the specified Application</li>
+<li>The Account&#8217;s <code class="docutils literal"><span class="pre">givenName</span></code> is equal to &#8220;Joe&#8221; AND</li>
+<li>The Account&#8217;s <code class="docutils literal"><span class="pre">middleName</span></code> ends with &#8220;aul&#8221; AND</li>
+<li>The Account&#8217;s <code class="docutils literal"><span class="pre">surname</span></code> equals or contains &#8220;mit&#8221; AND</li>
+<li>The Account&#8217;s <code class="docutils literal"><span class="pre">email</span></code> starts with with &#8220;joePaul&#8221; AND</li>
+<li>The Account&#8217;s <code class="docutils literal"><span class="pre">status</span></code> equals &#8220;disabled&#8221;.</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
