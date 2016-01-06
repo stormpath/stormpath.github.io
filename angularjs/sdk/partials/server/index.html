@@ -1,0 +1,156 @@
+<a href="https://github.com/stormpath/stormpath-sdk-angularjs/edit/master/ngdoc_assets/server/index.ngdoc" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><h1><code ng:non-bindable=""></code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><div class="server-integration-guide-page"><h2 id="server-integration-guide">Server Integration Guide</h2>
+<p>Front-end applications can not communicate with the Stormpath API directly,
+and thus need an integrated back-end.  This page has information about
+how to integrate Stormpath into your back-end.</p>
+<h3 id="server-integration-guide_with-expressjs">With Express.js</h3>
+<p>If you are using Express.js as your server, you can add our
+<a href="https://github.com/stormpath/express-stormpath">Stormpath Express Module</a> to your server.</p>
+<h3 id="server-integration-guide_with-other-environments">With other environments</h3>
+<p>If you are using another type of server you will have to manually setup some
+server endpoints to support this module.  Please visit
+<a href="https://docs.stormpath.com">Stormpath Docs</a> to find the language SDK of your
+server environment.</p>
+<p>Using the SDK of your choice, you need to implement the endpoints in the
+following table.  The expected URLs can be changed by modifying the URLs
+in the <a href="#/api/stormpath.STORMPATH_CONFIG:STORMPATH_CONFIG">STORMPATH_CONFIG</a></p>
+<p><strong>Endpoints to implement:</strong></p>
+<table>
+  <thead>
+    <th>Server Endpoint Description</th>
+    <th>Expected Endpoint</th>
+    <th>Stormpath SDK API to use</th>
+  </thead>
+<tbody>
+  <tr>
+    <td>
+      <p><strong>Current User Endpoint</strong></p>
+      <p>Returns a JSON object of the currently logged-in Stormpath account</p>
+    </td>
+    <td>
+      <code>/me</code>
+      <br/>
+    </td>
+    <td>
+      <em>N/A</em>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><strong>Email Verification</strong></p>
+      <p>Used to verify and consume email verification tokens</p>
+    </td>
+    <td>
+      <code>/verify</code>
+    </td>
+    <td>
+      <a href="http://docs.stormpath.com/rest/product-guide/#verify-an-email-address">Account Verification</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><strong>Forgot Password</strong></p>
+      <p>Used to create password reset tokens, triggering a password reset email</p>
+    </td>
+    <td>
+      <code>/forgot</code>
+    </td>
+    <td>
+      <a href="http://docs.stormpath.com/rest/product-guide/#reset-an-accounts-password">Password Reset</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><strong>Login</strong></p>
+      <p>
+        Used to authenticate a user and generate an access token which is stored in a secure cookie.
+      </p>
+    </td>
+    <td>
+      <code>/login</code>
+    </td>
+    <td>
+      <a href="http://docs.stormpath.com/rest/product-guide/#authenticate-an-account">Login Attempts</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><strong>Logout</strong></p>
+      <p>Used to remove any session-related cookies, such as the access token.</p>
+    </td>
+    <td>
+      <code>/logout</code>
+    </td>
+    <td>
+      <em>N/A</em>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><strong>Password Reset</strong></p>
+      <p>Used to complete the password reset workflow, with an sp token that
+      was issued by the forgot password flow</p>
+    </td>
+    <td>
+      <code>/change</code>
+    </td>
+    <td>
+      <a href="http://docs.stormpath.com/rest/product-guide/#reset-an-accounts-password">Password Reset</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><strong>User Registration</strong></p>
+      <p>Used to create new Stormpath accounts</p>
+    </td>
+    <td>
+      <code>/register</code>
+    </td>
+    <td>
+      <a href="http://docs.stormpath.com/rest/product-guide/#create-an-account">Account Creation</a>
+    </td>
+  </tr>
+</tbody>
+</table>
+
+<h3 id="server-integration-guide_how-sessions-work">How Sessions Work</h3>
+<p>The Angular SDK is agnostic to the authentication strategy used, it assumes that
+you are using a cookie-based system for authenticating the browser as a client.
+However we do suggest that you use JWT access tokens.  You can read more in our
+blog post, <a href="https://stormpath.com/blog/token-auth-spa">Token Based Authentication for Single Page
+Apps</a>. Our <a href="https://github.com/stormpath/express-stormpath">Stormpath Express Module</a>
+does this for you.</p>
+<p>Most of our SDKs have methods for issuing JWTs, and can be used to implement
+this strategy in your server.</p>
+<p>If you do not want to use JWT Access Tokens, you need to ensure the following on
+your server:</p>
+<ul>
+<li>The <a href="#/api/stormpath.STORMPATH_CONFIG:STORMPATH_CONFIG#properties_authentication_endpoint">AUTHENTICATION_ENDPOINT</a> should set a cookie that identifies a session for the
+user</li>
+<li>Your protected API endpoints should respond with <code>401 Unauthorized</code> if the
+user does not have a valid session</li>
+</ul>
+<h3 id="server-integration-guide_how-our-token-authentication-works">How Our Token Authentication Works</h3>
+<h4 id="server-integration-guide_how-our-token-authentication-works_token-creation-and-storage">Token Creation and Storage</h4>
+<p>When a user logs in, the server will issue an access token in the form of a
+JWT.  This access token will be stored in an HTTP-only cookie and will also
+set the Secure flag (so that it is only sent over HTTPS) in your production
+environment.</p>
+<p>A secondary refresh token will also be stored in a secure cookie, and this token
+is used to get more access tokens as they expire.  The refresh tokens can
+be revoked, using the Stormpath REST API.</p>
+<p>You may have heard that cookies are insecure, but that is a vague statement.
+The truth is that HTTP-only cookies, especially Secure-only cookies, are the
+most secure place to store authentication information because the JavaScript
+environment cannot access them.  This is the best way to protect yourself
+from XSS attacks.</p>
+<h4 id="server-integration-guide_how-our-token-authentication-works_token-expiration-and-revocation">Token Expiration and Revocation</h4>
+<p>Access tokens are valid until they expire.  You should set an expiration (TTL) that
+makes sense for your application.  If you are using Stormpath to manage your access
+tokens, you can modify the TTL by modifying the OAuth Policy of the Stormpath Application
+that you are using for your Angular Application.</p>
+<p>For more information, please see <a href="http://docs.stormpath.com/guides/token-management/">Using Stormpath for OAuth 2.0 and Access/Refresh Token Management</a></p>
+</div></div>
