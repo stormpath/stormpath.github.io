@@ -281,7 +281,7 @@ learn more?  Here are a few other helpful resources you can jump into.
 <script>
 $(document).ready(function () {
   $.ajax({
-    url: 'http://search.maven.org/solrsearch/select', 
+    url: 'https://search.maven.org/solrsearch/select', 
     data: { q: 'stormpath-sdk-root', wt: 'json' }, 
     dataType: 'jsonp',
     jsonp: 'json.wrf',
