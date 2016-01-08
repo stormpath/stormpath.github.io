@@ -159,3 +159,45 @@ Only use this code if a more accurate status code is not available. For example,
 
 <a id="9006"></a>[**9006**](/errors/9006): Stormpath, while acting as a gateway/proxy to your Active Directory server, encountered a referral error while communicating with the AD server. Potential solutions are to ensure that your AD server's DNS settings are correctly configured or to log in to the Stormpath UI Console and change your AD server's Stormpath Agent configuration to 'Ignore Referral Issues'.
 
+***
+##<a id="Tokens"></a>100XX: OAuth Errors
+
+<a id="10010"></a>[**10010**](/errors/10010): Token is no longer valid because the account is not enabled.
+
+<a id="10011"></a>[**10011**](/errors/10011): Token is no longer valid because it has expired.
+
+<a id="10012"></a>[**10012**](/errors/10012): Token is invalid because the issued at time (iat) is after the current time.
+
+<a id="10013"></a>[**10013**](/errors/10013): Token does not exist. This can occur if the token has been manually deleted, or if the token has expired and removed by Stormpath.
+
+<a id="10014"></a>[**10014**](/errors/10014): Token is invalid because the issuer of the token does not match the Application validating the token.
+
+<a id="10015"></a>[**10015**](/errors/10015): Token is no longer valid because the application that issued the token is not enabled.
+
+<a id="10016"></a>[**10016**](/errors/10016): Token is no longer valid because the account is not in an account store assigned to the application that issued the token.
+
+<a id="10017"></a>[**10017**](/errors/10017): Token is invalid because verifying the signature of a JWT failed.
+
+***
+##<a id="SAML"></a>101XX: SAML Errors
+
+<a id="10100"></a>[**10100**](/errors/10100): The SAML Response object is malformed or cannot be used by Stormpath. Please contact us at support@stormpath.com to help troubleshoot this problem.
+
+<a id="10101"></a>[**10101**](/errors/10101): The SAML Response has an invalid signature and cannot be trusted. Please contact us at support@stormpath.com to help troubleshoot this problem.
+
+<a id="10102"></a>[**10102**](/errors/10102): Authentication failed at the SAML Identity Provider, please check the SAML Identity Provider logs for more information.
+
+***
+##<a id="SAML"></a>110XX: Token Errors
+
+<a id="11001"></a>[**11001**](/errors/11001): Token is invalid because the specified organization name key does not exist in your Stormpath Tenant.
+
+<a id="11002"></a>[**11002**](/errors/11002): Token is invalid because the specified organization is disabled.
+
+<a id="11003"></a>[**11003**](/errors/11003): Token is invalid because the specified organization reference is not one of the application's assigned account stores.
+
+<a id="11004"></a>[**11004**](/errors/11004): Token is invalid because the a required claim value cannot be null or empty.
+
+<a id="11005"></a>[**11005**](/errors/11005): Token is invalid because the a token with the same identifier (jti) has been already used.
+
+
