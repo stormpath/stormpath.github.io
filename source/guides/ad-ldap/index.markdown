@@ -28,7 +28,7 @@ You access Stormpath via a [beautiful](http://stormpath.com/blog/designing-rest-
 
 Many organizations use Active Directory (AD) or LDAP for identity services. But connecting new web and mobile applications outside the firewall to on-premise Active Directory or LDAP servers is difficult, time-consuming and sometimes impossible. With Stormpath, you can seamlessly connect your web or mobile applications to existing Active Directory/LDAP servers.
 
-![](https://stormpath.com/images/landingpage/ldap/ldap2.png)
+![](https://stormpath.com/images/product/ad-ldap/02-ldap-diagram.png)
 
 It’s an elegant solution for organizations transitioning to the cloud and the simplest tool for developers wrestling with Active Directory/LDAP.  
 
