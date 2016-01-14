@@ -245,14 +245,16 @@ app.get('/troopers',function (req, res){
     });
 });
 ------
+from stormpath.api_auth import ApiRequestAuthenticator
+
 uri = 'https://api.trooperapp.com'
 http_method = 'GET'
-body = {}
 headers = {
     'Authorization': 'Basic BASE64ENCODEDAPIKEYANDSECRET'
 }
 
-result = application.authenticate(allowed_scopes, http_method, uri, body, headers)
+authenticator = ApiRequestAuthenticator(application)
+result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri)
 if result:
     print result.api_key
     print result.account
@@ -334,7 +336,7 @@ app.post('/oauth/token',function (req,res){
 });
 ------
 
-result = app.authenticate_api(allowed_scopes, http_method, uri, body, headers)
+result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes)
 if result:
     print result.token
     print result.token.to_json()
@@ -401,7 +403,7 @@ app.get('/troopers',function (req, res){
     });
 });
 ------
-result = app.authenticate_api(allowed_scopes, http_method, uri, body, headers)
+result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes)
 if result:
     print result.account
 else:
@@ -432,7 +434,7 @@ application.authenticateApiRequest({request: req, ttl: 7200}, function(err, auth
     }
 });
 ------
-result = app.authenticate_api(allowed_scopes, http_method, uri, body, headers, ttl)
+result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes, ttl=ttl)
 ------
 {% endcodetab %}
 
@@ -528,7 +530,7 @@ app.post('/oauth/token',function (req,res){
     });
 });
 ------
-result = app.authenticate_api(allowed_scopes, http_method, uri, body, headers)
+result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes)
 ------
 {% endcodetab %}
 
