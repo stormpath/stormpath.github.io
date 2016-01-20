@@ -73,7 +73,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">3. Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#retrieve-your-application">3.1. Retrieve Your Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#create-a-user-account">3.2. Create a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#authenticate-a-user-account">3.3. Authenticate a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticate-a-user-account">3.3 Authenticate a User Account</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#next-steps">3.4. Next Steps</a></li>
 </ul>
 </li>
@@ -90,7 +90,7 @@
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#how-password-authentication-works-in-stormpath">5.1. How Password Authentication Works in Stormpath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#how-token-based-authentication-works">5.2. How Token-Based Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#how-social-authentication-works">5.3. How Social Authentication Works</a></li>
-<li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#authenticating-against-a-mirrored-ldap-directory">5.4. Authenticating Against a Mirrored LDAP Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#authenticating-against-an-ldap-directory">5.4. Authenticating Against an LDAP Directory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="005_auth_n.html#authenticating-against-a-saml-directory">5.5. Authenticating Against a SAML Directory</a></li>
 </ul>
 </li>
@@ -123,6 +123,10 @@
 <li class="toctree-l2"><a class="reference internal" href="reference.html#organization">Organization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html#account">Account</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html#custom-data">Custom Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#unreleased">UNRELEASED</a></li>
 </ul>
 </li>
 </ul>
@@ -193,7 +197,7 @@ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 </div>
 <p>Before you can get your Application, you must get the location of your Tenant from Stormpath, like so:</p>
 <div class="highlight-bash"><div class="highlight"><pre>curl --request GET <span class="se">\</span>
-  --user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
+  --user <span class="nv">$A</span>PI_KEY_ID:<span class="nv">$A</span>PI_KEY_SECRET <span class="se">\</span>
   --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
   --url <span class="s2">&quot;https://api.stormpath.com/v1/tenants/current&quot;</span>
 </pre></div>
@@ -213,7 +217,7 @@ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 <p>Make note of the <code class="docutils literal"><span class="pre">Location</span></code> header. This is the location of your Tenant in Stormpath, which you will need in the next step.</p>
 <p>From here, using the location of the Tenant, you can get your Application by performing a search for the Application by name, with $TENANT_HREF replaced with the <code class="docutils literal"><span class="pre">href</span></code> of your Tenant from the previous cURL:</p>
 <div class="highlight-bash"><div class="highlight"><pre>curl --request GET <span class="se">\</span>
-  --user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
+  --user <span class="nv">$A</span>PI_KEY_ID:<span class="nv">$A</span>PI_KEY_SECRET <span class="se">\</span>
   --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
   --url <span class="s2">&quot;https://api.stormpath.com/v1/tenants/yOuRTeNANtid/applications?name=My%20Application&quot;</span>
 </pre></div>
@@ -254,9 +258,9 @@ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 </div>
 <div class="section" id="create-a-user-account">
 <h2>3.2. Create a User Account<a class="headerlink" href="#create-a-user-account" title="Permalink to this headline">¶</a></h2>
-<p>Now that we&#8217;ve created an Application, let&#8217;s create a user Account so someone can log in to (i.e. authenticate with) the Application. POST a new Account resource to the Application&#8217;s <code class="docutils literal"><span class="pre">/accounts</span></code> endpoint, which you saw in the JSON response above:</p>
+<p>Now that we&#8217;ve created an Application, let&#8217;s create a user Account so someone can log in to (i.e. authenticate with) the Application.</p>
 <div class="highlight-bash"><div class="highlight"><pre>curl --request GET <span class="se">\</span>
-  --user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
+  --user <span class="nv">$A</span>PI_KEY_ID:<span class="nv">$A</span>PI_KEY_SECRET <span class="se">\</span>
   --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
   --url <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlEXampLE/accounts&quot;</span>
   --data <span class="s1">&#39;{</span>
@@ -300,11 +304,12 @@ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 <p>You&#8217;ll notice here that this user Account has a Directory <code class="docutils literal"><span class="pre">href</span></code> returned as well, even though you haven&#8217;t created one. This is because when you created an Application, Stormpath automatically created a new Directory as well.</p>
 </div>
 <div class="section" id="authenticate-a-user-account">
-<h2>3.3. Authenticate a User Account<a class="headerlink" href="#authenticate-a-user-account" title="Permalink to this headline">¶</a></h2>
-<p>Now we have a user Account that can use your Application. But how do you authenticate an Account logging in to the Application? You POST a &#8220;Login Attempt&#8221; to your Application&#8217;s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint.</p>
+<h2>3.3 Authenticate a User Account<a class="headerlink" href="#authenticate-a-user-account" title="Permalink to this headline">¶</a></h2>
+<p>Now we have a user Account that can use your Application. But how do you authenticate an Account logging in to the Application?</p>
+<p>You POST a &#8220;Login Attempt&#8221; to your Application&#8217;s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint.</p>
 <p>The login cURL command would look as follows:</p>
 <div class="highlight-bash"><div class="highlight"><pre>curl --request GET <span class="se">\</span>
-  --user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
+  --user <span class="nv">$A</span>PI_KEY_ID:<span class="nv">$A</span>PI_KEY_SECRET <span class="se">\</span>
   --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
   --url <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlEXampLE/loginAttempts&quot;</span>
   --data <span class="s1">&#39;{</span>
@@ -338,7 +343,7 @@ String value = base64_encode( bytes );
 </pre></div>
 </div>
 <p>You can use the returned <code class="docutils literal"><span class="pre">href</span></code> to GET the Account&#8217;s details (first name, last name, email, etc).</p>
-<p>If the authentication attempt fails, you will see an <a class="reference external" href="http://docs.stormpath.com/errors/">error response</a> instead:</p>
+<p>If the authentication attempt fails, you will see an error response instead:</p>
 <div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
   <span class="nt">&quot;code&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>

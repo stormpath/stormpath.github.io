@@ -73,7 +73,7 @@
 <li class="toctree-l1"><a class="reference internal" href="003_quickstart.html">3. Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#retrieve-your-application">3.1. Retrieve Your Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#create-a-user-account">3.2. Create a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#authenticate-a-user-account">3.3. Authenticate a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#authenticate-a-user-account">3.3 Authenticate a User Account</a></li>
 <li class="toctree-l2"><a class="reference internal" href="003_quickstart.html#next-steps">3.4. Next Steps</a></li>
 </ul>
 </li>
@@ -90,7 +90,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#how-password-authentication-works-in-stormpath">5.1. How Password Authentication Works in Stormpath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-token-based-authentication-works">5.2. How Token-Based Authentication Works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-social-authentication-works">5.3. How Social Authentication Works</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#authenticating-against-a-mirrored-ldap-directory">5.4. Authenticating Against a Mirrored LDAP Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticating-against-an-ldap-directory">5.4. Authenticating Against an LDAP Directory</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#authenticating-against-a-saml-directory">5.5. Authenticating Against a SAML Directory</a></li>
 </ul>
 </li>
@@ -123,6 +123,10 @@
 <li class="toctree-l2"><a class="reference internal" href="reference.html#organization">Organization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html#account">Account</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reference.html#custom-data">Custom Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#unreleased">UNRELEASED</a></li>
 </ul>
 </li>
 </ul>
@@ -230,29 +234,19 @@
 </div>
 <p>As you can see, Stormpath tries to find the Account in the &#8220;Customers&#8221; Directory first because it has a higher priority than the &#8220;Employees&#8221; directory. If not found, the &#8220;Employees&#8221; Directory is tried next as it has a lower priority.</p>
 <p>You can map multiple Account Stores to an Application, but only one is required to enable login for an Application. Mapping multiple Account Stores to an Application, as well as configuring their priority, allows you precise control over the Account populations that may log in to your Application.</p>
-<div class="section" id="how-login-works-with-mirrored-and-social-directories">
-<span id="non-cloud-login"></span><h5>How Login Works with Mirrored and Social Directories<a class="headerlink" href="#how-login-works-with-mirrored-and-social-directories" title="Permalink to this headline">¶</a></h5>
-<p>For both <a class="reference internal" href="004_accnt_mgmt.html#about-mirror-dir"><span>Mirrored</span></a> and <a class="reference internal" href="004_accnt_mgmt.html#about-social-dir"><span>Social</span></a> Directories, Stormpath has a default behavior that links the Mirror/Social Directories with corresponding &#8220;master&#8221; Directories.</p>
-<p>The default Stormpath behavior is as a follows: a new user visits your site, and chooses something to log-in with their LDAP credentials, or social login like &#8220;Sign-in with Google&#8221;. Once they log in using their social or LDAP credentials, if it doesn&#8217;t already exist, a new user Account is created in your Mirror/Social Directory. After this Account is created, a search is performed inside the Application&#8217;s master Directory for their email address, to see if they already exist in there. If the user Account is already in the master Directory, no action is taken. If the user Account is not found, a new one is created in the master Directory, and populated with the information pulled from the Google account. The customData resource for that Account is then used to store an <code class="docutils literal"><span class="pre">href</span></code> link to their Account in the Mirror/Social Directory.</p>
+<div class="section" id="how-login-works-with-master-directories">
+<span id="mirror-login"></span><h5>How Login Works with Master Directories<a class="headerlink" href="#how-login-works-with-master-directories" title="Permalink to this headline">¶</a></h5>
+<p>If you require a number of Mirror Directories, then we recommend that you have a master Directory alongside them. Any login attempts should be directed to the Mirror Directory. If the attempt succeeds, your application should then perform a <a class="reference internal" href="reference.html#about-search"><span>search</span></a> of the master Directory to see if there is an Account already there that links to this Account in the Mirror Directory.</p>
+<p>If such an Account is already in the master Directory, no action is taken. If such an Account is not found, your application should create a new one in the master Directory, and populate it with the information pulled from the Account in the Mirror Directory. The customData resource for that master Account should then be used to store an <code class="docutils literal"><span class="pre">href</span></code> link to the Account in the Mirror Directory, for example:</p>
 <div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
   <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;accountLink&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3fLduLKlQu&quot;</span>
+    <span class="nt">&quot;accountLink&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3fLduLKlEx&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>If the user then chooses at some point to &#8220;Sign in with Facebook&#8221;, then a similar process will occur, but this time with a link created to the user Account in the Facebook Directory.</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
-  <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;accountLinks&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;Link1&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3fLduLKlQu&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;Link2&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/X3rjfa4Ljd&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;Link3&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/a05Ghpjd30&quot;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>This approach has two major benefits: It allows for a user to have one unified identity in your Application, regardless of how many social or LDAP identities they choose to log in with; this central identity can also be the central point that all authorization permissions (whether they be implicit or explicit) are then applied to.</p>
+<p>If the user then chooses at some point to, for example, &#8220;Sign in with Facebook&#8221;, then a similar process will occur, but this time with a link created to the user Account in the Facebook Directory.</p>
+<p>This mirror-master approach has two major benefits: It allows for a user to have one unified identity in your Application, regardless of how many external identities they choose to log in with; and this central identity can also be the central point that all authorization permissions (whether they be implicit or explicit) are then applied to.</p>
 </div>
 </div>
 </div>
@@ -667,7 +661,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p class="first admonition-title">Note</p>
 <p>You can query the Access Tokens that an Account has for a specific Application by specifying the Application&#8217;s href as a URL parameter:</p>
 <div class="last highlight-bash"><div class="highlight"><pre>curl --request GET <span class="se">\</span>
---user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
+--user <span class="nv">$A</span>PI_KEY_ID:<span class="nv">$A</span>PI_KEY_SECRET <span class="se">\</span>
 --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
 --url <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/accessTokens?application.href=https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSEXAMPLE&quot;</span>
 </pre></div>
@@ -976,25 +970,26 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </div>
 </div>
 </div>
-<div class="section" id="authenticating-against-a-mirrored-ldap-directory">
-<span id="mirror-dir-authn"></span><h2>5.4. Authenticating Against a Mirrored LDAP Directory<a class="headerlink" href="#authenticating-against-a-mirrored-ldap-directory" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="authenticating-against-an-ldap-directory">
+<span id="ldap-dir-authn"></span><h2>5.4. Authenticating Against an LDAP Directory<a class="headerlink" href="#authenticating-against-an-ldap-directory" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id3">
 <ul class="simple">
 <li><a class="reference internal" href="#mirror-directories-and-ldap" id="id25">Mirror Directories and LDAP</a><ul>
-<li><a class="reference internal" href="#step-1-create-a-mirror-directory" id="id26">Step 1: Create a Mirror Directory</a></li>
+<li><a class="reference internal" href="#step-1-create-an-ldap-directory" id="id26">Step 1: Create an LDAP Directory</a></li>
 <li><a class="reference internal" href="#step-2-install-your-ldap-agent" id="id27">Step 2: Install your LDAP Agent</a></li>
-<li><a class="reference internal" href="#step-3-map-the-mirror-directory-as-an-account-store-for-your-application" id="id28">Step 3: Map the Mirror Directory as an Account Store for Your Application</a></li>
+<li><a class="reference internal" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" id="id28">Step 3: Map the LDAP Directory as an Account Store for Your Application</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<p>This section assumes that you are already familiar both with <a class="reference internal" href="#how-login-works"><span>5.1.2. How Login Attempts Work in Stormpath</span></a> and the concept of Stormpath <a class="reference internal" href="004_accnt_mgmt.html#about-mirror-dir"><span>Mirror Directories</span></a> as well as how they are <a class="reference internal" href="004_accnt_mgmt.html#modeling-mirror-dirs"><span>modeled</span></a>.</p>
+<p>This section assumes that you are already familiar both with <a class="reference internal" href="#how-login-works"><span>5.1.2. How Login Attempts Work in Stormpath</span></a> and the concept of Stormpath <a class="reference internal" href="004_accnt_mgmt.html#about-ldap-dir"><span>LDAP Directories</span></a>.</p>
 <div class="section" id="mirror-directories-and-ldap">
 <h3><a class="toc-backref" href="#id25">Mirror Directories and LDAP</a><a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
-<p>To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory, so it is recommended that you maintain a &#8220;master&#8221; Directory alongside your Mirror Directory. Furthermore, a successful user login is the recommended time to provision, link, and synchronize an Account in the Mirror Directory to your master Directory.</p>
-<div class="section" id="step-1-create-a-mirror-directory">
-<h4><a class="toc-backref" href="#id26">Step 1: Create a Mirror Directory</a><a class="headerlink" href="#step-1-create-a-mirror-directory" title="Permalink to this headline">¶</a></h4>
-<p>HTTP POST a new Directory resource to the <code class="docutils literal"><span class="pre">/directories</span></code> endpoint. This Directory will contain a <a class="reference internal" href="reference.html#ref-provider"><span>Provider</span></a> resource with <code class="docutils literal"><span class="pre">providerId</span></code> set to <code class="docutils literal"><span class="pre">&quot;ldap&quot;</span></code>. This Provider resource will in turn contain an <a class="reference internal" href="reference.html#ref-ldap-agent"><span>LDAP Agent</span></a> object:</p>
+<p>To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory. If this fulfills your requirements, then the story ends here. However, if you need to support other kinds of login (and therefore other kinds of Directories) it is recommended that you maintain a &#8220;master&#8221; Directory alongside your Mirror Directory. For more about this, see <a class="reference internal" href="#mirror-login"><span>How Login Works with Master Directories</span></a> above.</p>
+<p>The step-by-step process for setting-up LDAP login is as follows:</p>
+<div class="section" id="step-1-create-an-ldap-directory">
+<h4><a class="toc-backref" href="#id26">Step 1: Create an LDAP Directory</a><a class="headerlink" href="#step-1-create-an-ldap-directory" title="Permalink to this headline">¶</a></h4>
+<p>HTTP POST a new Directory resource to the <code class="docutils literal"><span class="pre">/directories</span></code> endpoint. This Directory will contain a <a class="reference internal" href="reference.html#ref-provider"><span>Provider</span></a> resource with <code class="docutils literal"><span class="pre">providerId</span></code> set to <code class="docutils literal"><span class="pre">ldap</span></code> or <code class="docutils literal"><span class="pre">ad</span></code>. This Provider resource will in turn contain an <a class="reference internal" href="reference.html#ref-ldap-agent"><span>LDAP Agent</span></a> object:</p>
 <div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
@@ -1067,17 +1062,16 @@ C:\stormpath\agent\bin&gt;startup.bat
 </pre></div>
 </div>
 <p>In Unix:</p>
-<p>cd to your agent directory, for example /opt/stormpath/agent</p>
-<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd </span>bin
-<span class="nv">$ </span>startup.sh
+<p>(cd to your agent directory, for example /opt/stormpath/agent)</p>
+<div class="highlight-bash"><div class="highlight"><pre>$ <span class="nb">cd</span> bin
+$ startup.sh
 </pre></div>
 </div>
 <p>The Agent will start synchronizing immediately, pushing the configured data to Stormpath. You will see the synchronized user Accounts and Groups appear in the Stormpath Directory, and the Accounts will be able to log in to any Stormpath-enabled application that you assign. When the Agent detects local changes, additions or deletions to the mirrored Accounts or Groups, it will automatically propagate those changes to Stormpath.</p>
 </div>
-<div class="section" id="step-3-map-the-mirror-directory-as-an-account-store-for-your-application">
-<h4><a class="toc-backref" href="#id28">Step 3: Map the Mirror Directory as an Account Store for Your Application</a><a class="headerlink" href="#step-3-map-the-mirror-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
-<p>Creating an Account Store Mapping between your new Mirror Directory and your Stormpath Application can be done through the REST API, as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
-<p>From this point on, any time a user logs in to your Application, their Account will be provisioned into Stormpath, as detailed above in <a class="reference internal" href="#non-cloud-login"><span>How Login Works with Mirrored and Social Directories</span></a>.</p>
+<div class="section" id="step-3-map-the-ldap-directory-as-an-account-store-for-your-application">
+<h4><a class="toc-backref" href="#id28">Step 3: Map the LDAP Directory as an Account Store for Your Application</a><a class="headerlink" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<p>Creating an Account Store Mapping between your new LDAP Directory and your Stormpath Application can be done through the REST API, as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
 </div>
 </div>
 </div>
@@ -1142,9 +1136,9 @@ C:\stormpath\agent\bin&gt;startup.bat
 <p class="last">Notice that new lines in the certificate are separated with a <code class="docutils literal"><span class="pre">\n</span></code> character.</p>
 </div>
 </div>
-<div class="section" id="step-3-configure-your-service-provider-in-your-identity-provider">
-<span id="configure-sp-in-idp"></span><h4>Step 3: Configure Your Service Provider in Your Identity Provider<a class="headerlink" href="#step-3-configure-your-service-provider-in-your-identity-provider" title="Permalink to this headline">¶</a></h4>
-<p>Next you will have to configure your Stormpath-powered application as a Service Provider in your Identity Provider.</p>
+<div class="section" id="step-3-retrieve-your-service-provider-metadata">
+<span id="configure-sp-in-idp"></span><h4>Step 3: Retrieve Your Service Provider Metadata<a class="headerlink" href="#step-3-retrieve-your-service-provider-metadata" title="Permalink to this headline">¶</a></h4>
+<p>Next you will have to configure your Stormpath-powered application as a Service Provider in your Identity Provider. This means that you will need to retrieve the correct metadata from Stormpath.</p>
 <p>In order to retrieve the required values, start by sending a GET to the Directory&#8217;s Provider:</p>
 <div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/v1/directories/$DIRECTORY_ID/provider</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
@@ -1222,6 +1216,10 @@ C:\stormpath\agent\bin&gt;startup.bat
 <li><strong>SAML Request Binding:</strong> Set to <code class="docutils literal"><span class="pre">HTTP-Redirect</span></code>.</li>
 <li><strong>SAML Response Binding:</strong> Set to <code class="docutils literal"><span class="pre">HTTP-Post</span></code>.</li>
 </ul>
+</div>
+<div class="section" id="step-5-configure-your-service-provider-in-your-identity-provider">
+<h4>Step 5: Configure Your Service Provider in Your Identity Provider<a class="headerlink" href="#step-5-configure-your-service-provider-in-your-identity-provider" title="Permalink to this headline">¶</a></h4>
+<p>Log-in to your Identity Provider (Salesforce, OneLogin, etc) and enter the information you retrieved in the previous step into the relevant application configuration fields. The specific steps to follow here will depend entirely on what Identity Provider you use, and for more information you should consult your Identity Provider&#8217;s SAML documentation.</p>
 </div>
 <div class="section" id="step-4-configure-your-application">
 <h4>Step 4: Configure Your Application<a class="headerlink" href="#step-4-configure-your-application" title="Permalink to this headline">¶</a></h4>
