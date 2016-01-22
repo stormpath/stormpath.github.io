@@ -6,9 +6,8 @@ var accessToken = authenticationResult.getAccessToken();</code></pre><hr><p><a n
 
 var responseBody = authenticationResult.getAccessTokenResponse();</code></pre><hr><p><a name="getJwt"></a></p><h3 id="-span-class-member-method-span-getjwt-"><span class="member">method</span> getJwt()</h3><p>This method returns a JWT instance (from the <a href="https://github.com/jwtk/njwt">nJwt</a> library) which is pre-configured with the same claims that you would get from calling <code>getAccessToken()</code>. This method exists in case you need to make more modifications to the JWT before you compact it to an access token</p><p><strong>Example</strong>:</p><pre><code class="lang-javascript">var jwt = authenticationResult.getJwt();
 
-// Modify the default TTL (one week in seconds)
-
-jwt.setTtl(604800);
+jwt.setExpiration(new Date(&#39;2015-07-01&#39;)); // A specific date
+jwt.setExpiration(new Date().getTime() + (60*60*1000)); // One hour from now
 
 // Compact the JWT to a base64 encoded token
 
