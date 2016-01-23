@@ -1,0 +1,557 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Registration &mdash; Spring Boot Stormpath Web Starter 1.0.RC8.1 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="about.html"/>
+    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC8.1 documentation" href="index.html"/>
+        <link rel="next" title="Login" href="login.html"/>
+        <link rel="prev" title="Configuration" href="config.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> Spring Boot Stormpath Web Starter</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-the-project">What is the Spring Boot Stormpath Web Starter?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#who-should-use-stormpath">Who should use Stormpath?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#get-an-api-key">Get an API Key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-stormpath-default-spring-boot-starter">Add the Stormpath Default Spring Boot Starter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#try-it">Try it!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#get-an-api-key">Get an API Key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#spring-boot-meet-stormpath">Spring Boot: Meet Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#some-access-controls">Some Access Controls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#spring-security-meet-stormpath">Spring Security: Meet Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#spring-security-refined">Spring Security Refined</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#a-finer-grain-of-control">A Finer Grain of Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#wrapping-up">Wrapping Up</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#no-config">No Config?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#property-overrides">Property Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#bean-overrides">Bean Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#stormpath-client">Stormpath Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#stormpath-application">Stormpath Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uri">URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#view">View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#events">Events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#security-notice">Security Notice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#uri">URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#view">View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#events">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#authentication-state">Authentication State</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="forgot-password.html">Forgot Password</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#configure-the-workflow">Configure the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#try-it">Try it!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-uri">Forgot URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-next-uri">Forgot Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-view">Forgot View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-uri">Change Password URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-next-uri">Change Password Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-view">Change Password View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#i18n">i18n</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#uri">URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#events">Events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="http-request-authentication.html">HTTP Request Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="http-request-authentication.html#http-basic-authentication">HTTP Basic Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="http-request-authentication.html#token-authentication">Token Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="http-request-authentication.html#api-key-authentication">API Key Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request.html">Request Context</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request.html#current-user-account">Current User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request.html#stormpath-application">Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request.html#stormpath-sdk-client">Stormpath SDK Client</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="i18n.html">Internationalization (i18n)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#languages">Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#request-locale">Request Locale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#view-templates">View Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#i18n-properties">i18n.properties</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="events.html#requesteventlistener">RequestEventListener</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#id2">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#listener-best-practices">Listener Best Practices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#disable-caching">Disable Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#cache-configuration">Cache Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="idsite.html">ID Site</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#how-does-it-work">How Does It Work?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#enable-id-site">Enable ID Site</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#configure-your-application">Configure Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#try-it">Try It!</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Custom Views</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="views.html#thymeleaf-views">Thymeleaf Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#head-template">Head Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#css">CSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#change-a-default-view">Change a Default View</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix/default-stormpath-properties.html">Default Stormpath Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/i18n-properties.html">i18n.properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/stormpath-css.html">/assets/css/stormpath.css</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/change.html">/templates/stormpath/change.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/forgot.html">/templates/stormpath/forgot.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/head.html">/templates/stormpath/head.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/login.html">/templates/stormpath/login.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/register.html">/templates/stormpath/register.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/verify.html">/templates/stormpath/verify.html</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Spring Boot Stormpath Web Starter</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Registration</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/registration.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="registration">
+<span id="id1"></span><h1>Registration<a class="headerlink" href="#registration" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#overview" id="id6">Overview</a></li>
+<li><a class="reference internal" href="#uri" id="id7">URI</a></li>
+<li><a class="reference internal" href="#next-uri" id="id8">Next URI</a><ul>
+<li><a class="reference internal" href="#next-query-parameter" id="id9">Next Query Parameter</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#view" id="id10">View</a><ul>
+<li><a class="reference internal" href="#form-fields" id="id11">Form Fields</a></li>
+<li><a class="reference internal" href="#password-strength" id="id12">Password Strength</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#i18n" id="id13">i18n</a></li>
+<li><a class="reference internal" href="#email-verification" id="id14">Email Verification</a><ul>
+<li><a class="reference internal" href="#try-it" id="id15">Try it!</a></li>
+<li><a class="reference internal" href="#verify-link-base-url" id="id16">Verify Link Base URL</a></li>
+<li><a class="reference internal" href="#verify-next-uri" id="id17">Verify Next URI</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#events" id="id18">Events</a><ul>
+<li><a class="reference internal" href="#registered-account" id="id19">Registered Account</a></li>
+<li><a class="reference internal" href="#verified-account" id="id20">Verified Account</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="overview">
+<h2><a class="toc-backref" href="#id6">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>One of the very first things most web apps need is the ability to create a user account and login.  So how do we create user accounts?</p>
+<ol class="arabic simple">
+<li>Visit <code class="docutils literal"><span class="pre">http://localhost:8080/register</span></code> and you&#8217;ll see the registration view:</li>
+</ol>
+<img alt="_images/register.png" src="_images/register.png" />
+<ol class="arabic simple" start="2">
+<li>Fill out the form and click submit and you&#8217;ll be redirected back to your application&#8217;s root path, for example, <code class="docutils literal"><span class="pre">http://localhost:8080/</span></code>.</li>
+</ol>
+<p>Pretty nice!  Not a single line of code required :)</p>
+<p>And while we think the default look and feel of the pages automatically rendered are pretty nice, you have full control over the CSS and HTML for these pages - we&#8217;ll cover customizing them later.</p>
+</div>
+<div class="section" id="uri">
+<h2><a class="toc-backref" href="#id7">URI</a><a class="headerlink" href="#uri" title="Permalink to this headline">¶</a></h2>
+<p>Users can self-register for your web application by visiting <code class="docutils literal"><span class="pre">/register</span></code></p>
+<p>If you want to change this path, set the <code class="docutils literal"><span class="pre">stormpath.web.register.uri</span></code> configuration property:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span class="c"># The context-relative path to the register (&#39;new user&#39;) view:</span>
+<span class="na">stormpath.web.register.uri</span> <span class="o">=</span> <span class="s">/register</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="next-uri">
+<h2><a class="toc-backref" href="#id8">Next URI</a><a class="headerlink" href="#next-uri" title="Permalink to this headline">¶</a></h2>
+<p>If <a class="reference internal" href="#email-verification"><span>email verification</span></a> is disabled, a successfully registered user will be automatically redirected to the application&#8217;s context root (home page) by default.  If you want to change this destination, set the <code class="docutils literal"><span class="pre">stormpath.web.register.nextUri</span></code> configuration property:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.web.register.nextUri</span> <span class="o">=</span> <span class="s">/</span>
+</pre></div>
+</div>
+<p>Again, this property is only referenced if email verification is disabled.  If email verification is enabled, a page will be rendered asking the user to check their email.</p>
+<div class="section" id="next-query-parameter">
+<h3><a class="toc-backref" href="#id9">Next Query Parameter</a><a class="headerlink" href="#next-query-parameter" title="Permalink to this headline">¶</a></h3>
+<p>If <a class="reference internal" href="#email-verification"><span>email verification</span></a> is disabled and the user is directed to the registration view (by clicking a link or via a redirect), and the URI has a <code class="docutils literal"><span class="pre">next</span></code> query parameter, the <code class="docutils literal"><span class="pre">next</span></code> query parameter value will take precedence as the post-registration redirect location.  For example:</p>
+<p><code class="docutils literal"><span class="pre">https://myapp.com/register?next=/registerSuccess</span></code></p>
+<p>This will cause the user to be redirected <code class="docutils literal"><span class="pre">/registerSuccess</span></code> instead of the configured <code class="docutils literal"><span class="pre">stormpath.web.register.nextUri</span></code> path.</p>
+<p>Again, this functionality is only executed if email verification is disabled.  If email verification is enabled, a page will be rendered asking the user to check their email.</p>
+</div>
+</div>
+<div class="section" id="view">
+<h2><a class="toc-backref" href="#id10">View</a><a class="headerlink" href="#view" title="Permalink to this headline">¶</a></h2>
+<p>When the URI is visited a default template view named <code class="docutils literal"><span class="pre">stormpath/register</span></code> is rendered by default.  If you wanted to render your own template instead of the default, you can set the name of the template to render with the <code class="docutils literal"><span class="pre">stormpath.web.register.view</span></code> property:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.web.register.view</span> <span class="o">=</span> <span class="s">stormpath/register</span>
+</pre></div>
+</div>
+<p>Remember that the property value is the <em>name</em> of a view, and the effective Spring <code class="docutils literal"><span class="pre">ViewResolver</span></code> will resolve that name to a template file.  See the <a class="reference internal" href="views.html#views"><span>Custom Views</span></a> chapter for more information.</p>
+<div class="section" id="form-fields">
+<h3><a class="toc-backref" href="#id11">Form Fields</a><a class="headerlink" href="#form-fields" title="Permalink to this headline">¶</a></h3>
+<p>You can specify a which form fields will be displayed in the default view by editing the <code class="docutils literal"><span class="pre">stormpath.web.register.form.fields</span></code> configuration property.  For example, the default value:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.web.register.form.fields</span> <span class="o">=</span> <span class="s">givenName, surname, email(required), password(required,password)</span>
+</pre></div>
+</div>
+<p>The value is a comma-delimited list Stormpath <code class="docutils literal"><span class="pre">Account</span></code> field names and optional form field directives.  The currently supported field names:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">givenName</span></code>: person&#8217;s given name, also known as &#8216;first name&#8217; in Western countries.</li>
+<li><code class="docutils literal"><span class="pre">middleName</span></code>: any middle name(s).</li>
+<li><code class="docutils literal"><span class="pre">surname</span></code>: person&#8217;s family name, also known as &#8216;last name&#8217; in Western countries.</li>
+<li><code class="docutils literal"><span class="pre">username</span></code>: a username.  If unspecified, Stormpath defaults the username to the <code class="docutils literal"><span class="pre">email</span></code> value.</li>
+<li><code class="docutils literal"><span class="pre">email</span></code>: the user&#8217;s email address.  This field is always required.</li>
+<li><code class="docutils literal"><span class="pre">password</span></code>: the user&#8217;s password.</li>
+</ul>
+<p>Field names may also have directives in parenthesis immediately following the field name:</p>
+<p><code class="docutils literal"><span class="pre">fieldName(directive1,</span> <span class="pre">directive2,</span> <span class="pre">...,</span> <span class="pre">directiveN)</span></code></p>
+<p>The currently supported directives are:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">required</span></code>: the form field must be populated before the form can be submitted</li>
+<li><code class="docutils literal"><span class="pre">password</span></code>: the form field is a password field; show <code class="docutils literal"><span class="pre">*</span></code> characters instead of raw password characters</li>
+</ul>
+<p>Fields specified without a directive will be optional (displayed, but not required to be filled in).</p>
+<p>So, the above default value indicates that:</p>
+<ol class="arabic simple">
+<li>The <code class="docutils literal"><span class="pre">givenName</span></code> form field (first name) will be shown first, but it is optional (no directives)</li>
+<li>The <code class="docutils literal"><span class="pre">surname</span></code> form field (last name) will be shown next, but it is optional (no directives)</li>
+<li>The <code class="docutils literal"><span class="pre">email</span></code> form field will be shown next and it is required (<code class="docutils literal"><span class="pre">required</span></code> directive)</li>
+<li>The <code class="docutils literal"><span class="pre">password</span></code> form field will be shown last, and it is required and a password field (show stars instead of raw characters).</li>
+</ol>
+<p>You can customize this list with optional directives as necessary, but note:</p>
+<p><strong>The</strong> <code class="docutils literal"><span class="pre">email</span></code> <strong>form field is always required.  If you customize your form fields, ensure that you always have at least an</strong> <code class="docutils literal"><span class="pre">email(required)</span></code> <strong>list entry.</strong></p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Re-ordering the comma-delimited list will automatically re-order the fields in the view :)</p>
+</div>
+</div>
+<div class="section" id="password-strength">
+<span id="id2"></span><h3><a class="toc-backref" href="#id12">Password Strength</a><a class="headerlink" href="#password-strength" title="Permalink to this headline">¶</a></h3>
+<p>When you first fill out the registration form, you probably noticed that you couldn&#8217;t register a user account without specifying a sufficiently strong password.  This is because, by default, Stormpath enforces certain password strength rules.</p>
+<p>If you&#8217;d like to change these password strength rules, you can do so easily by visiting the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a>, navigating to your your application&#8217;s user account <code class="docutils literal"><span class="pre">Directory</span></code>, and then changing the &#8220;Password Strength Policy&#8221;.</p>
+</div>
+</div>
+<div class="section" id="i18n">
+<h2><a class="toc-backref" href="#id13">i18n</a><a class="headerlink" href="#i18n" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="i18n.html#i18n"><span>Internationalization (i18n)</span></a> message keys used in the default register view have names prefixed with <code class="docutils literal"><span class="pre">stormpath.web.register.</span></code>:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span class="c"># ==================================================</span>
+<span class="na">stormpath.web.register.title</span> <span class="o">=</span> <span class="s">Create Account</span>
+<span class="na">stormpath.web.register.form.button.value</span> <span class="o">=</span> <span class="s">Create Account</span>
+<span class="na">stormpath.web.register.form.loginLink.text</span> <span class="o">=</span> <span class="s">Back to Login</span>
+<span class="na">stormpath.web.register.form.errors.default</span> <span class="o">=</span> <span class="s">Oops! Unable to register you! Please contact support.</span>
+
+<span class="na">stormpath.web.register.form.fields.email.label</span> <span class="o">=</span> <span class="s">Email</span>
+<span class="na">stormpath.web.register.form.fields.email.placeholder</span> <span class="o">=</span> <span class="s">Email</span>
+<span class="na">stormpath.web.register.form.fields.email.required</span> <span class="o">=</span> <span class="s">Email is required.</span>
+<span class="na">stormpath.web.register.form.fields.email.invalid</span> <span class="o">=</span> <span class="s">Please enter a valid email address.</span>
+
+<span class="na">stormpath.web.register.form.fields.username.label</span> <span class="o">=</span> <span class="s">Username</span>
+<span class="na">stormpath.web.register.form.fields.username.placeholder</span> <span class="o">=</span> <span class="s">Username</span>
+<span class="na">stormpath.web.register.form.fields.username.required</span> <span class="o">=</span> <span class="s">Username is required.</span>
+
+<span class="na">stormpath.web.register.form.fields.givenName.label</span> <span class="o">=</span> <span class="s">First Name</span>
+<span class="na">stormpath.web.register.form.fields.givenName.placeholder</span> <span class="o">=</span> <span class="s">First Name</span>
+<span class="na">stormpath.web.register.form.fields.givenName.required</span> <span class="o">=</span> <span class="s">First Name is required.</span>
+
+<span class="na">stormpath.web.register.form.fields.middleName.label</span> <span class="o">=</span> <span class="s">Middle Name</span>
+<span class="na">stormpath.web.register.form.fields.middleName.placeholder</span> <span class="o">=</span> <span class="s">Middle Name</span>
+<span class="na">stormpath.web.register.form.fields.middleName.required</span> <span class="o">=</span> <span class="s">Middle Name is required.</span>
+
+<span class="na">stormpath.web.register.form.fields.surname.label</span> <span class="o">=</span> <span class="s">Last Name</span>
+<span class="na">stormpath.web.register.form.fields.surname.placeholder</span> <span class="o">=</span> <span class="s">Last Name</span>
+<span class="na">stormpath.web.register.form.fields.surname.required</span> <span class="o">=</span> <span class="s">Last Name is required.</span>
+
+<span class="na">stormpath.web.register.form.fields.password.label</span> <span class="o">=</span> <span class="s">Password</span>
+<span class="na">stormpath.web.register.form.fields.password.placeholder</span> <span class="o">=</span> <span class="s">Password</span>
+</pre></div>
+</div>
+<p>For more information on customizing i18n messages and adding bundle files, please see <a class="reference internal" href="i18n.html#i18n"><span>Internationalization (i18n)</span></a>.</p>
+</div>
+<div class="section" id="email-verification">
+<span id="id3"></span><h2><a class="toc-backref" href="#id14">Email Verification</a><a class="headerlink" href="#email-verification" title="Permalink to this headline">¶</a></h2>
+<p>Many applications require a newly registered user to verify that they do indeed &#8216;own&#8217; the email address specified during registration before the user is allowed to login.  This helps ensure that:</p>
+<ul class="simple">
+<li>Email addresses cannot be abused by people that do not own them</li>
+<li>The application has a way of communicating with the user if necessary</li>
+<li>The registration process was completed by a human being (and not a &#8216;bot&#8217; performing automatic registration, which could be used for malicious purposes).</li>
+</ul>
+<p>If you want to enable email verification for newly registered accounts, you have to explicitly turn on this feature in the Stormpath Administration console:</p>
+<ol class="arabic">
+<li><p class="first">Login to the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a>.</p>
+</li>
+<li><p class="first">Click on the <code class="docutils literal"><span class="pre">Directories</span></code> tab and click the name of the Directory that will store accounts for your application.  If you created an application and automatically created a directory, the Directory name will be the same as the application name + &#8216; Directory&#8217;.</p>
+<img alt="_images/console-directories-ann.png" src="_images/console-directories-ann.png" />
+</li>
+<li><p class="first">On the resulting Directory screen, click on the Directory&#8217;s <code class="docutils literal"><span class="pre">Workflows</span></code> menu item.</p>
+<img alt="_images/console-directory-ann.png" src="_images/console-directory-ann.png" />
+</li>
+<li><p class="first">On the Directory Workflows screen, the &#8216;Verification Email&#8217; workflow is shown first.  Ensure that you</p>
+<ol class="arabic simple">
+<li>Enable the workflow, and</li>
+<li>Change the &#8216;Link Base URL&#8217; text field to equal the fully qualified URL of your application&#8217;s <a class="reference internal" href="#verify-link-base-url"><span>verify link base URL</span></a>.  The default context-relative path for this feature is <code class="docutils literal"><span class="pre">/verify</span></code>, implying a base URL (for example, during localhost testing) of <code class="docutils literal"><span class="pre">http://localhost:8080/verify</span></code>.</li>
+</ol>
+<img alt="_images/console-directory-workflows-ann.png" src="_images/console-directory-workflows-ann.png" />
+</li>
+<li><p class="first">Click the &#8216;Save Changes&#8217; button on the bottom right.</p>
+</li>
+</ol>
+<div class="section" id="try-it">
+<h3><a class="toc-backref" href="#id15">Try it!</a><a class="headerlink" href="#try-it" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Visit <code class="docutils literal"><span class="pre">http://localhost:8080/register</span></code> and you&#8217;ll see the registration view:</p>
+<img alt="_images/register.png" src="_images/register.png" />
+</li>
+<li><p class="first">Fill out the form and click submit and you&#8217;ll be shown a success view:</p>
+<img alt="_images/register-verify.png" src="_images/register-verify.png" />
+</li>
+<li><p class="first">Open your email and, depending on your &#8220;Account Email Verification&#8221; email template, you should see an email that looks like the following:</p>
+<img alt="_images/register-verify-email.png" src="_images/register-verify-email.png" />
+</li>
+<li><p class="first">Click the link in the email and it will take you to a <code class="docutils literal"><span class="pre">/verify</span></code> path.  This will verify your email address and immediately redirect you to the login page, allowing you to login with the new (and verified) account:</p>
+<img alt="_images/login-verified.png" src="_images/login-verified.png" />
+</li>
+</ol>
+</div>
+<div class="section" id="verify-link-base-url">
+<span id="id4"></span><h3><a class="toc-backref" href="#id16">Verify Link Base URL</a><a class="headerlink" href="#verify-link-base-url" title="Permalink to this headline">¶</a></h3>
+<p>The Verify &#8216;Link Base URL&#8217; mentioned above is the fully qualified base URL used to generate a unique link the user will click when reading the email.  For example, during development, this is often something like <code class="docutils literal"><span class="pre">http://localhost:8080/verify</span></code> and in production, something like <code class="docutils literal"><span class="pre">https://myapp.com/verify</span></code>.</p>
+<p>When a user clicks the link in the email, the Spring Boot Stormpath Web Starter will automatically process the resulting request.  By default, the context-relative path that will process these requests is <code class="docutils literal"><span class="pre">/verify</span></code> as the above link examples show.  This path is controlled via the <code class="docutils literal"><span class="pre">stormpath.web.verify.uri</span></code> configuration property:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.web.verify.uri</span> <span class="o">=</span> <span class="s">/verify</span>
+</pre></div>
+</div>
+<p>You can change the value to reflect a different path if you wish.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">The fully qualified Link Base URL configured in the Stormpath Admin Console must always reflect the path configured via <code class="docutils literal"><span class="pre">stormpath.web.verify.uri</span></code>.  If you change one, you must change the other.</p>
+</div>
+</div>
+<div class="section" id="verify-next-uri">
+<span id="id5"></span><h3><a class="toc-backref" href="#id17">Verify Next URI</a><a class="headerlink" href="#verify-next-uri" title="Permalink to this headline">¶</a></h3>
+<p>When the user clicks the email verification link and the request is processed by the the <code class="docutils literal"><span class="pre">stormpath.web.verify.uri</span></code> path, the user will be immediately redirected to a &#8216;next&#8217; URI.  By default, this URI is the <a class="reference internal" href="login.html#login"><span>login page</span></a> as controlled by the <code class="docutils literal"><span class="pre">stormpath.web.verify.nextUri</span></code> configuration property:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.web.verify.nextUri</span> <span class="o">=</span> <span class="s">/login?status=verified</span>
+</pre></div>
+</div>
+<p>As you can see, this URI has a <code class="docutils literal"><span class="pre">status=verified</span></code> query parameter.  The default login view will recognize the query parameter and show the user a nice message explaining that their account has been verified and that they can log in:</p>
+<img alt="_images/login-verified.png" src="_images/login-verified.png" />
+</div>
+</div>
+<div class="section" id="events">
+<h2><a class="toc-backref" href="#id18">Events</a><a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
+<p>If you implement a <a class="reference internal" href="events.html#events"><span>Request Event Listener</span></a>, you can listen registration-related events and execute custom logic if desired.</p>
+<div class="section" id="registered-account">
+<h3><a class="toc-backref" href="#id19">Registered Account</a><a class="headerlink" href="#registered-account" title="Permalink to this headline">¶</a></h3>
+<p>A <code class="docutils literal"><span class="pre">RegisteredAccountRequestEvent</span></code> will be published when processing an HTTP request that results in a newly registered <code class="docutils literal"><span class="pre">Account</span></code>.  If the newly registered account requires email verification before it can login, <code class="docutils literal"><span class="pre">event.getAccount().getStatus()</span> <span class="pre">==</span> <span class="pre">AccountStatus.UNDEFINED</span></code> will be <code class="docutils literal"><span class="pre">true</span></code>.</p>
+</div>
+<div class="section" id="verified-account">
+<h3><a class="toc-backref" href="#id20">Verified Account</a><a class="headerlink" href="#verified-account" title="Permalink to this headline">¶</a></h3>
+<p>A <code class="docutils literal"><span class="pre">VerifiedAccountRequestEvent</span></code> will be published when processing an HTTP request that verifies an account&#8217;s email address.  The event&#8217;s associated account is considered verified and may login to the application.</p>
+<p>Naturally, <strong>this event is only published if</strong> <a class="reference internal" href="#email-verification"><span>email verification</span></a> <strong>is enabled.</strong></p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="login.html" class="btn btn-neutral float-right" title="Login">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="config.html" class="btn btn-neutral" title="Configuration"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Stormpath, Inc..
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.RC8.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+   
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-29159574-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+  </script>
+  <script type="text/javascript">
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+    function _kms(u){
+        setTimeout(function(){
+            var d = document, f = d.getElementsByTagName('script')[0],
+                    s = d.createElement('script');
+            s.type = 'text/javascript'; s.async = true; s.src = u;
+            f.parentNode.insertBefore(s, f);
+        }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+  </script>
+  <script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+
+</body>
+</html>
