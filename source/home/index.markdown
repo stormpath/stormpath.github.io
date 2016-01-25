@@ -30,7 +30,7 @@ alias: [/index.html]
             <a href="/ruby/quickstart/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-ruby.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/php"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-php.jpg"></a>
+            <a href="/php/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-php.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="https://github.com/jarias/stormpath-sdk-go/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-go.jpg"></a>
@@ -39,7 +39,7 @@ alias: [/index.html]
             <a href="https://github.com/stormpath/stormpath-mod-authnz-external/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-apache.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/net/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-dotnet.jpg"></a>
+            <a href="/dotnet/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-dotnet.jpg"></a>
           </div>
         </div>
       </div>
