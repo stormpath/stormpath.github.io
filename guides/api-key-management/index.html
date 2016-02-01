@@ -1,0 +1,1810 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Using Stormpath for API Authentication - Stormpath</title>
+  <meta name="author" content="Stormpath, Inc.">
+
+  
+  <meta name="description" content="Secure authentication to your API with API Keys and OAuth tokens managed by Stormpath">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stormpath.github.io/guides/api-key-management">
+  <link href="/favicon.ico" rel="icon">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style>
+@import url("/stylesheets/normalize.css?mrrrji");
+@import url("/stylesheets/wireframes.css?mrrrji");
+@import url("/stylesheets/html-elements.css?mrrrji");
+@import url("/stylesheets/tabs.css?mrrrji");
+@import url("/stylesheets/tinybox2.css?mrrrji");
+@import url("/stylesheets/flexnav.css?mrrrji");
+@import url("/stylesheets/pages.css?mrrrji");
+@import url("/stylesheets/docs.css?mrrrji");
+@import url("/stylesheets/blocks.css?mrrrji");
+@import url("/stylesheets/navigation.css?mrrrji");
+@import url("/stylesheets/views-styles.css?mrrrji");
+@import url("/stylesheets/nodes.css?mrrrji");
+@import url("/stylesheets/comments.css?mrrrji");
+@import url("/stylesheets/forms.css?mrrrji");
+@import url("/stylesheets/fields.css?mrrrji");
+@import url("/stylesheets/layouts/responsive-sidebars.css?mrrrji");
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/atom.xml" rel="alternate" title="Stormpath" type="application/atom+xml">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Covered+By+Your+Grace|Open+Sans:300italic,400italic,600italic,700italic,800italic,300,400,600,700,800" media="all" />
+
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/cupertino/jquery-ui.css" />
+<link rel="stylesheet" href="/stylesheets/mono-blue.min.css" />
+
+<!--[if lt IE 9]>
+<script src="/javascripts/html5-respond.js"></script>
+<![endif]-->
+
+<link rel="publisher" href="https://plus.google.com/117307959654441669381" />
+<!-- twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="goStormpath">
+<meta name="twitter:title" content="Using Stormpath for API Authentication - Stormpath">
+<meta name="twitter:description" content="Secure authentication to your API with API Keys and OAuth tokens managed by Stormpath">
+<meta name="twitter:image:src" content="https://docs.stormpath.com/images/icons/twitter-stormpath-icon.jpg">
+<!-- opengraph -->
+<meta property="og:title" content="Using Stormpath for API Authentication - Stormpath" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://stormpath.github.io/guides/api-key-management" />
+<meta property="og:image" content="https://docs.stormpath.com/images/icons/og-stormpath-icon.jpg" />
+<meta property="og:description" content="Secure authentication to your API with API Keys and OAuth tokens managed by Stormpath" />
+<meta property="og:site_name" content="Stormpath" />
+<meta property="fb:admins" content="3230401" />
+
+
+<!-- kissmetrics -->
+<script type="text/javascript">
+  var _kmq = _kmq || [];
+  var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+  function _kms(u){
+    setTimeout(function(){
+      var d = document, f = d.getElementsByTagName('script')[0],
+      s = d.createElement('script');
+      s.type = 'text/javascript'; s.async = true; s.src = u;
+      f.parentNode.insertBefore(s, f);
+    }, 1);
+  }
+  _kms('//i.kissmetrics.com/i.js');
+  _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+</script>
+
+<!-- Optimizely -->
+<script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-29159574-1', 'auto');
+  // Optimizely Universal Analytics Integration
+  //https://help.optimizely.com/hc/en-us/articles/200039995-Integrating-Optimizely-with-Google-Analytics
+  window.optimizely = window.optimizely || [];
+  window.optimizely.push("activateUniversalAnalytics");
+    ga('send', 'pageview');
+
+</script>
+
+
+  
+
+</head>
+
+<body  class="not-front  node-type-documentation  ">
+<!-- Qualaroo for stormpath.com -->
+<script type="text/javascript">var _kiq = _kiq || [];</script>
+<script type="text/javascript" src="//s3.amazonaws.com/ki.js/47725/9JM.js" async="true"></script>
+      
+<script type="text/javascript" src="//assets.zendesk.com/external/zenbox/v2.6/zenbox.js"></script>
+<style type="text/css" media="screen, projection">
+  @import url(//assets.zendesk.com/external/zenbox/v2.6/zenbox.css);
+</style>
+<script type="text/javascript">
+  if (typeof(Zenbox) !== "undefined") {
+    Zenbox.init({
+      dropboxID:   "20184231",
+      url:         "https://stormpath.zendesk.com",
+      tabTooltip:  "Get Help",
+      tabImageURL: "/images/tab_questions_black_right.png",
+      tabColor:    "689ed0",
+      tabPosition: "Right"
+    });
+  }
+</script>
+
+
+<script src="/javascripts/stormpath_docs.js"></script>
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['dotnet'] = [];
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('10010');
+		
+			sp_docs_menu['errors'].push('10011');
+		
+			sp_docs_menu['errors'].push('10012');
+		
+			sp_docs_menu['errors'].push('10013');
+		
+			sp_docs_menu['errors'].push('10014');
+		
+			sp_docs_menu['errors'].push('10015');
+		
+			sp_docs_menu['errors'].push('10016');
+		
+			sp_docs_menu['errors'].push('10017');
+		
+			sp_docs_menu['errors'].push('10100');
+		
+			sp_docs_menu['errors'].push('10101');
+		
+			sp_docs_menu['errors'].push('10102');
+		
+			sp_docs_menu['errors'].push('11001');
+		
+			sp_docs_menu['errors'].push('11002');
+		
+			sp_docs_menu['errors'].push('11003');
+		
+			sp_docs_menu['errors'].push('11004');
+		
+			sp_docs_menu['errors'].push('11005');
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+</script>
+
+<div id="page">
+    <div class="fixed-header" id="wrap">
+      
+
+<nav class="navbar navbar-storm" role="navigation">
+  <div class="navbar-container">
+
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://stormpath.com/">
+        <img src="/images/template/logo_nav.png"/>
+      </a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="main-nav">
+      <a type="button" class="btn navbar-btn button-primary-bordered button-signup navbar-right" href="https://api.stormpath.com/register" onClick="ga('send', 'event', { eventCategory: 'sign up', eventAction: 'sign up button click', eventLabel: 'www', eventValue: 1});">Sign Up Now</a>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="http://docs.stormpath.com/">Docs</a></li>
+        <li><a href="https://stormpath.com/product/">Product</a></li>
+        <li><a href="https://stormpath.com/pricing/">Pricing</a></li>
+        <li><a href="https://stormpath.com/customers/">Customers</a></li>
+        <li><a href="https://boards.greenhouse.io/stormpath/">Jobs</a></li>
+        <li><a href="https://api.stormpath.com/login/">Login</a></li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</nav>
+
+
+
+
+      
+      
+    </div>
+
+<!--
+  <div id="header-wrapper">
+  	<header id="header" role="banner" class="container">
+      
+    </header>
+  </div>-->
+  <div id="main-wrapper">
+    <div id="main">
+      <div id="main-inner">
+        <div id="main-inner-inner">
+          <div id="content" class="column" role="main">
+            <div class="col-md-11">
+              <a id="main-content"></a>
+              
+                <h1 class="title" id="page-title">Using Stormpath for API Authentication</h1>
+              
+              <div class="sharing">
+
+  <!-- AddThis Button BEGIN -->
+  <div class="addthis_toolbox addthis_default_style addthis_16x16_style">
+    <a class="addthis_button_twitter"></a>
+    <a class="addthis_button_reddit"></a>
+    <a class="addthis_button_hackernews"></a>
+    <a class="addthis_button_google_plusone_share"></a>
+    <a class="addthis_button_linkedin"></a>
+    <a class="addthis_button_facebook"></a>
+    <a class="addthis_button_email"></a>
+  </div>
+  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+  <!-- AddThis Button END -->
+
+</div>
+            	<!-- this should be an Octopress include -->
+
+
+<div class='docs-info'><p>Currently supported Stormpath SDKs for this feature include: <strong>Java</strong>, <strong>Node.js</strong>, <strong>Python</strong></p>
+</div>
+
+
+<p>In this guide, we discuss how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services.  Stormpath provides not only the user management piece around API Keys, but also allows you to associate permissions and custom data with the accounts for advanced use-cases.</p>
+
+<h2><a id="why-should-i-use-stormpath-for-api-authentication"></a>Why should I use Stormpath for API Authentication?</h2>
+
+<p>With few lines of code, you can quickly and easily lock down your own APIs with OAuth-based authentication and secure API key management.</p>
+
+<p>Stormpath offers a complete solution that securely and easily helps you manage developer accounts, create and manage API Keys, and generate OAuth 2.0 bearer tokens to support Access Token authentication.</p>
+
+<p>In the next sections, we will explain how to get set up and use Stormpath for API Key Management and Authentication.</p>
+
+<hr />
+
+<h2><a id="first-some-terminology"></a>First, some terminology</h2>
+
+<p>Throughout this document we will use the following words with very specific meanings.</p>
+
+<p><strong>Admin</strong> or <strong>Administrator</strong> &ndash; Someone on your team who has access to the Stormpath API and/or Adminstration Console.  In turn, they will typically have the ability to create and manage user accounts, applications, API keys, etc.</p>
+
+<p><strong>Developer</strong> &ndash; A consumer of your API.  When you are generating and distributing API keys for your API, they are going to developers that are using your API.</p>
+
+<p><strong>OAuth 2.0 Access Token</strong>  &ndash; An access token is a string representation of  authorization issued to a client.  This access token is issued by an authority and grants access to a protected or gated resource.  This tokens are opaque to the client.</p>
+
+<p><strong>Bearer Token</strong> &ndash; A Bearer token is a specific token type for an Access Token. A Bearer token is used with the Bearer Authorization Scheme in HTTP.  A client wanting to access a protected service is required to locate a trusted entity to generate a Bearer Token.  In this document, a Bearer Token represent an Access Token.</p>
+
+<p><strong>API Keys</strong> &ndash; Represents an API Key Id and Secret pair which is generated for a developer integrating with your API.</p>
+
+<h2><a id="how-do-i-use-stormpath-for-api-authentication"></a>How do I use Stormpath for API Authentication?</h2>
+
+<p>If you haven&rsquo;t already, you should first familiarize your self with Stormpath basics in one of our <a href="https://stormpath.com/tutorial/">7-Minute Tutorials</a>.</p>
+
+<p>In order to implement API Authentication with Stormpath you&rsquo;ll need to do the following:</p>
+
+<ul>
+<li>Create a User Account for each of your Developers</li>
+<li>Create / Manage API Keys for the Developers&#8217; Accounts</li>
+<li>Use the Stormpath SDK to Authenticate and Generate Tokens for your API</li>
+</ul>
+
+
+<h2><a id="create-an-account-in-stormpath-for-your-developers"></a>Create an Account in Stormpath for your Developers</h2>
+
+<p>First, you will need user accounts in Stormpath to represent the people that are developing against your API.  Accounts can not only represent Developers, but also can be used to represent services, daemons, processes, or any “entity” that needs to login to a Stormpath-secured API.</p>
+
+<p>By assigning API keys directly to a User Account, as opposed to a general organization-wide set of keys, you get full traceability and accountability back to the specific individual in the event of an accident or breach on their end.</p>
+
+<p>Stormpath <code>Accounts</code> can be used to keep a variety of Developer information including name, email address, password, and any other custom data you would like to store.</p>
+
+<p>You will mostly likely create a Stormpath Account when a Developer signs up for access to your API.  Below is an example of how to create a user account in code:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-create-account-java">java</a></li><li><a href="#tabs-create-account-node">node</a></li><li><a href="#tabs-create-account-python">python</a></li></ul><div id="tabs-create-account-java"><pre lang="java"><code>
+//Create the account object
+Account account = client.instantiate(Account.class);
+
+//Set the account properties
+account.setGivenName("Joe");
+account.setSurname("Stormtrooper");
+account.setEmail("tk421@stormpath.com");
+account.setPassword("Changeme1");
+CustomData customData = account.getCustomData();
+customData.put("favoriteColor", "white");
+
+//Create the account using the existing Application object.
+application.createAccount(account);
+</code> </pre> </div><div id="tabs-create-account-node"><pre lang="node"><code>
+//Create a JSON object that represents the account
+var account = {
+  givenName: Joe',
+  surname: 'Stormtrooper',
+  email: 'tk421@stormpath.com',
+  password: 'Changeme1!'
+};
+
+//Have the application create the account
+application.createAccount(account, function onAccountCreated(err, createdAccount) {
+  console.log(createdAccount);
+});
+</code> </pre> </div><div id="tabs-create-account-python"><pre lang="python"><code>
+account = application.accounts.create({
+    'given_name': 'Joe',
+    'surname': 'Stormtrooper',
+    'email': 'tk421@stormpath.com',
+    'password': 'Changeme1!',
+    'custom_data': {
+        "faction": "empire"
+    }
+}) 
+</code> </pre> </div></div>
+
+
+
+
+<div class='docs-info'><p><strong>Reminder</strong> - An <code>Application</code> is a representation of your real world application.  In this case, it will be your application that is exposing an API.  For more info check out our <a href="https://stormpath.com/tutorial/">Tutorial</a> or <a href="/java/product-guide/">Product Guide</a>.</p>
+</div>
+
+
+<h2><a id="create-and-manage-api-keys-for-an-account"></a>Create and Manage API Keys for an Account</h2>
+
+<p>After you create an account for a developer, you will need to generate an API Key (or multiple) to be used when accessing your API.  Each account will have an <code>apiKeys</code> property that contains a collection of their API Keys.  There will also be a list of API keys on a account&rsquo;s profile in the Stormpath Admin Console.  You will be able to both create and manage keys in both.</p>
+
+<div class='docs-tip'><p>The <code>apiKeys</code> collection can be used to easily display the API Keys back to the Developer in your application&#8217;s UI in addition to general purpose API key management.</p>
+</div>
+
+
+<p>Let&rsquo;s start with creating APIs keys for an Account.</p>
+
+<h3><a id="creating-api-keys-for-an-account"></a>Creating API Keys for an Account</h3>
+
+<p>Creating an API Key is a simple method call on the <code>Account</code>.  The method will create a new API Key (Id and Secret) associated with that <code>Account</code> and later accessible via the account&rsquo;s <code>apiKeys</code>.</p>
+
+<div class="tabs"><ul><li><a href="#tabs-create-api-key-java">java</a></li><li><a href="#tabs-create-api-key-node">node</a></li><li><a href="#tabs-create-api-key-python">python</a></li></ul><div id="tabs-create-api-key-java"><pre lang="java"><code>
+APIKey apiKey = account.createApiKey();
+
+String apiKeyId = apikey.getId();
+String apiKeySecret = apikey.getSecret();
+</code> </pre> </div><div id="tabs-create-api-key-node"><pre lang="node"><code>
+account.createApiKey(function(err, apiKey){
+  console.log('API Key:', apiKey.id);
+  console.log('API Secret:', apiKey.secret);
+})
+</code> </pre> </div><div id="tabs-create-api-key-python"><pre lang="python"><code>
+# Create a new api key
+new_api_key = john.api_keys.create()
+
+</code> </pre> </div></div>
+
+
+<p>The <code>ApiKey</code> returned will have the following properties:</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description </th>
+<th align="left"> Type </th>
+<th align="left"> Valid Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>id</code> </td>
+<td align="left"> The unique identifier for the API Key </td>
+<td align="left"> String </td>
+<td align="left"> <span>&mdash;</span></td>
+</tr>
+<tr>
+<td align="left"><code>secret</code> </td>
+<td align="left"> The secret for the API key. </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>status</code> </td>
+<td align="left"> A property that represent the status of the key.  Keys with a disabled status will not be able to authenticate. </td>
+<td align="left"> ApiKeyStatus </td>
+<td align="left"> ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED, </td>
+</tr>
+<tr>
+<td align="left"><code>account</code> </td>
+<td align="left"> A link to the ApiKey&rsquo;s account. </td>
+<td align="left"> Account </td>
+<td align="left"> <span>&mdash;</span></td>
+</tr>
+<tr>
+<td align="left"><code>tenant</code> </td>
+<td align="left"> A link to the ApiKey&rsquo;s tenant. </td>
+<td align="left"> Tenant </td>
+<td align="left"> <span>&mdash;</span></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>After the API Key is created, you will need to deliver the API Key ID and Secret to the developer so they can start using them to access your API securely.  In most cases, this is done by displaying the API keys on a web page.</p>
+
+<h3><a id="manage-api-keys-for-an-account"></a>Manage API Keys for an Account</h3>
+
+<p>In some cases, you may need to delete or disable (revoke) an API Key.  This is important for management of API Keys.  For example, a developer may delete an API Key because it has been compromised, or the administrator may disable all API Keys for a developer that is past due on payments for the service.  API Keys can be retrieved from either the <code>Application</code> or <code>Account</code>.  Once it is retrieved, it can be deleted or disabled.</p>
+
+<h4>Deleting an API Key</h4>
+
+<div class="tabs"><ul><li><a href="#tabs-delete-api-key-java">java</a></li><li><a href="#tabs-delete-api-key-node">node</a></li><li><a href="#tabs-delete-api-key-python">python</a></li></ul><div id="tabs-delete-api-key-java"><pre lang="java"><code>
+APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
+apiKey.delete();
+</code> </pre> </div><div id="tabs-delete-api-key-node"><pre lang="node"><code>
+application.getApiKey('FURThLWDE4MElDTFVUMDNDTzpQSHozZ', function(err, apiKey){
+    apiKey.delete(function(){
+        console.log('API Key Deleted');
+    });
+});
+</code> </pre> </div><div id="tabs-delete-api-key-python"><pre lang="python"><code>
+# Delete an api key
+api_key.delete()
+</code> </pre> </div></div>
+
+
+<h4>Disable an API Key</h4>
+
+<div class="tabs"><ul><li><a href="#tabs-disable-api-key-java">java</a></li><li><a href="#tabs-disable-api-key-node">node</a></li><li><a href="#tabs-disable-api-key-python">python</a></li></ul><div id="tabs-disable-api-key-java"><pre lang="java"><code>
+APIKey apiKey = application.getApiKey("FURThLWDE4MElDTFVUMDNDTzpQSHozZ");
+apiKey.setStatus(ApiKeyStatus.DISABLED)
+apiKey.save()
+</code> </pre> </div><div id="tabs-disable-api-key-node"><pre lang="node"><code>
+application.getApiKey('FURThLWDE4MElDTFVUMDNDTzpQSHozZ', function(err, apiKey){
+    apiKey.status = 'DISABLED';
+    apiKey.save(function(){
+        console.log('API Key Disabled');
+    });
+});
+</code> </pre> </div><div id="tabs-disable-api-key-python"><pre lang="python"><code>
+# Disable an API Key
+api_key.status = 'DISABLED'
+api_key.save()
+</code> </pre> </div></div>
+
+
+<h2><a id="using-the-stormpath-sdk-to-authenticate-and-generate-tokens-for-your-api-keys"></a>Using the Stormpath SDK to Authenticate and Generate Tokens for your API Keys</h2>
+
+<p>The Stormpath SDK does all the heavy lifting for you in your application.  It automatically processes authentications via HTTP Basic or OAuth 2.0.  In addition, the SDK will handle more advance OAuth 2.0 features like <em>scope</em> and <em>time-to-live</em>.</p>
+
+<p>Stormpath supports two HTTP <code>Authorization</code> methods when authenticating API Keys, Basic and Bearer (OAuth 2.0 client-credentials grant type).  In this section we will discuss the strategies and best practices using these authorization methods.</p>
+
+<h3><a id="how-api-key-and-token-authentication-works"></a>How API Key and Token Authentication Works</h3>
+
+<p>All authentication attempts in Stormpath start with the <code>Application</code> object in the SDK.  You will likely have initialized the <code>Application</code> during startup.</p>
+
+<p>The <code>Application</code> object in Java has an <code>authenticateApiRequest</code> method that takes an HTTP request as a parameter.  Using  HTTP authorization headers, Stormpath can understand what type of authentication is occurring (Basic vs Bearer) and can quickly decide if the authentication request is successful or not.  For example, if your API supports both Basic and OAuth 2.0, the Stormpath SDK will take the full request, read the authorization header data and provide the right type of authentication.</p>
+
+<p>To demonstrate how the SDK works, we&rsquo;ll use an example.  We are building a Stormtrooper API for managing Stormtrooper equipment&mdash; like awesome helmets and blasters.  In order to secure our API, a developer must base64 encode their API Key and Secret and then pass the encoded data in the authorization header.</p>
+
+<p>The developer request would look something like this (using HTTPS Basic authentication):</p>
+
+<pre><code>GET /troopers/tk421/equipment 
+Accept: application/json
+Authorization: Basic MzRVU1BWVUFURThLWDE4MElDTFVUMDNDTzpQSHozZitnMzNiNFpHc1R3dEtOQ2h0NzhBejNpSjdwWTIwREo5N0R2L1g4
+Host: api.trooperapp.com
+</code></pre>
+
+<div class='docs-warning'><p>Basic Authentication provides no protection for the transmitted credentials. They are merely encoded with Base64 in transit, but not encrypted or hashed in any way. Basic Authentication is not secure and Stormpath strongly recommends that when a developer calls your API, it is transmitted over HTTPS protocol to provide adequate security.</p>
+</div>
+
+
+<p>Alternatively, the developer could have sent the same request using an OAuth 2.0 Access Token using the Bearer authorization scheme.  <a href="#exchanging-api-keys-for-oauth-20-tokens">More on this later</a>.</p>
+
+<p>In the simplest form, the Stormpath Java SDK would authenticate the above request (Basic or Bearer) as follows:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-generic-id-auth-java">java</a></li><li><a href="#tabs-generic-id-auth-node">node</a></li><li><a href="#tabs-generic-id-auth-python">python</a></li></ul><div id="tabs-generic-id-auth-java"><pre lang="java"><code>
+public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
+    Application application = client.getResource(applicationRestUrl, Application.class);
+
+    ApiAuthenticationResult result = application.authenticateApiRequest(request);
+
+    //Get any account properties as needed
+    String email = result.getAccount().getEmail();
+
+    //Get any api key properties as needed
+    String apiKeyId = result.getApiKey().getId();
+
+    //Return what you need to return in the response
+    handleEquipmentRequest(response);
+}
+</code> </pre> </div><div id="tabs-generic-id-auth-node"><pre lang="node"><code>
+// Express.js example - accept Basic for a given resource
+
+app.get('/troopers',function (req, res){
+
+    application.authenticateApiRequest({request: req}, function(err, authResult){
+        if(!err){
+            authResult.getAccount(function(err,account){
+                console.log('The account making this api call is ', account.email);
+            });
+            handleEquipmentRequest(req, res);
+        }
+    });
+});
+</code> </pre> </div><div id="tabs-generic-id-auth-python"><pre lang="python"><code>
+from stormpath.api_auth import ApiRequestAuthenticator
+
+uri = 'https://api.trooperapp.com'
+http_method = 'GET'
+headers = {
+    'Authorization': 'Basic BASE64ENCODEDAPIKEYANDSECRET'
+}
+
+authenticator = ApiRequestAuthenticator(application)
+result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri)
+if result:
+    print result.api_key
+    print result.account
+else:
+    print "Invalid or not authenticated request."
+</code> </pre> </div></div>
+
+
+<p>The returned <code>Authentication Result</code> will provide properties and methods for retrieving the authenticated <code>Account</code> and <code>ApiKey</code> for a successful authentication request.  Your API will use this information to provide context associated with who is calling your API.  This becomes important when your API has generic endpoints that return different information based on the caller.  In our Stormtrooper Equipment API, a call to <code>/my-equipment</code> would return the equipment for the authenticated account.</p>
+
+<p>The SDK provides a caching layer to ensure fast response times in your API by reducing network traffic to the Stormpath service. The caching layer will cache the API Key securely with the Secret encrypted. Stormpath will use the cache entry for API Key and Secret authentication when possible.</p>
+
+<h3><a id="exchanging-api-keys-for-oauth-20-tokens"></a>Exchanging API Keys for OAuth 2.0 Tokens</h3>
+
+<p>In the section above, we show how to perform Basic authentication on a request.  Basic authentication is common in the market, but there are more secure methods for securing your API. This is one of benefit of OAuth. Instead of passing base64 encoded API keys over the wire, you can exchange an API Key Id and Secret for an Access Token, and use the Access Token as a Bearer Token to authentication for a protected API or resource.</p>
+
+<p>Stormpath SDK has all the tools needed to enable your API to support OAuth 2.0 Bearer Tokens as a means of authentication. Stormpath explicitly supports OAuth 2.0 client credential grant type.  This workflow is represented as:</p>
+
+<pre><code> +---------+                                  +---------------+
+ |         |                                  |               |
+ |         |&gt;--- 1. Client Authentication ---&gt;| API backed by |
+ | Client  |                                  | Stormpath SDK |
+ |         |&lt;--- 2. -- Access Token ---------&lt;|               |
+ |         |                                  |               |
+ +---------+                                  +---------------+
+</code></pre>
+
+<ol>
+<li>The client authenticates with the authorization server and requests an access token from the token endpoint.</li>
+<li>The authorization server authenticates the client, and if valid issues an access token.</li>
+</ol>
+
+
+<p>Stormpath in this case is acting as the Authorization Server and will authenticate the client based on the API Key ID and Secret.  This allows you to generate an Access Token for a successful authentication result.</p>
+
+<p>Going back to the Stormtrooper Equipment API example.  The app would require that a developer call a REST endpoint to exchange a valid API Key and Secret for an Access Token.  The REST endpoint would canonically be <code>/oauth/token</code>. The API Key and Secret would need to be base64 encoded in the request. An example of the REST call:</p>
+
+<pre><code>POST /oauth/token
+Accept: application/json
+Authorization: Basic MzRVU1BWVUFURThLWDE4MElDTFVUMDNDTzpQSHozZitnMzNiNFpHc1
+Content-Type: application/x-www-form-urlencoded
+Host: api.trooperapp.com
+
+  grant_type=client_credentials
+</code></pre>
+
+<p>The request will need to explicitly state the grant type for the OAuth Access Token Request.  Stormpath only supports client credential grant type for exchanging API Keys for Access Tokens.</p>
+
+<p>Below is sample code to show how you would handle the request with the Stormpath SDK and return an access token to the client:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-exchange-keys-tokens-java">java</a></li><li><a href="#tabs-exchange-keys-tokens-node">node</a></li><li><a href="#tabs-exchange-keys-tokens-python">python</a></li></ul><div id="tabs-exchange-keys-tokens-java"><pre lang="java"><code>
+public void postOAuthToken(HttpServletRequest request, HttpServletResponse response) {
+    Application application = client.getResource(applicationRestUrl, Application.class);
+
+    //Getting the authentication result
+    AccessTokenResult result = (AccessTokenResult) application.authenticateApiRequest(request);
+
+    //Get the token response from the result which includes 
+    //information about the Access Token
+    TokenResponse token = result.getTokenResponse();
+
+    //Prepares the response back to the caller
+    response.setStatus(HttpServletResponse.SC_OK);
+    response.setContentType("application/json");
+
+    //Output the json of the Access Token
+    response.getWriter().print(token.toJson());
+    response.getWriter().flush();
+}
+</code> </pre> </div><div id="tabs-exchange-keys-tokens-node"><pre lang="node"><code>
+// Express.js example - accept Basic for a given resource
+
+app.post('/oauth/token',function (req,res){
+    application.authenticateApiRequest({
+        request: req
+    }, function(err,authResult){
+        if(!err){
+            res.json(authResult.tokenResponse);
+        }
+    });
+});
+</code> </pre> </div><div id="tabs-exchange-keys-tokens-python"><pre lang="python"><code>
+
+result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes)
+if result:
+    print result.token
+    print result.token.to_json()
+
+</code> </pre> </div></div>
+
+
+<p>When exchanging API keys for OAuth tokens, the <code>Authenticate Result</code> will contain a <code>Token Response</code> that has properties associated with the generated token for an authenticated request.  This includes the Access Token, expiration, and token type.  This allows the client to decide if they can use the token. The <code>Token Repsonse</code> can easily be used to return the JSON representation that conforms to OAuth 2.0 specification.  The response back to requesting client from the code above:</p>
+
+<pre><code>HTTP 200 OK
+Content-Type: application/json
+
+{
+   "access_token":"7FRhtCNRapj9zs.YI8MqPiS8hzx3wJH4.qT29JUOpU64T",
+   "token_type":"bearer",
+   "expires_in":3600
+}
+</code></pre>
+
+<h3><a id="using-oauth-as-authentication-for-your-rest-api"></a>Using OAuth as Authentication for your REST API</h3>
+
+<p>After you return an OAuth Access Token to a developer using your API service, they can start using the OAuth Access Token to validate authentication to your service.</p>
+
+<p>Stormpath requires that the developer send the Access Token in the Authorization header of the request.</p>
+
+<p>Again, the Stormtrooper Equipment API example.  We will require that a developer exchange his API Key and Secret for an Access Token and then pass the Access Token in future requests to gain access to your API.</p>
+
+<p>The developer request would look something like this:</p>
+
+<pre><code>GET /troopers/tk421/equipment 
+Accept: application/json
+Authorization: Bearer 7FRhtCNRapj9zs.YI8MqPiS8hzx3wJH4.qT29JUOpU64T
+Host: api.trooperapp.com
+</code></pre>
+
+<p>The Access Token needs to be passed to your API in the Authorization header, using the Bearer method.</p>
+
+<p>In the simplest form, the Stormpath SDK would authenticate a request as follows:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-generic-o-auth-java">java</a></li><li><a href="#tabs-generic-o-auth-node">node</a></li><li><a href="#tabs-generic-o-auth-python">python</a></li></ul><div id="tabs-generic-o-auth-java"><pre lang="java"><code>
+public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
+    Application application = client.getResource(applicationRestUrl, Application.class);
+
+    OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauthRequest(request).execute();
+
+    System.out.println(result.getApiKey());
+    System.out.println(result.getAccount());
+
+    //Return what you need to return in the response
+    handleEquipmentRequest(response);
+}
+</code> </pre> </div><div id="tabs-generic-o-auth-node"><pre lang="node"><code>
+// Express.js example - accept OAuth Bearer Token for a given resource
+
+app.get('/troopers',function (req, res){
+
+    application.authenticateApiRequest({request: req}, function(err, authResult){
+        if(!err){
+            authResult.getAccount(function(err,account){
+                console.log('The account making this api call is ', account.email);
+            });
+            handleEquipmentRequest(req, res);
+        }
+    });
+});
+</code> </pre> </div><div id="tabs-generic-o-auth-python"><pre lang="python"><code>
+result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes)
+if result:
+    print result.account
+else:
+    "Invalid or expired Token"
+</code> </pre> </div></div>
+
+
+<p>The returned <code>Authentication Result</code> will give you access to methods to get the <code>Account</code>, <code>ApiKey</code> and the scope (if set).</p>
+
+<h3><a id="customizing-time-to-live-and-scope-for-oauth-api-authentication"></a>Customizing Time-to-live and Scope for OAuth API Authentication</h3>
+
+<p>Exchanging API Keys for OAuth 2.0 Tokens can be customized to increase or decrease the time-to-live (TTL) of the token or allow the client integrating with your API to request an optional scope for the Access Token.</p>
+
+<p>Using Stormpath will automatically set a TTL of one hour (3600 seconds) and does not embed scope into the OAuth 2.0 Access Token.  These are both customizable using the Stormpath SDK.</p>
+
+<h4>Time-to-live</h4>
+
+<p>When an API Key is exchanged for a Access Token, the Access Token has a time-to-live in relation to when the it was created.</p>
+
+<p>Customizing the TTL is easy.  Just specify the TTL when exchanging the API keys for an OAuth token.</p>
+
+<div class="tabs"><ul><li><a href="#tabs-ttl-java">java</a></li><li><a href="#tabs-ttl-node">node</a></li><li><a href="#tabs-ttl-python">python</a></li></ul><div id="tabs-ttl-java"><pre lang="java"><code>
+result = application.authenticateOauthRequest(request).withTtl(7200).execute();
+</code> </pre> </div><div id="tabs-ttl-node"><pre lang="node"><code>
+application.authenticateApiRequest({request: req, ttl: 7200}, function(err, authResult){
+    if(!err){
+        res.json(authResult.tokenResponse);
+    }
+});
+</code> </pre> </div><div id="tabs-ttl-python"><pre lang="python"><code>
+result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes, ttl=ttl)
+</code> </pre> </div></div>
+
+
+<h4>Scope</h4>
+
+<p>When exchanging a API Key for an Access Token, the client may request additional permissions for the Access Token.  This is called scope in OAuth.  For example, in our Stormtrooper Equipment API, a client may request for a <code>view_others_equipment</code> scope, which will allow a client to view other stormtroopers equipment other than his own.</p>
+
+<div class='docs-note'><p>Scopes are defined by the API and are application specific. They are usually described to clients integrating with the API through documentation. For example, Facebook and Heroku both use OAuth, but have different scopes for their OAuth Tokens.  You would not expect clients integrating with Heroku to ask for a <code>post_to_my_wall</code> scope.</p>
+</div>
+
+
+<p>Using the Stormpath SDK will give you the tools to make the final decision if the scope will be granted in the token. To illustrate how this happens:</p>
+
+<pre><code>POST /oauth/token
+Accept: application/json
+Authorization: Basic MzRVU1BWVUFURThLWDE4MElDTFVUMDNDTzpQSHozZitnMzNiNFpHc1R3dEtOQ2h0NzhBejNpSjdwWTIwREo5N0R2L1g4
+Content-Type: application/x-www-form-urlencoded
+Host: api.trooperapp.com
+
+grant_type=client_credentials&amp;scope=view_others_equipment+admin
+</code></pre>
+
+<p>We know that this is a request for an Access Token, because the client included a grant_type parameter.  They also requested that the Access Token be granted the scopes of <code>view_others_equipment</code> and <code>admin</code>.  Note that scope is space-delimited.</p>
+
+<p>When the API exchanges the API Key for an Access Token, you can specify a <code>ScopeFactory</code> that will help you create an Access Token with the correct scopes.</p>
+
+<p>For example:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-scope-factory-java">java</a></li><li><a href="#tabs-scope-factory-node">node</a></li><li><a href="#tabs-scope-factory-python">python</a></li></ul><div id="tabs-scope-factory-java"><pre lang="java"><code>
+public void processOAuthTokenRequest(HttpServletRequest request, HttpServletResponse response) {
+    Application application = client.getResource(applicationRestUrl, Application.class);
+
+    //Build a scope factory
+    ScopeFactory scopeFactory = new ScopeFactory(){
+          public Set<String> createScope(AuthenticationResult result, Set<String> requestedScopes) {
+
+            //Initialize an empty set, and get the account
+            HashSet<String> returnedScopes = new HashSet<String>();
+            Account account = result.getAccount();
+
+            //For each requested scope, figure out if we the account can is allowed the scope.  
+            //This is up to the API to return the correct scopes
+
+            for(String scope: requestedScopes){
+              if(allowScopeForAccount(account, scope)){
+                returnedScopes.add(scope);
+              }
+            }
+
+            return returnedScopes;
+          }
+        };
+
+    //Authenticate the request with ScopeFactory
+    AccessTokenResult result;
+    result = (AccessTokenResult) application.authenticateOauthRequest(request).withScopeFactory(scopeFactory).execute();
+
+    //Get the token response for an authenticated request
+    TokenResponse token = result.getTokenResponse();
+
+    //Build the response
+    response.setStatus(HttpServletResponse.SC_OK);
+    response.setContentType("application/json");
+
+    //Include the access token and respond to caller
+    response.getWriter().print(token.toJson());
+    response.getWriter().flush();
+}
+</code> </pre> </div><div id="tabs-scope-factory-node"><pre lang="node"><code>
+//Create a scope factory function
+var scopeFactory = function (account, requestedScopes){
+    var allowedScopes = [];
+
+    for(var scope in requestedScopes){
+        if(allowScopeForAccount(account, scope)){
+            allowedScopes.push(scope);
+        } 
+    }
+    return allowedScopes;
+}
+
+app.post('/oauth/token',function (req,res){
+    //use the scope factory function as during authentication
+    application.authenticateApiRequest({
+        request: req,
+        scopeFactory: scopeFactory
+    }, function(err,authResult){
+        if(!err){
+            res.json(authResult.tokenResponse);
+        }
+    });
+});
+</code> </pre> </div><div id="tabs-scope-factory-python"><pre lang="python"><code>
+result = authenticator.authenticate(headers=headers, http_method=http_method, uri=uri, body=body, scopes=allowed_scopes)
+</code> </pre> </div></div>
+
+
+<p>In the code above, we use an arbitrary function to validate that an account is allowed a scope. You could use customData or the account&rsquo;s groups to validate scopes within Stormpath.  This is one way you can verify the scope requested, but your application may have another means to verify the requested scope.</p>
+
+<p>If the returned scopes are <code>admin</code> and <code>view_others_equipment</code>, the response for the above code would return the granted scopes to the client:</p>
+
+<pre><code>HTTP 200 OK
+Content-Type: application/json
+
+{
+   "access_token":"7FRhtCNRapj9zsYI8MqPiS8hzx3wJH4qT29JUOpU64T",
+   "token_type":"bearer",
+   "scope": "view_others_equipment admin",
+   "expires_in":3600
+}
+</code></pre>
+
+<p>The default <code>ScopeFactory</code> used does not include any scope, so if you need to include Scope in the Access Token, you must implement how to validate the requested scope.</p>
+
+<p>When this token is used in a resulting request, such as:</p>
+
+<pre><code>GET /troopers/tk329/equipment 
+Accept: application/json
+Authorization: Bearer 7FRhtCNRapj9zsYI8MqPiS8hzx3wJH4qT29JUOpU64T
+Content-Type: application/json
+Host: api.trooperapp.com
+</code></pre>
+
+<p>You can retrieve the granted scopes from the token when having the SDK authenticate the request:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-get-scopes-java">java</a></li><li><a href="#tabs-get-scopes-node">node</a></li></ul><div id="tabs-get-scopes-java"><pre lang="java"><code>
+public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
+    
+    Application application = client.getResource(applicationRestUrl, Application.class);
+
+    OauthAuthenticationResult result = (OauthAuthenticationResult) application.authenticateOauthRequest(request).execute();
+
+    //Checking if the Access Token includes the 'admin' scope
+    if(result.getScopes().contains("admin")){
+      //This authentication result includes the scope for admin, let's do something special...
+      handleEquipmentRequestForAdmin(response);
+    } else{
+
+      //Return what you need to return in the response
+      handleEquipmentRequest(response);
+    }
+}
+</code> </pre> </div><div id="tabs-get-scopes-node"><pre lang="node"><code>
+// Express.js example - accept OAuth Bearer Token for a given resource
+
+app.get('/troopers',function (req, res){
+
+    application.authenticateApiRequest({request: req}, function(err, authResult){
+        if(!err){
+            authResult.getAccount(function(err,account){
+                console.log('The account making this api call is ', account.email);
+            });
+
+            //Get the scopes from the grantedScopes property
+            console.log('Granted Scopes in Bearer Token', authResult.grantedScopes);
+
+            handleEquipmentRequest(req, res);
+        }
+    });
+});
+</code> </pre> </div></div>
+
+
+<h3><a id="javas-stormpath-authentication-result-visitor"></a>Java&rsquo;s Stormpath Authentication Result Visitor</h3>
+
+<p>In Java, when asking the <code>Application</code> to authenticate an API authentication request, the return type of a successful authentication request will vary based on the request headers.  This includes:</p>
+
+<ol>
+<li><code>ApiAuthenticationResult</code> &ndash; Authorization header is present, with the <code>Basic</code> method and the base64 encoded API_KEY_ID:API_KEY_SECRET.</li>
+<li><code>AccessTokenResult</code> &ndash; HTTP Method is <code>POST</code>. Authorization header is present, with the <code>Basic</code> method and the base64 encoded API_KEY_ID:API_KEY_SECRET. As part of the query or body of the request, the &lsquo;grant_type&rsquo; is specified as &lsquo;client_credentials&rsquo;.  Content-type is set to <code>x-www-form-urlencoded</code>.</li>
+<li><code>OauthAuthenticationResult</code> &ndash; Authorization header is present, with the <code>Bearer</code> method and the OAuth 2.0 Access Token retrieved from the Stormpath SDK in a previous request.</li>
+</ol>
+
+
+<!-- add grant type to #2 -->
+
+
+<p>As a result, Stormpath has the ability to use a <a href="http://en.wikipedia.org/wiki/Visitor_pattern">visitor pattern</a> to handle the different types of <code>AuthenticationResult</code>.  This becomes important if your API needs to support multiple Authorization methods (Basic and Bearer), or if you handle multiple types of authentication in the same place.</p>
+
+<p>When asking an <code>Application</code> to authenticate a result, a successful request will return a <code>AuthenticationResult</code>.  In the code samples in this guide, we have casted the <code>AuthenticationResult</code> directly, but the <code>AuthenticationResult</code> has the ability to accept a visitor.  Stormpath provides an <code>AuthenticationResultVisitorAdapter</code> which will throw exceptions for any method not overridden.</p>
+
+<pre><code>ApiAuthenticationResult authResult = application.authenticateApiRequest(request);
+
+//Accept a visitor. The method called will be based on the return type, which is passed as a parameter to the method (ApiAuthenticationResult, OauthAuthenticationResult, AccessTokenResult) 
+authResult.accept(new AuthenticationResultVisitorAdapter() {
+
+  public void visit(ApiAuthenticationResult result) {
+      Account account = result.getAccount();
+      ApiKey apiKey = result.getApiKey();   
+  }
+
+  public void visit(OauthAuthenticationResult result) {
+      Account account = result.getAccount();
+      Set&lt;String&gt; scope = result.getScope();
+
+  }
+
+  public void visit(AccessTokenResult result) {
+      TokenResponse tokenResponse = result.getTokenResponse();
+  }
+});
+</code></pre>
+
+<h2><a id="wrapping-up"></a>Wrapping up</h2>
+
+<p>In this guide, we discussed how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email <a href="&#x6d;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#115;&#x75;&#x70;&#112;&#111;&#x72;&#116;&#x40;&#115;&#116;&#111;&#114;&#109;&#x70;&#97;&#116;&#x68;&#x2e;&#99;&#111;&#109;&#46;">&#x73;&#117;&#112;&#112;&#111;&#114;&#116;&#x40;&#115;&#116;&#111;&#x72;&#109;&#112;&#97;&#x74;&#x68;&#x2e;&#x63;&#111;&#x6d;&#x2e;</a></p>
+
+<!-- wrap it up -->
+
+
+<!-- include the support -->
+
+
+
+
+              <div id="spread-word">
+<hr>
+
+<h2> Help Us Spread the Word </h2>
+
+<p>Did you find this valuable?  If you've enjoyed playing with Stormpath or are excited about what we've built, please help us spread the world with a quick tweet or by just telling a friend.  Thank you!</p>
+
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout Stormpath, it helps you set up complete user management in your application in minutes."
+addthis:url="https://stormpath.com" >
+  <a class="addthis_button_twitter"></a>
+  <a class="addthis_button_reddit"></a>
+  <a class="addthis_button_hackernews"></a>
+  <a class="addthis_button_google_plusone_share"></a>
+  <a class="addthis_button_linkedin"></a>
+  <a class="addthis_button_facebook"></a>
+  <a class="addthis_button_email"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+<!-- AddThis Button END -->
+<p>
+</div>
+
+            </div>
+            <div class="col-md-12">
+              <div id="bottom-wrapper">
+               <div class="region">
+
+	<div class="credits">
+	  <div class="container">
+	    <ul class="list-unstyled list-inline">
+	      <li>Copyright &copy; 2016 Stormpath, Inc.</li>
+	      <li class="divider-vertical"></li>
+	      <li>All rights reserved</li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/privacy_policy">Privacy policy</a></li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/terms_of_service">Terms of service</a></li>
+	    </ul>
+	  </div>
+	</div>
+	
+</div><!-- /.region -->
+
+              </div>
+            </div>
+          </div>
+
+
+
+<aside class="sidebars">
+  
+    <section class="region region-sidebar-first column sidebar">
+      
+<div id="block-stormpath-docs-languages" class="block block-stormpath-docs first odd">
+ <form class="stormpath-docs-select-language" action="/docs/java/product-guide" method="post" id="stormpath-docs-language-form" accept-charset="UTF-8"><div><div class="form-item form-type-select form-item-language">
+  <label for="edit-language">Language: </label>
+ <select id="edit-language" name="language" class="form-select">
+  
+  
+ 	
+    <option value="rest">REST API</option>
+ 	
+    <option value="java">Java</option>
+ 	
+    <option value="nodejs">Node.js</option>
+ 	
+    <option value="python">Python</option>
+ 	
+    <option value="ruby">Ruby</option>
+ 	
+    <option value="guides" selected>Guides</option>
+ 	
+    <option value="console">Admin Console</option>
+ 	
+ </select>
+</div>
+<input type="hidden" name="form_id" value="stormpath_docs_language_form">
+</div></form>
+</div>
+
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['dotnet'] = [];
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('10010');
+		
+			sp_docs_menu['errors'].push('10011');
+		
+			sp_docs_menu['errors'].push('10012');
+		
+			sp_docs_menu['errors'].push('10013');
+		
+			sp_docs_menu['errors'].push('10014');
+		
+			sp_docs_menu['errors'].push('10015');
+		
+			sp_docs_menu['errors'].push('10016');
+		
+			sp_docs_menu['errors'].push('10017');
+		
+			sp_docs_menu['errors'].push('10100');
+		
+			sp_docs_menu['errors'].push('10101');
+		
+			sp_docs_menu['errors'].push('10102');
+		
+			sp_docs_menu['errors'].push('11001');
+		
+			sp_docs_menu['errors'].push('11002');
+		
+			sp_docs_menu['errors'].push('11003');
+		
+			sp_docs_menu['errors'].push('11004');
+		
+			sp_docs_menu['errors'].push('11005');
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+</script>
+
+
+<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
+  
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/guides/multi-tenant">Multi-Tenant SaaS Applications with Stormpath</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/using-id-site">Using ID Site</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/social-integrations">Integrating Stormpath with Facebook and Google</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/ad-ldap">Integrating Stormpath with Active Directory and LDAP</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/dev-test-prod-environments">Setting up Development and Production Environments</a>
+			
+			
+			</li>
+		
+			<li class="leaf active-trail">
+			
+				<a href="/guides/api-key-management">Using Stormpath for API Authentication</a>
+			
+			
+				<ul class="menu"><li class="leaf"><a href="#why-should-i-use-stormpath-for-api-authentication" data-level="0" class="fragment">Why should I use Stormpath for API Authentication?</a><ul class="menu"></ul></li><li class="leaf"><a href="#first-some-terminology" data-level="0" class="fragment">First, some terminology</a><ul class="menu"></ul></li><li class="leaf"><a href="#how-do-i-use-stormpath-for-api-authentication" data-level="0" class="fragment">How do I use Stormpath for API Authentication?</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-an-account-in-stormpath-for-your-developers" data-level="0" class="fragment">Create an Account in Stormpath for your Developers</a><ul class="menu"></ul></li><li class="leaf"><a href="#create-and-manage-api-keys-for-an-account" data-level="0" class="fragment">Create and Manage API Keys for an Account</a><ul class="menu"><li class="leaf"><a href="#creating-api-keys-for-an-account" data-level="1" class="fragment">Creating API Keys for an Account</a><ul class="menu"></ul></li><li class="leaf"><a href="#manage-api-keys-for-an-account" data-level="1" class="fragment">Manage API Keys for an Account</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#using-the-stormpath-sdk-to-authenticate-and-generate-tokens-for-your-api-keys" data-level="0" class="fragment">Using the Stormpath SDK to Authenticate and Generate Tokens for your API Keys</a><ul class="menu"><li class="leaf"><a href="#how-api-key-and-token-authentication-works" data-level="1" class="fragment">How API Key and Token Authentication Works</a><ul class="menu"></ul></li><li class="leaf"><a href="#exchanging-api-keys-for-oauth-20-tokens" data-level="1" class="fragment">Exchanging API Keys for OAuth 2.0 Tokens</a><ul class="menu"></ul></li><li class="leaf"><a href="#using-oauth-as-authentication-for-your-rest-api" data-level="1" class="fragment">Using OAuth as Authentication for your REST API</a><ul class="menu"></ul></li><li class="leaf"><a href="#customizing-time-to-live-and-scope-for-oauth-api-authentication" data-level="1" class="fragment">Customizing Time-to-live and Scope for OAuth API Authentication</a><ul class="menu"></ul></li><li class="leaf"><a href="#javas-stormpath-authentication-result-visitor" data-level="1" class="fragment">Java’s Stormpath Authentication Result Visitor</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#wrapping-up" data-level="0" class="fragment">Wrapping up</a><ul class="menu"></ul></li></ul>
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/token-management">Using Stormpath for OAuth 2.0 and Access/Refresh Token Management</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+        
+  	
+                
+                       <div class="menu-divider"></div> 
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/how-do-i">How Do I..?</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/errors">Stormpath Error Codes</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+</div>
+
+    </section>
+  
+
+  
+</aside>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script src="/javascripts/highlight.min.js"></script>
+
+<script>
+$(function() {
+   hljs.initHighlightingOnLoad();
+
+   /* javascript for codetab to stop the page from shifting when changing tabs (tab sync) */
+   var currentEventTab;
+   var initialObjectTopOffset;
+   var initialPageYOffset;
+
+   $('.tabs').tabs({
+		activate: function(event ,ui){
+
+			//if the dom event, grab the hotness 
+			if(event.cancelable){
+				currentEventTab = event.target;
+				initialObjectTopOffset = $(currentEventTab).offset().top;
+				initialPageYOffset = window.pageYOffset;
+			}
+			//change ze tab
+			$('.tabs').tabs('option', 'active', ui.newTab.index());
+
+			//grab the new offsets
+			var afterChangeOffset = $(currentEventTab).offset().top;
+			var afterPageYOffset = window.pageYOffset;
+
+			//do ze scroll
+			$('body').scrollTop(initialPageYOffset - (initialObjectTopOffset - afterChangeOffset));
+		}
+	});
+});
+</script>
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<!-- Google Code for Remarketing tag -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1002663385;
+var google_conversion_label = "wSRZCLfkjQQQ2duN3gM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1002663385/?value=0&amp;label=wSRZCLfkjQQQ2duN3gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<!-- AdRoll Code -->
+<script type="text/javascript">
+adroll_adv_id = "RVWGHIV3GJCLHIUDNFIMNY";
+adroll_pix_id = "L2WE5KAWDRDBVP46PZZBQJ";
+(function () {
+var oldonload = window.onload;
+window.onload = function(){
+__adroll_loaded=true;
+var scr = document.createElement("script");
+var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+scr.setAttribute('async', 'true');
+scr.type = "text/javascript";
+scr.src = host + "/j/roundtrip.js";
+((document.getElementsByTagName('head') || [null])[0] ||
+document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+if(oldonload){oldonload()}};
+}());
+</script>
+
+<!-- HubSpot Analytics Code -->
+<script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+</script>
+<!-- End HubSpot Analytics Code -->
+
+<!-- CrazyEgg -->
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0017/1602.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+
+<!-- Perfect Audience -->
+<script type="text/javascript">
+(function() {
+window._pa = window._pa || {};
+// _pa.orderId = "";
+// _pa.revenue = "";
+var pa = document.createElement('script'); pa.type = 'text/javascript'; pa.async = true;
+pa.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + "//tag.perfectaudience.com/serve/51fc2c6f1b440adfcc000099.js";
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pa, s);
+})();
+</script>
+
+
+</body>
+</html>
