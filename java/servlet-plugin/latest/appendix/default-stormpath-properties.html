@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>A: default.stormpath.properties &mdash; Stormpath Java Servlet Plugin 1.0.RC8.2 documentation</title>
+  <title>A: default.stormpath.properties &mdash; Stormpath Java Servlet Plugin 1.0.RC8.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="../about.html"/>
-    <link rel="top" title="Stormpath Java Servlet Plugin 1.0.RC8.2 documentation" href="../index.html"/>
+    <link rel="top" title="Stormpath Java Servlet Plugin 1.0.RC8.3 documentation" href="../index.html"/>
         <link rel="up" title="Appendix" href="../appendix.html"/>
         <link rel="next" title="B: i18n.properties" href="i18n-properties.html"/>
         <link rel="prev" title="Appendix" href="../appendix.html"/> 
@@ -209,7 +209,7 @@
             
   <div class="section" id="a-default-stormpath-properties">
 <span id="default-stormpath-properties"></span><h1>A: default.stormpath.properties<a class="headerlink" href="#a-default-stormpath-properties" title="Permalink to this headline">¶</a></h1>
-<p>In stormpath-sdk-servlet-1.0.RC8.2.jar: <code class="docutils literal"><span class="pre">/META-INF/com/stormpath/sdk/servlet/default.stormpath.properties</span></code></p>
+<p>In stormpath-sdk-servlet-1.0.RC8.3.jar: <code class="docutils literal"><span class="pre">/META-INF/com/stormpath/sdk/servlet/default.stormpath.properties</span></code></p>
 <div class="highlight-properties"><div class="highlight"><pre><span class="c">#</span>
 <span class="c"># Copyright 2015 Stormpath, Inc.</span>
 <span class="c">#</span>
@@ -257,12 +257,21 @@
 <span class="na">stormpath.web.register.nextUri</span> <span class="o">=</span> <span class="s">/</span>
 
 <span class="c"># The context-relative path the user will visit when clicking a link in a verification email after registration</span>
-<span class="c"># This page will likely always be accessed with a ?sptoken=SP_TOKEN_VALUE query parameter</span>
+<span class="c"># If this page is not accessed with a ?sptoken=SP_TOKEN_VALUE query parameter, the user will be redirected to</span>
+<span class="c"># a page where they can enter their email address to have a verfication email resent to them.</span>
 <span class="na">stormpath.web.verify.uri</span> <span class="o">=</span> <span class="s">/verify</span>
+
+<span class="c"># If verify is enabled, the login view will show a link to to a page where users will be able to have the account</span>
+<span class="c"># verification email re-sent to them.</span>
+<span class="c"># The email verification workflow still needs to be enabled in the Stormpath admin console for this to work.</span>
+<span class="na">stormpath.web.verify.enabled</span> <span class="o">=</span> <span class="s">true</span>
 
 <span class="c"># The default context-relative path where the user will be redirected after successfully verifying their email address</span>
 <span class="c"># Note: it is *not safe* (insecure) to automatically login a user when they click an email link.</span>
 <span class="na">stormpath.web.verify.nextUri</span> <span class="o">=</span> <span class="s">/login?status=verified</span>
+
+<span class="c"># This shows the view where a user can enter their email address to have a verification email re-sent to them.</span>
+<span class="na">stormpath.web.sendVerificationEmail.uri</span> <span class="o">=</span> <span class="s">/sendVerificationEmail</span>
 
 <span class="c"># The context-relative path where an authenticated (already logged in) user will be redirected when attempting to</span>
 <span class="c"># access a url they are not allowed to access.</span>
@@ -271,6 +280,7 @@
 <span class="c"># The context-relative path an HTTP client may POST to obtain an access token.  The access token can be used by the</span>
 <span class="c"># client to authenticate subsequent HTTP requests:</span>
 <span class="na">stormpath.web.accessToken.uri</span> <span class="o">=</span> <span class="s">/oauth/token</span>
+<span class="na">stormpath.web.accessToken.validationStrategy</span> <span class="o">=</span> <span class="s">stormpath</span>
 
 <span class="na">stormpath.web.idSite.enabled</span> <span class="o">=</span> <span class="s">false</span>
 <span class="na">stormpath.web.idSite.register.uri</span> <span class="o">=</span> <span class="s">/#/register</span>
@@ -350,7 +360,6 @@
 <span class="na">stormpath.web.csrf.token.name</span> <span class="o">=</span> <span class="s">csrfToken</span>
 <span class="c"># 1 hour nonce cache for CSRF tokens:</span>
 <span class="na">stormpath.web.nonce.cache.name</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.nonces</span>
-<span class="na">stormpath.cache.com.stormpath.sdk.servlet.nonces.tti</span> <span class="o">=</span> <span class="s">3600000</span>
 <span class="na">stormpath.cache.com.stormpath.sdk.servlet.nonces.ttl</span> <span class="o">=</span> <span class="s">3600000</span>
 
 <span class="c"># =========== Servlet Request Behavior ========</span>
@@ -447,6 +456,8 @@
 
 <span class="na">stormpath.web.accessToken.authenticationRequestFactory</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.filter.oauth.config.AccessTokenAuthenticationRequestFactoryFactory</span>
 <span class="na">stormpath.web.accessToken.resultFactory</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.filter.oauth.config.AccessTokenResultFactoryFactory</span>
+<span class="na">stormpath.web.refreshToken.authenticationRequestFactory</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.filter.oauth.config.RefreshTokenAuthenticationRequestFactoryFactory</span>
+<span class="na">stormpath.web.refreshToken.resultFactory</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.filter.oauth.config.RefreshTokenResultFactoryFactory</span>
 
 <span class="na">stormpath.web.accountStoreResolver</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.http.authc.DisabledAccountStoreResolver</span>
 
@@ -531,7 +542,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.RC8.2',
+            VERSION:'1.0.RC8.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

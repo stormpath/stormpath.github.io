@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Tutorial &mdash; Spring Boot Stormpath Web Starter 1.0.RC8.2 documentation</title>
+  <title>Tutorial &mdash; Spring Boot Stormpath Web Starter 1.0.RC8.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC8.2 documentation" href="index.html"/>
+    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC8.3 documentation" href="index.html"/>
         <link rel="next" title="Configuration" href="config.html"/>
         <link rel="prev" title="Quickstart" href="quickstart.html"/> 
 
@@ -80,6 +80,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#spring-security-meet-stormpath">Spring Security: Meet Stormpath</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#spring-security-refined">Spring Security Refined</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#a-finer-grain-of-control">A Finer Grain of Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#token-management">Token Management</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#wrapping-up">Wrapping Up</a></li>
 </ul>
 </li>
@@ -234,17 +235,18 @@ Spring Security with properties in the <a class="reference internal" href="#spri
 <p>Topics:</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#get-an-api-key" id="id16">Get an API Key</a></li>
-<li><a class="reference internal" href="#spring-boot-meet-stormpath" id="id17">Spring Boot: Meet Stormpath</a></li>
-<li><a class="reference internal" href="#some-access-controls" id="id18">Some Access Controls</a></li>
-<li><a class="reference internal" href="#spring-security-meet-stormpath" id="id19">Spring Security: Meet Stormpath</a></li>
-<li><a class="reference internal" href="#spring-security-refined" id="id20">Spring Security Refined</a></li>
-<li><a class="reference internal" href="#a-finer-grain-of-control" id="id21">A Finer Grain of Control</a></li>
-<li><a class="reference internal" href="#wrapping-up" id="id22">Wrapping Up</a></li>
+<li><a class="reference internal" href="#get-an-api-key" id="id18">Get an API Key</a></li>
+<li><a class="reference internal" href="#spring-boot-meet-stormpath" id="id19">Spring Boot: Meet Stormpath</a></li>
+<li><a class="reference internal" href="#some-access-controls" id="id20">Some Access Controls</a></li>
+<li><a class="reference internal" href="#spring-security-meet-stormpath" id="id21">Spring Security: Meet Stormpath</a></li>
+<li><a class="reference internal" href="#spring-security-refined" id="id22">Spring Security Refined</a></li>
+<li><a class="reference internal" href="#a-finer-grain-of-control" id="id23">A Finer Grain of Control</a></li>
+<li><a class="reference internal" href="#token-management" id="id24">Token Management</a></li>
+<li><a class="reference internal" href="#wrapping-up" id="id25">Wrapping Up</a></li>
 </ul>
 </div>
 <div class="section" id="get-an-api-key">
-<span id="get-api-key"></span><h2><a class="toc-backref" href="#id16">Get an API Key</a><a class="headerlink" href="#get-an-api-key" title="Permalink to this headline">¶</a></h2>
+<span id="get-api-key"></span><h2><a class="toc-backref" href="#id18">Get an API Key</a><a class="headerlink" href="#get-an-api-key" title="Permalink to this headline">¶</a></h2>
 <p>All communication with Stormpath must be authenticated with an API Key.</p>
 <ol class="arabic">
 <li><p class="first">If you haven’t already, <a class="reference external" href="https://api.stormpath.com/register">sign up for Stormpath for free</a>.  You’ll be sent a verification email.</p>
@@ -287,7 +289,7 @@ java -jar target/*.jar
 </div>
 </div>
 <div class="section" id="spring-boot-meet-stormpath">
-<span id="id2"></span><h2><a class="toc-backref" href="#id17">Spring Boot: Meet Stormpath</a><a class="headerlink" href="#spring-boot-meet-stormpath" title="Permalink to this headline">¶</a></h2>
+<span id="id2"></span><h2><a class="toc-backref" href="#id19">Spring Boot: Meet Stormpath</a><a class="headerlink" href="#spring-boot-meet-stormpath" title="Permalink to this headline">¶</a></h2>
 <p>Let&#8217;s fire up a basic Spring Boot Web application. The code for this section can be found <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-java/tree/master/tutorials/spring-boot/00-the-basics">here</a>.</p>
 <p>Note: This assumes you have your <code class="docutils literal"><span class="pre">apiKey.properties</span></code> file in the standard location: <code class="docutils literal"><span class="pre">~/.stormpath/apiKey.properties</span></code>.</p>
 <p>For a maven build and run, do this:</p>
@@ -363,7 +365,7 @@ disable it. That&#8217;s where the <code class="docutils literal"><span class="p
 will refine that to make use of all the Spring Security has to offer in making our lives easier.</p>
 </div>
 <div class="section" id="some-access-controls">
-<span id="id4"></span><h2><a class="toc-backref" href="#id18">Some Access Controls</a><a class="headerlink" href="#some-access-controls" title="Permalink to this headline">¶</a></h2>
+<span id="id4"></span><h2><a class="toc-backref" href="#id20">Some Access Controls</a><a class="headerlink" href="#some-access-controls" title="Permalink to this headline">¶</a></h2>
 <p>I am going to say something a little radical here: Don&#8217;t use the code in this section in real life! &#8220;Why have it at all?&#8221;, you may ask.</p>
 <p>In the next section, we will talk about having access controls the &#8220;right&#8221; way by using Stormpath&#8217;s integration with Spring Security.</p>
 <p>The purpose of this section is to demonstrate the manual labor required in &#8220;rolling your own&#8221; permissions assertion layer.
@@ -428,7 +430,7 @@ mvn spring-boot:run
 <p>Now, let&#8217;s take a look at using Spring Security to restrict access.</p>
 </div>
 <div class="section" id="spring-security-meet-stormpath">
-<span id="id6"></span><h2><a class="toc-backref" href="#id19">Spring Security: Meet Stormpath</a><a class="headerlink" href="#spring-security-meet-stormpath" title="Permalink to this headline">¶</a></h2>
+<span id="id6"></span><h2><a class="toc-backref" href="#id21">Spring Security: Meet Stormpath</a><a class="headerlink" href="#spring-security-meet-stormpath" title="Permalink to this headline">¶</a></h2>
 <p>With the Stormpath Spring Security integration, you can use its standard syntax to restrict access to endpoints and
 methods.</p>
 <p>The official Spring Security documentation is <a class="reference external" href="http://projects.spring.io/spring-security/">here</a>.</p>
@@ -554,7 +556,7 @@ mvn spring-boot:run
 <p>In the next section, we&#8217;ll add a small amount of code to be able to dynamically set the Group reference and make the code more readable.</p>
 </div>
 <div class="section" id="spring-security-refined">
-<span id="id9"></span><h2><a class="toc-backref" href="#id20">Spring Security Refined</a><a class="headerlink" href="#spring-security-refined" title="Permalink to this headline">¶</a></h2>
+<span id="id9"></span><h2><a class="toc-backref" href="#id22">Spring Security Refined</a><a class="headerlink" href="#spring-security-refined" title="Permalink to this headline">¶</a></h2>
 <p>The code for this section can be found <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-java/tree/master/tutorials/spring-boot/03-spring-security-refined">here</a>.</p>
 <p>In the previous section, we hard-coded the Stormpath group href into <code class="docutils literal"><span class="pre">HelloService</span></code>.</p>
 <p>This is cumbersome in a real world situation where you may have multiple environments (dev, stage, prod, etc.).
@@ -655,7 +657,7 @@ mvn spring-boot:run
 <p>Next up: An even finer grain of control using Spring Security permissions.</p>
 </div>
 <div class="section" id="a-finer-grain-of-control">
-<span id="id11"></span><h2><a class="toc-backref" href="#id21">A Finer Grain of Control</a><a class="headerlink" href="#a-finer-grain-of-control" title="Permalink to this headline">¶</a></h2>
+<span id="id11"></span><h2><a class="toc-backref" href="#id23">A Finer Grain of Control</a><a class="headerlink" href="#a-finer-grain-of-control" title="Permalink to this headline">¶</a></h2>
 <p>The code for this section can be found <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-java/tree/master/tutorials/spring-boot/04-a-finer-grain-of-control">here</a>.</p>
 <p>So far, we&#8217;ve restricted access to certain methods with the <cite>hasRole</cite> clause of the <cite>&#64;PreAuthorize</cite> annotation. In this
 section, we are going to look at examples that give a finer grain of control and demonstrate how Stormpath hooks into
@@ -742,8 +744,112 @@ previous examples.</p>
 <p>You will find that, although both users are in the right group, only the one with the <code class="docutils literal"><span class="pre">springSecurityPermissions</span></code> custom data
 will be able to get to the <code class="docutils literal"><span class="pre">/restricted</span></code> page.</p>
 </div>
+<div class="section" id="token-management">
+<span id="id14"></span><h2><a class="toc-backref" href="#id24">Token Management</a><a class="headerlink" href="#token-management" title="Permalink to this headline">¶</a></h2>
+<p>The code for this section can be found <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-java/tree/master/tutorials/spring-boot/05-token-management">here</a>.</p>
+<p>The Java SDK supports <a class="reference external" href="http://oauth.net/2/">oauth2</a> workflows for obtaining and interacting with access tokens and
+refresh tokens. The Token Management feature is included &#8220;out of the box&#8221; and is used via the <cite>/oauth/token</cite> endpoint.</p>
+<p>The Token Management feature is supported all through the Java SDK stack, including Servlet, Spring, Spring Boot and
+Spring Security (with and without WebMVC).</p>
+<p>This part of the tutorial exercises the Token Magement features using Spring Security Spring Boot WebMVC.</p>
+<p>There&#8217;s a simple <cite>&#64;RestController</cite> called <cite>MeController</cite> that returns information about the authenticated account.</p>
+<div class="highlight-java"><div class="highlight"><pre><span class="nd">@RestController</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MeController</span> <span class="o">{</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/me&quot;</span><span class="o">,</span> <span class="n">produces</span> <span class="o">=</span> <span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON_VALUE</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="n">AccountInfo</span> <span class="nf">info</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">req</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">// must be logged in to get here per Spring Security config</span>
+        <span class="n">Account</span> <span class="n">account</span> <span class="o">=</span> <span class="n">AccountResolver</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getAccount</span><span class="o">(</span><span class="n">req</span><span class="o">);</span>
+
+        <span class="k">return</span> <span class="k">new</span> <span class="n">AccountInfo</span><span class="o">(</span><span class="n">account</span><span class="o">.</span><span class="na">getEmail</span><span class="o">(),</span> <span class="n">account</span><span class="o">.</span><span class="na">getFullName</span><span class="o">(),</span> <span class="n">account</span><span class="o">.</span><span class="na">getHref</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>In order to hit the <cite>/me</cite> endpoint, we&#8217;ll first, we&#8217;ll get an <cite>access_token</cite> and a <cite>refresh_token</cite> by hitting the
+<cite>/oauth/token</cite> endpoint:</p>
+<div class="highlight-bash"><div class="highlight"><pre>curl -v -X POST <span class="se">\</span>
+  -H <span class="s2">&quot;Origin: http://localhost:8080&quot;</span> <span class="se">\</span>
+  -H <span class="s2">&quot;Content-Type: application/x-www-form-urlencoded&quot;</span> <span class="se">\</span>
+  -d <span class="s2">&quot;grant_type=password&amp;username=&lt;valid_email_address&gt;&amp;password=&lt;valid_password&gt;&quot;</span> <span class="se">\</span>
+  http://localhost:8080/oauth/token
+</pre></div>
+</div>
+<p>Note: Make sure that the email address and password are URL encoded.</p>
+<p>You will get back a response that looks something like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s2">&quot;access_token&quot;</span><span class="o">:</span><span class="s2">&quot;eyJraWQiOiJSOTJTQkhKQzFVNERBSU1HUTNNSE9HVk1YIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI2M1laa1FBNjRTdEdUQjFhVEhlNGdPIiwiaWF0IjoxNDU0NDM4MTQ3LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy82dkZUNEFSZldDbXVIVlY4Vmt0alRvIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy80V1NjTWJBbm8zVjk1aWlTc3dralBYIiwiZXhwIjoxNDU0NDQxNzQ3LCJydGkiOiI2M1laa01xMTlzYUhxTHZqSDFtbzRLIn0.-3NNpi7-DTvl2VNCfHHFNwWVikmeCyNPy6KEu--XYjk&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;refresh_token&quot;</span><span class="o">:</span><span class="s2">&quot;eyJraWQiOiJSOTJTQkhKQzFVNERBSU1HUTNNSE9HVk1YIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI2M1laa01xMTlzYUhxTHZqSDFtbzRLIiwiaWF0IjoxNDU0NDM4MTQ3LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy82dkZUNEFSZldDbXVIVlY4Vmt0alRvIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy80V1NjTWJBbm8zVjk1aWlTc3dralBYIiwiZXhwIjoxNDU5NjIyMTQ3fQ.yK5twgj3-v51z4pszKXWTX9VtCbs1KxQU4vH1eXvgGo&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;token_type&quot;</span><span class="o">:</span><span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;expires_in&quot;</span><span class="o">:</span><span class="mi">3600</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The response includes the tokens as well as information on their type (<cite>Bearer</cite> in this case) and when it expires.</p>
+<p>We can now use the <cite>access_token</cite> to hit the <cite>/me</cite> endpoint:</p>
+<div class="highlight-bash"><div class="highlight"><pre>curl <span class="se">\</span>
+  -H <span class="s2">&quot;Authorization: Bearer eyJraWQiOiJSOTJTQkhKQzFVNERBSU1HUTNNSE9HVk1YIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI2M1laa1FBNjRTdEdUQjFhVEhlNGdPIiwiaWF0IjoxNDU0NDM4MTQ3LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy82dkZUNEFSZldDbXVIVlY4Vmt0alRvIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy80V1NjTWJBbm8zVjk1aWlTc3dralBYIiwiZXhwIjoxNDU0NDQxNzQ3LCJydGkiOiI2M1laa01xMTlzYUhxTHZqSDFtbzRLIn0.-3NNpi7-DTvl2VNCfHHFNwWVikmeCyNPy6KEu--XYjk&quot;</span> <span class="se">\</span>
+  http://localhost:8080/me
+</pre></div>
+</div>
+<p>You will get a response like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s2">&quot;href&quot;</span><span class="o">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/4WScMbAno3V95iiSswkjPX&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;fullName&quot;</span><span class="o">:</span><span class="s2">&quot;Micah Silverman&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;email&quot;</span><span class="o">:</span><span class="s2">&quot;micah@stormpath.com&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Refresh tokens are used to obtain a new access token. This is useful when you want to allow your users to have a longer
+lived session - such as in a mobile application - but you still want to maintain control over how the session is
+managed. Your application could automatically use the <cite>refresh_token</cite> to obtain a new <cite>access_token</cite> when the
+<cite>access_token</cite> expires. With this approach, you could revoke the user&#8217;s <cite>access_token</cite> and they would be kicked out of
+the system sooner because the <cite>access_token</cite> is short lived.</p>
+<p>Let&#8217;s use the <cite>refresh_token</cite> above to get a new <cite>access_token</cite>:</p>
+<div class="highlight-bash"><div class="highlight"><pre>curl -v -X POST <span class="se">\</span>
+  -H <span class="s2">&quot;Origin: http://localhost:8080&quot;</span> <span class="se">\</span>
+  -H <span class="s2">&quot;Content-Type: application/x-www-form-urlencoded&quot;</span> <span class="se">\</span>
+  -d <span class="s2">&quot;grant_type=refresh_token&amp;refresh_token=eyJraWQiOiJSOTJTQkhKQzFVNERBSU1HUTNNSE9HVk1YIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI2M1laa01xMTlzYUhxTHZqSDFtbzRLIiwiaWF0IjoxNDU0NDM4MTQ3LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy82dkZUNEFSZldDbXVIVlY4Vmt0alRvIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy80V1NjTWJBbm8zVjk1aWlTc3dralBYIiwiZXhwIjoxNDU5NjIyMTQ3fQ.yK5twgj3-v51z4pszKXWTX9VtCbs1KxQU4vH1eXvgGo&quot;</span> <span class="se">\</span>
+  http://localhost:8080/oauth/token
+</pre></div>
+</div>
+<p>Notice that in this case the <cite>grant_type</cite> is <cite>refresh_token</cite> and that we are using the <cite>refresh_token</cite> that we obtained
+previously.</p>
+<p>You will get a response like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s2">&quot;access_token&quot;</span><span class="o">:</span><span class="s2">&quot;eyJraWQiOiJSOTJTQkhKQzFVNERBSU1HUTNNSE9HVk1YIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI1eDlxbWlES2U0RmlFMU02alhLSDBMIiwiaWF0IjoxNDU0NDQ0MTU1LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy82dkZUNEFSZldDbXVIVlY4Vmt0alRvIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy80V1NjTWJBbm8zVjk1aWlTc3dralBYIiwiZXhwIjoxNDU0NDQ3NzU1LCJydGkiOiI2M1laa01xMTlzYUhxTHZqSDFtbzRLIn0.J2NR7MV3OoolYImfUNiu8SCDvaQdresHTnPHgL7mO1Q&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;refresh_token&quot;</span><span class="o">:</span><span class="s2">&quot;eyJraWQiOiJSOTJTQkhKQzFVNERBSU1HUTNNSE9HVk1YIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI2M1laa01xMTlzYUhxTHZqSDFtbzRLIiwiaWF0IjoxNDU0NDM4MTQ3LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy82dkZUNEFSZldDbXVIVlY4Vmt0alRvIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy80V1NjTWJBbm8zVjk1aWlTc3dralBYIiwiZXhwIjoxNDU5NjIyMTQ3fQ.yK5twgj3-v51z4pszKXWTX9VtCbs1KxQU4vH1eXvgGo&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;token_type&quot;</span><span class="o">:</span><span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;expires_in&quot;</span><span class="o">:</span><span class="mi">3600</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>While the <cite>refresh_token</cite> is the same, we get a new <cite>access_token</cite>.</p>
+<p>By default, when you logout, both the <cite>access_token</cite> and the <cite>refresh_token</cite> will be revoked. Let&#8217;s see this in action:</p>
+<div class="highlight-bash"><div class="highlight"><pre>curl -v <span class="se">\</span>
+  -H <span class="s2">&quot;Authorization: Bearer eyJraWQiOiJSOTJTQkhKQzFVNERBSU1HUTNNSE9HVk1YIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI1eDlxbWlES2U0RmlFMU02alhLSDBMIiwiaWF0IjoxNDU0NDQ0MTU1LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy82dkZUNEFSZldDbXVIVlY4Vmt0alRvIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy80V1NjTWJBbm8zVjk1aWlTc3dralBYIiwiZXhwIjoxNDU0NDQ3NzU1LCJydGkiOiI2M1laa01xMTlzYUhxTHZqSDFtbzRLIn0.J2NR7MV3OoolYImfUNiu8SCDvaQdresHTnPHgL7mO1Q&quot;</span> <span class="se">\</span>
+  http://localhost:8080/logout
+</pre></div>
+</div>
+<p>Now, if you attempt to use the <cite>access_token</cite> again, you will not be granted access as it&#8217;s been invalidated. You will
+need to login again.</p>
+<div class="highlight-bash"><div class="highlight"><pre>curl <span class="se">\</span>
+  -H <span class="s2">&quot;Authorization: Bearer eyJraWQiOiJSOTJTQkhKQzFVNERBSU1HUTNNSE9HVk1YIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI1eDlxbWlES2U0RmlFMU02alhLSDBMIiwiaWF0IjoxNDU0NDQ0MTU1LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy82dkZUNEFSZldDbXVIVlY4Vmt0alRvIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy80V1NjTWJBbm8zVjk1aWlTc3dralBYIiwiZXhwIjoxNDU0NDQ3NzU1LCJydGkiOiI2M1laa01xMTlzYUhxTHZqSDFtbzRLIn0.J2NR7MV3OoolYImfUNiu8SCDvaQdresHTnPHgL7mO1Q&quot;</span> <span class="se">\</span>
+  http://localhost:8080/me
+</pre></div>
+</div>
+<p>Here&#8217;s the response:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s2">&quot;error&quot;</span><span class="o">:</span><span class="s2">&quot;invalid_client&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;error_description&quot;</span><span class="o">:</span><span class="s2">&quot;access_token is invalid.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>As you can see from the examples above, Stormpath provides powerful oauth2 Token Management out-of-the-box using the
+<cite>/oauth/token</cite> endpoint. There is no additional coding required on your part to make use of the Token Management
+feature.</p>
+</div>
 <div class="section" id="wrapping-up">
-<span id="id14"></span><h2><a class="toc-backref" href="#id22">Wrapping Up</a><a class="headerlink" href="#wrapping-up" title="Permalink to this headline">¶</a></h2>
+<span id="id16"></span><h2><a class="toc-backref" href="#id25">Wrapping Up</a><a class="headerlink" href="#wrapping-up" title="Permalink to this headline">¶</a></h2>
 <p>We hope this tutorial has been of value to you in learning about Stormpath&#8217;s integration with Spring Security for Spring Boot
 applications.</p>
 <p>You can use the Stormpath Spring Security integration in contexts other than Spring Boot as well. For instance, you could
@@ -792,7 +898,7 @@ Stormpath Java SDK has to offer.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.RC8.2',
+            VERSION:'1.0.RC8.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
