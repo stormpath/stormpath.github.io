@@ -1,0 +1,729 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Authentication &mdash; Express Library Guide 2.3.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Express Library Guide 2.3.0 documentation" href="index.html"/>
+        <link rel="next" title="Authorization" href="authorization.html"/>
+        <link rel="prev" title="User Data" href="user_data.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> Express Library Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-does-this-library-do">What does this library do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#who-should-use-stormpath">Who Should Use Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#create-a-stormpath-account">Create a Stormpath Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#create-an-api-key-pair">Create an API Key Pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#create-a-stormpath-application">Create a Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#bonus-create-a-directory">Bonus: Create a Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#install-the-package">Install the Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#initialize-express-stormpath">Initialize Express-Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#option-profiles">Option Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#stormpath-client-options">Stormpath Client Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#startup">Startup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#single-page-applications">Single Page Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_data.html">User Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#req-user">req.user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#custom-data">Custom Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#automatic-expansion">Automatic Expansion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#collections">Collections</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cookie-authentication">Cookie Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#issuing-api-keys">Issuing API Keys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#http-basic-authentication">HTTP Basic Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oauth2-client-credentials">OAuth2 Client Credentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oauth2-password-grant">OAuth2 Password Grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authorization.html">Authorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#group-based-access-control">Group-based Access Control</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#modifying-default-fields">Modifying Default Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#creating-custom-fields">Creating Custom Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#changing-field-order">Changing Field Order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#password-strength-rules">Password Strength Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#auto-login">Auto Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#post-registration-handler">Post Registration Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#json-api">JSON API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#json-api">JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#post-login-handler">Post Login Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#using-id-site">Using ID Site</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social_login.html">Social Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#facebook-login">Facebook Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#google-login">Google Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#linkedin-login">LinkedIn Login</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#configuration-options">Configuration Options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_reset.html">Password Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#enable-the-workflow">Enable the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#using-the-workflow">Using the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#customizing-the-ux">Customizing the UX</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#default-views">Default Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#custom-views">Custom Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#view-variables">View Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#request-variables">Request Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#response-variables">Response Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributors.html#developers">Developers</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-1">Version 2.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-0">Version 2.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-0">Version 2.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-1-0">Version 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-14">Version 2.0.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-13">Version 2.0.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-12">Version 2.0.12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-11">Version 2.0.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-10">Version 2.0.10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-9">Version 2.0.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-8">Version 2.0.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-7">Version 2.0.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-6">Version 2.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-5">Version 2.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-4">Version 2.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-3">Version 2.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-2">Version 2.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-1">Version 2.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-0">Version 2.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-6">Version 1.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-5">Version 1.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-4">Version 1.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-3">Version 1.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-2">Version 1.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-1">Version 1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-9">Version 0.6.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-8">Version 0.6.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-7">Version 0.6.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-6">Version 0.6.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-5">Version 0.6.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-4">Version 0.6.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-3">Version 0.6.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-2">Version 0.6.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-1">Version 0.6.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-0">Version 0.6.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-9">Version 0.5.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-8">Version 0.5.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-7">Version 0.5.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-6">Version 0.5.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-5">Version 0.5.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-4">Version 0.5.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-3">Version 0.5.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-2">Version 0.5.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-1">Version 0.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-0">Version 0.5.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-9">Version 0.4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-8">Version 0.4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-7">Version 0.4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-6">Version 0.4.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-5">Version 0.4.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-4">Version 0.4.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-3">Version 0.4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-2">Version 0.4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-1">Version 0.4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-0">Version 0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-4">Version 0.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-3">Version 0.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-2">Version 0.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-1">Version 0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-0">Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-9">Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-8">Version 0.2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-7">Version 0.2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-6">Version 0.2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-5">Version 0.2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-4">Version 0.2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-3">Version 0.2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-2">Version 0.2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-1">Version 0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-0">Version 0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-9">Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-8">Version 0.1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-7">Version 0.1.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-6">Version 0.1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-5">Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-4">Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-3">Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-2">Version 0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-0">Version 0.1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-2-0-version-2-3-0">Version 2.2.0 -&gt; Version 2.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-1-0-version-2-2-0">Version 2.1.0 -&gt; Version 2.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-14-version-2-1-0">Version 2.0.14 -&gt; Version 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-13-version-2-0-14">Version 2.0.13 -&gt; Version 2.0.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-12-version-2-0-13">Version 2.0.12 -&gt; Version 2.0.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-9-version-2-0-10">Version 2.0.9 -&gt; Version 2.0.10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-8-version-2-0-9">Version 2.0.8 -&gt; Version 2.0.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-7-version-2-0-8">Version 2.0.7 -&gt; Version 2.0.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-6-version-2-0-7">Version 2.0.6 -&gt; Version 2.0.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-5-version-2-0-6">Version 2.0.5 -&gt; Version 2.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-4-version-2-0-5">Version 2.0.4 -&gt; Version 2.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-3-version-2-0-4">Version 2.0.3 -&gt; Version 2.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-2-version-2-0-3">Version 2.0.2 -&gt; Version 2.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-1-version-2-0-2">Version 2.0.1 -&gt; Version 2.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-0-version-2-0-1">Version 2.0.0 -&gt; Version 2.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-6-version-2-0-0">Version 1.0.6 -&gt; Version 2.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-5-version-1-0-6">Version 1.0.5 -&gt; Version 1.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-4-version-1-0-5">Version 1.0.4 -&gt; Version 1.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-3-version-1-0-4">Version 1.0.3 -&gt; Version 1.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-2-version-1-0-3">Version 1.0.2 -&gt; Version 1.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-1-version-1-0-2">Version 1.0.1 -&gt; Version 1.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-0-version-1-0-1">Version 1.0.0 -&gt; Version 1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-9-version-1-0-0">Version 0.6.9 -&gt; Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-8-version-0-6-9">Version 0.6.8 -&gt; Version 0.6.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-7-version-0-6-8">Version 0.6.7 -&gt; Version 0.6.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-6-version-0-6-7">Version 0.6.6 -&gt; Version 0.6.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-5-version-0-6-6">Version 0.6.5 -&gt; Version 0.6.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-4-version-0-6-5">Version 0.6.4 -&gt; Version 0.6.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-3-version-0-6-4">Version 0.6.3 -&gt; Version 0.6.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-2-version-0-6-3">Version 0.6.2 -&gt; Version 0.6.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-1-version-0-6-2">Version 0.6.1 -&gt; Version 0.6.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-0-version-0-6-1">Version 0.6.0 -&gt; Version 0.6.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-9-version-0-6-0">Version 0.5.9 -&gt; Version 0.6.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-8-version-0-5-9">Version 0.5.8 -&gt; Version 0.5.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-7-version-0-5-8">Version 0.5.7 -&gt; Version 0.5.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-6-version-0-5-7">Version 0.5.6 -&gt; Version 0.5.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-5-version-0-5-6">Version 0.5.5 -&gt; Version 0.5.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-4-version-0-5-5">Version 0.5.4 -&gt; Version 0.5.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-3-version-0-5-4">Version 0.5.3 -&gt; Version 0.5.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-2-version-0-5-3">Version 0.5.2 -&gt; Version 0.5.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-1-version-0-5-2">Version 0.5.1 -&gt; Version 0.5.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-0-version-0-5-1">Version 0.5.0 -&gt; Version 0.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-9-version-0-5-0">Version 0.4.9 -&gt; Version 0.5.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-8-version-0-4-9">Version 0.4.8 -&gt; Version 0.4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-7-version-0-4-8">Version 0.4.7 -&gt; Version 0.4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-6-version-0-4-7">Version 0.4.6 -&gt; Version 0.4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-5-version-0-4-6">Version 0.4.5 -&gt; Version 0.4.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-4-version-0-4-5">Version 0.4.4 -&gt; Version 0.4.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-3-version-0-4-4">Version 0.4.3 -&gt; Version 0.4.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-2-version-0-4-3">Version 0.4.2 -&gt; Version 0.4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-1-version-0-4-2">Version 0.4.1 -&gt; Version 0.4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-0-version-0-4-1">Version 0.4.0 -&gt; Version 0.4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-4-version-0-4-0">Version 0.3.4 -&gt; Version 0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-3-version-0-3-4">Version 0.3.3 -&gt; Version 0.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-2-version-0-3-3">Version 0.3.2 -&gt; Version 0.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-1-version-0-3-2">Version 0.3.1 -&gt; Version 0.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-0-version-0-3-1">Version 0.3.0 -&gt; Version 0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-9-version-0-3-0">Version 0.2.9 -&gt; Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-8-version-0-2-9">Version 0.2.8 -&gt; Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-7-version-0-2-8">Version 0.2.7 -&gt; Version 0.2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-6-version-0-2-7">Version 0.2.6 -&gt; Version 0.2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-5-version-0-2-6">Version 0.2.5 -&gt; Version 0.2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-4-version-0-2-5">Version 0.2.4 -&gt; Version 0.2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-3-version-0-2-4">Version 0.2.3 -&gt; Version 0.2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-2-version-0-2-3">Version 0.2.2 -&gt; Version 0.2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-1-version-0-2-2">Version 0.2.1 -&gt; Version 0.2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-0-version-0-2-1">Version 0.2.0 -&gt; Version 0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-9-version-0-2-0">Version 0.1.9 -&gt; Version 0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-8-version-0-1-9">Version 0.1.8 -&gt; Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-7-version-0-1-8">Version 0.1.7 -&gt; Version 0.1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-6-version-0-1-7">Version 0.1.6 -&gt; Version 0.1.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-5-version-0-1-6">Version 0.1.5 -&gt; Version 0.1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-4-version-0-1-5">Version 0.1.4 -&gt; Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-3-version-0-1-4">Version 0.1.3 -&gt; Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-2-version-0-1-3">Version 0.1.2 -&gt; Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-0-version-0-1-2">Version 0.1.0 -&gt; Version 0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-0-0-version-0-1-0">Version 0.0.0 -&gt; Version 0.1.0</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Express Library Guide</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Authentication</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/authentication.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="authentication">
+<span id="id1"></span><h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h1>
+<p>This library offers several options for securing your application and
+authenticating your users.  Which strategy should you use?  The answer depends
+on your use case, and we&#8217;ll discuss each one in detail.  But at a high level,
+your choices look like this:</p>
+<blockquote>
+<div><ul class="simple">
+<li>If you are building a traditional web app or single page application, you
+should use <strong>Cookie Authentication</strong>.</li>
+<li>If you are building a mobile application, you should use the <strong>OAuth2
+Password Grant</strong>.</li>
+<li>If you are building an API service, you can use
+<strong>HTTP Basic Authentication</strong> or <strong>OAuth2 Client Credentials</strong>.</li>
+</ul>
+</div></blockquote>
+<div class="section" id="cookie-authentication">
+<h2>Cookie Authentication<a class="headerlink" href="#cookie-authentication" title="Permalink to this headline">¶</a></h2>
+<p>If you are building a web application that serves traditional HTML pages, or a
+Single Page Application (Angular/React), this library will handle the cookie
+sessions for you.  No special configuration is necessary.</p>
+<p>To use cookie authentication, simply use the <code class="docutils literal"><span class="pre">loginRequired</span></code> middleware:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/secret&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="cm">/*</span>
+<span class="cm">    If we get here, the user is logged in.  Otherwise, they</span>
+<span class="cm">    were redirected to the login page</span>
+<span class="cm">   */</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Hello, &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">fullname</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Behind the scenes we are issuing a OAuth2 Access Token and Refresh token for
+the user, and storing them in secure, HTTPS-Only cookies.  The maximum
+lifetime of the cookies is controlled by the expiration time of the Refresh
+Token.</p>
+<p>If you need to change the expiration time of the Refresh Token, please login
+to the Stormpath Admin Console and navigate to the OAuth policy of your
+Stormpath Application.  Then change the expiration time of the Refresh Token.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Express-Stormpath&#8217;s session management will not interfere with any existing
+session middleware you might have.  The sessions that Stormpath uses are
+exclusively used for Stormpath&#8217;s purposes, so it&#8217;s safe to create your own
+separate sessions if needed.</p>
+</div>
+</div>
+<div class="section" id="issuing-api-keys">
+<h2>Issuing API Keys<a class="headerlink" href="#issuing-api-keys" title="Permalink to this headline">¶</a></h2>
+<p>If you are building an API service, you will need to distribute API keys to your
+developers.  They will then use these keys to authenticate with your API, either
+via HTTP Basic Auth or OAuth2 Access tokens.  We&#8217;ll cover those strategies in
+the next sections, but we need to provision API keys for your developers first.</p>
+<p>While your service may be an API service, you will still need to provide a
+basic website that developers can use to obtain their keys.  Here is an example
+of how you can create an API Key for the currently logged in user:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/apiKeys&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">createApiKey</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">apiKey</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">400</span><span class="p">).</span><span class="nx">end</span><span class="p">(</span><span class="s1">&#39;Oops!  There was an error: &#39;</span> <span class="o">+</span> <span class="nx">err</span><span class="p">.</span><span class="nx">userMessage</span><span class="p">);</span>
+    <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">apiKey</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>This is a naive example which simply prints out the API Keys for the user, but
+once they have the keys they will be able to authenticate with your API.</p>
+<p>For more information on API Keys, please see
+<a class="reference external" href="https://docs.stormpath.com/guides/api-key-management/">Using Stormpath for API Authentication</a></p>
+</div>
+<div class="section" id="http-basic-authentication">
+<h2>HTTP Basic Authentication<a class="headerlink" href="#http-basic-authentication" title="Permalink to this headline">¶</a></h2>
+<p>This strategy makes sense if you are building a simple API service that does
+not have complex needs around authorization and resource control.  This strategy
+is simple because the developer simply supplies their API keys on every request
+to your server.</p>
+<p>Once the developer has their API keys, they will use them to authenticate with your
+API.  For each request they will set the <code class="docutils literal"><span class="pre">Authorization</span></code> header, like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">Authorization</span><span class="o">:</span> <span class="nx">Basic</span> <span class="o">&lt;</span><span class="nx">Base64UrlSafe</span><span class="p">(</span><span class="nx">apiKeyId</span><span class="o">:</span><span class="nx">apiKeySecret</span><span class="p">)</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>How this is done will depend on what tool or library they are using.  For example,
+if using curl:</p>
+<div class="highlight-sh"><div class="highlight"><pre>curl -v --user apiKeyId:apiKeySecret http://localhost:3000/secret
+</pre></div>
+</div>
+<p>Or if you&#8217;re using the <code class="docutils literal"><span class="pre">request</span></code> library:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;request&#39;</span><span class="p">);</span>
+
+<span class="nx">request</span><span class="p">({</span>
+  <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://localhost:3000/secret&#39;</span><span class="p">,</span>
+  <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">user</span><span class="o">:</span> <span class="s1">&#39;apiKeyId&#39;</span><span class="p">,</span>
+    <span class="nx">pass</span><span class="o">:</span> <span class="s1">&#39;apiKeySecret&#39;</span>
+  <span class="p">}</span>
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>You will need to tell your application that you want to secure this endpoint and
+allow basic authentication.  This is done with the <code class="docutils literal"><span class="pre">apiAuthenticationRequired</span></code>
+middleware:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/secret&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">apiAuthenticationRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span>
+    <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;Hello, &quot;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">fullname</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="oauth2-client-credentials">
+<h2>OAuth2 Client Credentials<a class="headerlink" href="#oauth2-client-credentials" title="Permalink to this headline">¶</a></h2>
+<p>If you are building an API service and you have complex needs around
+authorization and security, this strategy should be used.  In this situation
+the developer does a one-time exchange of their API Keys for an access token.
+This access token is time limited and must be periodically refreshed.  This adds a
+layer of security, at the cost of being less simple than HTTP Basic
+Authentication.</p>
+<p>If you&#8217;re not sure which strategy to use, it&#8217;s best to start with HTTP Basic
+Authentication. You can always switch to OAuth2 at a later time.</p>
+<p>Once a developer has an API Key pair (see above, <em>Issuing API Keys</em>), they will
+need to use the OAuth2 Token Endpoint to obtain an access token.  In simple
+HTTP terms, that request looks like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">POST</span> <span class="o">/</span><span class="nx">oauth</span><span class="o">/</span><span class="nx">token</span> <span class="nx">HTTP</span><span class="o">/</span><span class="mf">1.1</span>
+<span class="nx">Host</span><span class="o">:</span> <span class="nx">myapi</span><span class="p">.</span><span class="nx">com</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">x</span><span class="o">-</span><span class="nx">www</span><span class="o">-</span><span class="nx">form</span><span class="o">-</span><span class="nx">urlencoded</span>
+<span class="nx">Authorization</span><span class="o">:</span> <span class="nx">Basic</span> <span class="o">&lt;</span><span class="nx">Base64UrlSafe</span><span class="p">(</span><span class="nx">apiKeyId</span><span class="o">:</span><span class="nx">apiKeySecret</span><span class="p">)</span><span class="o">&gt;</span>
+
+<span class="nx">grant_type</span><span class="o">=</span><span class="nx">client_credentials</span>
+</pre></div>
+</div>
+<p>How you construct this request will depend on your library or tool, but the key
+parts you need to know are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>The request must be a POST request.</li>
+<li>The content type must be form encoded, and the body must contain
+<code class="docutils literal"><span class="pre">grant_type=client_credentials</span></code>.</li>
+<li>The Authorization header must be Basic and contain the Base64 Url-Encoded
+values of the Api Key Pair.</li>
+</ul>
+</div></blockquote>
+<p>If you were doing this request with curl, it would look like this:</p>
+<div class="highlight-sh"><div class="highlight"><pre>curl -X POST --user api_key_id:api_key_secret http://localhost:3000/oauth/token -d <span class="nv">grant_type</span><span class="o">=</span>client_credentials
+</pre></div>
+</div>
+<p>Or if using the <code class="docutils literal"><span class="pre">request</span></code> library:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">request</span><span class="p">({</span>
+  <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://localhost:3000/oauth/token&#39;</span><span class="p">,</span>
+  <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+  <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">user</span><span class="o">:</span> <span class="s1">&#39;1BWQHHJCOW90HI7HFQ5LTD6O0&#39;</span><span class="p">,</span>
+    <span class="nx">pass</span><span class="o">:</span> <span class="s1">&#39;zzeu+NwmicjtJ9yDJ2KlRguC+8uTjKVm3AMs80ah6hw&#39;</span>
+  <span class="p">},</span>
+  <span class="nx">form</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s1">&#39;grant_type&#39;</span><span class="o">:</span> <span class="s1">&#39;client_credentials&#39;</span>
+  <span class="p">}</span>
+<span class="p">},</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>If the credentials are valid, you will get an access token response that looks
+like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s2">&quot;access_token&quot;</span><span class="o">:</span> <span class="s2">&quot;eyJ0eXAiOiJKV1QiL...&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;token_type&quot;</span><span class="o">:</span> <span class="s2">&quot;bearer&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;expires_in&quot;</span><span class="o">:</span> <span class="mi">3600</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The response is a JSON object which contains:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">access_token</span></code> - Your OAuth access token.  This can be used to authenticate
+on future requests.</li>
+<li><code class="docutils literal"><span class="pre">token_type</span></code> - This will always be <code class="docutils literal"><span class="pre">&quot;bearer&quot;</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">expires_in</span></code> - This is the amount of seconds (<em>as an integer</em>) for which
+this token is valid.</li>
+</ul>
+<p>With this token you can now make requests to your API.  This request is simpler,
+as only thing you need to supply is <code class="docutils literal"><span class="pre">Authorization</span></code> header with the access
+token as a bearer token.  If you are using curl, that request looks like this:</p>
+<div class="highlight-sh"><div class="highlight"><pre>curl -v -H <span class="s2">&quot;Authorization: Bearer eyJ0eXAiOiJKV1QiL...&quot;</span> http://localhost:3000/secret
+</pre></div>
+</div>
+<p>Or if using the <code class="docutils literal"><span class="pre">request</span></code> library:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">request</span><span class="p">({</span>
+  <span class="nx">url</span><span class="o">:</span> <span class="s1">&#39;http://localhost:3000/secret&#39;</span><span class="p">,</span>
+  <span class="nx">auth</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s1">&#39;bearer&#39;</span><span class="o">:</span> <span class="s1">&#39;eyJ0eXAiOiJKV1QiL...&#39;</span>
+  <span class="p">}</span>
+<span class="p">},</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>In order to protect your API endpoint and allow this form of authenetication,
+you need to use the <code class="docutils literal"><span class="pre">apiAuthenticationRequired</span></code> middleware:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/secret&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">apiAuthenticationRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span>
+    <span class="nx">message</span><span class="o">:</span> <span class="s2">&quot;Hello, &quot;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">fullname</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>By default the access tokens are valid for one hour.  If you want to change
+the expiration of these tokens you will need to configure it in the server
+configuration, like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">web</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">oauth2</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">client_credentials</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">accessToken</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">ttl</span><span class="o">:</span> <span class="mi">3600</span> <span class="c1">// your custom TTL, in seconds, goes here</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="oauth2-password-grant">
+<h2>OAuth2 Password Grant<a class="headerlink" href="#oauth2-password-grant" title="Permalink to this headline">¶</a></h2>
+<p>This is the authentication strategy that you will want to use for mobile clients.
+In this situation the end-user supplies their username and password to your
+mobile application.  The mobile application sends that username and password to
+your Express application, which then verifies the password with Stormpath.</p>
+<p>If the account is valid and the password is correct, Stormpath will generate
+an access token for the user.  Your server gets this access token from Stormpath
+and then sends it back to your mobile application.</p>
+<p>The mobile application then stores the access token in a secure location, and
+uses it for future requests to your API.  Every time the mobile application uses
+this access token your server will verify that it&#8217;s still valid, using Stormpath.</p>
+<p>When a user wants to login to your mobile application, the mobile application
+should make this request to your Express application:</p>
+<div class="highlight-javascript"><div class="highlight"><pre>POST /oauth/token HTTP/1.1
+Host: myapi.com
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password
+&amp;username=user@gmail.com
+&amp;password=theirPassword
+</pre></div>
+</div>
+<p>If the authentication is successful, the Stormpath API will return an access
+token to your mobile application.  The response will look like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s2">&quot;refresh_token&quot;</span><span class="o">:</span> <span class="s2">&quot;eyJraWQiOiI2...&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;stormpath_access_token_href&quot;</span><span class="o">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accessTokens/3bBAHmSuTJ64DM574awVen&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;token_type&quot;</span><span class="o">:</span> <span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;access_token&quot;</span><span class="o">:</span> <span class="s2">&quot;eyJraWQiOiI2Nl...&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;expires_in&quot;</span><span class="o">:</span> <span class="mi">3600</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Your mobile application should store the access token and refresh token.  By
+default the access token is valid for 1 hour and the refresh token for 60 days.
+When the access token expires you can get a new access token by using the
+refresh token, making this request to your Express application:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">POST</span> <span class="o">/</span><span class="nx">oauth</span><span class="o">/</span><span class="nx">token</span> <span class="nx">HTTP</span><span class="o">/</span><span class="mf">1.1</span>
+<span class="nx">Host</span><span class="o">:</span> <span class="nx">myapi</span><span class="p">.</span><span class="nx">com</span>
+<span class="nx">Content</span><span class="o">-</span><span class="nx">Type</span><span class="o">:</span> <span class="nx">application</span><span class="o">/</span><span class="nx">x</span><span class="o">-</span><span class="nx">www</span><span class="o">-</span><span class="nx">form</span><span class="o">-</span><span class="nx">urlencoded</span>
+
+<span class="nx">grant_type</span><span class="o">=</span><span class="nx">refresh_token</span>
+<span class="o">&amp;</span><span class="nx">refresh_token</span><span class="o">=</span><span class="nx">eyJraWQiOiI2</span><span class="p">...</span>
+</pre></div>
+</div>
+<p>The response will contain a new access token.  Once the refresh token expires,
+the user will have to re-authenticate with a username and password.</p>
+<p>You can control the lifetime of the access token and refresh token by modifying
+the OAuth Policy of your Stormpath Application.  This can be found by logging
+into the Stormpath Admin Console and finding your Application.</p>
+<p>For full documentation on our OAuth2 Access Token features, please see
+<a class="reference external" href="http://docs.stormpath.com/guides/token-management/">Using Stormpath for OAuth 2.0 and Access/Refresh Token Management</a></p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="authorization.html" class="btn btn-neutral float-right" title="Authorization">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="user_data.html" class="btn btn-neutral" title="User Data"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Stormpath, Inc..
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2.3.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+   
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-29159574-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+  </script>
+  <script type="text/javascript">
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+    function _kms(u){
+        setTimeout(function(){
+            var d = document, f = d.getElementsByTagName('script')[0],
+                    s = d.createElement('script');
+            s.type = 'text/javascript'; s.async = true; s.src = u;
+            f.parentNode.insertBefore(s, f);
+        }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+  </script>
+  <script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+
+</body>
+</html>
