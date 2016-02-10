@@ -59,7 +59,7 @@ alias: [/index.html]
         <p>Connect to the Stormpath API in minutes with the REST quickstart or find comprehensive documentation in the REST Product Guide.</p>
         <div class="row">
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/rest/quickstart/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-quick.jpg"></a>
+            <a href="/rest/product-guide/latest/quickstart.html"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-quick.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="/rest/product-guide/latest/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-product.jpg"></a>
