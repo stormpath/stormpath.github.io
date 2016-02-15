@@ -261,7 +261,7 @@
 <p>Once you have the Application resource you may attempt authentication by sending a POST request to the Application’s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint and providing a base64 encoded <code class="docutils literal"><span class="pre">username</span></code>/<code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code> pair that is separated with a colon (for example <code class="docutils literal"><span class="pre">testuser</span></code>:<code class="docutils literal"><span class="pre">testpassword</span></code>). Stormpath requires that the <code class="docutils literal"><span class="pre">username</span></code>/<code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code> are base64 encoded so that these values are not passed as clear text. For more information about the <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint please see the <a class="reference internal" href="reference.html#ref-loginattempts"><span>Reference Chapter</span></a>.</p>
 <p>So, if we had a user Account &#8220;Han Solo&#8221; in the &#8220;Captains&#8221; Directory, and we wanted to log him in, we would first need to take the combination of his <code class="docutils literal"><span class="pre">username</span></code> and <code class="docutils literal"><span class="pre">password</span></code> (&#8220;first2shoot:Change+me1&#8221;) and then Base64 encode them: <code class="docutils literal"><span class="pre">Zmlyc3Qyc2hvb3Q6Q2hhbmdlK21lMQ==</span></code>.</p>
 <p>We would issue the following POST to our Application with ID <code class="docutils literal"><span class="pre">1gk4Dxzi6o4PbdleXaMPLE</span></code>:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4PbdleXaMPLE/loginAttempts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4PbdleXaMPLE/loginAttempts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -276,7 +276,7 @@
 </div>
 <p>We are using the Base64 encoded <code class="docutils literal"><span class="pre">value</span></code> from above, and specifying that the Account can be found in the &#8220;Captains&#8221; Directory from <a class="reference internal" href="accnt_mgmt.html#about-cloud-dir"><span>earlier</span></a>.</p>
 <p>On success we would get back the <code class="docutils literal"><span class="pre">href</span></code> for the &#8220;Han Solo&#8221; Account:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
 <span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/accounts/72EaYgOaq8lwTFHILydAid</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -310,7 +310,7 @@
 <span id="mirror-login"></span><h5>How Login Works with Master Directories<a class="headerlink" href="#how-login-works-with-master-directories" title="Permalink to this headline">¶</a></h5>
 <p>If you require a number of Mirror Directories, then we recommend that you have a master Directory alongside them. Any login attempts should be directed to the Mirror Directory. If the attempt succeeds, your application should then perform a <a class="reference internal" href="reference.html#about-search"><span>search</span></a> of the master Directory to see if there is an Account already there that links to this Account in the Mirror Directory.</p>
 <p>If such an Account is already in the master Directory, no action is taken. If such an Account is not found, your application should create a new one in the master Directory, and populate it with the information pulled from the Account in the Mirror Directory. The customData resource for that master Account should then be used to store an <code class="docutils literal"><span class="pre">href</span></code> link to the Account in the Mirror Directory, for example:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;accountLink&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3fLduLKlEx&quot;</span>
   <span class="p">}</span>
@@ -327,7 +327,7 @@
 <p>As is hopefully evident by now, controlling which Accounts can log in to your Application is largely a matter of manipulating the Application&#8217;s Account Store Mappings. For more detailed information about this resource, please see the <a class="reference internal" href="reference.html#ref-asm"><span>Account Store Mapping</span></a> section of the Reference chapter.</p>
 <p>The reason why our user &#8220;Han Solo&#8221; was able to log in to our application is because the Application resource that represents our Application: <code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE</span></code>, and our &#8220;Captains&#8221; Directory: <code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp</span></code> are mapped to one another by an <strong>Account Store Mapping</strong>.</p>
 <p>We can find this Mapping by sending a <code class="docutils literal"><span class="pre">GET</span></code> to our Application&#8217;s <code class="docutils literal"><span class="pre">/accountStoreMappings</span></code> endpoint, which would yield the following response:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -365,7 +365,7 @@
 <li>It will be the default Group Store for any new Groups.</li>
 </ol>
 <p>To accomplish this, we will send a <code class="docutils literal"><span class="pre">POST</span></code>:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">v1/accountStoreMappings</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">v1/accountStoreMappings</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -459,7 +459,7 @@
 <h4><a class="toc-backref" href="#id32">Configuring Token-Based Authentication</a><a class="headerlink" href="#configuring-token-based-authentication" title="Permalink to this headline">¶</a></h4>
 <p>Stormpath is configurable so you can set the time to live (TTL) for both the Access and Refresh tokens. This is important for many applications because it gives the ability to define how the tokens expire. For example, you could decide that your application requires a user to log in daily, but the access should only live for 10 minutes. Or, you could decide that for your application, users should be able to stay logged-in for two months and the access token expires in an hour.</p>
 <p>Each Application resource in Stormpath has an associated <a class="reference internal" href="reference.html#ref-oauth-policy"><span>OAuth Policy resource</span></a> where the TTLs for a particular Application&#8217;s tokens are stored inside properties called <code class="docutils literal"><span class="pre">accessTokenTtl</span></code> and <code class="docutils literal"><span class="pre">refreshTokenTtl</span></code>:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE&quot;</span><span class="p">,</span>
     <span class="nt">&quot;accessTokenTtl&quot;</span><span class="p">:</span> <span class="s2">&quot;PT1H&quot;</span><span class="p">,</span>
     <span class="nt">&quot;refreshTokenTtl&quot;</span><span class="p">:</span> <span class="s2">&quot;P60D&quot;</span><span class="p">,</span>
@@ -469,7 +469,7 @@
 </div>
 <p>The values for both properties are stored as <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Durations</a>. By <strong>default</strong>, the TTL <code class="docutils literal"><span class="pre">duration</span></code> for the Access Token is 1 hour and the Refresh Token&#8217;s is 60 days, while the <strong>maximum</strong> <code class="docutils literal"><span class="pre">duration</span></code> is 180 days.</p>
 <p>If we wanted to change the TTL for the Access Token to 30 minutes and the Refresh Token to 7 days, we could simply make a POST request to the <code class="docutils literal"><span class="pre">/oAuthPolicies/$APPLICATION_ID</span></code> endpoint with the following payload:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -480,7 +480,7 @@
 </pre></div>
 </div>
 <p>And we would get the following response:</p>
-<div class="highlight-HTTP"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<div class="highlight-HTTP"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
 <span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -500,7 +500,7 @@
 <div class="section" id="generating-an-oauth-2-0-access-token">
 <span id="generate-oauth-token"></span><h4><a class="toc-backref" href="#id33">Generating an OAuth 2.0 Access Token</a><a class="headerlink" href="#generating-an-oauth-2-0-access-token" title="Permalink to this headline">¶</a></h4>
 <p>Stormpath can generate Access Tokens using the above-mentioned OAuth 2.0 <strong>Password Grant</strong> flow. Stormpath exposes an endpoint for each Application resource to support the OAuth 2.0 protocol:</p>
-<div class="highlight-python"><div class="highlight"><pre>https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
+<div class="highlight-python"><div class="highlight"><pre><span></span>https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
 </pre></div>
 </div>
 <p>This endpoint is used to generate an OAuth token for any valid Account associated with the specified Application. It uses the same validation as the <code class="docutils literal"><span class="pre">/loginAttempt</span></code> endpoint, as described in <a class="reference internal" href="#how-login-works"><span>5.1.2. How Login Attempts Work in Stormpath</span></a>.</p>
@@ -511,7 +511,7 @@
 <li>When Stormpath returns with the Access Token Response, you can then return the Access Token and/or the Refresh Token to the client.</li>
 </ul>
 <p>So you would send the following API call:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
 
@@ -519,7 +519,7 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 </pre></div>
 </div>
 <p>This would result in this response:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -570,7 +570,7 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Just like with logging-in a user, it is possible to generate a token against a particular Application&#8217;s Account Store resource. To do so, specify the Account Store&#8217;s <code class="docutils literal"><span class="pre">href</span></code> as a parameter in the body:</p>
-<div class="last highlight-python"><div class="highlight"><pre>grant_type=password&amp;username=tom@stormpath.com&amp;password=Secret1&amp;accountStore=https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp
+<div class="last highlight-python"><div class="highlight"><pre><span></span>grant_type=password&amp;username=tom@stormpath.com&amp;password=Secret1&amp;accountStore=https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp
 </pre></div>
 </div>
 </div>
@@ -579,7 +579,7 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 <h4><a class="toc-backref" href="#id34">Validating an Access Token</a><a class="headerlink" href="#validating-an-access-token" title="Permalink to this headline">¶</a></h4>
 <p>Once an <code class="docutils literal"><span class="pre">access_token</span></code> has been generated, we have taken care of the Authentication part of our workflow. Now, the OAuth token can be used to authorize individual requests that the user makes. To do this, the client will need to pass it to your application.</p>
 <p>For example, if you have a route <code class="docutils literal"><span class="pre">https://yourapplication.com/secure-resource</span></code>, the client would request authorization to access the resource by passing the access token as follows:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">https://yourapplication.com</span>
 <span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIxdkhJMGpCWERybW12UHFBRmYyWHNWIiwiaWF0IjoxNDQxMTE4Nzk2LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxMTIwNTk2LCJydGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2In0.xlCXL7UUVnMoBKj0p0bXM_cnraWo5Io-TvUt2WBOl3k</span>
 </pre></div>
@@ -638,17 +638,17 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 <li>Received back an <strong>Access Token Response</strong>, which contained - among other things - an <strong>Access Token</strong> in JWT format.</li>
 </ol>
 <p>The user now attempts to access a secured resource by passing the <code class="docutils literal"><span class="pre">access_token</span></code> JWT value from the Access Token Response in the <code class="docutils literal"><span class="pre">Authorization</span></code> header:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">https://yourapplication.com</span>
 <span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJraWQiOiIyWkZNVjRXV[...]</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">Authorization</span></code> header contains the Access Token. To validate this Token with Stormpath, you can issue an HTTP GET to your Stormpath Application’s <code class="docutils literal"><span class="pre">/authTokens/</span></code> endpoint with the JWT token:</p>
-<div class="highlight-python"><div class="highlight"><pre>https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/eyJraWQiOiIyWkZNVjRXV[...]
+<div class="highlight-python"><div class="highlight"><pre><span></span>https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/eyJraWQiOiIyWkZNVjRXV[...]
 </pre></div>
 </div>
 <p>If the access token can be validated, Stormpath will return a 302 to the Access Token resource:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Location Found</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Location Found</span>
 <span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/accessTokens/6zVrviSEIf26ggXdJG097f</span>
 </pre></div>
 </div>
@@ -657,7 +657,7 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 <div class="section" id="validating-the-token-locally">
 <h5>Validating the Token Locally<a class="headerlink" href="#validating-the-token-locally" title="Permalink to this headline">¶</a></h5>
 <p>Local validation would also begin at the point of the request to a secure resource:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">https://yourapplication.com</span>
 <span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJraWQiOiIyWkZNVjRXV[...]</span>
 </pre></div>
@@ -668,7 +668,7 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 <div class="section" id="refreshing-access-tokens">
 <h4><a class="toc-backref" href="#id35">Refreshing Access Tokens</a><a class="headerlink" href="#refreshing-access-tokens" title="Permalink to this headline">¶</a></h4>
 <p>In the event that the Access Token expires, the user can generate a new one using the Refresh Token without re-entering their credentials. To use this Refresh Token, simply make an HTTP POST to your Applications <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint with it and you will get a new token back.</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
 
@@ -676,7 +676,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </pre></div>
 </div>
 <p>This would be the response:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
 
 {
@@ -699,7 +699,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </ul>
 <p>To revoke the tokens, simply delete the Account&#8217;s <code class="docutils literal"><span class="pre">/accessTokens/:accessTokenId</span></code> resource.</p>
 <p>To retrieve an Account&#8217;s Access and Refresh tokens, make an HTTP GET calls for the Account information, then you will find the tokens inside the <code class="docutils literal"><span class="pre">/accessTokens</span></code> and <code class="docutils literal"><span class="pre">/refreshTokens</span></code> collections:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey&quot;</span><span class="p">,</span>
   <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;jlpicard&quot;</span><span class="p">,</span>
   <span class="nt">&quot;comment&quot;</span><span class="p">:</span><span class="s2">&quot; // This JSON has been truncated for readability&quot;</span><span class="p">,</span>
@@ -713,7 +713,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </pre></div>
 </div>
 <p>If you then perform a GET on the <code class="docutils literal"><span class="pre">accessTokens</span></code> link, you will get back the individual tokens:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/accessTokens&quot;</span><span class="p">,</span>
   <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
   <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
@@ -730,7 +730,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>You can query the Access Tokens that an Account has for a specific Application by specifying the Application&#8217;s href as a URL parameter:</p>
-<div class="last highlight-bash"><div class="highlight"><pre>curl --request GET <span class="se">\</span>
+<div class="last highlight-bash"><div class="highlight"><pre><span></span>curl --request GET <span class="se">\</span>
 --user <span class="nv">$A</span>PI_KEY_ID:<span class="nv">$A</span>PI_KEY_SECRET <span class="se">\</span>
 --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
 --url <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/accessTokens?application.href=https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSEXAMPLE&quot;</span>
@@ -738,7 +738,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </div>
 </div>
 <p>To revoke the token, simply issue an HTTP Delete:</p>
-<div class="highlight-python"><div class="highlight"><pre>DELETE https://api.stormpath.com/v1/accessTokens/6NrWIs5ikmIPVJCn2p4nrr
+<div class="highlight-python"><div class="highlight"><pre><span></span>DELETE https://api.stormpath.com/v1/accessTokens/6NrWIs5ikmIPVJCn2p4nrr
 </pre></div>
 </div>
 <p>You will get back a <code class="docutils literal"><span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></code> response back from Stormpath when the call succeeds.</p>
@@ -810,7 +810,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <div class="section" id="step-1-create-a-social-directory-for-google">
 <h4>Step 1: Create a Social Directory for Google<a class="headerlink" href="#step-1-create-a-social-directory-for-google" title="Permalink to this headline">¶</a></h4>
 <p>Creating this Directory for Google requires that you provide information from Google as a Provider resource. This can be accomplished by sending an HTTP POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -844,7 +844,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p class="last">It is required that your Google application requests the <code class="docutils literal"><span class="pre">email</span></code> scope from Google. If the authorization code or access token does not grant <code class="docutils literal"><span class="pre">email</span></code> scope, you will not be able to get an Account. For more information about scopes please see <a class="reference external" href="https://developers.google.com/+/web/api/rest/oauth#login-scopes">Google&#8217;s OAuth Login Scopes documentation</a>.</p>
 </div>
 <p>Once the Authorization Code is gathered, you send an HTTP POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -857,7 +857,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </pre></div>
 </div>
 <p>If you have already exchanged an Authorization Code for an Access Token, this can be passed to Stormpath in a similar fashion:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -884,7 +884,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <div class="section" id="step-1-create-a-social-directory-for-facebook">
 <h4>Step 1: Create a Social Directory for Facebook<a class="headerlink" href="#step-1-create-a-social-directory-for-facebook" title="Permalink to this headline">¶</a></h4>
 <p>Creating this Directory requires that you provide information from Facebook as a Provider resource. This can be accomplished by sending an HTTP POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -912,7 +912,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p class="last">It is required that your Facebook application requests the <code class="docutils literal"><span class="pre">email</span></code> scope from Facebook. If the access token does not grant <code class="docutils literal"><span class="pre">email</span></code> scope, you will not be able to get an Account with an access token. For more information about scopes please see <a class="reference external" href="https://developers.facebook.com/docs/facebook-login/permissions/">Permissions with Facebook Login</a>.</p>
 </div>
 <p>Once the User Access Token is gathered, you send an HTTP POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -939,7 +939,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <div class="section" id="step-1-create-a-social-directory-for-github">
 <h4>Step 1: Create a Social Directory for GitHub<a class="headerlink" href="#step-1-create-a-social-directory-for-github" title="Permalink to this headline">¶</a></h4>
 <p>Creating this Directory requires that you provide information from GitHub as a Provider resource. This can be accomplished by sending an HTTP POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -968,7 +968,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p class="last">It is required that your GitHub application requests the <code class="docutils literal"><span class="pre">user:email</span></code> scope from GitHub. If the access token does not grant <code class="docutils literal"><span class="pre">user:email</span></code> scope, you will not be able to get an Account with an access token. For more information about see <a class="reference external" href="https://developer.github.com/v3/oauth/#scopes">Github&#8217;s documentation on OAuth scopes</a>.</p>
 </div>
 <p>Once the Authorization Code is gathered, you can send an HTTP POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -995,7 +995,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <div class="section" id="step-1-create-a-social-directory-for-linkedin">
 <h4>Step 1: Create a Social Directory for LinkedIn<a class="headerlink" href="#step-1-create-a-social-directory-for-linkedin" title="Permalink to this headline">¶</a></h4>
 <p>Creating this Directory requires that you provide information from LinkedIn as a Provider resource. This can be accomplished by sending an HTTP POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -1024,7 +1024,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p class="last">It is required that your LinkedIn application requests the <code class="docutils literal"><span class="pre">r_basicprofile</span></code> and <code class="docutils literal"><span class="pre">r_emailaddress</span></code> scopes from LinkedIn. If the access token does not grant these scopes, you will not be able to get an Account with an access token. For more information about LinkedIn scopes, see <a class="reference external" href="https://developer.linkedin.com/docs/fields">LinkedIn&#8217;s &#8220;Profile Fields&#8221; documentation</a>.</p>
 </div>
 <p>Once the Access Token is gathered, you can send an HTTP POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -1060,7 +1060,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <div class="section" id="step-1-create-an-ldap-directory">
 <h4><a class="toc-backref" href="#id42">Step 1: Create an LDAP Directory</a><a class="headerlink" href="#step-1-create-an-ldap-directory" title="Permalink to this headline">¶</a></h4>
 <p>HTTP POST a new Directory resource to the <code class="docutils literal"><span class="pre">/directories</span></code> endpoint. This Directory will contain a <a class="reference internal" href="reference.html#ref-provider"><span>Provider</span></a> resource with <code class="docutils literal"><span class="pre">providerId</span></code> set to <code class="docutils literal"><span class="pre">ldap</span></code> or <code class="docutils literal"><span class="pre">ad</span></code>. This Provider resource will in turn contain an <a class="reference internal" href="reference.html#ref-ldap-agent"><span>LDAP Agent</span></a> object:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -1116,24 +1116,24 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p><em>a.</em> Make sure Java 1.8 is installed</p>
 <p><em>b.</em> Unzip to a location in your file system, for example <code class="docutils literal"><span class="pre">C:\stormpath\agent</span></code> in Windows or <code class="docutils literal"><span class="pre">/opt/stormpath/agent</span></code> in Unix.</p>
 <p>In the same location, open the file <code class="docutils literal"><span class="pre">dapper.properties</span></code> from the config folder and replace this line:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">agent</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">PutAgentSpecificIdHere</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">agent</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">PutAgentSpecificIdHere</span>
 </pre></div>
 </div>
 <p>With this line:</p>
-<div class="highlight-python"><div class="highlight"><pre>agent.id  = 72MlbWz6C4dLo1oBhgjjTt
+<div class="highlight-python"><div class="highlight"><pre><span></span>agent.id  = 72MlbWz6C4dLo1oBhgjjTt
 </pre></div>
 </div>
 <p>Follow the instructions in the <code class="docutils literal"><span class="pre">dapper.properties</span></code> file to reference your account&#8217;s API authentication.</p>
 <p><strong>3. Start</strong></p>
 <p>In Windows:</p>
 <p>(cd to your agent directory, for example C:stormpathagent)</p>
-<div class="highlight-none"><div class="highlight"><pre>C:\stormpath\agent&gt;cd bin
+<div class="highlight-none"><div class="highlight"><pre><span></span>C:\stormpath\agent&gt;cd bin
 C:\stormpath\agent\bin&gt;startup.bat
 </pre></div>
 </div>
 <p>In Unix:</p>
 <p>(cd to your agent directory, for example /opt/stormpath/agent)</p>
-<div class="highlight-bash"><div class="highlight"><pre>$ <span class="nb">cd</span> bin
+<div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> bin
 $ startup.sh
 </pre></div>
 </div>
@@ -1315,7 +1315,7 @@ $ startup.sh
 <h6>5.1. Find the Existing SAML Attributes<a class="headerlink" href="#find-the-existing-saml-attributes" title="Permalink to this headline">¶</a></h6>
 <p>If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that Salesforce sends by retrieving the new user Account that was created inside Stormpath.</p>
 <p>Specifically, you want that Account&#8217;s <code class="docutils literal"><span class="pre">providerData</span></code> resource:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/xbKQemsqW3HcpfeXAMPLE/providerData&quot;</span><span class="p">,</span>
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-01-20T17:56:25.532Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-01-20T17:57:22.530Z&quot;</span><span class="p">,</span>
@@ -1477,7 +1477,7 @@ $ startup.sh
 <h6>6.1. Find the Existing SAML Attributes<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h6>
 <p>If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that OneLogin sends by retrieving the new user Account that was created inside Stormpath.</p>
 <p>Specifically, you want that Account&#8217;s <code class="docutils literal"><span class="pre">providerData</span></code> resource:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/2i6Rxkcf8NFsIA9eXaMPle/providerData&quot;</span><span class="p">,</span>
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-01-21T18:11:09.838Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-01-21T18:13:39.102Z&quot;</span><span class="p">,</span>
@@ -1652,7 +1652,7 @@ $ startup.sh
 <div class="section" id="step-2-configure-your-saml-directory">
 <h4>Step 2: Configure Your SAML Directory<a class="headerlink" href="#step-2-configure-your-saml-directory" title="Permalink to this headline">¶</a></h4>
 <p>Input the data you gathered in Step 1 above into your Directory&#8217;s Provider resource, and then pass that along as part of the Directory creation request:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -1678,13 +1678,13 @@ $ startup.sh
 <span id="configure-sp-in-idp"></span><h4>Step 3: Retrieve Your Service Provider Metadata<a class="headerlink" href="#step-3-retrieve-your-service-provider-metadata" title="Permalink to this headline">¶</a></h4>
 <p>Next you will have to configure your Stormpath-powered application as a Service Provider in your Identity Provider. This means that you will need to retrieve the correct metadata from Stormpath.</p>
 <p>In order to retrieve the required values, start by sending this request:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/v1/directories/$DIRECTORY_ID/provider</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/directories/$DIRECTORY_ID/provider</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/xml</span>
 </pre></div>
 </div>
 <p>Which will return the Provider:</p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/1joyMCilyf1xSravQxaHxy/provider&quot;</span><span class="p">,</span>
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-12-21T20:27:16.190Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-12-21T20:27:16.190Z&quot;</span><span class="p">,</span>
@@ -1703,7 +1703,7 @@ $ startup.sh
 </pre></div>
 </div>
 <p>Now send a GET to this <code class="docutils literal"><span class="pre">serviceProviderMetadata</span></code> link found in your Directory&#8217;s Provider object.</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/v1/samlServiceProviderMetadatas/$METADATA_ID</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/samlServiceProviderMetadatas/$METADATA_ID</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/xml</span>
 </pre></div>
@@ -1713,7 +1713,7 @@ $ startup.sh
 <p class="last">This will return XML by default, but you can also specify <code class="docutils literal"><span class="pre">application/json</span></code> if you&#8217;d like to receive JSON instead.</p>
 </div>
 <p><strong>Example XML</strong></p>
-<div class="highlight-xml"><div class="highlight"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span>
+<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span>
 <span class="nt">&lt;md:EntityDescriptor</span> <span class="na">xmlns:md=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:metadata&quot;</span> <span class="na">entityID=</span><span class="s">&quot;urn:stormpath:directory:5rHYCSu9IjzKz5pkyId5eR:provider:sp&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;md:SPSSODescriptor</span> <span class="na">protocolSupportEnumeration=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:protocol&quot;</span><span class="nt">&gt;</span>
         <span class="nt">&lt;md:KeyDescriptor</span> <span class="na">use=</span><span class="s">&quot;signing&quot;</span><span class="nt">&gt;</span>
@@ -1730,7 +1730,7 @@ $ startup.sh
 </pre></div>
 </div>
 <p><strong>Example JSON</strong></p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;http://api.stormpath.com/v1/samlServiceProviderMetadatas/173pHdbJ96DpPeuExaMPLE&quot;</span><span class="p">,</span>
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-12-09T19:22:10.033Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-12-09T19:22:10.033Z&quot;</span><span class="p">,</span>
@@ -1766,7 +1766,7 @@ $ startup.sh
 <li>an <code class="docutils literal"><span class="pre">authorizedCallbackUri</span></code> Array that defines the authorized URIs that the IdP can return your user to. These should be URIs that you host yourself.</li>
 <li>an embedded <code class="docutils literal"><span class="pre">samlPolicy</span></code> object that contains information about the SAML flow configuration and endpoints.</li>
 </ul>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -1786,7 +1786,7 @@ $ startup.sh
 <div class="section" id="step-7-configure-saml-attribute-mapping">
 <span id="saml-mapping"></span><h4>Step 7: Configure SAML Attribute Mapping<a class="headerlink" href="#step-7-configure-saml-attribute-mapping" title="Permalink to this headline">¶</a></h4>
 <p>The Identity Provider&#8217;s SAML response contains assertions about the user&#8217;s identity, which Stormpath can use to create and populate a new Account resource.</p>
-<div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;saml:AttributeStatement&gt;</span>
+<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;saml:AttributeStatement&gt;</span>
   <span class="nt">&lt;saml:Attribute</span> <span class="na">Name=</span><span class="s">&quot;uid&quot;</span> <span class="na">NameFormat=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:basic&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;saml:AttributeValue</span> <span class="na">xsi:type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>test<span class="nt">&lt;/saml:AttributeValue&gt;</span>
   <span class="nt">&lt;/saml:Attribute&gt;</span>
@@ -1810,7 +1810,7 @@ $ startup.sh
 <li><strong>accountAttributes</strong>: This is an array of Stormpath Account or customData (<code class="docutils literal"><span class="pre">customData.$KEY_NAME</span></code>) attributes that will map to this SAML Attribute.</li>
 </ul>
 <p><strong>Example Rule</strong></p>
-<div class="highlight-json"><div class="highlight"><pre><span class="p">{</span>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;uid&quot;</span><span class="p">,</span>
   <span class="nt">&quot;nameFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:basic&quot;</span><span class="p">,</span>
   <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:[</span>
@@ -1830,7 +1830,7 @@ $ startup.sh
 <p class="last">It is possible to specify only a <code class="docutils literal"><span class="pre">name</span></code> or <code class="docutils literal"><span class="pre">nameFormat</span></code> in your rule, instead of both.</p>
 </div>
 <p>In order to create the mapping rules, we simply send the following POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">POST</span> <span class="nn">/v1/attributeStatementMappingRules/$MAPPING_RULES_ID&quot;,</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/attributeStatementMappingRules/$MAPPING_RULES_ID&quot;,</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -1962,7 +1962,7 @@ $ startup.sh
 <div class="section" id="step-2-initiate-the-flow">
 <h4>Step 2: Initiate the flow<a class="headerlink" href="#step-2-initiate-the-flow" title="Permalink to this headline">¶</a></h4>
 <p>Once the JWT is generated by your server, you initiate the SAML flow by sending a GET to the value found in the <code class="docutils literal"><span class="pre">ssoInitiationEndpoint</span></code>, which is <code class="docutils literal"><span class="pre">/v1/applications/$APPLICATION_ID/saml/sso/idpRedirect</span></code> along with the JWT you just generated:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="nf">GET</span> <span class="nn">/v1/applications/$APPLICATION_ID/saml/sso/idpRedirect?accessToken=$GENERATED_JWT</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/applications/$APPLICATION_ID/saml/sso/idpRedirect?accessToken=$GENERATED_JWT</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 </pre></div>
@@ -1971,7 +1971,7 @@ $ startup.sh
 <div class="section" id="step-3-redirection">
 <h4>Step 3: Redirection<a class="headerlink" href="#step-3-redirection" title="Permalink to this headline">¶</a></h4>
 <p>This GET will result in a redirection to the IdP Login URL that you specified during configuration:</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Redirect</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Redirect</span>
 <span class="na">Location</span><span class="o">:</span> <span class="l">https://idp.whatever.com/saml2/sso/login?SAMLRequest=fZFfa8IwFMXfBb9DyXvaJtZ1BqsURRC2Mabbw95ivc5Am3TJrXPffmmLY3%2F...</span>
 </pre></div>
 </div>
@@ -1991,7 +1991,7 @@ $ startup.sh
 <div class="section" id="step-6-stormpath-response-with-jwt">
 <h4>Step 6: Stormpath Response with JWT<a class="headerlink" href="#step-6-stormpath-response-with-jwt" title="Permalink to this headline">¶</a></h4>
 <p>The user will now be redirected by Stormpath back to your Application along with a JSON Web Token.</p>
-<div class="highlight-http"><div class="highlight"><pre><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Redirect</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">302</span> <span class="ne">Redirect</span>
 <span class="na">Location</span><span class="o">:</span> <span class="l">https://myapplication.com/whatever/callback?jwtResponse=$RESPONSE_JWT</span>
 </pre></div>
 </div>
