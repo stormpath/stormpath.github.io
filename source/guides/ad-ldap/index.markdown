@@ -50,11 +50,10 @@ A `Mirror Directory` is a special `Directory` used for AD/LDAP synchronization. 
 
 To configure a `Mirror Directory` and its `Agent`, you first log in to the [Administrator Console](https://api.stormpath.com), and follow these steps:
 
-1. Click on the `Directories` tab
-2. Click on the `Create Directory` button
-3. Click the `Mirror` button
+1. Click on the `Agents` tab
+2. Click on the `Create Agent` button
 
-This will start the directory creation wizard for AD / LDAP.  After configuring the Mirrored Directory, you will be able to input Agent configuration information related to the AD / LDAP server:
+This will start the agent creation wizard for AD / LDAP.  When configuring the Agent, you will be able to input Agent configuration information related to the AD / LDAP server:
 
 1. Agent User DN 
 2. Agent User Password
@@ -64,10 +63,10 @@ This will start the directory creation wizard for AD / LDAP.  After configuring 
 Once the creation wizard is completed, you can download the `Agent` to deploy on the same network as the AD / LDAP server.`Agent` installation instructions are provided in the console as the last step of the wizard.
 
 {% docs note %}
-The Stormpath `Agent` requires Java 1.7 or Java 1.8.
+The Stormpath `Agent` requires Java 1.8.
 {% enddocs %}
 
-After the agent is deployed and started, the agent will reports its status, pull down its configuration data, and then begin synchronization.  The agent can be monitored directly from the Stormpath Administrator Console in the Agents tab _(visible for Premium subscribers and above)_.
+After the agent is deployed and started, the agent will reports its status, pull down its configuration data, and then begin synchronization.  The agent can be monitored directly from the Stormpath Administrator Console in the Agents tab _(visible for Lite subscribers and above)_.
 
 ##Authentication Considerations for Multiple Directories
 
