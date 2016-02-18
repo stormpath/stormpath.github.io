@@ -77,7 +77,7 @@ By default, an `Application` has a the following TTLs:
 To get these values, you can query the `OAuth Policy` for an Application:
 
 
-{% codetab id:get-oauth-policy langs:java curl node php ruby python%}
+{% codetab id:get-oauth-policy langs:java curl node php ruby python %}
 ------
 Application application = client.getResource(applicationHref, Application.class);
 OauthPolicy oauthPolicy = application.getOauthPolicy();
@@ -118,7 +118,7 @@ Response:
 
 To update the `Access Token` and `Refresh Token` TTL, making a `POST` request to the application's oAuthPolicy with the updated values.  The valid valueFor example, if your application needs to have an shorter lived access and refresh token:
 
-{% codetab id:set-oauth-policy langs:java curl node php ruby python%}
+{% codetab id:set-oauth-policy langs:java curl node php ruby python %}
 ------
 oauthPolicy.setAccessTokenTtl("P8D");
 oauthPolicy.setRefreshTokenTtl("PT2M");
@@ -195,7 +195,7 @@ Once your application receives the username and password for the user, you can r
 
 Request:
 
-{% codetab id:get-access-token langs:java curl node php ruby python%}
+{% codetab id:get-access-token langs:java curl node php ruby python %}
 ------
 PasswordGrantRequest passwordGrantRequest = Oauth2Requests.PASSWORD_GRANT_REQUEST.builder()
   .setLogin("username@test.com")
