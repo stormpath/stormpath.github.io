@@ -1,11 +1,11 @@
 ---
 layout: doc
 lang: guides
-description: Stormpath guide 
+description: Stormpath guide
 title: Using Stormpath for OAuth 2.0 and Access/Refresh Token Management
 ---
 
-{% docs info %} 
+{% docs info %}
 Currently supported in Stormpath's REST API.  Support for SDKs and Integrations is coming soon.  Reach out to us on support for an update.
 {% enddocs %}
 
@@ -38,7 +38,7 @@ For Token Based Authentication, there are a couple different types of tokens tha
 + `Access Token`
 + `Refresh Token`
 
-The `Access Token` is the token that grants access to a protected resource.  The `Access Token` that Stormpath generates for accounts on authentication is a JSON Web Token, or JWT.  The JWT has security built in to make sure that the `Access Token` is not tampered with on the client, and is only valid for a specified duration.  The `Refresh Token` is a special token that is used to generate additional `Access Token`s.  This allows you to have an short lived `Access Token` without having to collect credentials every single time you need a new `Access Token`. 
+The `Access Token` is the token that grants access to a protected resource.  The `Access Token` that Stormpath generates for accounts on authentication is a JSON Web Token, or JWT.  The JWT has security built in to make sure that the `Access Token` is not tampered with on the client, and is only valid for a specified duration.  The `Refresh Token` is a special token that is used to generate additional `Access Token`s.  This allows you to have an short lived `Access Token` without having to collect credentials every single time you need a new `Access Token`.
 
 When using OAuth 2.0, the `Access Token` and `Refresh Token` are returned in the same response during the token exchange, this is called an `Access Token Response`.
 
@@ -109,7 +109,7 @@ Response:
 
     {
         "href": "https://api.stormpath.com/v1/oAuthPolicies/5r0klomitodnOCuvESIP5z",
-        "tokenEndpoint": { 
+        "tokenEndpoint": {
                 "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oauth/token"
         },
         "accessTokenTtl": "PT1H",
@@ -162,7 +162,7 @@ Response:
 
     {
         "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oAuthPolicy",
-        "tokenEndpoint": { 
+        "tokenEndpoint": {
                 "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oauth/token"
         },
         "accessTokenTtl": "PT30M",
@@ -262,13 +262,13 @@ The response is an `OAuth 2.0 Access Token Response` and includes the following:
 
 + `access_token` - A value denoting the access token for the response, as a JWT
 + `refresh_token` - A value denoting the refresh token that can be used to get refreshed Access Tokens, as a JWT
-+ `token_type` - A value denoting the type of token returned.  
++ `token_type` - A value denoting the type of token returned.
 + `expires_in` - A value denoting the time in seconds before the token expires
 + `stormpath_access_token_href` - A value denoting the href location of the token in Stormpath.
 
 ### Validating Access Tokens
 
-Once an `Access Token` has been generated, the client will need to pass the bearer token to your application. 
+Once an `Access Token` has been generated, the client will need to pass the bearer token to your application.
 
 For example, if you have a route `https://yourapplication.com/secure-resource`, the client would access the resource by passing the access token:
 
@@ -285,7 +285,7 @@ Once your application receives the request, the first thing to do is to validate
 The benefit of using Stormpath to validate the token through the REST API (or an SDK that is using the REST API) is that Stormpath can validate the token against the state of your application and account.  To illustrate the difference:
 
 Validation Criteria | Locally | Stormpath
-:---- | :---- | :---- 
+:---- | :---- | :----
 Token hasn't been tampered with | yes | yes
 Token hasn't expired | yes | yes
 Token hasn't been revoked | no | yes
@@ -321,7 +321,7 @@ JwtAuthenticationResult jwtAuthenticationResult = Authenticators.JWT_AUTHENTICAT
   .forApplication(application)
   .authenticate(jwtRequest);
 ------
-curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \    
+curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
 ------
 var authenticator = new stormpath.OAuthAuthenticator(application);
@@ -388,28 +388,28 @@ Response:
     {
         "account": {
             "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-        }, 
+        },
         "application": {
             "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
-        }, 
-        "createdAt": "2015-06-24T21:42:27.535Z", 
+        },
+        "createdAt": "2015-06-24T21:42:27.535Z",
         "expandedJwt": {
             "claims": {
-                "exp": 1435183947, 
-                "iat": 1435182147, 
-                "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6", 
-                "jti": "74Zd80iW0cOhotjXH4GqM7", 
-                "rti": "zxRTYcdBDiTFQmNIVudTv", 
+                "exp": 1435183947,
+                "iat": 1435182147,
+                "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6",
+                "jti": "74Zd80iW0cOhotjXH4GqM7",
+                "rti": "zxRTYcdBDiTFQmNIVudTv",
                 "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-            }, 
+            },
             "header": {
-                "alg": "HS256", 
+                "alg": "HS256",
                 "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
-            }, 
+            },
             "signature": "qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ"
-        }, 
-        "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7", 
-        "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ", 
+        },
+        "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7",
+        "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ",
         "tenant": {
             "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
         }
@@ -443,7 +443,7 @@ JwtAuthenticationRequest jwtRequest = Oauth2Requests.JWT_AUTHENTICATION_REQUEST.
   .build();
 JwtAuthenticationResult jwtAuthenticationResult = Authenticators.JWT_AUTHENTICATOR
   .forApplication(application)
-  .withLocalValidation()  
+  .withLocalValidation()
   .authenticate(jwtRequest);
 ------
 // This sample uses NJWT a Node JWT Library (https://github.com/jwtk/jjwt)
@@ -458,7 +458,7 @@ nJwt.verify(bearerToken, "$STORMPATH_API_KEY_SECRET", function(err, verifiedJwt)
     }else{
         console.log(verifiedJwt); // Will contain the header and body
     }
-});    
+});
 
 ------
 // You can pass in a JWT into the `verify` method as a string.  If not, it will look in the HTTP_AUTHORIZATION header for one, and then COOKIE with a name of access_token
@@ -587,69 +587,69 @@ application.auth_tokens
 Response:
 
     {
-        "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/accessTokens", 
+        "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/accessTokens",
         "items": [
             {
                 "account": {
                     "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-                }, 
+                },
                 "application": {
                     "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
-                }, 
-                "createdAt": "2015-06-24T21:36:52.684Z", 
+                },
+                "createdAt": "2015-06-24T21:36:52.684Z",
                 "expandedJwt": {
                     "claims": {
-                        "exp": 1435183612, 
-                        "iat": 1435181812, 
-                        "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6", 
-                        "jti": "zxa7fCzt2etCTce2RWIv5", 
-                        "rti": "zxRTYcdBDiTFQmNIVudTv", 
+                        "exp": 1435183612,
+                        "iat": 1435181812,
+                        "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6",
+                        "jti": "zxa7fCzt2etCTce2RWIv5",
+                        "rti": "zxRTYcdBDiTFQmNIVudTv",
                         "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-                    }, 
+                    },
                     "header": {
-                        "alg": "HS256", 
+                        "alg": "HS256",
                         "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
-                    }, 
+                    },
                     "signature": "da8G6xRUVird3MnG8HYTleDtXbwhqUfFK8KUvK8HDYI"
-                }, 
-                "href": "https://api.stormpath.com/v1/accessTokens/zxa7fCzt2etCTce2RWIv5", 
-                "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJ6eGE3ZkN6dDJldENUY2UyUldJdjUiLCJpYXQiOjE0MzUxODE4MTIsImlzcyI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xcDRSMXI5VUJNUXowZVNGQzZYWkU2Iiwic3ViIjoiaHR0cHM6Ly9zdGFnaW5nLWFwaS1iLnN0b3JtcGF0aC5jb20vdjEvYWNjb3VudHMvN05aeFZ5NXJVUzdXZzV2TlNzVFVhYyIsImV4cCI6MTQzNTE4MzYxMiwicnRpIjoienhSVFljZEJEaVRGUW1OSVZ1ZFR2In0.da8G6xRUVird3MnG8HYTleDtXbwhqUfFK8KUvK8HDYI", 
+                },
+                "href": "https://api.stormpath.com/v1/accessTokens/zxa7fCzt2etCTce2RWIv5",
+                "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJ6eGE3ZkN6dDJldENUY2UyUldJdjUiLCJpYXQiOjE0MzUxODE4MTIsImlzcyI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xcDRSMXI5VUJNUXowZVNGQzZYWkU2Iiwic3ViIjoiaHR0cHM6Ly9zdGFnaW5nLWFwaS1iLnN0b3JtcGF0aC5jb20vdjEvYWNjb3VudHMvN05aeFZ5NXJVUzdXZzV2TlNzVFVhYyIsImV4cCI6MTQzNTE4MzYxMiwicnRpIjoienhSVFljZEJEaVRGUW1OSVZ1ZFR2In0.da8G6xRUVird3MnG8HYTleDtXbwhqUfFK8KUvK8HDYI",
                 "tenant": {
                     "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
                 }
-            }, 
+            },
             {
                 "account": {
                     "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-                }, 
+                },
                 "application": {
                     "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
-                }, 
-                "createdAt": "2015-06-24T21:42:27.535Z", 
+                },
+                "createdAt": "2015-06-24T21:42:27.535Z",
                 "expandedJwt": {
                     "claims": {
-                        "exp": 1435183947, 
-                        "iat": 1435182147, 
-                        "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6", 
-                        "jti": "74Zd80iW0cOhotjXH4GqM7", 
-                        "rti": "zxRTYcdBDiTFQmNIVudTv", 
+                        "exp": 1435183947,
+                        "iat": 1435182147,
+                        "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6",
+                        "jti": "74Zd80iW0cOhotjXH4GqM7",
+                        "rti": "zxRTYcdBDiTFQmNIVudTv",
                         "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-                    }, 
+                    },
                     "header": {
-                        "alg": "HS256", 
+                        "alg": "HS256",
                         "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
-                    }, 
+                    },
                     "signature": "qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ"
-                }, 
-                "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7", 
-                "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ", 
+                },
+                "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7",
+                "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ",
                 "tenant": {
                     "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
                 }
             }
-        ], 
-        "limit": 25, 
-        "offset": 0, 
+        ],
+        "limit": 25,
+        "offset": 0,
         "size": 2
     }
 
