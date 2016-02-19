@@ -740,7 +740,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p class="first admonition-title">Note</p>
 <p>You can query the Access Tokens that an Account has for a specific Application by specifying the Application&#8217;s href as a URL parameter:</p>
 <div class="last highlight-bash"><div class="highlight"><pre><span></span>curl --request GET <span class="se">\</span>
---user <span class="nv">$A</span>PI_KEY_ID:<span class="nv">$A</span>PI_KEY_SECRET <span class="se">\</span>
+--user $SP_API_KEY_ID:$SP_API_KEY_SECRET <span class="se">\</span>
 --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
 --url <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/accessTokens?application.href=https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSEXAMPLE&quot;</span>
 </pre></div>
@@ -1151,6 +1151,11 @@ $ startup.sh
 <div class="section" id="step-3-map-the-ldap-directory-as-an-account-store-for-your-application">
 <h4><a class="toc-backref" href="#id45">Step 3: Map the LDAP Directory as an Account Store for Your Application</a><a class="headerlink" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
 <p>Creating an Account Store Mapping between your new LDAP Directory and your Stormpath Application can be done through the REST API, as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
+<p>The log-in process will now proceed as it would for <a class="reference internal" href="#how-login-works"><span>any other kind of Directory</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the case of Active Directory, the login process does not proceed as normal, and instead involves something called &#8220;delegated authentication&#8221;. The user accounts pulled-in from an Active Directory do not include the passwords. Consequently, the LDAP Agent does double duty in the case of Active Directory: it synchronizes accounts, and it also handles authentication attempts and relays back the outcome to Stormpath.</p>
+</div>
 </div>
 </div>
 </div>
