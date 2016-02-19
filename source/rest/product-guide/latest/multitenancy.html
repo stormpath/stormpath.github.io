@@ -234,18 +234,18 @@
 <div class="section" id="naming-your-tenant-groups">
 <h5>Naming Your Tenant Groups<a class="headerlink" href="#naming-your-tenant-groups" title="Permalink to this headline">¶</a></h5>
 <p>As this is the most common strategy used by our customers, we have found some minor naming conventions that are very powerful and we consider to be best-practice.</p>
-<p>First of all, the name of your tenant Organization will have a unique <code class="docutils literal"><span class="pre">nameKey</span></code>, for example <code class="docutils literal"><span class="pre">BankOfAm</span></code>. This <code class="docutils literal"><span class="pre">nameKey</span></code> this can be used for organizing tenant Groups and sub-Groups.</p>
-<p>For example, if your Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">BankOfAm</span></code>, you could name the Group <code class="docutils literal"><span class="pre">BankOfAm.tenant</span></code>. If you want to create sub-Groups for roles like <code class="docutils literal"><span class="pre">users</span></code> and <code class="docutils literal"><span class="pre">admins</span></code>, we recommend that you prepend the <code class="docutils literal"><span class="pre">nameKey</span></code> to their <code class="docutils literal"><span class="pre">name</span></code> Attribute, along with a descriptive name of what kind of Group it is:</p>
-<p><code class="docutils literal"><span class="pre">BankOfAm.role.users</span></code></p>
-<p><code class="docutils literal"><span class="pre">BankOfAm.role.administrators</span></code></p>
+<p>First of all, the name of your tenant Organization will have a unique <code class="docutils literal"><span class="pre">nameKey</span></code>, for example <code class="docutils literal"><span class="pre">BankOfA</span></code>. This <code class="docutils literal"><span class="pre">nameKey</span></code> this can be used for organizing tenant Groups and sub-Groups.</p>
+<p>For example, if your Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">BankOfA</span></code>, you could name the Group <code class="docutils literal"><span class="pre">BankOfA.tenant</span></code>. If you want to create sub-Groups for roles like <code class="docutils literal"><span class="pre">users</span></code> and <code class="docutils literal"><span class="pre">admins</span></code>, we recommend that you prepend the <code class="docutils literal"><span class="pre">nameKey</span></code> to their <code class="docutils literal"><span class="pre">name</span></code> Attribute, along with a descriptive name of what kind of Group it is:</p>
+<p><code class="docutils literal"><span class="pre">BankOfA.role.users</span></code></p>
+<p><code class="docutils literal"><span class="pre">BankOfA.role.administrators</span></code></p>
 <p>This has two benefits:</p>
 <ol class="arabic simple">
 <li>It makes it easy to find all the role Groups for that particular tenant, since you can simply search for the nameKey in the <code class="docutils literal"><span class="pre">name</span></code> field:</li>
 </ol>
 <blockquote>
-<div><code class="docutils literal"><span class="pre">GET</span> <span class="pre">https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=BankOfAm.role.*</span></code></div></blockquote>
+<div><code class="docutils literal"><span class="pre">GET</span> <span class="pre">https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=BankOfA.role.*</span></code></div></blockquote>
 <p>Or, if you wanted to retrieve the tenant Group and all of its sub-Groups, make the query a little less restrictive by removing the &#8220;role&#8221;:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=BankOfAm.*
+<div class="highlight-python"><div class="highlight"><pre><span></span>GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=BankOfA.*
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -266,14 +266,14 @@
 <div class="section" id="how-to-create-an-organization">
 <h4>How to Create an Organization<a class="headerlink" href="#how-to-create-an-organization" title="Permalink to this headline">¶</a></h4>
 <p>You can create an Organization in Stormpath by simply performing an HTTP POST to the <code class="docutils literal"><span class="pre">/v1/organizations</span></code> endpoint.</p>
-<p>So, if for example one of our application&#8217;s tenants was the Bank of America, we could send the following POST:</p>
+<p>So, if for example one of our application&#8217;s tenants was the Bank of A, we could send the following POST:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/organizations</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
-  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bank of America&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;BankOfAm&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bank of A&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;BankOfA&quot;</span><span class="p">,</span>
   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span>
 <span class="p">}</span>
 </pre></div>
@@ -287,8 +287,8 @@
   <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE&quot;</span><span class="p">,</span>
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-10-02T15:27:01.658Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-10-02T15:27:01.658Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bank of America&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;BankOfAm&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bank of A&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;BankOfA&quot;</span><span class="p">,</span>
   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
   <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
   <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
