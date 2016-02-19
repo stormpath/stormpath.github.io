@@ -433,6 +433,9 @@
 		sp_docs_menu['stylesheets'] = [];
 		
 	
+		sp_docs_menu['wizard'] = [];
+		
+	
 </script>
 
 <div id="page">
@@ -592,7 +595,7 @@
 
 <p>To get these values, you can query the <code>OAuth Policy</code> for an Application:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-oauth-policy-java">java</a></li><li><a href="#tabs-get-oauth-policy-curl">curl</a></li><li><a href="#tabs-get-oauth-policy-node">node</a></li><li><a href="#tabs-get-oauth-policy-php">php</a></li><li><a href="#tabs-get-oauth-policy-ruby">ruby</a></li></ul><div id="tabs-get-oauth-policy-java"><pre lang="java"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-oauth-policy-java">java</a></li><li><a href="#tabs-get-oauth-policy-curl">curl</a></li><li><a href="#tabs-get-oauth-policy-node">node</a></li><li><a href="#tabs-get-oauth-policy-php">php</a></li><li><a href="#tabs-get-oauth-policy-ruby">ruby</a></li><li><a href="#tabs-get-oauth-policy-python">python</a></li></ul><div id="tabs-get-oauth-policy-java"><pre lang="java"><code>
 Application application = client.getResource(applicationHref, Application.class);
 OauthPolicy oauthPolicy = application.getOauthPolicy();
 </code> </pre> </div><div id="tabs-get-oauth-policy-curl"><pre lang="curl"><code>
@@ -613,6 +616,9 @@ $oauthPolicy = $application->oauthPolicy;
 </code> </pre> </div><div id="tabs-get-oauth-policy-ruby"><pre lang="ruby"><code>
 oauth_policy = application.auth_policy
 # returns Stormpath::Resource::OauthPolicy instance
+</code> </pre> </div><div id="tabs-get-oauth-policy-python"><pre lang="python"><code>
+application = client.applications.get(application_href)
+application.oauth_policy
 </code> </pre> </div></div>
 
 
@@ -620,7 +626,7 @@ oauth_policy = application.auth_policy
 
 <pre><code>{
     "href": "https://api.stormpath.com/v1/oAuthPolicies/5r0klomitodnOCuvESIP5z",
-    "tokenEndpoint": { 
+    "tokenEndpoint": {
             "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oauth/token"
     },
     "accessTokenTtl": "PT1H",
@@ -630,7 +636,7 @@ oauth_policy = application.auth_policy
 
 <p>To update the <code>Access Token</code> and <code>Refresh Token</code> TTL, making a <code>POST</code> request to the application&rsquo;s oAuthPolicy with the updated values.  The valid valueFor example, if your application needs to have an shorter lived access and refresh token:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-set-oauth-policy-java">java</a></li><li><a href="#tabs-set-oauth-policy-curl">curl</a></li><li><a href="#tabs-set-oauth-policy-node">node</a></li><li><a href="#tabs-set-oauth-policy-php">php</a></li><li><a href="#tabs-set-oauth-policy-ruby">ruby</a></li></ul><div id="tabs-set-oauth-policy-java"><pre lang="java"><code>
+<div class="tabs"><ul><li><a href="#tabs-set-oauth-policy-java">java</a></li><li><a href="#tabs-set-oauth-policy-curl">curl</a></li><li><a href="#tabs-set-oauth-policy-node">node</a></li><li><a href="#tabs-set-oauth-policy-php">php</a></li><li><a href="#tabs-set-oauth-policy-ruby">ruby</a></li><li><a href="#tabs-set-oauth-policy-python">python</a></li></ul><div id="tabs-set-oauth-policy-java"><pre lang="java"><code>
 oauthPolicy.setAccessTokenTtl("P8D");
 oauthPolicy.setRefreshTokenTtl("PT2M");
 oauthPolicy.save();
@@ -662,6 +668,10 @@ oauth_policy = application.oauth_policy
 oauth_policy.access_token_ttl = 'PT1H'
 oauth_policy.refresh_token_ttl = "P60D"
 oauth_policy.save
+</code> </pre> </div><div id="tabs-set-oauth-policy-python"><pre lang="python"><code>
+oauth_policy.access_token_ttl = 'P8D'
+oauth_policy.refresh_token_ttl = 'PT2M'
+oauth_policy.save()
 </code> </pre> </div></div>
 
 
@@ -669,7 +679,7 @@ oauth_policy.save
 
 <pre><code>{
     "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oAuthPolicy",
-    "tokenEndpoint": { 
+    "tokenEndpoint": {
             "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oauth/token"
     },
     "accessTokenTtl": "PT30M",
@@ -705,7 +715,7 @@ oauth_policy.save
 
 <p>Request:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-curl">curl</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li><li><a href="#tabs-get-access-token-ruby">ruby</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-curl">curl</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li><li><a href="#tabs-get-access-token-ruby">ruby</a></li><li><a href="#tabs-get-access-token-python">python</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
 PasswordGrantRequest passwordGrantRequest = Oauth2Requests.PASSWORD_GRANT_REQUEST.builder()
   .setLogin("username@test.com")
   .setPassword("Password1!")
@@ -740,6 +750,9 @@ $result = $auth->authenticate($passwordGrant);
 pasword_grant = Stormpath::Oauth::PasswordGrantRequest.new(username, password)
 result = application.authenticate_oauth(password_grant)
 # returns Stormpath::Oauth::AccessToken instance
+</code> </pre> </div><div id="tabs-get-access-token-python"><pre lang="python"><code>
+authenticator = PasswordGrantAuthenticator(application)
+oauth_grant_authentication_result = authenticator.authenticate('username@test.com', 'Password1!')
 </code> </pre> </div></div>
 
 
@@ -870,7 +883,7 @@ Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg
 
 <p>Request:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-validate-token-java">java</a></li><li><a href="#tabs-validate-token-curl">curl</a></li><li><a href="#tabs-validate-token-node">node</a></li><li><a href="#tabs-validate-token-php">php</a></li><li><a href="#tabs-validate-token-ruby">ruby</a></li></ul><div id="tabs-validate-token-java"><pre lang="java"><code>
+<div class="tabs"><ul><li><a href="#tabs-validate-token-java">java</a></li><li><a href="#tabs-validate-token-curl">curl</a></li><li><a href="#tabs-validate-token-node">node</a></li><li><a href="#tabs-validate-token-php">php</a></li><li><a href="#tabs-validate-token-ruby">ruby</a></li><li><a href="#tabs-validate-token-python">python</a></li></ul><div id="tabs-validate-token-java"><pre lang="java"><code>
 JwtAuthenticationRequest jwtRequest = Oauth2Requests.JWT_AUTHENTICATION_REQUEST.builder()
   .setJwt(oauthGrantAuthenticationResult.getAccessTokenString())
   .build();
@@ -878,7 +891,7 @@ JwtAuthenticationResult jwtAuthenticationResult = Authenticators.JWT_AUTHENTICAT
   .forApplication(application)
   .authenticate(jwtRequest);
 </code> </pre> </div><div id="tabs-validate-token-curl"><pre lang="curl"><code>
-curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \    
+curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
 </code> </pre> </div><div id="tabs-validate-token-node"><pre lang="node"><code>
 var authenticator = new stormpath.OAuthAuthenticator(application);
@@ -898,6 +911,9 @@ $result = (new \Stormpath\Oauth\VerifyAccessToken($application))->verify();
 </code> </pre> </div><div id="tabs-validate-token-ruby"><pre lang="ruby"><code>
 Stormpath::Oauth::VerifyAccessToken.new(application).verify(authorization_token)
 # returns Stormpath::Oauth::VerifyToken instance
+</code> </pre> </div><div id="tabs-validate-token-python"><pre lang="python"><code>
+authenticator = JwtAuthenticator(application)
+jwt_authentication_result = authenticator.authenticate(oauth_grant_authentication_result.access_token.token)
 </code> </pre> </div></div>
 
 
@@ -965,11 +981,16 @@ Location: https://api.stormpath.com/v1/accessTokens/jr1zCsicMWpA661fe6715ed477Zi
 
 <p>Request:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-curl">curl</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-curl">curl</a></li><li><a href="#tabs-get-access-token-python">python</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
 AccessToken accessToken = client.getDataStore().getResource(accessTokenHref, AccessToken.class);
 </code> </pre> </div><div id="tabs-get-access-token-curl"><pre lang="curl"><code>
 curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7
+</code> </pre> </div><div id="tabs-get-access-token-python"><pre lang="python"><code>
+jwt_authentication_result.account
+jwt_authentication_result.application
+jwt_authentication_result.jwt
+jwt_authentication_result.expanded_jwt
 </code> </pre> </div></div>
 
 
@@ -978,28 +999,28 @@ curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 <pre><code>{
     "account": {
         "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-    }, 
+    },
     "application": {
         "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
-    }, 
-    "createdAt": "2015-06-24T21:42:27.535Z", 
+    },
+    "createdAt": "2015-06-24T21:42:27.535Z",
     "expandedJwt": {
         "claims": {
-            "exp": 1435183947, 
-            "iat": 1435182147, 
-            "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6", 
-            "jti": "74Zd80iW0cOhotjXH4GqM7", 
-            "rti": "zxRTYcdBDiTFQmNIVudTv", 
+            "exp": 1435183947,
+            "iat": 1435182147,
+            "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6",
+            "jti": "74Zd80iW0cOhotjXH4GqM7",
+            "rti": "zxRTYcdBDiTFQmNIVudTv",
             "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-        }, 
+        },
         "header": {
-            "alg": "HS256", 
+            "alg": "HS256",
             "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
-        }, 
+        },
         "signature": "qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ"
-    }, 
-    "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7", 
-    "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ", 
+    },
+    "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7",
+    "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ",
     "tenant": {
         "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
     }
@@ -1029,13 +1050,13 @@ Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg
 
 <p>To use a JWT library to validate the token:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li><li><a href="#tabs-get-access-token-ruby">ruby</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li><li><a href="#tabs-get-access-token-ruby">ruby</a></li><li><a href="#tabs-get-access-token-python">python</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
 JwtAuthenticationRequest jwtRequest = Oauth2Requests.JWT_AUTHENTICATION_REQUEST.builder()
   .setJwt(oauthGrantAuthenticationResult.getAccessTokenString())
   .build();
 JwtAuthenticationResult jwtAuthenticationResult = Authenticators.JWT_AUTHENTICATOR
   .forApplication(application)
-  .withLocalValidation()  
+  .withLocalValidation()
   .authenticate(jwtRequest);
 </code> </pre> </div><div id="tabs-get-access-token-node"><pre lang="node"><code>
 // This sample uses NJWT a Node JWT Library (https://github.com/jwtk/jjwt)
@@ -1050,7 +1071,7 @@ nJwt.verify(bearerToken, "$STORMPATH_API_KEY_SECRET", function(err, verifiedJwt)
     }else{
         console.log(verifiedJwt); // Will contain the header and body
     }
-});    
+});
 
 </code> </pre> </div><div id="tabs-get-access-token-php"><pre lang="php"><code>
 // You can pass in a JWT into the `verify` method as a string.  If not, it will look in the HTTP_AUTHORIZATION header for one, and then COOKIE with a name of access_token
@@ -1064,6 +1085,9 @@ begin
 rescue JWT::InvalidJtiError => error
     # handle error
 end
+</code> </pre> </div><div id="tabs-get-access-token-python"><pre lang="python"><code>
+authenticator = JwtAuthenticator(application)
+jwt_authentication_result = authenticator.authenticate(oauth_grant_authentication_result.access_token.token, local_validation=True)
 </code> </pre> </div></div>
 
 
@@ -1079,7 +1103,7 @@ end
 
 <p>Once your application has a <code>Refresh Token</code>, you can pass the token to your Stormpath Application&rsquo;s <code>tokenEndpoint</code> using the <code>refresh_token</code> OAuth 2.0 grant type.</p>
 
-<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-java">java</a></li><li><a href="#tabs-refresh-access-token-curl">curl</a></li><li><a href="#tabs-refresh-access-token-node">node</a></li><li><a href="#tabs-refresh-access-token-php">php</a></li><li><a href="#tabs-refresh-access-token-ruby">ruby</a></li></ul><div id="tabs-refresh-access-token-java"><pre lang="java"><code>
+<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-java">java</a></li><li><a href="#tabs-refresh-access-token-curl">curl</a></li><li><a href="#tabs-refresh-access-token-node">node</a></li><li><a href="#tabs-refresh-access-token-php">php</a></li><li><a href="#tabs-refresh-access-token-ruby">ruby</a></li><li><a href="#tabs-refresh-access-token-python">python</a></li></ul><div id="tabs-refresh-access-token-java"><pre lang="java"><code>
 RefreshGrantRequest refreshRequest = Oauth2Requests.REFRESH_GRANT_REQUEST.builder()
   .setRefreshToken(oauthGrantAuthenticationResult.getRefreshTokenString())
   .build();
@@ -1112,6 +1136,9 @@ $result = $auth->authenticate($refreshGrant);
 refresh_grant = Stormpath::Oauth::RefreshGrantRequest.new(refresh_token)
 result = application.authenticate_oauth(refresh_grant)
 # returns Stormpath::Oauth::AccessToken instance
+</code> </pre> </div><div id="tabs-refresh-access-token-python"><pre lang="python"><code>
+authenticator = RefreshGrantAuthenticator(application)
+result = authenticator.authenticate(oauth_grant_authentication_result.refresh_token)
 </code> </pre> </div></div>
 
 
@@ -1164,78 +1191,80 @@ Pragma: no-cache
 
 <p>For example:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-tokens-for-account-curl">curl</a></li></ul><div id="tabs-get-tokens-for-account-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-tokens-for-account-curl">curl</a></li><li><a href="#tabs-get-tokens-for-account-python">python</a></li></ul><div id="tabs-get-tokens-for-account-curl"><pre lang="curl"><code>
 curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     https://.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/accessTokens?application.href=https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6
+</code> </pre> </div><div id="tabs-get-tokens-for-account-python"><pre lang="python"><code>
+application.auth_tokens
 </code> </pre> </div></div>
 
 
 <p>Response:</p>
 
 <pre><code>{
-    "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/accessTokens", 
+    "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/accessTokens",
     "items": [
         {
             "account": {
                 "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-            }, 
+            },
             "application": {
                 "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
-            }, 
-            "createdAt": "2015-06-24T21:36:52.684Z", 
+            },
+            "createdAt": "2015-06-24T21:36:52.684Z",
             "expandedJwt": {
                 "claims": {
-                    "exp": 1435183612, 
-                    "iat": 1435181812, 
-                    "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6", 
-                    "jti": "zxa7fCzt2etCTce2RWIv5", 
-                    "rti": "zxRTYcdBDiTFQmNIVudTv", 
+                    "exp": 1435183612,
+                    "iat": 1435181812,
+                    "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6",
+                    "jti": "zxa7fCzt2etCTce2RWIv5",
+                    "rti": "zxRTYcdBDiTFQmNIVudTv",
                     "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-                }, 
+                },
                 "header": {
-                    "alg": "HS256", 
+                    "alg": "HS256",
                     "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
-                }, 
+                },
                 "signature": "da8G6xRUVird3MnG8HYTleDtXbwhqUfFK8KUvK8HDYI"
-            }, 
-            "href": "https://api.stormpath.com/v1/accessTokens/zxa7fCzt2etCTce2RWIv5", 
-            "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJ6eGE3ZkN6dDJldENUY2UyUldJdjUiLCJpYXQiOjE0MzUxODE4MTIsImlzcyI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xcDRSMXI5VUJNUXowZVNGQzZYWkU2Iiwic3ViIjoiaHR0cHM6Ly9zdGFnaW5nLWFwaS1iLnN0b3JtcGF0aC5jb20vdjEvYWNjb3VudHMvN05aeFZ5NXJVUzdXZzV2TlNzVFVhYyIsImV4cCI6MTQzNTE4MzYxMiwicnRpIjoienhSVFljZEJEaVRGUW1OSVZ1ZFR2In0.da8G6xRUVird3MnG8HYTleDtXbwhqUfFK8KUvK8HDYI", 
+            },
+            "href": "https://api.stormpath.com/v1/accessTokens/zxa7fCzt2etCTce2RWIv5",
+            "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJ6eGE3ZkN6dDJldENUY2UyUldJdjUiLCJpYXQiOjE0MzUxODE4MTIsImlzcyI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xcDRSMXI5VUJNUXowZVNGQzZYWkU2Iiwic3ViIjoiaHR0cHM6Ly9zdGFnaW5nLWFwaS1iLnN0b3JtcGF0aC5jb20vdjEvYWNjb3VudHMvN05aeFZ5NXJVUzdXZzV2TlNzVFVhYyIsImV4cCI6MTQzNTE4MzYxMiwicnRpIjoienhSVFljZEJEaVRGUW1OSVZ1ZFR2In0.da8G6xRUVird3MnG8HYTleDtXbwhqUfFK8KUvK8HDYI",
             "tenant": {
                 "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
             }
-        }, 
+        },
         {
             "account": {
                 "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-            }, 
+            },
             "application": {
                 "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
-            }, 
-            "createdAt": "2015-06-24T21:42:27.535Z", 
+            },
+            "createdAt": "2015-06-24T21:42:27.535Z",
             "expandedJwt": {
                 "claims": {
-                    "exp": 1435183947, 
-                    "iat": 1435182147, 
-                    "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6", 
-                    "jti": "74Zd80iW0cOhotjXH4GqM7", 
-                    "rti": "zxRTYcdBDiTFQmNIVudTv", 
+                    "exp": 1435183947,
+                    "iat": 1435182147,
+                    "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6",
+                    "jti": "74Zd80iW0cOhotjXH4GqM7",
+                    "rti": "zxRTYcdBDiTFQmNIVudTv",
                     "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
-                }, 
+                },
                 "header": {
-                    "alg": "HS256", 
+                    "alg": "HS256",
                     "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
-                }, 
+                },
                 "signature": "qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ"
-            }, 
-            "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7", 
-            "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ", 
+            },
+            "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7",
+            "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ",
             "tenant": {
                 "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
             }
         }
-    ], 
-    "limit": 25, 
-    "offset": 0, 
+    ],
+    "limit": 25,
+    "offset": 0,
     "size": 2
 }
 </code></pre>
@@ -1248,7 +1277,7 @@ curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 
 <p>For example:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-delete-access-token-java">java</a></li><li><a href="#tabs-delete-access-token-curl">curl</a></li><li><a href="#tabs-delete-access-token-node">node</a></li><li><a href="#tabs-delete-access-token-php">php</a></li><li><a href="#tabs-delete-access-token-ruby">ruby</a></li></ul><div id="tabs-delete-access-token-java"><pre lang="java"><code>
+<div class="tabs"><ul><li><a href="#tabs-delete-access-token-java">java</a></li><li><a href="#tabs-delete-access-token-curl">curl</a></li><li><a href="#tabs-delete-access-token-node">node</a></li><li><a href="#tabs-delete-access-token-php">php</a></li><li><a href="#tabs-delete-access-token-ruby">ruby</a></li><li><a href="#tabs-delete-access-token-python">python</a></li></ul><div id="tabs-delete-access-token-java"><pre lang="java"><code>
 AccessToken accessToken = oauthGrantAuthenticationResult.getAccessToken();
 accessToken.delete();
 </code> </pre> </div><div id="tabs-delete-access-token-curl"><pre lang="curl"><code>
@@ -1262,6 +1291,8 @@ $token->delete();
 </code> </pre> </div><div id="tabs-delete-access-token-ruby"><pre lang="ruby"><code>
 Stormpath::Resource::AccessToken.get href
 access_token.delete
+</code> </pre> </div><div id="tabs-delete-access-token-python"><pre lang="python"><code>
+jwt_authentication_result.delete()
 </code> </pre> </div></div>
 
 
@@ -1282,7 +1313,7 @@ access_token.delete
 
 <h2><a id="wrapping-it-up"></a>Wrapping it up</h2>
 
-<p>In this guide, we discussed how to set up and use Stormpath to generate and manage OAuth 2.0 Access Tokens and Refresh Tokens. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#115;&#x75;&#112;&#112;&#111;&#114;&#116;&#x40;&#115;&#x74;&#111;&#114;&#109;&#112;&#x61;&#116;&#104;&#x2e;&#x63;&#111;&#109;&#x2e;">&#x73;&#x75;&#x70;&#x70;&#111;&#114;&#x74;&#64;&#x73;&#x74;&#111;&#114;&#109;&#112;&#97;&#116;&#x68;&#46;&#x63;&#x6f;&#x6d;&#x2e;</a></p>
+<p>In this guide, we discussed how to set up and use Stormpath to generate and manage OAuth 2.0 Access Tokens and Refresh Tokens. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#105;&#108;&#116;&#111;&#x3a;&#115;&#x75;&#x70;&#112;&#x6f;&#x72;&#116;&#x40;&#x73;&#x74;&#111;&#114;&#x6d;&#x70;&#x61;&#116;&#104;&#x2e;&#x63;&#111;&#109;&#x2e;">&#115;&#117;&#112;&#x70;&#x6f;&#114;&#x74;&#x40;&#115;&#x74;&#111;&#x72;&#x6d;&#112;&#97;&#116;&#x68;&#46;&#x63;&#x6f;&#109;&#46;</a></p>
 
               <div id="spread-word">
 <hr>
@@ -1646,6 +1677,9 @@ addthis:url="https://stormpath.com" >
 		
 	
 		sp_docs_menu['stylesheets'] = [];
+		
+	
+		sp_docs_menu['wizard'] = [];
 		
 	
 </script>
