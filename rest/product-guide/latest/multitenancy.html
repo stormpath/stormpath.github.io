@@ -202,7 +202,7 @@
 <li>The ability to log into the &#8220;Lighting Banking&#8221; application is controlled by the accountStoreMappings that exist between the Application resource and the Organization resources. To enable or disable a tenant (and its userbase) from logging-in, all you would have to do is enable or disable this Account Store Mapping.</li>
 <li>If Claire wanted to create another Account with Bank of B using the same email address, she would be allowed to, since email uniqueness is enforced only inside a Directory.</li>
 <li>Any role Groups must be created separately, on a per-Directory basis. If you decided to create a new role, a new Group resource representing that role would have to be added to each of your tenant Directories if you wanted the Accounts in that Directory to be able to be assigned that role.</li>
-<li>In order to allow System Administrators to log in to the app, you&#8217;d had to create a new Directory just for them, which is separately mapped to the Application as an Account Store. Since this Directory does not represent a tenant, no Organization resource is created.</li>
+<li>In order to allow Application Administrators to log in to the app, you&#8217;d have to create a new Directory just for them, which is separately mapped to the Application as an Account Store. Since this Directory does not represent a tenant, no Organization resource is created.</li>
 </ul>
 </div>
 </div>
@@ -227,25 +227,25 @@
 <li>You can still control access to the Application by enabling or disabling the accountStoreMappings between the Organizations and the Application resource.</li>
 <li>If Claire tried to create another Account with Bank of B using the same email address she&#8217;d used with Bank of A, she would be unable to, since emails must be unique within a Directory.</li>
 <li>If there were a role Group that you wanted to be shared among the tenants, it is as simple as creating one instance of it and then associating Accounts with it.</li>
-<li>System Administrators just need their own Role Group, which is then mapped as an Account Store with the Application.</li>
-<li>Claire and Esther do not have access to your application&#8217;s Admin Console, because that is only allowed for members of the &#8220;Sys Admins&#8221; role Group. If, however, Claire were hired as a System Administrator, then she could be easily added to the &#8220;Sys Admins&#8221; Group and inherit all of its permissions.</li>
+<li>Application Administrators just need their own Role Group, which is then mapped as an Account Store with the Application.</li>
+<li>Claire and Esther do not have access to your application&#8217;s Admin Console, because that is only allowed for members of the &#8220;App Admins&#8221; role Group. If, however, Claire were hired as an Application Administrator, then she could be easily added to the &#8220;App Admins&#8221; Group and inherit all of its permissions.</li>
 </ul>
 </div>
 <div class="section" id="naming-your-tenant-groups">
 <h5>Naming Your Tenant Groups<a class="headerlink" href="#naming-your-tenant-groups" title="Permalink to this headline">¶</a></h5>
 <p>As this is the most common strategy used by our customers, we have found some minor naming conventions that are very powerful and we consider to be best-practice.</p>
-<p>First of all, the name of your tenant Organization will have a unique <code class="docutils literal"><span class="pre">nameKey</span></code>, for example <code class="docutils literal"><span class="pre">BankOfA</span></code>. This <code class="docutils literal"><span class="pre">nameKey</span></code> this can be used for organizing tenant Groups and sub-Groups.</p>
-<p>For example, if your Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">BankOfA</span></code>, you could name the Group <code class="docutils literal"><span class="pre">BankOfA.tenant</span></code>. If you want to create sub-Groups for roles like <code class="docutils literal"><span class="pre">users</span></code> and <code class="docutils literal"><span class="pre">admins</span></code>, we recommend that you prepend the <code class="docutils literal"><span class="pre">nameKey</span></code> to their <code class="docutils literal"><span class="pre">name</span></code> Attribute, along with a descriptive name of what kind of Group it is:</p>
-<p><code class="docutils literal"><span class="pre">BankOfA.role.users</span></code></p>
-<p><code class="docutils literal"><span class="pre">BankOfA.role.administrators</span></code></p>
+<p>First of all, the name of your tenant Organization will have a unique <code class="docutils literal"><span class="pre">nameKey</span></code>, for example <code class="docutils literal"><span class="pre">bank-of-a</span></code>. This <code class="docutils literal"><span class="pre">nameKey</span></code> this can be used for organizing tenant Groups and sub-Groups.</p>
+<p>For example, if your Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">bank-of-a</span></code>, you could name the Group <code class="docutils literal"><span class="pre">bank-of-a.tenant</span></code>. If you want to create sub-Groups for roles like <code class="docutils literal"><span class="pre">users</span></code> and <code class="docutils literal"><span class="pre">admins</span></code>, we recommend that you prepend the <code class="docutils literal"><span class="pre">nameKey</span></code> to their <code class="docutils literal"><span class="pre">name</span></code> Attribute, along with a descriptive name of what kind of Group it is:</p>
+<p><code class="docutils literal"><span class="pre">bank-of-a.role.users</span></code></p>
+<p><code class="docutils literal"><span class="pre">bank-of-a.role.admin</span></code></p>
 <p>This has two benefits:</p>
 <ol class="arabic simple">
 <li>It makes it easy to find all the role Groups for that particular tenant, since you can simply search for the nameKey in the <code class="docutils literal"><span class="pre">name</span></code> field:</li>
 </ol>
 <blockquote>
-<div><code class="docutils literal"><span class="pre">GET</span> <span class="pre">https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=BankOfA.role.*</span></code></div></blockquote>
+<div><code class="docutils literal"><span class="pre">GET</span> <span class="pre">https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=bank-of-a.role.*</span></code></div></blockquote>
 <p>Or, if you wanted to retrieve the tenant Group and all of its sub-Groups, make the query a little less restrictive by removing the &#8220;role&#8221;:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=BankOfA.*
+<div class="highlight-python"><div class="highlight"><pre><span></span>GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=bank-of-a.*
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -273,7 +273,7 @@
 
 <span class="p">{</span>
   <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bank of A&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;BankOfA&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;bank-of-a&quot;</span><span class="p">,</span>
   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span>
 <span class="p">}</span>
 </pre></div>
@@ -288,7 +288,7 @@
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-10-02T15:27:01.658Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-10-02T15:27:01.658Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bank of A&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;BankOfA&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;bank-of-a&quot;</span><span class="p">,</span>
   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
   <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
   <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
