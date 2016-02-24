@@ -109,6 +109,15 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#authenticating-an-account-against-an-organization">7.3. Authenticating an Account against an Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#routing-users-to-their-tenant">7.4 Routing Users to their Tenant</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sub-domain">7.4.1. Sub-Domain</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#separate-domain-space">Separate Domain Space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#combine-with-login-form-field">Combine With Login Form Field</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#login-form-field">7.4.2. Login Form Field</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="idsite.html">8. Using ID Site</a></li>
@@ -162,10 +171,15 @@
 <span id="multitenancy"></span><h1>7. Multi-Tenancy with Stormpath<a class="headerlink" href="#multi-tenancy-with-stormpath" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="what-is-a-multi-tenant-application">
 <h2>7.1. What Is a Multi-Tenant Application?<a class="headerlink" href="#what-is-a-multi-tenant-application" title="Permalink to this headline">¶</a></h2>
-<p>The best way to understand the concept of multi-tenancy is by thinking of a condo: lots of residents making use of a shared infrastructure while maintaining their own private and secure living areas. Similar to this, a <strong>multi-tenant application</strong> is a single application that services multiple tenants simultaneously. For privacy and security purposes, it&#8217;s very important that the application maintain data segmentation between its multiple tenants. At Stormpath, this segmentation is baked-in to our data model. How do we do this? Well, it starts with an Organization.</p>
+<p>The best way to understand the concept of multi-tenancy is by thinking of a condo: lots of residents making use of a shared infrastructure while maintaining their own private and secure living areas. Similar to this, a <strong>multi-tenant application</strong> is a single application that services multiple tenants simultaneously. For privacy and security purposes, it&#8217;s very important that the application maintain data segmentation between its multiple tenants. At Stormpath, this segmentation is baked-in to our data model.</p>
 </div>
 <div class="section" id="modeling-tenants-in-stormpath">
 <h2>7.2. Modeling Tenants in Stormpath<a class="headerlink" href="#modeling-tenants-in-stormpath" title="Permalink to this headline">¶</a></h2>
+<p>Multi-tenant applications come with special user management considerations:</p>
+<ul class="simple">
+<li>How will tenants be represented?</li>
+<li>How will user data in one tenant be kept secure and separate from other tenant partitions?</li>
+</ul>
 <p>In our <a class="reference internal" href="accnt_mgmt.html#account-mgmt"><span>Account Management</span></a> chapter we discussed two kinds of Account Stores: <a class="reference internal" href="accnt_mgmt.html#directory-mgmt"><span>Directories</span></a>, and <a class="reference internal" href="accnt_mgmt.html#group-mgmt"><span>Groups</span></a>. For multi-tenant applications there is an additional <a class="reference internal" href="reference.html#ref-organization"><span>Organization</span></a> resource, which functions like a virtual Account Store that itself wraps both Directories and Groups.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -262,7 +276,7 @@
 <p class="last">The <a class="reference internal" href="reference.html#ref-organization"><span>Organization</span></a> resource is not to be confused with the Tenant resource. While the <a class="reference internal" href="reference.html#ref-tenant"><span>Tenant</span></a> resource is so-called because it represents your tenancy inside the Stormpath server, the Organization resource represents the space alloted for a tenant of your application.</p>
 </div>
 <p>The Organization resource allows your application&#8217;s tenants to have as many, or as few, Directories and Groups as they want, while also maintaining strict data segregation. So if a tenant requires a Cloud Directory, a Google Social Directory, and an LDAP Directory, all of these can sit under the umbrella of a single Organization resource that represents their data space in your app.</p>
-<p>Although Organizations do not themselves own Accounts in the same way as Directories and Groups, they can be mapped to Applications as Account Stores for the purposes of user log in. This means that they can be used as single-point for access control to an Application. So, if you wanted to enable login for a new tenant in your multi-tenant application, all you would have to do is map all of the relevant Directories and/or Groups to your Organization, and then map that Organization to your Application as an Account Store. If at some future point you want to disable that tenant, all you have to do is remove the Account Store Mapping between that Organization and your Application, and the tenant&#8217;s users would no longer be able to log in.</p>
+<p>Although Organizations do not themselves own Accounts in the same way as Directories and Groups, they can be mapped to Applications as Account Stores for the purposes of user log in. This means that they can be used as, among other things, a single-point of access control to an Application. For example, if you wanted to enable login for a new tenant in your multi-tenant application, all you would have to do is map all of the relevant Directories and/or Groups to your Organization, and then map that Organization to your Application as an Account Store. If at some future point you want to disable that tenant, all you have to do is remove the Account Store Mapping between that Organization and your Application, and the tenant&#8217;s users would no longer be able to log in.</p>
 <div class="section" id="how-to-create-an-organization">
 <h4>How to Create an Organization<a class="headerlink" href="#how-to-create-an-organization" title="Permalink to this headline">¶</a></h4>
 <p>You can create an Organization in Stormpath by simply performing an HTTP POST to the <code class="docutils literal"><span class="pre">/v1/organizations</span></code> endpoint.</p>
@@ -397,6 +411,55 @@
 </li>
 </ul>
 <p>If the login attempt does specify an Organization, then we simply jump to that point in the steps, and the Organization&#8217;s Account Stores are iterated through as described above.</p>
+</div>
+<div class="section" id="routing-users-to-their-tenant">
+<span id="multitenant-routing-users"></span><h2>7.4 Routing Users to their Tenant<a class="headerlink" href="#routing-users-to-their-tenant" title="Permalink to this headline">¶</a></h2>
+<p>If you are designing a public multi-tenant web application that supports multiple application tenants with private data partitioning, then you will probably want some way for users to specify which tenant they are logging in to.</p>
+<p>This tenant selection also extends to the requests that the user makes. For example, let&#8217;s say we have a multi-tenant e-commerce SaaS application that shows purchase history. If a user requests the <code class="docutils literal"><span class="pre">/purchases</span></code> view, they should only be able to see the purchases specific to their organization. This means that instead of executing a query like this to a database:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">purchases</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The application needs to know the request user’s tenant identifier so they can show only the purchases for that tenant. The application might instead execute the following query:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">purchases</span> <span class="k">where</span> <span class="n">tenant_id</span> <span class="o">=</span> <span class="o">?</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>where ? is the <code class="docutils literal"><span class="pre">tenant_id</span></code> value obtained by inspecting the request.</p>
+<p>So if an application needs this identifier with every request, how do you ensure it is transmitted to the application in the easiest possible way for your end users? The best method is to use the :ref:<code class="docutils literal"><span class="pre">Organization</span> <span class="pre">resource</span> <span class="pre">&lt;ref-organization&gt;`</span> <span class="pre">and</span> <span class="pre">it's</span> <span class="pre">``nameKey</span></code> attribute.</p>
+<p>We present here two possible solutions that use this <code class="docutils literal"><span class="pre">nameKey</span></code>. You may support both if you wish to give your customers convenience options.</p>
+<div class="section" id="sub-domain">
+<h3>7.4.1. Sub-Domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h3>
+<p>The first solution is to allow your users to access your application via a unique subdomain URL:</p>
+<p><code class="docutils literal"><span class="pre">https://organizationNameKey.myapplication.io</span></code></p>
+<p>The primary benefit here is that the application never needs to ask the user for the tenant identifier, because it is inherently part of every request in the <code class="docutils literal"><span class="pre">HOST</span></code> header. Also, since we are using the Organization resource&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code>, we can guarantee that the URL is unique.</p>
+<p>There are also a few other things that we recommend with this approach:</p>
+<div class="section" id="separate-domain-space">
+<h4>Separate Domain Space<a class="headerlink" href="#separate-domain-space" title="Permalink to this headline">¶</a></h4>
+<p>Keep your customer organization subdomains space completely separate from your company&#8217;s subdomain space by using a different top-level domain name for your SaaS application.</p>
+<p>So if your company&#8217;s website URL is <code class="docutils literal"><span class="pre">http://mycompany.com</span></code>, then your customers could use the <code class="docutils literal"><span class="pre">http://mycompany.io</span></code> domain space:</p>
+<p><code class="docutils literal"><span class="pre">http://customerA.mycompany.io</span></code></p>
+<p>If you use the same domain space, it is possible that one of your customer&#8217;s will end up using a subdomain that you might want to use for your company.</p>
+<p>If you didn&#8217;t want to use a separate top-level domain, you could also use sub-subdomains. For example, the app could be accessible here:</p>
+<p><code class="docutils literal"><span class="pre">http://myapp.mycompany.com</span></code></p>
+<p>And customer organization subdomains for that app would be accessible via:</p>
+<p><code class="docutils literal"><span class="pre">http://customerA.myapp.mycompany.com</span></code></p>
+<p>It is our opinion that the separate top-level domain (e.g. <code class="docutils literal"><span class="pre">http://mycompany.io</span></code>) is the nicer alternative: it is shorter, easier to remember, easier to type, and it also looks better.</p>
+</div>
+<div class="section" id="combine-with-login-form-field">
+<h4>Combine With Login Form Field<a class="headerlink" href="#combine-with-login-form-field" title="Permalink to this headline">¶</a></h4>
+<p>If a user from a customer organization ever accesses your app directly (<code class="docutils literal"><span class="pre">https://mycompany.io</span></code>) instead of using their subdomain (<code class="docutils literal"><span class="pre">https://customerA.mycompany.io</span></code>), you still might need to provide a tenant-aware login form (described below). After login, you can redirect them to their tenant-specific URL for all subsequent requests.</p>
+</div>
+</div>
+<div class="section" id="login-form-field">
+<h3>7.4.2. Login Form Field<a class="headerlink" href="#login-form-field" title="Permalink to this headline">¶</a></h3>
+<p>An alternative, or complimentary, approach to tenant subdomains is to allow the user to specify their tenant on the login page, then storing that information. Then, for all subsequent requests to your application, you can:</p>
+<ul class="simple">
+<li>Inspect the session</li>
+<li>Look up the tenant ID</li>
+<li>Customize data views and queries based on the session&#8217;s Organization</li>
+</ul>
+<p>We advise that you auto-remember the login form tenant ID value so that field is pre-populated whenever a user returns to log in. Users don’t like having to remember and type that value in every time they log in.</p>
+<p>As already mentioned, it is strongly recommended that your tenant identifier be an Organization <code class="docutils literal"><span class="pre">nameKey</span></code>. Firstly because Organizations are the recommended resource to use to model multitenancy, but also because the <code class="docutils literal"><span class="pre">nameKey</span></code> attribute is unique and follows the DNS specification, which means that you could at any time adopt the Sub-Domain approach mentioned above.</p>
+</div>
 </div>
 </div>
 
