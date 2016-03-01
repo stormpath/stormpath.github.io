@@ -7,7 +7,7 @@ content_top: [docs_top.html]
 ---
 <div class="landingpage ios">
 
-<div class="masthead nodejs-masthead">
+<div class="masthead ios-masthead">
   <div class="container">
     <div class="row">
       <div class="col-xs-12">
@@ -29,8 +29,8 @@ content_top: [docs_top.html]
   <div class="row">
     <div class="col-xs-12 col-sm-12">
       <div class="row">
-        <div class="col-xs-12 col-sm-6">
-          <div class="language-header lang2"></div>
+        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+          <div class="language-header lang1"></div>
           <pre><code>pod 'Stormpath'</code></pre>
           <p class="body-copy">iOS SDK for both Swift and Objective-C apps.</p>
             <div class="row">
