@@ -91,7 +91,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">3. Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#retrieve-your-application">3.1. Retrieve Your Application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#create-a-user-account">3.2. Create a User Account</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#authenticate-a-user-account">3.3 Authenticate a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticate-a-user-account">3.3. Authenticate a User Account</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#next-steps">3.4. Next Steps</a></li>
 </ul>
 </li>
@@ -124,7 +124,7 @@
         <div class="rst-content">
           
 
-
+ 
 
 
 
@@ -149,7 +149,7 @@
   <div class="section" id="quickstart">
 <span id="id1"></span><h1>3. Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
 <p>This quickstart will get you up and running with Stormpath in about 7 minutes and give you a good initial feel for the Stormpath REST API.</p>
-<p>These instructions assume that you have <a class="reference external" href="https://curl.haxx.se/download.html">cURL</a> installed on your system and that you have already completed the steps in the <a class="reference internal" href="setup.html#set-up"><span>Set-up chapter</span></a>, and now have:</p>
+<p>These instructions assume that you have <a class="reference external" href="http://curl.haxx.se/download.html">cURL</a> installed on your system and that you have already completed the steps in the <a class="reference internal" href="setup.html#set-up"><span>Set-up chapter</span></a>, and now have:</p>
 <ul class="simple">
 <li>A Stormpath account</li>
 <li>A Stormpath API Key generated and downloaded onto your system</li>
@@ -172,7 +172,7 @@
 <p>Let&#8217;s get started!</p>
 <div class="section" id="retrieve-your-application">
 <h2>3.1. Retrieve Your Application<a class="headerlink" href="#retrieve-your-application" title="Permalink to this headline">¶</a></h2>
-<p>Before you can create user Accounts you&#8217;ll need to retrieve your Stormpath Application. An Application in Stormpath represents the project that you are working on. This means that, if you&#8217;re building a web app named &#8220;Lightsabers Galore&#8221;, you&#8217;d want to name your Stormpath Application &#8220;Lightsabers Galore&#8221; as well. By default, your Stormpath Tenant will have an Application already created for you to use. We will use this Application, named &#8220;My Application&#8221;, for the quickstart.</p>
+<p>Before you can create user Accounts, you&#8217;ll need to retrieve your Stormpath Application. An Application in Stormpath represents the project that you are working on. This means that, if you&#8217;re building a web app named &#8220;Lightsabers Galore&#8221;, you&#8217;d want to name your Stormpath Application &#8220;Lightsabers Galore&#8221; as well. By default, your Stormpath Tenant will have an Application already created for you to use. We will use this Application, named &#8220;My Application&#8221;, for the quickstart.</p>
 <p>In our examples below we will use the mock API Key from the <a class="reference internal" href="setup.html#set-up"><span>First Time Set-Up</span></a> chapter. You should replace this mock Key with your own, valid key:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span>apiKey.id = 144JVZINOF5EBNCMG9EXAMPLE
 apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
@@ -180,19 +180,19 @@ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 </div>
 <p>Before you can get your Application, you must get the location of your Tenant from Stormpath, like so:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>curl --request GET <span class="se">\</span>
-  --user $SP_API_KEY_ID:$SP_API_KEY_SECRET <span class="se">\</span>
-  --header <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
+  --user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
+  --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
   --url <span class="s2">&quot;https://api.stormpath.com/v1/tenants/current&quot;</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">$SP_API_KEY_ID</span></code> is the <code class="docutils literal"><span class="pre">apiKey.id</span></code> value in
+<li><code class="docutils literal"><span class="pre">$API_KEY_ID</span></code> is the <code class="docutils literal"><span class="pre">apiKey.id</span></code> value in
 <code class="docutils literal"><span class="pre">apiKey.properties</span></code> and</li>
-<li><code class="docutils literal"><span class="pre">$SP_API_KEY_SECRET</span></code> is the <code class="docutils literal"><span class="pre">apiKey.secret</span></code> value in
+<li><code class="docutils literal"><span class="pre">$API_KEY_SECRET</span></code> is the <code class="docutils literal"><span class="pre">apiKey.secret</span></code> value in
 <code class="docutils literal"><span class="pre">apiKey.properties</span></code></li>
 </ul>
 <p>The above cURL command returns an empty body along with a header:</p>
-<div class="highlight-none"><div class="highlight"><pre><span></span>  HTTP/1.1 302 Found
+<div class="highlight-http"><div class="highlight"><pre><span></span>  HTTP/1.1 302 Found
 <span class="hll">  Location: https://api.stormpath.com/v1/tenants/yOuRTeNANtid
 </span>  Content-Length: 0
 </pre></div>
@@ -200,8 +200,8 @@ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 <p>Make note of the <code class="docutils literal"><span class="pre">Location</span></code> header. This is the location of your Tenant in Stormpath, which you will need in the next step.</p>
 <p>From here, using the location of the Tenant, you can get your Application by performing a search for the Application by name, with $TENANT_HREF replaced with the <code class="docutils literal"><span class="pre">href</span></code> of your Tenant from the previous cURL:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>curl --request GET <span class="se">\</span>
-  --user $SP_API_KEY_ID:$SP_API_KEY_SECRET <span class="se">\</span>
-  --header <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\</span>
+  --user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
+  --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
   --url <span class="s2">&quot;https://api.stormpath.com/v1/tenants/yOuRTeNANtid/applications?name=My%20Application&quot;</span>
 </pre></div>
 </div>
@@ -242,16 +242,16 @@ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 <div class="section" id="create-a-user-account">
 <h2>3.2. Create a User Account<a class="headerlink" href="#create-a-user-account" title="Permalink to this headline">¶</a></h2>
 <p>Now that we&#8217;ve created an Application, let&#8217;s create a user Account so someone can log in to (i.e. authenticate with) the Application.</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>curl --request POST <span class="se">\</span>
-  --user $SP_API_KEY_ID:$SP_API_KEY_SECRET <span class="se">\</span>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl --request GET <span class="se">\</span>
+  --user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
   --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
-  --url <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlEXampLE/accounts&quot;</span> <span class="se">\</span>
+  --url <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlEXampLE/accounts&quot;</span>
   --data <span class="s1">&#39;{</span>
 <span class="s1">  &quot;givenName&quot;: &quot;Joe&quot;,</span>
 <span class="s1">  &quot;surname&quot;: &quot;Stormtrooper&quot;,</span>
 <span class="s1">  &quot;username&quot;: &quot;tk421&quot;,</span>
 <span class="s1">  &quot;email&quot;: &quot;tk421@stormpath.com&quot;,</span>
-<span class="s1">  &quot;password&quot;:&quot;Changeme1&quot;</span>
+<span class="s1">  &quot;password&quot;:&quot;Changeme1&quot;,</span>
 <span class="s1">  }&#39;</span>
 </pre></div>
 </div>
@@ -287,12 +287,12 @@ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 <p>You&#8217;ll notice here that this user Account has a Directory <code class="docutils literal"><span class="pre">href</span></code> returned as well, even though you haven&#8217;t created one. This is because when you created an Application, Stormpath automatically created a new Directory as well.</p>
 </div>
 <div class="section" id="authenticate-a-user-account">
-<h2>3.3 Authenticate a User Account<a class="headerlink" href="#authenticate-a-user-account" title="Permalink to this headline">¶</a></h2>
+<h2>3.3. Authenticate a User Account<a class="headerlink" href="#authenticate-a-user-account" title="Permalink to this headline">¶</a></h2>
 <p>Now we have a user Account that can use your Application. But how do you authenticate an Account logging in to the Application?</p>
 <p>You POST a &#8220;Login Attempt&#8221; to your Application&#8217;s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint.</p>
 <p>The login cURL command would look as follows:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span>curl --request POST <span class="se">\</span>
-  --user $SP_API_KEY_ID:$SP_API_KEY_SECRET <span class="se">\</span>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl --request GET <span class="se">\</span>
+  --user <span class="nv">$API_KEY_ID</span>:<span class="nv">$API_KEY_SECRET</span> <span class="se">\</span>
   --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
   --url <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlEXampLE/loginAttempts&quot;</span>
   --data <span class="s1">&#39;{</span>
