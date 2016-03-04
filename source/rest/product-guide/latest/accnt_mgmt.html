@@ -216,9 +216,18 @@
             
   <div class="section" id="account-management">
 <span id="account-mgmt"></span><h1>4. Account Management<a class="headerlink" href="#account-management" title="Permalink to this headline">¶</a></h1>
+<p>This chapter provides the information necessary for you to understand the resources and processes involved in Account Management in Stormpath. In addition to information about the different types of resources, it also contains examples of the steps required in setting up a basic user Account with membership in a Group. If you&#8217;d like to skip to those steps they are:</p>
+<ol class="arabic simple">
+<li><a class="reference internal" href="#make-cloud-dir"><span>Creating a Directory</span></a></li>
+<li><a class="reference internal" href="#make-group"><span>Creating a Group</span></a></li>
+<li><a class="reference internal" href="#add-new-account"><span>Adding an Account to a Directory</span></a></li>
+<li><a class="reference internal" href="#add-account-to-group"><span>Adding our Account to a Group</span></a></li>
+</ol>
+<p>The final step that would allow this Account to actually log in to the application is covered in <a class="reference internal" href="auth_n.html#create-asm"><span>the Authentication chapter</span></a>.</p>
 <div class="section" id="modeling-your-user-base">
 <h2>4.1. Modeling Your User Base<a class="headerlink" href="#modeling-your-user-base" title="Permalink to this headline">¶</a></h2>
-<p>The first question that we need to address is how we are going to model our users inside Stormpath. User Accounts in Stormpath aren&#8217;t directly associated with Applications, but only indirectly via <strong>Directories</strong> and also possibly <strong>Groups</strong>.</p>
+<p>The first topic that we need to address is how we are user modeling works inside Stormpath.</p>
+<p>User Accounts in Stormpath aren&#8217;t directly associated with Applications, but only indirectly via <strong>Directories</strong>, <strong>Organizations</strong>, and also possibly <strong>Groups</strong>.</p>
 <p>All of your Accounts will have to be associated with at least one Directory resource, so we can start there.</p>
 <div class="section" id="directories">
 <span id="directory-mgmt"></span><h3>4.1.1. Directories<a class="headerlink" href="#directories" title="Permalink to this headline">¶</a></h3>
@@ -242,7 +251,7 @@
 <span id="about-cloud-dir"></span><h4>Cloud Directories<a class="headerlink" href="#cloud-directories" title="Permalink to this headline">¶</a></h4>
 <p>The standard, default Directory resource. They can be created using a simple POST API.</p>
 <div class="section" id="how-to-make-a-cloud-directory">
-<h5>How to Make a Cloud Directory<a class="headerlink" href="#how-to-make-a-cloud-directory" title="Permalink to this headline">¶</a></h5>
+<span id="make-cloud-dir"></span><h5>How to Make a Cloud Directory<a class="headerlink" href="#how-to-make-a-cloud-directory" title="Permalink to this headline">¶</a></h5>
 <p>The following API request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
@@ -279,6 +288,12 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>Our current resources (<strong>not including the default ones</strong> created in the <a class="reference internal" href="quickstart.html#quickstart"><span>Quickstart</span></a>) can be visualized like this:</p>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="_images/am_erd_01.png"><img alt="&lt;ERD with Directory&gt;" src="_images/am_erd_01.png" /></a>
+<p class="caption"><span class="caption-text"><em>Our Stormpath Tenant, with an Application resource and our newly created &#8220;Captains&#8221; Directory</em></span></p>
+</div>
+<p>Any new Groups or Accounts that we create will have to be created inside a Directory. Before we move on to that though, it&#8217;s helpful to know a little about the other kinds of Directories available to you in Stormpath.</p>
 </div>
 </div>
 <div class="section" id="mirror-directories">
@@ -376,7 +391,7 @@
 <p>It can also be included in the customData resource, as a series of key-value relations. The downside to this second approach is that customData resources are not currently searchable in the same manner as the Group&#8217;s <code class="docutils literal"><span class="pre">description</span></code> field is.</p>
 </div>
 <div class="section" id="how-to-create-a-group">
-<h4>How to Create a Group<a class="headerlink" href="#how-to-create-a-group" title="Permalink to this headline">¶</a></h4>
+<span id="make-group"></span><h4>How to Create a Group<a class="headerlink" href="#how-to-create-a-group" title="Permalink to this headline">¶</a></h4>
 <p>So let&#8217;s say we want to add a new Group resource with the name &#8220;Starfleet Officers&#8221; to the &#8220;Captains&#8221; Directory.</p>
 <p>The following API request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/groups</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
@@ -423,6 +438,11 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>So we can now see how this Group would look in our Tenant:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/am_erd_02.png"><img alt="&lt;ERD with Directory and Group&gt;" src="_images/am_erd_02.png" /></a>
+</div>
+<p>As we can see here, there is our Application, Directory, and our newly-created Group, and they are all found inside the Stormpath Tenant.</p>
 </div>
 </div>
 </div>
@@ -432,13 +452,13 @@
 <p>For more detailed information about the Account resource, see the <a class="reference internal" href="reference.html#ref-account"><span>Account</span></a> section of the Reference chapter.</p>
 <div class="section" id="new-account-creation">
 <h3>4.2.1. New Account Creation<a class="headerlink" href="#new-account-creation" title="Permalink to this headline">¶</a></h3>
-<p>The basic steps for creating a new Account are covered in the <a class="reference internal" href="quickstart.html#quickstart"><span>Quickstart</span></a> chapter. In that example, we show how to add an Account to an Application. Below, we will also show how to add an Account to a specific Directory or Group.</p>
+<p>The basic steps for creating a new Account are covered in the <a class="reference internal" href="quickstart.html#quickstart"><span>Quickstart</span></a> chapter. In that example, we show how to add an Account to an Application. Below, we will also show how to add an Account to a specific Directory, or Group.</p>
 <div class="section" id="add-a-new-account-to-a-directory">
 <span id="add-new-account"></span><h4>Add a New Account to a Directory<a class="headerlink" href="#add-a-new-account-to-a-directory" title="Permalink to this headline">¶</a></h4>
-<p>Because Accounts are &#8220;owned&#8221; by Directories, you create new Accounts by adding them to a Directory. You can add an Account to a Directory directly, or you can add it indirectly by registering an Account with an Application, like in the <a class="reference internal" href="quickstart.html#quickstart"><span>Quickstart</span></a>.</p>
+<p>Because Accounts are &#8220;owned&#8221; by Directories, you create new Accounts by adding them to a Directory. You can add an Account to a Directory directly, or you can add it indirectly by registering an Account with an Application, like in the <a class="reference internal" href="quickstart.html#quickstart"><span>Quickstart</span></a>, or an Organization, like in <a class="reference internal" href="multitenancy.html#add-accnt-to-org"><span>the Multi-tenancy Chapter</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This section will show examples using a Directory&#8217;s <code class="docutils literal"><span class="pre">/accounts</span></code> href, but they will also function the same if you use an Application’s <code class="docutils literal"><span class="pre">/accounts</span></code> href instead.</p>
+<p class="last">This section will show examples using a Directory&#8217;s <code class="docutils literal"><span class="pre">/accounts</span></code> href, but they will also function the same if you use an Application’s or Organization&#8217;s <code class="docutils literal"><span class="pre">/accounts</span></code> href instead. Just make sure that you have Default Account Stores configured!</p>
 </div>
 <p>Let&#8217;s say we want to add a new account for user &#8220;Jean-Luc Picard&#8221; to the &#8220;Captains&#8221; Directory, which has the <code class="docutils literal"><span class="pre">directoryId</span></code> value <code class="docutils literal"><span class="pre">2SKhstu8PlaekcaEXampLE</span></code>. The following API request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
@@ -488,9 +508,14 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>Going back to our resource diagram:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/am_erd_03.png"><img alt="ERD with groupMembership" src="_images/am_erd_03.png" /></a>
+</div>
+<p>We now have our new Account inside the &#8220;Captains&#8221; Directory.</p>
 </div>
 <div class="section" id="add-an-existing-account-to-a-group">
-<h4>Add an Existing Account to a Group<a class="headerlink" href="#add-an-existing-account-to-a-group" title="Permalink to this headline">¶</a></h4>
+<span id="add-account-to-group"></span><h4>Add an Existing Account to a Group<a class="headerlink" href="#add-an-existing-account-to-a-group" title="Permalink to this headline">¶</a></h4>
 <p>So let&#8217;s say we want to add &#8220;Jean-Luc Picard&#8221; to the &#8220;Starfleet Officers&#8221; Group inside the &#8220;Captains&#8221; Directory.</p>
 <p>We make the following request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/groupMemberships</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
@@ -523,6 +548,11 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>This would leave us with the following resources:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/am_erd_final.png"><img alt="Final ERD" src="_images/am_erd_final.png" /></a>
+</div>
+<p>This our completed resource set, with an Account that is a member of a Group inside a Directory. That Directory, along with the Application, sit inside the Stormpath Tenant. Notice, however, that there is no association between the Application and the Directory. For more information about this, please see <a class="reference internal" href="auth_n.html#create-asm"><span>the Authentication chapter</span></a>.</p>
 </div>
 </div>
 <div class="section" id="importing-accounts">
@@ -1181,6 +1211,7 @@ This link takes you to a secure page where you can change your password.
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/javascript_for_java.js"></script>
 
   
 
