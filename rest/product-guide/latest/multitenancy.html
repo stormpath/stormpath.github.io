@@ -104,6 +104,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#how-to-create-an-organization">How to Create an Organization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adding-an-account-store-to-an-organization">Adding an Account Store to an Organization</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#registering-an-organization-as-an-account-store-for-an-application">Registering an Organization as an Account Store for an Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-an-account-to-an-organization">Adding an Account to an Organization</a></li>
 </ul>
 </li>
 </ul>
@@ -394,6 +395,26 @@
 <p>As described in <a class="reference internal" href="auth_n.html#authn"><span>the Authentication chapter</span></a>, in order to allow users to log-in to an Application, you must map some kind of Account Store (e.g. a Group or Directory) to it. One approach is to go one-by-one and map each Directory and/or Group to the Application. However, since we are building a multi-tenant app, and the Organization is itself an Account Store, we can just map our Organization resource to our Application resource. This would enable login for all of the Directories and Groups currently inside that Organization, as well as any we add in the future.</p>
 <p>To map an Organization to an Application, simply follow the steps you would for any Account Store, as described in <a class="reference internal" href="auth_n.html#create-asm"><span>Mapping a new Account Store</span></a>.</p>
 </div>
+<div class="section" id="adding-an-account-to-an-organization">
+<span id="add-accnt-to-org"></span><h4>Adding an Account to an Organization<a class="headerlink" href="#adding-an-account-to-an-organization" title="Permalink to this headline">¶</a></h4>
+<p>Adding a new Account to an Organization is exactly the same as adding them to a Directory, except that you use the Organization to route the creation request:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/organizations/2P4XOanz26AUomIexAmple/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Annie&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Nguyen&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;annie@nguyengland.me&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;annie@nguyengland.me&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="s2">&quot;Changeme1&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;favoriteColor&quot;</span><span class="p">:</span> <span class="s2">&quot;fuschia&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="authenticating-an-account-against-an-organization">
@@ -513,6 +534,7 @@
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/javascript_for_java.js"></script>
 
   
 
