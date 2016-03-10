@@ -38,7 +38,7 @@ content_top: [docs_top.html]
                 <ul class="fa-ul">
                   <li><i class="fa-li fa fa-book"></i><a href="/ios/apidocs/index.html">Documentation</a></li>
                   <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-ios-example">Example Application</a></li>
-                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-swift">Project on GitHub</a></li>
+                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-ios">Project on GitHub</a></li>
               </div>
               <div class="col-md-6 hidden-sm">
                 <ul class="fa-ul">
@@ -48,7 +48,7 @@ content_top: [docs_top.html]
               </div>
               <div class="col-md-6 hidden-sm">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-swift">Project on GitHub</a></li>
+                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-ios">Project on GitHub</a></li>
                 </ul>
               </div>
             </div>
