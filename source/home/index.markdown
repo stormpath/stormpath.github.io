@@ -47,6 +47,9 @@ alias: [/index.html]
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="/ios/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-ios.jpg"></a>
           </div>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="https://github.com/stormpath/stormpath-sdk-android/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-android.jpg"></a>
+          </div>
           <div class="hidden">
             <a href="https://github.com/stormpath/stormpath-nginx-module"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-nginx.jpg"></a>
           </div>
