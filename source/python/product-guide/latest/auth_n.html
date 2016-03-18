@@ -980,7 +980,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p class="first admonition-title">Note</p>
 <p class="last">It is required that your GitHub application requests the <code class="docutils literal"><span class="pre">user:email</span></code> scope from GitHub. If the access token does not grant <code class="docutils literal"><span class="pre">user:email</span></code> scope, you will not be able to get an Account with an access token. For more information about see <a class="reference external" href="https://developer.github.com/v3/oauth/#scopes">Github&#8217;s documentation on OAuth scopes</a>.</p>
 </div>
-<p>Once the Authorization Code is gathered, you can send an HTTP POST:</p>
+<p>Once the Authorization Code is gathered, you need to use the <a class="reference external" href="https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site">Github Access Token Endpoint</a> to exchange this code for a access token.  Then you can send an HTTP POST to Stormpath:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
@@ -988,12 +988,12 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <span class="p">{</span>
   <span class="nt">&quot;providerData&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;github&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;code&quot;</span><span class="p">:</span> <span class="s2">&quot;AUTH_CODE_FROM_GITHUB&quot;</span>
+    <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;ACCESS_TOKEN_FROM_GITHUB&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Stormpath will use the <code class="docutils literal"><span class="pre">code</span></code> provided to retrieve information about your GitHub Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).</p>
+<p>Stormpath will use the <code class="docutils literal"><span class="pre">accessToken</span></code> provided to retrieve information about your GitHub Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).</p>
 </div>
 </div>
 <div class="section" id="linkedin">
