@@ -1,0 +1,780 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Upgrade Guide &mdash; Express Library Guide 2.0.3 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Express Library Guide 2.0.3 documentation" href="index.html"/>
+        <link rel="prev" title="Change Log" href="changelog.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> Express Library Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-does-this-library-do">What does this library do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#who-should-use-stormpath">Who Should Use Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#create-a-stormpath-account">Create a Stormpath Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#create-an-api-key-pair">Create an API Key Pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#create-a-stormpath-application">Create a Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#bonus-create-a-directory">Bonus: Create a Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#install-the-package">Install the Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#initialize-express-stormpath">Initialize Express-Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#option-profiles">Option Profiles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#stormpath-client-options">Stormpath Client Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#startup">Startup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#single-page-applications">Single Page Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_data.html">User Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#req-user">req.user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#custom-data">Custom Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#automatic-expansion">Automatic Expansion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#collections">Collections</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#browser-sessions">Browser Sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#api-authentication-basic-auth">API Authentication: Basic Auth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#api-authentication-access-tokens">API Authentication: Access Tokens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#configuring-oauth-token-settings">Configuring OAuth Token Settings</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authorization.html">Authorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#group-based-access-control">Group-based Access Control</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#customizing-the-fields">Customizing The Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#password-strength-rules">Password Strength Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#auto-login">Auto Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#post-registration-handler">Post Registration Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#json-api">JSON API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#json-api">JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#post-login-handler">Post Login Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#using-id-site">Using ID Site</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social_login.html">Social Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#facebook-login">Facebook Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#google-login">Google Login</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#configuration-options">Configuration Options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_reset.html">Password Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#enable-the-workflow">Enable the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#using-the-workflow">Using the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#customizing-the-ux">Customizing the UX</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#default-views">Default Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#custom-views">Custom Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#view-variables">View Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#request-variables">Request Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#response-variables">Response Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributors.html#developers">Developers</a></li>
+</ul>
+</li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-3">Version 2.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-2">Version 2.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-1">Version 2.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-0">Version 2.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-6">Version 1.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-5">Version 1.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-4">Version 1.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-3">Version 1.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-2">Version 1.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-1">Version 1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-9">Version 0.6.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-8">Version 0.6.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-7">Version 0.6.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-6">Version 0.6.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-5">Version 0.6.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-4">Version 0.6.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-3">Version 0.6.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-2">Version 0.6.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-1">Version 0.6.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-0">Version 0.6.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-9">Version 0.5.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-8">Version 0.5.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-7">Version 0.5.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-6">Version 0.5.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-5">Version 0.5.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-4">Version 0.5.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-3">Version 0.5.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-2">Version 0.5.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-1">Version 0.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-0">Version 0.5.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-9">Version 0.4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-8">Version 0.4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-7">Version 0.4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-6">Version 0.4.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-5">Version 0.4.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-4">Version 0.4.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-3">Version 0.4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-2">Version 0.4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-1">Version 0.4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-0">Version 0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-4">Version 0.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-3">Version 0.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-2">Version 0.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-1">Version 0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-0">Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-9">Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-8">Version 0.2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-7">Version 0.2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-6">Version 0.2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-5">Version 0.2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-4">Version 0.2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-3">Version 0.2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-2">Version 0.2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-1">Version 0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-0">Version 0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-9">Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-8">Version 0.1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-7">Version 0.1.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-6">Version 0.1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-5">Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-4">Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-3">Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-2">Version 0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-0">Version 0.1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-2-0-2-version-2-0-3">Version 2.0.2 -&gt; Version 2.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-2-0-1-version-2-0-2">Version 2.0.1 -&gt; Version 2.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-2-0-0-version-2-0-1">Version 2.0.0 -&gt; Version 2.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-0-6-version-2-0-0">Version 1.0.6 -&gt; Version 2.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-0-5-version-1-0-6">Version 1.0.5 -&gt; Version 1.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-0-4-version-1-0-5">Version 1.0.4 -&gt; Version 1.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-0-3-version-1-0-4">Version 1.0.3 -&gt; Version 1.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-0-2-version-1-0-3">Version 1.0.2 -&gt; Version 1.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-0-1-version-1-0-2">Version 1.0.1 -&gt; Version 1.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-0-0-version-1-0-1">Version 1.0.0 -&gt; Version 1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-6-9-version-1-0-0">Version 0.6.9 -&gt; Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-6-8-version-0-6-9">Version 0.6.8 -&gt; Version 0.6.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-6-7-version-0-6-8">Version 0.6.7 -&gt; Version 0.6.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-6-6-version-0-6-7">Version 0.6.6 -&gt; Version 0.6.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-6-5-version-0-6-6">Version 0.6.5 -&gt; Version 0.6.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-6-4-version-0-6-5">Version 0.6.4 -&gt; Version 0.6.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-6-3-version-0-6-4">Version 0.6.3 -&gt; Version 0.6.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-6-2-version-0-6-3">Version 0.6.2 -&gt; Version 0.6.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-6-1-version-0-6-2">Version 0.6.1 -&gt; Version 0.6.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-6-0-version-0-6-1">Version 0.6.0 -&gt; Version 0.6.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-5-9-version-0-6-0">Version 0.5.9 -&gt; Version 0.6.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-5-8-version-0-5-9">Version 0.5.8 -&gt; Version 0.5.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-5-7-version-0-5-8">Version 0.5.7 -&gt; Version 0.5.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-5-6-version-0-5-7">Version 0.5.6 -&gt; Version 0.5.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-5-5-version-0-5-6">Version 0.5.5 -&gt; Version 0.5.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-5-4-version-0-5-5">Version 0.5.4 -&gt; Version 0.5.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-5-3-version-0-5-4">Version 0.5.3 -&gt; Version 0.5.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-5-2-version-0-5-3">Version 0.5.2 -&gt; Version 0.5.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-5-1-version-0-5-2">Version 0.5.1 -&gt; Version 0.5.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-5-0-version-0-5-1">Version 0.5.0 -&gt; Version 0.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-4-9-version-0-5-0">Version 0.4.9 -&gt; Version 0.5.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-4-8-version-0-4-9">Version 0.4.8 -&gt; Version 0.4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-4-7-version-0-4-8">Version 0.4.7 -&gt; Version 0.4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-4-6-version-0-4-7">Version 0.4.6 -&gt; Version 0.4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-4-5-version-0-4-6">Version 0.4.5 -&gt; Version 0.4.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-4-4-version-0-4-5">Version 0.4.4 -&gt; Version 0.4.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-4-3-version-0-4-4">Version 0.4.3 -&gt; Version 0.4.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-4-2-version-0-4-3">Version 0.4.2 -&gt; Version 0.4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-4-1-version-0-4-2">Version 0.4.1 -&gt; Version 0.4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-4-0-version-0-4-1">Version 0.4.0 -&gt; Version 0.4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-3-4-version-0-4-0">Version 0.3.4 -&gt; Version 0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-3-3-version-0-3-4">Version 0.3.3 -&gt; Version 0.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-3-2-version-0-3-3">Version 0.3.2 -&gt; Version 0.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-3-1-version-0-3-2">Version 0.3.1 -&gt; Version 0.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-3-0-version-0-3-1">Version 0.3.0 -&gt; Version 0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-9-version-0-3-0">Version 0.2.9 -&gt; Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-8-version-0-2-9">Version 0.2.8 -&gt; Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-7-version-0-2-8">Version 0.2.7 -&gt; Version 0.2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-6-version-0-2-7">Version 0.2.6 -&gt; Version 0.2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-5-version-0-2-6">Version 0.2.5 -&gt; Version 0.2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-4-version-0-2-5">Version 0.2.4 -&gt; Version 0.2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-3-version-0-2-4">Version 0.2.3 -&gt; Version 0.2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-2-version-0-2-3">Version 0.2.2 -&gt; Version 0.2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-1-version-0-2-2">Version 0.2.1 -&gt; Version 0.2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-0-version-0-2-1">Version 0.2.0 -&gt; Version 0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-1-9-version-0-2-0">Version 0.1.9 -&gt; Version 0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-1-8-version-0-1-9">Version 0.1.8 -&gt; Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-1-7-version-0-1-8">Version 0.1.7 -&gt; Version 0.1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-1-6-version-0-1-7">Version 0.1.6 -&gt; Version 0.1.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-1-5-version-0-1-6">Version 0.1.5 -&gt; Version 0.1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-1-4-version-0-1-5">Version 0.1.4 -&gt; Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-1-3-version-0-1-4">Version 0.1.3 -&gt; Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-1-2-version-0-1-3">Version 0.1.2 -&gt; Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-1-0-version-0-1-2">Version 0.1.0 -&gt; Version 0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-0-0-version-0-1-0">Version 0.0.0 -&gt; Version 0.1.0</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Express Library Guide</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Upgrade Guide</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/upgrading.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="upgrade-guide">
+<span id="upgrading"></span><h1>Upgrade Guide<a class="headerlink" href="#upgrade-guide" title="Permalink to this headline">¶</a></h1>
+<p>This page contains specific upgrading instructions to help you migrate between
+Express-Stormpath releases.</p>
+<div class="section" id="version-2-0-2-version-2-0-3">
+<h2>Version 2.0.2 -&gt; Version 2.0.3<a class="headerlink" href="#version-2-0-2-version-2-0-3" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-2-0-1-version-2-0-2">
+<h2>Version 2.0.1 -&gt; Version 2.0.2<a class="headerlink" href="#version-2-0-1-version-2-0-2" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-2-0-0-version-2-0-1">
+<h2>Version 2.0.0 -&gt; Version 2.0.1<a class="headerlink" href="#version-2-0-0-version-2-0-1" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-1-0-6-version-2-0-0">
+<h2>Version 1.0.6 -&gt; Version 2.0.0<a class="headerlink" href="#version-1-0-6-version-2-0-0" title="Permalink to this headline">¶</a></h2>
+<p><strong>Many changes needed!</strong></p>
+<p>This is a <strong>major release</strong> in the life of this library.  This release includes
+tons of new features, refactorings, etc.</p>
+<p>To upgrade from <strong>1.0.6</strong>, please pay careful attention to the below notes.</p>
+<p>Firstly, this library now takes new configuration options.  When you initialize
+the middleware, you&#8217;ll need to pass in the following basic options:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">client</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">apiKey</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">id</span><span class="o">:</span> <span class="s1">&#39;xxx&#39;</span><span class="p">,</span>
+      <span class="nx">secret</span><span class="o">:</span> <span class="s1">&#39;yyy&#39;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="nx">application</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">href</span><span class="o">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/applications/xxx&#39;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Every setting in the new configuration can also be set via environment
+variables.  The way it works is that all nested fields are expanded out to their
+full path.  For instance, if you wanted to set <cite>client.apiKey.id</cite>, you could
+create an environment variable called:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">STORMPATH_CLIENT_APIKEY_ID</span><span class="o">=</span><span class="nx">xxx</span>
+</pre></div>
+</div>
+<p>Likewise, for the rest of the settings above:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">STORMPATH_CLIENT_APIKEY_SECRET</span><span class="o">=</span><span class="nx">yyy</span>
+<span class="nx">STORMPATH_APPLICATION_HREF</span><span class="o">=</span><span class="nx">https</span><span class="o">:</span><span class="c1">//api.stormpath.com/v1/applications/xxx</span>
+</pre></div>
+</div>
+<p>Next, we&#8217;ve disabled default login, registration, and logout routes.  To enable
+them, you&#8217;ll want to do the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">website</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>This will enable the default <em>website</em> features this library provides:</p>
+<ul class="simple">
+<li>A login page (<cite>/login</cite>).</li>
+<li>A registration page (<cite>/register</cite>).</li>
+<li>A logout route (<cite>/logout</cite>).</li>
+</ul>
+<p>Next, we&#8217;ve disabled the <cite>/oauth</cite> endpoint we previously enabled by default.  If
+you want to enable this, with its default settings, you can now do the
+following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">api</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Another important thing to note, our old OAuth functionality created a route
+that lived at <cite>/oauth</cite>.  When you enable the <em>new</em> OAuth endpoint, it will live
+at <cite>/oauth/token</cite> instead.  This was done to comply with the OAuth2 spec more
+closely, and ensure compatibility between libraries / frameworks.</p>
+<p>Other than the above, your upgrade process should go smoothly.  There are, of
+course, lots of new features / configuration options, so please read through the
+new library documentation to get a feeling for it!</p>
+<p>Thanks for reading,</p>
+<p>-Randall</p>
+</div>
+<div class="section" id="version-1-0-5-version-1-0-6">
+<h2>Version 1.0.5 -&gt; Version 1.0.6<a class="headerlink" href="#version-1-0-5-version-1-0-6" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-1-0-4-version-1-0-5">
+<h2>Version 1.0.4 -&gt; Version 1.0.5<a class="headerlink" href="#version-1-0-4-version-1-0-5" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-1-0-3-version-1-0-4">
+<h2>Version 1.0.3 -&gt; Version 1.0.4<a class="headerlink" href="#version-1-0-3-version-1-0-4" title="Permalink to this headline">¶</a></h2>
+<p>If you were previously working with Stormpath sessions directly, then you&#8217;ll
+need to modify your code.  While previously Stormpath sessions were referred to
+by <code class="docutils literal"><span class="pre">req.session</span></code>, they are now referred to by <code class="docutils literal"><span class="pre">req.stormpathSession</span></code>.</p>
+</div>
+<div class="section" id="version-1-0-2-version-1-0-3">
+<h2>Version 1.0.2 -&gt; Version 1.0.3<a class="headerlink" href="#version-1-0-2-version-1-0-3" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-1-0-1-version-1-0-2">
+<h2>Version 1.0.1 -&gt; Version 1.0.2<a class="headerlink" href="#version-1-0-1-version-1-0-2" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-1-0-0-version-1-0-1">
+<h2>Version 1.0.0 -&gt; Version 1.0.1<a class="headerlink" href="#version-1-0-0-version-1-0-1" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-6-9-version-1-0-0">
+<h2>Version 0.6.9 -&gt; Version 1.0.0<a class="headerlink" href="#version-0-6-9-version-1-0-0" title="Permalink to this headline">¶</a></h2>
+<p>This is a major release that breaks several things from older releases.</p>
+<p>Firstly, if you were previously using the <code class="docutils literal"><span class="pre">postRegistrationHandler</span></code> to perform
+custom logic after a new user registers, you&#8217;ll need to modify this event
+handler to accept new arguments.</p>
+<p>Previously, the <code class="docutils literal"><span class="pre">postRegistrationHandler</span></code> had a method signature that looked
+like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">postRegistrationHandler</span><span class="p">(</span><span class="nx">account</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>In this release, we&#8217;re modifying the method signature to look like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">postRegistrationHandler</span><span class="p">(</span><span class="nx">account</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>What we&#8217;ve done is add in a new parameter: <code class="docutils literal"><span class="pre">req</span></code>, which is the Express request
+object.  This gives you more control over the request, and allows you to do
+things like modify session data, etc.</p>
+<p>Secondly, we no longer support old sessions.</p>
+<p>If you are upgrading directly from an older release (<em>version 0.2.x</em>) to this
+release, then your existing user sessions will be invalid, and this will force
+your users to re-authenticate the next time they visit your site.  This is due
+to a change in the way we store session data that was introduced in <em>version
+0.3.x</em>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The session change will NOT break your code, but it WILL require your users
+to re-authenticate the next time they visit your site.</p>
+</div>
+</div>
+<div class="section" id="version-0-6-8-version-0-6-9">
+<h2>Version 0.6.8 -&gt; Version 0.6.9<a class="headerlink" href="#version-0-6-8-version-0-6-9" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-6-7-version-0-6-8">
+<h2>Version 0.6.7 -&gt; Version 0.6.8<a class="headerlink" href="#version-0-6-7-version-0-6-8" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-6-6-version-0-6-7">
+<h2>Version 0.6.6 -&gt; Version 0.6.7<a class="headerlink" href="#version-0-6-6-version-0-6-7" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-6-5-version-0-6-6">
+<h2>Version 0.6.5 -&gt; Version 0.6.6<a class="headerlink" href="#version-0-6-5-version-0-6-6" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-6-4-version-0-6-5">
+<h2>Version 0.6.4 -&gt; Version 0.6.5<a class="headerlink" href="#version-0-6-4-version-0-6-5" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-6-3-version-0-6-4">
+<h2>Version 0.6.3 -&gt; Version 0.6.4<a class="headerlink" href="#version-0-6-3-version-0-6-4" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-6-2-version-0-6-3">
+<h2>Version 0.6.2 -&gt; Version 0.6.3<a class="headerlink" href="#version-0-6-2-version-0-6-3" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-6-1-version-0-6-2">
+<h2>Version 0.6.1 -&gt; Version 0.6.2<a class="headerlink" href="#version-0-6-1-version-0-6-2" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-6-0-version-0-6-1">
+<h2>Version 0.6.0 -&gt; Version 0.6.1<a class="headerlink" href="#version-0-6-0-version-0-6-1" title="Permalink to this headline">¶</a></h2>
+<p>If you were previously specifying a value for the
+<code class="docutils literal"><span class="pre">stormpathIDSiteVerificationFailedView</span></code> setting, you&#8217;ll need to rename that
+field to <code class="docutils literal"><span class="pre">stormpathIdSiteVerificationFailedView</span></code>.</p>
+</div>
+<div class="section" id="version-0-5-9-version-0-6-0">
+<h2>Version 0.5.9 -&gt; Version 0.6.0<a class="headerlink" href="#version-0-5-9-version-0-6-0" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-5-8-version-0-5-9">
+<h2>Version 0.5.8 -&gt; Version 0.5.9<a class="headerlink" href="#version-0-5-8-version-0-5-9" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-5-7-version-0-5-8">
+<h2>Version 0.5.7 -&gt; Version 0.5.8<a class="headerlink" href="#version-0-5-7-version-0-5-8" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-5-6-version-0-5-7">
+<h2>Version 0.5.6 -&gt; Version 0.5.7<a class="headerlink" href="#version-0-5-6-version-0-5-7" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-5-5-version-0-5-6">
+<h2>Version 0.5.5 -&gt; Version 0.5.6<a class="headerlink" href="#version-0-5-5-version-0-5-6" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-5-4-version-0-5-5">
+<h2>Version 0.5.4 -&gt; Version 0.5.5<a class="headerlink" href="#version-0-5-4-version-0-5-5" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-5-3-version-0-5-4">
+<h2>Version 0.5.3 -&gt; Version 0.5.4<a class="headerlink" href="#version-0-5-3-version-0-5-4" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-5-2-version-0-5-3">
+<h2>Version 0.5.2 -&gt; Version 0.5.3<a class="headerlink" href="#version-0-5-2-version-0-5-3" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-5-1-version-0-5-2">
+<h2>Version 0.5.1 -&gt; Version 0.5.2<a class="headerlink" href="#version-0-5-1-version-0-5-2" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-5-0-version-0-5-1">
+<h2>Version 0.5.0 -&gt; Version 0.5.1<a class="headerlink" href="#version-0-5-0-version-0-5-1" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-4-9-version-0-5-0">
+<h2>Version 0.4.9 -&gt; Version 0.5.0<a class="headerlink" href="#version-0-4-9-version-0-5-0" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-4-8-version-0-4-9">
+<h2>Version 0.4.8 -&gt; Version 0.4.9<a class="headerlink" href="#version-0-4-8-version-0-4-9" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-4-7-version-0-4-8">
+<h2>Version 0.4.7 -&gt; Version 0.4.8<a class="headerlink" href="#version-0-4-7-version-0-4-8" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-4-6-version-0-4-7">
+<h2>Version 0.4.6 -&gt; Version 0.4.7<a class="headerlink" href="#version-0-4-6-version-0-4-7" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-4-5-version-0-4-6">
+<h2>Version 0.4.5 -&gt; Version 0.4.6<a class="headerlink" href="#version-0-4-5-version-0-4-6" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-4-4-version-0-4-5">
+<h2>Version 0.4.4 -&gt; Version 0.4.5<a class="headerlink" href="#version-0-4-4-version-0-4-5" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-4-3-version-0-4-4">
+<h2>Version 0.4.3 -&gt; Version 0.4.4<a class="headerlink" href="#version-0-4-3-version-0-4-4" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-4-2-version-0-4-3">
+<h2>Version 0.4.2 -&gt; Version 0.4.3<a class="headerlink" href="#version-0-4-2-version-0-4-3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Please upgrade to version 0.4.4 &#8211; this version contains a bug with our user
+middleware which causes permission assertion to always fail.</li>
+</ul>
+</div>
+<div class="section" id="version-0-4-1-version-0-4-2">
+<h2>Version 0.4.1 -&gt; Version 0.4.2<a class="headerlink" href="#version-0-4-1-version-0-4-2" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-4-0-version-0-4-1">
+<h2>Version 0.4.0 -&gt; Version 0.4.1<a class="headerlink" href="#version-0-4-0-version-0-4-1" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-3-4-version-0-4-0">
+<h2>Version 0.3.4 -&gt; Version 0.4.0<a class="headerlink" href="#version-0-3-4-version-0-4-0" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-3-3-version-0-3-4">
+<h2>Version 0.3.3 -&gt; Version 0.3.4<a class="headerlink" href="#version-0-3-3-version-0-3-4" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-3-2-version-0-3-3">
+<h2>Version 0.3.2 -&gt; Version 0.3.3<a class="headerlink" href="#version-0-3-2-version-0-3-3" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-3-1-version-0-3-2">
+<h2>Version 0.3.1 -&gt; Version 0.3.2<a class="headerlink" href="#version-0-3-1-version-0-3-2" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-3-0-version-0-3-1">
+<h2>Version 0.3.0 -&gt; Version 0.3.1<a class="headerlink" href="#version-0-3-0-version-0-3-1" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-2-9-version-0-3-0">
+<h2>Version 0.2.9 -&gt; Version 0.3.0<a class="headerlink" href="#version-0-2-9-version-0-3-0" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-2-8-version-0-2-9">
+<h2>Version 0.2.8 -&gt; Version 0.2.9<a class="headerlink" href="#version-0-2-8-version-0-2-9" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-2-7-version-0-2-8">
+<h2>Version 0.2.7 -&gt; Version 0.2.8<a class="headerlink" href="#version-0-2-7-version-0-2-8" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-2-6-version-0-2-7">
+<h2>Version 0.2.6 -&gt; Version 0.2.7<a class="headerlink" href="#version-0-2-6-version-0-2-7" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-2-5-version-0-2-6">
+<h2>Version 0.2.5 -&gt; Version 0.2.6<a class="headerlink" href="#version-0-2-5-version-0-2-6" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-2-4-version-0-2-5">
+<h2>Version 0.2.4 -&gt; Version 0.2.5<a class="headerlink" href="#version-0-2-4-version-0-2-5" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-2-3-version-0-2-4">
+<h2>Version 0.2.3 -&gt; Version 0.2.4<a class="headerlink" href="#version-0-2-3-version-0-2-4" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-2-2-version-0-2-3">
+<h2>Version 0.2.2 -&gt; Version 0.2.3<a class="headerlink" href="#version-0-2-2-version-0-2-3" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-2-1-version-0-2-2">
+<h2>Version 0.2.1 -&gt; Version 0.2.2<a class="headerlink" href="#version-0-2-1-version-0-2-2" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-2-0-version-0-2-1">
+<h2>Version 0.2.0 -&gt; Version 0.2.1<a class="headerlink" href="#version-0-2-0-version-0-2-1" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-1-9-version-0-2-0">
+<h2>Version 0.1.9 -&gt; Version 0.2.0<a class="headerlink" href="#version-0-1-9-version-0-2-0" title="Permalink to this headline">¶</a></h2>
+<p>If you were previously relying on the built-in CSRF validation in your pages,
+you&#8217;ll need to include CSRF manually.  This release no longer includes CSRF
+token protection on <em>all</em> pages &#8211; it only protects the Stormpath pages &#8211;
+this was done to be less confusing for users.</p>
+<p>To add CSRF protection to your site similar to what was included automatically
+before, you&#8217;ll want to use the express-csurf library, which you can find on
+Github here: <a class="reference external" href="https://github.com/expressjs/csurf">https://github.com/expressjs/csurf</a></p>
+</div>
+<div class="section" id="version-0-1-8-version-0-1-9">
+<h2>Version 0.1.8 -&gt; Version 0.1.9<a class="headerlink" href="#version-0-1-8-version-0-1-9" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-1-7-version-0-1-8">
+<h2>Version 0.1.7 -&gt; Version 0.1.8<a class="headerlink" href="#version-0-1-7-version-0-1-8" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-1-6-version-0-1-7">
+<h2>Version 0.1.6 -&gt; Version 0.1.7<a class="headerlink" href="#version-0-1-6-version-0-1-7" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-1-5-version-0-1-6">
+<h2>Version 0.1.5 -&gt; Version 0.1.6<a class="headerlink" href="#version-0-1-5-version-0-1-6" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-1-4-version-0-1-5">
+<h2>Version 0.1.4 -&gt; Version 0.1.5<a class="headerlink" href="#version-0-1-4-version-0-1-5" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-1-3-version-0-1-4">
+<h2>Version 0.1.3 -&gt; Version 0.1.4<a class="headerlink" href="#version-0-1-3-version-0-1-4" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-1-2-version-0-1-3">
+<h2>Version 0.1.2 -&gt; Version 0.1.3<a class="headerlink" href="#version-0-1-2-version-0-1-3" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-1-0-version-0-1-2">
+<h2>Version 0.1.0 -&gt; Version 0.1.2<a class="headerlink" href="#version-0-1-0-version-0-1-2" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+<div class="section" id="version-0-0-0-version-0-1-0">
+<h2>Version 0.0.0 -&gt; Version 0.1.0<a class="headerlink" href="#version-0-0-0-version-0-1-0" title="Permalink to this headline">¶</a></h2>
+<p><strong>No changes needed!</strong></p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="changelog.html" class="btn btn-neutral" title="Change Log"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Stormpath, Inc..
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'2.0.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+   
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-29159574-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+  </script>
+  <script type="text/javascript">
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+    function _kms(u){
+        setTimeout(function(){
+            var d = document, f = d.getElementsByTagName('script')[0],
+                    s = d.createElement('script');
+            s.type = 'text/javascript'; s.async = true; s.src = u;
+            f.parentNode.insertBefore(s, f);
+        }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+  </script>
+  <script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+
+</body>
+</html>
