@@ -131,7 +131,7 @@ To manage Account Stores in the Console:
 
 {% codetab id:facebook-map-application langs:java python node curl %}
 ------
-AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class)
+ApplicationAccountStoreMapping applicationAccountStoreMapping = client.instantiate(ApplicationAccountStoreMapping.class)
         .setAccountStore(YOUR_FACEBOOK_DIRECTORY)
         .setApplication(application);
 
@@ -370,7 +370,7 @@ To manage Account Stores in the Console:
 
 {% codetab id:google-map-application langs:java python node curl %}
 ------
-AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class)
+ApplicationAccountStoreMapping applicationAccountStoreMapping = client.instantiate(ApplicationAccountStoreMapping.class)
         .setAccountStore(YOUR_GOOGLE_DIRECTORY)
         .setApplication(application);
 
