@@ -1611,7 +1611,7 @@ _Account Store_ is a generic term for either a [Directory](#directories) or a [G
 In Stormpath, you control who may login to an application by associating (or 'mapping') one or more account
 stores to an application.  All of the accounts across all of an application's assigned account stores form the application's effective _user base_; those accounts may login to the application.  If no account stores are assigned to an application, no accounts will be able to login to the application.
 
-You control which account stores are assigned (mapped) to an application, and the order in which they are consulted during a login attempt, by manipulating an application's `ApplicationAccountStoreMapping` resources.
+You control which account stores are assigned (mapped) to an application, and the order in which they are consulted during a login attempt, by manipulating the application's `ApplicationAccountStoreMapping` resources.
 
 <a class="anchor" name="workflow-login-attempt"></a>
 **How Login Attempts Work**
