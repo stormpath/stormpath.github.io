@@ -1748,7 +1748,7 @@ If you wish to change an account store's login priority for an application, you 
 
 **Example Request**
 
-For example, assume that an account store represented by mapping `$accountStoreMapping` has a list index of `0` (first in the list), and we wanted to lower its priority to `1` (second in the list):
+For example, assume that an account store represented by mapping `accountStoreMapping` has a list index of `0` (first in the list), and we wanted to lower its priority to `1` (second in the list):
 
     accountStoreMapping.setListIndex(1).save();
 
@@ -1757,7 +1757,7 @@ For example, assume that an account store represented by mapping `$accountStoreM
 
 Applications cannot store Accounts directly - Accounts are always stored in an Account Store (a Directory or Group). Therefore, if you would like an application to be able to create new accounts, you must specify which of the application's associated account stores should store the application's newly created accounts.  This designated account store is called the application's _default account store_.
 
-You specify an application's default account store by setting the ApplicationAccountStoreMapping's `isDefaultAccountStore` attribute to equal `true`.  You can do this when you create the `applicationAccountStoreMapping` resource.  Or if the resource has already been created:
+You specify an application's default account store by setting the ApplicationAccountStoreMapping's `isDefaultAccountStore` attribute equal `true`.  You can do this when you create the `applicationAccountStoreMapping` resource.  Or if the resource has already been created:
 
 1. Find the `applicationAccountStoreMapping` resource in the Application's `accountStoreMappings` [collection](#collections) that reflects the `accountStore` you wish to be the application's default account store.
 2. Issue an update request to that ApplicationAccountStoreMapping's instance with `defaultAccountStore` set to `true`.
@@ -1794,7 +1794,7 @@ Also note that Mirrored directories or groups within Mirrored directories are re
 
 Applications cannot store Groups directly - Groups are always stored in a Directory.  Therefore, if you would like an application to be able to create new groups, you must specify which of the application's associated account stores should store the application's newly created groups.  This designated store is called the application's _default group store_.
 
-You specify an application's default group store by setting the `AccountStoreMapping`'s `isDefaultGroupStore` attribute to equal `true`.  You can do this when you create the `accountStoreMapping` resource, or if the resource has already been created:
+You specify an application's default group store by setting the `AccountStoreMapping`'s `isDefaultGroupStore` attribute to `true`.  You can do this when you create the `accountStoreMapping` resource, or if the resource has already been created:
 
 1. Find the `accountStoreMapping` resource in the Application's `accountStoreMappings` [collection](#collections) that reflects the `accountStore` you wish to be the application's default group store.
 2. Issue an update request to that `AccountStoreMapping`'s instance with `isDefaultGroupStore` set to `true`.
@@ -1848,13 +1848,13 @@ For example, to delete the application-accountStore association we created in th
 
 You can list an applications's mapped account stores by issuing a request to the application's `accountStoreMappings` Collection Resource.
 
-The response is a paginated list of `accountStoreMapping` resources.  You may use collection [pagination](#pagination) query parameters to customize the paginated response.
+The response is a paginated list of `applicationAccountStoreMapping` resources.  You may use collection [pagination](#pagination) query parameters to customize the paginated response.
 
 **Example Request**
 
-    AccountStoreMappingList accountStoreMappings = application.getAccountStoreMappings();
-    for (AccountStoreMapping accountStoreMapping : accountStoreMappings) {
-    	System.out.println(accountStoreMapping.getAccountStore().getHref());
+    ApplicationAccountStoreMappingList applicationAccountStoreMappings = application.getAccountStoreMappings();
+    for (ApplicationAccountStoreMapping applicationAccountStoreMapping : accountStoreMappings) {
+    	System.out.println(applicationAccountStoreMapping.getAccountStore().getHref());
     }
 
 ***
