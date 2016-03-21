@@ -58,6 +58,12 @@ content_top: [docs_top.html]
   </div>
 </div>
 
+<div class="container" style="font-size: 10px;">
+  <div class="col-md-12">
+    <p>iOS is a trademark of Apple Inc.</p>
+  </div>
+</div>
+
 <div class="footer-banner">
   <div class="container info">
     <div class="row">

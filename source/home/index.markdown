@@ -114,5 +114,12 @@ alias: [/index.html]
     </div>
   </div>
 </div>
+
+<div class="container" style="font-size: 10px;">
+  <div class="col-md-12">
+    <p>The Android robot is reproduced or modified from work created and shared by Google and used according to terms described in the Creative Commons 3.0 Attribution License. Android is a trademark of Google Inc.</p>
+    <p>iOS is a trademark of Apple Inc.</p>
+  </div>
+</div>
 <!-- block__no_wrapper -->
 <!-- region__no_wrapper -->
