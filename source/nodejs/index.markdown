@@ -40,7 +40,7 @@ content_top: [docs_top.html]
                   <li><i class="fa-li fa fa-book"></i><a href="/nodejs/express/index.html">Documentation</a></li>
                   <li><i class="fa-li fa fa-code"></i><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/">Example Application</a></li>
                   {% comment %}<li><i class="fa-li fa fa-file-text"></i><a href="#">API Reference</a></li>{% endcomment %}
-                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-express">Project on GitHub</a></li>
+                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/express-stormpath">Project on GitHub</a></li>
                   <li><i class="fa-li fa fa-pencil"></i><a href="https://stormpath.com/blog/build-nodejs-express-stormpath-app/">Webapp Tutorial</a></li>
                   <li><i class="fa-li fa fa-pencil"></i><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
                 </ul>
@@ -55,7 +55,7 @@ content_top: [docs_top.html]
               </div>
               <div class="col-md-6 hidden-sm">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-express">Project on GitHub</a></li>
+                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/express-stormpath">Project on GitHub</a></li>
                   <li><i class="fa-li fa fa-pencil"></i><a href="https://stormpath.com/blog/build-nodejs-express-stormpath-app/">Webapp Tutorial</a></li>
                   <li><i class="fa-li fa fa-pencil"></i><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
                 </ul>
