@@ -1611,7 +1611,7 @@ _Account Store_ is a generic term for either a [Directory](#directories) or a [G
 In Stormpath, you control who may login to an application by associating (or 'mapping') one or more account
 stores to an application.  All of the accounts across all of an application's assigned account stores form the application's effective _user base_; those accounts may login to the application.  If no account stores are assigned to an application, no accounts will be able to login to the application.
 
-You control which account stores are assigned (mapped) to an application, and the order in which they are consulted during a login attempt, by manipulating an application's `AccountStoreMapping` resources.
+You control which account stores are assigned (mapped) to an application, and the order in which they are consulted during a login attempt, by manipulating the application's `ApplicationAccountStoreMapping` resources.
 
 <a class="anchor" name="workflow-login-attempt"></a>
 **How Login Attempts Work**
@@ -1630,7 +1630,7 @@ You can assign multiple account stores to an application, but only one is requir
 
 ### Account Store Mapping Resource
 
-An individual `accountStoreMapping` resource may be accessed via its Resource URI:
+An individual `applicationAccountStoreMapping` resource may be accessed via its Resource URI:
 
 <a class="anchor" name="account-store-mapping-url"></a>
 **Resource URI**
@@ -1664,14 +1664,14 @@ For Account Store Mappings, you may:
 <a class="anchor" name="account-store-mapping-url"></a>
 ### Locate an Account Store Mapping's REST URL
 
-You locate an Account Store Mapping's `href` by [listing an Application's associated Account Store Mappings](#application-account-store-mappings-list).  Within the list, find the `AccountStoreMapping` you need - it will have a unique `href` property.
+You locate an Account Store Mapping's `href` by [listing an Application's associated Account Store Mappings](#application-account-store-mappings-list).  Within the list, find the `ApplicationAccountStoreMapping` you need - it will have a unique `href` property.
 
 <a class="anchor" name="account-store-mapping-create"></a>
 ### Create an Account Store Mapping
 
-In order for accounts in a Directory or Group to be able to login to an application, you must associate or 'map' the Directory or Group to the Application.  You do this by creating a new `AccountStoreMapping` resource that references both the account store and application.
+In order for accounts in a Directory or Group to be able to login to an application, you must associate or 'map' the Directory or Group to the Application.  You do this by creating a new `ApplicationAccountStoreMapping` resource that references both the account store and application.
 
-You do this by calling the `create` method on the `AccountStoreMapping` resource class, or by calling the `createAccountStoreMapping` on an `Application` instance. You must specify the application and the account store instances, both containing an `href` property, when creating the account store mapping.
+You do this by calling the `create` method on the `ApplicationAccountStoreMapping` resource class, or by calling the `createAccountStoreMapping` on an `Application` instance. You must specify the application and the account store instances, both containing an `href` property, when creating the account store mapping.
 
 **Required Attributes**
 
@@ -1686,13 +1686,13 @@ You do this by calling the `create` method on the `AccountStoreMapping` resource
 
 Creating it from an application instance:
 
-    AccountStoreMapping accountStoreMapping = client.instantiate(AccountStoreMapping.class)
+    ApplicationAccountStoreMapping applicationAccountStoreMapping = client.instantiate(ApplicationAccountStoreMapping.class)
             .setAccountStore(accountStore) // this could be an existing group or a directory
             .setApplication(application)
             .setDefaultAccountStore(Boolean.TRUE)
             .setDefaultGroupStore(Boolean.FALSE)
             .setListIndex(0);
-        
+
     application.createAccountStoreMapping(accountStoreMapping);
 
 
@@ -1706,7 +1706,7 @@ If you don't have the account store mapping's `href`, you can find it in the [ap
 **Example Request**
 
 	String href = "https://api.stormpath.com/v1/accountStoreMappings/WpM9nyZ2TbayIfbRvLk9CO";
-    AccountStoreMapping accountStoreMapping = client.getResource(href, AccountStoreMapping.class);
+    ApplicationAccountStoreMapping applicationAccountStoreMapping = client.getResource(href, ApplicationAccountStoreMapping.class);
 
 
 <a class="anchor" name="account-store-mapping-resources-expand"></a>
@@ -1714,7 +1714,7 @@ If you don't have the account store mapping's `href`, you can find it in the [ap
 
 When retrieving an Account Store Mapping, you can also retrieve one or more of its linked resources by [expanding them in-line](#links-expansion) using the expansion options.
 
-The following `AccountStoreMapping` attributes are expandable:
+The following `ApplicationAccountStoreMapping` attributes are expandable:
 
 * `accountStore`
 * `application`
@@ -1724,7 +1724,7 @@ See the [Link Expansion](#links-expansion) section for more information on expan
 <a class="anchor" name="account-store-mapping-update"></a>
 ### Update An Account Store Mapping
 
-Call the `save` method on an accountStoreMapping when you want to change one or more of the account store mapping's attributes. Unspecified attributes are not changed, but at least one attribute must be specified.
+Call the `save` method on an applicationAccountStoreMapping when you want to change one or more of the account store mapping's attributes. Unspecified attributes are not changed, but at least one attribute must be specified.
 
 **Updatable Application Attributes**
 
@@ -1734,7 +1734,7 @@ Call the `save` method on an accountStoreMapping when you want to change one or 
 
 **Example Request**
 
-    accountStoreMapping.setDefaultAccountStore(Boolean.FALSE).save();
+    applicationAccountStoreMapping.setDefaultAccountStore(Boolean.FALSE).save();
 
 <a class="anchor" name="account-store-mapping-update-priority"></a>
 #### Set the Login Priority of an Assigned Account Store
@@ -1743,12 +1743,12 @@ As we've [shown previously](#workflow-login-attempt), an account trying to login
 
 If you wish to change an account store's login priority for an application, you simply:
 
-1. Find the `accountStoreMapping` resource in the application's `accountStoreMappings` [collection](#collections) that reflects the `accountStore` that you wish to re-prioritize.
-2. Issue an update request to that `AccountStoreMapping`'s instance with a new `listIndex` value.
+1. Find the `applicationAccountStoreMapping` resource in the application's `accountStoreMappings` [collection](#collections) that reflects the `accountStore` that you wish to re-prioritize.
+2. Issue an update request to that `ApplicationAccountStoreMapping`'s instance with a new `listIndex` value.
 
 **Example Request**
 
-For example, assume that an account store represented by mapping `$accountStoreMapping` has a list index of `0` (first in the list), and we wanted to lower its priority to `1` (second in the list):
+For example, assume that an account store represented by mapping `accountStoreMapping` has a list index of `0` (first in the list), and we wanted to lower its priority to `1` (second in the list):
 
     accountStoreMapping.setListIndex(1).save();
 
@@ -1757,14 +1757,14 @@ For example, assume that an account store represented by mapping `$accountStoreM
 
 Applications cannot store Accounts directly - Accounts are always stored in an Account Store (a Directory or Group). Therefore, if you would like an application to be able to create new accounts, you must specify which of the application's associated account stores should store the application's newly created accounts.  This designated account store is called the application's _default account store_.
 
-You specify an application's default account store by setting the AccountStoreMapping's `isDefaultAccountStore` attribute to equal `true`.  You can do this when you create the `accountStoreMapping` resource.  Or if the resource has already been created:
+You specify an application's default account store by setting the ApplicationAccountStoreMapping's `isDefaultAccountStore` attribute equal `true`.  You can do this when you create the `applicationAccountStoreMapping` resource.  Or if the resource has already been created:
 
-1. Find the `accountStoreMapping` resource in the Application's `accountStoreMappings` [collection](#collections) that reflects the `accountStore` you wish to be the application's default account store.
-2. Issue an update request to that AccountStoreMapping's instance with `defaultAccountStore` set to `true`.
+1. Find the `applicationAccountStoreMapping` resource in the Application's `accountStoreMappings` [collection](#collections) that reflects the `accountStore` you wish to be the application's default account store.
+2. Issue an update request to that ApplicationAccountStoreMapping's instance with `defaultAccountStore` set to `true`.
 
 **Example Request**
 
-    accountStoreMapping.setDefaultAccountStore(Boolean.TRUE).save();
+    applicationAccountStoreMapping.setDefaultAccountStore(Boolean.TRUE).save();
 
 Now, any time a new account is created from an application's `createAccount` method, the account will actually be created in the designated default account store.
 
@@ -1794,7 +1794,7 @@ Also note that Mirrored directories or groups within Mirrored directories are re
 
 Applications cannot store Groups directly - Groups are always stored in a Directory.  Therefore, if you would like an application to be able to create new groups, you must specify which of the application's associated account stores should store the application's newly created groups.  This designated store is called the application's _default group store_.
 
-You specify an application's default group store by setting the `AccountStoreMapping`'s `isDefaultGroupStore` attribute to equal `true`.  You can do this when you create the `accountStoreMapping` resource, or if the resource has already been created:
+You specify an application's default group store by setting the `AccountStoreMapping`'s `isDefaultGroupStore` attribute to `true`.  You can do this when you create the `accountStoreMapping` resource, or if the resource has already been created:
 
 1. Find the `accountStoreMapping` resource in the Application's `accountStoreMappings` [collection](#collections) that reflects the `accountStore` you wish to be the application's default group store.
 2. Issue an update request to that `AccountStoreMapping`'s instance with `isDefaultGroupStore` set to `true`.
@@ -1848,13 +1848,13 @@ For example, to delete the application-accountStore association we created in th
 
 You can list an applications's mapped account stores by issuing a request to the application's `accountStoreMappings` Collection Resource.
 
-The response is a paginated list of `accountStoreMapping` resources.  You may use collection [pagination](#pagination) query parameters to customize the paginated response.
+The response is a paginated list of `applicationAccountStoreMapping` resources.  You may use collection [pagination](#pagination) query parameters to customize the paginated response.
 
 **Example Request**
 
-    AccountStoreMappingList accountStoreMappings = application.getAccountStoreMappings();
-    for (AccountStoreMapping accountStoreMapping : accountStoreMappings) {
-    	System.out.println(accountStoreMapping.getAccountStore().getHref());
+    ApplicationAccountStoreMappingList applicationAccountStoreMappings = application.getAccountStoreMappings();
+    for (ApplicationAccountStoreMapping applicationAccountStoreMapping : accountStoreMappings) {
+    	System.out.println(applicationAccountStoreMapping.getAccountStore().getHref());
     }
 
 ***
