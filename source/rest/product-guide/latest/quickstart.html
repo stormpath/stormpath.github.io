@@ -185,6 +185,7 @@ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 </div>
 <p>Before you can get your Application, you must get the location of your Tenant from Stormpath, like so:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>curl --request GET <span class="se">\</span>
+  --verbose <span class="se">\</span>
   --user <span class="nv">$SP_API_KEY_ID</span>:<span class="nv">$SP_API_KEY_SECRET</span> <span class="se">\</span>
   --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
   --url <span class="s2">&quot;https://api.stormpath.com/v1/tenants/current&quot;</span>
@@ -202,12 +203,12 @@ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
 <span class="na">Content-Length</span><span class="o">:</span> <span class="l">0</span>
 </pre></div>
 </div>
-<p>Make note of the <code class="docutils literal"><span class="pre">Location</span></code> header. This is the location of your Tenant in Stormpath, which you will need in the next step.</p>
-<p>From here, using the location of the Tenant, you can get your Application by performing a search for the Application by name, with $TENANT_HREF replaced with the <code class="docutils literal"><span class="pre">href</span></code> of your Tenant from the previous cURL:</p>
+<p>Make note of the <code class="docutils literal"><span class="pre">Location</span></code> header. This is the location of your Tenant in Stormpath, with the Tenant&#8217;s unique ID at the end.</p>
+<p>From here, using your Tenant ID, you can get your Application by performing a search for the Application by name, with $TENANT_ID replaced with your Tenant&#8217;s ID from the previous cURL:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>curl --request GET <span class="se">\</span>
   --user <span class="nv">$SP_API_KEY_ID</span>:<span class="nv">$SP_API_KEY_SECRET</span> <span class="se">\</span>
   --header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
-  --url <span class="s2">&quot;https://api.stormpath.com/v1/tenants/yOuRTeNANtid/applications?name=My%20Application&quot;</span>
+  --url <span class="s2">&quot;https://api.stormpath.com/v1/tenants/</span><span class="nv">$TENANT_ID</span><span class="s2">/applications?name=My%20Application&quot;</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -223,7 +224,7 @@ apiKey.secret = lWxOiKqKPNwJmSldbiSkEbkNjgh2uRSNAb+AEXAMPLE
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-08-18T20:46:36.061Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-11-09T21:09:34.334Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;tenant&quot;</span><span class="p">:{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgDn9R91R&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgExAMPLE&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;comment&quot;</span><span class="p">:</span><span class="s2">&quot; // This JSON has been truncated for readability&quot;</span><span class="p">,</span>
 <span class="hll">  <span class="nt">&quot;accounts&quot;</span><span class="p">:{</span>
