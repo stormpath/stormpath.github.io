@@ -1,0 +1,1949 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Using Stormpath for OAuth 2.0 and Access/Refresh Token Management - Stormpath</title>
+  <meta name="author" content="Stormpath, Inc.">
+
+  
+  <meta name="description" content="Stormpath guide">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://stormpath.github.io/guides/token-management">
+  <link href="/favicon.ico" rel="icon">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style>
+@import url("/stylesheets/normalize.css?mrrrji");
+@import url("/stylesheets/wireframes.css?mrrrji");
+@import url("/stylesheets/html-elements.css?mrrrji");
+@import url("/stylesheets/tabs.css?mrrrji");
+@import url("/stylesheets/tinybox2.css?mrrrji");
+@import url("/stylesheets/flexnav.css?mrrrji");
+@import url("/stylesheets/pages.css?mrrrji");
+@import url("/stylesheets/docs.css?mrrrji");
+@import url("/stylesheets/blocks.css?mrrrji");
+@import url("/stylesheets/navigation.css?mrrrji");
+@import url("/stylesheets/views-styles.css?mrrrji");
+@import url("/stylesheets/nodes.css?mrrrji");
+@import url("/stylesheets/comments.css?mrrrji");
+@import url("/stylesheets/forms.css?mrrrji");
+@import url("/stylesheets/fields.css?mrrrji");
+@import url("/stylesheets/layouts/responsive-sidebars.css?mrrrji");
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/atom.xml" rel="alternate" title="Stormpath" type="application/atom+xml">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Covered+By+Your+Grace|Open+Sans:300italic,400italic,600italic,700italic,800italic,300,400,600,700,800" media="all" />
+
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/cupertino/jquery-ui.css" />
+<link rel="stylesheet" href="/stylesheets/mono-blue.min.css" />
+
+<!--[if lt IE 9]>
+<script src="/javascripts/html5-respond.js"></script>
+<![endif]-->
+
+<link rel="publisher" href="https://plus.google.com/117307959654441669381" />
+<!-- twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="goStormpath">
+<meta name="twitter:title" content="Using Stormpath for OAuth 2.0 and Access/Refresh Token Management - Stormpath">
+<meta name="twitter:description" content="Stormpath guide">
+<meta name="twitter:image:src" content="https://docs.stormpath.com/images/icons/twitter-stormpath-icon.jpg">
+<!-- opengraph -->
+<meta property="og:title" content="Using Stormpath for OAuth 2.0 and Access/Refresh Token Management - Stormpath" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://stormpath.github.io/guides/token-management" />
+<meta property="og:image" content="https://docs.stormpath.com/images/icons/og-stormpath-icon.jpg" />
+<meta property="og:description" content="Stormpath guide" />
+<meta property="og:site_name" content="Stormpath" />
+<meta property="fb:admins" content="3230401" />
+
+
+<!-- kissmetrics -->
+<script type="text/javascript">
+  var _kmq = _kmq || [];
+  var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+  function _kms(u){
+    setTimeout(function(){
+      var d = document, f = d.getElementsByTagName('script')[0],
+      s = d.createElement('script');
+      s.type = 'text/javascript'; s.async = true; s.src = u;
+      f.parentNode.insertBefore(s, f);
+    }, 1);
+  }
+  _kms('//i.kissmetrics.com/i.js');
+  _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+</script>
+
+<!-- Optimizely -->
+<script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-29159574-1', 'auto');
+  // Optimizely Universal Analytics Integration
+  //https://help.optimizely.com/hc/en-us/articles/200039995-Integrating-Optimizely-with-Google-Analytics
+  window.optimizely = window.optimizely || [];
+  window.optimizely.push("activateUniversalAnalytics");
+    ga('send', 'pageview');
+
+</script>
+
+
+  
+
+</head>
+
+<body  class="not-front  node-type-documentation  ">
+<!-- Qualaroo for stormpath.com -->
+<script type="text/javascript">var _kiq = _kiq || [];</script>
+<script type="text/javascript" src="//s3.amazonaws.com/ki.js/47725/9JM.js" async="true"></script>
+      
+<script type="text/javascript" src="//assets.zendesk.com/external/zenbox/v2.6/zenbox.js"></script>
+<style type="text/css" media="screen, projection">
+  @import url(//assets.zendesk.com/external/zenbox/v2.6/zenbox.css);
+</style>
+<script type="text/javascript">
+  if (typeof(Zenbox) !== "undefined") {
+    Zenbox.init({
+      dropboxID:   "20184231",
+      url:         "https://stormpath.zendesk.com",
+      tabTooltip:  "Get Help",
+      tabImageURL: "/images/tab_questions_black_right.png",
+      tabColor:    "689ed0",
+      tabPosition: "Right"
+    });
+  }
+</script>
+
+
+<script src="/javascripts/stormpath_docs.js"></script>
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['android'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['csharp'] = [];
+		
+	
+		sp_docs_menu['dotnet'] = [];
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('10010');
+		
+			sp_docs_menu['errors'].push('10011');
+		
+			sp_docs_menu['errors'].push('10012');
+		
+			sp_docs_menu['errors'].push('10013');
+		
+			sp_docs_menu['errors'].push('10014');
+		
+			sp_docs_menu['errors'].push('10015');
+		
+			sp_docs_menu['errors'].push('10016');
+		
+			sp_docs_menu['errors'].push('10017');
+		
+			sp_docs_menu['errors'].push('10100');
+		
+			sp_docs_menu['errors'].push('10101');
+		
+			sp_docs_menu['errors'].push('10102');
+		
+			sp_docs_menu['errors'].push('11001');
+		
+			sp_docs_menu['errors'].push('11002');
+		
+			sp_docs_menu['errors'].push('11003');
+		
+			sp_docs_menu['errors'].push('11004');
+		
+			sp_docs_menu['errors'].push('11005');
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['ios'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['vbnet'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+</script>
+
+<div id="page">
+    <div class="fixed-header" id="wrap">
+      
+
+<nav class="navbar navbar-storm" role="navigation">
+  <div class="navbar-container">
+
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://stormpath.com/">
+        <img src="/images/template/logo_nav.png"/>
+      </a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="main-nav">
+      <a type="button" class="btn navbar-btn button-primary-bordered button-signup navbar-right" href="https://api.stormpath.com/register" onClick="ga('send', 'event', { eventCategory: 'sign up', eventAction: 'sign up button click', eventLabel: 'www', eventValue: 1});">Sign Up Now</a>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="http://docs.stormpath.com/">Docs</a></li>
+        <li><a href="https://stormpath.com/product/">Product</a></li>
+        <li><a href="https://stormpath.com/pricing/">Pricing</a></li>
+        <li><a href="https://stormpath.com/customers/">Customers</a></li>
+        <li><a href="https://boards.greenhouse.io/stormpath/">Jobs</a></li>
+        <li><a href="https://api.stormpath.com/login/">Login</a></li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</nav>
+
+
+
+
+      
+      
+    </div>
+
+<!--
+  <div id="header-wrapper">
+  	<header id="header" role="banner" class="container">
+      
+    </header>
+  </div>-->
+  <div id="main-wrapper">
+    <div id="main">
+      <div id="main-inner">
+        <div id="main-inner-inner">
+          <div id="content" class="column" role="main">
+            <div class="col-md-11">
+              <a id="main-content"></a>
+              
+                <h1 class="title" id="page-title">Using Stormpath for OAuth 2.0 and Access/Refresh Token Management</h1>
+              
+              <div class="sharing">
+
+  <!-- AddThis Button BEGIN -->
+  <div class="addthis_toolbox addthis_default_style addthis_16x16_style">
+    <a class="addthis_button_twitter"></a>
+    <a class="addthis_button_reddit"></a>
+    <a class="addthis_button_hackernews"></a>
+    <a class="addthis_button_google_plusone_share"></a>
+    <a class="addthis_button_linkedin"></a>
+    <a class="addthis_button_facebook"></a>
+    <a class="addthis_button_email"></a>
+  </div>
+  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+  <!-- AddThis Button END -->
+
+</div>
+            	<div class='docs-info'><p>Currently supported in Stormpath&#8217;s REST API.  Support for SDKs and Integrations is coming soon.  Reach out to us on support for an update.</p>
+</div>
+
+
+<p>In this guide, we will discuss how to use Stormpath to authenticate your users for an <code>OAuth 2.0 Access Token</code>, and how to manage these tokens in Stormpath.</p>
+
+<h2><a id="what-is-token-based-authentication"></a>What is Token Based Authentication?</h2>
+
+<p>Token based authentication is a strategy to secure an application based on a security token that is generated for the user on authentication.  Since HTTP is considered <strong>stateless</strong>, if your application authenticates a user (one HTTP request) on the next request your application won&rsquo;t know who the user is.  This is why many applications today pass some information to tie the request to a user. Traditionally, this information usually requires state to be stored on the server and a session identifier to be stored on the client.</p>
+
+<p>Token Based Authentication is all about removing the need to store information on the server while giving extra security to keep the token secure on the client.  This help you as a developer build stateless / scalable applications or services.</p>
+
+<p>Stormpath complies with OAuth 2.0 to provide this functionality.</p>
+
+<h2><a id="why-oauth-20"></a>Why OAuth 2.0?</h2>
+
+<p>OAuth 2.0 is an authorization framework and provides a protocol to how to interact with a service that can delegate authentication or provide authorization.  OAuth 2.0 is prevalent across many mobile and web applications today.  If you have ever logged into a website using Facebook or Google, you have used one of OAuth 2.0 many authorization flows. You can read more about the different OAuth 2.0 authorization flows or <code>grant types</code> in depth on <a href="https://stormpath.com/blog/what-the-heck-is-oauth/">Stormpath&rsquo;s blog</a>.</p>
+
+<p>Even though, OAuth 2.0 supports many authorization grant types.  Stormpath currently supports:</p>
+
+<ul>
+<li>Password Grant Type that grants the ability to get an Access Token based on a login and password</li>
+<li>Refresh Grant Type that grants the ability to generate another Access Token based on a special Refresh Token</li>
+<li>Client Credentials Grant Type (which is supported through the <a href="/guides/api-key-management/">API Key Management feature</a>) that grants the ability to exchange an API Key for the Access Token</li>
+</ul>
+
+
+<p>To be able to understand how to use Token Based Authentication, we need to talk about the different types of tokens that are available.</p>
+
+<h2><a id="what-tokens-are-available-for-token-based-authentication"></a>What Tokens are available for Token Based Authentication?</h2>
+
+<p>For Token Based Authentication, there are a couple different types of tokens that need to be managed.  These are:</p>
+
+<ul>
+<li><code>Access Token</code></li>
+<li><code>Refresh Token</code></li>
+</ul>
+
+
+<p>The <code>Access Token</code> is the token that grants access to a protected resource.  The <code>Access Token</code> that Stormpath generates for accounts on authentication is a JSON Web Token, or JWT.  The JWT has security built in to make sure that the <code>Access Token</code> is not tampered with on the client, and is only valid for a specified duration.  The <code>Refresh Token</code> is a special token that is used to generate additional <code>Access Token</code>s.  This allows you to have an short lived <code>Access Token</code> without having to collect credentials every single time you need a new <code>Access Token</code>.</p>
+
+<p>When using OAuth 2.0, the <code>Access Token</code> and <code>Refresh Token</code> are returned in the same response during the token exchange, this is called an <code>Access Token Response</code>.</p>
+
+<h2><a id="how-to-use-stormpath-for-token-based-authentication"></a>How to use Stormpath for Token Based Authentication</h2>
+
+<p>Stormpath can be used to generate, manage, check, and revoke both access and refresh Tokens. Before diving in, let&rsquo;s talk about configuration.</p>
+
+<h3><a id="configuration"></a>Configuration</h3>
+
+<p>Stormpath is configurable so you can set the time to live (TTL) for both the access and refresh tokens.  This is important for many applications because it gives the ability to define how the tokens expired.  For example, you could decide that your application requires a user to login daily, but the access should only live for 10 minutes.  Or, you could decide that for your application, users should be able to stay longed in for 2 months and the access token expires in an hour.</p>
+
+<p>Each <code>Application</code> in Stormpath has an <code>oAuthPolicy</code> link where the TTLs for the tokens for a particular application are kept.</p>
+
+<pre><code>{
+    "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6",
+    ...
+    "name": "My Application",
+    "oAuthPolicy": {
+        "href": "https://api.stormpath.com/v1/oAuthPolicies/5r0klomitodnOCuvESIP5z"
+    }
+}
+</code></pre>
+
+<p>The values are stored and set as <a href="https://en.wikipedia.org/wiki/ISO_8601#Durationshttps://en.wikipedia.org/wiki/ISO_8601#Durations"><code>ISO 8601</code> durations</a>. The following durations are supported:</p>
+
+<ul>
+<li>Seconds, for example <code>PT300S</code></li>
+<li>Minutes, for example <code>PT60M</code></li>
+<li>Hours, for example <code>PT24H</code></li>
+<li>Days, for example <code>P7D</code></li>
+<li>Weeks, for example <code>P4W</code></li>
+</ul>
+
+
+<p>By default, an <code>Application</code> has a the following TTLs:</p>
+
+<ul>
+<li>Access Token: 1 hour (<code>PT1H</code>)</li>
+<li>Refresh Token: 60 days (<code>PT60D</code>)</li>
+</ul>
+
+
+<p>To get these values, you can query the <code>OAuth Policy</code> for an Application:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-get-oauth-policy-java">java</a></li><li><a href="#tabs-get-oauth-policy-curl">curl</a></li><li><a href="#tabs-get-oauth-policy-node">node</a></li><li><a href="#tabs-get-oauth-policy-php">php</a></li><li><a href="#tabs-get-oauth-policy-ruby">ruby</a></li><li><a href="#tabs-get-oauth-policy-python">python</a></li></ul><div id="tabs-get-oauth-policy-java"><pre lang="java"><code>
+Application application = client.getResource(applicationHref, Application.class);
+OauthPolicy oauthPolicy = application.getOauthPolicy();
+</code> </pre> </div><div id="tabs-get-oauth-policy-curl"><pre lang="curl"><code>
+curl -X GET \
+     -u $API_KEY_ID:$API_KEY_SECRET \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json;charset=UTF-8" \
+     "https://api.stormpath.com/v1/oAuthPolicies/5r0klomitodnOCuvESIP5z"
+
+</code> </pre> </div><div id="tabs-get-oauth-policy-node"><pre lang="node"><code>
+application.getOAuthPolicy(function(err, policy) {
+  console.log('policy:', policy);
+});
+</code> </pre> </div><div id="tabs-get-oauth-policy-php"><pre lang="php"><code>
+$oauthPolicy = $application->oauthPolicy;
+
+//Return Type: Stormpath\Resource\OauthPolicy
+</code> </pre> </div><div id="tabs-get-oauth-policy-ruby"><pre lang="ruby"><code>
+oauth_policy = application.auth_policy
+# returns Stormpath::Resource::OauthPolicy instance
+</code> </pre> </div><div id="tabs-get-oauth-policy-python"><pre lang="python"><code>
+application = client.applications.get(application_href)
+application.oauth_policy
+</code> </pre> </div></div>
+
+
+<p>Response:</p>
+
+<pre><code>{
+    "href": "https://api.stormpath.com/v1/oAuthPolicies/5r0klomitodnOCuvESIP5z",
+    "tokenEndpoint": {
+            "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oauth/token"
+    },
+    "accessTokenTtl": "PT1H",
+    "refreshTokenTtl": "P60D"
+}
+</code></pre>
+
+<p>To update the <code>Access Token</code> and <code>Refresh Token</code> TTL, making a <code>POST</code> request to the application&rsquo;s oAuthPolicy with the updated values.  The valid valueFor example, if your application needs to have an shorter lived access and refresh token:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-set-oauth-policy-java">java</a></li><li><a href="#tabs-set-oauth-policy-curl">curl</a></li><li><a href="#tabs-set-oauth-policy-node">node</a></li><li><a href="#tabs-set-oauth-policy-php">php</a></li><li><a href="#tabs-set-oauth-policy-ruby">ruby</a></li><li><a href="#tabs-set-oauth-policy-python">python</a></li></ul><div id="tabs-set-oauth-policy-java"><pre lang="java"><code>
+oauthPolicy.setAccessTokenTtl("P8D");
+oauthPolicy.setRefreshTokenTtl("PT2M");
+oauthPolicy.save();
+</code> </pre> </div><div id="tabs-set-oauth-policy-curl"><pre lang="curl"><code>
+curl -X GET \
+     -u $API_KEY_ID:$API_KEY_SECRET \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json;charset=UTF-8" \
+     -d '{
+            "accessTokenTtl": "PT30M",
+            "refreshTokenTtl": "P7D"
+        }' \
+     "https://api.stormpath.com/v1/oAuthPolicies/5r0klomitodnOCuvESIP5z"
+
+</code> </pre> </div><div id="tabs-set-oauth-policy-node"><pre lang="node"><code>
+application.getOAuthPolicy(function(err, policy) {
+  policy.accessTokenTtl = 'PT30M';
+  policy.refreshTokenTtl = 'P7D';
+  policy.save(function(err, updatedPolicy) {
+    console.log(updatedPolicy);
+  });
+</code> </pre> </div><div id="tabs-set-oauth-policy-php"><pre lang="php"><code>
+$oauthPolicy = $application->oauthPolicy;
+$oauthPolicy->accessTokenTtl = 'PT1H';
+$oauthPolicy->refreshTokenTtl = 'P7D';
+$oauthPolicy->save();
+</code> </pre> </div><div id="tabs-set-oauth-policy-ruby"><pre lang="ruby"><code>
+oauth_policy = application.oauth_policy
+oauth_policy.access_token_ttl = 'PT1H'
+oauth_policy.refresh_token_ttl = "P60D"
+oauth_policy.save
+</code> </pre> </div><div id="tabs-set-oauth-policy-python"><pre lang="python"><code>
+oauth_policy.access_token_ttl = 'P8D'
+oauth_policy.refresh_token_ttl = 'PT2M'
+oauth_policy.save()
+</code> </pre> </div></div>
+
+
+<p>Response:</p>
+
+<pre><code>{
+    "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oAuthPolicy",
+    "tokenEndpoint": {
+            "href": "https://api.stormpath.com/v1/applications/5r0klomitodnOCuvESIP5z/oauth/token"
+    },
+    "accessTokenTtl": "PT30M",
+    "refreshTokenTtl": "P7D"
+}
+</code></pre>
+
+<p>Refresh tokens are optional, if you would like to disable the refresh token from being generated, set a zero duration value (<code>PT0M</code>, <code>PT0S</code>, etc).</p>
+
+<div class='docs-notes'><p>The maximum duration for access and refresh tokens is 180 days (<code>P180D</code>).</p>
+</div>
+
+
+<h3><a id="using-stormpath-to-generate-an-oauth-20-access-tokens"></a>Using Stormpath to Generate an OAuth 2.0 Access Tokens</h3>
+
+<p>Stormpath can generate Access Tokens using OAuth 2.0 password grant flow.  Stormpath exposes an endpoint off of each Stormpath <code>Application</code> to support the OAuth 2.0 protocol:</p>
+
+<pre><code>https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
+</code></pre>
+
+<p>This endpoint supports POST operations to generate a token for a valid username and password for the application.  This endpoint has the same validation as the <code>loginAttempt</code> endpoint.  Meaning that Stormpath will check to make sure that the username and password are valid, that the account is in an <a href="/rest/product-guide/#account-store-mappings"><code>Account Store</code></a> for the application, and that the account is in an <code>ENABLED</code> state.</p>
+
+<p>Your application will act as a proxy to the Stormpath API.  For example:</p>
+
+<ol>
+<li>The user inputs username and password into a form and clicks submit</li>
+<li>Your application in turn takes the the username and password and formulates the OAuth 2.0 Access Token request to Stormpath</li>
+<li>When Stormpath returns with the <code>Access Token Response</code>, you can then return the access token and/or the refresh token to the client.</li>
+</ol>
+
+
+<p>Once your application receives the username and password for the user, you can request an for an <code>Access Token</code>.</p>
+
+<p>Request:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-curl">curl</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li><li><a href="#tabs-get-access-token-ruby">ruby</a></li><li><a href="#tabs-get-access-token-python">python</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
+PasswordGrantRequest passwordGrantRequest = Oauth2Requests.PASSWORD_GRANT_REQUEST.builder()
+  .setLogin("username@test.com")
+  .setPassword("Password1!")
+  .build();
+OauthGrantAuthenticationResult oauthGrantAuthenticationResult = Authenticators.PASSWORD_GRANT_AUTHENTICATOR
+  .forApplication(application)
+  .authenticate(passwordGrantRequest);
+</code> </pre> </div><div id="tabs-get-access-token-curl"><pre lang="curl"><code>
+curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -d "grant_type=password&username=tom@stormpath.com&password=Secret1"
+    https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
+</code> </pre> </div><div id="tabs-get-access-token-node"><pre lang="node"><code>
+var authenticator = new stormpath.OAuthAuthenticator(application);
+  authenticator.authenticate({
+    body: {
+      grant_type: 'password',
+      username: 'user@someemaildomain.com',
+      password: '0wootIFY0!'
+    }
+  }, function(err, result){
+    console.log(result.accessTokenResponse);
+  });
+</code> </pre> </div><div id="tabs-get-access-token-php"><pre lang="php"><code>
+$passwordGrant = new \Stormpath\Oauth\PasswordGrantRequest($_REQUEST['username'], $_REQUEST['password']);
+
+$auth = new \Stormpath\Oauth\PasswordGrantAuthenticator($application);
+$result = $auth->authenticate($passwordGrant);
+
+//Return Type: Stormpath\Oauth\OauthGrantAuthenticationResult
+</code> </pre> </div><div id="tabs-get-access-token-ruby"><pre lang="ruby"><code>
+pasword_grant = Stormpath::Oauth::PasswordGrantRequest.new(username, password)
+result = application.authenticate_oauth(password_grant)
+# returns Stormpath::Oauth::AccessToken instance
+</code> </pre> </div><div id="tabs-get-access-token-python"><pre lang="python"><code>
+authenticator = PasswordGrantAuthenticator(application)
+oauth_grant_authentication_result = authenticator.authenticate('username@test.com', 'Password1!')
+</code> </pre> </div></div>
+
+
+
+
+<div class='docs-note'><p>It is possible to target token generation against a particular <a href="/rest/product-guide/#account-store-mappings"><code>Application</code>&#8217;s <code>Account Store</code></a>.  To do so, specify the <code>Account Store</code>&#8217;s href as a parameter:</p>
+
+<pre><code>grant_type=password&amp;username=tom@stormpath.com&amp;password=Secret1&amp;accountStore=https://api.stormpath.com/v1/directories/1bcd23ec1d0a8wa6
+</code></pre>
+</div>
+
+
+<p>Response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+    "access_token":"2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg",
+    "refresh_token": "JIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxvaG4gRG9lIiwiYWRtaW4iOnRydWV9.eoaDVGTClRdfxUZXiPXqKxpLsts",
+    "token_type": "Bearer"
+    "expires_in": 3600,
+    "stormpath_access_token_href": "https://api.stormpath.com/v1/accessTokens/r0klomitodnOCuvESIP5"
+}
+</code></pre>
+
+<p>The response is an <code>OAuth 2.0 Access Token Response</code> and includes the following:</p>
+
+<ul>
+<li><code>access_token</code> &ndash; A value denoting the access token for the response, as a JWT</li>
+<li><code>refresh_token</code> &ndash; A value denoting the refresh token that can be used to get refreshed Access Tokens, as a JWT</li>
+<li><code>token_type</code> &ndash; A value denoting the type of token returned.</li>
+<li><code>expires_in</code> &ndash; A value denoting the time in seconds before the token expires</li>
+<li><code>stormpath_access_token_href</code> &ndash; A value denoting the href location of the token in Stormpath.</li>
+</ul>
+
+
+<h3><a id="validating-access-tokens"></a>Validating Access Tokens</h3>
+
+<p>Once an <code>Access Token</code> has been generated, the client will need to pass the bearer token to your application.</p>
+
+<p>For example, if you have a route <code>https://yourapplication.com/secure-resource</code>, the client would access the resource by passing the access token:</p>
+
+<pre><code>HTTP/1.1
+GET /secure-resource
+Host: https://yourapplication.com
+Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
+</code></pre>
+
+<p>Once your application receives the request, the first thing to do is to validate that the token is valid.  There are different ways you can complete this task.</p>
+
+<ul>
+<li><a href="#using-stormpath-to-validate-the-token">Using Stormpath to Validate the Token</a></li>
+<li><a href="#validate-the-token-locally">Validate the Token Locally</a></li>
+</ul>
+
+
+<p>The benefit of using Stormpath to validate the token through the REST API (or an SDK that is using the REST API) is that Stormpath can validate the token against the state of your application and account.  To illustrate the difference:</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Validation Criteria </th>
+<th align="left"> Locally </th>
+<th align="left"> Stormpath</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Token hasn&rsquo;t been tampered with </td>
+<td align="left"> yes </td>
+<td align="left"> yes</td>
+</tr>
+<tr>
+<td align="left">Token hasn&rsquo;t expired </td>
+<td align="left"> yes </td>
+<td align="left"> yes</td>
+</tr>
+<tr>
+<td align="left">Token hasn&rsquo;t been revoked </td>
+<td align="left"> no </td>
+<td align="left"> yes</td>
+</tr>
+<tr>
+<td align="left">Account hasn&rsquo;t been disabled, and hasn&rsquo;t been deleted </td>
+<td align="left"> no </td>
+<td align="left"> yes</td>
+</tr>
+<tr>
+<td align="left">Issuer is Stormpath </td>
+<td align="left"> yes </td>
+<td align="left"> yes</td>
+</tr>
+<tr>
+<td align="left">Issuing application is still enabled, and hasn&rsquo;t been deleted </td>
+<td align="left"> no </td>
+<td align="left"> yes</td>
+</tr>
+<tr>
+<td align="left">Account is still in an account store for the issuing application </td>
+<td align="left"> no </td>
+<td align="left"> yes</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Why is this important?  There are different goals for every application and the level of validation that each application needs may differ.  If you need to validate the state of the account / application or if you need to use  token revocation, then using Stormpath to validate the token is the obvious choice.  This does require an request to the Stormpath REST API.  If you only require that the token has not expired and has not been tampered with, you can validate the token locally and minimize the network request to Stormpath.</p>
+
+<p><a class="anchor" name="using-stormpath-to-validate-the-token"></a></p>
+
+<h4>Using Stormpath to Validate Tokens</h4>
+
+<p>To see how to validate tokens with the Stormpath REST API, let&rsquo;s go back to the example where a user has already generated an access token. The user then attempts to access a secured resource by passing the access token in the <code>Bearer</code> header:</p>
+
+<pre><code>HTTP/1.1
+GET /secure-resource
+Host: https://yourapplication.com
+Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
+</code></pre>
+
+<p>The <code>Authorization</code> header specifies the <code>Bearer</code> token.  This token can be validated by a <code>HTTP GET</code> to your Stormpath <code>Application</code>&rsquo;s <code>authTokens</code> endpoint:</p>
+
+<pre><code>https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/
+</code></pre>
+
+<p>Request:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-validate-token-java">java</a></li><li><a href="#tabs-validate-token-curl">curl</a></li><li><a href="#tabs-validate-token-node">node</a></li><li><a href="#tabs-validate-token-php">php</a></li><li><a href="#tabs-validate-token-ruby">ruby</a></li><li><a href="#tabs-validate-token-python">python</a></li></ul><div id="tabs-validate-token-java"><pre lang="java"><code>
+JwtAuthenticationRequest jwtRequest = Oauth2Requests.JWT_AUTHENTICATION_REQUEST.builder()
+  .setJwt(oauthGrantAuthenticationResult.getAccessTokenString())
+  .build();
+JwtAuthenticationResult jwtAuthenticationResult = Authenticators.JWT_AUTHENTICATOR
+  .forApplication(application)
+  .authenticate(jwtRequest);
+</code> </pre> </div><div id="tabs-validate-token-curl"><pre lang="curl"><code>
+curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+    https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
+</code> </pre> </div><div id="tabs-validate-token-node"><pre lang="node"><code>
+var authenticator = new stormpath.OAuthAuthenticator(application);
+authenticator.authenticate({
+  headers: { authorization: 'Bearer: ' + token }
+}, function(err, result) {
+  result.getAccount(function(err, account) {
+    console.log(account);
+  });
+});
+</code> </pre> </div><div id="tabs-validate-token-php"><pre lang="php"><code>
+ // You can pass in a JWT into the `verify` method as a string.  If not, it will look in the HTTP_AUTHORIZATION header for one, and then COOKIE with a name of access_token
+
+$result = (new \Stormpath\Oauth\VerifyAccessToken($application))->verify();
+
+// Return Type: Stormpath\Resource\AccessToken
+</code> </pre> </div><div id="tabs-validate-token-ruby"><pre lang="ruby"><code>
+Stormpath::Oauth::VerifyAccessToken.new(application).verify(authorization_token)
+# returns Stormpath::Oauth::VerifyToken instance
+</code> </pre> </div><div id="tabs-validate-token-python"><pre lang="python"><code>
+authenticator = JwtAuthenticator(application)
+jwt_authentication_result = authenticator.authenticate(oauth_grant_authentication_result.access_token.token)
+</code> </pre> </div></div>
+
+
+<p>If the access token can be validated, Stormpath will return a 302 to the <code>Access Token</code> resource</p>
+
+<p>Response:</p>
+
+<pre><code>HTTP/1.1 302 Location Found
+Location: https://api.stormpath.com/v1/accessTokens/jr1zCsicMWpA661fe6715ed477ZiTtPFtPFMD0D
+</code></pre>
+
+<p>The location of the <code>Access Token</code> resource can be directly retrieved via to get information about the <code>Token</code>, <code>Account</code>, and <code>Application</code>.</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Attribute </th>
+<th align="left"> Description </th>
+<th align="left"> Type </th>
+<th align="left"> Valid Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>href</code> </td>
+<td align="left"> The token&rsquo;s fully qualified URL </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>account</code> </td>
+<td align="left"> A link to the <code>Account</code> that the <code>Token</code> is associated with </td>
+<td align="left"> Link </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>application</code> </td>
+<td align="left"> A link to the <code>Application</code> that the <code>Token</code> is associated with </td>
+<td align="left"> Link </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>jwt</code> </td>
+<td align="left"> The compact JWT for the token </td>
+<td align="left"> String </td>
+<td align="left"> &mdash;</td>
+</tr>
+<tr>
+<td align="left"><code>expandedJwt</code> </td>
+<td align="left"> The expanded JWT, this will describe the header, claims, and signature for the token. </td>
+<td align="left"> &mdash;</td>
+<td></td>
+</tr>
+<tr>
+<td align="left"><code>tenant</code> </td>
+<td align="left"> A link to the <code>Tenant</code> that the <code>Token</code> is associated with </td>
+<td align="left"> Link </td>
+<td align="left"> &mdash;</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>To get the <code>Access Token</code>, follow the <code>302 Redirect</code> or issue a <code>GET</code> to the the resource href.</p>
+
+<p>Request:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-curl">curl</a></li><li><a href="#tabs-get-access-token-python">python</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
+AccessToken accessToken = client.getDataStore().getResource(accessTokenHref, AccessToken.class);
+</code> </pre> </div><div id="tabs-get-access-token-curl"><pre lang="curl"><code>
+curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+    https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7
+</code> </pre> </div><div id="tabs-get-access-token-python"><pre lang="python"><code>
+jwt_authentication_result.account
+jwt_authentication_result.application
+jwt_authentication_result.jwt
+jwt_authentication_result.expanded_jwt
+</code> </pre> </div></div>
+
+
+<p>Response:</p>
+
+<pre><code>{
+    "account": {
+        "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+    },
+    "application": {
+        "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
+    },
+    "createdAt": "2015-06-24T21:42:27.535Z",
+    "expandedJwt": {
+        "claims": {
+            "exp": 1435183947,
+            "iat": 1435182147,
+            "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6",
+            "jti": "74Zd80iW0cOhotjXH4GqM7",
+            "rti": "zxRTYcdBDiTFQmNIVudTv",
+            "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+        },
+        "header": {
+            "alg": "HS256",
+            "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
+        },
+        "signature": "qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ"
+    },
+    "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7",
+    "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ",
+    "tenant": {
+        "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
+    }
+}
+</code></pre>
+
+<div class='docs-note'><p>If you need to get the <code>Account</code> and/or <code>Application</code> information with the <code>Access Token</code>, you can use <a href="http://docs.stormpath.com/rest/product-guide/#link-expansion">expansion</a>.  For example:</p>
+
+<pre><code>https://api.stormpath.com/v1/accessTokens/jr1zCsicMWpA661fe6715ed477ZiTtPFtPFMD0D?expand=account,application
+</code></pre>
+</div>
+
+
+<p><a class="anchor" name="validate-the-token-locally"></a></p>
+
+<h4>Validating the Token Locally</h4>
+
+<p>To see how to validate tokens locally, let&rsquo;s go back to the example where a user has already generated an access token. The user then attempts to access a secured resource by passing the access token in the <code>Bearer</code> header:</p>
+
+<pre><code>HTTP/1.1
+GET /secure-resource
+Host: https://yourapplication.com
+Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
+</code></pre>
+
+<p>The <code>Authorization</code> header specifies the <code>Bearer</code> token.  This token is a JSON Web Token (JWT) that has been digitally signed with the Stormpath <code>API Key</code> Secret that was used to <a href="#using-stormpath-to-generate-an-oauth-20-access-tokens">generate the token</a>.  This means that you can use a JWT library to validate the token locally if necessary.</p>
+
+<p>To use a JWT library to validate the token:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li><li><a href="#tabs-get-access-token-ruby">ruby</a></li><li><a href="#tabs-get-access-token-python">python</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
+JwtAuthenticationRequest jwtRequest = Oauth2Requests.JWT_AUTHENTICATION_REQUEST.builder()
+  .setJwt(oauthGrantAuthenticationResult.getAccessTokenString())
+  .build();
+JwtAuthenticationResult jwtAuthenticationResult = Authenticators.JWT_AUTHENTICATOR
+  .forApplication(application)
+  .withLocalValidation()
+  .authenticate(jwtRequest);
+</code> </pre> </div><div id="tabs-get-access-token-node"><pre lang="node"><code>
+// This sample uses NJWT a Node JWT Library (https://github.com/jwtk/jjwt)
+
+var nJwt = require('nJwt');
+
+var bearerToken = "eyJraWQiOiI0TElJMTM3MVRZUkxWVUU5QjJSVU1JRDMwIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIyZHk1a09HTVBGd3FPR3VLVnZscWpKIiwiaWF0IjoxNDM1MTY2NDQxLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvdjEvYXBwbGljYXRpb25zLzNBZ2ExdWZHbFhnVGJLUWZvdmt5ZjMiLCJzdWIiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvdjEvYWNjb3VudHMvMWVQQmdWa3hDVm1meVJRYzV0UVpDRCIsImV4cCI6MTQzNTE2NzA0MSwicnRpIjoiMmRzTkUyRExRWkpnTE9MRzhwclJsaCJ9.fq-6BUHM5MBOoas2EGZepEib6RTwh6V6MnbDLe8rThs";
+
+nJwt.verify(bearerToken, "$STORMPATH_API_KEY_SECRET", function(err, verifiedJwt) {
+    if(err){
+        console.log(err); // Token has expired, has been tampered with, etc
+    }else{
+        console.log(verifiedJwt); // Will contain the header and body
+    }
+});
+
+</code> </pre> </div><div id="tabs-get-access-token-php"><pre lang="php"><code>
+// You can pass in a JWT into the `verify` method as a string.  If not, it will look in the HTTP_AUTHORIZATION header for one, and then COOKIE with a name of access_token
+
+$result = (new \Stormpath\Oauth\VerifyAccessToken($application))->withLocalValidation->verify();
+</code> </pre> </div><div id="tabs-get-access-token-ruby"><pre lang="ruby"><code>
+require(‘jwt’)
+
+begin
+    verified_jwt = JWT.decode(token, stormpath_api_key_secret)
+rescue JWT::InvalidJtiError => error
+    # handle error
+end
+</code> </pre> </div><div id="tabs-get-access-token-python"><pre lang="python"><code>
+authenticator = JwtAuthenticator(application)
+jwt_authentication_result = authenticator.authenticate(oauth_grant_authentication_result.access_token.token, local_validation=True)
+</code> </pre> </div></div>
+
+
+<h3><a id="refreshing-access-tokens"></a>Refreshing Access Tokens</h3>
+
+<p>Passing access tokens allows access to resources in your application.  But what happens when the <code>Access Token</code> expires?  You could require the user to authenticate again, or use the <code>Refresh Token</code> to get a new <code>Access Token</code> without requiring credentials.</p>
+
+<div class='docs-warning'><p>If using a <code>Refresh Token</code> in a web application, it is important NOT to expose the refresh token through javascript.</p>
+</div>
+
+
+<p>To get a new <code>Access Token</code> to for a <code>Refresh Token</code>, you must first make sure that the <a href="#configuration">application has been configured</a> to generate a <code>Refresh Token</code> in the <code>OAuth 2.0 Access Token Response</code>.</p>
+
+<p>Once your application has a <code>Refresh Token</code>, you can pass the token to your Stormpath Application&rsquo;s <code>tokenEndpoint</code> using the <code>refresh_token</code> OAuth 2.0 grant type.</p>
+
+<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-java">java</a></li><li><a href="#tabs-refresh-access-token-curl">curl</a></li><li><a href="#tabs-refresh-access-token-node">node</a></li><li><a href="#tabs-refresh-access-token-php">php</a></li><li><a href="#tabs-refresh-access-token-ruby">ruby</a></li><li><a href="#tabs-refresh-access-token-python">python</a></li></ul><div id="tabs-refresh-access-token-java"><pre lang="java"><code>
+RefreshGrantRequest refreshRequest = Oauth2Requests.REFRESH_GRANT_REQUEST.builder()
+  .setRefreshToken(oauthGrantAuthenticationResult.getRefreshTokenString())
+  .build();
+OauthGrantAuthenticationResult result = Authenticators.REFRESH_GRANT_AUTHENTICATOR
+  .forApplication(application)
+  .authenticate(refreshRequest);
+</code> </pre> </div><div id="tabs-refresh-access-token-curl"><pre lang="curl"><code>
+curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -d "grant_type=refresh_token&refresh_token=$REFRESH_TOKEN"
+    https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
+</code> </pre> </div><div id="tabs-refresh-access-token-node"><pre lang="node"><code>
+var authenticator = new stormpath.OAuthAuthenticator(application);
+authenticator.authenticate({
+  body: {
+    grant_type: 'refresh_token',
+    refresh_token: 'YOUR_REFRESH_TOKEN_JWT'
+  }
+}, function(err, result) {
+  console.log(result.accessTokenResponse);
+});
+</code> </pre> </div><div id="tabs-refresh-access-token-php"><pre lang="php"><code>
+$refreshGrant = new \Stormpath\Oauth\RefreshGrantRequest($_REQUEST['refresh_token']);
+
+$auth = new \Stormpath\Oauth\RefreshGrantAuthenticator($application);
+$result = $auth->authenticate($refreshGrant);
+
+// Return Type: Stormpath\Oauth\OauthGrantAuthenticationResult
+</code> </pre> </div><div id="tabs-refresh-access-token-ruby"><pre lang="ruby"><code>
+refresh_grant = Stormpath::Oauth::RefreshGrantRequest.new(refresh_token)
+result = application.authenticate_oauth(refresh_grant)
+# returns Stormpath::Oauth::AccessToken instance
+</code> </pre> </div><div id="tabs-refresh-access-token-python"><pre lang="python"><code>
+authenticator = RefreshGrantAuthenticator(application)
+result = authenticator.authenticate(oauth_grant_authentication_result.refresh_token)
+</code> </pre> </div></div>
+
+
+<p>Response:</p>
+
+<pre><code>HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+Cache-Control: no-store
+Pragma: no-cache
+
+{
+    "access_token":"2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg",
+    "refresh_token": "$REFRESH_TOKEN",
+    "token_type": "Bearer"
+    "expires_in": 3600,
+    "stormpath_access_token_href": "https://api.stormpath.com/v1/accessTokens/r0klomitodnOCuvESIP5"
+}
+</code></pre>
+
+<p>When Stormpath generates a new <code>Access Token</code> for a <code>Refresh Token</code> it does not generate or modify the expiration time of the <code>Refresh Token</code>.  This means that once the Refresh Token expires, the user must authenticate again to get a new <code>Access Token</code> and <code>Refresh Token</code></p>
+
+<h3><a id="using-stormpath-to-revoke-access-and-refresh-tokens"></a>Using Stormpath to Revoke Access and Refresh Tokens</h3>
+
+<p>Using <code>Access Token</code>s and <code>Refresh Token</code>s can control the access to your application. In some cases it is needed to revoke these tokens.  This is important under a couple different scenarios:</p>
+
+<ul>
+<li>The user has explicitly logged out, and your application needs to revoke their access, requiring authentication again</li>
+<li>The application, device, client has been compromised and you need to revoke tokens for an account.</li>
+</ul>
+
+
+<p>When <a href="#using-stormpath-to-validate-the-token">validating the tokens with Stormpath</a>, Stormpath will validate that the token has not been revoked before returning successfully.  Revoking tokens in Stormpath is as simple as deleting the token resource.</p>
+
+<p>To get the token resource href to delete the access tokens / refresh tokens for an account, you can get the <a href="http://docs.stormpath.com/rest/product-guide/#collection-resources">collection</a> from the account&rsquo;s <code>accessTokens</code> and <code>refreshTokens</code> collection:</p>
+
+<pre><code>{
+    "accessTokens": {
+        "href": "https://.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/accessTokens"
+    },
+    ...
+    "refreshTokens": {
+        "href": "https://.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/refreshTokens"
+    },
+    ...
+    "username": "tom@stormpath.com"
+}
+</code></pre>
+
+<p>The <code>accessTokens</code> and <code>refreshTokens</code> links on an account that be queried for a particular application.  This is accomplished by passing the Application&rsquo;s href as a query parameter</p>
+
+<p>For example:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-get-tokens-for-account-curl">curl</a></li><li><a href="#tabs-get-tokens-for-account-python">python</a></li></ul><div id="tabs-get-tokens-for-account-curl"><pre lang="curl"><code>
+curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+    https://.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/accessTokens?application.href=https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6
+</code> </pre> </div><div id="tabs-get-tokens-for-account-python"><pre lang="python"><code>
+application.auth_tokens
+</code> </pre> </div></div>
+
+
+<p>Response:</p>
+
+<pre><code>{
+    "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac/accessTokens",
+    "items": [
+        {
+            "account": {
+                "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+            },
+            "application": {
+                "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
+            },
+            "createdAt": "2015-06-24T21:36:52.684Z",
+            "expandedJwt": {
+                "claims": {
+                    "exp": 1435183612,
+                    "iat": 1435181812,
+                    "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6",
+                    "jti": "zxa7fCzt2etCTce2RWIv5",
+                    "rti": "zxRTYcdBDiTFQmNIVudTv",
+                    "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+                },
+                "header": {
+                    "alg": "HS256",
+                    "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
+                },
+                "signature": "da8G6xRUVird3MnG8HYTleDtXbwhqUfFK8KUvK8HDYI"
+            },
+            "href": "https://api.stormpath.com/v1/accessTokens/zxa7fCzt2etCTce2RWIv5",
+            "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJ6eGE3ZkN6dDJldENUY2UyUldJdjUiLCJpYXQiOjE0MzUxODE4MTIsImlzcyI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xcDRSMXI5VUJNUXowZVNGQzZYWkU2Iiwic3ViIjoiaHR0cHM6Ly9zdGFnaW5nLWFwaS1iLnN0b3JtcGF0aC5jb20vdjEvYWNjb3VudHMvN05aeFZ5NXJVUzdXZzV2TlNzVFVhYyIsImV4cCI6MTQzNTE4MzYxMiwicnRpIjoienhSVFljZEJEaVRGUW1OSVZ1ZFR2In0.da8G6xRUVird3MnG8HYTleDtXbwhqUfFK8KUvK8HDYI",
+            "tenant": {
+                "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
+            }
+        },
+        {
+            "account": {
+                "href": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+            },
+            "application": {
+                "href": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6"
+            },
+            "createdAt": "2015-06-24T21:42:27.535Z",
+            "expandedJwt": {
+                "claims": {
+                    "exp": 1435183947,
+                    "iat": 1435182147,
+                    "iss": "https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSFC6XZE6",
+                    "jti": "74Zd80iW0cOhotjXH4GqM7",
+                    "rti": "zxRTYcdBDiTFQmNIVudTv",
+                    "sub": "https://api.stormpath.com/v1/accounts/7NZxVy5rUS7Wg5vNSsTUac"
+                },
+                "header": {
+                    "alg": "HS256",
+                    "kid": "78Z49RZ9M5GZLSUMXPN0HLU8K"
+                },
+                "signature": "qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ"
+            },
+            "href": "https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7",
+            "jwt": "eyJraWQiOiI3OFo0OVJaOU01R1pMU1VNWFBOMEhMVThLIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI3NFpkODBpVzBjT2hvdGpYSDRHcU03IiwiaWF0IjoxNDM1MTgyMTQ3LCJpc3MiOiJodHRwczovL3N0YWdpbmctYXBpLWIuc3Rvcm1wYXRoLmNvbS92MS9hcHBsaWNhdGlvbnMvMXA0UjFyOVVCTVF6MGVTRkM2WFpFNiIsInN1YiI6Imh0dHBzOi8vc3RhZ2luZy1hcGktYi5zdG9ybXBhdGguY29tL3YxL2FjY291bnRzLzdOWnhWeTVyVVM3V2c1dk5Tc1RVYWMiLCJleHAiOjE0MzUxODM5NDcsInJ0aSI6Inp4UlRZY2RCRGlURlFtTklWdWRUdiJ9.qVmTZwkqXOvko5nOelIYfkq8gzIppLBNbPy64XW-WqQ",
+            "tenant": {
+                "href": "https://api.stormpath.com/v1/tenants/1nxg7TyvjHucV2p7z214Fa"
+            }
+        }
+    ],
+    "limit": 25,
+    "offset": 0,
+    "size": 2
+}
+</code></pre>
+
+<div class='docs-note'><p>Querying the account&#8217;s <code>accessTokens</code> or <code>refreshTokens</code> by <code>Application</code> href is optional.  If you would like to get tokens across all applications, do not include the <code>application.href</code> query parameter.</p>
+</div>
+
+
+<p>To revoke the tokens, you iterate over the collection, collect the href for the token and issue a <code>HTTP Delete</code></p>
+
+<p>For example:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-delete-access-token-java">java</a></li><li><a href="#tabs-delete-access-token-curl">curl</a></li><li><a href="#tabs-delete-access-token-node">node</a></li><li><a href="#tabs-delete-access-token-php">php</a></li><li><a href="#tabs-delete-access-token-ruby">ruby</a></li><li><a href="#tabs-delete-access-token-python">python</a></li></ul><div id="tabs-delete-access-token-java"><pre lang="java"><code>
+AccessToken accessToken = oauthGrantAuthenticationResult.getAccessToken();
+accessToken.delete();
+</code> </pre> </div><div id="tabs-delete-access-token-curl"><pre lang="curl"><code>
+curl -X DELETE --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+    https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7
+</code> </pre> </div><div id="tabs-delete-access-token-node"><pre lang="node"><code>
+token.delete(function(err) { console.log('deleted token'); });
+</code> </pre> </div><div id="tabs-delete-access-token-php"><pre lang="php"><code>
+$token = AccessToken::get($tokenHref);
+$token->delete();
+</code> </pre> </div><div id="tabs-delete-access-token-ruby"><pre lang="ruby"><code>
+Stormpath::Resource::AccessToken.get href
+access_token.delete
+</code> </pre> </div><div id="tabs-delete-access-token-python"><pre lang="python"><code>
+jwt_authentication_result.delete()
+</code> </pre> </div></div>
+
+
+<p>Response:</p>
+
+<pre><code>HTTP/1.1 204 No Content
+</code></pre>
+
+<p>When the token is deleted from Stormpath, attempting to validate the the deleted token in Stormpath will return the following error:</p>
+
+<pre><code>{
+    "code": "404",
+    "status": "10013",
+    "message": "Token is invalid",
+    "developerMessage": "Token does not exist. This can occur if the token has been manually deleted, or if the token has expired and removed by Stormpath"
+}
+</code></pre>
+
+<h2><a id="wrapping-it-up"></a>Wrapping it up</h2>
+
+<p>In this guide, we discussed how to set up and use Stormpath to generate and manage OAuth 2.0 Access Tokens and Refresh Tokens. If you have any questions, bug reports, or enhancement requests please email <a href="&#x6d;&#97;&#105;&#108;&#116;&#111;&#58;&#x73;&#x75;&#x70;&#112;&#x6f;&#114;&#x74;&#64;&#x73;&#116;&#x6f;&#114;&#109;&#x70;&#x61;&#x74;&#x68;&#46;&#99;&#x6f;&#x6d;&#x2e;">&#x73;&#117;&#112;&#x70;&#x6f;&#114;&#x74;&#x40;&#115;&#116;&#111;&#x72;&#109;&#x70;&#x61;&#x74;&#x68;&#x2e;&#99;&#x6f;&#x6d;&#46;</a></p>
+
+              <div id="spread-word">
+<hr>
+
+<h2> Help Us Spread the Word </h2>
+
+<p>Did you find this valuable?  If you've enjoyed playing with Stormpath or are excited about what we've built, please help us spread the world with a quick tweet or by just telling a friend.  Thank you!</p>
+
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout Stormpath, it helps you set up complete user management in your application in minutes."
+addthis:url="https://stormpath.com" >
+  <a class="addthis_button_twitter"></a>
+  <a class="addthis_button_reddit"></a>
+  <a class="addthis_button_hackernews"></a>
+  <a class="addthis_button_google_plusone_share"></a>
+  <a class="addthis_button_linkedin"></a>
+  <a class="addthis_button_facebook"></a>
+  <a class="addthis_button_email"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+<!-- AddThis Button END -->
+<p>
+</div>
+
+            </div>
+            <div class="col-md-12">
+              <div id="bottom-wrapper">
+               <div class="region">
+
+	<div class="credits">
+	  <div class="container">
+	    <ul class="list-unstyled list-inline">
+	      <li>Copyright &copy; 2016 Stormpath, Inc.</li>
+	      <li class="divider-vertical"></li>
+	      <li>All rights reserved</li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/privacy_policy">Privacy policy</a></li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/terms_of_service">Terms of service</a></li>
+	    </ul>
+	  </div>
+	</div>
+	
+</div><!-- /.region -->
+
+              </div>
+            </div>
+          </div>
+
+
+
+<aside class="sidebars">
+  
+    <section class="region region-sidebar-first column sidebar">
+      
+<div id="block-stormpath-docs-languages" class="block block-stormpath-docs first odd">
+ <form class="stormpath-docs-select-language" action="/docs/java/product-guide" method="post" id="stormpath-docs-language-form" accept-charset="UTF-8"><div><div class="form-item form-type-select form-item-language">
+  <label for="edit-language">Language: </label>
+ <select id="edit-language" name="language" class="form-select">
+  
+  
+ 	
+    <option value="rest">REST API</option>
+ 	
+    <option value="java">Java</option>
+ 	
+    <option value="nodejs">Node.js</option>
+ 	
+    <option value="python">Python</option>
+ 	
+    <option value="ruby">Ruby</option>
+ 	
+    <option value="guides" selected>Guides</option>
+ 	
+    <option value="console">Admin Console</option>
+ 	
+ </select>
+</div>
+<input type="hidden" name="form_id" value="stormpath_docs_language_form">
+</div></form>
+</div>
+
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['android'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['csharp'] = [];
+		
+	
+		sp_docs_menu['dotnet'] = [];
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('10010');
+		
+			sp_docs_menu['errors'].push('10011');
+		
+			sp_docs_menu['errors'].push('10012');
+		
+			sp_docs_menu['errors'].push('10013');
+		
+			sp_docs_menu['errors'].push('10014');
+		
+			sp_docs_menu['errors'].push('10015');
+		
+			sp_docs_menu['errors'].push('10016');
+		
+			sp_docs_menu['errors'].push('10017');
+		
+			sp_docs_menu['errors'].push('10100');
+		
+			sp_docs_menu['errors'].push('10101');
+		
+			sp_docs_menu['errors'].push('10102');
+		
+			sp_docs_menu['errors'].push('11001');
+		
+			sp_docs_menu['errors'].push('11002');
+		
+			sp_docs_menu['errors'].push('11003');
+		
+			sp_docs_menu['errors'].push('11004');
+		
+			sp_docs_menu['errors'].push('11005');
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['ios'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['vbnet'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+</script>
+
+
+<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
+  
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/guides/multi-tenant">Multi-Tenant SaaS Applications with Stormpath</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/using-id-site">Using ID Site</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/social-integrations">Integrating Stormpath with Facebook and Google</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/ad-ldap">Integrating Stormpath with Active Directory and LDAP</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/dev-test-prod-environments">Setting up Development and Production Environments</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/api-key-management">Using Stormpath for API Authentication</a>
+			
+			
+			</li>
+		
+			<li class="leaf active-trail">
+			
+				<a href="/guides/token-management">Using Stormpath for OAuth 2.0 and Access/Refresh Token Management</a>
+			
+			
+				<ul class="menu"><li class="leaf"><a href="#what-is-token-based-authentication" data-level="0" class="fragment">What is Token Based Authentication?</a><ul class="menu"></ul></li><li class="leaf"><a href="#why-oauth-20" data-level="0" class="fragment">Why OAuth 2.0?</a><ul class="menu"></ul></li><li class="leaf"><a href="#what-tokens-are-available-for-token-based-authentication" data-level="0" class="fragment">What Tokens are available for Token Based Authentication?</a><ul class="menu"></ul></li><li class="leaf"><a href="#how-to-use-stormpath-for-token-based-authentication" data-level="0" class="fragment">How to use Stormpath for Token Based Authentication</a><ul class="menu"><li class="leaf"><a href="#configuration" data-level="1" class="fragment">Configuration</a><ul class="menu"></ul></li><li class="leaf"><a href="#using-stormpath-to-generate-an-oauth-20-access-tokens" data-level="1" class="fragment">Using Stormpath to Generate an OAuth 2.0 Access Tokens</a><ul class="menu"></ul></li><li class="leaf"><a href="#validating-access-tokens" data-level="1" class="fragment">Validating Access Tokens</a><ul class="menu"></ul></li><li class="leaf"><a href="#refreshing-access-tokens" data-level="1" class="fragment">Refreshing Access Tokens</a><ul class="menu"></ul></li><li class="leaf"><a href="#using-stormpath-to-revoke-access-and-refresh-tokens" data-level="1" class="fragment">Using Stormpath to Revoke Access and Refresh Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#wrapping-it-up" data-level="0" class="fragment">Wrapping it up</a><ul class="menu"></ul></li></ul>
+			
+			</li>
+		
+		</ul>
+  	
+  
+        
+  	
+                
+                       <div class="menu-divider"></div> 
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/how-do-i">How Do I..?</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/errors">Stormpath Error Codes</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+</div>
+
+    </section>
+  
+
+  
+</aside>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script src="/javascripts/highlight.min.js"></script>
+
+<script>
+$(function() {
+   hljs.initHighlightingOnLoad();
+
+   /* javascript for codetab to stop the page from shifting when changing tabs (tab sync) */
+   var currentEventTab;
+   var initialObjectTopOffset;
+   var initialPageYOffset;
+
+   $('.tabs').tabs({
+		activate: function(event ,ui){
+
+			//if the dom event, grab the hotness 
+			if(event.cancelable){
+				currentEventTab = event.target;
+				initialObjectTopOffset = $(currentEventTab).offset().top;
+				initialPageYOffset = window.pageYOffset;
+			}
+			//change ze tab
+			$('.tabs').tabs('option', 'active', ui.newTab.index());
+
+			//grab the new offsets
+			var afterChangeOffset = $(currentEventTab).offset().top;
+			var afterPageYOffset = window.pageYOffset;
+
+			//do ze scroll
+			$('body').scrollTop(initialPageYOffset - (initialObjectTopOffset - afterChangeOffset));
+		}
+	});
+});
+</script>
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<!-- Google Code for Remarketing tag -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1002663385;
+var google_conversion_label = "wSRZCLfkjQQQ2duN3gM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1002663385/?value=0&amp;label=wSRZCLfkjQQQ2duN3gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<!-- AdRoll Code -->
+<script type="text/javascript">
+adroll_adv_id = "RVWGHIV3GJCLHIUDNFIMNY";
+adroll_pix_id = "L2WE5KAWDRDBVP46PZZBQJ";
+(function () {
+var oldonload = window.onload;
+window.onload = function(){
+__adroll_loaded=true;
+var scr = document.createElement("script");
+var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+scr.setAttribute('async', 'true');
+scr.type = "text/javascript";
+scr.src = host + "/j/roundtrip.js";
+((document.getElementsByTagName('head') || [null])[0] ||
+document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+if(oldonload){oldonload()}};
+}());
+</script>
+
+<!-- HubSpot Analytics Code -->
+<script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+</script>
+<!-- End HubSpot Analytics Code -->
+
+<!-- CrazyEgg -->
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0017/1602.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+
+<!-- Perfect Audience -->
+<script type="text/javascript">
+(function() {
+window._pa = window._pa || {};
+// _pa.orderId = "";
+// _pa.revenue = "";
+var pa = document.createElement('script'); pa.type = 'text/javascript'; pa.async = true;
+pa.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + "//tag.perfectaudience.com/serve/51fc2c6f1b440adfcc000099.js";
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pa, s);
+})();
+</script>
+
+
+</body>
+</html>
