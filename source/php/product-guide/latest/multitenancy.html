@@ -92,7 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="accnt_mgmt.html">4. Account Management</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auth_n.html">5. Authenticating Accounts with Stormpath</a></li>
 <li class="toctree-l1"><a class="reference internal" href="auth_z.html">6. Authorization With Stormpath</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">7. Multi-Tenancy with Stormpath</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">7. Multi-Tenancy with Stormpath</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#what-is-a-multi-tenant-application">7.1. What Is a Multi-Tenant Application?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#modeling-tenants-in-stormpath">7.2. Modeling Tenants in Stormpath</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#account-store-strategies-for-multi-tenancy">7.2.1. Account Store Strategies for Multi-Tenancy</a><ul>
@@ -181,7 +181,7 @@
 <li>How will tenants be represented?</li>
 <li>How will user data in one tenant be kept secure and separate from other tenant partitions?</li>
 </ul>
-<p>In our <a class="reference internal" href="accnt_mgmt.html#account-mgmt"><span>Account Management</span></a> chapter we discussed two kinds of Account Stores: <a class="reference internal" href="accnt_mgmt.html#directory-mgmt"><span>Directories</span></a>, and <a class="reference internal" href="accnt_mgmt.html#group-mgmt"><span>Groups</span></a>. For multi-tenant applications there is an additional <a class="reference internal" href="reference.html#ref-organization"><span>Organization</span></a> resource, which functions like a virtual Account Store that itself wraps both Directories and Groups.</p>
+<p>In our <a class="reference internal" href="accnt_mgmt.html#account-mgmt"><span class="std std-ref">Account Management</span></a> chapter we discussed two kinds of Account Stores: <a class="reference internal" href="accnt_mgmt.html#directory-mgmt"><span class="std std-ref">Directories</span></a>, and <a class="reference internal" href="accnt_mgmt.html#group-mgmt"><span class="std std-ref">Groups</span></a>. For multi-tenant applications there is an additional <a class="reference internal" href="reference.html#ref-organization"><span class="std std-ref">Organization</span></a> resource, which functions like a virtual Account Store that itself wraps both Directories and Groups.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">A Directory or Group can be added to multiple Organizations.</p>
@@ -192,24 +192,24 @@
 <p>Your primary consideration when modeling users in Stormpath always begins with the Directory that will contain the user Accounts. With multi-tenancy, the additional consideration is whether you will have each one of your application&#8217;s tenants represented by a Directory or a Group.</p>
 <div class="section" id="strategy-1-tenants-as-directories">
 <h4>Strategy 1: Tenants as Directories<a class="headerlink" href="#strategy-1-tenants-as-directories" title="Permalink to this headline">¶</a></h4>
-<p>To understand the multi-tenancy considerations in modeling tenants as <a class="reference internal" href="reference.html#ref-directory"><span>Directories</span></a>, there are three characteristics of Directories that are worth remembering:</p>
+<p>To understand the multi-tenancy considerations in modeling tenants as <a class="reference internal" href="reference.html#ref-directory"><span class="std std-ref">Directories</span></a>, there are three characteristics of Directories that are worth remembering:</p>
 <ul class="simple">
 <li>All Accounts within a Directory must have a unique <code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">username</span></code></li>
 <li>All Groups within a Directory must have a unique <code class="docutils literal"><span class="pre">name</span></code></li>
-<li>User policies, such as the <a class="reference internal" href="reference.html#ref-password-policy"><span>Password Policy</span></a> and the <a class="reference internal" href="reference.html#ref-accnt-creation-policy"><span>Account Creation Policy</span></a> are set at the Directory level</li>
+<li>User policies, such as the <a class="reference internal" href="reference.html#ref-password-policy"><span class="std std-ref">Password Policy</span></a> and the <a class="reference internal" href="reference.html#ref-accnt-creation-policy"><span class="std std-ref">Account Creation Policy</span></a> are set at the Directory level</li>
 </ul>
 <p>From these points we can derive a few conditions where the tenants-as-Directories strategy is optimal. If your tenants satisfy one or more of these conditions:</p>
 <ul class="simple">
 <li>You do not require email uniqueness across tenants. If a user has signed up for an Account with one tenant, they are able to use that same email to create an email for another Account in another tenant.</li>
 <li>Each tenant has its own password strength policy.</li>
 <li>Each tenant has different emails that need to be sent (or not sent) as part of the user Account creation process.</li>
-<li>Each tenant requires different user Groups and/or <a class="reference internal" href="auth_z.html#role-groups"><span>role Groups</span></a>. Application-wide Groups that span across tenants are not required.</li>
+<li>Each tenant requires different user Groups and/or <a class="reference internal" href="auth_z.html#role-groups"><span class="std std-ref">role Groups</span></a>. Application-wide Groups that span across tenants are not required.</li>
 </ul>
 <div class="section" id="tenants-as-directories-example">
 <h5>Tenants as Directories Example<a class="headerlink" href="#tenants-as-directories-example" title="Permalink to this headline">¶</a></h5>
 <p>Here is an example implementation that uses Directories to model tenants. It is important to note that this is just an example. Stormpath has a very flexible data model with intentionally versatile resources. If you&#8217;d like to discuss your particular implementation needs please <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">get in touch</a>!</p>
 <div class="figure align-center" id="id2">
-<a class="reference internal image-reference" href="_images/ERD_TpD.png"><img alt="Tenant per Directory" src="_images/ERD_TpD.png" /></a>
+<a class="reference internal image-reference" href="_images/ERD_TpD.png"><img alt="Tenant per Directory" src="_images/ERD_TpD.png" style="width: 2160.0px; height: 1766.0px;" /></a>
 <p class="caption"><span class="caption-text"><em>Tenants as Directories ERD.</em></span></p>
 </div>
 <p>An example implementation of the Tenants-as-Directories strategy is shown in the diagram above. Please note that everything discussed occurs inside the private data space that we refer to as your Stormpath Tenant, which is represented by the Tenant resource but does not play any part in multi-tenancy. The scenario demonstrates a multi-tenant userbase with two tenants, each of who is represented by two resources: an Organization and a Directory. There are a few points to highlight in this diagram:</p>
@@ -234,7 +234,7 @@
 <h5>Tenants as Groups Example<a class="headerlink" href="#tenants-as-groups-example" title="Permalink to this headline">¶</a></h5>
 <p>Below we have an example of an implementation that uses Groups to model tenants. This shows just one possible scenario, and if you&#8217;d like to discuss your particular implementation needs please <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">get in touch</a>!</p>
 <div class="figure align-center" id="id3">
-<a class="reference internal image-reference" href="_images/ERD_TpG.png"><img alt="Tenant per Group" src="_images/ERD_TpG.png" /></a>
+<a class="reference internal image-reference" href="_images/ERD_TpG.png"><img alt="Tenant per Group" src="_images/ERD_TpG.png" style="width: 2484.0px; height: 1857.0px;" /></a>
 <p class="caption"><span class="caption-text"><em>Tenants as Groups ERD</em></span></p>
 </div>
 <p>Once again, everything here is happening inside your private Stormpath Tenant. Just as with the Tenants-as-Directories strategy, every Tenant is modeled by its own dedicated Organization, but in this case there is also one Group resource per Tenant. All of the Accounts and Groups are contained within a single Directory resource. This all means that:</p>
@@ -260,7 +260,7 @@
 <blockquote>
 <div><code class="docutils literal"><span class="pre">GET</span> <span class="pre">https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=bank-of-a.role.*</span></code></div></blockquote>
 <p>Or, if you wanted to retrieve the tenant Group and all of its sub-Groups, make the query a little less restrictive by removing the &#8220;role&#8221;:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=bank-of-a.*
+<div class="highlight-default"><div class="highlight"><pre><span></span>GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=bank-of-a.*
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -274,7 +274,7 @@
 <p>Once you have your application&#8217;s tenants modeled as Directories or Groups, the final tool that Stormpath gives you is the Organization resource. These are umbrella entities that allow you to better structure and control multi-tenant applications.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <a class="reference internal" href="reference.html#ref-organization"><span>Organization</span></a> resource is not to be confused with the Tenant resource. While the <a class="reference internal" href="reference.html#ref-tenant"><span>Tenant</span></a> resource is so-called because it represents your tenancy inside the Stormpath server, the Organization resource represents the space alloted for a tenant of your application.</p>
+<p class="last">The <a class="reference internal" href="reference.html#ref-organization"><span class="std std-ref">Organization</span></a> resource is not to be confused with the Tenant resource. While the <a class="reference internal" href="reference.html#ref-tenant"><span class="std std-ref">Tenant</span></a> resource is so-called because it represents your tenancy inside the Stormpath server, the Organization resource represents the space alloted for a tenant of your application.</p>
 </div>
 <p>The Organization resource allows your application&#8217;s tenants to have as many, or as few, Directories and Groups as they want, while also maintaining strict data segregation. So if a tenant requires a Cloud Directory, a Google Social Directory, and an LDAP Directory, all of these can sit under the umbrella of a single Organization resource that represents their data space in your app.</p>
 <p>Although Organizations do not themselves own Accounts in the same way as Directories and Groups, they can be mapped to Applications as Account Stores for the purposes of user log in. This means that they can be used as, among other things, a single-point of access control to an Application. For example, if you wanted to enable login for a new tenant in your multi-tenant application, all you would have to do is map all of the relevant Directories and/or Groups to your Organization, and then map that Organization to your Application as an Account Store. If at some future point you want to disable that tenant, all you have to do is remove the Account Store Mapping between that Organization and your Application, and the tenant&#8217;s users would no longer be able to log in.</p>
@@ -330,7 +330,7 @@
 </div>
 <div class="section" id="adding-an-account-store-to-an-organization">
 <h4>Adding an Account Store to an Organization<a class="headerlink" href="#adding-an-account-store-to-an-organization" title="Permalink to this headline">¶</a></h4>
-<p>Like other Account Stores, an Organization can be mapped to an Application so that users in the Organization can log-in to that application (for more about how logging-in works with Stormpath, please see <a class="reference internal" href="auth_n.html#authn"><span>the Authentication chapter</span></a>). But before you do this, you must first associate some users with the Organization so that there is someone to log in! To do this, you have to map some Account Stores to your Organization.</p>
+<p>Like other Account Stores, an Organization can be mapped to an Application so that users in the Organization can log-in to that application (for more about how logging-in works with Stormpath, please see <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">the Authentication chapter</span></a>). But before you do this, you must first associate some users with the Organization so that there is someone to log in! To do this, you have to map some Account Stores to your Organization.</p>
 <p>First, you will need the <code class="docutils literal"><span class="pre">href</span></code> value for a Directory or Group. This, combined with the <code class="docutils literal"><span class="pre">href</span></code> of the Organization will be sent in a POST:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/organizations</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
@@ -392,8 +392,8 @@
 </div>
 <div class="section" id="registering-an-organization-as-an-account-store-for-an-application">
 <h4>Registering an Organization as an Account Store for an Application<a class="headerlink" href="#registering-an-organization-as-an-account-store-for-an-application" title="Permalink to this headline">¶</a></h4>
-<p>As described in <a class="reference internal" href="auth_n.html#authn"><span>the Authentication chapter</span></a>, in order to allow users to log-in to an Application, you must map some kind of Account Store (e.g. a Group or Directory) to it. One approach is to go one-by-one and map each Directory and/or Group to the Application. However, since we are building a multi-tenant app, and the Organization is itself an Account Store, we can just map our Organization resource to our Application resource. This would enable login for all of the Directories and Groups currently inside that Organization, as well as any we add in the future.</p>
-<p>To map an Organization to an Application, simply follow the steps you would for any Account Store, as described in <a class="reference internal" href="auth_n.html#create-asm"><span>Mapping a new Account Store</span></a>.</p>
+<p>As described in <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">the Authentication chapter</span></a>, in order to allow users to log-in to an Application, you must map some kind of Account Store (e.g. a Group or Directory) to it. One approach is to go one-by-one and map each Directory and/or Group to the Application. However, since we are building a multi-tenant app, and the Organization is itself an Account Store, we can just map our Organization resource to our Application resource. This would enable login for all of the Directories and Groups currently inside that Organization, as well as any we add in the future.</p>
+<p>To map an Organization to an Application, simply follow the steps you would for any Account Store, as described in <a class="reference internal" href="auth_n.html#create-asm"><span class="std std-ref">Mapping a new Account Store</span></a>.</p>
 </div>
 <div class="section" id="adding-an-account-to-an-organization">
 <span id="add-accnt-to-org"></span><h4>Adding an Account to an Organization<a class="headerlink" href="#adding-an-account-to-an-organization" title="Permalink to this headline">¶</a></h4>
@@ -419,7 +419,7 @@
 </div>
 <div class="section" id="authenticating-an-account-against-an-organization">
 <h2>7.3. Authenticating an Account against an Organization<a class="headerlink" href="#authenticating-an-account-against-an-organization" title="Permalink to this headline">¶</a></h2>
-<p>Authenticating an Account against an Organization works essentially the same way as described in <a class="reference internal" href="auth_n.html#how-login-works"><span>5.1.2. How Login Attempts Work in Stormpath</span></a>. The only difference is that adding the Organization resource allows for an additional level of Account Stores.</p>
+<p>Authenticating an Account against an Organization works essentially the same way as described in <a class="reference internal" href="auth_n.html#how-login-works"><span class="std std-ref">5.1.2. How Login Attempts Work in Stormpath</span></a>. The only difference is that adding the Organization resource allows for an additional level of Account Stores.</p>
 <p>When a login attempt is made against an Application’s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint without specifying an Account Store, Stormpath will iterate through the index of Account Stores mapped to the Application, in priority order. For every Account Store entry:</p>
 <ul class="simple">
 <li>If it is a Directory or Group, attempt to log in on that resource.</li>
