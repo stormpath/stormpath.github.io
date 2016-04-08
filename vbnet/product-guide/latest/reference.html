@@ -1824,12 +1824,30 @@
 <p>These are the other resources that can be found associated with any particular Application.</p>
 <div class="section" id="application-api-keys">
 <span id="ref-application-apikeys"></span><h4><a class="toc-backref" href="#id73">Application API Keys</a><a class="headerlink" href="#application-api-keys" title="Permalink to this headline">¶</a></h4>
-<p>A <code class="docutils literal"><span class="pre">GET</span></code> can be sent to this endpoint along with an <a class="reference internal" href="#ref-account-apikeys"><span class="std std-ref">API Key</span></a> ID, in order to retrieve the Account associated with that API Key.</p>
+<p>This collection stores any API Keys that have been generated for this Application.</p>
 <p><strong>Application apiKeys URL</strong></p>
-<p><code class="docutils literal"><span class="pre">/v1/applications/$APPLICATION_ID/apiKeys?id=$SP_API_KEY_ID</span></code></p>
-<p>If you would like to retrieve the API Key with the <a class="reference internal" href="#ref-account"><span class="std std-ref">Account</span></a> expanded you can include the <code class="docutils literal"><span class="pre">?expand=account</span></code> parameter.</p>
+<p><code class="docutils literal"><span class="pre">/v1/applications/$APPLICATION_ID/apiKeys</span></code></p>
+<p>If you would like to retrieve a specific API Key, and you know the Key ID, you can include it as an optional parameter: <code class="docutils literal"><span class="pre">id=$SP_API_KEY_ID</span></code>.</p>
+<p>If you would like to retrieve the API Key with the <a class="reference internal" href="#ref-account"><span class="std std-ref">Account</span></a> expanded you can include the <code class="docutils literal"><span class="pre">expand=account</span></code> parameter.</p>
+<p>Finally, if you would like the API Key&#8217;s Secret to be encrypted, use the <code class="docutils literal"><span class="pre">encryptSecret=true</span></code> parameter.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<dl class="last docutils">
+<dt>If <code class="docutils literal"><span class="pre">encryptSecret=true</span></code> is included, then the following parameter must also be included:</dt>
+<dd><ul class="first last simple">
+<li><code class="docutils literal"><span class="pre">encryptionKeySalt</span></code>: This is a <a class="reference external" href="https://tools.ietf.org/html/rfc4648">URL-safe Base64-encoded</a> 16-byte string that will be added to the secret before it is encrypted.</li>
+</ul>
+</dd>
+<dt>There are two more optional parameters than can be included alongside these two:</dt>
+<dd><ul class="first last simple">
+<li><code class="docutils literal"><span class="pre">encryptionKeySize</span></code>: The size of the key used for encryption. Possible values are <code class="docutils literal"><span class="pre">128</span></code>, <code class="docutils literal"><span class="pre">192</span></code>, and <code class="docutils literal"><span class="pre">256</span></code>. Default value is <code class="docutils literal"><span class="pre">128</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">encryptionKeyIterations</span></code>: The number of times the key is hashed before it is sent. Possible values are any whole number from <code class="docutils literal"><span class="pre">1</span></code> to <code class="docutils literal"><span class="pre">65536</span></code>.  Default value is <code class="docutils literal"><span class="pre">1024</span></code>.</li>
+</ul>
+</dd>
+</dl>
+</div>
 <p><strong>Application apiKeys Attributes</strong></p>
-<p>This call would return an <a class="reference internal" href="#ref-account-apikeys"><span class="std std-ref">API Key</span></a>.</p>
+<p>This call would return a collection of <a class="reference internal" href="#ref-account-apikeys"><span class="std std-ref">API Keys</span></a> for this Application only. For details about what an API Key object looks like you can refer to the <a class="reference internal" href="#ref-account-apikeys"><span class="std std-ref">Account API Keys</span></a> section.</p>
 </div>
 <div class="section" id="oauth-policy">
 <span id="ref-oauth-policy"></span><h4><a class="toc-backref" href="#id74">OAuth Policy</a><a class="headerlink" href="#oauth-policy" title="Permalink to this headline">¶</a></h4>
@@ -4657,8 +4675,8 @@
 <p><strong>apiKeys Example</strong></p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/apiKeys/5G5KR4W3K1BP235X8KEXAMPLE&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;5G5KR4W3K1BP235X8K6NEBL93&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;secret&quot;</span><span class="p">:</span> <span class="s2">&quot;GRiCelvEblNU7Xl4l3oOCw30c72Rwj8TkRn8cUQCrvU&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;5G5KR4W3K1BP235X8K6EXBL93&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;secret&quot;</span><span class="p">:</span> <span class="s2">&quot;GRiCelvEblNU7Xl4l3oOCw30c72Rwj8TkRn8cUQCreX&quot;</span><span class="p">,</span>
   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
   <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spexaMple&quot;</span>
@@ -4670,7 +4688,7 @@
 </pre></div>
 </div>
 <div class="section" id="account-api-key-operations">
-<h5>Account API Key Operations<a class="headerlink" href="#account-api-key-operations" title="Permalink to this headline">¶</a></h5>
+<span id="ref-api-key-operations"></span><h5>Account API Key Operations<a class="headerlink" href="#account-api-key-operations" title="Permalink to this headline">¶</a></h5>
 <p>An Account&#8217;s API Keys have a full set of CRUD operations available via REST.</p>
 <div class="section" id="creating-an-api-key">
 <h6>Creating an API Key<a class="headerlink" href="#creating-an-api-key" title="Permalink to this headline">¶</a></h6>
@@ -4711,18 +4729,22 @@
 <tbody valign="top">
 <tr class="row-even"><td>GET /v1/accounts/$ACCOUNT_ID/apiKeys</td>
 <td><code class="docutils literal"><span class="pre">expand</span></code>, <code class="docutils literal"><span class="pre">encryptSecret=true</span></code> (see below)</td>
-<td>Retrieves the API Keys for the specified Account. <code class="docutils literal"><span class="pre">account</span></code> and <code class="docutils literal"><span class="pre">tenant</span></code> can be expanded.</td>
+<td>Retrieves a collection of API Keys for the specified Account. <code class="docutils literal"><span class="pre">account</span></code> and <code class="docutils literal"><span class="pre">tenant</span></code> can be expanded.</td>
 </tr>
 </tbody>
 </table>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <dl class="last docutils">
-<dt>If <code class="docutils literal"><span class="pre">encryptSecret=true</span></code> is included, then the returned API Key is encrypted. Additionally, the following parameters can also be modified:</dt>
+<dt>If <code class="docutils literal"><span class="pre">encryptSecret=true</span></code> is included, then the returned API Key Secret is encrypted. Additionally, the following parameter must be included:</dt>
 <dd><ul class="first last simple">
-<li><code class="docutils literal"><span class="pre">encryptionKeySize</span></code>: The size of the key used for encryption. Default value is <code class="docutils literal"><span class="pre">128</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">encryptionKeyIterations</span></code>: The number of times the key is hashed before it is sent. Default value is <code class="docutils literal"><span class="pre">1024</span></code></li>
-<li><code class="docutils literal"><span class="pre">encryptionKeySalt</span></code>: Specifies whether you would like to use a cryptographic salt. Default value is <code class="docutils literal"><span class="pre">false</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">encryptionKeySalt</span></code>: This is a <a class="reference external" href="https://tools.ietf.org/html/rfc4648">URL-safe Base64-encoded</a> 16-byte string that will be added to the secret before it is encrypted.</li>
+</ul>
+</dd>
+<dt>There are two more optional parameters than can be included alongside these two:</dt>
+<dd><ul class="first last simple">
+<li><code class="docutils literal"><span class="pre">encryptionKeySize</span></code>: The size of the key used for encryption. Possible values are <code class="docutils literal"><span class="pre">128</span></code>, <code class="docutils literal"><span class="pre">192</span></code>, and <code class="docutils literal"><span class="pre">256</span></code>. Default value is <code class="docutils literal"><span class="pre">128</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">encryptionKeyIterations</span></code>: The number of times the key is hashed before it is sent. Possible values are any whole number from <code class="docutils literal"><span class="pre">1</span></code> to <code class="docutils literal"><span class="pre">65536</span></code>.  Default value is <code class="docutils literal"><span class="pre">1024</span></code>.</li>
 </ul>
 </dd>
 </dl>
