@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quickstart &mdash; Spring Boot Stormpath Web Starter 1.0.RC8.5 documentation</title>
+  <title>Quickstart &mdash; Spring Boot Stormpath Web Starter 1.0.RC9 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC8.5 documentation" href="index.html"/>
+    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC9 documentation" href="index.html"/>
         <link rel="next" title="Tutorial" href="tutorial.html"/>
         <link rel="prev" title="About" href="about.html"/> 
 
@@ -66,7 +66,7 @@
 <li class="toctree-l2"><a class="reference internal" href="about.html#who-should-use-stormpath">Who should use Stormpath?</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Quickstart</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#get-an-api-key">Get an API Key</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#add-the-stormpath-default-spring-boot-starter">Add the Stormpath Default Spring Boot Starter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#try-it">Try it!</a></li>
@@ -242,9 +242,9 @@
 </li>
 <li><p class="first">Click the link in the verification email.</p>
 </li>
-<li><p class="first">Log in to the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a> using the email address and password you used during registration.</p>
+<li><p class="first">Log in to the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a> using the email address and password you used during registration and the assigned tenant id.</p>
 </li>
-<li><p class="first">Click the <strong>Create API</strong> Key or <strong>Manage Existing Keys</strong> button in the middle of the page.</p>
+<li><p class="first">Click the <strong>Create API</strong> Key or <strong>Manage Existing Keys</strong> button.</p>
 </li>
 <li><p class="first">Under <strong>Security Credentials</strong>, click <strong>Create API Key</strong>.</p>
 <p>This will generate your API Key and download it to your computer as an <code class="docutils literal"><span class="pre">apiKey.properties</span></code> file.</p>
@@ -270,22 +270,25 @@ $ chmod u-w ~/.stormpath/apiKey.properties
 <span id="dependency-jar"></span><h2><a class="toc-backref" href="#id2">Add the Stormpath Default Spring Boot Starter</a><a class="headerlink" href="#add-the-stormpath-default-spring-boot-starter" title="Permalink to this headline">¶</a></h2>
 <p>This step allows you to enable Stormpath in a Spring Boot web app with <em>very minimal</em> configuration.
 It includes Stormpath Spring Security, Stormpath Spring WebMVC and Stormpath Thymeleaf templates. How amazing is that? Here&#8217;s how.</p>
-<p>Using your favorite dependency resolution build tool like Maven or Gradle, add the stormpath-default-spring-boot-starter-1.0.RC8.5.jar to your project dependencies. For example:</p>
+<p>Using your favorite dependency resolution build tool like Maven or Gradle, add the stormpath-default-spring-boot-starter-1.0.RC9.jar to your project dependencies. For example:</p>
 <p><strong>Maven</strong>:</p>
 <pre class="literal-block">
 &lt;dependency&gt;
     &lt;groupId&gt;com.stormpath.spring&lt;/groupId&gt;
     &lt;artifactId&gt;stormpath-default-spring-boot-starter&lt;/artifactId&gt;
-    &lt;version&gt;1.0.RC8.5&lt;/version&gt;
+    &lt;version&gt;1.0.RC9&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
 <p><strong>Gradle</strong>:</p>
 <pre class="literal-block">
 dependencies {
-    compile 'com.stormpath.spring:stormpath-default-spring-boot-starter:1.0.RC8.5'
+    compile 'com.stormpath.spring:stormpath-default-spring-boot-starter:1.0.RC9'
 }
 </pre>
-<p>In order to connect Stormpath and Spring Security, we need one small configuration class in your project:</p>
+<div class="section" id="spring-security">
+<h3>Spring Security<a class="headerlink" href="#spring-security" title="Permalink to this headline">¶</a></h3>
+<p>The Stormpath Default Spring Boot starter assumes Spring Security by default.  But to ensure they work
+together, you will need a Spring Security configuration class and apply the <code class="docutils literal"><span class="pre">stormpath()</span></code> hook:</p>
 <div class="highlight-java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">static</span> <span class="n">com</span><span class="o">.</span><span class="na">stormpath</span><span class="o">.</span><span class="na">spring</span><span class="o">.</span><span class="na">config</span><span class="o">.</span><span class="na">StormpathWebSecurityConfigurer</span><span class="o">.</span><span class="na">stormpath</span><span class="o">;</span>
 
 <span class="nd">@Configuration</span>
@@ -297,17 +300,30 @@ dependencies {
 <span class="o">}</span>
 </pre></div>
 </div>
-<p>Without this, you will get a popup in your browser prompting for authentication, which is the default basic authentication for Spring Security.</p>
-<p>Also, by default, all paths are locked down with Spring Security. Stormpath&#8217;s Spring Security integration follows this idiomatic
-behavior.</p>
+<p>Without this, you will see a browser popup prompting for authentication, which is the default basic authentication behavior for Spring Security.</p>
+<p>Also, by default, all paths are locked down with Spring Security. Stormpath&#8217;s Spring Security integration follows this idiomatic behavior.</p>
+<div class="section" id="disabling-spring-security">
+<h4>Disabling Spring Security<a class="headerlink" href="#disabling-spring-security" title="Permalink to this headline">¶</a></h4>
+<p>If you do not want to use Spring Security, do not add the <code class="docutils literal"><span class="pre">SpringSecurityWebAppConfig</span></code> class shown above (or just comment out the <code class="docutils literal"><span class="pre">http.apply(stormpath())</span></code> line if you do not want to remove the class).  Also set the following two config properties:</p>
+<blockquote>
+<div><div class="highlight-properties"><div class="highlight"><pre><span></span><span class="c"># disable Stormpath&#39;s Spring Security support:</span>
+<span class="na">stormpath.spring.security.enabled</span> <span class="o">=</span> <span class="s">false</span>
+
+<span class="c"># disable Spring Security entirely:</span>
+<span class="na">security.basic.enabled</span> <span class="o">=</span> <span class="s">false</span>
+</pre></div>
+</div>
+</div></blockquote>
 <p>That&#8217;s it!  You&#8217;re ready to start using Stormpath in your Spring Boot web application!  Can you believe how easy that was?</p>
+</div>
+</div>
 </div>
 <div class="section" id="try-it">
 <h2><a class="toc-backref" href="#id3">Try it!</a><a class="headerlink" href="#try-it" title="Permalink to this headline">¶</a></h2>
 <p>If you followed the steps above you will now have fully functional registration, login, logout, forgot password workflows, api authentication and more active on your site!</p>
 <p>Don’t believe it? Try it! Start up your Spring Boot web application, and we&#8217;ll walk you through the basics:</p>
 <ul class="simple">
-<li>Navigate to <code class="docutils literal"><span class="pre">/register</span></code>. You will see a registration page. Go ahead and enter some information. You should be able to create a user account (but notice how Stormpath helps enforce password strength rules?  You can <a class="reference internal" href="registration.html#password-strength"><span>customize these</span></a> later).  Once you’ve created a user account, you’ll be automatically logged in, then redirected back to the root URL (<code class="docutils literal"><span class="pre">/</span></code> by default).</li>
+<li>Navigate to <code class="docutils literal"><span class="pre">/register</span></code>. You will see a registration page. Go ahead and enter some information. You should be able to create a user account (but notice how Stormpath helps enforce password strength rules?  You can <a class="reference internal" href="registration.html#password-strength"><span class="std std-ref">customize these</span></a> later).  Once you’ve created a user account, you’ll be automatically logged in, then redirected back to the root URL (<code class="docutils literal"><span class="pre">/</span></code> by default).</li>
 <li>Navigate to <code class="docutils literal"><span class="pre">/logout</span></code>. You will be logged out of your account and then redirected back to <code class="docutils literal"><span class="pre">/login</span></code> by default.</li>
 <li>Navigate to <code class="docutils literal"><span class="pre">/login</span></code>. On the lower-right, click the <strong>Forgot Password?</strong> link, and you&#8217;ll be shown a form to enter your email.  Enter in your email address and it will send you an email.  Wait for the email and click the link and you&#8217;ll be able to set a new password!</li>
 </ul>
@@ -321,19 +337,13 @@ behavior.</p>
 </pre></div>
 </div>
 </li>
-<li><p class="first">you don&#8217;t want to use Spring Security or you are already using it and there are conflicts. You can easily disable Spring Security by adding two properties to <code class="docutils literal"><span class="pre">application.properties</span></code>:</p>
-<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.spring.security.enabled</span> <span class="o">=</span> <span class="s">false</span>
-<span class="na">security.basic.enabled</span> <span class="o">=</span> <span class="s">false</span>
-</pre></div>
-</div>
-</li>
 <li><p class="first">your web app already uses web frameworks that make heavy use of servlet filters, like Spring Security or Apache Shiro. These could cause filter ordering conflicts, but the fix is easy - you just need to specify the specific order where you want the Stormpath filter relative to other filters.  You do this by adding the following to your Spring Boot <code class="docutils literal"><span class="pre">application.properties</span></code> file (where <code class="docutils literal"><span class="pre">preferred_value</span></code> is your preferred integer value):</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.stormpathFilter.order</span> <span class="o">=</span> <span class="s">preferred_value</span>
 </pre></div>
 </div>
 <p>By default, the <code class="docutils literal"><span class="pre">StormpathFilter</span></code> is ordered as <code class="docutils literal"><span class="pre">Ordered.HIGHEST_PRECEDENCE</span></code>, but if you have multiple filters with that same order value, you might have to change the order of the other filters as well.</p>
 </li>
-<li><p class="first">you&#8217;re using the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> as a <code class="docutils literal"><span class="pre">parent</span></code> and you are getting errors related to Spring Security. The <code class="docutils literal"><span class="pre">stormpath-default-spring-boot-starter</span></code> relies on Spring Security, version 4.0.x. The current release of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> is 1.3.0 and it also relies on Spring Security 4.0.x. Prior versions of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> rely on Spring Security 3.2.x. Our first recommendation is to use the latest version of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code>. However, if you must use earlier versions, there is a simple solution to this, which is to override the Spring Security version in your <code class="docutils literal"><span class="pre">pom.xml</span></code></p>
+<li><p class="first">you&#8217;re using the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> as a <code class="docutils literal"><span class="pre">parent</span></code> and you are getting errors related to Spring Security. The <code class="docutils literal"><span class="pre">stormpath-default-spring-boot-starter</span></code> relies on Spring Security 4.0.x. The current release of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> is 1.3.0 and it also relies on Spring Security 4.0.x. Prior versions of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> rely on Spring Security 3.2.x. Our first recommendation is to use the latest version of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code>. However, if you must use earlier versions, there is a simple solution to this, which is to override the Spring Security version in your <code class="docutils literal"><span class="pre">pom.xml</span></code></p>
 <div class="highlight-xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
@@ -341,7 +351,7 @@ behavior.</p>
     <span class="nt">&lt;parent&gt;</span>
         <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
         <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-parent<span class="nt">&lt;/artifactId&gt;</span>
-        <span class="nt">&lt;version&gt;</span>1.3.2.RELEASE<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.3.3.RELEASE<span class="nt">&lt;/version&gt;</span>
         <span class="nt">&lt;relativePath/&gt;</span> <span class="c">&lt;!-- lookup parent from repository --&gt;</span>
     <span class="nt">&lt;/parent&gt;</span>
 
@@ -425,7 +435,7 @@ behavior.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.RC8.5',
+            VERSION:'1.0.RC9',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
@@ -482,6 +492,11 @@ behavior.</p>
     _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
   </script>
   <script src="//cdn.optimizely.com/js/225847041.js"></script>
+  <script type="text/javascript" >
+    $(document).ready(function() {
+      $("a[href^='http']").attr('target','_blank');
+    });
+  </script>
 
 
 </body>
