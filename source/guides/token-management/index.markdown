@@ -5,10 +5,6 @@ description: Stormpath guide
 title: Using Stormpath for OAuth 2.0 and Access/Refresh Token Management
 ---
 
-{% docs info %}
-Currently supported in Stormpath's REST API.  Support for SDKs and Integrations is coming soon.  Reach out to us on support for an update.
-{% enddocs %}
-
 In this guide, we will discuss how to use Stormpath to authenticate your users for an `OAuth 2.0 Access Token`, and how to manage these tokens in Stormpath.
 
 ## What is Token Based Authentication?
