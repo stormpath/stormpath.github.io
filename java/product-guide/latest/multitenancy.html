@@ -124,6 +124,7 @@
 <li class="toctree-l1"><a class="reference internal" href="idsite.html">8. Using ID Site</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">REST API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Stormpath Error Codes</a></li>
 </ul>
 
             
@@ -279,7 +280,7 @@
 <p>The Organization resource allows your application&#8217;s tenants to have as many, or as few, Directories and Groups as they want, while also maintaining strict data segregation. So if a tenant requires a Cloud Directory, a Google Social Directory, and an LDAP Directory, all of these can sit under the umbrella of a single Organization resource that represents their data space in your app.</p>
 <p>Although Organizations do not themselves own Accounts in the same way as Directories and Groups, they can be mapped to Applications as Account Stores for the purposes of user log in. This means that they can be used as, among other things, a single-point of access control to an Application. For example, if you wanted to enable login for a new tenant in your multi-tenant application, all you would have to do is map all of the relevant Directories and/or Groups to your Organization, and then map that Organization to your Application as an Account Store. If at some future point you want to disable that tenant, all you have to do is remove the Account Store Mapping between that Organization and your Application, and the tenant&#8217;s users would no longer be able to log in.</p>
 <div class="section" id="how-to-create-an-organization">
-<h4>How to Create an Organization<a class="headerlink" href="#how-to-create-an-organization" title="Permalink to this headline">¶</a></h4>
+<span id="create-org"></span><h4>How to Create an Organization<a class="headerlink" href="#how-to-create-an-organization" title="Permalink to this headline">¶</a></h4>
 <p>You can create an Organization in Stormpath by simply performing an HTTP POST to the <code class="docutils literal"><span class="pre">/v1/organizations</span></code> endpoint.</p>
 <p>So, if for example one of our application&#8217;s tenants was the Bank of A, we could send the following POST:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/organizations</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
@@ -445,7 +446,7 @@
 </pre></div>
 </div>
 <p>where ? is the <code class="docutils literal"><span class="pre">tenant_id</span></code> value obtained by inspecting the request.</p>
-<p>So if an application needs this identifier with every request, how do you ensure it is transmitted to the application in the easiest possible way for your end users? The best method is to use the :ref:<code class="docutils literal"><span class="pre">Organization</span> <span class="pre">resource</span> <span class="pre">&lt;ref-organization&gt;`</span> <span class="pre">and</span> <span class="pre">it's</span> <span class="pre">``nameKey</span></code> attribute.</p>
+<p>So if an application needs this identifier with every request, how do you ensure it is transmitted to the application in the easiest possible way for your end users? The best method is to use the <a class="reference internal" href="reference.html#ref-organization"><span class="std std-ref">Organization resource</span></a> and it&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> attribute.</p>
 <p>We present here two possible solutions that use this <code class="docutils literal"><span class="pre">nameKey</span></code>. You may support both if you wish to give your customers convenience options.</p>
 <div class="section" id="sub-domain">
 <h3>7.4.1. Sub-Domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h3>
@@ -479,7 +480,7 @@
 <li>Customize data views and queries based on the session&#8217;s Organization</li>
 </ul>
 <p>We advise that you auto-remember the login form tenant ID value so that field is pre-populated whenever a user returns to log in. Users don’t like having to remember and type that value in every time they log in.</p>
-<p>As already mentioned, it is strongly recommended that your tenant identifier be an Organization <code class="docutils literal"><span class="pre">nameKey</span></code>. Firstly because Organizations are the recommended resource to use to model multitenancy, but also because the <code class="docutils literal"><span class="pre">nameKey</span></code> attribute is unique and follows the DNS specification, which means that you could at any time adopt the Sub-Domain approach mentioned above.</p>
+<p>As already mentioned, it is strongly recommended that your tenant identifier be an Organization <code class="docutils literal"><span class="pre">nameKey</span></code>. Firstly because Organizations are the recommended resource to use to model multi-tenancy, but also because the <code class="docutils literal"><span class="pre">nameKey</span></code> attribute is unique and follows the DNS specification, which means that you could at any time adopt the Sub-Domain approach mentioned above.</p>
 </div>
 </div>
 </div>

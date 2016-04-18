@@ -121,10 +121,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#resetting-your-password-with-id-site">Resetting Your Password with ID Site</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#using-id-site-for-multi-tenancy">8.5 Using ID Site for Multi-tenancy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">REST API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a></li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Stormpath Error Codes</a></li>
 </ul>
 
             
@@ -173,7 +175,7 @@
 <span id="idsite"></span><h1>8. Using ID Site<a class="headerlink" href="#using-id-site" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="what-is-an-id-site">
 <h2>8.1. What is an ID Site?<a class="headerlink" href="#what-is-an-id-site" title="Permalink to this headline">¶</a></h2>
-<p>Stormpath ID Site is a set of hosted and pre-built user interface screens that take care of common identity functions for your applications — log in, registration, and password reset. ID Site can be accessed via your own custom domain like <code class="docutils literal"><span class="pre">id.mydomain.com</span></code> and shared across multiple applications to create centralized authentication.</p>
+<p>Stormpath ID Site is a set of hosted and pre-built user interface screens that take care of common identity functions for your applications — log in, registration, and password reset. ID Site can be accessed via your own custom domain like <code class="docutils literal"><span class="pre">id.mydomain.com</span></code> and shared across multiple applications to create centralized authentication. It supports regular login to your Stormpath Directories, as well as Social and SAML login.</p>
 <p>The screens and functionality of ID Site are completely customizable. You have full access to the source code of the ID Site screens so you can make simple changes like adding your own logo and changing CSS or more complex changes like adding fields, JavaScript code, screens, removing screens, and even changing how the screens behave.</p>
 <div class="section" id="why-should-i-use-stormpath-id-site">
 <h3>Why should I use Stormpath ID Site?<a class="headerlink" href="#why-should-i-use-stormpath-id-site" title="Permalink to this headline">¶</a></h3>
@@ -487,7 +489,11 @@ Location: https://api.stormpath.com/sso?jwtRequest=$GENERATED_JWT
 </div>
 <div class="section" id="exchanging-the-id-site-jwt-for-an-oauth-token">
 <span id="idsite-jwt-to-oauth"></span><h4>Exchanging the ID Site JWT for an OAuth Token<a class="headerlink" href="#exchanging-the-id-site-jwt-for-an-oauth-token" title="Permalink to this headline">¶</a></h4>
-<p>For background information, please see <a class="reference internal" href="auth_n.html#token-authn"><span class="std std-ref">5.2. How Token-Based Authentication Works</span></a>. In this situation, after the user has been authenticated via ID Site, a developer may want to control their authorization with an OAuth 2.0 Token. This is done by passing the JWT similar to the way we passed the user&#8217;s credentials as described in <a class="reference internal" href="auth_n.html#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>. The difference is that instead of using the <code class="docutils literal"><span class="pre">password</span></code> grant type and passing credentials, we will use the <code class="docutils literal"><span class="pre">id_site_token</span></code> type and pass the JWT we got from the ID Site.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For background information, please see <a class="reference internal" href="auth_n.html#token-authn"><span class="std std-ref">5.2. How Token-Based Authentication Works</span></a>.</p>
+</div>
+<p>In this situation, after the user has been authenticated via ID Site, a developer may want to control their authorization with an OAuth 2.0 Token. This is done by passing the JWT similar to the way we passed the user&#8217;s credentials as described in <a class="reference internal" href="auth_n.html#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>. The difference is that instead of using the <code class="docutils literal"><span class="pre">password</span></code> grant type and passing credentials, we will use the <code class="docutils literal"><span class="pre">id_site_token</span></code> type and pass the JWT we got from ID Site.</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
@@ -495,7 +501,7 @@ Location: https://api.stormpath.com/sso?jwtRequest=$GENERATED_JWT
 grant_type=id_site_token&amp;token={$JWT_FROM_ID_SITE}
 </pre></div>
 </div>
-<p>Stormpath will validate the JWT (i.e. ensure that it has not been tampered with, is not expired, and the Account that its associated with is still valid) and then return an OAuth 2.0 Access Token:</p>
+<p>Stormpath will validate the JWT (i.e. ensure that it has not been tampered with, is not expired, and the Account that it&#8217;s associated with is still valid) and then return an OAuth 2.0 Access Token:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -527,6 +533,11 @@ Location: https://api.stormpath.com/sso/logout?jwtRequest=%GENERATED_JWT%
 <p>The Account Management chapter has an overview of <a class="reference internal" href="accnt_mgmt.html#password-reset-flow"><span class="std std-ref">4.4.3. Password Reset</span></a> in Stormpath. In that flow, a user chooses to reset their password, then receives an email with a link to a page on your application that allows them to set a new password. If you are using ID Site for login, then it stands to reason that you would want them to land on your ID Site for password reset as well. The issue here, however, is bridging the Password Reset Flow and the ID Site flow.</p>
 <p>Using a JWT library, you have to generate a new JWT, with all of <a class="reference internal" href="#idsite-auth-jwt"><span class="std std-ref">the usual required claims</span></a>. The <code class="docutils literal"><span class="pre">path</span></code> claim should be set to <code class="docutils literal"><span class="pre">/#/reset</span></code> and you will also have to include an additional claim: <code class="docutils literal"><span class="pre">sp_token</span></code>. This is the <code class="docutils literal"><span class="pre">sp_token</span></code> value that you will have received from the link that the user clicked in their password reset email. This JWT is then passed to the <code class="docutils literal"><span class="pre">/sso</span></code> endpoint (as described in Step 1 above), and the user is taken to the Password Reset page on your ID Site.</p>
 </div>
+</div>
+<div class="section" id="using-id-site-for-multi-tenancy">
+<h2>8.5 Using ID Site for Multi-tenancy<a class="headerlink" href="#using-id-site-for-multi-tenancy" title="Permalink to this headline">¶</a></h2>
+<p>If you are <a class="reference internal" href="multitenancy.html#create-org"><span class="std std-ref">using Organizations to model multi-tenancy</span></a>, then you will want to map these as Account Stores for your Application.</p>
+<p>From that point, ID Site (combined with one of our SDKs) is able to handle either of the multi-tenant user routing methods described in <a class="reference internal" href="multitenancy.html#multitenant-routing-users"><span class="std std-ref">the Multi-tenancy Chapter</span></a>.</p>
 </div>
 </div>
 
