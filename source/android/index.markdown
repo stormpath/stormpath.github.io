@@ -5,13 +5,13 @@ description: User management & authentication for Android. Complete set of Storm
 title: Stormpath Android Documentation
 content_top: [docs_top.html]
 ---
-<div class="landingpage Android">
+<div class="landingpage android">
 
-<div class="masthead Android-masthead">
+<div class="masthead android-masthead">
   <div class="container">
     <div class="row">
       <div class="col-xs-12">
-        <img class="img-responsive logo" src="/images/landingpage/Android/logo-android.png">
+        <!-- Android&#8482; -->
       </div>
     </div>
   </div>
@@ -29,20 +29,20 @@ content_top: [docs_top.html]
   <div class="row">
     <div class="col-xs-12 col-sm-12">
       <div class="row">
-        <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-          <div class="language-header lang1"></div>
+        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+          <div class="language-header lang1">Stormpath Android SDK</div>
           <pre><code>compile 'com.stormpath.sdk:stormpath-sdk-android:1.1.2'</code></pre>
           <p class="body-copy">Android SDK</p>
             <div class="row">
               <div class="col-sm-12 visible-sm">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-book"></i><a href="/android/javadocs/index.html">Documentation</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/android/javadocs-sdk/index.html">Documentation</a></li>
                   <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-android-notes-example">Example Application</a></li>
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-android">Project on GitHub</a></li>
               </div>
               <div class="col-md-6 hidden-sm">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-book"></i><a href="/android/javadocs/index.html">Documentation</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/android/javadocs-sdk/index.html">Documentation</a></li>
                   <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-android-notes-example">Example Application</a></li>
                 </ul>
               </div>
