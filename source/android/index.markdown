@@ -10,8 +10,8 @@ content_top: [docs_top.html]
 <div class="masthead android-masthead">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12">
-        <!-- Android&#8482; -->
+      <div class="col-xs-12" style="font-size: 1.7em">
+        Android&#8482;
       </div>
     </div>
   </div>
