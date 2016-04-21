@@ -1,39 +1,36 @@
  ---
 layout: landingpage
 classes_array: [page-docs]
-description: User management & authentication for Java, Spring, Spring Boot & Apache Shiro apps. Complete set of Stormpath developer documentation & integration tools. 
+description: User management & authentication for Java, Spring, Spring Boot & Apache Shiro apps. Complete set of Stormpath developer documentation & integration tools.
 title: Java Support
 content_top: [docs_top.html]
 ---
 <div class="landingpage java">
-
-<div class="masthead java-masthead">
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-        <img class="img-responsive logo" src="/images/landingpage/java/logo-java.png">
+  <div class="masthead java-masthead">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <img class="img-responsive logo" src="/images/landingpage/java/logo-java.png">
+        </div>
       </div>
     </div>
   </div>
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12 intro-text">
-      <p>Stormpath has great support for a variety of Java environments.  Please select the environment that’s best for you.</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 intro-text">
+        <p>Stormpath has great support for a variety of Java environments.  Please select the environment that’s best for you.</p>
+      </div>
     </div>
   </div>
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12 col-sm-12">
-      <div class="row">
-        <div class="col-xs-6">
-          <div class="language-header lang1"></div>
-          <br>
-          <br>
-          <p class="body-copy">For Spring Boot web applications.</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12">
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="language-header lang1"></div>
+            <br>
+            <br>
+            <p class="body-copy">For Spring Boot web applications.</p>
             <div class="row">
               <div class="col-xs-12">
                 <ul class="fa-ul">
@@ -45,12 +42,12 @@ content_top: [docs_top.html]
                 </ul>
               </div>
             </div>
-        </div>
-        <div class="col-xs-6">
-          <div class="language-header lang5"></div>
-          <br>
-          <br>
-          <p class="body-copy">For traditional web applications that do not use Spring.</p>
+          </div>
+          <div class="col-xs-6">
+            <div class="language-header lang5"></div>
+            <br>
+            <br>
+            <p class="body-copy">For traditional web applications that do not use Spring.</p>
             <div class="row">
               <div class="col-xs-12">
                 <ul class="fa-ul">
@@ -62,14 +59,14 @@ content_top: [docs_top.html]
                 </ul>
               </div>
             </div>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-6">
-          <div class="language-header lang6"></div>
-          <br>
-          <br>
-          <p class="body-copy">for Non-web application that are not using Spring.</p>
+        <div class="row">
+          <div class="col-xs-6">
+            <div class="language-header lang6"></div>
+            <br>
+            <br>
+            <p class="body-copy">for Non-web application that are not using Spring.</p>
             <div class="row">
               <div class="col-xs-12">
                 <ul class="fa-ul">
@@ -80,17 +77,16 @@ content_top: [docs_top.html]
                 </ul>
               </div>
             </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
-<div class="footer-banner">
-  <div class="container info">
-    <div class="row">
-      <div class="col-xs-12 col-sm-12">
-        <h1>Dive Into Our REST API Documentation</h1>
+  <div class="footer-banner">
+    <div class="container info">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12">
+          <h1>Dive Into Our REST API Documentation</h1>
           <div class="row">
             <div class="col-xs-12 col-sm-3 col-sm-offset-3">
               <a class="btn btn-default" href="/rest/product-guide" role="button">REST API PRODUCT GUIDE</a>
@@ -99,11 +95,10 @@ content_top: [docs_top.html]
               <a class="btn btn-default" href="/rest/quickstart" role="button">REST API QUICKSTART</a>
             </div>
           </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
 </div>
 <!-- block__no_wrapper -->
 <!-- region__no_wrapper -->
