@@ -840,7 +840,7 @@
 <td><code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">description</span></code>, <code class="docutils literal"><span class="pre">status</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code>, <code class="docutils literal"><span class="pre">modifiedAt</span></code></td>
 </tr>
 <tr class="row-even"><td>Account</td>
-<td><code class="docutils literal"><span class="pre">givenName</span></code>, <code class="docutils literal"><span class="pre">middleName</span></code>, <code class="docutils literal"><span class="pre">surname</span></code>, <code class="docutils literal"><span class="pre">username</span></code>, <code class="docutils literal"><span class="pre">email</span></code>, <code class="docutils literal"><span class="pre">status</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code>, <code class="docutils literal"><span class="pre">modifiedAt</span></code></td>
+<td><code class="docutils literal"><span class="pre">givenName</span></code>, <code class="docutils literal"><span class="pre">middleName</span></code>, <code class="docutils literal"><span class="pre">surname</span></code>, <code class="docutils literal"><span class="pre">username</span></code>, <code class="docutils literal"><span class="pre">email</span></code>, <code class="docutils literal"><span class="pre">status</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code>, <code class="docutils literal"><span class="pre">modifiedAt</span></code>, <code class="docutils literal"><span class="pre">passwordModifiedAt</span></code></td>
 </tr>
 <tr class="row-odd"><td>Group</td>
 <td><code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">description</span></code>, <code class="docutils literal"><span class="pre">status</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code>, <code class="docutils literal"><span class="pre">modifiedAt</span></code></td>
@@ -2692,7 +2692,7 @@
 <col width="57%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">Property</th>
+<tr class="row-odd"><th class="head">Attribute</th>
 <th class="head">Type</th>
 <th class="head">Valid Value(s)</th>
 <th class="head">Description</th>
@@ -2727,11 +2727,11 @@
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">mimeType</span></code></td>
 <td>String</td>
 <td><code class="docutils literal"><span class="pre">text/plain</span></code> or <code class="docutils literal"><span class="pre">text/html</span></code> or <code class="docutils literal"><span class="pre">multipart/alternative</span></code></td>
-<td>A property that defines whether Stormpath will send an email as plaintext, HTML, or both.</td>
+<td>An attribute that defines whether Stormpath will send an email as plaintext, HTML, or both.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">defaultModel</span></code></td>
 <td>Object</td>
-<td>Object that includes one property <code class="docutils literal"><span class="pre">linkBaseUrl</span></code> which is itself a String</td>
+<td>Object that includes one attribute <code class="docutils literal"><span class="pre">linkBaseUrl</span></code> which is itself a String</td>
 <td>An object that defines the model of the email template. The defaultModel currently holds one value, which is the <code class="docutils literal"><span class="pre">linkBaseUrl</span></code>. The <code class="docutils literal"><span class="pre">linkBaseUrl</span></code> is retrieved when using the macro ${url} in an email template. This macro generates a URL that includes the <code class="docutils literal"><span class="pre">linkBaseUrl</span></code> and the <code class="docutils literal"><span class="pre">sptoken</span></code> used in Account creation and password reset workflows.</td>
 </tr>
 </tbody>
@@ -4347,52 +4347,57 @@
 <td>N/A</td>
 <td>A link to the Account’s email verification token. This will only be set if the Account needs to be verified.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">customData</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">passwordModifiedAt</span></code></td>
+<td>String</td>
+<td>ISO-8601 Datetime</td>
+<td>Indicates when this Account&#8217;s password was last modified.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">customData</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the Account’s customData resource that you can use to store your own Account-specific custom fields.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">providerData</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">providerData</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the information from the owner Directory&#8217;s Provider.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">directory</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">directory</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the Account&#8217;s Directory.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tenant</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tenant</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the Tenant that owns the Account’s Directory.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">groups</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">groups</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to a collection of the Groups that the Account belongs to.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">groupMemberships</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">groupMemberships</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the <a class="reference internal" href="#ref-groupmembership"><span class="std std-ref">Group Memberships</span></a> that the Account is in.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">applications</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">applications</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the Applications that the Account belongs to.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">apiKeys</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">apiKeys</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the apiKeys for this Account.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">accessTokens</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">accessTokens</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A collection of valid JSON Web Tokens associated with this Account, used for token-based authentication.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">refreshTokens</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">refreshTokens</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A collection of valid JSON Web Tokens associated with this Account, used to generate additional <code class="docutils literal"><span class="pre">accessTokens</span></code> for token-based authentication.</td>
