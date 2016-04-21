@@ -439,10 +439,10 @@
 		sp_docs_menu['sample-apps'] = [];
 		
 	
-		sp_docs_menu['vbnet'] = [];
+		sp_docs_menu['stylesheets'] = [];
 		
 	
-		sp_docs_menu['stylesheets'] = [];
+		sp_docs_menu['vbnet'] = [];
 		
 	
 </script>
@@ -1179,6 +1179,72 @@ AccountList accounts = application.getAccounts(criteria);
 </div>
 
 
+<h4>Datetime Search</h4>
+
+<p>Stormpath Java SDK exposes attributes on all resources that will give you information about when the resource was created or modified. This includes, but isn&rsquo;t exclusive to common resources like <code>Account</code>, <code>Group</code>, <code>Directory</code>, <code>Application</code>. For example, an <code>Account</code> resource will have the <code>createdAt</code> and <code>modifiedAt</code> attributes:</p>
+
+<p> account.getCreatedAt()
+ account.getModifiedAt()</p>
+
+<p>These attributes are timezone aware datetimes parsed from <code>ISO 8601</code> formatted string. The timezone is coordinated universal time (UTC). Both of these parameters can be queried from collection.</p>
+
+<p><code>createdAt</code> and <code>modifiedAt</code> query parameters are a type of <a href="#search-attribute">Attribute Search</a> that allow you to filter or search collections that were created or modified at a particular time. The query parameters are supported for all collections. This includes <code>Account</code>, <code>Group</code>, <code>Directory</code>, <code>Application</code>. As an example, if you wanted to get all accounts created from Jan 12, 2015 to Jan 14, 2015 you would request:</p>
+
+<p> String date1 = &ldquo;2015-01-12T00:00:00.00Z&rdquo;;
+ String date2 = &ldquo;2015-01-15T00:00:00.00Z&rdquo;;
+ DateFormat formatter = new SimpleDateFormat(&ldquo;yyyy-MM-dd&rsquo;T&#8217;HH:mm:ss.sssZ);
+ Date startDate = formatter.parse(date1);
+ Date endDate = formatter.parse(date2);
+ application.getAccounts(Accounts.where(Accounts.createdAt().gte(startDate)).and(Accounts.createdAt().lt(endDate)))</p>
+
+<p>The response would be a <a href="#collection-resources">collection</a> of accounts created between the two days. The corresponding datetime range is denoted as:</p>
+
+<p> createdAt|modifiedAt=[ISO-8601-BEGIN-DATETIME, ISO-8601-END-DATETIME)</p>
+
+<div class='docs-note'><p> Omitting the beginning or ending date is valid for requests. Omitting the begin datetime range [,ISO-8601-END-DATETIME] would include all resources created or modified before the end datetime. Omitting the end datetime range [ISO-8601-BEGIN-DATETIME,] would include all resources created or modified after the the begin datetime.</p>
+</div>
+
+
+<p><strong>Exclusion vs Inclusion</strong></p>
+
+<p>The brackets <code>[]</code> denote inclusion, but <code>createdAt</code> and <code>modifiedAt</code> also support exclusion with parentheses <code>()</code>. For example, if you wanted to get all accounts created between Jan 12, 2015 and Jan 14, 2015 not including the 14th, you would request:</p>
+
+<p> application.getAccounts(Accounts.where(Accounts.createdAt().matches(&lsquo;[2015-01-12, 2015-01-14)&rsquo;)))</p>
+
+<p><strong>Precision</strong></p>
+
+<p>Precision of datetime for this request is controlled by the granularity of the ISO-8601 Datetime you specify. For example, if you need precision in seconds:</p>
+
+<p> Calendar cal = Calendar.getInstance();
+ cal.setTimeInMillis(0);
+ cal.set(2014, 10, 21, 11, 45, 23);
+ Date date = cal.getTime();
+ application.getAccounts(Accounts.where(Accounts.createdAt().equals(date)))</p>
+
+<p>And, if you need precision in years:</p>
+
+<p> application.getAccounts(Accounts.where(Accounts.createdAt().matches(&lsquo;[2014, 2015]&rsquo;)))</p>
+
+<p><strong>Shorthand</strong></p>
+
+<p><code>createdAt</code> and <code>modifiedAt</code> can use shorthand for the range to simplify the query parameter. This is useful for queries where the range can be encapsulated in a particular year, month, day, hour, minute or second.</p>
+
+<p>For example if you wanted all accounts created in Jan 2015 :</p>
+
+<p> application.getAccounts(Accounts.where(Accounts.createdAt().matches(&lsquo;2015-01&rsquo;)))</p>
+
+<p>is shorthand for:</p>
+
+<p> application.getAccounts(Accounts.where(Accounts.createdAt().matches(&lsquo;[2015-01-01T00:00:00.000Z,2015-02-01T00:00:00.000)&rsquo;)))</p>
+
+<p>If you wanted all accounts modified at in the 12th hour UTC on Feb 03, 2015:</p>
+
+<p> application.getAccounts(Accounts.where(Accounts.modifiedAt().matches(&lsquo;2015-02-03T12&rsquo;)))</p>
+
+<p>is shorthand for:</p>
+
+<p> application.getAccounts(Accounts.where(Accounts.modifiedAt().matches(&lsquo;[2015-02-03T12:00:00.000Z, 2015-02-04T13:00:00.000)&rsquo;)))</p>
+
 <p><a class="anchor" name="links-expansion"></a></p>
 
 <h3><a id="link-expansion"></a>Link Expansion</h3>
@@ -1247,7 +1313,7 @@ AccountList accounts = application.getAccounts(criteria);
 
 <p>For example, it would not be possible to return an account with its directory expanded and also the directory&rsquo;s groups expanded as well. Link expansion is currently only possible one level &lsquo;deep&rsquo;.</p>
 
-<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#109;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#x73;&#x75;&#112;&#x70;&#x6f;&#114;&#x74;&#x40;&#115;&#x74;&#111;&#x72;&#109;&#112;&#x61;&#116;&#104;&#46;&#x63;&#111;&#109;">&#115;&#117;&#x70;&#112;&#x6f;&#x72;&#x74;&#x40;&#x73;&#116;&#x6f;&#114;&#109;&#112;&#x61;&#116;&#x68;&#x2e;&#99;&#x6f;&#x6d;</a> and submit a feature request.</p>
+<p>If you have a critical need of multi-depth expansion, please contact us at <a href="&#109;&#97;&#x69;&#x6c;&#116;&#111;&#58;&#x73;&#x75;&#112;&#112;&#111;&#x72;&#x74;&#64;&#x73;&#116;&#111;&#x72;&#x6d;&#x70;&#97;&#x74;&#x68;&#x2e;&#x63;&#111;&#x6d;">&#x73;&#117;&#112;&#x70;&#x6f;&#x72;&#116;&#x40;&#115;&#116;&#x6f;&#x72;&#109;&#x70;&#97;&#x74;&#x68;&#46;&#x63;&#x6f;&#x6d;</a> and submit a feature request.</p>
 
 <h4>Expanding Collection Resources</h4>
 
@@ -1368,7 +1434,7 @@ AccountList accounts = application.getAccounts(criteria);
 <!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
 
 
-<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#109;&#x61;&#105;&#x6c;&#116;&#111;&#x3a;&#x73;&#117;&#x70;&#x70;&#111;&#114;&#x74;&#x40;&#115;&#x74;&#x6f;&#x72;&#x6d;&#112;&#97;&#116;&#104;&#x2e;&#99;&#111;&#109;">&#x73;&#x75;&#112;&#x70;&#111;&#114;&#116;&#64;&#115;&#116;&#x6f;&#x72;&#x6d;&#112;&#x61;&#116;&#104;&#x2e;&#99;&#x6f;&#109;</a> and request it.</p>
+<p>&ldquo;Create&rdquo; and &ldquo;Delete&rdquo; Tenant operations are currently not supported via the REST API. If you require this functionality, please email <a href="&#109;&#97;&#105;&#108;&#x74;&#x6f;&#x3a;&#x73;&#117;&#112;&#112;&#111;&#x72;&#x74;&#x40;&#115;&#x74;&#x6f;&#114;&#109;&#112;&#97;&#116;&#x68;&#46;&#99;&#111;&#109;">&#x73;&#x75;&#x70;&#x70;&#x6f;&#114;&#x74;&#x40;&#x73;&#116;&#111;&#x72;&#109;&#112;&#97;&#x74;&#x68;&#x2e;&#99;&#111;&#109;</a> and request it.</p>
 
 <p><a class="anchor" name="tenant-retrieve"></a></p>
 
@@ -6859,10 +6925,10 @@ addthis:url="https://stormpath.com" >
 		sp_docs_menu['sample-apps'] = [];
 		
 	
-		sp_docs_menu['vbnet'] = [];
+		sp_docs_menu['stylesheets'] = [];
 		
 	
-		sp_docs_menu['stylesheets'] = [];
+		sp_docs_menu['vbnet'] = [];
 		
 	
 </script>
