@@ -571,7 +571,7 @@
 <p>Due to the sheer number of database types and the variation between individual data models, the actual importing of users is not something that Stormpath handles at this time. What we recommend is that you write a script that is able to iterate through your database and grab the necessary information. Then the script uses our APIs to re-create the user base in the Stormpath database.</p>
 <div class="section" id="importing-accounts-with-plaintext-passwords">
 <h4>Importing Accounts with Plaintext Passwords<a class="headerlink" href="#importing-accounts-with-plaintext-passwords" title="Permalink to this headline">¶</a></h4>
-<p>In this case, it is recommended that you suppress Account Verification emails. This can be done by simply adding a <code class="docutils literal"><span class="pre">registrationWorkflowEnabled=false</span></code> query parameter to the end of your API like so:</p>
+<p>In this case, it is recommended that you suppress Account Verification emails. This can be done by adding a <code class="docutils literal"><span class="pre">registrationWorkflowEnabled=false</span></code> query parameter to the end of your API like so:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbeXaMPLE/accounts?registrationWorkflowEnabled=false
 </pre></div>
 </div>
@@ -608,7 +608,7 @@ This works as follows:</p>
 <col width="33%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">Property</th>
+<tr class="row-odd"><th class="head">Attribute</th>
 <th class="head">Description</th>
 <th class="head">Valid Values</th>
 </tr>
@@ -827,7 +827,7 @@ This works as follows:</p>
 <p class="first admonition-title">Note</p>
 <p class="last">This section assumes a basic familiarity with Stormpath Workflows. For more information about Workflows, please see <a class="reference external" href="http://docs.stormpath.com/console/product-guide/#directory-workflows">the Directory Workflows section of the Admin Console Guide</a>.</p>
 </div>
-<p>Changing the Password Strength resource for a Directory modifies the requirement for new Accounts and password changes on existing Accounts in that Directory. To update Password Strength, simply HTTP POST to the appropriate <code class="docutils literal"><span class="pre">$directoryId</span></code> and <code class="docutils literal"><span class="pre">/strength</span></code> resource with the changes.</p>
+<p>Changing the Password Strength resource for a Directory modifies the requirement for new Accounts and password changes on existing Accounts in that Directory. To update Password Strength, send an HTTP POST to the appropriate <code class="docutils literal"><span class="pre">$directoryId</span></code> and <code class="docutils literal"><span class="pre">/strength</span></code> resource with the changes.</p>
 <p>This call:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">v1/passwordPolicies/$DIRECTORY_ID/strength</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
@@ -860,12 +860,12 @@ This works as follows:</p>
 </div>
 <div class="section" id="change-an-account-s-password">
 <span id="change-account-pwd"></span><h3>4.4.2. Change an Account&#8217;s Password<a class="headerlink" href="#change-an-account-s-password" title="Permalink to this headline">¶</a></h3>
-<p>At no point is the user shown, or does Stormpath have access to, the original password once it has been hashed during account creation. The only ways to change an Account password once it has been created are:</p>
+<p>At no point is the user shown, or does Stormpath have access to, the original password once it has been hashed during Account creation. The only ways to change an Account password once it has been created are:</p>
 <ol class="arabic simple">
 <li>To allow the user to update it (without seeing the original value) after being authenticated, or</li>
 <li>To use the <a class="reference internal" href="#password-reset-flow"><span class="std std-ref">password reset workflow</span></a>.</li>
 </ol>
-<p>To update the password, you simply send a POST to the <code class="docutils literal"><span class="pre">v1/accounts/$ACCOUNT_ID</span></code> endpoint with the new password:</p>
+<p>To update the password, you send a POST to the <code class="docutils literal"><span class="pre">v1/accounts/$ACCOUNT_ID</span></code> endpoint with the new password:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accounts/3apenYvL0Z9v9spexAmple</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
@@ -1007,7 +1007,7 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="password-reset-email-templates">
 <span id="id2"></span><h4>Password Reset Email Templates<a class="headerlink" href="#password-reset-email-templates" title="Permalink to this headline">¶</a></h4>
 <p>The contents of the password reset and the password reset success emails are both defined in an <a class="reference internal" href="reference.html#ref-emailtemplates"><span class="std std-ref">Email Templates</span></a> collection.</p>
-<p>To modify the emails that get sent during the password reset workflow, all you have to do is send an HTTP POST with the desired property in the payload body.</p>
+<p>To modify the emails that get sent during the password reset workflow, all you have to do is send an HTTP POST with the desired attribute in the payload body.</p>
 </div>
 </div>
 </div>
@@ -1042,7 +1042,7 @@ This link takes you to a secure page where you can change your password.
 </div>
 <div class="section" id="triggering-the-verification-email-creating-a-token">
 <h3>4.5.3. Triggering the Verification Email (Creating A Token)<a class="headerlink" href="#triggering-the-verification-email-creating-a-token" title="Permalink to this headline">¶</a></h3>
-<p>In order to verify an Account’s email address, an <code class="docutils literal"><span class="pre">emailVerificationToken</span></code> must be created for that Account. To create this token, you simply create an Account in a Directory, either programmatically or via a public account creation form of your own design, that has the account registration and verification workflows enabled.</p>
+<p>In order to verify an Account’s email address, an <code class="docutils literal"><span class="pre">emailVerificationToken</span></code> must be created for that Account. To create this token, you create an Account in a Directory, either programmatically or via a public account creation form of your own design, that has the account registration and verification workflows enabled.</p>
 </div>
 <div class="section" id="verifying-the-email-address-consuming-the-token">
 <h3>4.5.4. Verifying the Email Address (Consuming The Token)<a class="headerlink" href="#verifying-the-email-address-consuming-the-token" title="Permalink to this headline">¶</a></h3>
