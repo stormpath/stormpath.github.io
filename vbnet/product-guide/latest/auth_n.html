@@ -1073,8 +1073,21 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p>To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory. If this fulfills your requirements, then the story ends here. However, if you need to support other kinds of login (and therefore other kinds of Directories) it is recommended that you maintain a &#8220;master&#8221; Directory alongside your Mirror Directory. For more about this, see <a class="reference internal" href="#mirror-login"><span class="std std-ref">How Login Works with Master Directories</span></a> above.</p>
 <p>The step-by-step process for setting-up LDAP login is as follows:</p>
 <div class="section" id="step-1-create-an-ldap-directory">
-<h4><a class="toc-backref" href="#id61">Step 1: Create an LDAP Directory</a><a class="headerlink" href="#step-1-create-an-ldap-directory" title="Permalink to this headline">¶</a></h4>
-<p>HTTP POST a new Directory resource to the <code class="docutils literal"><span class="pre">/directories</span></code> endpoint. This Directory will contain a <a class="reference internal" href="reference.html#ref-provider"><span class="std std-ref">Provider</span></a> resource with <code class="docutils literal"><span class="pre">providerId</span></code> set to <code class="docutils literal"><span class="pre">ldap</span></code> or <code class="docutils literal"><span class="pre">ad</span></code>. This Provider resource will in turn contain an <a class="reference internal" href="reference.html#ref-ldap-agent"><span class="std std-ref">LDAP Agent</span></a> object:</p>
+<span id="authn-ldap-dir-creation"></span><h4><a class="toc-backref" href="#id61">Step 1: Create an LDAP Directory</a><a class="headerlink" href="#step-1-create-an-ldap-directory" title="Permalink to this headline">¶</a></h4>
+<p>HTTP POST a new Directory resource to the <code class="docutils literal"><span class="pre">/directories</span></code> endpoint. This Directory will contain a <a class="reference internal" href="reference.html#ref-provider"><span class="std std-ref">Provider</span></a> resource with <code class="docutils literal"><span class="pre">providerId</span></code> set to <code class="docutils literal"><span class="pre">ldap</span></code> or <code class="docutils literal"><span class="pre">ad</span></code>. This Provider resource will in turn contain an <a class="reference internal" href="reference.html#ref-ldap-agent"><span class="std std-ref">LDAP Agent</span></a> object, which in turn also contains a few nested configuration resources.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>All of these must be passed at the same time:</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>directory
+  └──provider
+      └──agent
+          └──config
+              ├──accountConfig
+              └──groupConfig
+</pre></div>
+</div>
+</div>
+<p>The full Directory object, with all of the required resources, will look like this:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
@@ -1093,8 +1106,6 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
         <span class="nt">&quot;agentUserDnPassword&quot;</span><span class="p">:</span><span class="s2">&quot;StormpathRulez&quot;</span><span class="p">,</span>
         <span class="nt">&quot;baseDn&quot;</span><span class="p">:</span><span class="s2">&quot;dc=example,dc=com&quot;</span><span class="p">,</span>
         <span class="nt">&quot;pollInterval&quot;</span><span class="p">:</span><span class="mi">60</span><span class="p">,</span>
-        <span class="nt">&quot;referralMode&quot;</span><span class="p">:</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;ignoreReferralIssues&quot;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span>
         <span class="nt">&quot;accountConfig&quot;</span><span class="p">:{</span>
           <span class="nt">&quot;dnSuffix&quot;</span><span class="p">:</span><span class="s2">&quot;ou=employees&quot;</span><span class="p">,</span>
           <span class="nt">&quot;objectClass&quot;</span><span class="p">:</span><span class="s2">&quot;person&quot;</span><span class="p">,</span>
@@ -1120,11 +1131,11 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>For more information about all of these values, please see the Reference chapter <a class="reference internal" href="reference.html#ref-directory"><span class="std std-ref">Directory</span></a> section.</p>
+<p>For more information about all of these values, please see the Reference chapter <a class="reference internal" href="reference.html#ref-directory"><span class="std std-ref">Directory</span></a> section, with special attention to the <a class="reference internal" href="reference.html#ref-ldap-agent"><span class="std std-ref">LDAP Agent</span></a> sub-section.</p>
 </div>
 <div class="section" id="step-2-install-your-ldap-agent">
 <h4><a class="toc-backref" href="#id62">Step 2: Install your LDAP Agent</a><a class="headerlink" href="#step-2-install-your-ldap-agent" title="Permalink to this headline">¶</a></h4>
-<p>Installing your Agent is done in three steps.</p>
+<p>Once the Directory, Provider and Agent are created, installing your Agent is done in three steps.</p>
 <p><strong>1. Download</strong></p>
 <p>Download your Agent by following the Download link on the Agent page in the Admin Console.</p>
 <p><strong>2. Configure</strong></p>
@@ -1141,13 +1152,13 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p>Follow the instructions in the <code class="docutils literal"><span class="pre">dapper.properties</span></code> file to reference your account&#8217;s API authentication.</p>
 <p><strong>3. Start</strong></p>
 <p>In Windows:</p>
-<p>(cd to your agent directory, for example C:stormpathagent)</p>
+<p>(Go to your agent directory, for example <code class="docutils literal"><span class="pre">C:\stormpath\agent</span></code>)</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span>C:\stormpath\agent&gt;cd bin
 C:\stormpath\agent\bin&gt;startup.bat
 </pre></div>
 </div>
 <p>In Unix:</p>
-<p>(cd to your agent directory, for example /opt/stormpath/agent)</p>
+<p>(Go to your agent directory, for example <code class="docutils literal"><span class="pre">/opt/stormpath/agent</span></code>)</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> bin
 $ startup.sh
 </pre></div>
