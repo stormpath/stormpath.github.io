@@ -37,10 +37,10 @@ The Ruby SDK is compatible with Ruby *1.9.3* and higher.
 You can install [Stormpath](https://github.com/stormpath/stormpath-sdk-ruby)
 using [RubyGems](https://rubygems.org/):
 
-    $ gem install stormpath-sdk --pre
+    $ gem install stormpath-sdk
 
 {% docs note %}
-The Stormpath SDK for Ruby is in beta and requires the use of the gem  `--pre` flag. 
+The Stormpath SDK for Ruby is in beta and requires the use of the gem  `--pre` flag.
 {% enddocs %}
 
 ***
@@ -116,7 +116,7 @@ create multiple `Client` instances as it could negatively affect caching.
 Before you can create user Accounts you'll need to retrieve your Stormpath
 Application.  An Application in Stormpath is the same thing as a project. If
 you're building a web app named "Lightsabers Galore", you'd want to name your
-Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath account will have an application already created for you to use.  We will use this application for the quickstart. 
+Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath account will have an application already created for you to use.  We will use this application for the quickstart.
 
 You can retrieve your example `Application` using the client you created in the previous step:
 
@@ -137,15 +137,12 @@ The code above will retrieve your example `Application`, which we can use later 
 Now that we've created an `Application`, let's create a user `Account`!  To do
 this, you'll need to use your `Application` (*created in the previous step*):
 
-    account = application.accounts.create({
-        given_name: 'Joe',
-        surname: 'Stormtrooper',
-        username: 'tk421',
-        email: 'tk421@stormpath.com',
-        password: 'Changeme1',
-        custom_data: {
-            favorite_color: 'white',
-        },
+    account = directory.accounts.create({
+      given_name: 'John',
+      surname: 'Smith',
+      email: 'john.smith@example.com',
+      username: 'johnsmith',
+      password: '4P@$$w0rd!'
     })
 
 Stormpath accounts have several basic fields (`given_name`, `surname`, `email`,
@@ -172,15 +169,14 @@ referencing the attribute names, for instance:
 Authenticating users is equally simple -- you can specify either a `username` or
 `email` address, along with a `password`:
 
-    auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421@stormpath.com', 'Changeme1'
-    auth_result = application.authenticate_account auth_request
-    account = auth_result.account
-    puts account.given_name + " successfully authenticated!"
+    auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'johnsmith', '4P@$$w0rd!'
 
-    auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421', 'Changeme1'
-    auth_result = application.authenticate_account auth_request
-    account = auth_result.account
-    puts account.given_name + " successfully authenticated!"
+    begin
+      auth_result = application.authenticate_account auth_request
+      account = auth_result.account
+    rescue Stormpath::Error => e
+      #If credentials are invalid or account doesn't exist
+    end
 
 If the authentication request is successful, an `Account` resource will be
 returned.
@@ -219,4 +215,3 @@ learn more?  Here are a few other helpful resources you can jump into.
 
 * Dig in deeper with the [Official Ruby Product Guide](/ruby/product-guide).
 * Learn to easily partition user data with our [Guide to Building Multitenant SaaS Applications](/guides/multi-tenant/).
-
