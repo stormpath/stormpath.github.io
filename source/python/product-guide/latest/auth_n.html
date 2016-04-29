@@ -777,12 +777,13 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <li><a class="reference internal" href="#authn-github"><span class="std std-ref">Github</span></a></li>
 <li><a class="reference internal" href="#authn-linkedin"><span class="std std-ref">LinkedIn</span></a></li>
 </ul>
+<p><em>The Social Login Process</em></p>
 <p>In general, the social login process works as follows:</p>
 <ol class="arabic simple">
 <li>The user who wishes to authenticate will click a &#8220;Log in with x&#8221; link.</li>
 <li>The user will be asked by the Provider to accept the permissions required by your app.</li>
-<li>The Provider will return the user to your application with an access token.</li>
-<li>Stormpath will take this access token and use it to query the provider for:<ul>
+<li>The Provider will return the user to your application with an Access Token or Authorization Code.</li>
+<li>Stormpath will take this token/code and use it to query the provider for:<ul>
 <li>an email address</li>
 <li>a first name</li>
 <li>a last name.</li>
@@ -794,7 +795,7 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p class="last">If Stormpath is unable to retrieve the user&#8217;s first and last name, it will populate those attributes with a default value: <code class="docutils literal"><span class="pre">NOT_PROVIDED</span></code>.</p>
 </div>
 <ol class="arabic simple" start="5">
-<li>Stormpath will first search for a Directory that matches the provider of the access token. If one is not found, an error will return.</li>
+<li>Stormpath will first search for a Directory that matches the provider of the token/code. If one is not found, an error will return.</li>
 <li>Once the Directory is located, Stormpath will look for an Account in your application&#8217;s Directories that matches this information.<ol class="loweralpha">
 <li>If a matching Account is found, Stormpath will return the existing Account&#8217;s <code class="docutils literal"><span class="pre">href</span></code>.</li>
 <li>If a matching Account is not found, Stormpath will create one and return the new Account&#8217;s <code class="docutils literal"><span class="pre">href</span></code>.</li>
@@ -802,11 +803,12 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </li>
 <li>At this point, a language/framework-specific integration would use this <code class="docutils literal"><span class="pre">href</span></code> to create a Session for the user.</li>
 </ol>
-<p>As a developer, integrating Social Login into your application with Stormpath only requires three steps:</p>
+<p><strong>Configuring Social Login</strong></p>
+<p>Assuming that you already have the appropriate developer account with the Social Login provider, integrating Social Login into your application with Stormpath only requires three steps:</p>
 <ol class="arabic simple">
-<li>Create a Social Directory for your Provider.</li>
-<li>Map the Directory as an Account Store to an Application resource. When an Account Store (in this case a Directory) is mapped to an Application, the Accounts in the AccountStore are considered the Application’s users and they can log in to it.</li>
-<li>Include the provider-specific logic that will access the social account (e.g. embed the appropriate link in your site that will send an authentication request to the social provider)</li>
+<li>Create a Directory for your Social Login provider of choice.</li>
+<li>Map the Directory as an Account Store to an Application resource. When an Account Store (in this case a Directory) is mapped to an Application, the Accounts in the Account Store are considered the Application’s users and they can log in to it.</li>
+<li>Include the provider-specific logic that will access the social account (e.g. embed the appropriate link in your site that will send an authentication request to the social provider).</li>
 </ol>
 <div class="section" id="google">
 <span id="authn-google"></span><h3><a class="toc-backref" href="#id56">5.3.1. Google</a><a class="headerlink" href="#google" title="Permalink to this headline">¶</a></h3>
@@ -853,13 +855,13 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <div class="section" id="step-3-access-an-account-with-google-tokens">
 <h4>Step 3: Access an Account with Google Tokens<a class="headerlink" href="#step-3-access-an-account-with-google-tokens" title="Permalink to this headline">¶</a></h4>
 <p>To access or create an Account in your new Google Directory, you must gather a Google <strong>Authorization Code</strong> on behalf of the user. This requires leveraging <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">Google’s OAuth 2.0 protocol</a> and the user’s consent for your application’s permissions.</p>
-<p>Generally, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the <strong>Authorization Code</strong> or <strong>Access Token</strong>. This is documented in detail here: <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2WebServer">Using OAuth 2.0 for Web Server Applications</a>.</p>
+<p>Generally, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the <strong>Authorization Code</strong>. This is documented in detail here: <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2WebServer">Using OAuth 2.0 for Web Server Applications</a>. Note that you will also find instructions there on how to exchange that Authorization Code for an Access Token directly with Google.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">It is required that your Google application requests the <code class="docutils literal"><span class="pre">email</span></code> scope from Google. If the authorization code or access token does not grant <code class="docutils literal"><span class="pre">email</span></code> scope, you will not be able to get an Account. For more information about scopes please see <a class="reference external" href="https://developers.google.com/+/web/api/rest/oauth#login-scopes">Google&#8217;s OAuth Login Scopes documentation</a>.</p>
 </div>
 <p>Once the Authorization Code is gathered, you send an HTTP POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -872,14 +874,14 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </pre></div>
 </div>
 <p>If you have already exchanged an Authorization Code for an Access Token, this can be passed to Stormpath in a similar fashion:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
     <span class="nt">&quot;providerData&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;google&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;%ACCESS_TOKEN_FROM_GOOGLE%&quot;</span>
+      <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;ACCESS_TOKEN_FROM_GOOGLE&quot;</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -924,10 +926,10 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p>To access or create an Account in your new Facebook Directory, you need to gather a <strong>User Access Token</strong> from Facebook before submitting it to Stormpath. This is possible either by using a <a class="reference external" href="https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens">Facebook SDK Library</a>, or <a class="reference external" href="https://developers.facebook.com/tools/explorer/">Facebook’s Graph Explorer</a> for testing.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It is required that your Facebook application requests the <code class="docutils literal"><span class="pre">email</span></code> scope from Facebook. If the access token does not grant <code class="docutils literal"><span class="pre">email</span></code> scope, you will not be able to get an Account with an access token. For more information about scopes please see <a class="reference external" href="https://developers.facebook.com/docs/facebook-login/permissions/">Permissions with Facebook Login</a>.</p>
+<p class="last">It is required that your Facebook application requests the <code class="docutils literal"><span class="pre">email</span></code> scope (or &#8220;Permission&#8221;) from Facebook. If the Access Token does not grant <code class="docutils literal"><span class="pre">email</span></code> scope, you will not be able to get an Account with an Access Token. For more information about scopes please see <a class="reference external" href="https://developers.facebook.com/docs/facebook-login/permissions/">Permissions with Facebook Login</a>.</p>
 </div>
 <p>Once the User Access Token is gathered, you send an HTTP POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -982,8 +984,8 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 <p class="first admonition-title">Note</p>
 <p class="last">It is required that your GitHub application requests the <code class="docutils literal"><span class="pre">user:email</span></code> scope from GitHub. If the access token does not grant <code class="docutils literal"><span class="pre">user:email</span></code> scope, you will not be able to get an Account with an access token. For more information about see <a class="reference external" href="https://developer.github.com/v3/oauth/#scopes">Github&#8217;s documentation on OAuth scopes</a>.</p>
 </div>
-<p>Once the Authorization Code is gathered, you need to use the <a class="reference external" href="https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site">Github Access Token Endpoint</a> to exchange this code for a access token.  Then you can send an HTTP POST to Stormpath:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<p>Once the Authorization Code is gathered, you need to use the <a class="reference external" href="https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site">Github Access Token Endpoint</a> to exchange this code for an Access Token.  Then you can send an HTTP POST to Stormpath:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
@@ -1032,26 +1034,39 @@ grant_type=refresh_token&amp;refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJO
 </div>
 <div class="section" id="step-3-access-an-account-with-linkedin-tokens">
 <h4>Step 3: Access an Account with LinkedIn Tokens<a class="headerlink" href="#step-3-access-an-account-with-linkedin-tokens" title="Permalink to this headline">¶</a></h4>
-<p>To access or create an Account in your new LinkedIn Directory, you must gather a LinkedIn <strong>Access Token</strong> on behalf of the user. This requires leveraging <a class="reference external" href="https://developer.linkedin.com/docs/oauth2">LinkedIn&#8217;s OAuth 2.0 protocol</a> and the user’s consent for your application’s permissions.</p>
-<p>Generally, this will include embedding a link in your site that will send an authentication request to LinkedIn. Once the user has authenticated, LinkedIn will redirect the response to your application, along with an Access Token. This is documented in detail in LinkedIn&#8217;s <a class="reference external" href="https://developer.linkedin.com/docs/oauth2#hero-par_longformtext_3_longform-text-content-par_resourceparagraph_3">Authenticating with OAuth 2.0 page</a>.</p>
+<p>To access or create an Account in your new LinkedIn Directory, you must gather a LinkedIn <strong>Authorization Code</strong> on behalf of the user. This requires leveraging <a class="reference external" href="https://developer.linkedin.com/docs/oauth2">LinkedIn&#8217;s OAuth 2.0 protocol</a> and the user’s consent for your application’s permissions.</p>
+<p>Generally, this will include embedding a link in your site that will send an authentication request to LinkedIn. Once the user has authenticated, LinkedIn will redirect the response to your application, along with an Authorization Code. This is documented in detail in LinkedIn&#8217;s <a class="reference external" href="https://developer.linkedin.com/docs/oauth2#hero-par_longformtext_3_longform-text-content-par_resourceparagraph_3">Authenticating with OAuth 2.0 page</a>. Note that it is also possible for you to use the Authorization Code to retrieve an Access Token yourself.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It is required that your LinkedIn application requests the <code class="docutils literal"><span class="pre">r_basicprofile</span></code> and <code class="docutils literal"><span class="pre">r_emailaddress</span></code> scopes from LinkedIn. If the access token does not grant these scopes, you will not be able to get an Account with an access token. For more information about LinkedIn scopes, see <a class="reference external" href="https://developer.linkedin.com/docs/fields">LinkedIn&#8217;s &#8220;Profile Fields&#8221; documentation</a>.</p>
+<p class="last">It is required that your LinkedIn application requests the <code class="docutils literal"><span class="pre">r_basicprofile</span></code> and <code class="docutils literal"><span class="pre">r_emailaddress</span></code> scopes (or &#8220;fields&#8221;) from LinkedIn. If the Authorization Code does not grant these scopes, you will not be able to get an Account. For more information about LinkedIn scopes, see <a class="reference external" href="https://developer.linkedin.com/docs/fields">LinkedIn&#8217;s &#8220;Profile Fields&#8221; documentation</a>.</p>
 </div>
-<p>Once the Access Token is gathered, you can send an HTTP POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/YOUR_APP_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<p>Once the Authorization Code is gathered, you can send an HTTP POST:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
   <span class="nt">&quot;providerData&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;linkedin&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;TOKEN_FROM_LINKEDIN&quot;</span>
+    <span class="nt">&quot;code&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_LINKEDIN_AUTH_CODE&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Stormpath will use the <code class="docutils literal"><span class="pre">accessToken</span></code> provided to retrieve information about your LinkedIn Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).</p>
+<p>If you have already exchanged the code for an Access Token, you can send that instead:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;providerData&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;linkedin&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;ACCESS_TOKEN_FROM_LINKEDIN&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Stormpath will use the <code class="docutils literal"><span class="pre">code</span></code> or <code class="docutils literal"><span class="pre">accessToken</span></code> provided to retrieve information about your LinkedIn Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).</p>
 </div>
 </div>
 </div>
