@@ -439,10 +439,10 @@
 		sp_docs_menu['sample-apps'] = [];
 		
 	
-		sp_docs_menu['vbnet'] = [];
+		sp_docs_menu['stylesheets'] = [];
 		
 	
-		sp_docs_menu['stylesheets'] = [];
+		sp_docs_menu['vbnet'] = [];
 		
 	
 </script>
@@ -552,7 +552,7 @@ of this quickstart.</p>
 <p>You can install <a href="https://github.com/stormpath/stormpath-sdk-ruby">Stormpath</a>
 using <a href="https://rubygems.org/">RubyGems</a>:</p>
 
-<pre><code>$ gem install stormpath-sdk --pre
+<pre><code>$ gem install stormpath-sdk
 </code></pre>
 
 <div class='docs-note'><p>The Stormpath SDK for Ruby is in beta and requires the use of the gem  <code>--pre</code> flag.</p>
@@ -652,15 +652,12 @@ Stormpath Application &ldquo;Lightsabers Galore&rdquo; as well.  By default, you
 <p>Now that we&rsquo;ve created an <code>Application</code>, let&rsquo;s create a user <code>Account</code>!  To do
 this, you&rsquo;ll need to use your <code>Application</code> (<em>created in the previous step</em>):</p>
 
-<pre><code>account = application.accounts.create({
-    given_name: 'Joe',
-    surname: 'Stormtrooper',
-    username: 'tk421',
-    email: 'tk421@stormpath.com',
-    password: 'Changeme1',
-    custom_data: {
-        favorite_color: 'white',
-    },
+<pre><code>account = directory.accounts.create({
+  given_name: 'John',
+  surname: 'Smith',
+  email: 'john.smith@example.com',
+  username: 'johnsmith',
+  password: '4P@$$w0rd!'
 })
 </code></pre>
 
@@ -687,15 +684,14 @@ account.custom_data['favorite_color']
 <p>Authenticating users is equally simple &mdash; you can specify either a <code>username</code> or
 <code>email</code> address, along with a <code>password</code>:</p>
 
-<pre><code>auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421@stormpath.com', 'Changeme1'
-auth_result = application.authenticate_account auth_request
-account = auth_result.account
-puts account.given_name + " successfully authenticated!"
+<pre><code>auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'johnsmith', '4P@$$w0rd!'
 
-auth_request = Stormpath::Authentication::UsernamePasswordRequest.new 'tk421', 'Changeme1'
-auth_result = application.authenticate_account auth_request
-account = auth_result.account
-puts account.given_name + " successfully authenticated!"
+begin
+  auth_result = application.authenticate_account auth_request
+  account = auth_result.account
+rescue Stormpath::Error =&gt; e
+  #If credentials are invalid or account doesn't exist
+end
 </code></pre>
 
 <p>If the authentication request is successful, an <code>Account</code> resource will be
@@ -1108,10 +1104,10 @@ addthis:url="https://stormpath.com" >
 		sp_docs_menu['sample-apps'] = [];
 		
 	
-		sp_docs_menu['vbnet'] = [];
+		sp_docs_menu['stylesheets'] = [];
 		
 	
-		sp_docs_menu['stylesheets'] = [];
+		sp_docs_menu['vbnet'] = [];
 		
 	
 </script>
