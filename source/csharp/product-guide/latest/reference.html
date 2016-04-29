@@ -840,7 +840,7 @@
 <td><code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">description</span></code>, <code class="docutils literal"><span class="pre">status</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code>, <code class="docutils literal"><span class="pre">modifiedAt</span></code></td>
 </tr>
 <tr class="row-even"><td>Account</td>
-<td><code class="docutils literal"><span class="pre">givenName</span></code>, <code class="docutils literal"><span class="pre">middleName</span></code>, <code class="docutils literal"><span class="pre">surname</span></code>, <code class="docutils literal"><span class="pre">username</span></code>, <code class="docutils literal"><span class="pre">email</span></code>, <code class="docutils literal"><span class="pre">status</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code>, <code class="docutils literal"><span class="pre">modifiedAt</span></code></td>
+<td><code class="docutils literal"><span class="pre">givenName</span></code>, <code class="docutils literal"><span class="pre">middleName</span></code>, <code class="docutils literal"><span class="pre">surname</span></code>, <code class="docutils literal"><span class="pre">username</span></code>, <code class="docutils literal"><span class="pre">email</span></code>, <code class="docutils literal"><span class="pre">status</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code>, <code class="docutils literal"><span class="pre">modifiedAt</span></code>, <code class="docutils literal"><span class="pre">passwordModifiedAt</span></code></td>
 </tr>
 <tr class="row-odd"><td>Group</td>
 <td><code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">description</span></code>, <code class="docutils literal"><span class="pre">status</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code>, <code class="docutils literal"><span class="pre">modifiedAt</span></code></td>
@@ -960,7 +960,7 @@
 <div class="highlight-default"><div class="highlight"><pre><span></span>?modifiedAt=[2015-02-03T12:00:00.000Z, 2015-02-04T13:00:00.000)
 </pre></div>
 </div>
-<p>You can simply write:</p>
+<p>You can write:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>?modifiedAt=2015-02-03T12
 </pre></div>
 </div>
@@ -2271,7 +2271,7 @@
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">status</span></code></td>
 <td>String (Enum)</td>
 <td><code class="docutils literal"><span class="pre">ENABLED</span></code> , <code class="docutils literal"><span class="pre">DISABLED</span></code></td>
-<td>Enabled Directories can be used as Account Stores for Applications. Disabled Directories cannot be used for login.</td>
+<td>Enabled Directories can be used as Account Stores for logging in to Applications. Disabled Directories cannot be used for login.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">createdAt</span></code></td>
 <td>String</td>
@@ -2692,7 +2692,7 @@
 <col width="57%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">Property</th>
+<tr class="row-odd"><th class="head">Attribute</th>
 <th class="head">Type</th>
 <th class="head">Valid Value(s)</th>
 <th class="head">Description</th>
@@ -2727,11 +2727,11 @@
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">mimeType</span></code></td>
 <td>String</td>
 <td><code class="docutils literal"><span class="pre">text/plain</span></code> or <code class="docutils literal"><span class="pre">text/html</span></code> or <code class="docutils literal"><span class="pre">multipart/alternative</span></code></td>
-<td>A property that defines whether Stormpath will send an email as plaintext, HTML, or both.</td>
+<td>An attribute that defines whether Stormpath will send an email as plaintext, HTML, or both.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">defaultModel</span></code></td>
 <td>Object</td>
-<td>Object that includes one property <code class="docutils literal"><span class="pre">linkBaseUrl</span></code> which is itself a String</td>
+<td>Object that includes one attribute <code class="docutils literal"><span class="pre">linkBaseUrl</span></code> which is itself a String</td>
 <td>An object that defines the model of the email template. The defaultModel currently holds one value, which is the <code class="docutils literal"><span class="pre">linkBaseUrl</span></code>. The <code class="docutils literal"><span class="pre">linkBaseUrl</span></code> is retrieved when using the macro ${url} in an email template. This macro generates a URL that includes the <code class="docutils literal"><span class="pre">linkBaseUrl</span></code> and the <code class="docutils literal"><span class="pre">sptoken</span></code> used in Account creation and password reset workflows.</td>
 </tr>
 </tbody>
@@ -2964,6 +2964,16 @@
 <div class="section" id="ldap-agent">
 <span id="ref-ldap-agent"></span><h5>LDAP Agent<a class="headerlink" href="#ldap-agent" title="Permalink to this headline">¶</a></h5>
 <p><a class="reference internal" href="accnt_mgmt.html#about-ldap-dir"><span class="std std-ref">LDAP Directories</span></a> have an associated <a class="reference internal" href="#ref-provider"><span class="std std-ref">Provider resource</span></a> with either the <code class="docutils literal"><span class="pre">ldap</span></code> or <code class="docutils literal"><span class="pre">ad</span></code> <code class="docutils literal"><span class="pre">providerId</span></code>. That Provider in turn contains an <strong>Agent</strong> resource. This Agent is what will scan your LDAP directory and map the accounts and groups in that directory to Stormpath Accounts and Groups.</p>
+<p>The Agent itself is a complicated object, with a number of required objects both above and below it. All of these resources are required for LDAP configuration:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>directory
+  └──provider
+      └──agent
+          └──config
+              ├──accountConfig
+              └──groupConfig
+</pre></div>
+</div>
+<p>You will need to pass all of these resources together if you want to create an LDAP Agent. For an example JSON see <a class="reference internal" href="auth_n.html#authn-ldap-dir-creation"><span class="std std-ref">the Authentication chapter</span></a>.</p>
 <p>An Agents collection may be accessed via its Resource URL:</p>
 <p><strong>Agent URL</strong></p>
 <p><code class="docutils literal"><span class="pre">/v1/agents/$DIRECTORY_ID</span></code></p>
@@ -2995,7 +3005,7 @@
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">status</span></code></td>
 <td>String</td>
-<td><code class="docutils literal"><span class="pre">online</span></code>, <code class="docutils literal"><span class="pre">offline</span></code>, <code class="docutils literal"><span class="pre">error</span></code></td>
+<td><code class="docutils literal"><span class="pre">ONLINE</span></code>, <code class="docutils literal"><span class="pre">OFFLINE</span></code>, <code class="docutils literal"><span class="pre">ERROR</span></code></td>
 <td>The Agent&#8217;s status.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">config</span></code></td>
@@ -3060,7 +3070,7 @@
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">sslRequired</span></code></td>
 <td>Boolean</td>
-<td>.</td>
+<td><code class="docutils literal"><span class="pre">true</span></code>, <code class="docutils literal"><span class="pre">false</span></code></td>
 <td>Indicates whether the Agent socket connection to the directory uses SSL encryption.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">agentUserDn</span></code></td>
@@ -3096,12 +3106,12 @@
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">referralMode</span></code></td>
 <td>String</td>
 <td><code class="docutils literal"><span class="pre">follow</span></code>, <code class="docutils literal"><span class="pre">ignore</span></code></td>
-<td>Prevents referral problems for Active Directory servers that are not configured properly for DNS.</td>
+<td>Prevents referral problems for Active Directory servers that are not configured properly for DNS. <em>(Active Directory only)</em></td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">ignoreReferralIssues</span></code></td>
 <td>Boolean</td>
 <td>N/A</td>
-<td>Referral issues can arise when querying an Active Directory server without proper DNS. Setting this as true ignores referral exceptions and allows (potentially partial) results to be returned.</td>
+<td>Referral issues can arise when querying an Active Directory server without proper DNS. Setting this as true ignores referral exceptions and allows (potentially partial) results to be returned. <em>(Active Directory only)</em></td>
 </tr>
 </tbody>
 </table>
@@ -3126,7 +3136,7 @@
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">dnSuffix</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>Optional value appended to the Base DN when accessing accounts. If left unspecified, account searches will stem from the Base DN.</td>
+<td><em>(Optional)</em> Value appended to the Base DN when accessing accounts. If left unspecified, account searches will stem from the Base DN.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">objectClass</span></code></td>
 <td>String</td>
@@ -3136,7 +3146,7 @@
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">objectFilter</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>LDAP query filter to use when searching for user accounts.</td>
+<td><em>(Optional)</em> LDAP query filter to use when searching for user accounts.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">emailRdn</span></code></td>
 <td>String</td>
@@ -3151,7 +3161,7 @@
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">middleNameRdn</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>The name of the attribute for an account&#8217;s middle name.</td>
+<td><em>(Optional)</em> The name of the attribute for an account&#8217;s middle name.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">surnameRdn</span></code></td>
 <td>String</td>
@@ -3166,7 +3176,7 @@
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">passwordRdn</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>The name of the attribute for an account&#8217;s password.</td>
+<td>The name of the attribute for an account&#8217;s password. <em>(Non-AD only)</em></td>
 </tr>
 </tbody>
 </table>
@@ -3184,24 +3194,24 @@
 <tr class="row-odd"><th class="head"><code class="docutils literal"><span class="pre">dnSuffix</span></code></th>
 <th class="head">String</th>
 <th class="head">N/A</th>
-<th class="head">Optional value appended to the Base DN when accessing groups. If left unspecified, group searches will stem from the Base DN.</th>
+<th class="head"><em>(Optional)</em> Value appended to the Base DN when accessing groups. If left unspecified, group searches will stem from the Base DN.</th>
 </tr>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">objectClass</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>The LDAP object class to use when when loading accounts.</td>
+<td>The LDAP group object class to use when when loading accounts.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">objectFilter</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>LDAP query filter to use when searching for groups.</td>
+<td><em>(Optional)</em> LDAP query filter to use when searching for groups.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">nameRdn</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>The name of the attribute for a group&#8217;s name. For example cn. Please note: group names must be unique within a directory.</td>
+<td>The name of the attribute for a group&#8217;s name. For example <code class="docutils literal"><span class="pre">cn</span></code>. Please note: group names must be unique within a directory.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">descriptionRdn</span></code></td>
 <td>String</td>
@@ -3211,11 +3221,15 @@
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">membersRdn</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>The name of the attribute that lists the group members.</td>
+<td><em>(Optional)</em> The name of the attribute that lists the group members.</td>
 </tr>
 </tbody>
 </table>
-<p id="agent-json-ex"><strong>Agent example with embedded Config, accountConfig and groupConfig resources</strong></p>
+<p id="agent-json-ex"><strong>Agent example with embedded config, accountConfig and groupConfig resources</strong></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We can tell that this is an Active Directory Agent because it is missing <code class="docutils literal"><span class="pre">referralMode</span></code> and <code class="docutils literal"><span class="pre">ignoreReferralIssues</span></code> from the <code class="docutils literal"><span class="pre">config</span></code> resource, and has the <code class="docutils literal"><span class="pre">passwordRdn</span></code> attribute inside <code class="docutils literal"><span class="pre">accountConfig</span></code>. You would also know that it is an Active Directory Agent because the associated Provider resource would have its <code class="docutils literal"><span class="pre">providerId</span></code> attribute set to <code class="docutils literal"><span class="pre">ad</span></code>.</p>
+</div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/agents/2PjCYRg3mhGNLUieXamPLE&quot;</span><span class="p">,</span>
   <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;2PjCYRg3mhGNLUixcSdK0k&quot;</span><span class="p">,</span>
@@ -3317,7 +3331,7 @@
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">status</span></code></td>
 <td>String (Enum)</td>
 <td><code class="docutils literal"><span class="pre">ENABLED</span></code>, <code class="docutils literal"><span class="pre">DISABLED</span></code></td>
-<td><code class="docutils literal"><span class="pre">ENABLED</span></code> Groups are able to authenticate against an Application. <code class="docutils literal"><span class="pre">DISABLED</span></code> Groups cannot authenticate against an Application.</td>
+<td>Enabled Groups can be used as Account Stores for logging in to Applications. Disabled Groups cannot be used for login.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">createdAt</span></code></td>
 <td>String</td>
@@ -3785,7 +3799,7 @@
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">status</span></code></td>
 <td>String (Enum)</td>
 <td><code class="docutils literal"><span class="pre">ENABLED</span></code>, <code class="docutils literal"><span class="pre">DISABLED</span></code></td>
-<td>Indicates whether the Organization is enabled or not. Enabled Organizations can be used as Account Stores for applications; disabled Organizations cannot.</td>
+<td>Enabled Organizations can be used for logging in to Applications. Disabled Organizations cannot be used for login.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">description</span></code></td>
 <td>String</td>
@@ -4143,7 +4157,7 @@
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>POST /v1/organizationAccountStoreMappings</td>
-<td>Required: <code class="docutils literal"><span class="pre">application</span></code>, <code class="docutils literal"><span class="pre">accountStore</span></code>; Optional: <code class="docutils literal"><span class="pre">listIndex</span></code>, <code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code>, <code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code></td>
+<td>Required: <code class="docutils literal"><span class="pre">organization</span></code>, <code class="docutils literal"><span class="pre">accountStore</span></code>; Optional: <code class="docutils literal"><span class="pre">listIndex</span></code>, <code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code>, <code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code></td>
 <td>N/A</td>
 <td>Creates a new organizationAccountStoreMapping resource, thereby enabling the Accounts in the specified Store to log in to the specified Organization. By default <code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code> and <code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code> are set to <code class="docutils literal"><span class="pre">false</span></code>.</td>
 </tr>
@@ -4167,7 +4181,7 @@
 <tbody valign="top">
 <tr class="row-even"><td>GET /v1/organizationAccountStoreMappings/$ORG_ACCOUNT_STORE_MAPPING_ID</td>
 <td><code class="docutils literal"><span class="pre">expand</span></code></td>
-<td>Retrieves the specified Organization Account Store Mapping resource. <code class="docutils literal"><span class="pre">accountStore`</span> <span class="pre">and</span> <span class="pre">``organization</span></code> can be expanded. More info <a class="reference internal" href="#about-links"><span class="std std-ref">above</span></a>.</td>
+<td>Retrieves the specified Organization Account Store Mapping resource. <code class="docutils literal"><span class="pre">accountStore</span></code> and <code class="docutils literal"><span class="pre">organization</span></code> can be expanded. More info <a class="reference internal" href="#about-links"><span class="std std-ref">above</span></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -4330,7 +4344,7 @@
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">status</span></code></td>
 <td>String (Enum)</td>
 <td><code class="docutils literal"><span class="pre">ENABLED</span></code>, <code class="docutils literal"><span class="pre">DISABLED</span></code>, <code class="docutils literal"><span class="pre">UNVERIFIED</span></code></td>
-<td><code class="docutils literal"><span class="pre">ENABLED</span></code> Accounts are able to log in to their assigned Applications, <code class="docutils literal"><span class="pre">DISABLED</span></code> Accounts may not log in to Applications, <code class="docutils literal"><span class="pre">UNVERIFIED</span></code> Accounts are disabled because they have not verified their email address.</td>
+<td>Enabled Accounts are able to log in to their assigned Applications, Disabled Accounts may not log in to Applications, Unverified Accounts are disabled because they have not verified their email address.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">createdAt</span></code></td>
 <td>String</td>
@@ -4347,52 +4361,57 @@
 <td>N/A</td>
 <td>A link to the Account’s email verification token. This will only be set if the Account needs to be verified.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">customData</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">passwordModifiedAt</span></code></td>
+<td>String</td>
+<td>ISO-8601 Datetime</td>
+<td>Indicates when this Account&#8217;s password was last modified.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">customData</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the Account’s customData resource that you can use to store your own Account-specific custom fields.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">providerData</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">providerData</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the information from the owner Directory&#8217;s Provider.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">directory</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">directory</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the Account&#8217;s Directory.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tenant</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">tenant</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the Tenant that owns the Account’s Directory.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">groups</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">groups</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to a collection of the Groups that the Account belongs to.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">groupMemberships</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">groupMemberships</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the <a class="reference internal" href="#ref-groupmembership"><span class="std std-ref">Group Memberships</span></a> that the Account is in.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">applications</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">applications</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the Applications that the Account belongs to.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">apiKeys</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">apiKeys</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A link to the apiKeys for this Account.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">accessTokens</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">accessTokens</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A collection of valid JSON Web Tokens associated with this Account, used for token-based authentication.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">refreshTokens</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">refreshTokens</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>A collection of valid JSON Web Tokens associated with this Account, used to generate additional <code class="docutils literal"><span class="pre">accessTokens</span></code> for token-based authentication.</td>
