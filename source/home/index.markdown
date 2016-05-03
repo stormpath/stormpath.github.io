@@ -71,7 +71,7 @@ alias: [/index.html]
             <a href="/rest/product-guide/latest/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-product.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/errors/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-error.jpg"></a>
+            <a href="/rest/product-guide/latest/errors.html"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-error.jpg"></a>
           </div>
         </div>
       </div>

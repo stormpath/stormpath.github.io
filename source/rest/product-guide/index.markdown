@@ -41,7 +41,7 @@ When building your applications in the past, how much time have you spent writin
 By offloading all of this effort to Stormpath, a service with deep security roots, you can quickly get back to writing your actual application and never worry about password attacks again.
 
 <a class="anchor" name="core"></a>
-### Core Concepts 
+### Core Concepts
 
 Stormpath has five core concepts, and everything else in the Stormpath REST API exists to support them:
 
@@ -62,11 +62,11 @@ You can assign one or more *Account Stores* to an Application.  Accounts within 
 
 **Account Stores**
 
-An *Account Store* is a generic term for either a `Directory` or a `Group`. Directories and Groups are both are considered 'account stores' because they both contain, or 'store', Accounts. 
+An *Account Store* is a generic term for either a `Directory` or a `Group`. Directories and Groups are both are considered 'account stores' because they both contain, or 'store', Accounts.
 
 * **Directories**
 
-  A [Directory](#directories) is a top-level storage container of Accounts and Groups.  A Directory also manages security policies (like password strength) for the Accounts it contains.  Stormpath supports two types of Directories: natively hosted 'Cloud' directories that originate in Stormpath and 'Mirror' directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers. 
+  A [Directory](#directories) is a top-level storage container of Accounts and Groups.  A Directory also manages security policies (like password strength) for the Accounts it contains.  Stormpath supports two types of Directories: natively hosted 'Cloud' directories that originate in Stormpath and 'Mirror' directories that act as secure mirrors or replicas of existing directories outside of Stormpath, for example LDAP or Active Directory servers.
 
   Directories can be used to cleanly manage segmented account populations - for example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.
 
@@ -585,7 +585,7 @@ Which, if URL decoded, the URL would look like this:
 
 Notice the `surname` order statement does not specify `asc` or `desc`, implying `asc` by default.
 
-<a class="anchor" name="search"></a> 
+<a class="anchor" name="search"></a>
 ### Search
 
 You can search for specific resources within a Collection Resource by using certain query parameters to specify your search criteria.
@@ -593,7 +593,7 @@ You can search for specific resources within a Collection Resource by using cert
 There are currently two different types of searches that might be performed: a generic [Filter](#search-filter)-based search and a more targeted [Attribute](#search-attribute)-based search. Both options support result [ordering](#sorting), [pagination](#pagination), and [link expansion](#links-expansion).
 
 {% docs info %}
-Currently, a REST search request must be targeted at resources of the same type. For example, a search can be performed across accounts or groups, but not both at the same time. 
+Currently, a REST search request must be targeted at resources of the same type. For example, a search can be performed across accounts or groups, but not both at the same time.
 
 Because the Stormpath REST API always represents one or more resources of the same type as a Collection Resource, a REST search is always sent to a Collection Resource endpoint.
 {% enddocs %}
@@ -714,7 +714,7 @@ Stormpath exposes properties on all resources that will give you information abo
             "href": "https://api.stormpath.com/v1/accounts/MYNtz266FZK0ruvbKziwc/groups"
         },
         "href": "https://api.stormpath.com/v1/accounts/MYNtz266FZK0ruvbKziwc",
-        "middleName": null, 
+        "middleName": null,
         "modifiedAt": "2015-02-02T12:44:28+00:00",
         ...
     }
@@ -937,7 +937,7 @@ You can combine the two techniques to more precisely customize your desired outp
 
 ***
 
-<a class="anchor" name="tenants"></a> 
+<a class="anchor" name="tenants"></a>
 ## Tenants
 
 Stormpath is a [multi-tenant](http://en.wikipedia.org/wiki/Multitenancy) software service. When you [sign up for Stormpath](https://api.stormpath.com/register), a private data 'space' is created for you.  This space is represented as a `Tenant` resource in the Stormpath REST API.
@@ -946,10 +946,10 @@ It might help to think of a `Tenant` as a Stormpath customer.  As a Stormpath Te
 
 In the Stormpath REST API specifically, your `Tenant` resource can be thought of as your global starting point.  You can access everything in your tenant space by accessing your tenant resource first and then interacting with its other linked resources (applications collection, directories collection, etc).
 
-<a class="anchor" name="tenant-resource"></a> 
+<a class="anchor" name="tenant-resource"></a>
 ### Tenant Resource
 
-<a class="anchor" name="tenant-resource-uri"></a> 
+<a class="anchor" name="tenant-resource-uri"></a>
 #### Resource URI
 
     /v1/tenants/:tenantId
@@ -1257,7 +1257,7 @@ You can list your tenant's accounts by sending a `GET` request your tenant's `ac
 
 #### Search Tenant Accounts
 
-You may search for accounts by sending a `GET` request to your tenant's `accounts` Collection Resource `href` URL using [search query parameters](#search).  Any matching accounts with your tenant will be returned as a [paginated](#pagination) list. 
+You may search for accounts by sending a `GET` request to your tenant's `accounts` Collection Resource `href` URL using [search query parameters](#search).  Any matching accounts with your tenant will be returned as a [paginated](#pagination) list.
 
 In addition to the the [search query parameters](#search), you may also use [pagination](#pagination), [sorting](#sorting), and [link expansion](#link-expansion) query parameters to customize the paginated response.
 
@@ -1306,7 +1306,7 @@ You can list your tenant's groups by sending a `GET` request your tenant's `grou
 
 #### Search Tenant Groups
 
-You may search for groups by sending a `GET` request to your tenant's `groups` Collection Resource `href` URL using [search query parameters](#search).  Any matching groups with your tenant will be returned as a [paginated](#pagination) list. 
+You may search for groups by sending a `GET` request to your tenant's `groups` Collection Resource `href` URL using [search query parameters](#search).  Any matching groups with your tenant will be returned as a [paginated](#pagination) list.
 
 In addition to the the [search query parameters](#search), you may also use [pagination](#pagination), [sorting](#sorting), and [link expansion](#link-expansion) query parameters to customize the paginated response.
 
@@ -2251,7 +2251,7 @@ After a successfully `GET` with the query string token, you can return a page to
       "password": "$PASSWORD_FROM_USER"
     }
 
-** Example Success Response** 
+** Example Success Response**
 
     HTTP/1.1 200 OK
 
@@ -2380,7 +2380,7 @@ If your application wants to create a new group, POST the [group resource attrib
     HTTP/1.1 201 Created
     Location: https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ
     Content-Type: application/json;charset=UTF-8;
-    
+
     {
       "href" : "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ",
       "name" : "Jedi High Council",
@@ -2557,7 +2557,7 @@ effective _user base_; those accounts may login to the application.  If no accou
 
 You control which account stores are assigned (mapped) to an application, and the order in which they are consulted during a login attempt, by manipulating an application's `AccountStoreMapping` resources.
 
-<a class="anchor" name="workflow-login-attempt"></a> 
+<a class="anchor" name="workflow-login-attempt"></a>
 **How Login Attempts Work**
 
 When an account tries to login to your application, you submit a request to your application's `/loginAttempts` endpoint.  Stormpath then consults the application's assigned account stores _in the order that they are assigned to the application_.  When a matching account is discovered in a mapped account store, it is used to verify the authentication attempt and all subsequent account stores are ignored.  In other words, accounts are matched for application login based on a 'first match wins' policy.
@@ -2813,7 +2813,7 @@ In addition, setting an AccountStoreMapping's `isDefaultAccountStore` value to `
 {% enddocs %}
 
 {% docs warning %}
-If none of the application's AccountStoreMappings are designated as the default account store, the application _WILL NOT_ be able to create new accounts from the applications endpoint.  It is still possible to create accounts from the [accounts endpoint](#account-create). 
+If none of the application's AccountStoreMappings are designated as the default account store, the application _WILL NOT_ be able to create new accounts from the applications endpoint.  It is still possible to create accounts from the [accounts endpoint](#account-create).
 {% enddocs %}
 
 {% docs warning %}
@@ -2843,7 +2843,7 @@ Now, any time a new group is created by `POST`ing to the application's `https://
 
 {% docs note %}
 Only one of an application's mapped account stores may be the default group store.
- 
+
 Also, note that setting an AccountStoreMapping's `isDefaultGroupStore` value to `true` will automatically set the application's other AccountStoreMappings' `isDefaultGroupStore` values to `false`. HOWEVER:
 
 Lastly, setting an AccountStoreMapping's `isDefaultGroupStore` value to `false` **WILL NOT** automatically set another AccountStoreMapping's `isDefaultGroupStore` to `true`.  You are responsible for explicitly setting `isDefaultGroupStore` to `true` if you want the application to be able to create new groups.
@@ -2961,7 +2961,7 @@ Mirror directories are a big benefit to Stormpath customers who need LDAP or Act
 LDAP or Active Directory are still the 'system of record' or source of identity 'truth' for these accounts and groups.  The big benefit is that your Stormpath-enabled applications still use the same convenient REST+JSON API - they do not need to know anything about LDAP, Active Directory or legacy connection protocols!
 
 {% docs tip %}
-The Stormpath Agent is **firewall friendly**: you do not need to open any inbound holes in your company firewall.  The only requirement is that the Agent be able to make an _outbound_ HTTPS connection to https://api.stormpath.com 
+The Stormpath Agent is **firewall friendly**: you do not need to open any inbound holes in your company firewall.  The only requirement is that the Agent be able to make an _outbound_ HTTPS connection to https://api.stormpath.com
 {% enddocs %}
 
 Finally, note that accounts and groups in mirrored directories are automatically deleted when:
@@ -2979,7 +2979,7 @@ An individual `directory` resource may be accessed via its Resource URI:
 
     /v1/directories/:directoryId
 
-<a id="directory-attributes"></a> 
+<a id="directory-attributes"></a>
 **Resource Attributes**
 
 Attribute | Description | Type | Valid Value
@@ -3254,7 +3254,7 @@ To delete a directory:
 **Example Response**
 
     HTTP/1.1 204 No Content
-    
+
 {% docs info %}
 The `Stormpath Administrators` directory cannot be deleted.
 {% enddocs %}
@@ -3482,11 +3482,11 @@ The `Account Creation Policy` can be retrieved by interacting with the directory
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `verificationEmailStatus` | The status of the verification email workflow.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account to have them verify their email.  The email sent is configurable through `verificationEmailTemplates` property | String | `ENABLED` or `DISABLED`
-`verificationEmailTemplates` | A collection of email templates that can be used for sending the 'email verification' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+`verificationEmailTemplates` | A collection of email templates that can be used for sending the 'email verification' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
 `verificationSuccessEmailStatus` | The status of the verification success email.  If this is set to `ENABLED`, Stormpath will send an email to a newly verified account to let them know that they have successfully verified their email.  The email sent is configurable through `verificationSuccessEmailTemplates` property | String | `ENABLED` or `DISABLED`
-`verificationSuccessEmailTemplates`| A collection of email templates that can be used for sending 'email verification success' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+`verificationSuccessEmailTemplates`| A collection of email templates that can be used for sending 'email verification success' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
 `welcomeEmailStatus` | The status of the welcome email.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account (if `verificationEmailStatus` is set to disabled) or a newly verified account (if `verificationEmailStatus` is set to enabled).  The email sent is configurable through `welcomeEmailTemplates` property | String | `ENABLED` or `DISABLED`
-`welcomeEmailTemplates` | A collection of email templates that can be used for sending a welcome email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+`welcomeEmailTemplates` | A collection of email templates that can be used for sending a welcome email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
 `createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
 `modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
@@ -3507,16 +3507,16 @@ The `href` of the account creation policy for a directory can be retrieved by fr
     HTTP/1.1 200 OK
 
     {
-      "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy", 
-      "verificationEmailStatus": "DISABLED", 
+      "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy",
+      "verificationEmailStatus": "DISABLED",
       "verificationEmailTemplates": {
           "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/verificationEmailTemplates"
-      }, 
-      "verificationSuccessEmailStatus": "DISABLED", 
+      },
+      "verificationSuccessEmailStatus": "DISABLED",
       "verificationSuccessEmailTemplates": {
           "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/verificationSuccessEmailTemplates"
-      }, 
-      "welcomeEmailStatus": "DISABLED", 
+      },
+      "welcomeEmailStatus": "DISABLED",
       "welcomeEmailTemplates": {
           "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/welcomeEmailTemplates"
       }
@@ -3555,16 +3555,16 @@ By default, all of the `Account Creation Policy` email status are set to `DISABL
     HTTP/1.1 200 OK
 
     {
-      "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy", 
-      "verificationEmailStatus": "ENABLED", 
+      "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy",
+      "verificationEmailStatus": "ENABLED",
       "verificationEmailTemplates": {
           "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/verificationEmailTemplates"
-      }, 
-      "verificationSuccessEmailStatus": "DISABLED", 
+      },
+      "verificationSuccessEmailStatus": "DISABLED",
       "verificationSuccessEmailTemplates": {
           "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/verificationSuccessEmailTemplates"
-      }, 
-      "welcomeEmailStatus": "ENABLED", 
+      },
+      "welcomeEmailStatus": "ENABLED",
       "welcomeEmailTemplates": {
           "href": "https://api.stormpath.com/v1/accountCreationPolicies/vuJwv33xO5P3HVX4C9kHy/welcomeEmailTemplates"
       }
@@ -3585,7 +3585,7 @@ Attribute | Description | Type | Valid Value
 `htmlBody` | The body of the email in HTML format.  This body is only sent when the `mimeType` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `textBody` | The body of the email is plain text format.  This body is only sent when the `mimeType` for the template is set to `text/plain` | String | A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `mimeType` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
-`defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String 
+`defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String
 `createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
 `modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
@@ -3600,16 +3600,16 @@ To update an email template, first you must get the email template's href.  This
 **Example Response**
 
     {
-        "href": "https://api.stormpath.com/v1/accountCreationPolicies/3vuJwv33xO5P3HVX4C9kHy/welcomeEmailTemplates", 
+        "href": "https://api.stormpath.com/v1/accountCreationPolicies/3vuJwv33xO5P3HVX4C9kHy/welcomeEmailTemplates",
         "items": [
             {
                 ...
                 "href": "https://api.stormpath.com/v1/emailTemplates/wztp77rsr05swAFL3AnrY",
                 ...
             }
-        ], 
-        "limit": 25, 
-        "offset": 0, 
+        ],
+        "limit": 25,
+        "offset": 0,
         "size": 1
     }
 
@@ -3627,18 +3627,18 @@ After getting the href for the email template, you can update by an HTTP `POST` 
          'https://api.stormpath.com/v1/emailTemplates/wztp77rsr05swAFL3AnrY'
 
 **Example Response**
-    
+
     HTTP/1.1 200 OK
 
     {
-        "description": "This is the welcome email template that is associated with the directory.", 
-        "fromEmailAddress": "tom@stormpath.com", 
-        "fromName": "Tom Abbott", 
-        "href": "https://api.stormpath.com/v1/emailTemplates/wztp77rsr05swAFL3AnrY", 
-        "htmlBody": "You have been successfully registered for an application that uses Stormpath.\n\n--------------------\nFor general inquiries or to request support with your account, please email tom@stormpath.com", 
-        "mimeType": "text/plain", 
-        "name": "Default Welcome Email Template", 
-        "subject": "Your registration was successful", 
+        "description": "This is the welcome email template that is associated with the directory.",
+        "fromEmailAddress": "tom@stormpath.com",
+        "fromName": "Tom Abbott",
+        "href": "https://api.stormpath.com/v1/emailTemplates/wztp77rsr05swAFL3AnrY",
+        "htmlBody": "You have been successfully registered for an application that uses Stormpath.\n\n--------------------\nFor general inquiries or to request support with your account, please email tom@stormpath.com",
+        "mimeType": "text/plain",
+        "name": "Default Welcome Email Template",
+        "subject": "Your registration was successful",
         "textBody": "You have been successfully registered for an application that uses Stormpath.\n\n--------------------\nFor general inquiries or to request support with your account, please email tom@stormpath.com"
     }
 
@@ -3658,7 +3658,7 @@ Attribute | Description | Type | Valid Value
 `resetSuccessEmailStatus` | The status of the reset success email.  If this is set to ENABLED, then Stormpath will send the a email when an account's password is reset using the email workflow and it is successful.  The email template that is sent is defined in the passwordPolicy's `resetSuccessEmailTemplates` | String | `"ENABLED"` or `"DISABLED"`
 `resetSuccessEmailTemplates` | A collection of email templates that can be used for sending password reset success email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
 `resetTokenTtl` | An integer that defines how long the password reset token is valid for during the password reset email workflow. | Integer |  A positive integer, less than 169 (0 < i < 169). Default is 24
-`strength` |  A link to the password strength requirements for the directory | Link | -- 
+`strength` |  A link to the password strength requirements for the directory | Link | --
 `createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
 `modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
 
@@ -3673,7 +3673,7 @@ The href location of the password policy for a directory can be retrieved by fro
     curl -u $API_KEY_ID:$API_KEY_SECRET \
          -H "Accept: application/json" \
          "https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID"
-    
+
 
 **Example Response**
 
@@ -3681,16 +3681,16 @@ The href location of the password policy for a directory can be retrieved by fro
     Content-Type: application/json;charset=UTF-8
 
     {
-        "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc", 
-        "resetEmailStatus": "ENABLED", 
+        "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc",
+        "resetEmailStatus": "ENABLED",
         "resetEmailTemplates": {
             "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc/resetEmailTemplates"
-        }, 
-        "resetSuccessEmailStatus": "ENABLED", 
+        },
+        "resetSuccessEmailStatus": "ENABLED",
         "resetSuccessEmailTemplates": {
             "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc/resetSuccessEmailTemplates"
-        }, 
-        "resetTokenTtl": 24, 
+        },
+        "resetTokenTtl": 24,
         "strength": {
             "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc/strength"
         }
@@ -3739,7 +3739,7 @@ Attribute | Description | Type | Valid Value
 `htmlBody` | The body of the email in HTML format.  This body is only sent when the `mimeType` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `textBody` | The body of the email is plain text format.  This body is only sent when the `mimeType` for the template is set to `text/plain` | String | A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `mimeType` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
-`defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String 
+`defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String
 
 To update an email template, first you must get the email template's href.  This is done by working with the resetEmailTemplates and resetSuccessEmailTemplates collection.  These collections hold only one email template, but in the future may hold multiple templates.  
 
@@ -3752,16 +3752,16 @@ To update an email template, first you must get the email template's href.  This
 **Example Response**
 
     {
-        "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc/resetEmailTemplates", 
+        "href": "https://api.stormpath.com/v1/passwordPolicies/6uFCqUAMk8kQ3VWUulvtkc/resetEmailTemplates",
         "items": [
             {
                 ...
                 "href": "https://api.stormpath.com/v1/emailTemplates/3wztp77rsr05swAFL3AnrY",
                 ...
             }
-        ], 
-        "limit": 25, 
-        "offset": 0, 
+        ],
+        "limit": 25,
+        "offset": 0,
         "size": 1
     }
 
@@ -3782,20 +3782,20 @@ After getting the href for the email template, you can update by an HTTP `POST` 
          'https://api.stormpath.com/v1/emailTemplates/3wztp77rsr05swAFL3AnrY'
 
 **Example Response**
-    
+
     HTTP/1.1 200 OK
     {
         "defaultModel": {
             "linkBaseUrl": "https://application.com/password-reset"
-        }, 
-        "description": "This is the password reset email template that is associated with the directory", 
-        "fromEmailAddress": "support@application.com", 
-        "fromName": "Application Support", 
-        "href": "https://api.stormpath.com/v1/emailTemplates/3wztp77rsr05swAFL3AnrY", 
-        "htmlBody": "<p>Forgot your password?</p><br/><br/><p>We've received a request to reset the password for this email address.</p><p>To reset your password please click on this link (link expires ${expirationWindow} hours):<br/><a href=\"${url}\">Link</a></p><p>This link takes you to a secure page where you can change your password. If you don't want to reset your password, please ignore this message. Your password will not be reset.</p><p>----------------------<br/>For general inquiries or to request support with your account, please email support@application.com</p>", 
-        "mimeType": "text/plain", 
-        "name": "Default Password Reset Email Template", 
-        "subject": "Reset your Password for application.com", 
+        },
+        "description": "This is the password reset email template that is associated with the directory",
+        "fromEmailAddress": "support@application.com",
+        "fromName": "Application Support",
+        "href": "https://api.stormpath.com/v1/emailTemplates/3wztp77rsr05swAFL3AnrY",
+        "htmlBody": "<p>Forgot your password?</p><br/><br/><p>We've received a request to reset the password for this email address.</p><p>To reset your password please click on this link (link expires ${expirationWindow} hours):<br/><a href=\"${url}\">Link</a></p><p>This link takes you to a secure page where you can change your password. If you don't want to reset your password, please ignore this message. Your password will not be reset.</p><p>----------------------<br/>For general inquiries or to request support with your account, please email support@application.com</p>",
+        "mimeType": "text/plain",
+        "name": "Default Password Reset Email Template",
+        "subject": "Reset your Password for application.com",
         "textBody": "Forgot your password?\n\nWe've received a request to reset the password for this email address.\n\nTo reset your password please click on this link or cut and paste this URL into your browser (link expires in ${expirationWindow} hours):\n${url}\n\nThis link takes you to a secure page where you can change your password.\n\nIf you don't want to reset your password, please ignore this message. Your password will not be reset.\n---------------------\nFor general inquiries or to request support with your account, please email support@application.com"
     }
 
@@ -3829,13 +3829,13 @@ To retrieve the `Password Strength` requirements for a directory:
     HTTP/1.1 200 OK
 
     {
-      "href": "https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID/strength", 
-      "maxLength": 100, 
-      "minDiacritic": 0, 
-      "minLength": 8, 
-      "minLowerCase": 1, 
-      "minNumeric": 1, 
-      "minSymbol": 0, 
+      "href": "https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID/strength",
+      "maxLength": 100,
+      "minDiacritic": 0,
+      "minLength": 8,
+      "minLowerCase": 1,
+      "minNumeric": 1,
+      "minSymbol": 0,
       "minUpperCase": 1
     }
 
@@ -3855,13 +3855,13 @@ Setting new `Password Strength` requirement for a directory modifies the require
 **Example Response**
 
     {
-      "href": "https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID/strength", 
-      "maxLength": 24, 
-      "minDiacritic": 0, 
-      "minLength": 1, 
-      "minLowerCase": 1, 
-      "minNumeric": 1, 
-      "minSymbol": 1, 
+      "href": "https://api.stormpath.com/v1/passwordPolicies/$PASSWORD_POLICY_ID/strength",
+      "maxLength": 24,
+      "minDiacritic": 0,
+      "minLength": 1,
+      "minLowerCase": 1,
+      "minNumeric": 1,
+      "minSymbol": 1,
       "minUpperCase": 1
     }
 
@@ -4216,7 +4216,7 @@ To delete a cloud directory group:
 
 While Stormpath's default Group attributes are useful to many applications, you might want to add your own custom data to a Stormpath group.  If you want, you can store all of your custom group information in Stormpath so you don't have to maintain another separate database to store your specific group data.
 
-Please see the [custom data section](#custom-data) for more information and requirements/restrictions for creating, retrieving, updating and deleting group custom data. 
+Please see the [custom data section](#custom-data) for more information and requirements/restrictions for creating, retrieving, updating and deleting group custom data.
 
 <a class="anchor" name="groups-list"></a>
 ### List Groups
@@ -4449,7 +4449,7 @@ HTTP `GET` returns a Collection Resource containing the group memberships to whi
 <a class="anchor" name="group-memberships"></a>
 ## Group Memberships
 
-A `Group Membership` resource represents the link between an [account](#accounts) and a [group](#groups). When an `Account` is associated with a `Group` or a `Group` is associated with an `Account`, a group membership is created. 
+A `Group Membership` resource represents the link between an [account](#accounts) and a [group](#groups). When an `Account` is associated with a `Group` or a `Group` is associated with an `Account`, a group membership is created.
 
 <a class="anchor" name="group-membership-resource"></a>
 ### Group Membership Resource
@@ -4724,7 +4724,7 @@ Attribute | Description | Type | Valid Value
 `defaultGroupStoreMapping` | A link to the account store mapping that reflects the default group store where the organization will store newly created groups. (A POST to /v1/organizations/:organizationId/groups will result in storing the new group in the default group store). A null value disables the organization from directly creating new groups. | link | `null` or link
 `description` | A description of the organization to allow you to put additional information about the organizations | String | 0 <= N <= 4000 chars
 `groups` | A link to all groups that are accessible to the organization. This is an aggregate view of all groups in the organization’s assigned account stores. | Link | --
-`href` | The read-only organization's fully qualified URL. | String | -- 
+`href` | The read-only organization's fully qualified URL. | String | --
 `modifiedAt` | A read-only ISO-8601 Datetime value that represents when this resource’s properties were last modified | ISO-8601 Datetime | --
 `name` | The name of the organization. Must be unique across all organizations within your Stormpath [tenant](#tenants). | String | 1 <= N <= 255 characters. Unique within a tenant
 `nameKey` | A name key that represents the organization. Must be unique across all organizations within your Stormpath [tenant](#tenants) and must follow DNS label rules.  | String | 1 <= N <= 63 characters.  Must consist of only a-z, A-Z, 0-9, and `-`.  Must not start or end with a hyphen.  Unique constraint is case insensitive (STORMPATH
@@ -4758,30 +4758,30 @@ For example, if you want to find the href for an organization named “Finance O
 **Example Response**
 
     {
-        "href": "https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbu0KAFKR/organizations", 
+        "href": "https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbu0KAFKR/organizations",
         "items": [{
                 "accountStoreMappings": {
                     "href": "https://api.stormpath.com/v1/organizations/1vE9nmaFevbe9OhHSe4PEL/accountStoreMappings"
-                }, 
-                "createdAt": "2015-09-11T22:20:02.608Z", 
+                },
+                "createdAt": "2015-09-11T22:20:02.608Z",
                 "customData": {
                     "href": "https://api.stormpath.com/v1/organizations/1vE9nmaFevbe9OhHSe4PEL/customData"
-                }, 
-                "defaultAccountStoreMapping": null, 
-                "defaultGroupStoreMapping": null, 
-                "description": null, 
-                "href": "https://api.stormpath.com/v1/organizations/1vE9nmaFevbe9OhHSe4PEL", 
-                "modifiedAt": "2015-09-11T22:20:02.608Z", 
-                "name": "Finance Organization", 
-                "nameKey": "finance-organization", 
-                "status": "ENABLED", 
+                },
+                "defaultAccountStoreMapping": null,
+                "defaultGroupStoreMapping": null,
+                "description": null,
+                "href": "https://api.stormpath.com/v1/organizations/1vE9nmaFevbe9OhHSe4PEL",
+                "modifiedAt": "2015-09-11T22:20:02.608Z",
+                "name": "Finance Organization",
+                "nameKey": "finance-organization",
+                "status": "ENABLED",
                 "tenant": {
                     "href": "https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbu0KAFKR"
                 }
             }
-        ], 
-        "limit": 25, 
-        "offset": 0, 
+        ],
+        "limit": 25,
+        "offset": 0,
         "size": 3
     }
 
@@ -4802,10 +4802,10 @@ Optional attribute include:
 
 **Example Request**
 
-    HTTP/1.1 POST 
+    HTTP/1.1 POST
     https://api.stormpath.com/v1/organizations
     Content-Type: application/json;charset=UTF-8
-  
+
     {
       "name": "Finance Organization",
       "nameKey": "finance",
@@ -4821,19 +4821,19 @@ Optional attribute include:
     {
       "accountStoreMappings": {
           "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/accountStoreMappings"
-      }, 
-      "createdAt": "2015-09-16T17:45:53.737Z", 
+      },
+      "createdAt": "2015-09-16T17:45:53.737Z",
       "customData": {
           "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/customData"
-      }, 
-      "defaultAccountStoreMapping": null, 
-      "defaultGroupStoreMapping": null, 
-      "description": null, 
-      "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD", 
-      "modifiedAt": "2015-09-16T17:45:53.737Z", 
-      "name": "Finance Organization", 
-      "nameKey": "finance", 
-      "status": "ENABLED", 
+      },
+      "defaultAccountStoreMapping": null,
+      "defaultGroupStoreMapping": null,
+      "description": null,
+      "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD",
+      "modifiedAt": "2015-09-16T17:45:53.737Z",
+      "name": "Finance Organization",
+      "nameKey": "finance",
+      "status": "ENABLED",
       "tenant": {
           "href": "https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbu0KAFKR"
       }
@@ -4851,26 +4851,26 @@ If you don’t have the organization’s URL, you can find it by looking it up i
   https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD
 
 **Example Response**
-  
+
   HTTP/1.1 200 OK
   Content-Type: application/json;charset=UTF-8
 
     {
       "accountStoreMappings": {
           "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/accountStoreMappings"
-      }, 
-      "createdAt": "2015-09-16T17:45:53.737Z", 
+      },
+      "createdAt": "2015-09-16T17:45:53.737Z",
       "customData": {
           "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/customData"
-      }, 
-      "defaultAccountStoreMapping": null, 
-      "defaultGroupStoreMapping": null, 
-      "description": null, 
-      "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD", 
-      "modifiedAt": "2015-09-16T17:45:53.737Z", 
-      "name": "Finance Organization", 
-      "nameKey": "finance", 
-      "status": "ENABLED", 
+      },
+      "defaultAccountStoreMapping": null,
+      "defaultGroupStoreMapping": null,
+      "description": null,
+      "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD",
+      "modifiedAt": "2015-09-16T17:45:53.737Z",
+      "name": "Finance Organization",
+      "nameKey": "finance",
+      "status": "ENABLED",
       "tenant": {
           "href": "https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbu0KAFKR"
       }
@@ -4893,30 +4893,30 @@ Submit an HTTP `POST` to an organization's href when you want to change one or m
     HTTP/1.1 POST
     https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD
     Content-Type: application/json;charset=UTF-8
-  
+
     {
     "description": "A new description"
     }
 
 **Example Response**
-  
+
   HTTP/1.1 200 OK
     {
       "accountStoreMappings": {
           "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/accountStoreMappings"
-      }, 
-      "createdAt": "2015-09-16T17:45:53.737Z", 
+      },
+      "createdAt": "2015-09-16T17:45:53.737Z",
       "customData": {
           "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD/customData"
-      }, 
-      "defaultAccountStoreMapping": null, 
-      "defaultGroupStoreMapping": null, 
-      "description": "A new description", 
-      "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD", 
-      "modifiedAt": "2015-09-16T17:45:53.737Z", 
-      "name": "Finance Organization", 
-      "nameKey": "finance", 
-      "status": "ENABLED", 
+      },
+      "defaultAccountStoreMapping": null,
+      "defaultGroupStoreMapping": null,
+      "description": "A new description",
+      "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD",
+      "modifiedAt": "2015-09-16T17:45:53.737Z",
+      "name": "Finance Organization",
+      "nameKey": "finance",
+      "status": "ENABLED",
       "tenant": {
           "href": "https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbu0KAFKR"
       }
@@ -4936,7 +4936,7 @@ If you wish to delete an organization:
 
 **Example Request**
 
-    HTTP/1.1 DELETE 
+    HTTP/1.1 DELETE
     https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD
 
 **Example Response**
@@ -4964,33 +4964,33 @@ To create an `Organization Account Store Mapping`, you need to collection a `Dir
 
 **Example Request**
 
-  HTTP/1.1 POST 
+  HTTP/1.1 POST
   https://api.stormpath.com/v1/organizationAccountStoreMappings
   Content-Type: application/json
-  
+
     {
       "accountStore": {
           "href": "https://api.stormpath.com/v1/directories/HoYnVyb1fyzfGhoKyXf8Y"
-      }, 
+      },
       "organization": {
           "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD"
       }
     }
 
 **Example Response**
-  
+
     HTTP/1.1 201 Created
     Location: https://api.stormpath.com/v1/organizationAccountStoreMappings/2FM1LaTAXBHa5rCZOaPJxs
     Content-Type: application/json;charset=UTF-8
-  
+
     {
       "accountStore": {
           "href": "https://api.stormpath.com/v1/directories/HoYnVyb1fyzfGhoKyXf8Y"
-      }, 
-      "href": "https://api.stormpath.com/v1/organizationAccountStoreMappings/2FM1LaTAXBHa5rCZOaPJxs", 
-      "isDefaultAccountStore": false, 
-      "isDefaultGroupStore": false, 
-      "listIndex": 0, 
+      },
+      "href": "https://api.stormpath.com/v1/organizationAccountStoreMappings/2FM1LaTAXBHa5rCZOaPJxs",
+      "isDefaultAccountStore": false,
+      "isDefaultGroupStore": false,
+      "listIndex": 0,
       "organization": {
           "href": "https://api.stormpath.com/v1/organizations/63QhzFLc9tg4oTZXm6tADD"
       }
@@ -5143,7 +5143,7 @@ You may only create accounts for Stormpath-manageed 'Cloud' directories.  Mirror
 
 {% docs note %}
 The password in the request is being sent to Stormpath as plain text. This is one of the reasons why Stormpath only allows requests via HTTPS. Stormpath implements the latest password hashing and cryptographic best-practices that are automatically upgraded over time so the developer does not have to worry about this. Stormpath can only do this for the developer if Stormpath receives the plaintext password so we can hash it using these techniques.
-  
+
 Plaintext passwords also allow Stormpath to [enforce password restrictions](#directories-password-restrictions) in a configurable manner (e.g., you can configure your directories to reject passwords without mixed case and non-alphanumeric characters.)
 
 Most importantly, Stormpath does not persist nor relay plaintext passwords in any circumstances.
@@ -5165,7 +5165,7 @@ Simple creation request:
 
     POST https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts
     Content-Type: application/json;charset=UTF-8
-    
+
     {
       "username" : "jlpicard",
       "email" : "capt@enterprise.com",
@@ -5179,7 +5179,7 @@ Simple creation request:
     HTTP/1.1 201 Created
     Location: https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA
     Content-Type: application/json;charset=UTF-8;
-    
+
     {
       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
       "username" : "jlpicard",
@@ -5190,7 +5190,7 @@ Simple creation request:
       "surname" : "Picard",
       "status" : "UNVERIFIED",
       "customData": {
-        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData"
       },
       "groups" : {
         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
@@ -5275,7 +5275,7 @@ Stormpath does not allow for account creation with ANY password hash, the passwo
     $stormpath2$ALGORITHM_NAME$ITERATION_COUNT$BASE64_SALT$BASE64_PASSWORD_HASH
 
 Property | Description | Valid Values
-:---- | :---- | :---- 
+:---- | :---- | :----
 `ALGORITHM_NAME` | The name of the hashing algorithm used to generate the `BASE64_PASSWORD_HASH`. | `MD5`, `SHA-1`, `SHA-256`, `SHA-384`, `SHA-512`
 `ITERATION_COUNT` | The number of iterations executed when generating the `BASE64_PASSWORD_HASH` | Integer greater than 0 (1 or more)
 `BASE64_SALT` | The salt byte array used to salt the first hash iteration, formatted as a Base64 string. | Base64 String, if your password hashes do not have salt, you can leave it blank ($stormpath2$ALGORITHM_NAME$ITERATION_COUNT$$BASE64_PASSWORD_HASH)
@@ -5286,7 +5286,7 @@ Once you have a `bcrypt` or `stormpath2` MCF password hash, you can create the a
 **Example Request**
 
     POST https://api.stormpath.com/v1/directories/WpM9nyZ2TbaEzfbRvLk9KA/accounts?passwordFormat=mcf
-    
+
     {
       "username" : "jlpicard",
       "email" : "capt@enterprise.com",
@@ -5311,7 +5311,7 @@ Once you have a `bcrypt` or `stormpath2` MCF password hash, you can create the a
       "surname" : "Picard",
       "status" : "UNVERIFIED",
       "customData": {
-        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData"
       },
       "groups" : {
         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
@@ -5343,7 +5343,7 @@ HTTP `GET` returns a representation of an `account` resource that includes the a
 
     HTTP/1.1 200 OK
     Content-Type: application/json;charset=UTF-8;
-    
+
     {
       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
       "username" : "jlpicard",
@@ -5354,7 +5354,7 @@ HTTP `GET` returns a representation of an `account` resource that includes the a
       "surname" : "Picard",
       "status" : "ENABLED",
       "customData": {
-        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData"
       },
       "groups" : {
         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
@@ -5416,7 +5416,7 @@ The password in the request is being sent to Stormpath as plain text. This is on
 Plaintext passwords also allow Stormpath to [enforce password restrictions](#directories-password-restrictions) in a configurable manner (e.g., you can configure your directories to reject passwords without mixed case and non-alphanumeric characters.)
 
 Most importantly, Stormpath does not persist nor relay plaintext passwords in any circumstances.
-  
+
 On the client side, then, you do not need to worry about salting or storing passwords at any point; you need only pass them to Stormpath for hashing, salting, and persisting with the appropriate HTTPS API call (e.g., [Create An Account](#account-create) or [Update An Account](#account-update)).
 {% enddocs %}
 
@@ -5432,7 +5432,7 @@ Here are some account update examples:
 
     POST https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb
     Content-Type: application/json;charset=UTF-8
-    
+
     {
       "username" : "jlpicard",
       "givenName" : "Jean-Luc",
@@ -5443,7 +5443,7 @@ Here are some account update examples:
 
     HTTP/1.1 200 OK
     Content-Type: application/json;charset=UTF-8;
-    
+
     {
       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
       "username" : "jlpicard",
@@ -5454,7 +5454,7 @@ Here are some account update examples:
       "surname" : "Picard",
       "status" : "ENABLED",
       "customData": {
-        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData"
       },
       "groups" : {
         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
@@ -5478,7 +5478,7 @@ Here are some account update examples:
 
     POST https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb
     Content-Type: application/json;charset=UTF-8
-    
+
     {
       "password" : "L9%hw4c5q"
     }
@@ -5487,7 +5487,7 @@ Here are some account update examples:
 
     HTTP/1.1 200 OK
     Content-Type: application/json;charset=UTF-8;
-    
+
     {
       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA",
       "username" : "jlpicard",
@@ -5498,7 +5498,7 @@ Here are some account update examples:
       "surname" : "Picard",
       "status" : "ENABLED",
       "customData": {
-        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData" 
+        "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData"
       },
       "groups" : {
         "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/groups"
@@ -5526,7 +5526,7 @@ To assign an account to a group:
 
     POST https://api.stormpath.com/v1/groupMemberships
     Content-Type: application/json;charset=UTF-8
-    
+
     {
       "account" : {
         "href" : "https://api.stormpath.com/v1/accounts/Gu8oshf7HdsspjHs3uhd7jGd"
@@ -5541,7 +5541,7 @@ To assign an account to a group:
     HTTP/1.1 201 Created
     Location: https://api.stormpath.com/v1/groupMemberships/cJoiwjorTTmLDDBsf04Abi
     Content-Type: application/json;charset=UTF-8;
-    
+
     {
       "href" : "https://api.stormpath.com/v1/groupMemberships/cJoiwjorTTmLDDBsf04Abi",
       "account" : {
@@ -5580,7 +5580,7 @@ For example, to enable an account:
 
     POST https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb
     Content-Type: application/json;charset=UTF-8
-    
+
     {
       "status" : "ENABLED"
     }
@@ -5752,7 +5752,7 @@ If the verification token is not found, a `404 Not Found` is returned with an [e
 <a class="anchor" name="accounts-authenticate"></a>
 ### Authenticate An Account
 
-After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts. 
+After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts.
 
 Once you have the application resource you may attempt authentication by sending a 'POST' request to the application's `loginAttempts` endpoint and providing a base64 encoded username and password pair that is seperated with a colon (for example - testuser:testpassword).  Stormpath requires that the username and password are base64 encoded so these values are not passed as clear text.
 
@@ -5922,7 +5922,7 @@ HTTP `GET` returns a Collection Resource containing the group memberships to whi
 
 Groups Membership resources support the full suite of CRUD commands and other interactions. Please see the [Group Memberships section](#group-memberships) for more information.
 
-*** 
+***
 ## Custom Data
 
 Stormpath resources have predefined fields that are useful to many `Applications`, but you are likely to have your own requirements and custom fields that you need to associate with Stormpath resources. For this reason, `Accounts`, `Groups`, `Applications`, `Directories` and `Tenant` resources support a linked `customData` resource that you can use for your own needs.
@@ -6067,7 +6067,7 @@ Similar to `Accounts` and `Groups`, `Applications` / `Directories` / `Tenants` c
 
     HTTP/1.1 200 OK
     Content-Type: application/json;charset=UTF-8;
-    
+
     {
       "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData",
       "createdAt": "2014-07-16T13:48:22.378Z",
@@ -6106,7 +6106,7 @@ The response will contain the resource with the latest values:
 
     HTTP/1.1 200 OK
     Content-Type: application/json;charset=UTF-8;
-    
+
     {
       "href": "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA/customData",
       "createdAt": "2014-07-16T13:48:22.378Z",
@@ -6207,7 +6207,7 @@ This request would remove the `favoriteColor` field entirely from the customData
 <a class="anchor" name="integration-google"></a>
 ## Integrating with Google
 
-Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codea (or access tokens) to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codea (or access tokens) to return an `Account` for a given code.
 
 The steps to enable this functionality into your application include:
 
@@ -6230,12 +6230,12 @@ Example Request
 Example Response
 
     {
-        "clientId": "501417", 
-        "clientSecret": "4913953281ec6bb109", 
+        "clientId": "501417",
+        "clientSecret": "4913953281ec6bb109",
         "redirectUri": "https://myapp.com/google/authentication"
-        "createdAt": "2014-03-31T21:01:34.631Z", 
-        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", 
-        "modifiedAt": "2014-03-31T21:01:34.643Z", 
+        "createdAt": "2014-03-31T21:01:34.631Z",
+        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider",
+        "modifiedAt": "2014-03-31T21:01:34.643Z",
         "providerId": "google"
     }
 
@@ -6245,7 +6245,7 @@ Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `clientId` | The App ID for your Google application | String | --
 `clientSecret` | The App Secret for your Google application | String | --
-`redirectUri` | The redirection Uri for your Google application | String | -- 
+`redirectUri` | The redirection Uri for your Google application | String | --
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'google'
 `createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
 `modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
@@ -6264,7 +6264,7 @@ Creating a Google Directory requires that you gather some information beforehand
 + Client Secret
 + Redirect URI
 
-Creating a Google Directory is very similar to [creating a directory](#create-a-directory) within Stormpath by making a HTTP `POST` request to the `/v1/directories` endpoint.  For a Google Directory to be configured correctly, you must specify the correct `Provider` information. 
+Creating a Google Directory is very similar to [creating a directory](#create-a-directory) within Stormpath by making a HTTP `POST` request to the `/v1/directories` endpoint.  For a Google Directory to be configured correctly, you must specify the correct `Provider` information.
 
 **Example Request**
 
@@ -6292,23 +6292,23 @@ Creating a Google Directory is very similar to [creating a directory](#create-a-
     {
         "accounts": {
             "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/accounts"
-        }, 
-        "description": "A Google directory", 
+        },
+        "description": "A Google directory",
         "groups": {
             "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/groups"
-        }, 
-        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q", 
-        "name": "my-google-directory", 
+        },
+        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q",
+        "name": "my-google-directory",
         "provider": {
-            "clientId": "857385-m8vk0fn2r7jmjo.apps.googleusercontent.com", 
-            "clientSecret": "ehs7_-bA7OWQSQ4", 
-            "createdAt": "2014-03-31T23:47:05.576Z", 
-            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", 
-            "modifiedAt": "2014-03-31T23:47:05.592Z", 
-            "providerId": "google", 
+            "clientId": "857385-m8vk0fn2r7jmjo.apps.googleusercontent.com",
+            "clientSecret": "ehs7_-bA7OWQSQ4",
+            "createdAt": "2014-03-31T23:47:05.576Z",
+            "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider",
+            "modifiedAt": "2014-03-31T23:47:05.592Z",
+            "providerId": "google",
             "redirectUri": "https://myapplication.com/authenticate"
-        }, 
-        "status": "ENABLED", 
+        },
+        "status": "ENABLED",
         "tenant": {
             "href": "https://api.stormpath.com/v1/tenants/bckhcGMXQDujIXpbCDRb2Q"
         }
@@ -6393,11 +6393,11 @@ Once an `Account` is retreived, Stormpath maps common fields for the Google User
 The returned `providerData` will include:
 
     {
-      "accessToken": "y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4", 
-      "createdAt": "2014-04-01T17:00:09.154Z", 
-      "href": "https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData", 
-      "modifiedAt": "2014-04-01T17:00:09.189Z", 
-      "providerId": "google", 
+      "accessToken": "y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4",
+      "createdAt": "2014-04-01T17:00:09.154Z",
+      "href": "https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData",
+      "modifiedAt": "2014-04-01T17:00:09.189Z",
+      "providerId": "google",
       "refreshToken": "1/qQTS638g3ArE4U02FoiXL1yIh-OiPmhc"
     }
 
@@ -6424,7 +6424,7 @@ The `refreshToken` will only be present if your application asked for offline ac
 <a class="anchor" name="integration-facebook"></a>
 ## Integrating with Facebook
 
-Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their or access tokens to return an `Account` for a given code.
 
 The steps to enable this functionality into your application include:
 
@@ -6447,12 +6447,12 @@ Example Request
 Example Response
 
     {
-        "clientId": "501417", 
-        "clientSecret": "4913953281ec6bb109", 
+        "clientId": "501417",
+        "clientSecret": "4913953281ec6bb109",
         "redirectUri": "https://myapp.com/facebook/authentication"
-        "createdAt": "2014-03-31T21:01:34.631Z", 
-        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", 
-        "modifiedAt": "2014-03-31T21:01:34.643Z", 
+        "createdAt": "2014-03-31T21:01:34.631Z",
+        "href": "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider",
+        "modifiedAt": "2014-03-31T21:01:34.643Z",
         "providerId": "facebook"
     }
 
@@ -6461,7 +6461,7 @@ Example Response
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `clientId` | The App ID for your Facebook application | String | --
-`clientSecret` | The App Secret for your Facebook application | String | -- 
+`clientSecret` | The App Secret for your Facebook application | String | --
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'facebook'
 `createdAt` | An ISO-8601 Datetime value that represents when this resource was created | ISO-8601 Datetime | <span>--</span>
 `modifiedAt` | An ISO-8601 Datetime value that represents when this resource's properties were last modified | ISO-8601 Datetime | <span>--</span>
@@ -6479,7 +6479,7 @@ Creating a Facebook Directory requires that you gather some information beforeha
 + Client ID
 + Client Secret
 
-Creating a Facebook Directory is very similar to [creating a directory](#create-a-directory) within Stormpath by making a HTTP `POST` request to the `/v1/directories` endpoint.  For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information. 
+Creating a Facebook Directory is very similar to [creating a directory](#create-a-directory) within Stormpath by making a HTTP `POST` request to the `/v1/directories` endpoint.  For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information.
 
 **Example Request**
 
@@ -6605,10 +6605,10 @@ Once an `Account` is retreived, Stormpath maps common fields for the Facebook Us
 The returned `providerData` will include:
 
     {
-      "accessToken": "y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4", 
-      "createdAt": "2014-04-01T17:00:09.154Z", 
-      "href": "https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData", 
-      "modifiedAt": "2014-04-01T17:00:09.189Z", 
+      "accessToken": "y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4",
+      "createdAt": "2014-04-01T17:00:09.154Z",
+      "href": "https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData",
+      "modifiedAt": "2014-04-01T17:00:09.189Z",
       "providerId": "facebook"
     }
 
