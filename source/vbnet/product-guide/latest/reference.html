@@ -241,6 +241,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#account-api-keys">Account API Keys</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#access-tokens">Access Tokens</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#refresh-tokens">Refresh Tokens</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#provider-data">Provider Data</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#expanded-json-web-token">Expanded JSON Web Token</a></li>
 </ul>
 </li>
@@ -664,6 +665,59 @@
 <div class="section" id="collection-resource">
 <span id="about-collections"></span><h3><a class="toc-backref" href="#id50">Collection Resource</a><a class="headerlink" href="#collection-resource" title="Permalink to this headline">¶</a></h3>
 <p>A <strong>Collection</strong> Resource is a resource containing other resources. It is known as a Collection Resource because it is itself a first class resource – it has its own attributes in addition to the resources it contains.</p>
+<p><strong>Collection Attributes</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="10%" />
+<col width="19%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Type</th>
+<th class="head">Valid Value(s)</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">href</span></code></td>
+<td>String</td>
+<td>N/A</td>
+<td>The collections&#8217;s fully qualified location URL.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">createdAt</span></code></td>
+<td>String</td>
+<td>ISO-8601 Datetime</td>
+<td>Indicates when this collection was created.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">modifiedAt</span></code></td>
+<td>String</td>
+<td>ISO-8601 Datetime</td>
+<td>Indicates when this collection&#8217;s attributes were last modified.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">offset</span></code></td>
+<td>Number</td>
+<td>Default is 0.</td>
+<td>Used for <a class="reference internal" href="#about-pagination"><span class="std std-ref">Pagination</span></a>. The offset of the first returned resource.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">limit</span></code></td>
+<td>Number</td>
+<td>Default is 25.</td>
+<td>Used for <a class="reference internal" href="#about-pagination"><span class="std std-ref">Pagination</span></a>. The maximum number of collection items to return for a single request.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">size</span></code></td>
+<td>Number</td>
+<td>N/A</td>
+<td>The number of resources in the <code class="docutils literal"><span class="pre">items</span></code> array.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">items</span></code></td>
+<td>Array</td>
+<td>N/A</td>
+<td>An array of resources, each with their own <code class="docutils literal"><span class="pre">href</span></code> and attributes.</td>
+</tr>
+</tbody>
+</table>
 <p>If you want to interact with multiple resources, you must do so with a Collection Resource. Collection Resources also support additional behavior specific to collections, such as <a class="reference internal" href="#about-pagination"><span class="std std-ref">pagination</span></a>, <a class="reference internal" href="#about-sorting"><span class="std std-ref">sorting</span></a>, and <a class="reference internal" href="#about-search"><span class="std std-ref">searching</span></a>.</p>
 <div class="section" id="pagination">
 <span id="about-pagination"></span><h4><a class="toc-backref" href="#id51">Pagination</a><a class="headerlink" href="#pagination" title="Permalink to this headline">¶</a></h4>
@@ -671,7 +725,7 @@
 <p><em>Query Parameters</em></p>
 <p>There are two optional query parameters that may be specified to control pagination:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">offset</span></code>: The zero-based starting index in the entire collection of the first item to return. Default is 0.</li>
+<li><code class="docutils literal"><span class="pre">offset</span></code>: The point at which, in the zero-based starting index of the entire collection, the first returned item is found. Default is 0.</li>
 <li><code class="docutils literal"><span class="pre">limit</span></code>: The maximum number of collection items to return for a single request. Minimum value is 1. Maximum value is 100. Default is 25.</li>
 </ul>
 <p><em>Usage</em></p>
@@ -1470,9 +1524,9 @@
 <td>A collection of Auth Tokens for this Application. For more information, see <a class="reference internal" href="auth_n.html#about-token-validation"><span class="std std-ref">Using Stormpath to Validate Tokens</span></a>.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">authorizedCallbackUris</span></code></td>
-<td>String</td>
+<td>Array</td>
 <td>N/A</td>
-<td>Authorized callback URIs for the purposes of <a class="reference internal" href="auth_n.html#saml-authn"><span class="std std-ref">SAML authentication flows</span></a>.</td>
+<td>An array of Authorized callback URIs for the purposes of <a class="reference internal" href="auth_n.html#saml-authn"><span class="std std-ref">SAML authentication flows</span></a>.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">samlPolicy</span></code></td>
 <td>Object</td>
@@ -1798,7 +1852,7 @@
 <p><strong>passwordResetTokens Example</strong></p>
 <p>This is an example of the JSON response to a successful POST to the <code class="docutils literal"><span class="pre">/passwordResetTokens</span></code> endpoint.</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlBVa6tfR/passwordResetTokens/eyJraWQiOiIxZ0JUbmNXc3AyT2JRR2dEbjlSOTFSIiwiYWxnIjoiSFMeXAMpLE.eyJleHAiOjE0NDc4ODU1ODIsImp0aSI6IjFucDE1UkJVTXJQR0FxSlVpOGVJYlEifQ.AiL5ejbhPnjzxOWZkZGrAfYP8KvqT62r_zktvlkGQE0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlexaMple/passwordResetTokens/eyJraWQiOiIxZ0JUbmNXc3AyT2JRR2dEbjlSOTFSIiwiYWxnIjoiSFMeXAMpLE.eyJleHAiOjE0NDc4ODU1ODIsImp0aSI6IjFucDE1UkJVTXJQR0FxSlVpOGVJYlEifQ.AiL5ejbhPnjzxOWZkZGrAfYP8KvqT62r_zktvlkGQE0&quot;</span><span class="p">,</span>
   <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;capt@enterprise.com&quot;</span><span class="p">,</span>
   <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spexaMple&quot;</span>
@@ -2943,18 +2997,18 @@
 <td>(SAML only) The algorithm used by the SAML Identity Provider to sign SAML assertions that are returned to Stormpath. For more information see <a class="reference internal" href="auth_n.html#saml-configuration"><span class="std std-ref">5.5.2. Configuring SAML</span></a>.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">attributeStatementMappingRules</span></code></td>
-<td>Object</td>
+<td>Link</td>
 <td>N/A</td>
-<td>(SAML only) This object contains the rules that map SAML assertions to Stormpath resource attributes.</td>
+<td>(SAML only) This object contains the rules that map SAML assertions to Stormpath resource attributes. For information about what&#8217;s found in this object, see <a class="reference internal" href="#ref-attribute-mapping"><span class="std std-ref">below</span></a>. For more information about how it is used, please see <a class="reference internal" href="auth_n.html#saml-mapping"><span class="std std-ref">Step 7 of the SAML configuration section</span></a>.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">serviceProviderMetadata</span></code></td>
 <td>Link</td>
 <td>N/A</td>
-<td>(SAML only) This object contains metadata related to your Service Provider. For more information, please see <a class="reference internal" href="auth_n.html#configure-sp-in-idp"><span class="std std-ref">Step 3 of the SAML configuration section</span></a>.</td>
+<td>(SAML only) This object contains metadata related to your Service Provider. For information about what&#8217;s found in this object, see <a class="reference internal" href="#ref-sp-metadata"><span class="std std-ref">below</span></a>. For more information about how it is used, please see <a class="reference internal" href="auth_n.html#configure-sp-in-idp"><span class="std std-ref">Step 3 of the SAML configuration section</span></a>.</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Provider Example</strong></p>
+<p><strong>Provider Example (Facebook)</strong></p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/2TL06yrJ05EAM9gEXAMpLe/provider&quot;</span><span class="p">,</span>
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2014-03-28T22:21:32.937Z&quot;</span><span class="p">,</span>
@@ -2962,6 +3016,25 @@
   <span class="nt">&quot;clientId&quot;</span><span class="p">:</span> <span class="s2">&quot;5014174166example&quot;</span><span class="p">,</span>
   <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span> <span class="s2">&quot;e7c1274966b0844913953281example&quot;</span><span class="p">,</span>
   <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;facebook&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Provider Example (SAML)</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/4yuXfz9HS0okwMTeXample/provider&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-04-22T18:40:10.062Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-04-22T18:40:10.062Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;saml&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ssoLoginUrl&quot;</span><span class="p">:</span><span class="s2">&quot;https://sso.someSamlIdp.com/sso/idp/SSO.saml2?idpid=4ad1f356-Ha5h-440d-955a-60873aExample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ssoLogoutUrl&quot;</span><span class="p">:</span><span class="s2">&quot;https://sso.someSamlIdp.com/sso/SLO.saml2&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;encodedX509SigningCert&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN CERTIFICATE-----\nTHISHASBEENTRUNCATEDMIIDaDCCAlCgAwIBAgIGAVQ0xF8mMA0GCSqGSIb3DQEBCwUAMHUxCzAJBgNVBAYTAlVTMQswCQYD\nsh3WzqLNeYeoU5sGPWhlvNR7n2R1\n-----END CERTIFICATE-----&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;requestSignatureAlgorithm&quot;</span><span class="p">:</span><span class="s2">&quot;RSA-SHA256&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;attributeStatementMappingRules&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/attributeStatementMappingRules/4yveqrVFYsVas8lExample&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;serviceProviderMetadata&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/samlServiceProviderMetadatas/506sSbmUAx1rXnpExample&quot;</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -3186,7 +3259,7 @@
 </table>
 <p>For an example JSON see <a class="reference internal" href="#agent-json-ex"><span class="std std-ref">below</span></a>.</p>
 <p id="ref-groupconfig"><strong>groupConfig Attributes</strong></p>
-<p>The <code class="docutils literal"><span class="pre">groupConfig</span></code> object is found inside a <code class="docutils literal"><span class="pre">config</span></code> object.</p>
+<p>The <code class="docutils literal"><span class="pre">groupConfig</span></code> object is found inside a <code class="docutils literal"><span class="pre">config</span></code> object. It corresponds with the &#8220;Group Configuration&#8221; tab in the Stormpath Admin Console &#8220;Agents&#8221; section.</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="14%" />
@@ -3205,22 +3278,22 @@
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">objectClass</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>The LDAP group object class to use when when loading accounts.</td>
+<td>The LDAP group object class to use when when loading Accounts.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">objectFilter</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td><em>(Optional)</em> LDAP query filter to use when searching for groups.</td>
+<td><em>(Optional)</em> LDAP query filter to use when searching for Groups.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">nameRdn</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>The name of the attribute for a group&#8217;s name. For example <code class="docutils literal"><span class="pre">cn</span></code>. Please note: group names must be unique within a directory.</td>
+<td>The name of the attribute for a Group&#8217;s name. For example <code class="docutils literal"><span class="pre">cn</span></code>. Please note: Group names must be unique within a Directory.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">descriptionRdn</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>The name of the attribute for a group&#8217;s description.</td>
+<td>The name of the attribute for a Group&#8217;s description.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">membersRdn</span></code></td>
 <td>String</td>
@@ -3230,10 +3303,6 @@
 </tbody>
 </table>
 <p id="agent-json-ex"><strong>Agent example with embedded config, accountConfig and groupConfig resources</strong></p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">We can tell that this is an Active Directory Agent because it is missing <code class="docutils literal"><span class="pre">referralMode</span></code> and <code class="docutils literal"><span class="pre">ignoreReferralIssues</span></code> from the <code class="docutils literal"><span class="pre">config</span></code> resource, and has the <code class="docutils literal"><span class="pre">passwordRdn</span></code> attribute inside <code class="docutils literal"><span class="pre">accountConfig</span></code>. You would also know that it is an Active Directory Agent because the associated Provider resource would have its <code class="docutils literal"><span class="pre">providerId</span></code> attribute set to <code class="docutils literal"><span class="pre">ad</span></code>.</p>
-</div>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/agents/2PjCYRg3mhGNLUieXamPLE&quot;</span><span class="p">,</span>
   <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;2PjCYRg3mhGNLUixcSdK0k&quot;</span><span class="p">,</span>
@@ -3277,6 +3346,192 @@
     <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/tenants/7g9HG1YMBX8ohFbeXamPLE&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">We can tell that this is an Active Directory Agent because it is missing <code class="docutils literal"><span class="pre">referralMode</span></code> and <code class="docutils literal"><span class="pre">ignoreReferralIssues</span></code> from the <code class="docutils literal"><span class="pre">config</span></code> resource, and has the <code class="docutils literal"><span class="pre">passwordRdn</span></code> attribute inside <code class="docutils literal"><span class="pre">accountConfig</span></code>. You would also know that it is an Active Directory Agent because the associated Provider resource would have its <code class="docutils literal"><span class="pre">providerId</span></code> attribute set to <code class="docutils literal"><span class="pre">ad</span></code>.</p>
+</div>
+</div>
+<div class="section" id="attribute-statement-mapping-rules">
+<span id="ref-attribute-mapping"></span><h5>Attribute Statement Mapping Rules<a class="headerlink" href="#attribute-statement-mapping-rules" title="Permalink to this headline">¶</a></h5>
+<p>This is an object that contains an array of mapping rules. Each of these rules maps an SAML attribute passed by the SAML Identity Provider to one or more Stormpath Account or Account customData attributes. For more detailed information about how these rules are configured, see <a class="reference internal" href="auth_n.html#saml-mapping"><span class="std std-ref">the Authentication chapter</span></a>.</p>
+<p><strong>Attribute Statement Mapping Rules URL</strong></p>
+<p><code class="docutils literal"><span class="pre">/v1/attributeStatementMappingRules/$ATTRIBUTE_STATEMENT_MAPPING_RULES_ID</span></code></p>
+<p><strong>Attribute Statement Mapping Rules Attributes</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="10%" />
+<col width="19%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Type</th>
+<th class="head">Valid Value(s)</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">href</span></code></td>
+<td>String</td>
+<td>N/A</td>
+<td>The resource&#8217;s fully qualified location URL.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">createdAt</span></code></td>
+<td>String</td>
+<td>ISO-8601 Datetime</td>
+<td>Indicates when this resource was created.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">modifiedAt</span></code></td>
+<td>String</td>
+<td>ISO-8601 Datetime</td>
+<td>Indicates when this resource’s attributes were last modified.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">items</span></code></td>
+<td>Array</td>
+<td>N/A</td>
+<td>An array of Mapping Rules (see below).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Mapping Rule Attributes</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="10%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">name</span></code></td>
+<td>String</td>
+<td>The SAML Attribute name that will be passed from your Identity Provider.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">nameFormat</span></code></td>
+<td>String</td>
+<td>(Optional) The name format for the above-specified SAML Attribute, expressed as a Uniform Resource Name (URN).</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">accountAttributes</span></code></td>
+<td>Array</td>
+<td>This is an array of Stormpath Account or customData (<code class="docutils literal"><span class="pre">customData.$KEY_NAME</span></code>) attributes that will map to this SAML Attribute.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attribute Statement Mapping Rules Example</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/attributeStatementMappingRules/PybI8DObmohmOIexample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-01-21T17:47:34.980Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-01-28T21:58:47.839Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;User.FirstName&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;nameFormat&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+          <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;givenName&quot;</span>
+          <span class="p">]</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+          <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;User.LastName&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;nameFormat&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+          <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:</span> <span class="p">[</span>
+              <span class="s2">&quot;surname&quot;</span>
+          <span class="p">]</span>
+      <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="service-provider-metadata">
+<span id="ref-sp-metadata"></span><h5>Service Provider Metadata<a class="headerlink" href="#service-provider-metadata" title="Permalink to this headline">¶</a></h5>
+<p>This object contains the SAML Service Provider information about Stormpath that is required for the Service Provider-initiated SAML flow. The object by default returns as XML, but it is possible to get JSON by adding an <code class="docutils literal"><span class="pre">Accept:</span> <span class="pre">application/json</span></code> header to your request. For more information about how to use this, please see <a class="reference internal" href="auth_n.html#configure-sp-in-idp"><span class="std std-ref">the Authentication chapter</span></a>.</p>
+<p><strong>Service Provider Metadata URL</strong></p>
+<p><code class="docutils literal"><span class="pre">/v1/samlServiceProviderMetadatas/$SERVICE_PROVIDER_METADATA_ID</span></code></p>
+<p><strong>Service Provider Metadata Elements</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="10%" />
+<col width="19%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Type</th>
+<th class="head">Valid Value(s)</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">href</span></code></td>
+<td>String</td>
+<td>N/A</td>
+<td>The resource&#8217;s fully qualified location URL.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">createdAt</span></code></td>
+<td>String</td>
+<td>ISO-8601 Datetime</td>
+<td>Indicates when this resource was created.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">modifiedAt</span></code></td>
+<td>String</td>
+<td>ISO-8601 Datetime</td>
+<td>Indicates when this resource’s attributes were last modified.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">entityId</span></code></td>
+<td>String</td>
+<td>URN-formatted</td>
+<td>The entity ID of the Stormpath SAML Directory in URN-format.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">assertionConsumerServicePostEndpoint</span></code></td>
+<td>Link</td>
+<td>N/A</td>
+<td>The ACS Endpoint required by your Identity Provider.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">x509SigningCert</span></code></td>
+<td>Link</td>
+<td>N/A</td>
+<td>An XML x509 Signing Certificate that will return with <code class="docutils literal"><span class="pre">Content-Type:</span> <span class="pre">application/pkix-cert</span></code>. If you retrieve XML instead of JSON, the certificate will be embedded in the response.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Service Provider Metadata JSON Example</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/samlServiceProviderMetadatas/QLoznDKpnXuX77example&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-01-21T17:47:35.313Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-01-21T17:47:35.313Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;entityId&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:stormpath:directory:PwrCmDmJisz3uDexample:provider:sp&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;assertionConsumerServicePostEndpoint&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/PwrCmDmJisz3uDexample/saml/sso/post&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;x509SigningCert&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/x509certificates/QLXha2bQ9f4d1Rexample&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Service Provider Metadata XML Example</strong></p>
+<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;md:EntityDescriptor</span> <span class="na">xmlns:md=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:metadata&quot;</span> <span class="na">entityID=</span><span class="s">&quot;urn:stormpath:directory:PwrCmDmJisz3uDexample:provider:sp&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;md:SPSSODescriptor</span> <span class="na">protocolSupportEnumeration=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:protocol&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;md:KeyDescriptor</span> <span class="na">use=</span><span class="s">&quot;signing&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;ds:KeyInfo</span> <span class="na">xmlns:ds=</span><span class="s">&quot;http://www.w3.org/2000/09/xmldsig#&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;ds:X509Data&gt;</span>
+          <span class="nt">&lt;ds:X509Certificate&gt;</span>MIIC1zCCAb+TRUNACATED<span class="nt">&lt;/ds:X509Certificate&gt;</span>
+        <span class="nt">&lt;/ds:X509Data&gt;</span>
+      <span class="nt">&lt;/ds:KeyInfo&gt;</span>
+    <span class="nt">&lt;/md:KeyDescriptor&gt;</span>
+    <span class="nt">&lt;md:NameIDFormat&gt;</span>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress<span class="nt">&lt;/md:NameIDFormat&gt;</span>
+    <span class="nt">&lt;md:AssertionConsumerService</span> <span class="na">Binding=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST&quot;</span> <span class="na">Location=</span><span class="s">&quot;https://api.stormpath.com/v1/directories/PwrCmDmJisz3uDexample/saml/sso/post&quot;</span> <span class="na">index=</span><span class="s">&quot;0&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/md:SPSSODescriptor&gt;</span>
+<span class="nt">&lt;/md:EntityDescriptor&gt;</span>
 </pre></div>
 </div>
 </div>
@@ -4274,7 +4529,8 @@
 <li><a class="reference internal" href="#account-api-keys" id="id154">Account API Keys</a></li>
 <li><a class="reference internal" href="#access-tokens" id="id155">Access Tokens</a></li>
 <li><a class="reference internal" href="#refresh-tokens" id="id156">Refresh Tokens</a></li>
-<li><a class="reference internal" href="#expanded-json-web-token" id="id157">Expanded JSON Web Token</a></li>
+<li><a class="reference internal" href="#provider-data" id="id157">Provider Data</a></li>
+<li><a class="reference internal" href="#expanded-json-web-token" id="id158">Expanded JSON Web Token</a></li>
 </ul>
 </li>
 </ul>
@@ -4378,7 +4634,7 @@
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">providerData</span></code></td>
 <td>Link</td>
 <td>N/A</td>
-<td>A link to the information from the owner Directory&#8217;s Provider.</td>
+<td>A link to this Account&#8217;s <a class="reference internal" href="#ref-provider-data"><span class="std std-ref">Provider Data</span></a>.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">directory</span></code></td>
 <td>Link</td>
@@ -4436,10 +4692,10 @@
   <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-08-25T19:57:05.976Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;emailVerificationToken&quot;</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span>
   <span class="nt">&quot;customData&quot;</span><span class="p">:{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/customData&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdexaMple/customData&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;providerData&quot;</span><span class="p">:{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/providerData&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdexaMple/providerData&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;directory&quot;</span><span class="p">:{</span>
     <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/2SKhstu8PlaekcaexaMPLe&quot;</span>
@@ -4472,15 +4728,15 @@
 <span id="id32"></span><h3><a class="toc-backref" href="#id147">Account Operations</a><a class="headerlink" href="#account-operations" title="Permalink to this headline">¶</a></h3>
 <div class="contents local topic" id="id33">
 <ul class="simple">
-<li><a class="reference internal" href="#create-an-account" id="id158">Create an Account</a></li>
-<li><a class="reference internal" href="#retrieve-an-account" id="id159">Retrieve an Account</a></li>
-<li><a class="reference internal" href="#update-an-account" id="id160">Update an Account</a></li>
-<li><a class="reference internal" href="#delete-an-account" id="id161">Delete an Account</a></li>
-<li><a class="reference internal" href="#using-an-account-for-look-up" id="id162">Using an Account for Look-Up</a></li>
+<li><a class="reference internal" href="#create-an-account" id="id159">Create an Account</a></li>
+<li><a class="reference internal" href="#retrieve-an-account" id="id160">Retrieve an Account</a></li>
+<li><a class="reference internal" href="#update-an-account" id="id161">Update an Account</a></li>
+<li><a class="reference internal" href="#delete-an-account" id="id162">Delete an Account</a></li>
+<li><a class="reference internal" href="#using-an-account-for-look-up" id="id163">Using an Account for Look-Up</a></li>
 </ul>
 </div>
 <div class="section" id="create-an-account">
-<h4><a class="toc-backref" href="#id158">Create an Account</a><a class="headerlink" href="#create-an-account" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id159">Create an Account</a><a class="headerlink" href="#create-an-account" title="Permalink to this headline">¶</a></h4>
 <p>Because an Account is &#8220;owned&#8221; by a Directory, you can add it either directly through the Directory that owns it, or indirectly via an Application or Organization that has that Directory as an Account Store:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -4510,7 +4766,7 @@
 </div>
 </div>
 <div class="section" id="retrieve-an-account">
-<h4><a class="toc-backref" href="#id159">Retrieve an Account</a><a class="headerlink" href="#retrieve-an-account" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id160">Retrieve an Account</a><a class="headerlink" href="#retrieve-an-account" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -4532,7 +4788,7 @@
 </table>
 </div>
 <div class="section" id="update-an-account">
-<h4><a class="toc-backref" href="#id160">Update an Account</a><a class="headerlink" href="#update-an-account" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id161">Update an Account</a><a class="headerlink" href="#update-an-account" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -4554,7 +4810,7 @@
 </table>
 </div>
 <div class="section" id="delete-an-account">
-<h4><a class="toc-backref" href="#id161">Delete an Account</a><a class="headerlink" href="#delete-an-account" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id162">Delete an Account</a><a class="headerlink" href="#delete-an-account" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -4614,7 +4870,7 @@
 </div>
 </div>
 <div class="section" id="using-an-account-for-look-up">
-<h4><a class="toc-backref" href="#id162">Using an Account for Look-Up</a><a class="headerlink" href="#using-an-account-for-look-up" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id163">Using an Account for Look-Up</a><a class="headerlink" href="#using-an-account-for-look-up" title="Permalink to this headline">¶</a></h4>
 <p>It is possible to retrieve other, associated resources using the Account for look-up.</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -4880,9 +5136,9 @@
 </table>
 <p><strong>accessTokens Example</strong></p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accessTokens/6TVcnquGRyFZq0ssyHwpTN&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accessTokens/6TVcnquGRyFZq0sexample&quot;</span><span class="p">,</span>
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-11-18T19:16:12.437Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;jwt&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI2VFZjbnF1R1J5RlpxMHNzeUh3cFROIiwiaWF0IjoxNDQ3ODc0MTcyLCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQ3ODc1OTcyLCJydGkiOiI2VFZjbm5hQlhOd2JEQm4xbTI1WXJKIn0.flUqUWUEnwGcmVaCwWuf4KpQCkxkqYeWlYGrtFkBaFs&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;jwt&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQ...kqYeWlYGrtFkBaFs&quot;</span><span class="p">,</span>
   <span class="nt">&quot;expandedJwt&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;header&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;2ZFMV4WVVCVG35XATII9T96J7&quot;</span><span class="p">,</span>
@@ -4891,21 +5147,21 @@
     <span class="nt">&quot;claims&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;jti&quot;</span><span class="p">:</span> <span class="s2">&quot;6TVcnquGRyFZq0ssyHwpTN&quot;</span><span class="p">,</span>
       <span class="nt">&quot;iat&quot;</span><span class="p">:</span> <span class="mi">1447874172</span><span class="p">,</span>
-      <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlBVa6tfR&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlexaMple&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdexaMple&quot;</span><span class="p">,</span>
       <span class="nt">&quot;exp&quot;</span><span class="p">:</span> <span class="mi">1447875972</span><span class="p">,</span>
       <span class="nt">&quot;rti&quot;</span><span class="p">:</span> <span class="s2">&quot;6TVcnnaBXNwbDBn1m25YrJ&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;flUqUWUEnwGcmVaCwWuf4KpQCkxkqYeWlYGrtFkBaFs&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdexaMple&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;application&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlBVa6tfR&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlexaMple&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;tenant&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgDn9R91R&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgExaMPLe&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -5012,20 +5268,20 @@
     <span class="nt">&quot;claims&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;jti&quot;</span><span class="p">:</span> <span class="s2">&quot;6TVcnnaBXNwbDBn1m25YrJ&quot;</span><span class="p">,</span>
       <span class="nt">&quot;iat&quot;</span><span class="p">:</span> <span class="mi">1447874172</span><span class="p">,</span>
-      <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlBVa6tfR&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlexaMple&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdexaMple&quot;</span><span class="p">,</span>
       <span class="nt">&quot;exp&quot;</span><span class="p">:</span> <span class="mi">1448478972</span>
     <span class="p">},</span>
     <span class="nt">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;jwb8UYfmGeqGT42wUjB1ymZp6c4ofJaqdkM6ZHRG_tk&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdexaMple&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;application&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlBVa6tfR&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlexaMple&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;tenant&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgDn9R91R&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgExaMPLe&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -5061,8 +5317,83 @@
 </div>
 </div>
 </div>
+<div class="section" id="provider-data">
+<span id="ref-provider-data"></span><h4><a class="toc-backref" href="#id157">Provider Data</a><a class="headerlink" href="#provider-data" title="Permalink to this headline">¶</a></h4>
+<p>The Provider Data object contains a mixture of data pulled from the Provider information of <a class="reference internal" href="#ref-provider"><span class="std std-ref">the owner Directory</span></a> as well as Provider data specific to this Account.</p>
+<p>It could, for example, contain:</p>
+<ul class="simple">
+<li>An Access Token for Facebook or GitHub (e.g. <code class="docutils literal"><span class="pre">&quot;accessToken&quot;:&quot;someTokenValue&quot;</span></code>)</li>
+<li>All SAML attributes passed by the SAML IdP that this Account came from (e.g. <code class="docutils literal"><span class="pre">&quot;firstName&quot;:&quot;Aname&quot;</span></code>)</li>
+</ul>
+<p>For more information about Provider Data and Social Directories, see <a class="reference internal" href="auth_n.html#social-authn"><span class="std std-ref">5.3. How Social Authentication Works</span></a>.</p>
+<p>To find out about Provider Data for SAML Directories, see <a class="reference internal" href="auth_n.html#saml-configuration"><span class="std std-ref">5.5.2. Configuring SAML</span></a>. Each SAML Identity Provider has their own information that they pass into the Provider Data, and all SAML attributes passed in by the Provider will be present in the Account&#8217;s Provider Data.</p>
+<p><strong>Provider Data Attributes</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="10%" />
+<col width="19%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Type</th>
+<th class="head">Valid Value(s)</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">href</span></code></td>
+<td>String</td>
+<td>N/A</td>
+<td>The resource&#8217;s fully qualified location URL.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">createdAt</span></code></td>
+<td>String</td>
+<td>ISO-8601 Datetime</td>
+<td>Indicates when this resource was created.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">modifiedAt</span></code></td>
+<td>String</td>
+<td>ISO-8601 Datetime</td>
+<td>Indicates when this resource’s attributes were last modified.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">providerId</span></code></td>
+<td>String</td>
+<td><em>(See Description)</em></td>
+<td>Contains an identifying string for the source of this Account&#8217;s information. This will match the <code class="docutils literal"><span class="pre">providerId</span></code> of <a class="reference internal" href="#ref-provider"><span class="std std-ref">the Directory that owns this Account</span></a>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Provider Data Example (Google)</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/1Voi7LQ6NGnTPskexample/providerData&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-04-29T17:31:23.676Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-04-29T17:31:23.686Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;ya29.CjHTAlCOmTwdjexDp-CwCbP2wGMExampleo-on6Ce79eR9Qd_Oq3nm3Zv6ForExample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;google&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;refreshToken&quot;</span><span class="p">:</span> <span class="kc">null</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Provider Data Example (SAML)</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/5JlXuVTgTnVCh0gEXAMPLE/providerData&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-04-22T20:06:21.496Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-04-22T20:09:50.104Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="s2">&quot;jakub@stormpath.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;firstName&quot;</span><span class="p">:</span><span class="s2">&quot;Jakub&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;saml&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="provider-data-operations">
+<h5>Provider Data Operations<a class="headerlink" href="#provider-data-operations" title="Permalink to this headline">¶</a></h5>
+<p>The providerData object can be explicitly created as part of the Directory creation POST. Once it has been created, it can be retrieved with a GET, and in some cases updated with a PUT. Provider Data plays a role in both Social Login and SAML Configurations. For more information about the operations possible with Provider Data, please see the <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">5. Authenticating Accounts with Stormpath</span></a> Chapter.</p>
+</div>
+</div>
 <div class="section" id="expanded-json-web-token">
-<span id="ref-jwt"></span><h4><a class="toc-backref" href="#id157">Expanded JSON Web Token</a><a class="headerlink" href="#expanded-json-web-token" title="Permalink to this headline">¶</a></h4>
+<span id="ref-jwt"></span><h4><a class="toc-backref" href="#id158">Expanded JSON Web Token</a><a class="headerlink" href="#expanded-json-web-token" title="Permalink to this headline">¶</a></h4>
 <p><strong>expandedJwt Attributes</strong></p>
 <p><em>Header</em></p>
 <table border="1" class="docutils">
@@ -5167,8 +5498,8 @@
   <span class="nt">&quot;claims&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;jti&quot;</span><span class="p">:</span> <span class="s2">&quot;6TVcnnaBXNwbDBn1m25YrJ&quot;</span><span class="p">,</span>
     <span class="nt">&quot;iat&quot;</span><span class="p">:</span> <span class="mi">1447874172</span><span class="p">,</span>
-    <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlBVa6tfR&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;iss&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdlexaMple&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdexaMple&quot;</span><span class="p">,</span>
     <span class="nt">&quot;exp&quot;</span><span class="p">:</span> <span class="mi">1448478972</span>
   <span class="p">},</span>
   <span class="nt">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;jwb8UYfmGeqGT42wUjB1ymZp6c4ofJaqdkM6ZHRG_tk&quot;</span>
@@ -5182,11 +5513,11 @@
 <span id="ref-customdata"></span><h2>Custom Data<a class="headerlink" href="#custom-data" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id36">
 <ul class="simple">
-<li><a class="reference internal" href="#custom-data-operations" id="id163">Custom Data Operations</a><ul>
-<li><a class="reference internal" href="#create-a-customdata" id="id164">Create a customData</a></li>
-<li><a class="reference internal" href="#retrieve-a-customdata" id="id165">Retrieve a customData</a></li>
-<li><a class="reference internal" href="#update-a-customdata" id="id166">Update a customData</a></li>
-<li><a class="reference internal" href="#delete-a-customdata" id="id167">Delete a customData</a></li>
+<li><a class="reference internal" href="#custom-data-operations" id="id164">Custom Data Operations</a><ul>
+<li><a class="reference internal" href="#create-a-customdata" id="id165">Create a customData</a></li>
+<li><a class="reference internal" href="#retrieve-a-customdata" id="id166">Retrieve a customData</a></li>
+<li><a class="reference internal" href="#update-a-customdata" id="id167">Update a customData</a></li>
+<li><a class="reference internal" href="#delete-a-customdata" id="id168">Delete a customData</a></li>
 </ul>
 </li>
 </ul>
@@ -5259,22 +5590,22 @@
 </pre></div>
 </div>
 <div class="section" id="custom-data-operations">
-<span id="customdata-operations"></span><h3><a class="toc-backref" href="#id163">Custom Data Operations</a><a class="headerlink" href="#custom-data-operations" title="Permalink to this headline">¶</a></h3>
+<span id="customdata-operations"></span><h3><a class="toc-backref" href="#id164">Custom Data Operations</a><a class="headerlink" href="#custom-data-operations" title="Permalink to this headline">¶</a></h3>
 <div class="contents local topic" id="id37">
 <ul class="simple">
-<li><a class="reference internal" href="#create-a-customdata" id="id168">Create a customData</a></li>
-<li><a class="reference internal" href="#retrieve-a-customdata" id="id169">Retrieve a customData</a></li>
-<li><a class="reference internal" href="#update-a-customdata" id="id170">Update a customData</a></li>
-<li><a class="reference internal" href="#delete-a-customdata" id="id171">Delete a customData</a></li>
+<li><a class="reference internal" href="#create-a-customdata" id="id169">Create a customData</a></li>
+<li><a class="reference internal" href="#retrieve-a-customdata" id="id170">Retrieve a customData</a></li>
+<li><a class="reference internal" href="#update-a-customdata" id="id171">Update a customData</a></li>
+<li><a class="reference internal" href="#delete-a-customdata" id="id172">Delete a customData</a></li>
 </ul>
 </div>
 <div class="section" id="create-a-customdata">
-<h4><a class="toc-backref" href="#id168">Create a customData</a><a class="headerlink" href="#create-a-customdata" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id169">Create a customData</a><a class="headerlink" href="#create-a-customdata" title="Permalink to this headline">¶</a></h4>
 <p>Whenever you create an Stormpath resource, an empty customData resource is created for that resource automatically – you do not need to explicitly execute a request to create it.</p>
 <p>However, it is often useful to populate custom data at the same time you create a resource. You can do this by embedding the customData directly in the resource. For an example, see <a class="reference internal" href="#accnt-create-with-customdata"><span class="std std-ref">below</span></a>.</p>
 </div>
 <div class="section" id="retrieve-a-customdata">
-<h4><a class="toc-backref" href="#id169">Retrieve a customData</a><a class="headerlink" href="#retrieve-a-customdata" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id170">Retrieve a customData</a><a class="headerlink" href="#retrieve-a-customdata" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -5296,7 +5627,7 @@
 </table>
 </div>
 <div class="section" id="update-a-customdata">
-<h4><a class="toc-backref" href="#id170">Update a customData</a><a class="headerlink" href="#update-a-customdata" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id171">Update a customData</a><a class="headerlink" href="#update-a-customdata" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -5318,7 +5649,7 @@
 </table>
 </div>
 <div class="section" id="delete-a-customdata">
-<h4><a class="toc-backref" href="#id171">Delete a customData</a><a class="headerlink" href="#delete-a-customdata" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id172">Delete a customData</a><a class="headerlink" href="#delete-a-customdata" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
