@@ -138,6 +138,7 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#how-to-find-when-an-account-s-password-was-changed">4.4.4. How to Find When An Account&#8217;s Password Was Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-restrict-password-reuse">4.4.5. How to Restrict Password Reuse</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-verify-an-account-s-email">4.5. How to Verify an Account&#8217;s Email</a><ul>
@@ -1020,6 +1021,19 @@ This link takes you to a secure page where you can change your password.
 </pre></div>
 </div>
 <p>This would then return all Accounts in the specified Directory that had their passwords modified at any time between the beginning of time and the end of 2015.</p>
+</div>
+<div class="section" id="how-to-restrict-password-reuse">
+<span id="password-reuse"></span><h3>4.4.5. How to Restrict Password Reuse<a class="headerlink" href="#how-to-restrict-password-reuse" title="Permalink to this headline">¶</a></h3>
+<p>Stormpath can store historical password information in order to allow for restrictions on password reuse. This is controlled on the Directory Password Policy&#8217;s Strength object, which has an attribute called <code class="docutils literal"><span class="pre">preventReuse</span></code>. By default this feature is disabled and set to <code class="docutils literal"><span class="pre">0</span></code>. In order to enable this feature, you have to modify the Directory Password Policy&#8217;s Strength object, sending any value up to <code class="docutils literal"><span class="pre">25</span></code>:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/passwordPolicies/2SKhstu8Plaekcai8lghrp/strength</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+
+{
+    &quot;preventReuse&quot;: &quot;10&quot;
+}
+</pre></div>
+</div>
+<p>This would not allow a user to set their password to any string that matched their previous 10 passwords.</p>
 </div>
 </div>
 <div class="section" id="how-to-verify-an-account-s-email">
