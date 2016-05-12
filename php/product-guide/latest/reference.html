@@ -2716,7 +2716,7 @@
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">strength</span></code></td>
 <td>Link</td>
 <td>N/A</td>
-<td>A link to the password strength requirements for the Directory.</td>
+<td>A link to the <a class="reference internal" href="#ref-password-strength"><span class="std std-ref">Password Strength requirements</span></a> for the Directory.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">resetEmailTemplates</span></code></td>
 <td>Link</td>
@@ -2857,7 +2857,7 @@
 </div>
 <div class="section" id="password-strength">
 <span id="ref-password-strength"></span><h4><a class="toc-backref" href="#id100">Password Strength</a><a class="headerlink" href="#password-strength" title="Permalink to this headline">¶</a></h4>
-<p>The Password Strength Policy for a Directory can be modified through the Administrator Console and through the REST API. Password Strength Policy is part of the Directory’s Password Policy and can be accessed through the <code class="docutils literal"><span class="pre">strength</span></code> attribute.</p>
+<p>The Password Strength Policy for a Directory can be modified through the Administrator Console and through the REST API. Password Strength Policy is part of the Directory’s Password Policy and can be accessed through the <code class="docutils literal"><span class="pre">strength</span></code> link.</p>
 <p><strong>Strength URL</strong></p>
 <p><code class="docutils literal"><span class="pre">/v1/passwordPolicies/$DIRECTORY_ID/strength</span></code></p>
 <p><strong>strength Attributes</strong></p>
@@ -2876,20 +2876,30 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">maxLength</span></code></td>
-<td>Number</td>
-<td>Default is 100</td>
-<td>Represents the maximum length for a password. For example <code class="docutils literal"><span class="pre">maxLength</span></code> of <code class="docutils literal"><span class="pre">10</span></code> indicates that a password can have no more than 10 characters.</td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">href</span></code></td>
+<td>String</td>
+<td>N/A</td>
+<td>The resource&#8217;s fully qualified location URL.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">minLength</span></code></td>
 <td>Number</td>
 <td>Default is 8</td>
 <td>Represents the minimum length for a password. For example <code class="docutils literal"><span class="pre">minLength</span></code> of <code class="docutils literal"><span class="pre">5</span></code> requires that a password has no less than 5 characters.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">minLowerCase</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">maxLength</span></code></td>
+<td>Number</td>
+<td>Default is 100</td>
+<td>Represents the maximum length for a password. For example <code class="docutils literal"><span class="pre">maxLength</span></code> of <code class="docutils literal"><span class="pre">10</span></code> indicates that a password can have no more than 10 characters.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">minLowerCase</span></code></td>
 <td>Number</td>
 <td>Default is 1</td>
 <td>Represents the minimum number of lower case characters required for the password. characters</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">minUpperCase</span></code></td>
+<td>Number</td>
+<td>Default is 1</td>
+<td>Represents the minimum number of upper case characters required for the password.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">minNumeric</span></code></td>
 <td>Number</td>
@@ -2901,18 +2911,32 @@
 <td>Default is 0</td>
 <td>Represents the minimum number of symbol characters required for the password.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">minUpperCase</span></code></td>
-<td>Number</td>
-<td>Default is 1</td>
-<td>Represents the minimum number of upper case characters required for the password.</td>
-</tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">minDiacritic</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">minDiacritic</span></code></td>
 <td>Number</td>
 <td>Default is 0</td>
 <td>Represents the minimum number of diacritic characters required for the password.</td>
 </tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">preventReuse</span></code></td>
+<td>Number</td>
+<td>Default <code class="docutils literal"><span class="pre">0</span></code> (disabled), max <code class="docutils literal"><span class="pre">25</span></code>.</td>
+<td>Restricts password reuse if the password was used within the specified number of entries in the password history. So if <code class="docutils literal"><span class="pre">preventReuse</span></code> is set to <code class="docutils literal"><span class="pre">10</span></code>, then a password will be rejected if it falls within the last 10 entries of the user&#8217;s password history.</td>
+</tr>
 </tbody>
 </table>
+<p><strong>Password Strength Example</strong></p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/passwordPolicies/2SKhstu8PlaekcaexaMPLe/strength&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;minLength&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;maxLength&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
+  <span class="nt">&quot;minLowerCase&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;minUpperCase&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;minNumeric&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;minSymbol&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;minDiacritic&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;preventReuse&quot;</span><span class="p">:</span> <span class="mi">10</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="provider">
 <span id="ref-provider"></span><h4><a class="toc-backref" href="#id101">Provider</a><a class="headerlink" href="#provider" title="Permalink to this headline">¶</a></h4>
@@ -3041,7 +3065,7 @@
 <div class="section" id="ldap-agent">
 <span id="ref-ldap-agent"></span><h5>LDAP Agent<a class="headerlink" href="#ldap-agent" title="Permalink to this headline">¶</a></h5>
 <p><a class="reference internal" href="accnt_mgmt.html#about-ldap-dir"><span class="std std-ref">LDAP Directories</span></a> have an associated <a class="reference internal" href="#ref-provider"><span class="std std-ref">Provider resource</span></a> with either the <code class="docutils literal"><span class="pre">ldap</span></code> or <code class="docutils literal"><span class="pre">ad</span></code> <code class="docutils literal"><span class="pre">providerId</span></code>. That Provider in turn contains an <strong>Agent</strong> resource. This Agent is what will scan your LDAP directory and map the accounts and groups in that directory to Stormpath Accounts and Groups.</p>
-<p>The Agent itself is a complicated object, with a number of required objects both above and below it. All of these resources are required for LDAP configuration:</p>
+<p>The Agent itself is a complex object, with a number of required objects both above and below it. All of these resources are required for LDAP configuration:</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span>directory
   └──provider
       └──agent
