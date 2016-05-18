@@ -108,6 +108,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#new-account-creation">4.2.1. New Account Creation</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#add-a-new-account-to-a-directory">Add a New Account to a Directory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#add-an-existing-account-to-a-group">Add an Existing Account to a Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-new-account-or-group-to-an-application-or-organization">Adding a new Account or Group to an Application or Organization</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#importing-accounts">4.2.2. Importing Accounts</a><ul>
@@ -396,6 +397,10 @@
 <div class="section" id="how-to-create-a-group">
 <span id="make-group"></span><h4>How to Create a Group<a class="headerlink" href="#how-to-create-a-group" title="Permalink to this headline">¶</a></h4>
 <p>So let&#8217;s say we want to add a new Group resource with the name &#8220;Starfleet Officers&#8221; to the &#8220;Captains&#8221; Directory.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Although in this example we use the Directory&#8217;s <cite>/groups</cite> endpoint, it is also possible to use an Application or Organization&#8217;s <cite>/groups</cite> endpoint. For more information see <a class="reference internal" href="#add-to-app-or-org"><span class="std std-ref">below</span></a>.</p>
+</div>
 <p>The following API request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/groups</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
@@ -458,12 +463,12 @@
 <p>The basic steps for creating a new Account are covered in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> chapter. In that example, we show how to add an Account to an Application. Below, we will also show how to add an Account to a specific Directory, or Group.</p>
 <div class="section" id="add-a-new-account-to-a-directory">
 <span id="add-new-account"></span><h4>Add a New Account to a Directory<a class="headerlink" href="#add-a-new-account-to-a-directory" title="Permalink to this headline">¶</a></h4>
-<p>Because Accounts are &#8220;owned&#8221; by Directories, you create new Accounts by adding them to a Directory. You can add an Account to a Directory directly, or you can add it indirectly by registering an Account with an Application, like in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a>, or an Organization, like in <a class="reference internal" href="multitenancy.html#add-accnt-to-org"><span class="std std-ref">the Multi-tenancy Chapter</span></a>.</p>
+<p>Because Accounts are &#8220;owned&#8221; by Directories, you create new Accounts by adding them to a Directory. You can add an Account to a Directory directly, or you can add it indirectly by registering an Account with an Application, like in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a>, or an Organization, like in <a class="reference internal" href="multitenancy.html#add-accnt-to-org"><span class="std std-ref">the Multi-tenancy Chapter</span></a>. This is only the case for Cloud Directories. Accounts cannot be directly added to <a class="reference internal" href="#about-mirror-dir"><span class="std std-ref">Mirror</span></a> Directories since those pull all of their Account information from external sources like Facebook or Active Directory.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This section will show examples using a Directory&#8217;s <code class="docutils literal"><span class="pre">/accounts</span></code> href, but they will also function the same if you use an Application’s or Organization&#8217;s <code class="docutils literal"><span class="pre">/accounts</span></code> href instead. Just make sure that you have Default Account Stores configured!</p>
+<p class="last">This section will show examples using a Directory&#8217;s <code class="docutils literal"><span class="pre">/accounts</span></code> href, but they will also function the same if you use an Application’s or Organization&#8217;s <code class="docutils literal"><span class="pre">/accounts</span></code> href instead. For more information about, see <a class="reference internal" href="#add-to-app-or-org"><span class="std std-ref">below</span></a>.</p>
 </div>
-<p>Let&#8217;s say we want to add a new account for user &#8220;Jean-Luc Picard&#8221; to the &#8220;Captains&#8221; Directory, which has the <code class="docutils literal"><span class="pre">directoryId</span></code> value <code class="docutils literal"><span class="pre">2SKhstu8PlaekcaEXampLE</span></code>. The following API request:</p>
+<p>Let&#8217;s say we want to add a new Account for user &#8220;Jean-Luc Picard&#8221; to the &#8220;Captains&#8221; Directory, which has the <code class="docutils literal"><span class="pre">directoryId</span></code> value <code class="docutils literal"><span class="pre">2SKhstu8PlaekcaEXampLE</span></code>. The following API request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
@@ -519,7 +524,7 @@
 </div>
 <div class="section" id="add-an-existing-account-to-a-group">
 <span id="add-account-to-group"></span><h4>Add an Existing Account to a Group<a class="headerlink" href="#add-an-existing-account-to-a-group" title="Permalink to this headline">¶</a></h4>
-<p>So let&#8217;s say we want to add &#8220;Jean-Luc Picard&#8221; to the &#8220;Starfleet Officers&#8221; Group inside the &#8220;Captains&#8221; Directory.</p>
+<p>So let&#8217;s say we want to add &#8220;Jean-Luc Picard&#8221; to the &#8220;Starfleet Officers&#8221; Group inside the &#8220;Captains&#8221; Directory. Once again, this is possible because we are working with a Cloud Directory. If we were working with a <a class="reference internal" href="#about-mirror-dir"><span class="std std-ref">Mirror Directory</span></a>, we would not be able to manually add Groups since that information is pulled from the external user directory.</p>
 <p>We make the following request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/groupMemberships</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
@@ -556,6 +561,19 @@
 <a class="reference internal image-reference" href="_images/am_erd_final.png"><img alt="Final ERD" src="_images/am_erd_final.png" style="width: 581.0px; height: 449.0px;" /></a>
 </div>
 <p>This our completed resource set, with an Account that is a member of a Group inside a Directory. That Directory, along with the Application, sit inside the Stormpath Tenant. Notice, however, that there is no association between the Application and the Directory. For more information about this, please see <a class="reference internal" href="auth_n.html#create-asm"><span class="std std-ref">the Authentication chapter</span></a>.</p>
+</div>
+<div class="section" id="adding-a-new-account-or-group-to-an-application-or-organization">
+<span id="add-to-app-or-org"></span><h4>Adding a new Account or Group to an Application or Organization<a class="headerlink" href="#adding-a-new-account-or-group-to-an-application-or-organization" title="Permalink to this headline">¶</a></h4>
+<p>Instead of adding an Account via the Directory&#8217;s <code class="docutils literal"><span class="pre">/accounts</span></code> endpoint, it is also possible to use an Application&#8217;s <code class="docutils literal"><span class="pre">/accounts</span></code> endpoint:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">POST</span> <span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">applications</span><span class="o">/</span><span class="mi">1</span><span class="n">gk4Dxzi6o4Pbdlexample</span><span class="o">/</span><span class="n">accounts</span> <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span>
+</pre></div>
+</div>
+<p>Or the same endpoint found on an Organization:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">POST</span> <span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">organizations</span><span class="o">/</span><span class="mi">2</span><span class="n">P4XOanz26AUomIexample</span><span class="o">/</span><span class="n">accounts</span> <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span>
+</pre></div>
+</div>
+<p>This will then add the Account to the Directory that is set as that Application or Organization&#8217;s <strong>Default Account Store</strong>. What this means is that Stormpath will go through the Application/Organization&#8217;s list of Account Store Mappings (found in the <code class="docutils literal"><span class="pre">/accountStoreMappings</span></code> collection) and find the Account Store Mapping where <code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code> is set to <code class="docutils literal"><span class="pre">true</span></code>. The Account will then be added to that Account Store.</p>
+<p>All of this is also true for adding Groups, except in that case you would use the <code class="docutils literal"><span class="pre">/groups</span></code> endpoint and Stormpath would add the Group to the Account Store Mapping that had <code class="docutils literal"><span class="pre">&quot;isDefaultGroupStore</span></code> set to <code class="docutils literal"><span class="pre">true</span></code>.</p>
 </div>
 </div>
 <div class="section" id="importing-accounts">
@@ -671,7 +689,7 @@ This works as follows:</p>
 </pre></div>
 </div>
 <p>This information can also be appended as part of the initial Account creation payload.</p>
-<p>For more information about the customData resource, please see the <a class="reference external" href="http://docs.stormpath.com/rest/product-guide/#custom-data">customData section</a> of the REST API Product Guide .</p>
+<p>For more information about the customData resource, please see the <a class="reference internal" href="reference.html#ref-customdata"><span class="std std-ref">customData section</span></a> of the REST API Product Guide.</p>
 </div>
 </div>
 <div class="section" id="how-to-search-accounts">
