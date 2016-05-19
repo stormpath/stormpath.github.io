@@ -1,78 +1,187 @@
 .. _authn:
 
 *****************************************
-5. Authenticating Accounts with Stormpath
+4. Authenticating Accounts with Stormpath
 *****************************************
 
 Authentication is the process by which a system identifies that someone is who they say they are. Perhaps the most accessible example of this process is at the airport, where you must present your passport and your plane ticket. The passport is used to authenticate you, that you are who you present yourself to be, and the plane ticket represents your authorization to board a specific flight.
 
-In this chapter we will cover three of the ways that Stormpath allows you to authenticate users: :ref:`password authentication <password-authn>`, :ref:`token authentication <token-authn>`, and :ref:`social authentication <social-authn>`.
+In this chapter you will cover three of the ways that Stormpath allows you to authenticate users: :ref:`password authentication <password-authn>`, :ref:`token authentication <token-authn>`, and :ref:`social authentication <social-authn>`.
 
 .. _password-authn:
 
-5.1. How Password Authentication Works in Stormpath
+4.1. How Password Authentication Works in Stormpath
 ===================================================
 
 .. contents::
   :local:
   :depth: 2
 
-Probably the single most common way of authenticating a user is to ask them for their account credentials. When a user creates an account in Stormpath, it is required that they provide a username (or email) and a password. Those credentials can then be provided in order to authenticate an account.
+Probably the single most common way of authenticating a user is to ask them for their account credentials. When a user creates an Account in Stormpath, it is required that they provide a username (or email) and a password. Those credentials can then be provided in order to authenticate that Account.
 
-5.1.1. Authenticating An Account
+4.1.1. Authenticating An Account
 --------------------------------
 
-After an Account resource has been created, you can authenticate it given an input of a ``username`` or ``email`` and a ``password`` from the end-user. When authentication occurs, you are authenticating an Account within a specific Application against that Application’s Organizations, Directories and Groups (more on that :ref:`below <how-login-works>`). The key point is that the :ref:`Application resource <ref-application>` is the starting point for authentication attempts.
+After an Account resource has been created, you can authenticate it given an input of a ``username``/``email`` and a ``password`` from the end-user. When authentication occurs, you are authenticating an Account within a specific Application against that Application’s Organizations, Directories and Groups (more on that :ref:`below <how-login-works>`). The key point is that the Application resource is the starting point for authentication attempts.
 
-Once you have the Application resource you may attempt authentication by sending a POST request to the Application’s ``/loginAttempts`` endpoint and providing a base64 encoded ``username``/``email`` and ``password`` pair that is separated with a colon (for example ``testuser``:``testpassword``). Stormpath requires that the ``username``/``email`` and ``password`` are base64 encoded so that these values are not passed as clear text. For more information about the ``/loginAttempts`` endpoint please see the :ref:`Reference Chapter <ref-loginattempts>`.
+.. only:: rest
 
-So, if we had a user Account "Han Solo" in the "Captains" Directory, and we wanted to log him in, we would first need to take the combination of his ``username`` and ``password`` ("first2shoot:Change+me1") and then Base64 encode them: ``Zmlyc3Qyc2hvb3Q6Q2hhbmdlK21lMQ==``.
+  Once you have the Application resource you may attempt authentication by sending a POST request to the Application’s ``/loginAttempts`` endpoint and providing a base64 encoded ``username``/``email`` and ``password`` pair that is separated with a colon (for example ``testuser``:``testpassword``). Stormpath requires that the ``username``/``email`` and ``password`` are base64 encoded so that these values are not passed as clear text. For more information about the ``/loginAttempts`` endpoint please see the :ref:`Reference Chapter <ref-loginattempts>`.
 
-We would issue the following POST to our Application with ID ``1gk4Dxzi6o4PbdleXaMPLE``:
+  So, if you had a user Account "Han Solo" in the "Captains" Directory, and you wanted to log him in, you would first need to take the combination of his ``username`` and ``password`` ("first2shoot:Change+me1") and then Base64 encode them: ``Zmlyc3Qyc2hvb3Q6Q2hhbmdlK21lMQ==``.
 
-.. code-block:: http
+  You would issue the following POST to your Application with ID ``1gk4Dxzi6o4PbdleXaMPLE``:
 
-  POST /v1/applications/1gk4Dxzi6o4PbdleXaMPLE/loginAttempts HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-    "type": "basic",
-    "value": "Zmlyc3Qyc2hvb3Q6Q2hhbmdlK21lMQ==",
-    "accountStore": {
-       "href": "https://api.stormpath.com/v1/groups/2SKhstu8Plaekcaexample"
-     }
-  }
+    POST /v1/applications/1gk4Dxzi6o4PbdleXaMPLE/loginAttempts HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
 
-We are using the Base64 encoded ``value`` from above, and specifying that the Account can be found in the "Captains" Directory from :ref:`earlier <about-cloud-dir>`.
-
-On success we would get back the ``href`` for the "Han Solo" Account:
-
-.. code-block:: http
-
-  HTTP/1.1 200 OK
-  Location: https://api.stormpath.com/v1/accounts/72EaYgOaq8lwTFHILydAid
-  Content-Type: application/json;charset=UTF-8
-
-  {
-    "account": {
-      "href": "https://api.stormpath.com/v1/accounts/72EaYgOaq8lwTFHILydAid"
+    {
+      "type": "basic",
+      "value": "Zmlyc3Qyc2hvb3Q6Q2hhbmdlK21lMQ==",
+      "accountStore": {
+         "href": "https://api.stormpath.com/v1/groups/2SKhstu8Plaekcaexample"
+       }
     }
-  }
 
-The reason this succeeds is because there is an existing **Account Store Mapping** between the "Han Solo" Account's "Captains" Directory and our Application. This mapping is what allows this Account to log in to the Application.
+  You are using the Base64 encoded ``value`` from above, and specifying that the Account can be found in the "Captains" Directory from :ref:`earlier <about-cloud-dir>`.
 
-.. note::
+  On success you would get back the ``href`` for the "Han Solo" Account:
 
-  Instead of just receiving an Account's ``href`` after successful authentication, it is possible to receive the full Account resource in the JSON response body. To do this, add the **expand=account** parameter to the end of your authentication query:
+  .. code-block:: http
 
-    ``https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/loginAttempts?expand=account``
+    HTTP/1.1 200 OK
+    Location: https://api.stormpath.com/v1/accounts/72EaYgOaq8lwTFHILydAid
+    Content-Type: application/json;charset=UTF-8
 
-  For more information about link expansion, please see :ref:`the Reference chapter <about-links>`.
+    {
+      "account": {
+        "href": "https://api.stormpath.com/v1/accounts/72EaYgOaq8lwTFHILydAid"
+      }
+    }
+
+  The reason this succeeds is because there is an existing **Account Store Mapping** between the "Han Solo" Account's "Captains" Directory and your Application. This mapping is what allows this Account to log in to the Application.
+
+  .. note::
+
+    Instead of just receiving an Account's ``href`` after successful authentication, it is possible to receive the full Account resource in the JSON response body. To do this, simply add the **expand=account** parameter to the end of your authentication query:
+
+      ``https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/loginAttempts?expand=account``
+
+    For more information about link expansion, please see :ref:`the Reference chapter <about-links>`.
+
+.. only:: csharp or vbnet
+
+  So, if you had a user Account "Han Solo" in the "Captains" Directory, and you wanted to log him in, you would use the ``AuthenticateAccountAsync()`` method on the ``IApplication`` object.
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/login_attempt_req.cs
+        :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/login_attempt_req.vb
+        :language: vbnet
+
+  If the authentication succeeds, you receive an ``IAuthenticationResult`` that contains a link you can traverse to retrieve the Account details. If the authentication fails, a ``ResourceException`` will be thrown.
+
+  To retreive Account details, call ``GetAccountAsync()``. To avoid making a separate network request, you can request the Account details during authentication by making an *expanded* request (assuming you have caching enabled):
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/login_attempt_req_expand_account.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/login_attempt_req_expand_account.vb
+      :language: vbnet
+
+  .. note::
+    It's also possible to specify a specific Account Store to authenticate against, instead of relying on the default login flow (see below). To do this, use the ``SetAccountStore()`` method on the ``UsernamePasswordRequestBuilder`` syntax shown above.
+
+.. only:: java
+
+  So, if you had a user Account "Han Solo" in the "Captains" Directory, and you wanted to log him in, you would... (todo)
+
+  .. literalinclude:: code/java/authentication/login_attempt_req.java
+      :language: java
+
+  .. note::
+
+    Instead of just receiving an authentication result, it is possible to receive the full Account object. To do this... (todo)
+
+    .. literalinclude:: code/java/authentication/login_attempt_req_expand_account.java
+      :language: java
+
+  If authentication succeeded, you would receive back... (todo)
+
+  .. literalinclude:: code/java/authentication/login_attempt_resp.java
+      :language: java
+
+.. only:: nodejs
+
+  So, if you had a user Account "Han Solo" in the "Captains" Directory, and you wanted to log him in, you would... (todo)
+
+  .. literalinclude:: code/nodejs/authentication/login_attempt_req.js
+      :language: javascript
+
+  .. note::
+
+    Instead of just receiving an authentication result, it is possible to receive the full Account object. To do this... (todo)
+
+    .. literalinclude:: code/nodejs/authentication/login_attempt_req_expand_account.js
+      :language: javascript
+
+  If authentication succeeded, you would receive back ... (todo)
+
+  .. literalinclude:: code/nodejs/authentication/login_attempt_resp.js
+      :language: javascript
+
+.. only:: php
+
+  So, if you had a user Account "Han Solo" in the "Captains" Directory, and you wanted to log him in, you would use the ``UsernamePasswordRequest`` class
+
+    .. literalinclude:: code/php/authentication/login_attempt_req.php
+      :language: php
+
+  .. note::
+
+    Instead of just receiving an authentication result, it is possible to receive the full Account object. To do this, change your result code to include ``->account`` at the end of the line.
+
+    .. literalinclude:: code/php/authentication/login_attempt_req_expand_account.php
+      :language: php
+
+  If authentication succeeded, You will either see just the ``href`` referencing the account, or the full account object.
+
+    .. literalinclude:: code/php/authentication/login_attempt_resp.php
+      :language: php
+
+.. only:: python
+
+  So, if you had a user Account "Han Solo" in the "Captains" Directory, and you wanted to log him in, you would... (todo)
+
+  .. literalinclude:: code/python/authentication/login_attempt_req.py
+      :language: python
+
+  .. note::
+
+    Instead of just receiving an authentication result, it is possible to receive the full Account object. To do this... (todo)
+
+    .. literalinclude:: code/python/authentication/login_attempt_req_expand_account.py
+      :language: python
+
+  If authentication succeeded, you would receive back ... (todo)
+
+  .. literalinclude:: code/python/authentication/login_attempt_resp.py
+      :language: python
 
 .. _how-login-works:
 
-5.1.2. How Login Attempts Work in Stormpath
+4.1.2. How Login Attempts Work in Stormpath
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 When the "Han Solo" Account tries to log in to the Application, the user submits a request to the Application’s ``/loginAttempts`` endpoint. Stormpath then consults the Application’s assigned **Account Stores** (Organizations, Directories, and Groups) in the order that they are assigned to the Application. When a matching Account is discovered in a mapped Account Store, it is used to verify the authentication attempt and all subsequent Account Stores are ignored. In other words, Accounts are matched for Application login based on a "first match wins" policy.
@@ -97,62 +206,190 @@ You can map multiple Account Stores to an Application, but only one is required 
 How Login Works with Master Directories
 """""""""""""""""""""""""""""""""""""""
 
-If you require a number of Mirror Directories, then we recommend that you have a master Directory alongside them. Any login attempts should be directed to the Mirror Directory. If the attempt succeeds, your application should then perform a :ref:`search <about-search>` of the master Directory to see if there is an Account already there that links to this Account in the Mirror Directory.
+If you require a number of Mirror Directories, then you recommend that you have a master Directory alongside them. Any login attempts should be directed to the Mirror Directory. If the attempt succeeds, your application should then perform a :ref:`search <about-search>` of the master Directory to see if there is an Account already there that links to this Account in the Mirror Directory.
 
-If such an Account is already in the master Directory, no action is taken. If such an Account is not found, your application should create a new one in the master Directory, and populate it with the information pulled from the Account in the Mirror Directory. The Custom Data resource for that master Account should then be used to store an ``href`` link to the Account in the Mirror Directory, for example:
+If such an Account is already in the master Directory, no action is taken. If such an Account is not found, your application should create a new one in the master Directory, and populate it with the information pulled from the Account in the Mirror Directory. The customData resource for that master Account should then be used to store a link to the Account in the Mirror Directory, for example:
 
-.. code-block:: json
+.. only:: rest
 
-  {
-    "customData": {
-      "accountLink": "https://api.stormpath.com/v1/accounts/3fLduLKlEx"
+  .. code-block:: json
+
+    {
+      "customData": {
+        "accountLink": "https://api.stormpath.com/v1/accounts/3fLduLKlEx"
+      }
     }
-  }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/customdata_accountlink.cs
+        :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/customdata_accountlink.vb
+        :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/customdata_accountlink.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/customdata_accountlink.js
+      :language: javascript
+
+.. only:: php
+
+    .. literalinclude:: code/php/authentication/customdata_accountlink.php
+      :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/customdata_accountlink.py
+      :language: python
 
 If the user then chooses at some point to, for example, "Sign in with Facebook", then a similar process will occur, but this time with a link created to the user Account in the Facebook Directory.
 
-This mirror-master approach has two major benefits: It allows for a user to have one unified identity in your Application, regardless of how many external identities they choose to log in with; and this central identity can also be the central point that all authorization permissions (whether they be implicit or explicit) are then applied to.
+This mirror-master approach has two major benefits:
+
+1. It allows for a user to have one unified identity in your Application, regardless of how many external identities they choose to log in with.
+2. This identity can also be the central point that all authorization permissions (whether they be implicit or explicit) are then applied to.
 
 .. _managing-login:
 
-5.1.3. Manage Who Can Log Into Your Application
-------------------------------------------------
+4.1.3. Manage Who Can Log Into Your Application
+-----------------------------------------------
 
-As is hopefully evident by now, controlling which Accounts can log in to your Application is largely a matter of manipulating the Application's Account Store Mappings. For more detailed information about this resource, please see the :ref:`ref-asm` section of the Reference chapter.
+As is hopefully evident by now, controlling which Accounts can log in to your Application is largely a matter of manipulating the Application's Account Store Mappings.
 
-The reason why our user "Han Solo" was able to log in to our application is because the Application resource that represents our Application: ``https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE``, and our "Captains" Directory: ``https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp`` are mapped to one another by an **Account Store Mapping**.
+.. only:: rest
 
-We can find this Mapping by sending a ``GET`` to our Application's ``/accountStoreMappings`` endpoint, which would yield the following response:
+  For more detailed information about this resource, please see the :ref:`ref-asm` section of the Reference chapter.
 
-.. code-block:: http
+The reason why your user "Han Solo" was able to log in to your application is because the Application resource that represents your application and your "Captains" Directory are mapped to one another by an **Account Store Mapping**.
 
-  HTTP/1.1 200 OK
-  Content-Type: application/json;charset=UTF-8
+.. only:: rest
 
-  {
-    "href":"https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE/accountStoreMappings",
-    "offset":0,
-    "limit":25,
-    "size":1,
-    "items":[
-      {
-        "href":"https://api.stormpath.com/v1/accountStoreMappings/5WKhSDXNR8Wiksjv808XHp",
-        "listIndex":1,
-        "isDefaultAccountStore":true,
-        "isDefaultGroupStore":true,
-        "application":{
-          "href":"https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE"
-        },
-        "accountStore":{
-          "href":"https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp"
+  You can find this mapping by sending a ``GET`` to your Application's ``/accountStoreMappings`` endpoint, which would yield the following response:
+
+  .. code-block:: http
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "href":"https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE/accountStoreMappings",
+      "offset":0,
+      "limit":25,
+      "size":1,
+      "items":[
+        {
+          "href":"https://api.stormpath.com/v1/accountStoreMappings/5WKhSDXNR8Wiksjv808XHp",
+          "listIndex":1,
+          "isDefaultAccountStore":true,
+          "isDefaultGroupStore":true,
+          "application":{
+            "href":"https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE"
+          },
+          "accountStore":{
+            "href":"https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp"
+          }
         }
+      ]
+    }
+
+  .. note::
+
+    Any new Accounts and Groups added to this Application via it's `/accounts` and `/groups` endpoints will be added to this Directory by default, since ``isDefaultAccountStore`` and ``isDefaultGroupStore`` are both set to ``true``.
+
+.. only:: csharp or vbnet
+
+  You can find all the Account Store Mappings for an application by using the ``GetAccountStoreMappings()`` collection:
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/get_asm_req.cs
+        :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/get_asm_req.vb
+        :language: vbnet
+
+.. only:: java
+
+  You can find this mapping by... (todo)
+
+  .. literalinclude:: code/java/authentication/get_asm_req.java
+      :language: java
+
+.. only:: nodejs
+
+  You can find this mapping by...
+
+  .. literalinclude:: code/nodejs/authentication/get_asm_req.js
+      :language: javascript
+
+.. only:: php
+
+  You can find this mapping by...
+
+  .. literalinclude:: code/php/authentication/get_asm_req.php
+    :language: php
+
+  .. note::
+
+    This will return an account store mapping list which you can iterate over to get each account store object.
+
+    .. code-block:: php
+
+      $accountStores = [];
+
+      foreach($accountStoreMappings as $accountStoreMapping) {
+        $accountStores[] = $accountStoreMapping->accountStore;
       }
-    ]
-  }
 
-.. note::
 
-  Any new Accounts and Groups added to this Application via it's `/accounts` and `/groups` endpoints will be added to this Directory by default, since ``isDefaultAccountStore`` and ``isDefaultGroupStore`` are both set to ``true``.
+
+.. only:: python
+
+  You can find this mapping by... (todo)
+
+  .. literalinclude:: code/python/authentication/get_asm_req.py
+      :language: python
+
+
+.. only:: java
+
+  This will return the Account Store Mapping:
+
+  .. literalinclude:: code/java/authentication/get_asm_resp.java
+      :language: java
+
+.. only:: nodejs
+
+  This will return the Account Store Mapping:
+
+  .. literalinclude:: code/nodejs/authentication/get_asm_resp.js
+      :language: javascript
+
+.. only:: php
+
+  This will return the Account Store Mapping:
+
+  .. literalinclude:: code/php/authentication/get_asm_resp.php
+    :language: php
+
+.. only:: python
+
+  This will return the Account Store Mapping:
+
+  .. literalinclude:: code/python/authentication/get_asm_resp.py
+      :language: python
 
 .. _create-asm:
 
@@ -165,35 +402,71 @@ We would now like to map a new Account Store that will have the following charac
 #. It will be the default Account Store for any new Accounts.
 #. It will be the default Group Store for any new Groups.
 
-To accomplish this, we will send a ``POST``:
+.. only:: rest
 
-.. code-block:: http
+  To accomplish this, you will send a ``POST``:
 
-  POST v1/accountStoreMappings HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-    "listIndex": 0,
-    "isDefaultAccountStore": true,
-    "isDefaultGroupStore": true,
-    "application": {
-      "href": "https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE"
-    },
-    "accountStore": {
-      "href": "https://api.stormpath.com/v1/directories/2SKhstu8PlaekcaEXampLE"
+    POST v1/accountStoreMappings HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "listIndex": 0,
+      "isDefaultAccountStore": true,
+      "isDefaultGroupStore": true,
+      "application": {
+        "href": "https://api.stormpath.com/v1/applications/1gk4Dxzi6o4PbdleXaMPLE"
+      },
+      "accountStore": {
+        "href": "https://api.stormpath.com/v1/directories/2SKhstu8PlaekcaEXampLE"
+      }
     }
-  }
 
-We are mapping the Application (id: ``1gk4Dxzi6o4PbdleXaMPLE``) to a new Directory (id: ``2SKhstu8PlaekcaEXampLE``). Additionally, we are setting
+  You are mapping the Application (id: ``1gk4Dxzi6o4PbdleXaMPLE``) to a new Directory (id: ``2SKhstu8PlaekcaEXampLE``). Additionally, you are setting
 
-#. the login priority to the highest priority, by sending a ``listIndex`` of ``0``.
-#. ``isDefaultAccountStore`` to ``true`` and
-#. ``isDefaultGroupStore`` to ``true`` as well.
+  #. the login priority to the highest priority, by sending a ``listIndex`` of ``0``.
+  #. ``isDefaultAccountStore`` to ``true`` and
+  #. ``isDefaultGroupStore`` to ``true`` as well.
 
-So by sending a ``POST`` with these contents, we are able to create a new Account Store Mapping that supersedes the old one.
+  So by sending a ``POST`` with these contents, you are able to create a new Account Store Mapping that supersedes the old one.
 
-If we go back to the example from the :ref:`Account Management chapter<account-mgmt>`, we can see the accountStoreMapping between the Directory and the Application. This now means that the Captain's Account in the Directory will now be able to log in to the Application.
+.. only:: csharp or vbnet
+
+  We can accomplish this by creating a new ``IApplicationAccountStoreMapping`` instance, and then adding to the Application with ``CreateAccountStoreMappingAsync()``:
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/create_asm.cs
+        :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/create_asm.vb
+        :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_asm.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_asm.js
+      :language: javascript
+
+.. only:: php
+
+    .. literalinclude:: code/php/authentication/create_asm.php
+      :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_asm.py
+      :language: python
+
+If you go back to the example from the :ref:`Account Management chapter<account-mgmt>`, you can see the accountStoreMapping between the Directory and the Application. This now means that the Captain's Account in the Directory will now be able to log in to the Application.
 
 .. figure:: images/auth_n/authn_asm_erd.png
   :align: center
@@ -202,32 +475,123 @@ If we go back to the example from the :ref:`Account Management chapter<account-m
 Updating an Existing Account Store
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Updating an existing Account Store simply involves sending a ``POST`` to the ``v1/accountStoreMappings/$ACCOUNT_STORE_MAPPING_ID`` endpoint with the attributes that you would like to update.
+Updating an existing Account Store simply involves sending a request with the attributes that you would like to update.
 
 **Changing Login Priority**
 
-For example, if you want to update an existing Account Store to now have highest login priority, simple send a ``POST`` with "listIndex": 0 in the body, and the accountStoreMapping resource will be updated. Additionally, all of the other Account Stores will have their ``listIndex`` incremented up by 1.
+For example, if you want to update an existing Account Store to now have highest login priority, send this request that sets the Mapping's list index value as ``0``:
+
+.. only:: rest
+
+  .. code-block:: http
+
+    POST /v1/accountStoreMappings/1NUhrCPT0q66bjyexample HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json
+
+    {
+      "listIndex": 0
+    }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/change_login_priority.cs
+        :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/change_login_priority.vb
+        :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/change_login_priority.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/change_login_priority.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/change_login_priority.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/change_login_priority.py
+      :language: python
+
+The accountStoreMapping resource will be updated and all of the other Account Stores will have their ``listIndex`` incremented up by 1.
 
 **Changing the Default Account or Group Store**
 
-Sending ``"isDefaultAccountStore": true`` and/or ``"isDefaultAccountStore": true`` in the JSON body to a ``v1/accountStoreMappings/$ACCOUNT_STORE_MAPPING_ID`` endpoint would result in those values being updated on the target resource, and whichever resource had those values as ``true`` would have them changed to ``false``.
+Setting an Account Store Mapping as the default Account or Group store would automatically supersede any other Account Store Mapping. Any other mapping that had previously been the default would have the "true" flag switched to "false".
+
+.. only:: rest
+
+  .. code-block:: http
+
+    POST /v1/accountStoreMappings/1NUhrCPT0q66bjyexample HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json
+
+    {
+        "isDefaultAccountStore": "true",
+        "isDefaultGroupStore": "true"
+    }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/change_default_stores.cs
+        :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/change_default_stores.vb
+        :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/change_default_stores.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/change_default_stores.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/change_default_stores.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/change_default_stores.py
+      :language: python
 
 .. note::
 
-  Setting an AccountStoreMapping’s ``isDefaultGroupStore`` or ``isDefaultAccountStore`` to ``false`` will **not** automatically set another AccountStoreMapping’s ``isDefaultGroupStore`` or ``isDefaultAccountStore`` to ``true``. You are responsible for setting this yourself if you would like your Application to create new Accounts/Groups.
+  Setting an Account Store Mapping's Default Group/Account Store flag to ``false`` will **not** automatically set another Default Group/Account Store flag ``true``. You are responsible for setting this yourself if you would like your Application to create new Accounts/Groups.
 
 .. _token-authn:
 
-5.2. How Token-Based Authentication Works
+4.2. How Token-Based Authentication Works
 =========================================
 
 .. contents::
   :local:
   :depth: 2
 
-In this section, we will discuss how to use Stormpath to generate and manage OAuth 2.0 Access Tokens.
+In this section, you will discuss how to use Stormpath to generate and manage OAuth 2.0 Access Token.
 
-5.2.1. Introduction to Token-Based Authentication
+4.2.1. Introduction to Token-Based Authentication
 -------------------------------------------------
 
 Since HTTP is considered a stateless protocol, if your application authenticates a user for one HTTP request, a problem arises when the next request is sent and your application doesn't know who the user is. This is why many applications today pass some information to tie the request to a user. Traditionally, this requires **Server-based authentication**, where state is stored on the server and only a session identifier is stored on the client.
@@ -249,7 +613,7 @@ Even though OAuth 2.0 has many authorization modes or "grant types", Stormpath c
 
 - **Client Credentials Grant Type**: Provides the ability to exchange an API Key for the Access Token. This is supported through the API Key Management feature.
 
-To understand how to use Token-based Authentication, we need to talk about the different types of tokens that are available.
+To understand how to use Token-based Authentication, you need to talk about the different types of tokens that are available.
 
 What Tokens Are Available for Token-Based Authentication?
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -267,8 +631,8 @@ When using OAuth 2.0, the Access Token and Refresh Token are returned in the sam
 
 .. _token-authn-config:
 
-5.2.2. Using Stormpath for Token-Based Authentication
-------------------------------------------------------
+4.2.2. Using Stormpath for Token-Based Authentication
+-----------------------------------------------------
 
 Stormpath can be used to generate, manage, check, and revoke both Access and Refresh Tokens. Before diving in, let's talk about configuration.
 
@@ -277,133 +641,432 @@ Configuring Token-Based Authentication
 
 Stormpath is configurable so you can set the time to live (TTL) for both the Access and Refresh tokens. This is important for many applications because it gives the ability to define how the tokens expire. For example, you could decide that your application requires a user to log in daily, but the access should only live for 10 minutes. Or, you could decide that for your application, users should be able to stay logged-in for two months and the access token expires in an hour.
 
-Each Application resource in Stormpath has an associated :ref:`OAuth Policy resource <ref-oauth-policy>` where the TTLs for a particular Application's tokens are stored inside properties called ``accessTokenTtl`` and ``refreshTokenTtl``:
+Each Application resource in Stormpath has an associated :ref:`OAuth Policy resource <ref-oauth-policy>` where the TTLs for a particular Application's tokens are stored:
 
-.. code-block:: json
+.. only:: rest
 
-  {
+  .. code-block:: json
+
+    {
+        "href": "https://api.stormpath.com/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE",
+        "accessTokenTtl": "PT1H",
+        "refreshTokenTtl": "P60D",
+        "comment":" // This JSON has been truncated for readability"
+    }
+
+  The values for both properties are stored as `ISO 8601 Durations <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_. By **default**, the TTL for the Access Token is 1 hour and the Refresh Token's is 60 days. The maximum value for both is 180 days.
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/oauth_policy.cs
+        :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/oauth_policy.vb
+        :language: vbnet
+
+  The ``AccessTokenTimeToLive`` and ``RefreshTokenTimeToLive`` properties represent the time to live (TTL) values as ``TimeSpan`` objects.
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/oauth_policy.java
+      :language: java
+
+  The values for both properties are stored as `ISO 8601 Durations <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/oauth_policy.js
+      :language: javascript
+
+  The values for both properties are stored as `ISO 8601 Durations <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/oauth_policy.php
+    :language: php
+
+  This will return
+
+  .. literalinclude:: code/php/authentication/oauth_policy_res.php
+
+  The values for both properties are stored as `ISO 8601 Durations <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/oauth_policy.py
+      :language: python
+
+  The values for both properties are stored as `ISO 8601 Durations <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_.
+
+By **default**, the TTL for the Access Token is 1 hour and the Refresh Token TTL is 60 days. The maximum value for both is 180 days.
+
+If you wanted to change the TTL for the Access Token to 30 minutes and the Refresh Token to 7 days, you could send the following request:
+
+.. only:: rest
+
+  .. code-block:: http
+
+    POST /v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "accessTokenTtl": "PT30M",
+      "refreshTokenTtl": "P7D"
+    }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/update_oauth_ttl_req.cs
+        :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/update_oauth_ttl_req.vb
+        :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/update_oauth_ttl_req.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/update_oauth_ttl_req.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/update_oauth_ttl_req.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/update_oauth_ttl_req.py
+      :language: python
+
+.. only:: rest
+
+  And you would get the following response:
+
+  .. code-block:: HTTP
+
+    HTTP/1.1 200 OK
+    Location: https://api.stormpath.com/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE
+    Content-Type: application/json;charset=UTF-8
+
+    {
       "href": "https://api.stormpath.com/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE",
-      "accessTokenTtl": "PT1H",
-      "refreshTokenTtl": "P60D",
+      "accessTokenTtl": "PT30M",
+      "refreshTokenTtl": "P7D",
       "comment":" // This JSON has been truncated for readability"
-  }
+    }
 
-The values for both properties are stored as `ISO 8601 Durations <https://en.wikipedia.org/wiki/ISO_8601#Durations>`_. By **default**, the TTL ``duration`` for the Access Token is 1 hour and the Refresh Token's is 60 days, while the **maximum** ``duration`` is 180 days.
+.. only:: java
 
-If we wanted to change the TTL for the Access Token to 30 minutes and the Refresh Token to 7 days, we could simply make a POST request to the ``/oAuthPolicies/$APPLICATION_ID`` endpoint with the following payload:
+  And you would get the following response:
 
-.. code-block:: http
+  .. literalinclude:: code/java/authentication/update_oauth_ttl_resp.java
+      :language: java
 
-  POST /v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+.. only:: nodejs
 
-  {
-    "accessTokenTtl": "PT30M",
-    "refreshTokenTtl": "P7D"
-  }
+  .. literalinclude:: code/nodejs/authentication/update_oauth_ttl_resp.js
+      :language: javascript
 
-And we would get the following response:
+.. only:: php
 
-.. code-block:: HTTP
+  And you would get the following response:
 
-  HTTP/1.1 200 OK
-  Location: https://api.stormpath.com/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE
-  Content-Type: application/json;charset=UTF-8
+  .. literalinclude:: code/php/authentication/update_oauth_ttl_resp.php
+    :language: php
 
-  {
-    "href": "https://api.stormpath.com/v1/oAuthPolicies/1gk4Dxzi6o4PbdleXaMPLE",
-    "accessTokenTtl": "PT30M",
-    "refreshTokenTtl": "P7D",
-    "comment":" // This JSON has been truncated for readability"
-  }
+.. only:: python
 
-.. note::
+  And you would get the following response:
 
-    Refresh Tokens are optional. If you would like to disable the Refresh Token from being generated, set a ``duration`` value of 0 (e.g. PT0M).
+  .. literalinclude:: code/python/authentication/update_oauth_ttl_resp.py
+      :language: python
+
+.. only:: rest
+
+  .. note::
+
+    Refresh Tokens are optional. If you would like to disable the Refresh Token from being generated, set a duration value of 0 (e.g. ``PT0M``).
+
+.. only:: (csharp or vbnet)
+
+  .. note::
+
+    Refresh Tokens are optional. If you would like to disable the Refresh Token from being generated, set a duration value of ``TimeSpan.Zero``.
+
+.. only:: java
+
+  .. note::
+
+    Refresh Tokens are optional. If you would like to disable the Refresh Token from being generated, set a duration value of 0 (e.g. ``PT0M``).
+
+.. only:: nodejs
+
+  .. note::
+
+    Refresh Tokens are optional. If you would like to disable the Refresh Token from being generated, set a duration value of 0 (e.g. ``PT0M``).
+
+.. only:: php
+
+  .. note::
+
+    Refresh Tokens are optional. If you would like to disable the Refresh Token from being generated, set a duration value of 0 (e.g. ``PT0M``).
+
+.. only:: python
+
+  .. note::
+
+    Refresh Tokens are optional. If you would like to disable the Refresh Token from being generated, set a duration value of 0 (e.g. ``PT0M``).
 
 .. _generate-oauth-token:
 
 Generating an OAuth 2.0 Access Token
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Stormpath can generate Access Tokens using the above-mentioned OAuth 2.0 **Password Grant** flow. Stormpath exposes an endpoint for each Application resource to support the OAuth 2.0 protocol::
+Stormpath can generate Access Tokens using the above-mentioned OAuth 2.0 **Password Grant** flow.
 
-    https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
+.. only:: rest
 
-This endpoint is used to generate an OAuth token for any valid Account associated with the specified Application. It uses the same validation as the ``/loginAttempt`` endpoint, as described in :ref:`how-login-works`.
+  Stormpath exposes an endpoint for each Application resource to support the OAuth 2.0 protocol::
+
+      https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
+
+  This endpoint is used to generate an OAuth token for any valid Account associated with the specified Application. It uses the same validation as the ``/loginAttempt`` endpoint, as described in :ref:`how-login-works`.
 
 Your application will act as a proxy to the Stormpath API. For example:
 
-- The user inputs their credentials (e.g. ``username`` and ``password``) into a form and submits them.
+- The user inputs their credentials into a form and submits them.
 - Your application in turn takes the credentials and formulates the OAuth 2.0 Access Token request to Stormpath.
 - When Stormpath returns with the Access Token Response, you can then return the Access Token and/or the Refresh Token to the client.
 
-So you would send the following API call:
+So you would send the following request:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/applications/$YOUR_APPLICATION_ID/oauth/token HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/x-www-form-urlencoded
+  .. code-block:: http
 
-  grant_type=password&username=tom%40stormpath.com&password=Secret1
+    POST /v1/applications/$YOUR_APPLICATION_ID/oauth/token HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/x-www-form-urlencoded
 
-This would result in this response:
+    grant_type=password&username=tom%40stormpath.com&password=Secret1
 
-.. code-block:: http
-
-  HTTP/1.1 200 OK
-  Content-Type: application/json;charset=UTF-8
-
-  {
-    "access_token": "eyJraWQiOiIyWkZNV...TvUt2WBOl3k",
-    "refresh_token": "eyJraWQiOiIyWkZNV...8TvvrB7cBEmNF_g",
-    "token_type": "Bearer",
-    "expires_in": 1800,
-    "stormpath_access_token_href": "https://api.stormpath.com/v1/accessTokens/1vHI0jBXDrmmvPqEXaMPle"
-  }
-
-This is an **OAuth 2.0 Access Token Response** and includes the following:
-
-.. list-table::
-    :widths: 15 10 60
-    :header-rows: 1
-
-    * - Property
-      - Type
-      - Description
-
-    * - access_token
-      - String (JSON Web Token)
-      - The access token for the response.
-
-    * - refresh_token
-      - String (JSON Web Token)
-      - The refresh token that can be used to get refreshed Access Tokens.
-
-    * - token_type
-      - String
-      - The type of token returned.
-
-    * - expires_in
-      - Number
-      - The time in seconds before the token expires.
-
-    * - stormpath_access_token_href
-      - String
-      - The href location of the token in Stormpath.
-
-.. note::
+  .. note::
 
     Just like with logging-in a user, it is possible to generate a token against a particular Application's Account Store resource. To do so, specify the Account Store's ``href`` as a parameter in the body::
 
         grant_type=password&username=tom@stormpath.com&password=Secret1&accountStore=https://api.stormpath.com/v1/directories/2SKhstu8Plaekcai8lghrp
 
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/generate_oauth_token_req.cs
+        :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/generate_oauth_token_req.vb
+        :language: vbnet
+
+  .. note::
+
+      Just like with logging-in a user, it is possible to generate a token against a particular Application's Account Store resource. To do so, use the ``SetAccountStore()`` method when you are building the request.
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/generate_oauth_token_req.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/generate_oauth_token_req.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/generate_oauth_token_req.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/generate_oauth_token_req.py
+      :language: python
+
+.. only:: rest
+
+  Which would result in this response:
+
+  .. code-block:: http
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "access_token": "eyJraWQiOiIyWkZNV...TvUt2WBOl3k",
+      "refresh_token": "eyJraWQiOiIyWkZNV...8TvvrB7cBEmNF_g",
+      "token_type": "Bearer",
+      "expires_in": 1800,
+      "stormpath_access_token_href": "https://api.stormpath.com/v1/accessTokens/1vHI0jBXDrmmvPqEXaMPle"
+    }
+
+  This is an **OAuth 2.0 Access Token Response** and includes the following:
+
+  .. list-table::
+      :widths: 15 10 60
+      :header-rows: 1
+
+      * - Attribute
+        - Type
+        - Description
+
+      * - access_token
+        - String (JSON Web Token)
+        - The access token for the response.
+
+      * - refresh_token
+        - String (JSON Web Token)
+        - The refresh token that can be used to get refreshed Access Tokens.
+
+      * - token_type
+        - String
+        - The type of token returned.
+
+      * - expires_in
+        - Number
+        - The time in seconds before the token expires.
+
+      * - stormpath_access_token_href
+        - String
+        - The href location of the token in Stormpath.
+
+.. only:: (csharp or vbnet)
+
+  The ``IOauthGrantAuthenticationResult`` response contains the following properties and methods:
+
+  .. list-table::
+      :widths: 15 10 60
+      :header-rows: 1
+
+      * - Member
+        - Type
+        - Description
+
+      * - AccessTokenString
+        - String (JSON Web Token)
+        - The access token for the response.
+
+      * - AccessTokenHref
+        - String
+        - The href location of the token in Stormpath.
+
+      * - RefreshTokenString
+        - String (JSON Web Token)
+        - The refresh token that can be used to get refreshed Access Tokens.
+
+      * - TokenType
+        - String
+        - The type of token returned.
+
+      * - ExpiresIn
+        - Long
+        - The time in seconds before the token expires.
+
+      * - GetAccessTokenAsync()
+        - ``Task<IAccessToken>``
+        - Retrieves the generated access token as an ``IAccessToken`` object.
+
+.. only:: java
+
+  Which would result in this response:
+
+  .. literalinclude:: code/java/authentication/generate_oauth_token_resp.java
+      :language: java
+
+  .. todo::
+    Describe the result.
+
+.. only:: nodejs
+
+  Which would result in this response:
+
+  .. literalinclude:: code/nodejs/authentication/generate_oauth_token_resp.js
+      :language: javascript
+
+  .. todo::
+    Describe the result.
+
+.. only:: php
+
+  Which would result in this response:
+
+  .. literalinclude:: code/php/authentication/generate_oauth_token_resp.php
+    :language: php
+
+  This is an **OAuth 2.0 Access Token Response** and includes the following:
+
+  .. list-table::
+      :widths: 15 10 60
+      :header-rows: 1
+
+      * - Attribute
+        - Type
+        - Description
+
+      * - accessToken
+        - Object (Stormpath\Resource\AccessToken)
+        - The access token object.
+
+      * - accessTokenString
+        - String (JSON Web Token)
+        - The access token for the response.
+
+      * - refreshToken
+        - Object (Stormpath\Resource\RefreshToken)
+        - The refresh token object.
+
+      * - refreshTokenString
+        - String (JSON Web Token)
+        - The refresh token that can be used to get refreshed Access Tokens.
+
+      * - accessTokenHref
+        - String
+        - The href location of the token in Stormpath.
+
+      * - tokenType
+        - String
+        - The type of token that was returned (Typically Bearer)
+
+      * - expiresIn
+        - Number
+        - The time in seconds before the token expires.
+
+.. only:: python
+
+  Which would result in this response:
+
+  .. literalinclude:: code/python/authentication/generate_oauth_token_resp.py
+      :language: python
+
+  .. todo::
+    Describe the result.
+
 Validating an Access Token
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Once an ``access_token`` has been generated, we have taken care of the Authentication part of our workflow. Now, the OAuth token can be used to authorize individual requests that the user makes. To do this, the client will need to pass it to your application.
+Once an Access Token has been generated, you have taken care of the Authentication part of your workflow. Now, the OAuth token can be used to authorize individual requests that the user makes. To do this, the client will need to pass it to your application.
 
 For example, if you have a route ``https://yourapplication.com/secure-resource``, the client would request authorization to access the resource by passing the access token as follows:
 
@@ -457,31 +1120,116 @@ It is up to you to determine which kind of validation is important for your appl
 
 Using Stormpath to Validate Tokens
 """"""""""""""""""""""""""""""""""
-To see how to validate tokens with the Stormpath REST API, let's go back to the example where a user has already generated an access token.
+To see how to validate tokens with Stormpath, let's go back to the example where a user has already generated an access token.
 
-To recap, we have done the following:
+To recap, you have done the following:
 
-1. Sent a POST to ``https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token`` with a body that included information about the OAuth Grant Type we wanted, as well as our user's username and password.
-2. Received back an **Access Token Response**, which contained - among other things - an **Access Token** in JWT format.
+.. only:: rest
 
-The user now attempts to access a secured resource by passing the ``access_token`` JWT value from the Access Token Response in the ``Authorization`` header:
+  1. Sent a POST to ``https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token`` with a body that included information about the OAuth Grant Type you wanted, as well as your user's username and password.
+  2. Received back an **Access Token Response**, which contained - among other things - an **Access Token** in JWT format.
 
-.. code-block:: http
+  The user now attempts to access a secured resource by passing the ``access_token`` JWT value from the Access Token Response in the ``Authorization`` header:
 
-  GET /secure-resource HTTP/1.1
-  Host: https://yourapplication.com
-  Authorization: Bearer eyJraWQiOiIyWkZNVjRXV[...]
+  .. code-block:: http
 
-The ``Authorization`` header contains the Access Token. To validate this Token with Stormpath, you can issue an HTTP GET to your Stormpath Application’s ``/authTokens/`` endpoint with the JWT token::
+    GET /secure-resource HTTP/1.1
+    Host: https://yourapplication.com
+    Authorization: Bearer eyJraWQiOiIyWkZNVjRXV[...]
 
-    https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/eyJraWQiOiIyWkZNVjRXV[...]
+  The ``Authorization`` header contains the Access Token. To validate this Token with Stormpath, you can issue an HTTP GET to your Stormpath Application’s ``/authTokens/`` endpoint with the JWT token:
 
-If the access token can be validated, Stormpath will return a 302 to the Access Token resource:
+  .. code-block:: none
 
-.. code-block:: http
+      https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/eyJraWQiOiIyWkZNVjRXV[...]
 
-  HTTP/1.1 302 Location Found
-  Location: https://api.stormpath.com/v1/accessTokens/6zVrviSEIf26ggXdJG097f
+  If the access token can be validated, Stormpath will return a 302 to the Access Token resource:
+
+  .. code-block:: http
+
+    HTTP/1.1 302 Location Found
+    Location: https://api.stormpath.com/v1/accessTokens/6zVrviSEIf26ggXdJG097f
+
+.. only:: csharp or vbnet
+
+  1. Created and sent an OAuth request to Stormpath (see :ref:`generate-oauth-token`).
+  2. Received back an **Access Token Response**, which contained - among other things - an **Access Token** in string (JWT) format.
+
+  The user now attempts to access a secured resource and provides their Access Token (as in the example of passing a Bearer header to a protected web controller). To validate the Access Token, create and send a validation request to Stormpath:
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/validate_oauth_token_sp_req.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/validate_oauth_token_sp_req.vb
+      :language: vbnet
+
+  If the access token can be validated, Stormpath will return the access token to you as an ``IAccessToken``. If the access token is invalid or expired, a ``ResourceException`` will be thrown.
+
+.. only:: java
+
+  1. (todo)
+  2. Received back an **Access Token Response**, which contained - among other things - an **Access Token** in JWT format.
+
+  The user now attempts to access a secured resource by...?
+
+  .. literalinclude:: code/java/authentication/validate_oauth_token_sp_req.java
+    :language: java
+
+  If the access token can be validated, Stormpath will return...?
+
+  .. literalinclude:: code/java/authentication/validate_oauth_token_sp_resp.java
+    :language: java
+
+.. only:: nodejs
+
+  1. (todo)
+  2. Received back an **Access Token Response**, which contained - among other things - an **Access Token** in JWT format.
+
+  The user now attempts to access a secured resource by...?
+
+  .. literalinclude:: code/nodejs/authentication/validate_oauth_token_sp_req.js
+    :language: javascript
+
+  If the access token can be validated, Stormpath will return...?
+
+  .. literalinclude:: code/nodejs/authentication/validate_oauth_token_sp_resp.js
+    :language: javascript
+
+.. only:: php
+
+  1. Created a ``PasswordGrantRequest`` object with the users email/username and password.
+  2. Created a new ``PasswordGrantAuthenticator`` object and passed it the application object.
+  3. Made an authenticate attempt with the ``PasswordGrantAuthenticator`` passing the ``PasswordGrantRequest`` object
+  4. Received back an **Access Token Response**, which contained - among other things - an **Access Token** in JWT format.
+
+  The user now attempts to access a secured resource by...
+
+  .. literalinclude:: code/php/authentication/validate_oauth_token_sp_req.php
+    :language: php
+
+  If the access token can be validated, Stormpath will return...
+
+  .. literalinclude:: code/php/authentication/validate_oauth_token_sp_resp.php
+    :language: php
+
+.. only:: python
+
+  1. (todo)
+  2. Received back an **Access Token Response**, which contained - among other things - an **Access Token** in JWT format.
+
+  The user now attempts to access a secured resource by...?
+
+  .. literalinclude:: code/python/authentication/validate_oauth_token_sp_req.py
+    :language: python
+
+  If the access token can be validated, Stormpath will return...?
+
+  .. literalinclude:: code/python/authentication/validate_oauth_token_sp_resp.py
+    :language: python
 
 With the confirmation that the token is valid, you can now allow the user to access the secured resource that they requested.
 
@@ -496,40 +1244,152 @@ Local validation would also begin at the point of the request to a secure resour
   Host: https://yourapplication.com
   Authorization: Bearer eyJraWQiOiIyWkZNVjRXV[...]
 
-The token specified in the Authorization header has been digitally signed with the Stormpath API Key Secret that was used to generate the token. This means that you can use a JWT library for your specific language to validate the token locally if necessary. For more information, please see one of our `Integration Guides <https://docs.stormpath.com/home/>`_.
+The token specified in the Authorization header has been digitally signed with the Stormpath API Key Secret that was used to generate the token.
+
+.. only:: rest
+
+  This means that you can use a JWT library for your specific language to validate the token locally if necessary. For more information, please see one of your `Integration Guides <https://docs.stormpath.com/home/>`_.
+
+.. only:: csharp or vbnet
+
+  Validating the token locally is simply a matter of using the ``WithLocalValidation`` flag when creating the request:
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/validate_oauth_token_local.cs
+        :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/validate_oauth_token_local.vb
+        :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/validate_oauth_token_local.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/validate_oauth_token_local.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/validate_oauth_token_local.php
+      :language: php
+
+  If the token can be validated locally, it will return an object with...(todo)
+
+  .. literalinclude:: code/php/authentication/validate_oauth_token_local_res.php
+      :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/validate_oauth_token_local.py
+      :language: python
 
 Refreshing Access Tokens
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-In the event that the Access Token expires, the user can generate a new one using the Refresh Token without re-entering their credentials. To use this Refresh Token, simply make an HTTP POST to your Applications ``/oauth/token`` endpoint with it and you will get a new token back.
+In the event that the Access Token expires, the user can generate a new one using the Refresh Token without re-entering their credentials.
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/applications/$YOUR_APPLICATION_ID/oauth/token HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/x-www-form-urlencoded
+  To use this Refresh Token, you make an HTTP POST to your Applications ``/oauth/token`` endpoint with it and you will get a new token back.
 
-  grant_type=refresh_token&refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2IiwiaWF0IjoxNDQxMTE4Nzk2LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxNzIzNTk2fQ.xUjcxTZhWx74aa6adnUXjuvUgqjC8TvvrB7cBEmNF_g
+  .. code-block:: http
 
-This would be the response:
+    POST /v1/applications/$YOUR_APPLICATION_ID/oauth/token HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/x-www-form-urlencoded
 
-.. code-block:: http
+    grant_type=refresh_token&refresh_token=eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2IiwiaWF0IjoxNDQxMTE4Nzk2LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxNzIzNTk2fQ.xUjcxTZhWx74aa6adnUXjuvUgqjC8TvvrB7cBEmNF_g
 
-  HTTP/1.1 200 OK
-  Content-Type: application/x-www-form-urlencoded
+.. only:: csharp or vbnet
 
-  {
-    "access_token": "eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI2TnJXSXM1aWttSVBWSkNuMnA0bnJyIiwiaWF0IjoxNDQxMTMzNjQ1LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxMTM1NDQ1LCJydGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2In0.SbSmuPz0-v4J2BO9-lpyz_2_T62mSB1ql_0IMrftpgg",
-    "refresh_token": "eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2IiwiaWF0IjoxNDQxMTE4Nzk2LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxNzIzNTk2fQ.xUjcxTZhWx74aa6adnUXjuvUgqjC8TvvrB7cBEmNF_g",
-    "token_type": "Bearer",
-    "expires_in": 1800,
-    "stormpath_access_token_href": "https://api.stormpath.com/v1/accessTokens/6NrWIs5ikmIPVJCn2p4nrr"
-  }
+  Simply create and send a Refresh Grant request to Stormpath containing the Refresh Token:
 
-Note that this response contains the same Refresh Token as was in the request. This is because when Stormpath generates a new Access Token for a Refresh Token it does not generate a new Refresh token, nor does it modify its expiration time.
+  .. only:: csharp
 
-This means that once the Refresh Token expires, the user must authenticate again to get new Access and Refresh Tokens.
+    .. literalinclude:: code/csharp/authentication/refresh_access_token_req.cs
+      :language: csharp
 
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/refresh_access_token_req.vb
+      :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/refresh_access_token_req.java
+    :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/refresh_access_token_req.js
+    :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/refresh_access_token_req.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/refresh_access_token_req.py
+    :language: python
+
+.. only:: rest
+
+  This would be the response:
+
+  .. code-block:: http
+
+    HTTP/1.1 200 OK
+    Content-Type: application/x-www-form-urlencoded
+
+    {
+      "access_token": "eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI2TnJXSXM1aWttSVBWSkNuMnA0bnJyIiwiaWF0IjoxNDQxMTMzNjQ1LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxMTM1NDQ1LCJydGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2In0.SbSmuPz0-v4J2BO9-lpyz_2_T62mSB1ql_0IMrftpgg",
+      "refresh_token": "eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2IiwiaWF0IjoxNDQxMTE4Nzk2LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxNzIzNTk2fQ.xUjcxTZhWx74aa6adnUXjuvUgqjC8TvvrB7cBEmNF_g",
+      "token_type": "Bearer",
+      "expires_in": 1800,
+      "stormpath_access_token_href": "https://api.stormpath.com/v1/accessTokens/6NrWIs5ikmIPVJCn2p4nrr"
+    }
+
+.. only:: csharp or vbnet
+
+  The response type is ``IOauthGrantAuthenticationResult``, the same type as the initial grant response. The ``AccessTokenString`` property contains the new Access Token in string (JWT) form.
+
+.. only:: java
+
+  This would be the response:
+
+  .. literalinclude:: code/java/authentication/refresh_access_token_resp.java
+    :language: java
+
+.. only:: nodejs
+
+  This would be the response:
+
+  .. literalinclude:: code/nodejs/authentication/refresh_access_token_resp.js
+    :language: javascript
+
+.. only:: php
+
+  This would be the response:
+
+  .. literalinclude:: code/php/authentication/refresh_access_token_resp.php
+    :language: php
+
+.. only:: python
+
+  This would be the response:
+
+  .. literalinclude:: code/python/authentication/refresh_access_token_resp.py
+    :language: python
+
+Note that this response contains the same Refresh Token as was in the request. This is because when Stormpath generates a new Access Token for a Refresh Token it does not generate a new Refresh token, nor does it modify its expiration time. This means that once the Refresh Token expires, the user must authenticate again to get a new Access and Refresh Tokens.
 
 Revoking Access and Refresh Tokens
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -539,61 +1399,155 @@ There are cases where you might want to revoke the Access and Refresh Tokens tha
 - The user has explicitly logged out, and your application needs to revoke their access, requiring re-authentication.
 - The application, device, and/or client has been compromised and you need to revoke tokens for an Account.
 
-To revoke the tokens, simply delete the Account's ``/accessTokens/:accessTokenId`` resource.
+.. only:: rest
 
-To retrieve an Account's Access and Refresh tokens, make an HTTP GET calls for the Account information, then you will find the tokens inside the ``/accessTokens`` and ``/refreshTokens`` collections:
+  To revoke the tokens, all you have to do is delete the Account's ``/accessTokens/:accessTokenId`` resource.
 
-.. code-block:: json
+  First, you retrieve an Account's Access and Refresh tokens. To do this, make an HTTP GET call for the Account information, then you will find the tokens inside the ``/accessTokens`` and ``/refreshTokens`` collections:
 
-  {
-    "href": "https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey",
-    "username": "jlpicard",
-    "comment":" // This JSON has been truncated for readability",
-    "accessTokens": {
-      "href": "https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/accessTokens"
-    },
-    "refreshTokens": {
-      "href": "https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/refreshTokens"
-    }
-  }
-
-If you then perform a GET on the ``accessTokens`` link, you will get back the individual tokens:
-
-.. code-block:: json
+  .. code-block:: json
 
     {
-      "href": "https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/accessTokens",
+      "href": "https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey",
+      "username": "jlpicard",
+      "comment":" // This JSON has been truncated for readability",
+      "accessTokens": {
+        "href": "https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/accessTokens"
+      },
+      "refreshTokens": {
+        "href": "https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spexample/refreshTokens"
+      }
+    }
+
+  If you then perform a GET on the ``accessTokens`` link, you will get back the individual tokens:
+
+  .. code-block:: json
+
+    {
+      "href": "https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spexample/accessTokens",
       "offset": 0,
       "limit": 25,
       "size": 1,
       "items": [
         {
-          "href": "https://api.stormpath.com/v1/accessTokens/6NrWIs5ikmIPVJCn2p4nrr",
+          "href": "https://api.stormpath.com/v1/accessTokens/6NrWIs5ikmIPVJCexample",
           "comment":" // This JSON has been truncated for readability"
         }
       ]
     }
 
-.. note::
+  .. note::
 
-  You can query the Access Tokens that an Account has for a specific Application by specifying the Application's href as a URL parameter:
+    You can query the Access Tokens that an Account has for a specific Application by specifying the Application's href as a URL parameter:
 
-  .. code-block:: bash
+    .. code-block:: bash
 
-    curl --request GET \
-    --user $SP_API_KEY_ID:$SP_API_KEY_SECRET \
-    --header 'content-type: application/json' \
-    --url "https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/accessTokens?application.href=https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0eSEXAMPLE"
+      curl --request GET \
+      --user $SP_API_KEY_ID:$SP_API_KEY_SECRET \
+      --header 'content-type: application/json' \
+      --url "https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spexample//accessTokens?application.href=https://api.stormpath.com/v1/applications/1p4R1r9UBMQz0e5EXAMPLE"
 
-To revoke the token, simply issue an HTTP Delete::
+.. only:: (csharp or vbnet)
 
-    DELETE https://api.stormpath.com/v1/accessTokens/6NrWIs5ikmIPVJCn2p4nrr
+  First, you have to get a reference to the Access or Refresh token you'd like to delete. You can do this by retrieving all the tokens for the Account in question and examining the returned items for the token you need to revoke:
 
-You will get back a ``204 No Content`` response back from Stormpath when the call succeeds.
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/get_access_tokens.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/get_access_tokens.vb
+      :language: vbnet
+
+  .. note::
+
+    You can restrict your search to only the Access or Refresh tokens related to a specific Application by specifying the Application's href:
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/get_access_tokens_for_app.cs
+        :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/get_access_tokens_for_app.vb
+        :language: vbnet
+
+.. only:: rest
+
+  To revoke the token, send the following request:
+
+  .. code-block:: http
+
+    DELETE /v1/accessTokens/6NrWIs5ikmIPVJCexample HTTP/1.1
+    Host: api.stormpath.com
+
+  You will get back a ``204 No Content`` response back from Stormpath when the call succeeds.
+
+.. only:: csharp or vbnet
+
+  After you retrieve the tokens, it's a simple matter of telling Stormpath to delete them:
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/delete_user_access_tokens_req.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/delete_user_access_tokens_req.vb
+      :language: vbnet
+
+.. only:: java
+
+  To revoke the token, send the following request:
+
+  .. literalinclude:: code/java/authentication/delete_user_access_tokens_req.java
+    :language: java
+
+  You will get back a ... (todo)
+
+  .. literalinclude:: code/java/authentication/delete_user_access_tokens_resp.java
+    :language: java
+
+.. only:: nodejs
+
+  To revoke the token, send the following request:
+
+  .. literalinclude:: code/nodejs/authentication/delete_user_access_tokens_req.js
+    :language: javascript
+
+  You will get back a ... (todo)
+
+  .. literalinclude:: code/nodejs/authentication/delete_user_access_tokens_resp.js
+    :language: javascript
+
+.. only:: php
+
+  To revoke the token, send the following request:
+
+  .. literalinclude:: code/php/authentication/delete_user_access_tokens_req.php
+    :language: php
+
+  If successful, ``null`` will be returned
+
+.. only:: python
+
+  To revoke the token, send the following request:
+
+  .. literalinclude:: code/python/authentication/delete_user_access_tokens_req.py
+    :language: python
+
+  You will get back a ... (todo)
+
+  .. literalinclude:: code/python/authentication/delete_user_access_tokens_resp.py
+    :language: python
 
 .. _social-authn:
 
-5.3. How Social Authentication Works
+4.3. How Social Authentication Works
 ====================================
 
 .. contents::
@@ -631,25 +1585,64 @@ In general, the social login process works as follows:
 
 6. Once the Directory is located, Stormpath will look for an Account in your application's Directories that matches this information.
 
-   a. If a matching Account is found, Stormpath will return the existing Account's ``href``.
+.. only:: rest
 
-   b. If a matching Account is not found, Stormpath will create one and return the new Account's ``href``.
+     a. If a matching Account is found, Stormpath will return the existing Account's ``href``.
 
-7. At this point, a language/framework-specific integration would use this ``href`` to create a Session for the user.
+     b. If a matching Account is not found, Stormpath will create one and return the new Account's ``href``.
 
-**Configuring Social Login**
+  7. At this point, a language/framework-specific integration would use this ``href`` to create a Session for the user.
 
-Assuming that you already have the appropriate developer account with the Social Login provider, integrating Social Login into your application with Stormpath only requires three steps:
+.. only:: csharp or vbnet
 
-1. Create a Directory for your Social Login provider of choice.
+     a. If a matching Account is found, Stormpath will return the existing Account.
 
-2. Map the Directory as an Account Store to an Application resource. When an Account Store (in this case a Directory) is mapped to an Application, the Accounts in the Account Store are considered the Application’s users and they can log in to it.
+     b. If a matching Account is not found, Stormpath will create one and return it.
 
-3. Include the provider-specific logic that will access the social account (e.g. embed the appropriate link in your site that will send an authentication request to the social provider).
+  7. The Account can now be used like any other Account in Stormpath.
+
+.. only:: java
+
+    a. If a matching Account is found, (todo)
+
+    b. If a matching Account is not found, (todo)
+
+ 7. At this point, (todo)
+
+.. only:: nodejs
+
+    a. If a matching Account is found, (todo)
+
+    b. If a matching Account is not found, (todo)
+
+ 7. At this point, (todo)
+
+.. only:: php
+
+    a. If a matching Account is found, Stormpath will return the existing Account's ``href``.
+
+    b. If a matching Account is not found, Stormpath will create one and return the new Account's ``href``.
+
+
+.. only:: python
+
+    a. If a matching Account is found, (todo)
+
+    b. If a matching Account is not found, (todo)
+
+ 7. At this point, (todo)
+
+As a developer, integrating Social Login into your application with Stormpath only requires three steps:
+
+1. Create a Social Directory for your Provider.
+
+2. Map the Directory as an Account Store to an Application resource. When an Account Store (in this case a Directory) is mapped to an Application, the Accounts in the AccountStore are considered the Application’s users and they can log in to it.
+
+3. Include the provider-specific logic that will access the social account (e.g. embed the appropriate link in your site that will send an authentication request to the social provider)
 
 .. _authn-google:
 
-5.3.1. Google
+4.3.1. Google
 --------------
 
 Before you integrate Google Login with Stormpath, you must complete the following steps:
@@ -671,24 +1664,58 @@ For more information, please see the `Google OAuth 2.0 documentation <https://de
 Step 1: Create a Social Directory for Google
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Creating this Directory for Google requires that you provide information from Google as a Provider resource. This can be accomplished by sending an HTTP POST:
+Creating this Directory for Google requires that you provide information from Google as a Provider resource. This can be accomplished by creating a new Directory:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/directories HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-      "name" : "my-google-directory",
-      "description" : "A Google directory",
-      "provider": {
-          "providerId": "google",
-          "clientId":"YOUR_GOOGLE_CLIENT_ID",
-          "clientSecret":"YOUR_GOOGLE_CLIENT_SECRET",
-          "redirectUri":"YOUR_GOOGLE_REDIRECT_URI"
-      }
-  }
+    POST /v1/directories HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+        "name" : "my-google-directory",
+        "description" : "A Google directory",
+        "provider": {
+            "providerId": "google",
+            "clientId":"YOUR_GOOGLE_CLIENT_ID",
+            "clientSecret":"YOUR_GOOGLE_CLIENT_SECRET",
+            "redirectUri":"YOUR_GOOGLE_REDIRECT_URI"
+        }
+    }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/create_directory_google.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/create_directory_google.vb
+      :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_directory_google.java
+    :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_directory_google.js
+    :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_directory_google.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_directory_google.py
+    :language: python
 
 .. note::
 
@@ -697,54 +1724,138 @@ Creating this Directory for Google requires that you provide information from Go
 Step 2: Map the Google Directory as an Account Store for Your Application
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Creating an Account Store Mapping between your new Google Directory and your Stormpath Application can be done through the REST API, as described in :ref:`create-asm`.
+Creating an Account Store Mapping between your new Google Directory and your Stormpath Application can be done as described in :ref:`create-asm`.
 
 Step 3: Access an Account with Google Tokens
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 To access or create an Account in your new Google Directory, you must gather a Google **Authorization Code** on behalf of the user. This requires leveraging `Google’s OAuth 2.0 protocol <https://developers.google.com/identity/protocols/OAuth2>`_ and the user’s consent for your application’s permissions.
 
-Generally, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the **Authorization Code**. This is documented in detail here: `Using OAuth 2.0 for Web Server Applications <https://developers.google.com/identity/protocols/OAuth2WebServer>`_. Note that you will also find instructions there on how to exchange that Authorization Code for an Access Token directly with Google.
+Generally, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the **Authorization Code** or **Access Token**. This is documented in detail here: `Using OAuth 2.0 for Web Server Applications <https://developers.google.com/identity/protocols/OAuth2WebServer>`_.
 
 .. note::
 
     It is required that your Google application requests the ``email`` scope from Google. If the authorization code or access token does not grant ``email`` scope, you will not be able to get an Account. For more information about scopes please see `Google's OAuth Login Scopes documentation <https://developers.google.com/+/web/api/rest/oauth#login-scopes>`_.
 
-Once the Authorization Code is gathered, you send an HTTP POST:
+Once the Authorization Code is gathered, you send this request:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/applications/$APPLICATION_ID/accounts HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-      "providerData": {
-        "providerId": "google",
-        "code": "YOUR_GOOGLE_AUTH_CODE"
-      }
-  }
+    POST /v1/applications/YOUR_APP_ID/accounts HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+        "providerData": {
+          "providerId": "google",
+          "code": "YOUR_GOOGLE_AUTH_CODE"
+        }
+    }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/create_account_google_providerdata_code.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/create_account_google_providerdata_code.vb
+      :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_account_google_providerdata_code.java
+    :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_account_google_providerdata_code.js
+    :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_account_google_providerdata_code.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_account_google_providerdata_code.py
+    :language: python
 
 If you have already exchanged an Authorization Code for an Access Token, this can be passed to Stormpath in a similar fashion:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/applications/$APPLICATION_ID/accounts HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-      "providerData": {
-        "providerId": "google",
-        "accessToken": "ACCESS_TOKEN_FROM_GOOGLE"
-      }
-  }
+    POST /v1/applications/YOUR_APP_ID/accounts HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
 
-Either way, Stormpath will use the ``code`` or ``accessToken`` provided to retrieve information about your Google Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).
+    {
+        "providerData": {
+          "providerId": "google",
+          "accessToken": "%ACCESS_TOKEN_FROM_GOOGLE%"
+        }
+    }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/create_account_google_providerdata_access_token.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/create_account_google_providerdata_access_token.vb
+      :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_account_google_providerdata_access_token.java
+    :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_account_google_providerdata_access_token.js
+    :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_account_google_providerdata_access_token.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_account_google_providerdata_access_token.py
+    :language: python
+
+Either way, Stormpath will use the code or access token provided to retrieve information about your Google Account, then return a Stormpath Account.
+
+.. only:: rest
+
+  The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).
+
+.. only:: csharp or vbnet
+
+  The ``IProviderAccountResult`` response includes an ``IsNewAccount`` property which indicates whether the Account already existed in your Stormpath Directory or not. You can retrieve the Account details through the ``Account`` property.
+
+.. only:: java
+
+.. only:: nodejs
+
+.. only:: php
+
+.. only:: python
 
 .. _authn-facebook:
 
-5.3.2. Facebook
+4.3.2. Facebook
 ---------------
 
 Before you integrate Facebook Login with Stormpath, you must complete the following steps:
@@ -760,28 +1871,62 @@ For more information, please see the `Facebook documentation <https://developers
 Step 1: Create a Social Directory for Facebook
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Creating this Directory requires that you provide information from Facebook as a Provider resource. This can be accomplished by sending an HTTP POST:
+Creating this Directory requires that you provide information from Facebook as a Provider resource. This can be accomplished by creating a new Directory:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/directories HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-      "name" : "my-facebook-directory",
-      "description" : "A Facebook directory",
-      "provider": {
-        "providerId": "facebook",
-        "clientId":"YOUR_FACEBOOK_APP_ID",
-        "clientSecret":"YOUR_FACEBOOK_APP_SECRET"
-      }
-  }
+    POST /v1/directories HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+        "name" : "my-facebook-directory",
+        "description" : "A Facebook directory",
+        "provider": {
+          "providerId": "facebook",
+          "clientId":"YOUR_FACEBOOK_APP_ID",
+          "clientSecret":"YOUR_FACEBOOK_APP_SECRET"
+        }
+    }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/create_directory_fb.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/create_directory_fb.vb
+      :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_directory_fb.java
+    :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_directory_fb.js
+    :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_directory_fb.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_directory_fb.py
+    :language: python
 
 Step 2: Map the Facebook Directory as an Account Store for Your Application
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Creating an Account Store Mapping between your new Facebook Directory and your Stormpath Application can be done through the REST API, as described in :ref:`create-asm`.
+Creating an Account Store Mapping between your new Facebook Directory and your Stormpath Application can be done as described in :ref:`create-asm`.
 
 Step 3: Access an Account with Facebook Tokens
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -790,29 +1935,79 @@ To access or create an Account in your new Facebook Directory, you need to gathe
 
 .. note::
 
-    It is required that your Facebook application requests the ``email`` scope (or "Permission") from Facebook. If the Access Token does not grant ``email`` scope, you will not be able to get an Account with an Access Token. For more information about scopes please see `Permissions with Facebook Login <https://developers.facebook.com/docs/facebook-login/permissions/>`_.
+    It is required that your Facebook application requests the ``email`` scope from Facebook. If the access token does not grant ``email`` scope, you will not be able to get an Account with an access token. For more information about scopes please see `Permissions with Facebook Login <https://developers.facebook.com/docs/facebook-login/permissions/>`_.
 
-Once the User Access Token is gathered, you send an HTTP POST:
+Once the User Access Token is gathered, you send an this request:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/applications/$APPLICATION_ID/accounts HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-      "providerData": {
-        "providerId": "facebook",
-        "accessToken": "USER_ACCESS_TOKEN_FROM_FACEBOOK"
-      }
-  }
+    POST /v1/applications/YOUR_APP_ID/accounts HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
 
-Stormpath will use the ``accessToken`` provided to retrieve information about your Facebook Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).
+    {
+        "providerData": {
+          "providerId": "facebook",
+          "accessToken": "USER_ACCESS_TOKEN_FROM_FACEBOOK"
+        }
+    }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/create_account_fb_providerdata_access_token.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/create_account_fb_providerdata_access_token.vb
+      :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_account_fb_providerdata_access_token.java
+    :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_account_fb_providerdata_access_token.js
+    :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_account_fb_providerdata_access_token.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_account_fb_providerdata_access_token.py
+    :language: python
+
+Stormpath will use the Access Token provided to retrieve information about your Facebook Account, then return a Stormpath Account.
+
+.. only:: rest
+
+  The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).
+
+.. only:: csharp or vbnet
+
+  The ``IProviderAccountResult`` response includes an ``IsNewAccount`` property which indicates whether the Account already existed in your Stormpath Directory or not. You can retrieve the Account details through the ``Account`` property.
+
+.. only:: java
+
+.. only:: nodejs
+
+.. only:: php
+
+.. only:: python
 
 .. _authn-github:
 
-5.3.3. Github
---------------
+4.3.3. Github
+-------------
 
 Before you integrate GitHub Login with Stormpath, you must complete the following steps:
 
@@ -827,28 +2022,62 @@ For more information, please see the `GitHub documentation on registering your a
 Step 1: Create a Social Directory for GitHub
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Creating this Directory requires that you provide information from GitHub as a Provider resource. This can be accomplished by sending an HTTP POST:
+Creating this Directory requires that you provide information from GitHub as a Provider resource. This can be accomplished by creating a new Directory:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/directories HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-      "name" : "my-github-directory",
-      "description" : "A GitHub directory",
-      "provider": {
-        "providerId": "github",
-        "clientId":"YOUR_GITHUB_CLIENT_ID",
-        "clientSecret":"YOUR_GITHUB_CLIENT_SECRET"
-      }
-  }
+    POST /v1/directories HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+        "name" : "my-github-directory",
+        "description" : "A GitHub directory",
+        "provider": {
+          "providerId": "github",
+          "clientId":"YOUR_GITHUB_CLIENT_ID",
+          "clientSecret":"YOUR_GITHUB_CLIENT_SECRET"
+        }
+    }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/create_directory_github.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/create_directory_github.vb
+      :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_directory_github.java
+    :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_directory_github.js
+    :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_directory_github.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_directory_github.py
+    :language: python
 
 Step 2: Map the GitHub Directory as an Account Store for Your Application
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Creating an Account Store Mapping between your new GitHub Directory and your Stormpath Application can be done through the REST API, as described in :ref:`create-asm`.
+Creating an Account Store Mapping between your new GitHub Directory and your Stormpath Application can be done as described in :ref:`create-asm`.
 
 Step 3: Access an Account with GitHub Tokens
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -859,29 +2088,83 @@ Generally, this will include embedding a link in your site that will send an aut
 
 .. note::
 
-    It is required that your GitHub application requests the ``user:email`` scope from GitHub. If the access token does not grant ``user:email`` scope, you will not be able to get an Account with an access token. For more information about see `Github's documentation on OAuth scopes <https://developer.github.com/v3/oauth/#scopes>`_.
+    It is required that your GitHub application requests the ``user:email`` scope from GitHub. If the access token does not grant ``user:email`` scope, you will not be able to get an Account with an access token. For more information about this see `Github's documentation on OAuth scopes <https://developer.github.com/v3/oauth/#scopes>`_.
 
-Once the Authorization Code is gathered, you need to use the `Github Access Token Endpoint <https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site>`_ to exchange this code for an Access Token.  Then you can send an HTTP POST to Stormpath:
+Once the Authorization Code is gathered, you need to use the `Github Access Token Endpoint <https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site>`_ to exchange this code for an access token.  Then you can send this information to Stormpath:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/applications/$APPLICATION_ID/accounts HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-    "providerData": {
-      "providerId": "github",
-      "accessToken": "ACCESS_TOKEN_FROM_GITHUB"
+    POST /v1/applications/$APPLICATION_ID/accounts HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "providerData": {
+        "providerId": "github",
+        "accessToken": "ACCESS_TOKEN_FROM_GITHUB"
+      }
     }
-  }
 
-Stormpath will use the ``accessToken`` provided to retrieve information about your GitHub Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/create_account_github_providerdata_access_token.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/create_account_github_providerdata_access_token.vb
+      :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_account_github_providerdata_access_token.java
+    :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_account_github_providerdata_access_token.js
+    :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_account_github_providerdata_access_token.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_account_github_providerdata_access_token.py
+    :language: python
+
+Stormpath will use the Access Token provided to retrieve information about your GitHub Account, then return a Stormpath Account.
+
+.. only:: rest
+
+  The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).
+
+.. only:: csharp or vbnet
+
+  The ``IProviderAccountResult`` response includes an ``IsNewAccount`` property which indicates whether the Account already existed in your Stormpath Directory or not. You can retrieve the Account details through the ``Account`` property.
+
+.. only:: java
+
+ (todo)
+
+.. only:: nodejs
+
+ (todo)
+
+.. only:: python
+
+ (todo)
 
 .. _authn-linkedin:
 
-5.3.4 LinkedIn
----------------
+4.3.4 LinkedIn
+--------------
 
 Before you integrate LinkedIn Login with Stormpath, you must complete the following steps:
 
@@ -896,28 +2179,62 @@ For more information, please see `LinkedIn's OAuth documentation <https://develo
 Step 1: Create a Social Directory for LinkedIn
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Creating this Directory requires that you provide information from LinkedIn as a Provider resource. This can be accomplished by sending an HTTP POST:
+Creating this Directory requires that you provide information from LinkedIn as a Provider resource. This can be accomplished by creating a new Directory:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/directories HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-      "name" : "my-linkedin-directory",
-      "description" : "A LinkedIn Directory",
-      "provider": {
-        "providerId": "linkedin",
-        "clientId":"YOUR_LINKEDIN_APP_ID",
-        "clientSecret":"YOUR_LINKEDIN_APP_SECRET"
-      }
-  }
+    POST /v1/directories HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+        "name" : "my-linkedin-directory",
+        "description" : "A LinkedIn Directory",
+        "provider": {
+          "providerId": "linkedin",
+          "clientId":"YOUR_LINKEDIN_APP_ID",
+          "clientSecret":"YOUR_LINKEDIN_APP_SECRET"
+        }
+    }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/create_directory_linkedin.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/create_directory_linkedin.vb
+      :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_directory_linkedin.java
+    :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_directory_linkedin.js
+    :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_directory_linkedin.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_directory_linkedin.py
+    :language: python
 
 Step 2: Map the LinkedIn Directory as an Account Store for Your Application
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Creating an Account Store Mapping between your new LinkedIn Directory and your Stormpath Application can be done through the REST API, as described in :ref:`create-asm`.
+Creating an Account Store Mapping between your new LinkedIn Directory and your Stormpath Application can be done as described in :ref:`create-asm`.
 
 Step 3: Access an Account with LinkedIn Tokens
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -930,42 +2247,99 @@ Generally, this will include embedding a link in your site that will send an aut
 
     It is required that your LinkedIn application requests the ``r_basicprofile`` and ``r_emailaddress`` scopes (or "fields") from LinkedIn. If the Authorization Code does not grant these scopes, you will not be able to get an Account. For more information about LinkedIn scopes, see `LinkedIn's "Profile Fields" documentation <https://developer.linkedin.com/docs/fields>`_.
 
-Once the Authorization Code is gathered, you can send an HTTP POST:
+Once the Authorization Code is gathered, you can send it to Stormpath::
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/applications/$APPLICATION_ID/accounts HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-    "providerData": {
-      "providerId": "linkedin",
-      "code": "YOUR_LINKEDIN_AUTH_CODE"
-    }
-  }
+    POST /v1/applications/$APPLICATION_ID/accounts HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "providerData": {
+        "providerId": "linkedin",
+        "code": "YOUR_LINKEDIN_AUTH_CODE"
+      }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/create_account_linkedin_providerdata_access_token.cs
+      :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/create_account_linkedin_providerdata_access_token.vb
+      :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_account_linkedin_providerdata_access_token.java
+    :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_account_linkedin_providerdata_access_token.js
+    :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_account_linkedin_providerdata_access_token.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_account_linkedin_providerdata_access_token.py
+    :language: python
 
 If you have already exchanged the code for an Access Token, you can send that instead:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/applications/$APPLICATION_ID/accounts HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-    "providerData": {
-      "providerId": "linkedin",
-      "accessToken": "ACCESS_TOKEN_FROM_LINKEDIN"
+    POST /v1/applications/$APPLICATION_ID/accounts HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "providerData": {
+        "providerId": "linkedin",
+        "accessToken": "ACCESS_TOKEN_FROM_LINKEDIN"
+      }
     }
-  }
 
-Stormpath will use the ``code`` or ``accessToken`` provided to retrieve information about your LinkedIn Account, then return a Stormpath Account. The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).
+.. todo::
+
+  only sections for the other languages!
+
+Stormpath will use the ``code`` or ``accessToken`` provided to retrieve information about your LinkedIn Account, then return a Stormpath Account.
+
+.. only:: rest
+
+  The HTTP Status code will tell you if the Account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200).
+
+.. only:: csharp or vbnet
+
+  The ``IProviderAccountResult`` response includes an ``IsNewAccount`` property which indicates whether the Account already existed in your Stormpath Directory or not. You can retrieve the Account details through the ``Account`` property.
+
+.. only:: java
+
+ (todo)
+
+.. only:: nodejs
+
+ (todo)
+
+.. only:: python
 
 .. _ldap-dir-authn:
 
-5.4. Authenticating Against an LDAP Directory
-=====================================================
+4.4. Authenticating Against an LDAP Directory
+=============================================
 
 .. contents::
   :local:
@@ -983,73 +2357,110 @@ The step-by-step process for setting-up LDAP login is as follows:
 .. _authn-ldap-dir-creation:
 
 Step 1: Create an LDAP Directory
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-HTTP POST a new Directory resource to the ``/directories`` endpoint. This Directory will contain a :ref:`ref-provider` resource with ``providerId`` set to ``ldap`` or ``ad``. This Provider resource will in turn contain an :ref:`ref-ldap-agent` object, which in turn also contains a few nested configuration resources.
+.. only:: rest
 
-.. note::
+  HTTP POST a new Directory resource to the ``/directories`` endpoint. This Directory will contain a :ref:`ref-provider` resource with ``providerId`` set to ``ldap`` or ``ad``. This Provider resource will in turn contain an :ref:`ref-ldap-agent` object, which in turn also contains a few nested configuration resources.
 
-  All of these must be passed at the same time:
+  .. note::
 
-  .. code-block:: none
+    All of these must be passed at the same time:
 
-    directory
-      └──provider
-          └──agent
-              └──config
-                  ├──accountConfig
-                  └──groupConfig
+    .. code-block:: none
 
-The full Directory object, with all of the required resources, will look like this:
+      directory
+        └──provider
+            └──agent
+                └──config
+                    ├──accountConfig
+                    └──groupConfig
 
-.. code-block:: http
+  The full Directory object, with all of the required resources, will look like this:
 
-    POST /v1/directories HTTP/1.1
-    Host: api.stormpath.com
-    Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-    {
-      "name":"My LDAP Directory",
-      "description":"An LDAP Directory created with the Stormpath API",
-      "provider":{
-        "providerId":"ldap",
-        "agent":{
-          "config":{
-            "directoryHost":"ldap.local",
-            "directoryPort":"636",
-            "sslRequired":true,
-            "agentUserDn":"tom@stormpath.com",
-            "agentUserDnPassword":"StormpathRulez",
-            "baseDn":"dc=example,dc=com",
-            "pollInterval":60,
-            "accountConfig":{
-              "dnSuffix":"ou=employees",
-              "objectClass":"person",
-              "objectFilter":"(cn=finance)",
-              "emailRdn":"email",
-              "givenNameRdn":"givenName",
-              "middleNameRdn":"middleName",
-              "surnameRdn":"sn",
-              "usernameRdn":"uid",
-              "passwordRdn":"userPassword"
-            },
-            "groupConfig":{
-              "dnSuffix":"ou=groups",
-              "objectClass":"groupOfUniqueNames",
-              "objectFilter":"(ou=*-group)",
-              "nameRdn":"cn",
-              "descriptionRdn":"description",
-              "membersRdn":"uniqueMember"
+      POST /v1/directories HTTP/1.1
+      Host: api.stormpath.com
+      Content-Type: application/json;charset=UTF-8
+
+      {
+        "name":"My LDAP Directory",
+        "description":"An LDAP Directory created with the Stormpath API",
+        "provider":{
+          "providerId":"ldap",
+          "agent":{
+            "config":{
+              "directoryHost":"ldap.local",
+              "directoryPort":"636",
+              "sslRequired":true,
+              "agentUserDn":"tom@stormpath.com",
+              "agentUserDnPassword":"StormpathRulez",
+              "baseDn":"dc=example,dc=com",
+              "pollInterval":60,
+              "referralMode":"ignore",
+              "ignoreReferralIssues":false,
+              "accountConfig":{
+                "dnSuffix":"ou=employees",
+                "objectClass":"person",
+                "objectFilter":"(cn=finance)",
+                "emailRdn":"email",
+                "givenNameRdn":"givenName",
+                "middleNameRdn":"middleName",
+                "surnameRdn":"sn",
+                "usernameRdn":"uid",
+                "passwordRdn":"userPassword"
+              },
+              "groupConfig":{
+                "dnSuffix":"ou=groups",
+                "objectClass":"groupOfUniqueNames",
+                "objectFilter":"(ou=*-group)",
+                "nameRdn":"cn",
+                "descriptionRdn":"description",
+                "membersRdn":"uniqueMember"
+              }
             }
           }
         }
       }
-    }
 
-For more information about all of these values, please see the Reference chapter :ref:`ref-directory` section, with special attention to the :ref:`ref-ldap-agent` sub-section.
+  For more information about all of these values, please see the Reference chapter :ref:`ref-directory` section.
+
+.. only:: csharp or vbnet
+
+  .. warning::
+
+    The ability to create an LDAP directory is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #167 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/167>`_ on Github.
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_directory_ldap.java
+    :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_directory_ldap.js
+    :language: javascript
+
+.. only:: php
+
+  .. warning::
+
+    This feature is not yet available in the PHP SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #148 <https://github.com/stormpath/stormpath-sdk-php/issues/148>`_ on Github.
+
+    .. todo::
+
+      Add SAML directory creation .NET example
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_directory_ldap.py
+    :language: python
 
 Step 2: Install your LDAP Agent
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Once the Directory, Provider and Agent are created, installing your Agent is done in three steps.
 
@@ -1096,9 +2507,9 @@ In Unix:
 The Agent will start synchronizing immediately, pushing the configured data to Stormpath. You will see the synchronized user Accounts and Groups appear in the Stormpath Directory, and the Accounts will be able to log in to any Stormpath-enabled application that you assign. When the Agent detects local changes, additions or deletions to the mirrored Accounts or Groups, it will automatically propagate those changes to Stormpath.
 
 Step 3: Map the LDAP Directory as an Account Store for Your Application
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Creating an Account Store Mapping between your new LDAP Directory and your Stormpath Application can be done through the REST API, as described in :ref:`create-asm`.
+Creating an Account Store Mapping between your new LDAP Directory and your Stormpath Application can be done as described in :ref:`create-asm`.
 
 The log-in process will now proceed as it would for :ref:`any other kind of Directory <how-login-works>`.
 
@@ -1108,7 +2519,7 @@ The log-in process will now proceed as it would for :ref:`any other kind of Dire
 
 .. _saml-authn:
 
-5.5. Authenticating Against a SAML Directory
+4.5. Authenticating Against a SAML Directory
 ============================================
 
 .. contents::
@@ -1127,7 +2538,7 @@ If you'd like to understand the steps involved in a SAML login, see the :ref:`SA
 
 .. _saml-overview:
 
-5.5.1. Stormpath as a Service Provider
+4.5.1. Stormpath as a Service Provider
 --------------------------------------
 
 As mentioned above, Stormpath supports both Service Provider (SP) initiated and Identity Provider (IdP) initiated SAML authentication.  In SAML terminology, the user is the **User Agent**, your application (along with Stormpath) is the **Service Provider**, and the third-party SAML authentication site is the **Identity Provider** or **IdP**.
@@ -1145,7 +2556,7 @@ The IdP initiated process looks like this:
 #. Service Provider receives SAML assertions and either creates or retrieves Account information
 
 Service Provider Initiated SAML Authentication
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In this scenario, a user requests a protected resource (e.g. your application). Your application, with the help of Stormpath, then confirms the user's identity in order to determine whether they are able to access the resource.
 
@@ -1157,14 +2568,14 @@ The broad strokes of the process are as follows:
 #. Identity provider redirects user back to Service Provider along with SAML assertions.
 #. Service Provider receives SAML assertions and either creates or retrieves Account information
 
-In both cases, just like with Mirror and Social Directories, the user information that is returned from the IdP is used by Stormpath to either identify an existing Account resource, or create a new one. In the case of new Account creation, Stormpath will map the information in the response onto its own resources. In the following section we will walk you through the process of configuring your SAML Directory, as well as giving you an overview of how the SAML Authentication process works.
+In both cases, just like with Mirror and Social Directories, the user information that is returned from the IdP is used by Stormpath to either identify an existing Account resource, or create a new one. In the case of new Account creation, Stormpath will map the information in the response onto its own resources. In the following section you will walk you through the process of configuring your SAML Directory, as well as giving you an overview of how the SAML Authentication process works.
 
 For a more detailed step-by-step account of SAML login, see :ref:`below <saml-flow>`.
 
 .. _saml-configuration:
 
-5.5.2. Configuring SAML
-------------------------
+4.5.2. Configuring SAML
+-----------------------
 
 .. todo::
 
@@ -1231,7 +2642,7 @@ Step 1: Set-up Salesforce
 #. Also click on **Download Metadata**, which will download an XML file which you will use in the very next step.
 
 1.2. Set-up Single Sign On
-++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++
 
 #. From **Administer**, click on **Security Controls** then **Single Sign-On Settings**.
 
@@ -1242,7 +2653,7 @@ Step 1: Set-up Salesforce
 #. Select the metadata XML file that you downloaded in step 1.1 above, then click **Create**.
 
 1.3. Create a Connected App
-++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++
 
 #. In the navigation pane on the left, under **Build**, find the **Create** section, then click on **Apps**.
 
@@ -1254,14 +2665,14 @@ Step 1: Set-up Salesforce
 
 #. For the "Entity ID" field enter in ``changeme`` as a temporary value
 
-#. For the "ACS URL" we will also enter in a temporary value: ``http://example.com``
+#. For the "ACS URL" you will also enter in a temporary value: ``http://example.com``
 
 #. For "Name ID Format" select the "emailAddress" format. Unlike the other two, this value is not temporary.
 
 #. Click **Save**.
 
 1.4. Get your SSO URLs
-++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++
 
 You will now be on your Connected App's page.
 
@@ -1270,12 +2681,12 @@ You will now be on your Connected App's page.
 #. Under "SAML Login Information", copy the "SP-Initiated Redirect Endpoint". It will be a URL ending in ``idp/endpoint/HttpRedirect``. This value will be used for both your "SSO Login URL" and "SSO Logout URL" when you are setting up your Stormpath SAML Directory.
 
 Step 2: Create Your SAML Directory in Stormpath
-""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""
 
-You will now create our SAML Directory in Stormpath, using the values you gathered in the previous step. Then you will use information from this newly-created Directory to configure Stormpath as a Service Provider in the IdP in the next step.
+You will now create your SAML Directory in Stormpath, using the values you gathered in the previous step. Then you will use information from this newly-created Directory to configure Stormpath as a Service Provider in the IdP in the next step.
 
 2.1. Create Your SAML Directory
-++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++
 
 #. Log in to the Stormpath Admin Console: https://api.stormpath.com
 
@@ -1296,7 +2707,7 @@ You will now create our SAML Directory in Stormpath, using the values you gather
 #. Once all this information is entered, click on **Create Directory**. At this point, you will arrive back on the main Directories page.
 
 2.2. Gather Your SAML Directory Information
-+++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++
 
 Find and click on your new SAML Directory.
 
@@ -1324,7 +2735,7 @@ You will now enter in your Directory information:
 #. Under the "Profiles" section, you will need to click on **Manage Profiles** and select profiles appropriate to the users that will be logging in to your app. For more information about profiles, see the `Salesforce documentation <https://help.salesforce.com/apex/HTViewHelpDoc?id=admin_userprofiles.htm&language=en>`__.
 
 Step 4: Configure Your Application in Stormpath
-""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""
 
 We will now complete the final steps in the Stormpath Admin Console: adding one or more Callback URIs to the Application, and mapping your SAML Directory to your Application.
 
@@ -1345,33 +2756,74 @@ We will now complete the final steps in the Stormpath Admin Console: adding one 
 Step 5: Configure Your Attribute Mappings
 """""""""""""""""""""""""""""""""""""""""
 
-When a new Account logs in via SAML, the IdP sends along a number of SAML attributes. These attributes are mapped to Stormpath :ref:`Account attributes <ref-account>` (such as ``givenName`` or ``email``) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step we will configure how these IdP SAML Attributes are mapped to Stormpath attributes.
+When a new Account logs in via SAML, the IdP sends along a number of SAML attributes. These attributes are mapped to Stormpath :ref:`Account attributes <ref-account>` (such as ``givenName`` or ``email``) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step you will configure how these IdP SAML Attributes are mapped to Stormpath attributes.
 
-5.1. Find the Existing SAML Attributes
-+++++++++++++++++++++++++++++++++++++++++++++
+4.1. Find the Existing SAML Attributes
+++++++++++++++++++++++++++++++++++++++
 
 If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that Salesforce sends by retrieving the new user Account that was created inside Stormpath.
 
-Specifically, you want that Account's ``providerData`` resource:
+Specifically, you want that Account's Provider Data:
 
-.. code-block:: json
+.. only:: rest
 
-  {
-    "href":"https://api.stormpath.com/v1/accounts/xbKQemsqW3HcpfeXAMPLE/providerData",
-    "createdAt":"2016-01-20T17:56:25.532Z",
-    "modifiedAt":"2016-01-20T17:57:22.530Z",
-    "email":"saml+testuser@email.com",
-    "is_portal_user":"false",
-    "providerId":"saml",
-    "userId":"00536000000G4ft",
-    "username":"saml+testuser@email.com"
-  }
+  .. code-block:: json
 
-Everything here other than ``href``, ``createdAt`` and ``modifiedAt`` are Attributes passed by Salesforce.
+    {
+      "href":"https://api.stormpath.com/v1/accounts/xbKQemsqSForceXAMPLE/providerData",
+      "createdAt":"2016-01-20T17:56:25.532Z",
+      "modifiedAt":"2016-01-20T17:57:22.530Z",
+      "email":"saml+testuser@email.com",
+      "is_portal_user":"false",
+      "providerId":"saml",
+      "userId":"00536000000G4ft",
+      "username":"saml+testuser@email.com"
+    }
+
+  Everything here other than ``href``, ``createdAt`` and ``modifiedAt`` are Attributes passed by Salesforce.
+
+.. only:: csharp or vbnet
+
+  .. warning::
+
+    The ability to inspect SAML Provider Data is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #171 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/171>`_ on Github.
+
+  .. todo::
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/saml_salesforce_account_providerdata.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/saml_salesforce_account_providerdata.vb
+          :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/saml_salesforce_account_providerdata.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/saml_salesforce_account_providerdata.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/saml_salesforce_account_providerdata.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/saml_salesforce_account_providerdata.py
+      :language: python
 
 Now the ``email`` Attribute has already been passed as part of the Account creation, but you can also map the other SAML Attributes to Stormpath Account attributes as well.
 
-5.2. (Optional) Add Any Additional Attributes You Want
+4.2. (Optional) Add Any Additional Attributes You Want
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 If there are other attributes that you would like Salesforce to pass other attributes, you can configure this. From your Salesforce settings page:
@@ -1391,7 +2843,7 @@ For example:
 
 You will now be returned to your App's main page, and you will see the attribute you just added in the "Custom Attributes" section. You can add as many attributes as you wish.
 
-5.3. Specify Your Mapping
+4.3. Specify Your Mapping
 +++++++++++++++++++++++++
 
 #. Go to your `Stormpath Admin Console <https://api.stormpath.com/>`__
@@ -1402,7 +2854,7 @@ You will now be returned to your App's main page, and you will see the attribute
 #. (Optional) Under "Name Format" you can enter ``urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified``
 #. Finally, enter the Account attribute(s) that you would like this Salesforce attribute to map to
 
-For example, you could enter, using the custom attribute from Step 5.2 above:
+For example, you could enter, using the custom attribute from Step 4.2 above:
 
 * For the "Name" enter ``firstname``
 * For "Stormpath Attributes" enter ``givenName``
@@ -1432,7 +2884,7 @@ Step 1: Set-up OneLogin
 #. Give your app a name and click **Save**
 
 Step 2: Gather Your Identity Provider Information
-""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""
 
 You will now need to gather the following pieces of information:
 
@@ -1451,7 +2903,7 @@ Click on **SSO** in your App's navigation pane.
 #. Copy the contents of the "X.509 Certificate" text box, starting with the line ``-----BEGIN CERTIFICATE-----`` and ending with ``-----END CERTIFICATE-----``. The contents of this file are your "SAML X.509 Signing Cert".
 
 2.2. The SSO Login / Logout URLs
-+++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++
 
 Return to the **App** > **SSO** section. On this page there are two different URLS:
 
@@ -1459,12 +2911,12 @@ Return to the **App** > **SSO** section. On this page there are two different UR
 #. Copy the "SLO Endpoint (HTTP)", which is the "SSO Logout URL".
 
 Step 3: Create Your SAML Directory in Stormpath
-""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""
 
-We will now create our SAML Directory in Stormpath, using the values we gathered in the previous step. Then we will use information from this newly-created Directory to configure Stormpath as a Service Provider in the IdP in the next step.
+We will now create your SAML Directory in Stormpath, using the values you gathered in the previous step. Then you will use information from this newly-created Directory to configure Stormpath as a Service Provider in the IdP in the next step.
 
 3.1. Create Your SAML Directory
-++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++
 
 #. Log in to the Stormpath Admin Console: https://api.stormpath.com
 
@@ -1487,7 +2939,7 @@ We will now create our SAML Directory in Stormpath, using the values we gathered
 #. Once all this information is entered, click on **Create Directory**. At this point, you will arrive back on the main Directories page.
 
 3.2. Gather Your SAML Directory Information
-++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++
 
 #. Find and click on your new SAML Directory.
 
@@ -1509,7 +2961,7 @@ Step 4: Configure Your Service Provider in Your IdP
 #. Now click on **Parameters** in the App navigation pane. On this page, you need to ensure that your "Email (SAML NameID)" field has the value "Email", which it should by default.
 
 Step 5: Configure Your Application in Stormpath
-""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""
 
 We will now complete the final steps in the Stormpath Admin Console: adding one or more Callback URIs to the Application, and mapping your SAML Directory to your Application.
 
@@ -1532,29 +2984,70 @@ You have now completed the initial steps of setting-up log in via OneLogin.
 Step 6: Configure Your Attribute Mappings
 """""""""""""""""""""""""""""""""""""""""
 
-When a new Account logs in via SAML, the IdP sends along a number of SAML attributes. These attributes are mapped to Stormpath :ref:`Account attributes <ref-account>` (such as ``givenName`` or ``email``) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step we will configure how these IdP SAML Attributes are mapped to Stormpath attributes.
+When a new Account logs in via SAML, the IdP sends along a number of SAML attributes. These attributes are mapped to Stormpath :ref:`Account attributes <ref-account>` (such as ``givenName`` or ``email``) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step you will configure how these IdP SAML Attributes are mapped to Stormpath attributes.
 
 6.1. Find the Existing SAML Attributes
-+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++
 
 If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that OneLogin sends by retrieving the new user Account that was created inside Stormpath.
 
 Specifically, you want that Account's ``providerData`` resource:
 
-.. code-block:: json
+.. only:: rest
 
-  {
-    "href":"https://api.stormpath.com/v1/accounts/2i6Rxkcf8NFsIA9eXaMPle/providerData",
-    "createdAt":"2016-01-21T18:11:09.838Z",
-    "modifiedAt":"2016-01-21T18:13:39.102Z",
-    "PersonImmutableID":"samltestuser",
-    "User.FirstName":"John",
-    "User.LastName":"Samlton",
-    "User.email":"saml+testuser@example.com",
-    "providerId":"saml"
-  }
+  .. code-block:: json
 
-Everything here other than ``href``, ``createdAt`` and ``modifiedAt`` are Attributes passed by OneLogin.
+    {
+      "href":"https://api.stormpath.com/v1/accounts/2i6RxkcOneLogineXaMPle/providerData",
+      "createdAt":"2016-01-21T18:11:09.838Z",
+      "modifiedAt":"2016-01-21T18:13:39.102Z",
+      "PersonImmutableID":"samltestuser",
+      "User.FirstName":"John",
+      "User.LastName":"Samlton",
+      "User.email":"saml+testuser@example.com",
+      "providerId":"saml"
+    }
+
+  Everything here other than ``href``, ``createdAt`` and ``modifiedAt`` are Attributes passed by OneLogin.
+
+.. only:: csharp or vbnet
+
+  .. warning::
+
+    The ability to inspect SAML Provider Data is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #171 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/171>`_ on Github.
+
+  .. todo::
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/saml_onelogin_account_providerdata.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/saml_onelogin_account_providerdata.vb
+          :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/saml_onelogin_account_providerdata.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/saml_onelogin_account_providerdata.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/saml_onelogin_account_providerdata.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/saml_onelogin_account_providerdata.py
+      :language: python
 
 Now the ``email`` Attribute has already been passed as part of the Account creation, but you can also map the other attributes to Stormpath Account attributes as well.
 
@@ -1625,7 +3118,7 @@ Step 1: Set-up Okta
 
 #. Click **Next** at the bottom of the page.
 
-#. On the "Feedback" page, select **I'm an Okta customer adding an internal app** and **This is an internal app that we have created**, then select **Finish**.
+#. On the "Feedback" page, select **I'm an Okta customer adding an internal app** and **This is an internal app that you have created**, then select **Finish**.
 
 You will now arrive at your App's Admin page.
 
@@ -1644,15 +3137,15 @@ You will now need to gather the required IdP information:
 
 .. note::
 
-    It is recommended that you stay on this page, as we will be returning here in Step 3 to add more configuration details.
+    It is recommended that you stay on this page, as you will be returning here in Step 3 to add more configuration details.
 
 Step 3: Create Your SAML Directory in Stormpath
 """"""""""""""""""""""""""""""""""""""""""""""""""""
 
-We will now create our SAML Directory in Stormpath, using the values we gathered in the previous step. Then we will use information from this newly-created Directory to configure Stormpath as a Service Provider in the IdP in the next step.
+We will now create your SAML Directory in Stormpath, using the values you gathered in the previous step. Then you will use information from this newly-created Directory to configure Stormpath as a Service Provider in the IdP in the next step.
 
 3.1. Create Your SAML Directory
-+++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++
 
 #. Log in to the Stormpath Admin Console: https://api.stormpath.com
 
@@ -1686,7 +3179,7 @@ In the "SAML Identity Provider Configuration" section:
 We will now input these values into the Identity Provider.
 
 Step 4: Configure Your Service Provider in Your IdP
-""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 
 #. Back in your App's "General" tab, find the "SAML Settings" section and click **Edit**.
 
@@ -1697,7 +3190,7 @@ Step 4: Configure Your Service Provider in Your IdP
 #. Copy the "Entity ID" URN into the "Audience URI (SP Entity ID)", also replacing the dummy value.
 
 Step 5: Configure Your Application in Stormpath
-""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""
 
 We will now complete the final steps in the Stormpath Admin Console: adding one or more Callback URIs to the Application, and mapping your SAML Directory to your Application.
 
@@ -1720,7 +3213,7 @@ We will now complete the final steps in the Stormpath Admin Console: adding one 
 Step 6: Configure Your Attribute Mappings
 """""""""""""""""""""""""""""""""""""""""
 
-When a new Account logs in via SAML, the IdP sends along a number of SAML attributes. These attributes are mapped to Stormpath :ref:`Account attributes <ref-account>` (such as ``givenName`` or ``email``) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step we will configure how these IdP SAML Attributes are mapped to Stormpath attributes.
+When a new Account logs in via SAML, the IdP sends along a number of SAML attributes. These attributes are mapped to Stormpath :ref:`Account attributes <ref-account>` (such as ``givenName`` or ``email``) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step you will configure how these IdP SAML Attributes are mapped to Stormpath attributes.
 
 6.1. Find the Existing SAML Attributes
 ++++++++++++++++++++++++++++++++++++++
@@ -1728,6 +3221,96 @@ When a new Account logs in via SAML, the IdP sends along a number of SAML attrib
 If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that Okta sends by retrieving the new user Account that was created inside Stormpath.
 
 Specifically, you want that Account's ``providerData`` resource:
+
+.. only:: rest
+
+  .. code-block:: json
+
+    {
+      "href":"https://api.stormpath.com/v1/accounts/6Y2ViNhE5GOktaExample/providerData",
+      "createdAt":"2016-03-09T18:16:16.116Z",
+      "modifiedAt":"2016-03-25T14:49:30.098Z",
+      "providerId":"saml"
+    }
+
+.. only:: csharp or vbnet
+
+  .. warning::
+
+    The ability to inspect SAML Provider Data is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #171 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/171>`_ on Github.
+
+  .. todo::
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/saml_okta_account_providerdata.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/saml_okta_account_providerdata.vb
+          :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/saml_okta_account_providerdata.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/saml_okta_account_providerdata.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/saml_okta_account_providerdata.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/saml_okta_account_providerdata.py
+    :language: python
+
+As you can see there are no default attributes passed by Okta, but you can map any attributes you like to the Stormpath Account attributes as well.
+
+6.2. (Optional) Add Any Additional Attributes You Want
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+If there are attributes that you would like Okta to pass other attributes, you can configure this. From your Okta Admin settings page:
+
+#. Click on the **Applications** tab in the top navigation pane
+#. Select your Application
+#. In the "SAML Settings" section, click on **Edit**
+#. You will arrive on "General Settings", click **Next**
+#. On the "Configure SAML" page, you will see a section called "Attribute Statements". Here you can specify whatever additional attributes that you would like to be sent.
+
+For example:
+
+* For "Name" enter ``firstName``
+* (Optional) For "Name format" you can select "Basic"
+* For the "Value" you would choose "user:firstName"
+* Click "Next" and on the next page "Finish"
+
+You will now be returned to your App's "Sign on" page. If you click on the "General" tab, you will see the attribute you just added in the "Attribute Statements" section. You can add as many attributes as you wish.
+
+6.3. Specify Your Mapping
++++++++++++++++++++++++++
+
+#. Go to your `Stormpath Admin Console <https://api.stormpath.com/>`__
+#. Click on the **Directories** tab
+#. Select your Okta SAML Directory
+#. Under the "SAML Attribute Statement Mapping Rules" section you will see three fields: "Name", "Name Format", and "Stormpath Attributes"
+#. Here you will enter the Okta attribute name under "Name"
+#. (Optional) Under "Name Format" you can enter ``Basic``
+#. Finally, enter the Account attribute(s) that you would like this Okta attribute to map to.
+
+For example, you could enter:
+
+* For the "Name" enter ``firstName``
+* For "Stormpath Attributes" enter ``givenName``
+
+If a user now logs in, Stormpath will take the ``firstName`` attribute and map it to the ``givenName`` field on the Account resource.
 
 .. code-block:: json
 
@@ -1907,7 +3490,7 @@ Step 5: Configure Your Attribute Mappings
 
 When a new Account logs in via SAML, the IdP sends along a number of SAML attributes. These attributes are mapped to Stormpath :ref:`Account attributes <ref-account>` (such as ``givenName`` or ``email``) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step we will configure how these IdP SAML Attributes are mapped to Stormpath attributes.
 
-5.1. Find the Existing SAML Attributes
+4.1. Find the Existing SAML Attributes
 +++++++++++++++++++++++++++++++++++++++++++++
 
 If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that Ping sends by retrieving the new user Account that was created inside Stormpath.
@@ -1929,7 +3512,7 @@ Everything here other than ``href``, ``createdAt`` and ``modifiedAt`` are Attrib
 
 If you want, you can map other SAML Attributes to Stormpath Account attributes.
 
-5.2. (Optional) Add Any Additional Attributes You Want
+4.2. (Optional) Add Any Additional Attributes You Want
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 If there are other attributes that you would like Ping to pass, you can configure this.
@@ -1945,7 +3528,7 @@ If there are other attributes that you would like Ping to pass, you can configur
 #. Under "Identity Bridge Attribute or Literal Value" you can click on the textbox to see a list of available values. For this example, you'd select **First Name**.
 #. Finally click on **Save & Publish** and, on the next page, **Finish**.
 
-5.3. Specify Your Mapping
+4.3. Specify Your Mapping
 +++++++++++++++++++++++++
 
 #. Go to your `Stormpath Admin Console <https://api.stormpath.com/>`__
@@ -1955,7 +3538,7 @@ If there are other attributes that you would like Ping to pass, you can configur
 #. Here you will enter the Ping attribute name under "Name"
 #. Finally, enter the Account attribute(s) that you would like this Ping attribute to map to
 
-For example, you could enter, using the custom attribute from Step 5.2 above:
+For example, you could enter, using the custom attribute from Step 4.2 above:
 
 * For the "Name" enter ``firstname``
 * For "Stormpath Attributes" enter ``givenName``
@@ -1966,10 +3549,10 @@ You have now completed the initial steps of setting-up log in via Ping.
 
 .. _saml-configuration-rest:
 
-5.5.3. Configuring SAML via REST
+4.5.3. Configuring SAML via REST
 --------------------------------
 
-Here we will explain to you the steps that are required to configure Stormpath as a SAML Service Provider using only the REST API.
+Here you will explain to you the steps that are required to configure Stormpath as a SAML Service Provider using only the REST API.
 
 It is recommend that you configure SAML using the Stormpath Admin console, as explained in the above :ref:`IdP-specific configuration instructions <saml-configuration>`. However, understanding the REST underpinnings of those instructions will allow you to automate some or all of the configuration process, if that is something that your application requires.
 
@@ -1992,27 +3575,68 @@ You will need the following information from your IdP:
 - **Signing Algorithm** - You will need the name of the signing algorithm that your IdP uses. It will be either "RSA-SHA256" or "RSA-SHA1".
 
 Step 2: Configure Your SAML Directory
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Input the data you gathered in Step 1 above into your Directory's Provider resource, and then pass that along as part of the Directory creation request:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/directories HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-    "name" : "My SAML Directory",
-    "description" : "A Directory used for SAML Authorization",
-    "provider": {
-      "providerId":"saml",
-      "ssoLoginUrl":"https://yourIdp.com/saml2/sso/login",
-      "ssoLogoutUrl":"https://yourIdp.com/saml2/sso/logout",
-      "encodedX509SigningCert":"-----BEGIN CERTIFICATE-----\n...Certificate goes here...\n-----END CERTIFICATE-----",
-      "requestSignatureAlgorithm":"RSA-SHA256"
+    POST /v1/directories HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "name" : "My SAML Directory",
+      "description" : "A Directory used for SAML Authorization",
+      "provider": {
+        "providerId":"saml",
+        "ssoLoginUrl":"https://yourIdp.com/saml2/sso/login",
+        "ssoLogoutUrl":"https://yourIdp.com/saml2/sso/logout",
+        "encodedX509SigningCert":"-----BEGIN CERTIFICATE-----\n...Certificate goes here...\n-----END CERTIFICATE-----",
+        "requestSignatureAlgorithm":"RSA-SHA256"
+      }
     }
-  }
+
+.. only:: csharp or vbnet
+
+.. warning::
+
+  The ability to create SAML Directories is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+  For updates, you can follow `ticket #111 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/111>`_ on Github.
+
+  .. todo::
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/create_directory_saml.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/create_directory_saml.vb
+          :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_directory_saml.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_directory_saml.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_directory_saml.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_directory_saml.py
+      :language: python
 
 .. note::
 
@@ -2027,45 +3651,157 @@ Next you will have to configure your Stormpath-powered application as a Service 
 
 In order to retrieve the required values, start by sending this request:
 
-.. code-block:: http
+.. only:: rest
 
-  GET /v1/directories/$DIRECTORY_ID/provider HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/xml
+  .. code-block:: http
 
-Which will return the Provider:
+    GET /v1/directories/$DIRECTORY_ID/provider HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/xml
 
-.. code-block:: json
-  :emphasize-lines: 13,14
+.. only:: csharp or vbnet
 
-  {
-    "href":"https://api.stormpath.com/v1/directories/1joyMCilyf1xSravQxaHxy/provider",
-    "createdAt":"2015-12-21T20:27:16.190Z",
-    "modifiedAt":"2015-12-21T20:27:16.190Z",
-    "providerId":"saml",
-    "ssoLoginUrl":"https://stormpathsaml-dev-ed.my.salesforce.com/idp/endpoint/HttpRedirect",
-    "ssoLogoutUrl":"https://stormpathsaml-dev-ed.my.salesforce.com/idp/endpoint/HttpRedirect",
-    "encodedX509SigningCert":"-----BEGIN CERTIFICATE-----\nexample\n-----END CERTIFICATE-----",
-    "requestSignatureAlgorithm":"RSA-SHA256",
-    "attributeStatementMappingRules":{
-      "href":"https://api.stormpath.com/v1/attributeStatementMappingRules/1jq5X3PhdEZJ5EL5MORdTG"
-    },
-    "serviceProviderMetadata":{
-      "href":"https://api.stormpath.com/v1/samlServiceProviderMetadatas/1l4aLK8aJPNtwslBgXBjGE"
+.. warning::
+
+  The ability to retrieve SAML Provider metadata is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+  For updates, you can follow `ticket #111 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/111>`_ on Github.
+
+  .. todo::
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/get_directory_provider_req.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/get_directory_provider_req.vb
+          :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/get_directory_provider_req.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/get_directory_provider_req.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/get_directory_provider_req.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/get_directory_provider_req.py
+      :language: python
+
+.. only:: rest
+
+  This will return the Provider:
+
+  .. code-block:: json
+    :emphasize-lines: 13,14
+
+    {
+      "href":"https://api.stormpath.com/v1/directories/1joyMCilyf1xSravQxaHxy/provider",
+      "createdAt":"2015-12-21T20:27:16.190Z",
+      "modifiedAt":"2015-12-21T20:27:16.190Z",
+      "providerId":"saml",
+      "ssoLoginUrl":"https://stormpathsaml-dev-ed.my.salesforce.com/idp/endpoint/HttpRedirect",
+      "ssoLogoutUrl":"https://stormpathsaml-dev-ed.my.salesforce.com/idp/endpoint/HttpRedirect",
+      "encodedX509SigningCert":"-----BEGIN CERTIFICATE-----\nexample\n-----END CERTIFICATE-----",
+      "requestSignatureAlgorithm":"RSA-SHA256",
+      "attributeStatementMappingRules":{
+        "href":"https://api.stormpath.com/v1/attributeStatementMappingRules/1jq5X3PhdEZJ5EL5MORdTG"
+      },
+      "serviceProviderMetadata":{
+        "href":"https://api.stormpath.com/v1/samlServiceProviderMetadatas/1l4aLK8aJPNtwslBgXBjGE"
+      }
     }
-  }
 
-Now send a GET to this ``serviceProviderMetadata`` link found in your Directory's Provider object.
+.. only:: java
 
-.. code-block:: http
+  This will return the Provider:
 
-  GET /v1/samlServiceProviderMetadatas/$METADATA_ID HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/xml
+  .. literalinclude:: code/java/authentication/get_directory_provider_resp.java
+      :language: java
 
-.. note::
+.. only:: nodejs
 
-  This will return XML by default, but you can also specify ``application/json`` if you'd like to receive JSON instead.
+  This will return the Provider:
+
+  .. literalinclude:: code/nodejs/authentication/get_directory_provider_resp.js
+      :language: javascript
+
+.. only:: php
+
+  This will return the Provider:
+
+  .. literalinclude:: code/php/authentication/get_directory_provider_resp.php
+    :language: php
+
+.. only:: python
+
+  This will return the Provider:
+
+  .. literalinclude:: code/python/authentication/get_directory_provider_resp.py
+      :language: python
+
+Now you will need to retrieve your Directory Provider's Service Provider Metadata:
+
+.. only:: rest
+
+  .. code-block:: http
+
+    GET /v1/samlServiceProviderMetadatas/$METADATA_ID HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/xml
+
+  .. note::
+
+    This will return XML by default, but you can also specify ``application/json`` if you'd like to receive JSON instead.
+
+.. only:: csharp or vbnet
+
+  .. warning::
+
+    The ability to retrieve SAML Provider metadata is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #111 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/111>`_ on Github.
+
+  .. todo::
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/get_serviceprovider_metadata_req.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/get_serviceprovider_metadata_req.vb
+          :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/get_serviceprovider_metadata_req.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/get_serviceprovider_metadata_req.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/get_serviceprovider_metadata_req.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/get_serviceprovider_metadata_req.py
+      :language: python
 
 **Example XML**
 
@@ -2086,22 +3822,29 @@ Now send a GET to this ``serviceProviderMetadata`` link found in your Directory'
       </md:SPSSODescriptor>
   </md:EntityDescriptor>
 
-**Example JSON**
+.. only:: rest
 
-.. code-block:: json
+  **Example JSON**
 
-  {
-    "href":"http://api.stormpath.com/v1/samlServiceProviderMetadatas/173pHdbJ96DpPeuExaMPLE",
-    "createdAt":"2015-12-09T19:22:10.033Z",
-    "modifiedAt":"2015-12-09T19:22:10.033Z",
-    "entityId":"urn:stormpath:directory:15iM83Y77qIIviKlTzGqjX:provider:sp",
-    "assertionConsumerServicePostEndpoint":{
-      "href":"http://api.stormpath.com/v1/directories/5rHYCSu9IjzKz5pEXample/saml/sso/post"
-    },
-    "x509SigningCert":{
-      "href":"http://api.stormpath.com/v1/x509certificates/1712LVrz0fNSMk2y20EzfL"
+  .. code-block:: json
+
+    {
+      "href":"http://api.stormpath.com/v1/samlServiceProviderMetadatas/173pHdbJ96DpPeuExaMPLE",
+      "createdAt":"2015-12-09T19:22:10.033Z",
+      "modifiedAt":"2015-12-09T19:22:10.033Z",
+      "entityId":"urn:stormpath:directory:15iM83Y77qIIviKlTzGqjX:provider:sp",
+      "assertionConsumerServicePostEndpoint":{
+        "href":"http://api.stormpath.com/v1/directories/5rHYCSu9IjzKz5pEXample/saml/sso/post"
+      },
+      "x509SigningCert":{
+        "href":"http://api.stormpath.com/v1/x509certificates/1712LVrz0fNSMk2y20EzfL"
+      }
     }
-  }
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/get_serviceprovider_metadata_res.php
+      :language: php
 
 From this metadata, you will need two values:
 
@@ -2119,62 +3862,207 @@ Step 4: Configure Your Service Provider in Your Identity Provider
 Log-in to your Identity Provider (Salesforce, OneLogin, etc) and enter the information you retrieved in the previous step into the relevant application configuration fields. The specific steps to follow here will depend entirely on what Identity Provider you use, and for more information you should consult your Identity Provider's SAML documentation.
 
 Step 5: Configure Your Application
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The Stormpath :ref:`Application <ref-application>` Resource has two parts that are relevant to SAML:
+Your Stormpath Application Resource has two parts that are relevant to SAML:
 
 1. An ``authorizedCallbackUri`` Array that defines the authorized URIs that the IdP can return your user to. These should be URIs that you host yourself.
 
-You should ``POST`` any URIs here that you would like included as authorized callback URIs.
+You should create any URIs here that you would like included as authorized callback URIs.
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/applications/$APPLICATION_ID HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. code-block:: http
 
-  {
-    "authorizedCallbackUris": [
-      "https://myapplication.com/whatever/callback",
-      "https://myapplication.com/whatever/callback2"
-    ]
-  }
+    POST /v1/applications/$APPLICATION_ID HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "authorizedCallbackUris": [
+        "https://myapplication.com/whatever/callback",
+        "https://myapplication.com/whatever/callback2"
+      ]
+    }
+
+.. only:: csharp or vbnet
+
+  .. warning::
+
+    The ability to update the authorized callbackURIs is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #172 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/172>`_ on Github.
+
+  .. todo::
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/create_callback_uris.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/create_callback_uris.vb
+          :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_callback_uris.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_callback_uris.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_callback_uris.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_callback_uris.py
+      :language: python
 
 2. There is also an embedded ``samlPolicy`` object that contains information about the SAML flow configuration and endpoints:
 
-.. code-block:: json
+.. only:: rest
 
-  {
-    "href":"https://api.stormpath.com/v1/samlServiceProviders/61fOguTd49bCKEJbuLnFHO",
-    "createdAt":"2016-01-18T21:02:24.501Z",
-    "modifiedAt":"2016-01-18T21:02:24.501Z",
-    "ssoInitiationEndpoint":{
-      "href":"https://api.stormpath.com/v1/applications/61eykaiWwglwT5mngYyExu/saml/sso/idpRedirect"
-    },
-    "defaultRelayStates":{
-      "href":"https://api.stormpath.com/v1/samlServiceProviders/61fOguTd49bCKEJbuLnFHO/defaultRelayStates"
+  .. code-block:: json
+
+    {
+      "href":"https://api.stormpath.com/v1/samlServiceProviders/61fOguTd49bCKEJbuLnFHO",
+      "createdAt":"2016-01-18T21:02:24.501Z",
+      "modifiedAt":"2016-01-18T21:02:24.501Z",
+      "ssoInitiationEndpoint":{
+        "href":"https://api.stormpath.com/v1/applications/61eykaiWwglwT5mngYyExu/saml/sso/idpRedirect"
+      },
+      "defaultRelayStates":{
+        "href":"https://api.stormpath.com/v1/samlServiceProviders/61fOguTd49bCKEJbuLnFHO/defaultRelayStates"
+      }
     }
-  }
+
+.. only:: csharp or vbnet
+
+  .. only:: csharp
+
+    .. literalinclude:: code/csharp/authentication/saml_policy_example.cs
+        :language: csharp
+
+  .. only:: vbnet
+
+    .. literalinclude:: code/vbnet/authentication/saml_policy_example.vb
+        :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/saml_policy_example.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/saml_policy_example.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/saml_policy_example.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/saml_policy_example.py
+      :language: python
 
 .. _saml-restconfig-5a:
 
 Step 5a: Generate defaultRelayState (IdP-initiated Authentication Only)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-To configure your IdP for IdP-initiated authentication, you will need to get a ``defaultRelayState`` JWT by sending a POST to the Service Provider resource's ``defaultRelayStates`` endpoint.
+To configure your IdP for IdP-initiated authentication, you will need to get a ``defaultRelayState`` JWT:
 
-.. code-block:: http
+.. only:: rest
 
-  POST /v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates HTTP/1.1
-  Host: api.stormpath.com
+  .. code-block:: http
 
-This request will return a response containing a JWT like this:
+    POST /v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates HTTP/1.1
+    Host: api.stormpath.com
 
-.. code-block:: json
+.. only:: php
 
-  {
-    "defaultRelayState": "eyJ0aWQiOiIxZ0JUbmNXc3AyT2JRR2dEbjlSOTFSIiwiYWxnIjoiSFMyNTYifQ.eyJzcFVpZCI6IjZ2b0F5YTFCdnJOZUZPQW9neGJ4T2UiLCJqdGkiOiIxdjdjT1l1SE1kQzA0Z2Vucm1wU2lZIn0.WvfWRxTfjRoPxA803HyOR380u2dWpdtQiO0I2kislFY"
-  }
+  .. warning::
+
+    This feature is not yet available in the PHP SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #149 <https://github.com/stormpath/stormpath-sdk-php/issues/149>`_ on Github.
+
+    .. todo::
+
+      Add Default Relay State PHP example
+
+.. only:: csharp or vbnet
+
+  .. warning::
+
+    The ability to get the default relay state is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #111 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/111>`_ on Github.
+
+  .. todo::
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/get_default_relay_state_req.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/get_default_relay_state_req.vb
+          :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/get_default_relay_state_req.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/get_default_relay_state_req.js
+      :language: javascript
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/get_default_relay_state_req.py
+      :language: python
+
+.. only:: rest
+
+  This request will return a response containing a JWT like this:
+
+  .. code-block:: json
+
+    {
+      "defaultRelayState": "eyJ0aWQiOiIxZ0JUbmNXc3AyT2JRR2dEbjlSOTFSIiwiYWxnIjoiSFMyNTYifQ.eyJzcFVpZCI6IjZ2b0F5YTFCdnJOZUZPQW9neGJ4T2UiLCJqdGkiOiIxdjdjT1l1SE1kQzA0Z2Vucm1wU2lZIn0.WvfWRxTfjRoPxA803HyOR380u2dWpdtQiO0I2kislFY"
+    }
+
+.. only:: java
+
+  This request will return a response containing a JWT like this:
+
+  .. literalinclude:: code/java/authentication/get_default_relay_state_resp.java
+      :language: java
+
+.. only:: nodejs
+
+  This request will return a response containing a JWT like this:
+
+  .. literalinclude:: code/nodejs/authentication/get_default_relay_state_resp.js
+      :language: javascript
+
+.. only:: python
+
+  This request will return a response containing a JWT like this:
+
+  .. literalinclude:: code/python/authentication/get_default_relay_state_resp.py
+      :language: python
 
 This JWT will then need to be entered into your IdP's configuration in order for IdP-initiated authentication to function properly.
 
@@ -2184,21 +4072,59 @@ This ``defaultRelayStates/`` endpoint also accepts a few optional properties. Th
 - **organization**: Allows you to specify an Organization to check users for.
 - **state**: Any state that your application would like to receive. Note that the application developer will need to interpret this state.
 
-.. code-block:: http
+A request including these optional properties looks like this:
 
-  POST /v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates HTTP/1.1
-  Host: api.stormpath.com
+.. only:: rest
 
-  {
-      "callbackUri": "https://org1.myapp.com",
-      "organization": {
-          "nameKey": "org1",
-      }
-      "state": "IAmAState"
-  }
+  .. code-block:: http
+
+    POST /v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates HTTP/1.1
+    Host: api.stormpath.com
+
+    {
+        "callbackUri": "https://org1.myapp.com",
+        "organization": {
+            "nameKey": "org1",
+        }
+        "state": "IAmAState"
+    }
+
+.. only:: csharp or vbnet
+
+  .. warning::
+
+    The ability to get the default relay state is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #111 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/111>`_ on Github.
+
+  .. todo::
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/get_default_relay_state_with_extras.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/get_default_relay_state_with_extras.vb
+          :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/get_default_relay_state_with_extras.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/get_default_relay_state_with_extras.js
+      :language: javascript
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/get_default_relay_state_with_extras.py
+      :language: python
 
 Step 6: Add the SAML Directory as an Account Store
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Now the last thing you have to do is map the new Directory to your Application with an Account Store Mapping as described in :ref:`create-asm`.
 
@@ -2238,63 +4164,168 @@ The rules have three different components:
 
 **Example Rule**
 
-.. code-block:: json
+.. only:: rest or php
 
-  {
-    "name":"uid",
-    "nameFormat": "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
-    "accountAttributes":[
-      "username"
-    ]
-  }
+  .. code-block:: json
 
-The rule expressed here is as follows:
+    {
+      "name": "uid",
+      "nameFormat": "urn:oasis:names:tc:SAML:2.0:attrname-format:basic",
+      "accountAttributes":[
+        "username"
+      ]
+    }
 
-- A SAML Assertion with the name ``uid`` AND
-- the name format ``urn:oasis:names:tc:SAML:2.0:attrname-format:basic``
-- maps to the Account Attribute ``username``.
+  The rule expressed here is as follows:
 
-.. note::
+  - A SAML Assertion with the name ``uid`` AND
+  - the name format ``urn:oasis:names:tc:SAML:2.0:attrname-format:basic``
+  - maps to the Account Attribute ``username``.
 
-  It is possible to specify only a ``name`` or ``nameFormat`` in your rule, instead of both.
+  .. note::
 
-In order to create the mapping rules, we send the following POST:
+    It is possible to specify only a ``name`` or ``nameFormat`` in your rule, instead of both.
 
-.. code-block:: http
+.. only:: csharp or vbnet
 
-  POST /v1/attributeStatementMappingRules/$MAPPING_RULES_ID", HTTP/1.1
-  Host: api.stormpath.com
-  Content-Type: application/json;charset=UTF-8
+  .. warning::
 
-  {
-    "items":[
-      {
-        "name":"uid",
-        "accountAttributes":[
-          "username"
-        ]
-      },
-      {
-        "name":"mail",
-        "accountAttributes":[
-          "email"
-        ]
-      },
-      {
-        "name":"location",
-        "accountAttributes":[
-          "customData.location"
-        ]
-      }
-    ]
-  }
+    The ability to modify attribute mapping is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #111 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/111>`_ on Github.
 
-Now that we've configured everything, we can take a look at what the actual SAML authentication flow looks like.
+  .. todo::
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/example_saml_rule.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/example_saml_rule.vb
+          :language: vbnet
+
+    .. todo:
+
+      The rule expressed here is as follows:
+
+      (todo)
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/example_saml_rule.java
+      :language: java
+
+  .. todo:
+
+    The rule expressed here is as follows:
+
+    (todo)
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/example_saml_rule.js
+      :language: javascript
+
+  .. todo:
+
+    The rule expressed here is as follows:
+
+    (todo)
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/example_saml_rule.py
+      :language: python
+
+  .. todo:
+
+    The rule expressed here is as follows:
+
+    (todo)
+
+In order to create the mapping rules, you send the following request:
+
+.. only:: rest
+
+  .. code-block:: http
+
+    POST /v1/attributeStatementMappingRules/$MAPPING_RULES_ID", HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json;charset=UTF-8
+
+    {
+      "items":[
+        {
+          "name":"uid",
+          "accountAttributes":[
+            "username"
+          ]
+        },
+        {
+          "name":"mail",
+          "accountAttributes":[
+            "email"
+          ]
+        },
+        {
+          "name":"location",
+          "accountAttributes":[
+            "customData.location"
+          ]
+        }
+      ]
+    }
+
+.. only:: csharp or vbnet
+
+  .. warning::
+
+    The ability to modify attribute mapping is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+    For updates, you can follow `ticket #111 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/111>`_ on Github.
+
+  .. todo::
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/create_mapping_rule.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/create_mapping_rule.vb
+          :language: vbnet
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/create_mapping_rule.java
+      :language: java
+
+.. only:: nodejs
+
+  .. literalinclude:: code/nodejs/authentication/create_mapping_rule.js
+      :language: javascript
+
+.. only:: php
+
+  .. literalinclude:: code/php/authentication/create_mapping_rule.php
+    :language: php
+
+.. only:: python
+
+  .. literalinclude:: code/python/authentication/create_mapping_rule.py
+      :language: python
+
+Now that we've configured everything, you can take a look at what the actual SAML authentication flow looks like.
 
 .. _saml-flow:
 
-5.5.4. The Stormpath SAML Flow
+4.5.4. The Stormpath SAML Flow
 ------------------------------
+
+.. todo::
+
+  This is probably most irrelevant to the SDKs.
 
 The two SAML authentication flows that Stormpath supports differ primarily in their starting points, and so the Service Provider (SP) initiated flow is really just the Identity Provider (IdP) initiated flow with a few extra steps at the beginning.
 
@@ -2424,11 +4455,10 @@ This JWT again contains both Headers and a Body with Claims.
 
 At this point your user is authenticated and able to use your app.
 
-
 .. _saml-sp-init-flow:
 
 The Service Provider Initiated Flow
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. todo::
 
@@ -2466,7 +4496,7 @@ The Service Provider Initiated Flow
 
 
 Step 1: Generate a JWT
-^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 The user agent will request to login with SAML. You will need to generate a JWT using an approved JWT library.
 
@@ -2481,7 +4511,7 @@ Below are language specific JWT libraries that Stormpath has sanity tested with 
 - Node JWT - https://github.com/jwtk/njwt
 
 SAML Authentication JWT
-"""""""""""""""""""""""""""
+"""""""""""""""""""""""
 
 .. note::
 
@@ -2595,3 +4625,287 @@ The user will now be redirected by Stormpath back to your Application along with
 For more information about what is contained in this token, please see :ref:`above <saml-response-jwt>`.
 
 At this point your user is authenticated and able to use your app.
+
+.. only:: not rest
+
+  4.6. How API Key Authentication Works in Stormpath
+  =====================================================
+
+  In this section, we discuss how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API services. Stormpath provides not only the user management piece around API Keys, but also allows you to associate permissions and custom data with the Accounts for advanced use-cases.
+
+  Stormpath offers a complete solution that securely and easily helps you manage developer accounts, create and manage API Keys, and generate OAuth 2.0 bearer tokens to support Access Token authentication.
+
+  4.6.1. How to use API Key and Secret Authentication
+  -----------------------------------------------------------------
+
+  First, you will need an Account for a developer. For information about how to create an Account, see :ref:`the Account Management chapter <add-new-account>`.
+
+  Create an API Key for an Account
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  Once you have an Account, creating an API Key is a simple call:
+
+  .. only:: csharp or vbnet
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/create_apikey_req.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/create_apikey_req.vb
+          :language: vbnet
+
+  .. only:: java
+
+    .. literalinclude:: code/java/authentication/create_apikey_req.java
+        :language: java
+
+  .. only:: nodejs
+
+    .. literalinclude:: code/nodejs/authentication/create_apikey_req.js
+        :language: javascript
+
+  .. only:: php
+
+    .. literalinclude:: code/php/authentication/create_apikey_req.php
+      :language: php
+
+  .. only:: python
+
+    .. literalinclude:: code/python/authentication/create_apikey_req.py
+        :language: python
+
+  .. only:: csharp or vbnet
+
+    The returned ``IApiKey`` object contains properties for the ID and secret, as well as the status of the API Key pair.
+
+  .. only:: java
+
+    You will then get back the newly-created API Key:
+
+    .. literalinclude:: code/java/authentication/create_apikey_resp.java
+        :language: java
+
+  .. only:: nodejs
+
+    You will then get back the newly-created API Key:
+
+    .. literalinclude:: code/nodejs/authentication/create_apikey_resp.js
+        :language: javascript
+
+  .. only:: php
+
+    You will then get back the newly-created API Key:
+
+    .. literalinclude:: code/php/authentication/create_apikey_resp.php
+      :language: php
+
+  .. only:: python
+
+    You will then get back the newly-created API Key:
+
+    .. literalinclude:: code/python/authentication/create_apikey_resp.py
+        :language: python
+
+  Managing API Keys
+  ^^^^^^^^^^^^^^^^^
+
+  In some cases, you may need to delete or disable an API Key. This is important for management of API Keys. For example, a developer may delete an API Key because it has been compromised, or the administrator may disable all API Keys for a developer that is past due on payments for the service. API Keys can be retrieved from either the Application or Account. Once a key is retrieved, it can be deleted or disabled.
+
+  **Delete an API Key**
+
+  .. only:: csharp or vbnet
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/delete_apikey.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/delete_apikey.vb
+          :language: vbnet
+
+  .. only:: java
+
+    .. literalinclude:: code/java/authentication/delete_apikey.java
+        :language: java
+
+  .. only:: nodejs
+
+    .. literalinclude:: code/nodejs/authentication/delete_apikey.js
+        :language: javascript
+
+  .. only:: php
+
+    .. literalinclude:: code/php/authentication/delete_apikey.php
+      :language: php
+
+  .. only:: python
+
+    .. literalinclude:: code/python/authentication/delete_apikey.py
+        :language: python
+
+  **Disable an API Key**
+
+  .. only:: csharp or vbnet
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/disable_apikey.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/disable_apikey.vb
+          :language: vbnet
+
+  .. only:: java
+
+    .. literalinclude:: code/java/authentication/disable_apikey.java
+        :language: java
+
+  .. only:: nodejs
+
+    .. literalinclude:: code/nodejs/authentication/disable_apikey.js
+        :language: javascript
+
+  .. only:: php
+
+    .. literalinclude:: code/php/authentication/disable_apikey.php
+      :language: php
+
+  .. only:: python
+
+    .. literalinclude:: code/python/authentication/disable_apikey.py
+        :language: python
+
+  .. _api-basic-auth:
+
+  4.6.2. How to authenticate using HTTP Basic
+  -----------------------------------------------------------------
+
+  Now that your developer has an API Key, there are two methods that they can use to authenticate their API calls: HTTP Basic and HTTP Bearer. In this section we'll cover Basic Authentication, then we'll discuss :ref:`how to exchange an API Key for an OAuth token <api-key-for-token>`, and finally how to authenticate an API call with that token using :ref:`HTTP Bearer Authentication <api-bearer-auth>`.
+
+  The simplest way to authenticate a call is to Base64 encode the API Key and Secret and then pass this encoded string in the authorization header:
+
+  .. code-block:: http
+
+    GET /v1/groups/1ORBsz2iCNpV8yJKqFWhDc/accountMemberships HTTP/1.1
+    Host: api.stormpath.com
+    Authorization: Basic MlpGTVY0V1ZWQ1ZHMzVYQVRJSTlUOTZKNzpYRVBKb2xobk1ZRUR3MmJTQ2ZSbkQrbnlxSyt...
+
+  .. warning::
+
+    Basic Authentication does not encrypt or hash the credentials in any way. By itself, it is not secure and Stormpath strongly recommends that when a developer calls your API, it is transmitted over HTTPS to provide adequate security.
+
+  Upon receiving this request, the Stormpath SDK will authenticate the request as follows:
+
+  .. only:: csharp or vbnet
+
+    .. only:: csharp
+
+      .. literalinclude:: code/csharp/authentication/authenticate_basic_req.cs
+          :language: csharp
+
+    .. only:: vbnet
+
+      .. literalinclude:: code/vbnet/authentication/authenticate_basic_req.vb
+          :language: vbnet
+
+  .. only:: java
+
+    .. literalinclude:: code/java/authentication/authenticate_basic_req.java
+        :language: java
+
+  .. only:: nodejs
+
+    .. literalinclude:: code/nodejs/authentication/authenticate_basic_req.js
+        :language: javascript
+
+  .. only:: php
+
+    .. literalinclude:: code/php/authentication/authenticate_basic_req.php
+      :language: php
+
+  .. only:: python
+
+    .. literalinclude:: code/python/authentication/authenticate_basic_req.py
+        :language: python
+
+  The returned Authentication Result will provide properties and methods for retrieving the authenticated Account and ApiKey for a successful authentication request. Your application will use this information to provide context associated with who is calling your API. This becomes important when your API has generic endpoints that return different information based on the caller.
+
+  The SDK provides a caching layer to ensure fast response times in your API by reducing network traffic to the Stormpath service. The caching layer will cache the API Key securely with the Secret encrypted. Stormpath will use the cached entry for API Key and Secret authentication when possible.
+
+  .. _api-key-for-token:
+
+  4.6.3. How to exchange an API Key for an Access Token
+  -----------------------------------------------------------------
+
+  Instead of passing base64 encoded API keys over the wire, you can exchange an API Key Id and Secret for an Access Token, and use the Access Token as a Bearer Token to authentication for a protected API or resource. Exchanging an API Key for a token is essentially a two step process:
+
+  1. The client authenticates with Stormpath and requests an access token from the token endpoint
+  2. Stormpath authenticates the client and issues an access token
+
+  For more details, see earlier in this chapter: :ref:`generate-oauth-token`.
+
+  .. _api-bearer-auth:
+
+  4.6.4. How to authenticate using HTTP Bearer Access Tokens
+  -----------------------------------------------------------------
+
+  After you return an OAuth Access Token to a developer using your API service, they can start using the OAuth Access Token to validate authentication to your service.
+
+  Stormpath requires that the developer send the Access Token in the Authorization header of the request.
+
+  Again, the Stormtrooper Equipment API example. We will require that a developer exchange their API Key and Secret for an Access Token and then pass the Access Token in future requests to gain access to your API.
+
+  The developer request would look something like this:
+
+  .. code-block:: http
+
+    GET /v1/groups/1ORBsz2iCNpV8yJKqFWhDc/accountMemberships HTTP/1.1
+    Host: api.stormpath.com
+    Authorization: Bearer 7FRhtCNRapj9zs.YI8MqPiS8hzx3wJH4.qT29JUOpU...
+
+  The Stormpath SDK would then authenticate the request as follows:
+
+  .. only:: csharp or vbnet
+
+    .. warning::
+
+      This feature is not yet available in the .NET SDK. For updates, you can follow `ticket #173 <https://github.com/stormpath/stormpath-sdk-dotnet/issues/173>`_ on Github.
+
+    .. todo::
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/authenticate_bearer_req.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/authenticate_bearer_req.vb
+            :language: vbnet
+
+  .. only:: java
+
+    .. literalinclude:: code/java/authentication/authenticate_bearer_req.java
+        :language: java
+
+  .. only:: nodejs
+
+    .. literalinclude:: code/nodejs/authentication/authenticate_bearer_req.js
+        :language: javascript
+
+  .. only:: php
+
+    .. literalinclude:: code/php/authentication/authenticate_bearer_req.php
+      :language: php
+
+  .. only:: python
+
+    .. literalinclude:: code/python/authentication/authenticate_bearer_req.py
+        :language: python
