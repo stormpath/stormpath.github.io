@@ -554,7 +554,15 @@
 
 <h2><a id="how-do-i-use-stormpath-for-api-authentication"></a>How do I use Stormpath for API Authentication?</h2>
 
-<p>If you haven&rsquo;t already, you should first familiarize your self with Stormpath basics in one of our <a href="https://stormpath.com/tutorial/">7-Minute Tutorials</a>.</p>
+<p>If you haven&rsquo;t already, you should first familiarize your self with Stormpath basics in one of our 7-Minute Tutorials.</p>
+
+<ul>
+<li><a href="/java/quickstart/">Java</a></li>
+<li><a href="/nodejs/quickstart/">Nodejs</a></li>
+<li><a href="/python/quickstart/">Python</a></li>
+<li><a href="/rest/product-guide/latest/quickstart.html">REST</a></li>
+</ul>
+
 
 <p>In order to implement API Authentication with Stormpath you&rsquo;ll need to do the following:</p>
 
@@ -573,9 +581,10 @@
 
 <p>Stormpath <code>Accounts</code> can be used to keep a variety of Developer information including name, email address, password, and any other custom data you would like to store.</p>
 
-<p>You will mostly likely create a Stormpath Account when a Developer signs up for access to your API.  Below is an example of how to create a user account in code:</p>
+<p>You will most likely create a Stormpath Account when a Developer signs up for access to your API.  Below is an example of how to create a user account in code:</p>
 
 <div class="tabs"><ul><li><a href="#tabs-create-account-java">java</a></li><li><a href="#tabs-create-account-node">node</a></li><li><a href="#tabs-create-account-python">python</a></li></ul><div id="tabs-create-account-java"><pre lang="java"><code>
+
 //Create the account object
 Account account = client.instantiate(Account.class);
 
@@ -590,19 +599,26 @@ customData.put("favoriteColor", "white");
 //Create the account using the existing Application object.
 application.createAccount(account);
 </code> </pre> </div><div id="tabs-create-account-node"><pre lang="node"><code>
-//Create a JSON object that represents the account
-var account = {
-  givenName: Joe',
-  surname: 'Stormtrooper',
-  email: 'tk421@stormpath.com',
-  password: 'Changeme1!'
-};
+client.getApplications({name:'My Application'}, function(err, applications){
+    if (err) throw err;
 
-//Have the application create the account
-application.createAccount(account, function onAccountCreated(err, createdAccount) {
-  console.log(createdAccount);
+    application = applications.items[0];
+
+    //Create a JSON object that represents the account
+    var account = {
+      givenName: 'Joe',
+      surname: 'Stormtrooper',
+      email: 'tk421@stormpath.com',
+      password: 'Changeme1!'
+    };
+
+    //Have the application create the account
+    application.createAccount(account, function onAccountCreated(err, createdAccount) {
+      console.log(createdAccount);
+    });
 });
 </code> </pre> </div><div id="tabs-create-account-python"><pre lang="python"><code>
+
 account = application.accounts.create({
     'given_name': 'Joe',
     'surname': 'Stormtrooper',
@@ -611,13 +627,13 @@ account = application.accounts.create({
     'custom_data': {
         "faction": "empire"
     }
-}) 
+})
 </code> </pre> </div></div>
 
 
 
 
-<div class='docs-info'><p><strong>Reminder</strong> - An <code>Application</code> is a representation of your real world application.  In this case, it will be your application that is exposing an API.  For more info check out our <a href="https://stormpath.com/tutorial/">Tutorial</a> or <a href="/java/product-guide/">Product Guide</a>.</p>
+<div class='docs-info'><p><strong>Reminder</strong> - An <code>Application</code> is a representation of your real world application.  In this case, it will be your Stormpath <code>Application</code> that is exposing the API used for authentication.</p>
 </div>
 
 
@@ -647,7 +663,7 @@ account.createApiKey(function(err, apiKey){
 })
 </code> </pre> </div><div id="tabs-create-api-key-python"><pre lang="python"><code>
 # Create a new api key
-new_api_key = john.api_keys.create()
+new_api_key = account.api_keys.create()
 
 </code> </pre> </div></div>
 
@@ -680,7 +696,7 @@ new_api_key = john.api_keys.create()
 <td align="left"><code>status</code> </td>
 <td align="left"> A property that represent the status of the key.  Keys with a disabled status will not be able to authenticate. </td>
 <td align="left"> ApiKeyStatus </td>
-<td align="left"> ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED, </td>
+<td align="left"> ApiKeyStatus.ENABLED, ApiKeyStatus.DISABLED,</td>
 </tr>
 <tr>
 <td align="left"><code>account</code> </td>
@@ -757,7 +773,7 @@ api_key.save()
 
 <p>The developer request would look something like this (using HTTPS Basic authentication):</p>
 
-<pre><code>GET /troopers/tk421/equipment 
+<pre><code>GET /troopers/tk421/equipment
 Accept: application/json
 Authorization: Basic MzRVU1BWVUFURThLWDE4MElDTFVUMDNDTzpQSHozZitnMzNiNFpHc1R3dEtOQ2h0NzhBejNpSjdwWTIwREo5N0R2L1g4
 Host: api.trooperapp.com
@@ -868,7 +884,7 @@ public void postOAuthToken(HttpServletRequest request, HttpServletResponse respo
     //Getting the authentication result
     AccessTokenResult result = (AccessTokenResult) Applications.apiRequestAuthenticator(application).authenticate(request);
 
-    //Get the token response from the result which includes 
+    //Get the token response from the result which includes
     //information about the Access Token
     TokenResponse token = result.getTokenResponse();
 
@@ -924,7 +940,7 @@ Content-Type: application/json
 
 <p>The developer request would look something like this:</p>
 
-<pre><code>GET /troopers/tk421/equipment 
+<pre><code>GET /troopers/tk421/equipment
 Accept: application/json
 Authorization: Bearer 7FRhtCNRapj9zs.YI8MqPiS8hzx3wJH4.qT29JUOpU64T
 Host: api.trooperapp.com
@@ -1069,7 +1085,7 @@ var scopeFactory = function (account, requestedScopes){
     for(var scope in requestedScopes){
         if(allowScopeForAccount(account, scope)){
             allowedScopes.push(scope);
-        } 
+        }
     }
     return allowedScopes;
 }
@@ -1109,7 +1125,7 @@ Content-Type: application/json
 
 <p>When this token is used in a resulting request, such as:</p>
 
-<pre><code>GET /troopers/tk329/equipment 
+<pre><code>GET /troopers/tk329/equipment
 Accept: application/json
 Authorization: Bearer 7FRhtCNRapj9zsYI8MqPiS8hzx3wJH4qT29JUOpU64T
 Content-Type: application/json
@@ -1120,7 +1136,7 @@ Host: api.trooperapp.com
 
 <div class="tabs"><ul><li><a href="#tabs-get-scopes-java">java</a></li><li><a href="#tabs-get-scopes-node">node</a></li></ul><div id="tabs-get-scopes-java"><pre lang="java"><code>
 public void getEquipment(HttpServletRequest request, HttpServletResponse response) {
-    
+
     Application application = client.getResource(applicationRestUrl, Application.class);
 
     OauthAuthenticationResult result = Applications.oauthRequestAuthenticator(application).authenticate(request);
@@ -1176,7 +1192,7 @@ app.get('/troopers',function (req, res){
 
 <pre><code>ApiAuthenticationResult authResult = application.authenticateApiRequest(request);
 
-//Accept a visitor. The method called will be based on the return type, which is passed as a parameter to the method (ApiAuthenticationResult, OauthAuthenticationResult, AccessTokenResult) 
+//Accept a visitor. The method called will be based on the return type, which is passed as a parameter to the method (ApiAuthenticationResult, OauthAuthenticationResult, AccessTokenResult)
 authResult.accept(new AuthenticationResultVisitorAdapter() {
 
   public void visit(ApiAuthenticationResult result) {
@@ -1198,14 +1214,12 @@ authResult.accept(new AuthenticationResultVisitorAdapter() {
 
 <h2><a id="wrapping-up"></a>Wrapping up</h2>
 
-<p>In this guide, we discussed how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#97;&#105;&#x6c;&#116;&#111;&#x3a;&#115;&#x75;&#x70;&#x70;&#111;&#x72;&#116;&#64;&#x73;&#x74;&#x6f;&#x72;&#x6d;&#112;&#97;&#x74;&#x68;&#x2e;&#x63;&#111;&#x6d;&#46;">&#115;&#x75;&#112;&#112;&#x6f;&#114;&#116;&#x40;&#x73;&#116;&#111;&#114;&#109;&#112;&#97;&#116;&#x68;&#x2e;&#99;&#111;&#109;&#x2e;</a></p>
+<p>In this guide, we discussed how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#x6f;&#58;&#x73;&#117;&#x70;&#112;&#x6f;&#x72;&#x74;&#64;&#x73;&#116;&#111;&#114;&#x6d;&#x70;&#x61;&#116;&#x68;&#x2e;&#x63;&#111;&#x6d;&#x2e;">&#x73;&#117;&#x70;&#112;&#x6f;&#114;&#x74;&#64;&#115;&#x74;&#111;&#x72;&#x6d;&#x70;&#x61;&#116;&#x68;&#46;&#x63;&#111;&#109;&#46;</a></p>
 
 <!-- wrap it up -->
 
 
 <!-- include the support -->
-
-
 
 
               <div id="spread-word">
