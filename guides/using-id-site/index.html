@@ -368,8 +368,6 @@
 		
 			sp_docs_menu['guides'].push('dev-test-prod-environments');
 		
-			sp_docs_menu['guides'].push('multi-tenant');
-		
 			sp_docs_menu['guides'].push('social-integrations');
 		
 			sp_docs_menu['guides'].push('token-management');
@@ -440,10 +438,10 @@
 		sp_docs_menu['sample-apps'] = [];
 		
 	
-		sp_docs_menu['vbnet'] = [];
+		sp_docs_menu['stylesheets'] = [];
 		
 	
-		sp_docs_menu['stylesheets'] = [];
+		sp_docs_menu['vbnet'] = [];
 		
 	
 </script>
@@ -555,12 +553,10 @@
 
 <!-- When a user wants to login to or register for your application, your application will redirect them to your ID Site.  On your ID Site, the user will enter their data and complete the appropriate action, like login.  ID Site will automatically detect any Workflow or Social Login configurations you have set in Stormpath and show the appropriate buttons, messaging, and behavior.
 
-On a Login, your ID Site will validate the user's credentials and create a security assertion that will be sent back to your application letting your application know that the current user is authenticated and should be trusted.  That security assertion is cryptographically signed by Stormpath using a shared secret known by your application.  This means that only Stormpath and your application can understand the assertion, thwarting certain attack vectors including [man-in-the-middle attacks](http://en.wikipedia.org/wiki/Man-in-the-middle_attack). 
+On a Login, your ID Site will validate the user's credentials and create a security assertion that will be sent back to your application letting your application know that the current user is authenticated and should be trusted.  That security assertion is cryptographically signed by Stormpath using a shared secret known by your application.  This means that only Stormpath and your application can understand the assertion, thwarting certain attack vectors including [man-in-the-middle attacks](http://en.wikipedia.org/wiki/Man-in-the-middle_attack).
 
 Once your application receives the security assertion, your application will use the Stormpath SDK to verify and unpack the user data.  -->
 
-
-<p></p>
 
 <p><img src="/images/docs/ID-diagram.png" alt="" /></p>
 
@@ -801,7 +797,7 @@ response.setHeader("Location", idSiteBuilder.build());
 <!-- do we want to include the example? -->
 
 
-<!-- 
+<!--
 To demonstrate how the SDK works, we’ll use an example. Imagine you are  building a Stormtrooper application for managing Stormtrooper equipment— like awesome helmets and blasters. The application is using Stormpath's ID Site for authentication.
 -->
 
@@ -837,7 +833,7 @@ if result is not None:
     print result.account
     print result.account.is_new_account # if the user came to the callback uri from the register screen
     print result.state # if any state was set during the creation of the redirect URI
-    
+
 </code> </pre> </div><div id="tabs-handle-response-php"><pre lang="php"><code>
 $response = $application->handleIdSiteCallback($requestUri);
 
@@ -866,7 +862,7 @@ $account = $response->account;
 <th align="left">Error Code </th>
 <th align="left"> Message </th>
 <th align="left"> Developer Message </th>
-<th align="left"> Explanation </th>
+<th align="left"> Explanation</th>
 </tr>
 </thead>
 <tbody>
@@ -997,7 +993,7 @@ $application->createIdSiteUrl([
 
 <h3><a id="using-id-site-for-multitenancy"></a>Using ID Site for Multitenancy</h3>
 
-<p>When a user wants to login to your application, you may want to specify an organization for the user to login to.  Stormpath ID Site is configurable to support multitenancy with <code>Organization</code> resources.  An <a href="#/rest/product-guide#organizations"><code>Organization</code></a> in Stormpath is a resource used to group together <code>Account Stores</code> for an <code>Application</code> and can represent a tenant for your application.  These <code>Organization</code> resources can be mapped to your <code>Application</code> as account stores</p>
+<p>When a user wants to login to your application, you may want to specify an organization for the user to login to.  Stormpath ID Site is configurable to support multitenancy with <code>Organization</code> resources.  An <a href="/rest/product-guide/latest/reference.html#organization"><code>Organization</code></a> in Stormpath is a resource used to group together <code>Account Stores</code> for an <code>Application</code> and can represent a tenant for your application.  These <code>Organization</code> resources can be mapped to your <code>Application</code> as account stores</p>
 
 <p>To imagine how this works, take the following example.  You are building a trooper application, <code>trooperapp.com</code> where you have three different <code>Organizations</code>:</p>
 
@@ -1008,12 +1004,12 @@ $application->createIdSiteUrl([
 </ul>
 
 
-<p>Each of these types of troopers can only access their own <code>Organization</code>. To be able to support this, you create three <a href="/rest/product-guide#organizations"><code>Organization</code></a> resources in Stormpath, specifying the <code>nameKey</code> that matches the subdomain.</p>
+<p>Each of these types of troopers can only access their own <code>Organization</code>. To be able to support this, you create three <a href="/rest/product-guide/latest/reference.html#organization"><code>Organization</code></a> resources in Stormpath, specifying the <code>nameKey</code> that matches the subdomain.</p>
 
 <p>For example:</p>
 
 <ul>
-<li><a href="/rest/product-guide#create-an-organization">REST</a></li>
+<li><a href="/rest/product-guide/latest/reference.html#create-an-organization">REST</a></li>
 </ul>
 
 
@@ -1473,24 +1469,24 @@ $application->createIdSiteUrl([
 <tr>
 <th> Claim Name </th>
 <th> Required </th>
-<th> Valid Value </th>
+<th> Valid Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>iat</code></td>
 <td> true </td>
-<td> The issued at time is the time that the token is issued in seconds since epoch. Similar to <code>var seconds = new Date() / 1000;</code> in JavaScript </td>
+<td> The issued at time is the time that the token is issued in seconds since epoch. Similar to <code>var seconds = new Date() / 1000;</code> in JavaScript</td>
 </tr>
 <tr>
 <td><code>iss</code> </td>
 <td> true </td>
-<td> The issuer of the token as your API Key ID from Stormpath </td>
+<td> The issuer of the token as your API Key ID from Stormpath</td>
 </tr>
 <tr>
 <td><code>sub</code> </td>
 <td> true </td>
-<td> The subject of the token as your <code>Application</code> href </td>
+<td> The subject of the token as your <code>Application</code> href</td>
 </tr>
 <tr>
 <td><code>cb_uri</code> </td>
@@ -1500,12 +1496,12 @@ $application->createIdSiteUrl([
 <tr>
 <td><code>jti</code> </td>
 <td> true </td>
-<td> A universally unique identifier for the token.  This can be generated using a GUID or UUID function of your choice. </td>
+<td> A universally unique identifier for the token.  This can be generated using a GUID or UUID function of your choice.</td>
 </tr>
 <tr>
 <td><code>path</code> </td>
 <td> false </td>
-<td> The path on the ID Site that you want the user to land on. <code>/</code> for login page, <code>/#/register</code> for the sign up page, <code>/#/forgot</code> for the password reset page </td>
+<td> The path on the ID Site that you want the user to land on. <code>/</code> for login page, <code>/#/register</code> for the sign up page, <code>/#/forgot</code> for the password reset page</td>
 </tr>
 <tr>
 <td><code>state</code> </td>
@@ -1617,7 +1613,7 @@ Location: https://api.stormpath.com/sso/logout?jwtRequest=%GENERATED_JWT%
 
 <h2><a id="wrapping-up"></a>Wrapping up</h2>
 
-<p>In this guide, we discussed how to set up a Stormpath ID Site as well as how your application can leverage your ID Site to provide common application workflows around user login and registration. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#105;&#108;&#x74;&#111;&#x3a;&#x73;&#117;&#112;&#x70;&#111;&#x72;&#116;&#x40;&#115;&#116;&#111;&#x72;&#x6d;&#112;&#97;&#116;&#104;&#46;&#x63;&#x6f;&#109;&#x2e;">&#x73;&#117;&#x70;&#112;&#x6f;&#x72;&#x74;&#x40;&#115;&#116;&#x6f;&#x72;&#x6d;&#x70;&#97;&#x74;&#x68;&#46;&#99;&#x6f;&#x6d;&#x2e;</a></p>
+<p>In this guide, we discussed how to set up a Stormpath ID Site as well as how your application can leverage your ID Site to provide common application workflows around user login and registration. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email <a href="&#x6d;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#115;&#117;&#x70;&#112;&#x6f;&#x72;&#116;&#64;&#115;&#x74;&#x6f;&#x72;&#x6d;&#112;&#x61;&#116;&#104;&#46;&#x63;&#111;&#109;&#46;">&#x73;&#117;&#112;&#112;&#111;&#x72;&#116;&#64;&#115;&#116;&#111;&#114;&#109;&#112;&#x61;&#x74;&#104;&#46;&#99;&#x6f;&#x6d;&#x2e;</a></p>
 
               <div id="spread-word">
 <hr>
@@ -1917,8 +1913,6 @@ addthis:url="https://stormpath.com" >
 		
 			sp_docs_menu['guides'].push('dev-test-prod-environments');
 		
-			sp_docs_menu['guides'].push('multi-tenant');
-		
 			sp_docs_menu['guides'].push('social-integrations');
 		
 			sp_docs_menu['guides'].push('token-management');
@@ -1989,10 +1983,10 @@ addthis:url="https://stormpath.com" >
 		sp_docs_menu['sample-apps'] = [];
 		
 	
-		sp_docs_menu['vbnet'] = [];
+		sp_docs_menu['stylesheets'] = [];
 		
 	
-		sp_docs_menu['stylesheets'] = [];
+		sp_docs_menu['vbnet'] = [];
 		
 	
 </script>
