@@ -52,7 +52,7 @@ content_top: [docs_top.html]
           <div class="row">
             <div class="col-sm-12">
               <ul class="fa-ul">
-                <li><i class="fa-li fa fa-car"></i><a href="https://github.com/stormpath/stormpath-sdk-dotnet/blob/develop/README.MD#quickstart">Quickstart</a></li>
+                <li><i class="fa-li fa fa-car"></i><a href="/csharp/product-guide/latest/quickstart.html">Quickstart</a></li>
                 <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-dotnet">Project on GitHub</a></li>
                 <li><i class="fa-li fa fa-file-text"></i><a href="https://docs.stormpath.com/dotnet/api/">API Reference</a></li>
               </ul>
