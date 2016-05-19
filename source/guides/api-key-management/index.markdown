@@ -111,7 +111,7 @@ account = application.accounts.create({
 {% endcodetab %}
 
 {% docs info %}
-**Reminder** - An `Application` is a representation of your real world application.  In this case, it will be your application that is exposing an API.  For more info check out our [Tutorial](https://stormpath.com/tutorial/) or [Product Guide](/java/product-guide/).
+**Reminder** - An `Application` is a representation of your real world application.  In this case, it will be your Stormpath `Application` that is exposing the API used for authentication.
 {% enddocs %}
 
 ## Create and Manage API Keys for an Account
@@ -140,7 +140,7 @@ account.createApiKey(function(err, apiKey){
 })
 ------
 # Create a new api key
-new_api_key = john.api_keys.create()
+new_api_key = account.api_keys.create()
 
 ------
 {% endcodetab s%}
