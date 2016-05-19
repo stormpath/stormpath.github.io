@@ -8,6 +8,9 @@ If you are using browser-based sessions, you'll need a way for the user to log o
 By default, this library will provide a POST route at ``/logout``.
 Simply make a POST request to this URI and the user's tokens and cookies will be destroyed. You can change this URI, or disable the feature entirely if you wish.
 
+.. note::
+  For security purposes, GET requests to the logout route are not supported.
+
 Configuration Options
 ---------------------
 
@@ -28,11 +31,10 @@ You can easily change the logout route URI and post-logout location by changing 
 
 .. code-block:: yaml
 
-  stormpath:
-    web:
-      logout:
-        uri: "/logMeOut"
-        nextUri: "/goodbye"
+  web:
+    logout:
+      uri: "/logMeOut"
+      nextUri: "/goodbye"
 
 You could also set this configuration via code:
 
@@ -43,15 +45,15 @@ You could also set this configuration via code:
 
 .. only:: aspnet
 
-  .. todo::
-    Add code
+  .. literalinclude:: code/logout/aspnet/configure_uris.cs
+    :language: csharp
 
 .. only:: nancy
 
-  .. todo::
-    Add code
+  .. .literalinclude:: code/logout/nancy/configure_uris.cs
+    :language: csharp
 
-See the :ref:`configuration` section for more details on how configuration works, or :ref:`logout_default_configuration` to see the default values.
+See the :ref:`configuration` section for more details on how configuration works, or :ref:`logout_default_configuration` to see the default values for this route.
 
 
 .. todo::
@@ -107,12 +109,11 @@ For reference, the full default configuration for this route is shown as YAML be
 
 .. code-block:: yaml
 
-  stormpath:
-    web:
-      logout:
-        enabled: true
-        uri: "/logout"
-        nextUri: "/"
+  web:
+    logout:
+      enabled: true
+      uri: "/logout"
+      nextUri: "/"
 
 .. tip::
   You can also refer to the `Example Stormpath configuration`_ to see the entire default library configuration.

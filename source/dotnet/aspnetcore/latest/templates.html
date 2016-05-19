@@ -75,7 +75,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#minimum-required-configuration">Minimum Required Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#required-settings">Required Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#markup-file-yaml-or-json">Markup File (YAML or JSON)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#api-credentials-file">API Credentials File</a></li>
@@ -193,10 +193,10 @@
             
   <div class="section" id="view-templates">
 <span id="templates"></span><h1>View Templates<a class="headerlink" href="#view-templates" title="Permalink to this headline">¶</a></h1>
-<p>This library has includes built-in views that are rendered automatically for HTML requests. You can use these views as-is, or you can customize them to your liking.</p>
+<p>This library includes built-in views that are rendered automatically for HTML requests. You can use these views as-is, customize them via configuration, or replace them with custom views.</p>
 <div class="section" id="default-views">
 <h2>Default Views<a class="headerlink" href="#default-views" title="Permalink to this headline">¶</a></h2>
-<p>By default this library will use pre-built views for the following routes:</p>
+<p>By default, this library will use pre-built views for the following routes:</p>
 <ul class="simple">
 <li>Login Page (<code class="docutils literal"><span class="pre">/login</span></code>)</li>
 <li>Registration Page (<code class="docutils literal"><span class="pre">/register</span></code>)</li>
@@ -204,21 +204,29 @@
 <li>Change Password Page (<code class="docutils literal"><span class="pre">/change</span></code>)</li>
 <li>Email Verifiation Page (<code class="docutils literal"><span class="pre">/verify</span></code>)</li>
 </ul>
-<p>If you like the way the default views look, great! They work perfectly out of the box.</p>
+<p>In the case of the the <a class="reference internal" href="registration.html#register-customizing-form"><span>Registration</span></a> and <a class="reference internal" href="login.html#login-customizing-form"><span>Login</span></a> routes, the forms fields can be customized simply by changing their configuration.</p>
 </div>
 <div class="section" id="custom-views">
 <span id="templates-custom-views"></span><h2>Custom Views<a class="headerlink" href="#custom-views" title="Permalink to this headline">¶</a></h2>
-<p>If you want to customize the look and feel of the views, you can set a route&#8217;s <code class="docutils literal"><span class="pre">view</span></code> configuration option to the name of (or the path to) a Razor view available in your project.</p>
-<p>For example, to use a custom view for the login page, use this configuration (shown as YAML):</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">view</span><span class="p p-Indicator">:</span> <span class="s">&quot;~/Views/Login/Login.cshtml&quot;</span>
+<p>If you want full control over the look and feel of the view, you can set a route&#8217;s <code class="docutils literal"><span class="pre">view</span></code> option to the name of (or the path to) a Razor view available in your project.</p>
+<p>For example, to use a custom view for the login route, use this configuration (shown as YAML):</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">view</span><span class="p p-Indicator">:</span> <span class="s">&quot;~/Views/Login/MyLogin.cshtml&quot;</span>
 </pre></div>
 </div>
-<div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">It&#8217;s also possible to set this configuration via code. See the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section.</p>
+<p>You could also set this configuration via code:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathConfiguration</span>
+<span class="p">{</span>
+    <span class="n">Web</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebConfiguration</span>
+    <span class="p">{</span>
+        <span class="n">Login</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebLoginRouteConfiguration</span>
+        <span class="p">{</span>
+            <span class="n">View</span> <span class="p">=</span> <span class="s">&quot;~/Views/Login/MyLogin.cshtml&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
 </div>
 <p>Feel free to copy and modify our <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-owin-middleware/tree/master/src/Stormpath.Owin.Views">pre-built view templates</a>, and use them as a starting point!</p>
 <div class="section" id="view-models">

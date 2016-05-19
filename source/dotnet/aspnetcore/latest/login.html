@@ -75,7 +75,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#minimum-required-configuration">Minimum Required Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#required-settings">Required Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#markup-file-yaml-or-json">Markup File (YAML or JSON)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#api-credentials-file">API Credentials File</a></li>
@@ -212,10 +212,9 @@
 <div class="section" id="configuration-example">
 <h3>Configuration Example<a class="headerlink" href="#configuration-example" title="Permalink to this headline">¶</a></h3>
 <p>You could, for example, change the endpoint path by setting this configuration (shown as YAML):</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/logMeIn&quot;</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/logMeIn&quot;</span>
 </pre></div>
 </div>
 <p>You could also set this configuration via code:</p>
@@ -231,7 +230,7 @@
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>See the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section for more details on how configuration works, or <a class="reference internal" href="#login-default-configuration"><span>Default Configuration</span></a> to see the default values.</p>
+<p>See the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section for more details on how configuration works, or <a class="reference internal" href="#login-default-configuration"><span>Default Configuration</span></a> to see the default values for this route.</p>
 </div>
 </div>
 <div class="section" id="customizing-the-form">
@@ -242,16 +241,24 @@
 <li>Password</li>
 </ul>
 <p>You can change the label and placeholder text that is displayed by changing the configuration, as shown in YAML below:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">form</span><span class="p p-Indicator">:</span>
-        <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
-            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Email&quot;</span>
-            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;you@yourdomain.com&quot;</span>
-          <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
-            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Tip:</span><span class="nv"> </span><span class="s">Use</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">strong</span><span class="nv"> </span><span class="s">password!&quot;</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">form</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">visible</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Email&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;you@yourdomain.com&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;text&quot;</span>
+        <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">visible</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Password&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Tip:</span><span class="nv"> </span><span class="s">Use</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">strong</span><span class="nv"> </span><span class="s">password!&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;password&quot;</span>
 </pre></div>
 </div>
 <p>Or, through code:</p>
@@ -281,14 +288,17 @@
 <span class="p">});</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you want to go beyond customizing the fields on the form, see <a class="reference internal" href="templates.html#templates"><span>View Templates</span></a>.</p>
+</div>
 </div>
 <div class="section" id="next-uri">
 <h2>Next URI<a class="headerlink" href="#next-uri" title="Permalink to this headline">¶</a></h2>
 <p>If the login attempt is successful, the user will be redirected to <code class="docutils literal"><span class="pre">/</span></code> by default. If you want to change this, set the <code class="docutils literal"><span class="pre">nextUri</span></code> option:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">nextUri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/dashboard&quot;</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">nextUri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/dashboard&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -310,7 +320,7 @@ Content-Type: application/json
 </div>
 <p>If the login attempt is successful, you will receive a 200 OK response and the
 session cookies will be set on the response. (See <a class="reference internal" href="authentication.html#cookie-authentication"><span>Cookie Authentication</span></a>)</p>
-<p>If an error occurs, you&#8217;ll get an error response that looks like this:</p>
+<p>If an error occurs, you&#8217;ll get an error response:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
   <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Invalid username or password.&quot;</span>
@@ -321,8 +331,7 @@ session cookies will be set on the response. (See <a class="reference internal" 
 <div class="section" id="getting-the-form-view-model">
 <h3>Getting the Form View Model<a class="headerlink" href="#getting-the-form-view-model" title="Permalink to this headline">¶</a></h3>
 <p>By making a GET request to the login endpoint with the <code class="docutils literal"><span class="pre">Accept:</span>
-<span class="pre">application/json</span></code> set, you can retreive a JSON view model that describes the login
-form and the social account stores that are mapped to your Stormpath
+<span class="pre">application/json</span></code> header, you can retreive a JSON view model that describes the login form and the social account stores that are mapped to your Stormpath
 Application.</p>
 <p>Here&#8217;s an example view model that shows you an application that has the default login form, and a mapped Google directory:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -359,8 +368,8 @@ Application.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
 <p class="last">You may have to explicitly tell your client library that you want a JSON
 response from the server. Not all libraries do this automatically. If the
 library does not set the <code class="docutils literal"><span class="pre">Accept:</span> <span class="pre">application/json</span></code> header on the request,
@@ -373,32 +382,31 @@ expect!</p>
 <span id="login-default-configuration"></span><h2>Default Configuration<a class="headerlink" href="#default-configuration" title="Permalink to this headline">¶</a></h2>
 <p>Options that are not overridden by explicit configuration (see <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a>) will retain their default values.</p>
 <p>For reference, the full default configuration for this route is shown as YAML below:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-      <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/login&quot;</span>
-      <span class="l l-Scalar l-Scalar-Plain">nextUri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/&quot;</span>
-      <span class="l l-Scalar l-Scalar-Plain">view</span><span class="p p-Indicator">:</span> <span class="s">&quot;login&quot;</span>
-      <span class="l l-Scalar l-Scalar-Plain">form</span><span class="p p-Indicator">:</span>
-        <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
-            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-            <span class="l l-Scalar l-Scalar-Plain">visible</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Username</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">Email&quot;</span>
-            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Username</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">Email&quot;</span>
-            <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-            <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;text&quot;</span>
-          <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
-            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-            <span class="l l-Scalar l-Scalar-Plain">visible</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Password&quot;</span>
-            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Password&quot;</span>
-            <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-            <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;password&quot;</span>
-        <span class="l l-Scalar l-Scalar-Plain">fieldOrder</span><span class="p p-Indicator">:</span>
-          <span class="p p-Indicator">-</span> <span class="s">&quot;login&quot;</span>
-          <span class="p p-Indicator">-</span> <span class="s">&quot;password&quot;</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/login&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">nextUri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">view</span><span class="p p-Indicator">:</span> <span class="s">&quot;login&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">form</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">visible</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Username</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">Email&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Username</span><span class="nv"> </span><span class="s">or</span><span class="nv"> </span><span class="s">Email&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;text&quot;</span>
+        <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">visible</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Password&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Password&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+          <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;password&quot;</span>
+      <span class="l l-Scalar l-Scalar-Plain">fieldOrder</span><span class="p p-Indicator">:</span>
+        <span class="p p-Indicator">-</span> <span class="s">&quot;login&quot;</span>
+        <span class="p p-Indicator">-</span> <span class="s">&quot;password&quot;</span>
 </pre></div>
 </div>
 <div class="admonition tip">

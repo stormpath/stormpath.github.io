@@ -33,10 +33,9 @@ You could, for example, change the endpoint path by setting this configuration (
 
 .. code-block:: yaml
 
-  stormpath:
-    web:
-      register:
-        uri: "/createAccount"
+  web:
+    register:
+      uri: "/createAccount"
 
 You could also set this configuration via code:
 
@@ -47,15 +46,15 @@ You could also set this configuration via code:
 
 .. only:: aspnet
 
-  .. todo::
-    Add code
+  .. literalinclude:: code/registration/aspnet/configure_uri.cs
+    :language: csharp
 
 .. only:: nancy
 
-  .. todo::
-    Add code
+  .. .literalinclude:: code/registration/nancy/configure_uri.cs
+    :language: csharp
 
-See the :ref:`configuration` section for more details on how configuration works, or :ref:`register_default_configuration` to see the default values.
+See the :ref:`configuration` section for more details on how configuration works, or :ref:`register_default_configuration` to see the default values for this route.
 
 
 .. _register_customizing_form:
@@ -70,9 +69,12 @@ The registration form will render these fields by default, and they will be requ
 * Email
 * Password
 
-You can customize the form by simply changing the configuration. For example, while email and password will always be required, you could make first and last name optional. Or, you can ask the user for both an email address and a username. You can also specify your own custom fields!
+You can customize the form by simply changing the configuration. For example, while email and password will always be required, you could make first and last name optional. Or, you can ask the user for both an email address and a username. You can also specify your own custom fields, no code required!
 
-Each field item in ``stormpath.web.register.form.fields`` has these configurable properties:
+.. note::
+  If you want to use a custom view for the form, see :ref:`templates`.
+
+Each field item in the ``stormpath.web.register.form.fields`` collection has these configurable properties:
 
 * **enabled**: Whether the field exists on the form is and accepted in POST requests.
 * **visible**: Whether the field is visible on the form.
@@ -89,15 +91,24 @@ If you would like to show a field, but not require it, set the ``required`` prop
 
 .. code-block:: yaml
 
-  stormpath:
-    web:
-      register:
-        form:
-          fields:
-            givenName:
-              required: false
-            surname:
-              required: false
+  web:
+    register:
+      form:
+        fields:
+          givenName:
+            enabled: true
+            visible: true
+            label: "First Name"
+            placeholder: "First Name"
+            required: false
+            type: "text"
+          surname:
+            enabled: true
+            visible: true
+            label: "Last Name"
+            placeholder: "Last Name"
+            required: false
+            type: "text"
 
 Or, in code:
 
@@ -108,13 +119,13 @@ Or, in code:
 
 .. only:: aspnet
 
-  .. todo::
-    Add code
+  .. literalinclude:: code/registration/aspnet/configure_form_fields_required.cs
+    :language: csharp
 
 .. only:: nancy
 
-  .. todo::
-    Add code
+  .. .literalinclude:: code/registration/nancy/configure_form_fields_required.cs
+    :language: csharp
 
 If you would like to remove a field from the form entirely, set the ``visible`` or ``enabled`` properties to ``false``. The behavior is slightly different:
 
@@ -136,18 +147,17 @@ successfully.  You can create a custom field by defining a new field configurati
 
 .. code-block:: yaml
 
-  stormpath:
-    web:
-      register:
-        form:
-          fields:
-            favoriteColor:
-              enabled: true
-              visible: true
-              label: "Favorite Color"
-              placeholder: "e.g. red, blue"
-              required: true
-              type: "text"
+  web:
+    register:
+      form:
+        fields:
+          favoriteColor:
+            enabled: true
+            visible: true
+            label: "Favorite Color"
+            placeholder: "e.g. red, blue"
+            required: true
+            type: "text"
 
 Or, in code:
 
@@ -158,13 +168,13 @@ Or, in code:
 
 .. only:: aspnet
 
-  .. todo::
-    Add code
+  .. literalinclude:: code/registration/aspnet/configure_custom_form_field.cs
+    :language: csharp
 
 .. only:: nancy
 
-  .. todo::
-    Add code
+  .. .literalinclude:: code/registration/nancy/configure_custom_form_field.cs
+    :language: csharp
 
 
 Changing Field Order
@@ -175,15 +185,14 @@ If you want to change the order of the fields, you can do so by specifying the
 
 .. code-block:: yaml
 
-  stormpath:
-    web:
-      register:
-        form:
-          fieldOrder:
-            - "surname"
-            - "givenName"
-            - "email"
-            - "password"
+  web:
+    register:
+      form:
+        fieldOrder:
+          - "surname"
+          - "givenName"
+          - "email"
+          - "password"
 
 Or, in code:
 
@@ -194,13 +203,13 @@ Or, in code:
 
 .. only:: aspnet
 
-  .. todo::
-    Add code
+  .. literalinclude:: code/registration/aspnet/configure_field_order.cs
+    :language: csharp
 
 .. only:: nancy
 
-  .. todo::
-    Add code
+  .. .literalinclude:: code/registration/nancy/configure_field_order.cs
+    :language: csharp
 
 Any visible fields that are omitted from the ``fieldOrder`` array will be placed at the end of the form.
 
@@ -208,21 +217,17 @@ Any visible fields that are omitted from the ``fieldOrder`` array will be placed
 Password Strength Requirements
 ------------------------------
 
-Stormpath supports complex password strength rules, such as the number of letters
-or special characters required.  These settings are controlled on a per-Directory
-basis.
+Stormpath supports complex password strength rules, such as the number of letters or special characters required.  These settings are controlled on a per-Directory basis.
 
 If you want to modify the password strength rules for your application, use the `Stormpath Admin Console`_ to find the directory that is mapped to your application, and modify the associated password policy.
 
-For more information, see `Account Password Strength Policy`_.
-
+For more information, see the `Account Password Strength Policy`_ section in the REST API documentation.
 
 
 Email Verification
 ------------------
 
-We **highly** recommend that you use email verification, as it adds an additional layer
-of security to your site (it makes it harder for bots to create spam accounts).
+We **highly** recommend that you use email verification, as it adds an additional layer of security to your site (it makes it harder for bots to create spam accounts).
 
 Email verification will be automatically enabled if the Verification Email workflow is enabled on the Stormpath Directory linked to your application; see the :ref:`email_verification` section.
 
@@ -236,13 +241,12 @@ After registering, the default behavior is to require the user to enter their ne
 
 .. code-block:: yaml
 
-  stormpath:
-    web:
-      register:
-        autoLogin: true
-        nextUri: "/"
+  web:
+    register:
+      autoLogin: true
+      nextUri: "/"
 
-By default the ``nextUri`` is to the ``/`` root page, but you can modify this to whatever destination you want.
+By default the ``nextUri`` is to ``/`` (the root page), but you can modify this to whatever destination you want.
 
 .. note::
   The :ref:`email_verification` and :ref:`password_reset` features will observe this setting as well.
@@ -350,7 +354,7 @@ If you are using this library from a mobile application, or a client framework l
 Getting the Form View Model
 ...........................
 
-By making a GET request to the registration endpoint with the ``Accept: application/json`` header set, you can retrieve a JSON view model that describes the registration form and any external account stores that are mapped to your Stormpath Application.
+By making a GET request to the registration endpoint with the ``Accept: application/json`` header, you can retrieve a JSON view model that describes the registration form and any external account stores that are mapped to your Stormpath Application.
 
 Here's an example view model that represents an application that has the default registration form, and a mapped Google social directory:
 
@@ -403,7 +407,7 @@ Here's an example view model that represents an application that has the default
     }
   }
 
-.. note::
+.. tip::
 
   You may have to explicitly tell your client library that you want a JSON
   response from the server. Not all libraries do this automatically. If the
@@ -450,7 +454,7 @@ If the user is created successfully, you'll get a ``200 OK`` response. The body 
     }
   }
 
-If an error occurs, you'll get an error object that looks like this:
+If an error occurs, you'll get an error response:
 
 .. code-block:: json
 
@@ -458,6 +462,7 @@ If an error occurs, you'll get an error object that looks like this:
     "status": 400,
     "message": "Invalid username or password."
   }
+
 
 Supplying Custom Fields
 .......................
@@ -477,7 +482,7 @@ If any custom fields exist on the form (see :ref:`register_custom_fields`), you 
       "givenName": "foo",
       "customValue": "custom value can be on root object or in customData object",
       "customData": {
-        "favoriteColor": "beige"
+        "favoriteColor": "red"
       }
   }
 
@@ -493,73 +498,72 @@ For reference, the full default configuration for this route is shown as YAML be
 
 .. code-block:: yaml
 
-  stormpath:
-    web:
-      register:
-        enabled: true
-        uri: "/register"
-        autoLogin: false
-        nextUri: "/"
-        view: "register"
-        form:
-          fields:
-            givenName:
-              enabled: true
-              visible: true
-              label: "First Name"
-              placeholder: "First Name"
-              required: true
-              type: "text"
-            middleName:
-              enabled: false
-              visible: true
-              label: "Middle Name"
-              placeholder: "Middle Name"
-              required: true
-              type: "text"
-            surname:
-              enabled: true
-              visible: true
-              label: "Last Name"
-              placeholder: "Last Name"
-              required: true
-              type: "text"
-            username:
-              enabled: false
-              visible: true
-              label: "Username"
-              placeholder: "Username"
-              required: true
-              type: "text"
-            email:
-              enabled: true
-              visible: true
-              label: "Email"
-              placeholder: "Email"
-              required: true
-              type: "email"
-            password:
-              enabled: true
-              visible: true
-              label: "Password"
-              placeholder: "Password"
-              required: true
-              type: "password"
-            confirmPassword:
-              enabled: false
-              visible: true
-              label: "Confirm Password"
-              placeholder: "Confirm Password"
-              required: true
-              type: "password"
-          fieldOrder:
-            - "username"
-            - "givenName"
-            - "middleName"
-            - "surname"
-            - "email"
-            - "password"
-            - "confirmPassword"
+  web:
+    register:
+      enabled: true
+      uri: "/register"
+      autoLogin: false
+      nextUri: "/"
+      view: "register"
+      form:
+        fields:
+          givenName:
+            enabled: true
+            visible: true
+            label: "First Name"
+            placeholder: "First Name"
+            required: true
+            type: "text"
+          middleName:
+            enabled: false
+            visible: true
+            label: "Middle Name"
+            placeholder: "Middle Name"
+            required: true
+            type: "text"
+          surname:
+            enabled: true
+            visible: true
+            label: "Last Name"
+            placeholder: "Last Name"
+            required: true
+            type: "text"
+          username:
+            enabled: false
+            visible: true
+            label: "Username"
+            placeholder: "Username"
+            required: true
+            type: "text"
+          email:
+            enabled: true
+            visible: true
+            label: "Email"
+            placeholder: "Email"
+            required: true
+            type: "email"
+          password:
+            enabled: true
+            visible: true
+            label: "Password"
+            placeholder: "Password"
+            required: true
+            type: "password"
+          confirmPassword:
+            enabled: false
+            visible: true
+            label: "Confirm Password"
+            placeholder: "Confirm Password"
+            required: true
+            type: "password"
+        fieldOrder:
+          - "username"
+          - "givenName"
+          - "middleName"
+          - "surname"
+          - "email"
+          - "password"
+          - "confirmPassword"
 
 .. tip::
   You can also refer to the `Example Stormpath configuration`_ to see the entire default library configuration.

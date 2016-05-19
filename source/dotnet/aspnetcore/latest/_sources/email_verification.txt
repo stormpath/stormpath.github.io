@@ -11,10 +11,10 @@ By default, this library will serve an Email Verification form and callback hand
 Enabling the Workflow
 ---------------------
 
-To enable email verification, you need to configure the Stormpath Directory. Follow these steps:
+To enable email verification, you need to configure the Stormpath Directory your application is using. Follow these steps:
 
-1. Use the `Stormpath Admin Console`_ to find the Stormpath Directory linked to your Application
-2. Navigate to the Workflows section and enable the **Verification Email** workflow
+1. Use the `Stormpath Admin Console`_ to find the Stormpath Directory linked to your Application.
+2. Navigate to the Workflows section and enable the **Verification Email** workflow.
 3. Modify the **Link Base URL** to point to your application:
 
 .. code-block:: sh
@@ -62,10 +62,9 @@ You could, for example, change the endpoint path by setting this configuration (
 
 .. code-block:: yaml
 
-  stormpath:
-    web:
-      verifyEmail:
-        uri: "/verifyEmail"
+  web:
+    verifyEmail:
+      uri: "/verifyEmail"
 
 You could also set this configuration via code:
 
@@ -76,16 +75,16 @@ You could also set this configuration via code:
 
 .. only:: aspnet
 
-  .. todo::
-    Add code
+  .. literalinclude:: code/email_verification/aspnet/configure_uri.cs
+    :language: csharp
 
 .. only:: nancy
 
-  .. todo::
-    Add code
+  .. .literalinclude:: code/email_verification/nancy/configure_uri.cs
+    :language: csharp
 
 
-See the :ref:`configuration` section for more details on how configuration works, or :ref:`email_verification_default_configuration` to see the default values.
+See the :ref:`configuration` section for more details on how configuration works, or :ref:`email_verification_default_configuration` to see the default values for this route.
 
 
 .. _email_verification_auto_login:
@@ -117,7 +116,7 @@ To verify a user, make a GET request with the ``sptoken`` from the verification 
 
 If validation succeeds, the endpoint will respond with ``200 OK``.
 
-If an error occurs, you'll get an error response that looks like this:
+If an error occurs, you'll get an error response:
 
 .. code-block:: json
 
@@ -157,13 +156,12 @@ For reference, the full default configuration for this route is shown as YAML be
 
 .. code-block:: yaml
 
-  stormpath:
-    web:
-      verifyEmail:
-        enabled: null
-        uri: "/verify"
-        nextUri: "/login?status=verified"
-        view: "verify"
+  web:
+    verifyEmail:
+      enabled: null
+      uri: "/verify"
+      nextUri: "/login?status=verified"
+      view: "verify"
 
 .. tip::
   You can also refer to the `Example Stormpath configuration`_ to see the entire default library configuration.
