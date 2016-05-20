@@ -201,7 +201,7 @@ Initialize the Middleware
 
   .. tip::
 
-    If you don't have a ``Startup.cs`` file, right-click on your project and select **Add - OWIN Startup class**.
+    If you don't have a ``Startup.cs`` file, right-click on your project and select **Add - OWIN Startup class**. If this option doesn't appear for you, or you see OWIN errors when your application starts, see the `OWIN Startup Class documentation <http://www.asp.net/aspnet/overview/owin-and-katana/owin-startup-class-detection>`_.
 
   .. literalinclude:: code/quickstart/aspnet/startup.cs
     :language: csharp
