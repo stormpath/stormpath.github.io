@@ -75,7 +75,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#minimum-required-configuration">Minimum Required Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#required-settings">Required Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#markup-file-yaml-or-json">Markup File (YAML or JSON)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#api-credentials-file">API Credentials File</a></li>
@@ -201,14 +201,14 @@ your choices look like this:</p>
 <div><ul class="simple">
 <li>If you are building a traditional web app or single page application, you
 should use <strong>Cookie Authentication</strong>.</li>
-<li>If you are building a mobile application, you should use the <strong>OAuth2 Password Grant</strong>.</li>
+<li>If you are building a mobile application, you should use the <strong>OAuth 2.0 Password Grant</strong>.</li>
 </ul>
 </div></blockquote>
 <div class="section" id="cookie-authentication">
 <span id="id2"></span><h2>Cookie Authentication<a class="headerlink" href="#cookie-authentication" title="Permalink to this headline">¶</a></h2>
 <p>If you are building a web application that serves traditional HTML pages, or a
 Single Page Application (such as Angular/React), this library will handle cookie authentication for you, out of the box!</p>
-<p>To use cookie authentication, simply use the <code class="docutils literal"><span class="pre">[Authorize]</span></code> attribute on MVC or Web API routes:</p>
+<p>To use cookie authentication, simply use the <code class="docutils literal"><span class="pre">[Authorize]</span></code> attribute on your MVC or Web API routes:</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[Authorize]</span>
 <span class="k">public</span> <span class="k">class</span> <span class="nc">ProfileController</span> <span class="p">:</span> <span class="n">Controller</span>
 <span class="p">{</span>
@@ -222,80 +222,50 @@ Single Page Application (such as Angular/React), this library will handle cookie
 </pre></div>
 </div>
 <p>If the user is not logged in, they will be redirected to the built-in login route (<code class="docutils literal"><span class="pre">/login</span></code> by default) to log in or register. After authenticating, they will be redirected back to the original route automatically.</p>
-<p>Behind the scenes, the Stormpath middleware creates OAuth2 Access and Refresh tokens for the user (via the Stormpath API), and stores them in secure, HTTP-only cookies. After the user has logged in, these cookies will be supplied on every request. The Stormpath middleware will assert that the Access Token is valid.  If the Access Token is expired, it will attempt to refresh it with the Refresh Token.</p>
+<p>Behind the scenes, the Stormpath middleware creates OAuth 2.0 Access and Refresh Tokens for the user (via the Stormpath API), and stores them in secure, HTTP-only cookies. After the user has logged in, these cookies will be supplied on every request. The Stormpath middleware will assert that the Access Token is valid.  If the Access Token is expired, it will attempt to refresh it with the Refresh Token.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">By default, the cookie names are <code class="docutils literal"><span class="pre">access_token</span></code> and <code class="docutils literal"><span class="pre">refresh_token</span></code>. See <a class="reference internal" href="#configuring-cookie-flags"><span>Configuring Cookie Flags</span></a> if you want to change the defaults.</p>
 </div>
 <div class="section" id="setting-token-expiration-time">
 <span id="id3"></span><h3>Setting Token Expiration Time<a class="headerlink" href="#setting-token-expiration-time" title="Permalink to this headline">¶</a></h3>
-<p>If you need to change the expiration time of the Access Token or Refresh Token,
-please login to the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a> and navigate to the OAuth Policy of
-your Stormpath Application. You can configure the time-to-live (TTL) for both Access and Refresh Tokens.</p>
+<p>If you need to change the expiration time of the Access Token or Refresh Token, log in to the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a> and navigate to the OAuth Policy of your Stormpath Application. You can configure the time-to-live (TTL) for both Access and Refresh Tokens.</p>
 </div>
 <div class="section" id="configuring-cookie-flags">
 <span id="id4"></span><h3>Configuring Cookie Flags<a class="headerlink" href="#configuring-cookie-flags" title="Permalink to this headline">¶</a></h3>
 <p>This library creates two cookies, one for the Access Token and one for the
 Refresh Token. The cookie details are configurable via code or markup (see the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section).</p>
 <p>The default cookie configuration (in YAML) is:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">accessTokenCookie</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;access_token&quot;</span>
-      <span class="l l-Scalar l-Scalar-Plain">domain</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
-      <span class="l l-Scalar l-Scalar-Plain">httpOnly</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-      <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
-      <span class="l l-Scalar l-Scalar-Plain">secure</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">accessTokenCookie</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;access_token&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">domain</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+    <span class="l l-Scalar l-Scalar-Plain">httpOnly</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="s">&quot;/&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">secure</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
 
-    <span class="l l-Scalar l-Scalar-Plain">refreshTokenCookie</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;refresh_token&quot;</span>
-      <span class="l l-Scalar l-Scalar-Plain">domain</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
-      <span class="l l-Scalar l-Scalar-Plain">httpOnly</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-      <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
-      <span class="l l-Scalar l-Scalar-Plain">secure</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+  <span class="l l-Scalar l-Scalar-Plain">refreshTokenCookie</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;refresh_token&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">domain</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+    <span class="l l-Scalar l-Scalar-Plain">httpOnly</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="s">&quot;/&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">secure</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
 </pre></div>
 </div>
 <p>The flags behave as follows:</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="16%" />
-<col width="12%" />
-<col width="72%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Cookie Flag</th>
-<th class="head">Default</th>
-<th class="head">Description</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>domain</td>
-<td><code class="docutils literal"><span class="pre">null</span></code></td>
-<td>Set if needed, e.g. &#8220;subdomain.mydomain.com&#8221;.</td>
-</tr>
-<tr class="row-odd"><td>httpOnly</td>
-<td><code class="docutils literal"><span class="pre">true</span></code></td>
-<td><code class="docutils literal"><span class="pre">true</span></code> by default, do not disable without good reason
-(exposes tokens to XSS  attacks).</td>
-</tr>
-<tr class="row-even"><td>path</td>
-<td><code class="docutils literal"><span class="pre">null</span></code></td>
-<td>Set if needed, e.g. &#8220;/newapp&#8221;. <code class="docutils literal"><span class="pre">null</span></code> equals <code class="docutils literal"><span class="pre">/</span></code>.</td>
-</tr>
-<tr class="row-odd"><td>secure</td>
-<td><code class="docutils literal"><span class="pre">null</span></code></td>
-<td>Will be <code class="docutils literal"><span class="pre">true</span></code> in HTTPS environments (as detected
-by the request URI), unless explicitly set to
-<code class="docutils literal"><span class="pre">false</span></code> (not recommended!).</td>
-</tr>
-</tbody>
-</table>
+<ul class="simple">
+<li><strong>name</strong> - Controls the name of the cookie stored in the user&#8217;s browser.</li>
+<li><strong>domain</strong> - Set this if needed; e.g. &#8220;subdomain.mydomain.com&#8221;. (Default: <code class="docutils literal"><span class="pre">null</span></code>.)</li>
+<li><strong>httpOnly</strong> - Controls the <code class="docutils literal"><span class="pre">HttpOnly</span></code> flag on the cookie. Be careful if changing this, because <code class="docutils literal"><span class="pre">false</span></code> exposes cookies to XSS attacks. (Default: <code class="docutils literal"><span class="pre">true</span></code>.)</li>
+<li><strong>path</strong> - Unless explicitly set, this property will inherit <code class="docutils literal"><span class="pre">stormpath.web.basePath</span></code>. (Default: <code class="docutils literal"><span class="pre">/</span></code>.)</li>
+<li><strong>secure</strong> - Controls the <code class="docutils literal"><span class="pre">Secure</span></code> flag on the cookie. A value of <code class="docutils literal"><span class="pre">null</span></code> means that the Secure flag will be automatically set in HTTPS environments (as detected by the request URI). This can be explicitly set, but we recommend leaving automatic detection on. (Default: <code class="docutils literal"><span class="pre">null</span></code>.)</li>
+</ul>
 </div>
 <div class="section" id="token-validation-strategy">
 <span id="id5"></span><h3>Token Validation Strategy<a class="headerlink" href="#token-validation-strategy" title="Permalink to this headline">¶</a></h3>
 <p>When a request comes in to your server, the Stormpath middleware will use the Access Token
 and Refresh Token cookies to make an authentication decision. The first step is to validate the Access Token to make sure it hasn&#8217;t been tampered with.</p>
-<p>There are two validation strategies: local validation (default) and Stormpath validation. Local validation does <strong>not</strong> make a network request to the Stormpath API, while Stormpath validation does make a network request and supports token revocation.</p>
+<p>There are two validation strategies: local validation (the default) and Stormpath validation. Local validation does <strong>not</strong> make a network request to the Stormpath API, while Stormpath validation does make a network request and supports token revocation.</p>
 <p>Both validation strategies follow the same pattern:</p>
 <ul class="simple">
 <li>If the Access Token is valid, accept the request.</li>
@@ -306,11 +276,10 @@ and Refresh Token cookies to make an authentication decision. The first step is 
 the Access Token to determine whether it is valid.  It does not check whether the token has been revoked.</p>
 <p>If you want the ability to revoke Access Tokens, you&#8217;ll need to update your configuration to opt-in to the <code class="docutils literal"><span class="pre">stormpath</span></code> validation strategy. This will make a network call to the Stormpath API on every incoming request. If the Access Token has been revoked, or the Stormpath Account has been disabled or deleted, the Access Token will not be considered valid.</p>
 <p>The validation strategy can be changed via <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a>. The default configuration (in YAML) is:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">oauth2</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
-        <span class="l l-Scalar l-Scalar-Plain">validationStrategy</span><span class="p p-Indicator">:</span> <span class="s">&quot;local&quot;</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">oauth2</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">validationStrategy</span><span class="p p-Indicator">:</span> <span class="s">&quot;local&quot;</span>
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -328,14 +297,12 @@ for validation.</p>
 </div>
 <div class="section" id="oauth-2-0-password-grant">
 <span id="oauth2-password-grant"></span><h2>OAuth 2.0 Password Grant<a class="headerlink" href="#oauth-2-0-password-grant" title="Permalink to this headline">¶</a></h2>
-<p>This is the authentication strategy that you will want to use for mobile clients.</p>
-<p>In this situation the end-user supplies their username and password to your
+<p>This is the authentication strategy that you&#8217;ll want to use for mobile clients, and it&#8217;s supported this flow out-of-the-box.</p>
+<p>In this scenario, the end-user supplies their username and password to your
 mobile application.  The mobile application sends that username and password to
 your ASP.NET Core server, which then verifies the password with Stormpath.</p>
 <p>If the account is valid and the password is correct, Stormpath will generate
-an Access and Refresh Token for the user.  Your server gets these tokens from Stormpath
-and then sends them down to your mobile application.</p>
-<p>The mobile application then stores the tokens in a secure location, and
+an Access and Refresh Token for the user.  Your server gets these tokens from Stormpath and then sends them down to your mobile application. The mobile application then stores the tokens in a secure location, and
 uses them for future requests to your ASP.NET Core application.</p>
 <p>When a user wants to login to your mobile application, the mobile application
 should make this request to your application:</p>
@@ -359,29 +326,28 @@ grant_type=password
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Your mobile application should store the tokens in a secure location.</p>
+<p>Your mobile application should store the Access and Refresh Tokens in a secure location.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">By default the Access Token is valid for 1 hour and the Refresh Token is valid for 60 days. You can configure this in the Stormpath Admin Console; see <a class="reference internal" href="#setting-token-expiration-time"><span>Setting Token Expiration Time</span></a>.</p>
+<p class="last">By default the Access Token is valid for 1 hour, and the Refresh Token is valid for 60 days. You can configure this in the Stormpath Admin Console; see <a class="reference internal" href="#setting-token-expiration-time"><span>Setting Token Expiration Time</span></a>.</p>
 </div>
 <p>Each subsequent request the mobile application makes to your ASP.NET Core application should include the Access Token as a <code class="docutils literal"><span class="pre">Bearer</span></code> header:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span>GET /profile
 Host: myapi.com
 Accept: application/json
 Authorization: Bearer eyJraWQiOiI2Nl...
-...
 </pre></div>
 </div>
 <p>When the Access Token expires, you can use the Refresh Token to obtain a new Access Token:</p>
-<p>..code-block:: http</p>
-<blockquote>
-<div><p>POST /oauth/token
+<div class="highlight-http"><div class="highlight"><pre><span></span>POST /oauth/token
 Host: myapi.com
 Accept: application/json
-Content-Type: application/x-www-form-urlencoded</p>
-<p>grant_type=refresh_token
-&amp;refresh_token=eyJraWQiOiI2...</p>
-</div></blockquote>
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token
+&amp;refresh_token=eyJraWQiOiI2...
+</pre></div>
+</div>
 <p>The response will contain a new Access Token.  Once the Refresh Token expires,
 the user will have to re-authenticate with a username and password.</p>
 <p>For details on how to configure the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint, see the <a class="reference internal" href="oauth2.html#oauth2"><span>OAuth 2.0 API</span></a> section.</p>
