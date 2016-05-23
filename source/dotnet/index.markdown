@@ -30,31 +30,50 @@ content_top: [docs_top.html]
     <div class="col-xs-12 col-sm-12">
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          <div class="language-header lang2"></div>
-          <pre><code>$ install-package Stormpath.AspNetCore</code></pre>
-          <p class="body-copy">For web applications or APIs that use ASP.NET Core, this package can add a complete user authentication system in a few lines of code.</p>
+          <div class="language-header langbox">ASP.NET Core</div>
+          <pre><code>> install-package Stormpath.AspNetCore</code></pre>
+          <p class="body-copy">For web applications or APIs that use ASP.NET Core, this package adds a complete user authentication system in a few lines of code.</p>
           <div class="row">
             <div class="col-sm-12">
               <ul class="fa-ul">
                 <li><i class="fa-li fa fa-car"></i><a href="https://github.com/stormpath/stormpath-aspnetcore#quickstart">Quickstart</a></li>
+                <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-aspnetcore-example">Example Application</a></li>
                 <li><i class="fa-li fa fa-book"></i><a href="/dotnet/aspnetcore/latest/">Documentation</a></li>
                 <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-aspnetcore">Project on GitHub</a></li>
-                <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-aspnetcore-example">Example Application</a></li>
                 <li><i class="fa-li fa fa-pencil"></i><a href="https://stormpath.com/blog/asp-net-core-authentication/">Web App Tutorial</a></li>
               </ul>
             </div>
           </div>
         </div>
         <div class="col-xs-12 col-sm-6">
-          <div class="language-header lang1"></div>
-          <pre><code>$ install-package Stormpath.SDK</code></pre>
-          <p class="body-copy">For an existing server or framework-less project, this module is a fully-featured .NET client for our REST API.</p>
+          <div class="language-header langbox">ASP.NET 4.5+</div>
+          <pre><code>> install-package -pre Stormpath.AspNet</code></pre>
+          <p class="body-copy">For web applications or APIs that use ASP.NET 4.x, this package adds a complete user authentication system in a few lines of code.</p>
+          <div class="row">
+            <div class="col-sm-12">
+              <ul class="fa-ul">
+                <li><i class="fa-li fa fa-car"></i><a href="https://github.com/stormpath/stormpath-aspnet#quickstart">Quickstart</a></li>
+                <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-aspnet-example">Example Application</a></li>
+                <li><i class="fa-li fa fa-book"></i><a href="/dotnet/aspnet/latest/">Documentation</a></li>
+                <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-aspnet">Project on GitHub</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <div class="language-header langbox">Generic .NET</div>
+          <pre><code>> install-package Stormpath.SDK</code></pre>
+          <p class="body-copy">For an existing server or framework-less project, this package is a fully-featured .NET SDK for our REST API that works with C#, Visual Basic, and other CLR languages.</p>
           <div class="row">
             <div class="col-sm-12">
               <ul class="fa-ul">
                 <li><i class="fa-li fa fa-car"></i><a href="/csharp/product-guide/latest/quickstart.html">Quickstart</a></li>
+                <li><i class="fa-li fa fa-book"></i><a href="/csharp/product-guide/latest/">C# Documentation</a></li>
+                <li><i class="fa-li fa fa-book"></i><a href="/vbnet/product-guide/latest/">VB Documentation</a></li>
+                <li><i class="fa-li fa fa-file-text"></i><a href="https://docs.stormpath.com/dotnet/api/">SDK API Reference</a></li>
                 <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-dotnet">Project on GitHub</a></li>
-                <li><i class="fa-li fa fa-file-text"></i><a href="https://docs.stormpath.com/dotnet/api/">API Reference</a></li>
               </ul>
             </div>
           </div>
