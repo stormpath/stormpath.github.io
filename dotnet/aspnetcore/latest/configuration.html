@@ -75,7 +75,7 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="">Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#minimum-required-configuration">Minimum Required Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#required-settings">Required Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#markup-file-yaml-or-json">Markup File (YAML or JSON)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api-credentials-file">API Credentials File</a></li>
@@ -193,20 +193,21 @@
             
   <div class="section" id="configuration">
 <span id="id1"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
-<p>The library provides several options that allow you to customize the authentication
-features of your ASP.NET Core application. We will cover the major options in this
-section, and more specific options in later sections of this guide.</p>
+<p>The Stormpath ASP.NET Core library provides several options that allow you to customize the authentication features of your ASP.NET Core application. This section will cover how to configure the library in general, and later sections will go into detail on specific features.</p>
+<p>The default configuration enables a lot of functionality by default, but you may want to customize the behavior of the library to suit the needs of your application.</p>
 <p>There are a few ways you can set these configuration options:</p>
 <ul class="simple">
 <li>Environment variables</li>
 <li>Markup file (YAML or JSON)</li>
-<li>API Credentials file (<code class="docutils literal"><span class="pre">apiKey.properties</span></code>)</li>
-<li>Inline options (supplied to the middleware constructor)</li>
+<li>Inline options in code (supplied to the middleware constructor)</li>
 </ul>
-<p>If you would like a list of all available options, please refer to the
-<a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-config/blob/master/src/Stormpath.Configuration.Abstractions/Default.cs">Web Configuration Defaults</a>.</p>
-<div class="section" id="minimum-required-configuration">
-<h2>Minimum Required Configuration<a class="headerlink" href="#minimum-required-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Additionally, you can also use an API credentials file (<code class="docutils literal"><span class="pre">apiKey.properties</span></code>) to set the values of the Stormpath API Key ID and Secret options.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you would like a list of all available options, or to view the default values, please refer to the <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-config/blob/master/src/Stormpath.Configuration.Abstractions/Default.cs">Web Configuration Defaults</a>.</p>
+</div>
+<div class="section" id="required-settings">
+<h2>Required Settings<a class="headerlink" href="#required-settings" title="Permalink to this headline">¶</a></h2>
 <p>At the very least, these configuration options <strong>must</strong> be set in order for
 the Stormpath middleware to initialize properly:</p>
 <ul class="simple">
@@ -214,28 +215,30 @@ the Stormpath middleware to initialize properly:</p>
 <li><code class="docutils literal"><span class="pre">stormpath.client.apiKey.secret</span></code></li>
 </ul>
 <p>Additionally, if you have more than one Application resource in your Stormpath tenant, either <code class="docutils literal"><span class="pre">stormpath.application.name</span></code> or <code class="docutils literal"><span class="pre">stormpath.application.href</span></code> must be set.</p>
-<p>Any configuration option that is omitted will fall back to the <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-config/blob/master/src/Stormpath.Configuration.Abstractions/Default.cs">Web Configuration Defaults</a>.</p>
+<p>If these values aren&#8217;t set (using one of the methods below), the Stormpath middleware component with throw an error on startup.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Any other configuration option that is omitted will fall back to the <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-config/blob/master/src/Stormpath.Configuration.Abstractions/Default.cs">Web Configuration Defaults</a>.</p>
+</div>
 </div>
 <div class="section" id="environment-variables">
 <h2>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
-<p>Configuration options can be set in environment variables by formatting the key name with underscores.
-For example, <code class="docutils literal"><span class="pre">stormpath.client.apiKey.id</span></code> becomes <code class="docutils literal"><span class="pre">STORMPATH_CLIENT_APIKEY_ID</span></code>.</p>
+<p>Configuration options can be set in environment variables by formatting the key name with underscores. For example, <code class="docutils literal"><span class="pre">stormpath.client.apiKey.id</span></code> becomes <code class="docutils literal"><span class="pre">STORMPATH_CLIENT_APIKEY_ID</span></code>.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">It is a best practice to store confidential information in environment
-variables, to avoid hard-coding it into your application. We recommend you store your
-confidential Stormpath information (API credentials and application URL) in this way.</p>
+variables, to avoid hard-coding it into your application. We recommend you store your confidential Stormpath information (API credentials and application URL) in this way.</p>
 </div>
 <p>In a bash-like shell, you can set environment variables by running these commands:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_ID</span><span class="o">=</span>YOUR_ID_HERE
-<span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_SECRET</span><span class="o">=</span>YOUR_SECRET_HERE
-<span class="nb">export</span> <span class="nv">STORMPATH_APPLICATION_HREF</span><span class="o">=</span>YOUR_APP_HREF
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_ID</span><span class="o">=</span>your_id_here
+<span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_SECRET</span><span class="o">=</span>your_secret_here
+<span class="nb">export</span> <span class="nv">STORMPATH_APPLICATION_HREF</span><span class="o">=</span>your_app_href
 </pre></div>
 </div>
 <p>On Windows, the commands are:</p>
-<div class="highlight-powershell"><div class="highlight"><pre><span></span><span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_ID</span> <span class="n">YOUR_ID_HERE</span>
-<span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_SECRET</span> <span class="n">YOUR_SECRET_HERE</span>
-<span class="n">setx</span> <span class="n">STORMPATH_APPLICATION_HREF</span> <span class="n">YOUR_APP_HREF</span>
+<div class="highlight-powershell"><div class="highlight"><pre><span></span><span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_ID</span> <span class="n">your_id_here</span>
+<span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_SECRET</span> <span class="n">your_secret_here</span>
+<span class="n">setx</span> <span class="n">STORMPATH_APPLICATION_HREF</span> <span class="n">your_app_href</span>
 </pre></div>
 </div>
 <p>Any configuration option can be set using environment variables. The above are just examples!</p>
@@ -247,15 +250,33 @@ confidential Stormpath information (API credentials and application URL) in this
 <li><code class="docutils literal"><span class="pre">~/.stormpath</span></code> (where <code class="docutils literal"><span class="pre">~</span></code> represents the user&#8217;s home directory)</li>
 <li>The application&#8217;s base directory</li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On Windows machines, the home directory is usually <code class="docutils literal"><span class="pre">C:\Users\&lt;username&gt;\</span></code>.</p>
+</div>
 <p>For example, this YAML configuration will disable the default <code class="docutils literal"><span class="pre">/register</span></code> and <code class="docutils literal"><span class="pre">/login</span></code> routes:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
-    <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
+<p>The equivalent JSON is:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;web&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;register&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;login&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In both cases, the <code class="docutils literal"><span class="pre">stormpath</span></code> root node is implied and should be omitted.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
 <p class="last">You can also refer to the <a class="reference external" href="https://github.com/stormpath/stormpath-framework-spec/blob/master/example-config.yaml">Example Stormpath configuration</a> to see the entire default library configuration in YAML.</p>
@@ -263,9 +284,9 @@ confidential Stormpath information (API credentials and application URL) in this
 </div>
 <div class="section" id="api-credentials-file">
 <h2>API Credentials File<a class="headerlink" href="#api-credentials-file" title="Permalink to this headline">¶</a></h2>
-<p>The API Key ID (<code class="docutils literal"><span class="pre">stormpath.client.apiKey.id</span></code>) and API Key Secret (<code class="docutils literal"><span class="pre">stormpath.client.apiKey.secret</span></code>) can be set by placing the <code class="docutils literal"><span class="pre">apiKey.properties</span></code> file in one of these locations:</p>
+<p>The API Key ID (<code class="docutils literal"><span class="pre">stormpath.client.apiKey.id</span></code>) and API Key Secret (<code class="docutils literal"><span class="pre">stormpath.client.apiKey.secret</span></code>) can be set by placing the <code class="docutils literal"><span class="pre">apiKey.properties</span></code> generated by the Stormpath Admin Console file in one of these locations:</p>
 <ul class="simple">
-<li><code class="docutils literal"><span class="pre">~/.stormpath</span></code> (where <code class="docutils literal"><span class="pre">~</span></code> represents the user&#8217;s home directory)</li>
+<li><code class="docutils literal"><span class="pre">~/.stormpath/</span></code> (where <code class="docutils literal"><span class="pre">~</span></code> represents the user&#8217;s home directory)</li>
 <li>The application&#8217;s base directory</li>
 </ul>
 <p>If you don&#8217;t opt to store the Stormpath API credentials in environment variables, this functionality makes it easy to download the <code class="docutils literal"><span class="pre">apiKey.properties</span></code> file from Stormpath and place it directly in one of these locations.</p>
@@ -273,7 +294,7 @@ confidential Stormpath information (API credentials and application URL) in this
 <div class="section" id="inline-options">
 <h2>Inline Options<a class="headerlink" href="#inline-options" title="Permalink to this headline">¶</a></h2>
 <p>If you wish to define your configuration in code, you
-can do so in the <code class="docutils literal"><span class="pre">services.AddStormpath()</span></code> call, like this:</p>
+can do so when initializing the middleware:</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="n">Application</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ApplicationConfiguration</span><span class="p">()</span>
@@ -310,7 +331,7 @@ can do so in the <code class="docutils literal"><span class="pre">services.AddSt
 <p>Both of these examples will use the Stormpath Application called &#8220;My Application&#8221; and disable the default <code class="docutils literal"><span class="pre">/register</span></code> route.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">You&#8217;ll need to add <code class="docutils literal"><span class="pre">using</span> <span class="pre">Stormpath.Configuration.Abstractions;</span></code> to your <code class="docutils literal"><span class="pre">Startup.cs</span></code> file in order to use the type-safe <code class="docutils literal"><span class="pre">StormpathConfiguration</span></code> model.</p>
+<p class="last">You&#8217;ll need to add <code class="docutils literal"><span class="pre">using</span> <span class="pre">Stormpath.Configuration.Abstractions;</span></code> to your file in order to use the type-safe <code class="docutils literal"><span class="pre">StormpathConfiguration</span></code> model in the first example.</p>
 </div>
 <p>Like all the other methods of supplying configuration, any omitted options will fall back to the <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-config/blob/master/src/Stormpath.Configuration.Abstractions/Default.cs">Web Configuration Defaults</a>.</p>
 <div class="admonition tip">
@@ -320,7 +341,7 @@ can do so in the <code class="docutils literal"><span class="pre">services.AddSt
 </div>
 <div class="section" id="default-features">
 <span id="id2"></span><h2>Default Features<a class="headerlink" href="#default-features" title="Permalink to this headline">¶</a></h2>
-<p>When you add Stormpath to your application using <code class="docutils literal"><span class="pre">app.UseStormpath()</span></code>,
+<p>When you add the Stormpath middleware to your application pipeline,
 the library will automatically add the following routes to your application:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -422,31 +443,30 @@ this configuration in code:</p>
 </div>
 <p>The equivalent <code class="docutils literal"><span class="pre">stormpath.yaml</span></code> looks like this:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="nn">---</span>
-<span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">forgotPassword</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">forgotPassword</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 
-    <span class="l l-Scalar l-Scalar-Plain">changePassword</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="l l-Scalar l-Scalar-Plain">changePassword</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 
-    <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 
-    <span class="l l-Scalar l-Scalar-Plain">logout</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="l l-Scalar l-Scalar-Plain">logout</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 
-    <span class="l l-Scalar l-Scalar-Plain">me</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="l l-Scalar l-Scalar-Plain">me</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 
-    <span class="l l-Scalar l-Scalar-Plain">oauth2</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="l l-Scalar l-Scalar-Plain">oauth2</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 
-    <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 
-    <span class="l l-Scalar l-Scalar-Plain">verifyEmail</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="l l-Scalar l-Scalar-Plain">verifyEmail</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
 </pre></div>
 </div>
 <p>You could also achieve the same result using environment variables, by setting <code class="docutils literal"><span class="pre">STORMPATH_WEB_LOGIN_ENABLED</span> <span class="pre">=</span> <span class="pre">'false'</span></code> and so on.</p>
@@ -467,8 +487,8 @@ this configuration in code:</p>
 </div>
 <div class="section" id="stormpath-client-options">
 <h2>Stormpath Client Options<a class="headerlink" href="#stormpath-client-options" title="Permalink to this headline">¶</a></h2>
-<p>When you initialize this library, it creates an instance of a Stormpath Client.
-The Stormpath client is responsible for communicating with the Stormpath REST
+<p>When you initialize this library, it creates an instance of the Stormpath SDK Client.
+The Stormpath Client is responsible for communicating with the Stormpath REST
 API and is provided by the <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet">Stormpath .NET SDK</a>.</p>
 <p>Any options you set when initializing the Stormpath middleware library are also passed down to the SDK Client.</p>
 <p>For example, to hardcode the Stormpath API credentials (not recommended!), you could use this configuration:</p>

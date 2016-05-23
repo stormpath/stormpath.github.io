@@ -75,7 +75,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#minimum-required-configuration">Minimum Required Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#required-settings">Required Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#markup-file-yaml-or-json">Markup File (YAML or JSON)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#api-credentials-file">API Credentials File</a></li>
@@ -193,77 +193,77 @@
             
   <div class="section" id="quickstart">
 <span id="setup"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
-<p>This section walks you through adding Stormpath to a new ASP.NET Core project. By the end
-of this short page you&#8217;ll have working login and registration features added to your application!</p>
+<p>This section walks you through adding Stormpath to a new ASP.NET Core project. By the end of this short tutorial you&#8217;ll have working login and registration features added to your application!</p>
 <div class="section" id="create-a-stormpath-account">
 <h2>Create a Stormpath Account<a class="headerlink" href="#create-a-stormpath-account" title="Permalink to this headline">¶</a></h2>
 <p>If you haven&#8217;t already, the first thing you&#8217;ll want to do is <a class="reference external" href="https://api.stormpath.com/register">create a new Stormpath account</a>.</p>
 </div>
 <div class="section" id="create-an-api-key-pair">
 <h2>Create an API Key Pair<a class="headerlink" href="#create-an-api-key-pair" title="Permalink to this headline">¶</a></h2>
-<p>Once you&#8217;ve created a new account, you need to create an API key pair. A new
-API key pair is easily created by logging into your dashboard and clicking the
-&#8220;Create an API Key&#8221; button. This will generate a new API key for you, and
-prompt you to download your key pair.</p>
+<p>Once you&#8217;ve created a new account, you need to create an API key pair. These are your credentials for the Stormpath API. A new API key pair is easily created by logging into your dashboard and clicking the &#8220;Create an API Key&#8221; button. This will generate a new key pair for you, and prompt you to download the key pair as a file.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Please keep the API key file safe!  This key and secret
 allows you to make Stormpath API requests, and should be properly protected.</p>
 </div>
-<p>We recommend storing your API credentials in local environment variables. Once you&#8217;ve downloaded your <code class="docutils literal"><span class="pre">apiKey.properties</span></code> file, open it in Notepad or your favorite text editor. Find the <strong>API Key ID</strong> and <strong>API Key Secret</strong> and run these commands in PowerShell (or your shell of choice):</p>
-<div class="highlight-powershell"><div class="highlight"><pre><span></span><span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_ID</span> <span class="s2">&quot;[value from properties file]&quot;</span>
-<span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_SECRET</span> <span class="s2">&quot;[value from properties file]&quot;</span>
+<p>We recommend storing your API credentials in local environment variables. Once you&#8217;ve downloaded your <code class="docutils literal"><span class="pre">apiKey.properties</span></code> file, open it in your favorite text editor, and find the <strong>API Key ID</strong> and <strong>API Key Secret</strong> values.</p>
+<p>In a bash-like shell, you can set environment variables by running these commands:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_ID</span><span class="o">=</span>your_id_here
+<span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_SECRET</span><span class="o">=</span>your_secret_here
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">You can also load your credentials straight from the <code class="docutils literal"><span class="pre">apiKey.properties</span></code> file, or
-include them in your project code. See the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section for all the details.</p>
+<p>On Windows, the commands are:</p>
+<div class="highlight-powershell"><div class="highlight"><pre><span></span><span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_ID</span> <span class="n">your_id_here</span>
+<span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_SECRET</span> <span class="n">your_secret_here</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You can also load your credentials straight from the <code class="docutils literal"><span class="pre">apiKey.properties</span></code> file, or include them in your project code. See the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section for more information.</p>
 </div>
 </div>
 <div class="section" id="find-your-stormpath-application">
 <h2>Find Your Stormpath Application<a class="headerlink" href="#find-your-stormpath-application" title="Permalink to this headline">¶</a></h2>
-<p>To get you up and running quickly, all new Stormpath Tenants come with a Stormpath Application called
-&#8220;My Application&#8221;. You&#8217;ll generally want one application per project, and we can
-use this default application to get started.</p>
+<p>To get you up and running quickly, all new Stormpath Tenants come with a Stormpath Application called &#8220;My Application&#8221;. You&#8217;ll generally want one application per project, and we can use this default application to get started.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To learn more about Stormpath Applications, please see the
+<a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#application">Application Resource</a> section of our REST API documentation.</p>
+</div>
 <p>Every Stormpath Application has unique URL, which looks something like this:</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span>https://api.stormpath.com/v1/applications/l0ngr4nd0mstr1ngh3r3
 </pre></div>
 </div>
-<p>From inside the <a class="reference external" href="https://api.stormpath.com/login">Admin Console</a>, you can find the URL (called the REST URL or <strong>href</strong> in the Admin Console) by navigating to the
-&#8220;My Application&#8221; item in the Applications list.</p>
+<p>From inside the <a class="reference external" href="https://api.stormpath.com/login">Admin Console</a>, you can find the URL (also called the REST URL or href) by navigating to the &#8220;My Application&#8221; item in the Applications list.</p>
 <p>We recommend saving this URL as an environment variable as well:</p>
-<div class="highlight-powershell"><div class="highlight"><pre><span></span><span class="n">setx</span> <span class="n">STORMPATH_APPLICATION_HREF</span> <span class="s2">&quot;[your Application href]&quot;</span>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">STORMPATH_APPLICATION_HREF</span><span class="o">=</span>your_app_href
 </pre></div>
 </div>
-<p>To learn more about Stormpath Applications, please see the
-<a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#application">Application Resource</a> section of our REST API documentation.</p>
-<p>Your default Application will also have a directory mapped to it. The
-Directory is where Stormpath stores accounts. To learn more, please see
-<a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#directory">Directory Resource</a> and <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#modeling-your-user-base">Modeling Your User Base</a>.</p>
-<p>Now that your API credentials and Stormpath Application are ready, you&#8217;re set to plug Stormpath into your project!</p>
+<p>Or, on Windows:</p>
+<div class="highlight-powershell"><div class="highlight"><pre><span></span><span class="n">setx</span> <span class="n">STORMPATH_APPLICATION_HREF</span> <span class="n">your_app_href</span>
+</pre></div>
+</div>
+<p>Now that your API credentials and Stormpath Application are set, you&#8217;re ready to plug Stormpath into your project!</p>
 </div>
 <div class="section" id="example-projects">
 <h2>Example Projects<a class="headerlink" href="#example-projects" title="Permalink to this headline">¶</a></h2>
 <p>If you&#8217;re feeling lazy (as all good programmers should!), you can download one of our example projects to get up and running super fast:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://github.com/stormpath/stormpath-aspnetcore-example">ASP.NET Core (MVC6) Example Project</a></li>
+<li><a class="reference external" href="https://github.com/stormpath/stormpath-aspnetcore-example">ASP.NET Core 1.0 MVC Example Project</a></li>
+<li><a class="reference external" href="https://github.com/stormpath/stormpath-aspnet-example">ASP.NET MVC 5 Example Project</a></li>
 </ul>
 </div>
 <div class="section" id="create-a-new-project">
 <h2>Create a New Project<a class="headerlink" href="#create-a-new-project" title="Permalink to this headline">¶</a></h2>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If you are adding Stormpath to an existing application, skip to the next section.</p>
-</div>
-<p>First, create a new project using the ASP.NET Core template in Visual Studio.</p>
+<p>If you are adding Stormpath to an existing application, skip to the next section!</p>
+<p>If you are using Visual Studio, First, create a new project using the ASP.NET Core template:</p>
 <ol class="arabic simple">
 <li>Click on <strong>File - New Project</strong>.</li>
 <li>Under <strong>Visual C# - Web</strong>, pick the <strong>ASP.NET Web Application</strong> template.</li>
-<li>In the New ASP.NET Project dialog, pick <strong>Web Application</strong> from <strong>ASP.NET 5 Templates</strong>.</li>
+<li>In the New ASP.NET Project dialog, pick <strong>Web Application</strong> or <strong>Web API</strong> from <strong>ASP.NET 5 Templates</strong>.</li>
 <li>Click <strong>Change Authentication</strong> and pick <strong>No Authentication</strong>. (You&#8217;ll be adding it yourself!)</li>
 </ol>
-<p>If you prefer the command line, you can use the <a class="reference external" href="https://github.com/OmniSharp/generator-aspnet">ASP.NET Yeoman Generator</a> to scaffold a new project instead:</p>
+<p>If you&#8217;re on Mac or Linux, or just prefer the command line, you can use the <a class="reference external" href="https://github.com/OmniSharp/generator-aspnet">ASP.NET Yeoman Generator</a> to scaffold a new project instead:</p>
 <ol class="arabic simple">
 <li>Run <code class="docutils literal"><span class="pre">yo</span> <span class="pre">aspnet</span></code>.</li>
 <li>Pick the <strong>Web Application Basic [without Membership and Authorization]</strong> template. Done!</li>
@@ -271,16 +271,16 @@ Directory is where Stormpath stores accounts. To learn more, please see
 </div>
 <div class="section" id="install-the-package">
 <h2>Install the Package<a class="headerlink" href="#install-the-package" title="Permalink to this headline">¶</a></h2>
-<p>Now that you&#8217;ve got a project and a Stormpath account all set up and ready to go, all that&#8217;s
-left to do before we dive into the code is install the library package from NuGet.</p>
-<p>This can be done with the NuGet Package Manager GUI, or using the Package Manager Console:</p>
+<p>The <code class="docutils literal"><span class="pre">Stormpath.AspNetCore</span></code> package comes with everything you need to plug Stormpath into an ASP.NET Core project.</p>
+<p>The package can be installed with the NuGet Package Manager interface, or using the Package Manager Console:</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span>PM&gt; install-package Stormpath.AspNetCore
 </pre></div>
 </div>
+<p>It includes the <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet">Stormpath .NET SDK</a>, the Stormpath OWIN middleware, and pre-rendered views that work out of the box.</p>
 </div>
 <div class="section" id="initialize-the-middleware">
 <h2>Initialize the Middleware<a class="headerlink" href="#initialize-the-middleware" title="Permalink to this headline">¶</a></h2>
-<p>Once the package is installed, you can add it to your application in <code class="docutils literal"><span class="pre">Startup.cs</span></code>. First, add the required services in <code class="docutils literal"><span class="pre">ConfigureServices()</span></code>:</p>
+<p>Once the package is installed, you need to add it to your application in <code class="docutils literal"><span class="pre">Startup.cs</span></code>. First, add the required services in <code class="docutils literal"><span class="pre">ConfigureServices()</span></code>:</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">();</span>
@@ -300,22 +300,25 @@ left to do before we dive into the code is install the library package from NuGe
 <span class="p">}</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It&#8217;s important that the Stormpath middleware is added <strong>before</strong> any middleware that needs to be protected, such as MVC!</p>
+</div>
 <p>With this minimal configuration, the library will do the following:</p>
 <ul class="simple">
-<li>Look for your Stormpath API credentials and Application URL in your local environment variables.</li>
-<li>Fetch your Stormpath Application and all the data about its configuration and
-account stores.</li>
+<li>Look for Stormpath API credentials and Application URL in your local environment variables.</li>
+<li>Discover your Stormpath Application and its configuration and account stores.</li>
 <li>Attach the <a class="reference internal" href="configuration.html#default-features"><span>Default Features</span></a> to your application, such as the
-login page and registration page.</li>
+login and registration routes.</li>
 </ul>
 <p>That&#8217;s it, you&#8217;re ready to go! Compile and run your project, and try navigating to these URLs:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://localhost:5000/login">http://localhost:5000/login</a></li>
-<li><a class="reference external" href="http://localhost:5000/register">http://localhost:5000/register</a></li>
+<li><a class="reference external" href="http://localhost:50000/login">http://localhost:50000/login</a></li>
+<li><a class="reference external" href="http://localhost:50000/register">http://localhost:50000/register</a></li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Your port number may differ. Check your project&#8217;s configuration to find the port number your project is using.</p>
+<p class="last">Your port number will differ. To find the port assigned to your project, right-click on the project in the Solution Explorer and choose <strong>Properties</strong>. Switch to the <strong>Web</strong> tab and check the URL listed in <strong>Servers - Project Url</strong>.</p>
 </div>
 <p>You should be able to register for an account and log in. The newly created
 account will be placed in the directory that is mapped to &#8220;My Application&#8221;.</p>
@@ -324,8 +327,7 @@ account will be placed in the directory that is mapped to &#8220;My Application&
 <p class="last">By default, we don&#8217;t require email verification for new accounts, but we
 highly recommend you use this workflow. See the <a class="reference internal" href="email_verification.html#email-verification"><span>Email Verification</span></a> section for details.</p>
 </div>
-<p>There are many more features than login and registration. Continue to the
-next section to learn more!</p>
+<p>There are many more features beyond basic login and registration. You can jump to any of the features using the sidebar menu on the left, or continue to the next section to learn how to configure the library.</p>
 </div>
 </div>
 

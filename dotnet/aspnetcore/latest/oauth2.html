@@ -75,7 +75,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#minimum-required-configuration">Minimum Required Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#required-settings">Required Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#markup-file-yaml-or-json">Markup File (YAML or JSON)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#api-credentials-file">API Credentials File</a></li>
@@ -195,7 +195,7 @@
 <span id="oauth2"></span><h1>OAuth 2.0 API<a class="headerlink" href="#oauth-2-0-api" title="Permalink to this headline">¶</a></h1>
 <p>If you are building a mobile application, and don&#8217;t want to (or can&#8217;t) use cookie-based sessions, you&#8217;ll need to generate access tokens using the OAuth 2.0 API provided by this library.</p>
 <p>By default, this library will provide a POST route at <code class="docutils literal"><span class="pre">/oauth/token</span></code>. Simply make a POST request to this URI with the user&#8217;s credentials to generate tokens for the user. You can change this URI, or disable the feature entirely if you wish.</p>
-<p>This topic describes how to configure the OAuth 2.0 API endpoint. For details on how to use it, see the <a class="reference internal" href="authentication.html#authentication"><span>Authentication</span></a> section.</p>
+<p>This topic describes how to configure the OAuth 2.0 API endpoint. For details on how to use it, see the <a class="reference internal" href="authentication.html#oauth2-password-grant"><span>OAuth 2.0 Password Grant</span></a> section.</p>
 <div class="section" id="configuration-options">
 <h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
 <p>This feature supports several options that you can configure using code or markup (see the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section):</p>
@@ -225,13 +225,12 @@
 </div>
 <div class="section" id="configuration-example">
 <h3>Configuration Example<a class="headerlink" href="#configuration-example" title="Permalink to this headline">¶</a></h3>
-<p>To change the token endpoint URI and use remote (Stormpath API) validation of the access token, use this configuration (shown in YAML):</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">oauth2</span><span class="p p-Indicator">:</span>
-      <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/api/token&quot;</span>
-      <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
-        <span class="l l-Scalar l-Scalar-Plain">validationStrategy</span><span class="p p-Indicator">:</span> <span class="s">&quot;stormpath&quot;</span>
+<p>To change the token endpoint URI and use remote (Stormpath API) validation of the Access Token, use this configuration (shown in YAML):</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">oauth2</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/api/token&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">validationStrategy</span><span class="p p-Indicator">:</span> <span class="s">&quot;stormpath&quot;</span>
 </pre></div>
 </div>
 <p>You could also set this configuration via code:</p>
@@ -251,25 +250,24 @@
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>See the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section for more details on how configuration works, or <a class="reference internal" href="#oauth2-default-configuration"><span>Default Configuration</span></a> to see the default values.</p>
+<p>See the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section for more details on how configuration works, or <a class="reference internal" href="#oauth2-default-configuration"><span>Default Configuration</span></a> to see the default values for this route.</p>
 </div>
 </div>
 <div class="section" id="default-configuration">
 <span id="oauth2-default-configuration"></span><h2>Default Configuration<a class="headerlink" href="#default-configuration" title="Permalink to this headline">¶</a></h2>
 <p>Options that are not overridden by explicit configuration (see <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a>) will retain their default values.</p>
 <p>For reference, the full default configuration for this route is shown as YAML below:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">oauth2</span><span class="p p-Indicator">:</span>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">oauth2</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/oauth/token&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">client_credentials</span><span class="p p-Indicator">:</span>
       <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-      <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/oauth/token&quot;</span>
-      <span class="l l-Scalar l-Scalar-Plain">client_credentials</span><span class="p p-Indicator">:</span>
-        <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-        <span class="l l-Scalar l-Scalar-Plain">accessToken</span><span class="p p-Indicator">:</span>
-          <span class="l l-Scalar l-Scalar-Plain">ttl</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">3600</span>
-      <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
-        <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-        <span class="l l-Scalar l-Scalar-Plain">validationStrategy</span><span class="p p-Indicator">:</span> <span class="s">&quot;local&quot;</span>
+      <span class="l l-Scalar l-Scalar-Plain">accessToken</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">ttl</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">3600</span>
+    <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+      <span class="l l-Scalar l-Scalar-Plain">validationStrategy</span><span class="p p-Indicator">:</span> <span class="s">&quot;local&quot;</span>
 </pre></div>
 </div>
 <div class="admonition tip">
