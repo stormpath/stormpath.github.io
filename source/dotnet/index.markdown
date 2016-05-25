@@ -48,7 +48,7 @@ content_top: [docs_top.html]
         <div class="col-xs-12 col-sm-6">
           <div class="language-header langbox">ASP.NET 4.5+</div>
           <pre><code>> install-package -pre Stormpath.AspNet</code></pre>
-          <p class="body-copy">For web applications or APIs that use ASP.NET 4.x, this package adds a complete user authentication system in a few lines of code.</p>
+          <p class="body-copy">For web applications or APIs that use ASP.NET 4.5+, this package adds a complete user authentication system in a few lines of code.</p>
           <div class="row">
             <div class="col-sm-12">
               <ul class="fa-ul">
