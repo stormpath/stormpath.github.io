@@ -1081,7 +1081,7 @@ $ startup.sh
 <h6>4.1. Find the Existing SAML Attributes<a class="headerlink" href="#find-the-existing-saml-attributes" title="Permalink to this headline">¶</a></h6>
 <p>If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that Salesforce sends by retrieving the new user Account that was created inside Stormpath.</p>
 <p>Specifically, you want that Account&#8217;s Provider Data:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">provider_data</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">provider_data</span>
 </pre></div>
 </div>
 <p>Now the <code class="docutils literal"><span class="pre">email</span></code> Attribute has already been passed as part of the Account creation, but you can also map the other SAML Attributes to Stormpath Account attributes as well.</p>
@@ -1233,7 +1233,7 @@ $ startup.sh
 <h6>6.1. Find the Existing SAML Attributes<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h6>
 <p>If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that OneLogin sends by retrieving the new user Account that was created inside Stormpath.</p>
 <p>Specifically, you want that Account&#8217;s <code class="docutils literal"><span class="pre">providerData</span></code> resource:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">provider_data</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">provider_data</span>
 </pre></div>
 </div>
 <p>Now the <code class="docutils literal"><span class="pre">email</span></code> Attribute has already been passed as part of the Account creation, but you can also map the other attributes to Stormpath Account attributes as well.</p>
@@ -1380,7 +1380,7 @@ $ startup.sh
 <h6>6.1. Find the Existing SAML Attributes<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h6>
 <p>If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that Okta sends by retrieving the new user Account that was created inside Stormpath.</p>
 <p>Specifically, you want that Account&#8217;s <code class="docutils literal"><span class="pre">providerData</span></code> resource:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">provider_data</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">provider_data</span>
 </pre></div>
 </div>
 <p>As you can see there are no default attributes passed by Okta, but you can map any attributes you like to the Stormpath Account attributes as well.</p>
@@ -1656,12 +1656,19 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <div class="section" id="step-2-configure-your-saml-directory">
 <h4>Step 2: Configure Your SAML Directory<a class="headerlink" href="#step-2-configure-your-saml-directory" title="Permalink to this headline">¶</a></h4>
 <p>Input the data you gathered in Step 1 above into your Directory&#8217;s Provider resource, and then pass that along as part of the Directory creation request:</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">The ability to create SAML Directories is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">stormpath.resources</span> <span class="kn">import</span> <span class="n">Provider</span>
+
+<span class="n">client</span><span class="o">.</span><span class="n">directories</span><span class="o">.</span><span class="n">create</span><span class="p">({</span>
+    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;My SAML Directory&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;A Directory used for SAML Authorization&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;provider&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;provider_id&#39;</span><span class="p">:</span> <span class="n">Provider</span><span class="o">.</span><span class="n">SAML</span><span class="p">,</span>
+        <span class="s1">&#39;sso_login_url&#39;</span><span class="p">:</span> <span class="s1">&#39;https://example.com/saml2/sso/login&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;sso_logout_url&#39;</span><span class="p">:</span> <span class="s1">&#39;https://example.com/saml2/sso/logout&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;encoded_x509_signing_cert&#39;</span><span class="p">:</span> <span class="s1">&#39;-----BEGIN CERTIFICATE-----</span><span class="se">\n</span><span class="s1">...Certificate goes here...</span><span class="se">\n</span><span class="s1">-----END CERTIFICATE-----&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;request_signature_algorithm&#39;</span><span class="p">:</span> <span class="n">Provider</span><span class="o">.</span><span class="n">SIGNING_ALGORITHM_RSA_SHA_256</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">})</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -1673,20 +1680,11 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <span id="configure-sp-in-idp"></span><h4>Step 3: Retrieve Your Service Provider Metadata<a class="headerlink" href="#step-3-retrieve-your-service-provider-metadata" title="Permalink to this headline">¶</a></h4>
 <p>Next you will have to configure your Stormpath-powered application as a Service Provider in your Identity Provider. This means that you will need to retrieve the correct metadata from Stormpath.</p>
 <p>In order to retrieve the required values, start by sending this request:</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">The ability to retrieve SAML Provider metadata is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<p>This will return the Provider:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">provider</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">provider</span>
 </pre></div>
 </div>
 <p>Now you will need to retrieve your Directory Provider&#8217;s Service Provider Metadata:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">metadata</span> <span class="o">=</span> <span class="n">provider</span><span class="o">.</span><span class="n">service_provider_metadata</span>
 </pre></div>
 </div>
 <p><strong>Example XML</strong></p>
@@ -1728,23 +1726,24 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <li>An <code class="docutils literal"><span class="pre">authorizedCallbackUri</span></code> Array that defines the authorized URIs that the IdP can return your user to. These should be URIs that you host yourself.</li>
 </ol>
 <p>You should create any URIs here that you would like included as authorized callback URIs.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">application</span><span class="o">.</span><span class="n">authorized_callback_uris</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;https://myapplication.com/whatever/callback&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;https://myapplication.com/whatever/callback2&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="n">application</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
 <li>There is also an embedded <code class="docutils literal"><span class="pre">samlPolicy</span></code> object that contains information about the SAML flow configuration and endpoints:</li>
 </ol>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">policy</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="n">saml_policy</span>
 </pre></div>
 </div>
 <div class="section" id="step-5a-generate-defaultrelaystate-idp-initiated-authentication-only">
 <span id="saml-restconfig-5a"></span><h5>Step 5a: Generate defaultRelayState (IdP-initiated Authentication Only)<a class="headerlink" href="#step-5a-generate-defaultrelaystate-idp-initiated-authentication-only" title="Permalink to this headline">¶</a></h5>
 <p>To configure your IdP for IdP-initiated authentication, you will need to get a <code class="docutils literal"><span class="pre">defaultRelayState</span></code> JWT:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<p>This request will return a response containing a JWT like this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">drs</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="n">saml_policy</span><span class="o">.</span><span class="n">service_provider</span><span class="o">.</span><span class="n">default_relay_states</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="n">relay_state</span> <span class="o">=</span> <span class="n">drs</span><span class="o">.</span><span class="n">default_relay_state</span>
 </pre></div>
 </div>
 <p>This JWT will then need to be entered into your IdP&#8217;s configuration in order for IdP-initiated authentication to function properly.</p>
@@ -1755,7 +1754,18 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <li><strong>state</strong>: Any state that your application would like to receive. Note that the application developer will need to interpret this state.</li>
 </ul>
 <p>A request including these optional properties looks like this:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">drs</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="n">saml_policy</span><span class="o">.</span><span class="n">service_provider</span><span class="o">.</span><span class="n">default_relay_states</span><span class="o">.</span><span class="n">create</span><span class="p">({</span>
+    <span class="s1">&#39;callback_uri&#39;</span><span class="p">:</span> <span class="s1">&#39;https://org1.myapp.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;organization&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name_key&#39;</span><span class="p">:</span> <span class="s1">&#39;org1&#39;</span><span class="p">},</span>
+    <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="s1">&#39;iamastate&#39;</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="c1"># This is also possible:</span>
+<span class="n">drs</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="n">saml_policy</span><span class="o">.</span><span class="n">service_provider</span><span class="o">.</span><span class="n">default_relay_states</span><span class="o">.</span><span class="n">create</span><span class="p">({</span>
+    <span class="s1">&#39;callback_uri&#39;</span><span class="p">:</span> <span class="s1">&#39;https://org1.myapp.com&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;organization&#39;</span><span class="p">:</span> <span class="n">organization</span><span class="p">,</span>
+    <span class="s1">&#39;state&#39;</span><span class="p">:</span> <span class="s1">&#39;iamastate&#39;</span><span class="p">,</span>
+<span class="p">})</span>
 </pre></div>
 </div>
 </div>
@@ -1791,11 +1801,21 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <li><strong>accountAttributes</strong>: This is an array of Stormpath Account or customData (<code class="docutils literal"><span class="pre">customData.$KEY_NAME</span></code>) attributes that will map to this SAML Attribute.</li>
 </ul>
 <p><strong>Example Rule</strong></p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">AttributeStatementMappingRule</span><span class="p">(</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;uid&#39;</span><span class="p">,</span>
+    <span class="n">name_format</span> <span class="o">=</span> <span class="s1">&#39;urn:oasis:names:tc:SAML:2.0:attrname-format:basic&#39;</span><span class="p">,</span>
+    <span class="n">account_attributes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p>In order to create the mapping rules, you send the following request:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">rule_uid</span> <span class="o">=</span> <span class="n">AttributeStatementMappingRule</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;uid&#39;</span><span class="p">,</span> <span class="n">account_attributes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>
+<span class="n">rule_mail</span> <span class="o">=</span> <span class="n">AttributeStatementMappingRule</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;mail&#39;</span><span class="p">,</span> <span class="n">account_attributes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">])</span>
+<span class="n">rule_location</span> <span class="o">=</span> <span class="n">AttributeStatementMappingRule</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;location&#39;</span><span class="p">,</span> <span class="n">account_attributes</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;customData.location&#39;</span><span class="p">])</span>
+
+<span class="n">asmr</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">provider</span><span class="o">.</span><span class="n">attribute_statement_mapping_rules</span>
+<span class="n">asmr</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">rule_uid</span><span class="p">,</span> <span class="n">rule_mail</span><span class="p">,</span> <span class="n">rule_location</span><span class="p">]</span>
+<span class="n">asmr</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Now that we&#8217;ve configured everything, you can take a look at what the actual SAML authentication flow looks like.</p>
