@@ -152,6 +152,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#using-id-site-for-multi-tenancy">7.5. Using ID Site for Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idsite-sso">7.6. ID Site &amp; Single Sign-On</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="reference.html">REST API Reference</a></li>
@@ -599,6 +600,21 @@ Location: https://api.stormpath.com/sso/logout?jwtRequest=%GENERATED_JWT%
 <div class="highlight-default"><div class="highlight"><pre><span></span>https://home-depot.elastic-rebel.id.stormpath.io/?jwt={GENERATED_JWT}
 </pre></div>
 </div>
+</div>
+<div class="section" id="idsite-sso">
+<span id="id-site-single-sign-on"></span><h2>7.6. ID Site &amp; Single Sign-On<a class="headerlink" href="#idsite-sso" title="Permalink to this headline">¶</a></h2>
+<p>One of the areas where ID Site really shines is if you have multiple applications that need to support single sign-on. All you need to do is to ensure that all your Applications have the same Directory mapped as an Account Store, and any time a user in that Directory logs in to one Application via ID Site, they will be able be authenticated for all other Applications.</p>
+<p>As an overview, the flow would look like this:</p>
+<ol class="arabic simple">
+<li>User goes to Application A while unauthenticated with that application and clicks on &#8220;Log in&#8221;.</li>
+<li>User is redirected to ID Site.</li>
+<li>User authenticates successfully on ID Site.</li>
+<li>ID Site redirects the user back to Application A with an ID Site Assertion for Application A.</li>
+<li>At this point you could (optionally) <a class="reference internal" href="#idsite-jwt-to-oauth"><span class="std std-ref">exchange the ID Site JWT for an OAuth token</span></a>.</li>
+<li>User now goes to Application B while unauthenticated with that application and clicks on &#8220;Log in&#8221;.</li>
+<li>User is redirected to ID Site.</li>
+<li>ID Site detects the user&#8217;s authenticated session and redirects them back to Application B with an ID Site Assertion JWT for Application B.</li>
+</ol>
 </div>
 </div>
 
