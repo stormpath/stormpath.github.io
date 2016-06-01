@@ -113,6 +113,7 @@
 
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
+  
             
             
                 <ul class="current">
@@ -158,6 +159,10 @@
 
             
           
+
+  
+  
+
         </div>
       </div>
     </nav>
@@ -283,12 +288,18 @@
 <p><code class="docutils literal"><span class="pre">bank-of-a.role.admin</span></code></p>
 <p>This has two benefits:</p>
 <ol class="arabic simple">
-<li>It makes it easy to find all the role Groups for that particular tenant, since you can simply search for the nameKey in the <code class="docutils literal"><span class="pre">name</span></code> field:</li>
+<li>It makes it easy to find all the role Groups for that particular tenant, since you can search for the nameKey:</li>
 </ol>
-<blockquote>
-<div><code class="docutils literal"><span class="pre">GET</span> <span class="pre">https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=bank-of-a.role.*</span></code></div></blockquote>
+<div class="highlight-php"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 <p>Or, if you wanted to retrieve the tenant Group and all of its sub-Groups, make the query a little less restrictive by removing the &#8220;role&#8221;:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>GET https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=bank-of-a.*
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">only</span><span class="p">::</span> <span class="n">rest</span>
+</pre></div>
+</div>
+<blockquote>
+<div>GET <a class="reference external" href="https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=bank-of-a.*">https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=bank-of-a.*</a></div></blockquote>
+<div class="highlight-php"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -308,112 +319,27 @@
 <p>Although Organizations do not themselves own Accounts in the same way as Directories and Groups, they can be mapped to Applications as Account Stores for the purposes of user log in. This means that they can be used as, among other things, a single-point of access control to an Application. For example, if you wanted to enable login for a new tenant in your multi-tenant application, all you would have to do is map all of the relevant Directories and/or Groups to your Organization, and then map that Organization to your Application as an Account Store. If at some future point you want to disable that tenant, all you have to do is remove the Account Store Mapping between that Organization and your Application, and the tenant&#8217;s users would no longer be able to log in.</p>
 <div class="section" id="how-to-create-an-organization">
 <span id="create-org"></span><h4>How to Create an Organization<a class="headerlink" href="#how-to-create-an-organization" title="Permalink to this headline">¶</a></h4>
-<p>You can create an Organization in Stormpath by simply performing an HTTP POST to the <code class="docutils literal"><span class="pre">/v1/organizations</span></code> endpoint.</p>
-<p>So, if for example one of our application&#8217;s tenants was the Bank of A, we could send the following POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/organizations</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
-
-<span class="p">{</span>
-  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bank of A&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;bank-of-a&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span>
-<span class="p">}</span>
+<p>You can create an Organization in Stormpath by sending the following request:</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 <p>Which would return the following:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
-<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
-
-<span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-10-02T15:27:01.658Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2015-10-02T15:27:01.658Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Bank of A&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;bank-of-a&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE/customData&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;defaultAccountStoreMapping&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;defaultGroupStoreMapping&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;accountStoreMappings&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE/accountStoreMappings&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE/groups&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;accounts&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE/accounts&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;tenant&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgexAMPLE&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<p>Notice here that both the Default Account Store and Group Store are <code class="docutils literal"><span class="pre">null</span></code> which means that Groups and Accounts added to the Organization (e.g. A POST to <code class="docutils literal"><span class="pre">/v1/organizations/$ORGANIZATION_ID/groups</span></code>) would fail until a default Account Store is added.</p>
 </div>
 <div class="section" id="adding-an-account-store-to-an-organization">
 <h4>Adding an Account Store to an Organization<a class="headerlink" href="#adding-an-account-store-to-an-organization" title="Permalink to this headline">¶</a></h4>
 <p>Like other Account Stores, an Organization can be mapped to an Application so that users in the Organization can log-in to that application (for more about how logging-in works with Stormpath, please see <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">the Authentication chapter</span></a>). But before you do this, you must first associate some users with the Organization so that there is someone to log in! To do this, you have to map some Account Stores to your Organization.</p>
-<p>First, you will need the <code class="docutils literal"><span class="pre">href</span></code> value for a Directory or Group. This, combined with the <code class="docutils literal"><span class="pre">href</span></code> of the Organization will be sent in a POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/organizations</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
-
-<span class="p">{</span>
-  <span class="nt">&quot;organization&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/2SKhstu8Plaekcaexample&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<p>These two attributes, <code class="docutils literal"><span class="pre">organization</span></code> and <code class="docutils literal"><span class="pre">accountStore</span></code> are required, though you may add some optional attributes as well:</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">listIndex</span></code>: Represents the priority in which this accountStore will be consulted by the Organization during an authentication attempt. This is a zero-based index, meaning that an Account Store at <code class="docutils literal"><span class="pre">listIndex</span></code> of 0 will be consulted first, followed by the Account Store at listIndex 1, etc. Setting a negative value will default the value to 0, placing it first in the list. A listIndex of larger than the current list size will place the mapping at the end of the list and then default the value to (list size – 1).</li>
-<li><code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code>: A <code class="docutils literal"><span class="pre">true</span></code> value indicates that new Accounts created by the Organization’s <code class="docutils literal"><span class="pre">/accounts</span></code> endpoint will be automatically saved to this mapping’s Directory or Group.</li>
-<li><code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code>: A <code class="docutils literal"><span class="pre">true</span></code> value indicates that new Groups created by the Organization’s <code class="docutils literal"><span class="pre">/groups</span></code> endpoint will be automatically saved to this mapping’s Directory. Note that a <code class="docutils literal"><span class="pre">true</span></code> value will only be valid here if the accountStore is a Directory.</li>
-</ul>
 <p>In order to be able to add Groups and Accounts to the Organization in the way mentioned above, we should also make sure that we mark this Account Store as our default for both Accounts and Groups:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/organizations</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
-
-<span class="p">{</span>
-  <span class="nt">&quot;organization&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/2SKhstu8Plaekcaexample&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;isDefaultAccountStore&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
-  <span class="nt">&quot;isDefaultGroupStore&quot;</span><span class="p">:</span><span class="kc">true</span>
-<span class="p">}</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<p>Which would result in the following <code class="docutils literal"><span class="pre">201</span> <span class="pre">Created</span></code> response:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
-<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/organizationAccountStoreMappings/3e9cNxhX8abxmPWexAMPle&quot;</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
-
-<span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizationAccountStoreMappings/3e9cNxhX8abxmPWexAMPle&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;listIndex&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nt">&quot;isDefaultAccountStore&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-  <span class="nt">&quot;isDefaultGroupStore&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-  <span class="nt">&quot;organization&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/organizations/DhfD17pJrUbsofEXaMPLE&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/2SKhstu8Plaekcaexample&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<p>Which would result in the following response:</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 <p>So our Organization now has an associated Directory which can be used as an Account Store to add new Accounts and Groups. To enable login for the Accounts in this Organization, we must now map the Organization to an Application.</p>
@@ -421,25 +347,12 @@
 <div class="section" id="registering-an-organization-as-an-account-store-for-an-application">
 <h4>Registering an Organization as an Account Store for an Application<a class="headerlink" href="#registering-an-organization-as-an-account-store-for-an-application" title="Permalink to this headline">¶</a></h4>
 <p>As described in <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">the Authentication chapter</span></a>, in order to allow users to log-in to an Application, you must map some kind of Account Store (e.g. a Group or Directory) to it. One approach is to go one-by-one and map each Directory and/or Group to the Application. However, since we are building a multi-tenant app, and the Organization is itself an Account Store, we can just map our Organization resource to our Application resource. This would enable login for all of the Directories and Groups currently inside that Organization, as well as any we add in the future.</p>
-<p>To map an Organization to an Application, simply follow the steps you would for any Account Store, as described in <a class="reference internal" href="auth_n.html#create-asm"><span class="std std-ref">Mapping a new Account Store</span></a>.</p>
+<p>To map an Organization to an Application, follow the steps you would for any Account Store, as described in <a class="reference internal" href="auth_n.html#create-asm"><span class="std std-ref">Mapping a new Account Store</span></a>.</p>
 </div>
 <div class="section" id="adding-an-account-to-an-organization">
 <span id="add-accnt-to-org"></span><h4>Adding an Account to an Organization<a class="headerlink" href="#adding-an-account-to-an-organization" title="Permalink to this headline">¶</a></h4>
 <p>Adding a new Account to an Organization is exactly the same as adding them to a Directory, except that you use the Organization to route the creation request:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/organizations/2P4XOanz26AUomIexAmple/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
-
-<span class="p">{</span>
-    <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Annie&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Nguyen&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;annie@nguyengland.me&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;annie@nguyengland.me&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="s2">&quot;Changeme1&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;favoriteColor&quot;</span><span class="p">:</span> <span class="s2">&quot;fuschia&quot;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
 </div>
@@ -474,6 +387,10 @@
 </div>
 <p>where ? is the <code class="docutils literal"><span class="pre">tenant_id</span></code> value obtained by inspecting the request.</p>
 <p>So if an application needs this identifier with every request, how do you ensure it is transmitted to the application in the easiest possible way for your end users? The best method is to use the <a class="reference internal" href="reference.html#ref-organization"><span class="std std-ref">Organization resource</span></a> and it&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> attribute.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Stormpath&#8217;s ID Site supports multi-tenancy right out of the box. For more information about how to handle user login in a multi-tenant set-up with ID Site, please see <a class="reference internal" href="idsite.html#idsite-multitenancy"><span class="std std-ref">the ID Site chapter</span></a>.</p>
+</div>
 <p>We present here two possible solutions that use this <code class="docutils literal"><span class="pre">nameKey</span></code>. You may support both if you wish to give your customers convenience options.</p>
 <div class="section" id="sub-domain">
 <h3>6.4.1. Sub-Domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h3>
@@ -508,6 +425,7 @@
 </ul>
 <p>We advise that you auto-remember the login form tenant ID value so that field is pre-populated whenever a user returns to log in. Users don’t like having to remember and type that value in every time they log in.</p>
 <p>As already mentioned, it is strongly recommended that your tenant identifier be an Organization <code class="docutils literal"><span class="pre">nameKey</span></code>. Firstly because Organizations are the recommended resource to use to model multi-tenancy, but also because the <code class="docutils literal"><span class="pre">nameKey</span></code> attribute is unique and follows the DNS specification, which means that you could at any time adopt the Sub-Domain approach mentioned above.</p>
+<p>Stormpath supports quick implementation of all of these strategies with ID Site. For more information, please see <a class="reference internal" href="idsite.html#idsite-multitenancy"><span class="std std-ref">the ID Site chapter</span></a>.</p>
 </div>
 </div>
 </div>
