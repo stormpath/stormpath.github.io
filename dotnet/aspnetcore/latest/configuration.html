@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Configuration &mdash; ASP.NET Core Library Guide 0.1.2 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="ASP.NET Core Library Guide 0.1.2 documentation" href="index.html"/>
+        <link rel="next" title="Request Objects" href="request_objects.html"/>
+        <link rel="prev" title="Quickstart" href="quickstart.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> ASP.NET Core Library Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-does-this-library-do">What does this library do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#who-should-use-stormpath">Who Should Use Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-a-stormpath-account">Create a Stormpath Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-an-api-key-pair">Create an API Key Pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#find-your-stormpath-application">Find Your Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#example-projects">Example Projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-a-new-project">Create a New Project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#install-the-package">Install the Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#initialize-the-middleware">Initialize the Middleware</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#required-settings">Required Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#markup-file-yaml-or-json">Markup File (YAML or JSON)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api-credentials-file">API Credentials File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inline-options">Inline Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#default-features">Default Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#disabling-features">Disabling Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#disabling-content-types">Disabling Content Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stormpath-client-options">Stormpath Client Options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request_objects.html">Request Objects</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request_objects.html#stormpath-client">Stormpath Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request_objects.html#stormpath-application">Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request_objects.html#current-user-account">Current User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request_objects.html#working-with-the-stormpath-api">Working with the Stormpath API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#cookie-authentication">Cookie Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth-2-0-password-grant">OAuth 2.0 Password Grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="oauth2.html">OAuth 2.0 API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="oauth2.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oauth2.html#default-configuration">Default Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="me_api.html">Current User API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#using-the-endpoint">Using the Endpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#link-expansion">Link Expansion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#default-configuration">Default Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#customizing-the-form">Customizing the Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#password-strength-requirements">Password Strength Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#auto-login">Auto Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#default-configuration">Default Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#customizing-the-form">Customizing the Form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#default-configuration">Default Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#default-configuration">Default Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_reset.html">Password Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#enabling-the-workflow">Enabling the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#how-it-works">How it Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#default-configuration">Default Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="email_verification.html">Email Verification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#enabling-the-workflow">Enabling the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#how-it-works">How it Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#auto-login">Auto Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#default-configuration">Default Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">View Templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#default-views">Default Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#custom-views">Custom Views</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Getting Help</a></li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">ASP.NET Core Library Guide</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Configuration</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/configuration.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="configuration">
+<span id="id1"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
+<p>The Stormpath ASP.NET Core library provides several options that allow you to customize the authentication features of your ASP.NET Core application. This section will cover how to configure the library in general, and later sections will go into detail on specific features.</p>
+<p>The default configuration enables a lot of functionality by default, but you may want to customize the behavior of the library to suit the needs of your application.</p>
+<p>There are a few ways you can set these configuration options:</p>
+<ul class="simple">
+<li>Environment variables</li>
+<li>Markup file (YAML or JSON)</li>
+<li>Inline options in code (supplied to the middleware constructor)</li>
+</ul>
+<p>Additionally, you can also use an API credentials file (<code class="docutils literal"><span class="pre">apiKey.properties</span></code>) to set the values of the Stormpath API Key ID and Secret options.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you would like a list of all available options, or to view the default values, please refer to the <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-config/blob/master/src/Stormpath.Configuration.Abstractions/Default.cs">Web Configuration Defaults</a>.</p>
+</div>
+<div class="section" id="required-settings">
+<h2>Required Settings<a class="headerlink" href="#required-settings" title="Permalink to this headline">¶</a></h2>
+<p>At the very least, these configuration options <strong>must</strong> be set in order for
+the Stormpath middleware to initialize properly:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">stormpath.client.apiKey.id</span></code></li>
+<li><code class="docutils literal"><span class="pre">stormpath.client.apiKey.secret</span></code></li>
+</ul>
+<p>Additionally, if you have more than one Application resource in your Stormpath tenant, either <code class="docutils literal"><span class="pre">stormpath.application.name</span></code> or <code class="docutils literal"><span class="pre">stormpath.application.href</span></code> must be set.</p>
+<p>If these values aren&#8217;t set (using one of the methods below), the Stormpath middleware component with throw an error on startup.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Any other configuration option that is omitted will fall back to the <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-config/blob/master/src/Stormpath.Configuration.Abstractions/Default.cs">Web Configuration Defaults</a>.</p>
+</div>
+</div>
+<div class="section" id="environment-variables">
+<h2>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
+<p>Configuration options can be set in environment variables by formatting the key name with underscores. For example, <code class="docutils literal"><span class="pre">stormpath.client.apiKey.id</span></code> becomes <code class="docutils literal"><span class="pre">STORMPATH_CLIENT_APIKEY_ID</span></code>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">It is a best practice to store confidential information in environment
+variables, to avoid hard-coding it into your application. We recommend you store your confidential Stormpath information (API credentials and application URL) in this way.</p>
+</div>
+<p>In a bash-like shell, you can set environment variables by running these commands:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_ID</span><span class="o">=</span>your_id_here
+<span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_SECRET</span><span class="o">=</span>your_secret_here
+<span class="nb">export</span> <span class="nv">STORMPATH_APPLICATION_HREF</span><span class="o">=</span>your_app_href
+</pre></div>
+</div>
+<p>On Windows, the commands are:</p>
+<div class="highlight-powershell"><div class="highlight"><pre><span></span><span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_ID</span> <span class="n">your_id_here</span>
+<span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_SECRET</span> <span class="n">your_secret_here</span>
+<span class="n">setx</span> <span class="n">STORMPATH_APPLICATION_HREF</span> <span class="n">your_app_href</span>
+</pre></div>
+</div>
+<p>Any configuration option can be set using environment variables. The above are just examples!</p>
+</div>
+<div class="section" id="markup-file-yaml-or-json">
+<h2>Markup File (YAML or JSON)<a class="headerlink" href="#markup-file-yaml-or-json" title="Permalink to this headline">¶</a></h2>
+<p>Configuration options can also be set by placing a file called <code class="docutils literal"><span class="pre">stormpath.yaml</span></code> or <code class="docutils literal"><span class="pre">stormpath.json</span></code> in one of these locations:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">~/.stormpath</span></code> (where <code class="docutils literal"><span class="pre">~</span></code> represents the user&#8217;s home directory)</li>
+<li>The application&#8217;s base directory</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">On Windows machines, the home directory is usually <code class="docutils literal"><span class="pre">C:\Users\&lt;username&gt;\</span></code>.</p>
+</div>
+<p>For example, this YAML configuration will disable the default <code class="docutils literal"><span class="pre">/register</span></code> and <code class="docutils literal"><span class="pre">/login</span></code> routes:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+  <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p>The equivalent JSON is:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;web&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;register&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;login&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;enabled&quot;</span><span class="p">:</span> <span class="kc">false</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In both cases, the <code class="docutils literal"><span class="pre">stormpath</span></code> root node is implied and should be omitted.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You can also refer to the <a class="reference external" href="https://github.com/stormpath/stormpath-framework-spec/blob/master/example-config.yaml">Example Stormpath configuration</a> to see the entire default library configuration in YAML.</p>
+</div>
+</div>
+<div class="section" id="api-credentials-file">
+<h2>API Credentials File<a class="headerlink" href="#api-credentials-file" title="Permalink to this headline">¶</a></h2>
+<p>The API Key ID (<code class="docutils literal"><span class="pre">stormpath.client.apiKey.id</span></code>) and API Key Secret (<code class="docutils literal"><span class="pre">stormpath.client.apiKey.secret</span></code>) can be set by placing the <code class="docutils literal"><span class="pre">apiKey.properties</span></code> generated by the Stormpath Admin Console file in one of these locations:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">~/.stormpath/</span></code> (where <code class="docutils literal"><span class="pre">~</span></code> represents the user&#8217;s home directory)</li>
+<li>The application&#8217;s base directory</li>
+</ul>
+<p>If you don&#8217;t opt to store the Stormpath API credentials in environment variables, this functionality makes it easy to download the <code class="docutils literal"><span class="pre">apiKey.properties</span></code> file from Stormpath and place it directly in one of these locations.</p>
+</div>
+<div class="section" id="inline-options">
+<h2>Inline Options<a class="headerlink" href="#inline-options" title="Permalink to this headline">¶</a></h2>
+<p>If you wish to define your configuration in code, you
+can do so when initializing the middleware:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Application</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ApplicationConfiguration</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">Name</span> <span class="p">=</span> <span class="s">&quot;My Application&quot;</span>
+    <span class="p">},</span>
+    <span class="n">Web</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebConfiguration</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">Register</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebRegisterRouteConfiguration</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">Enabled</span> <span class="p">=</span> <span class="k">false</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>You can also use an anonymous object with the same (case-insensitive) names:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">(</span><span class="k">new</span>
+<span class="p">{</span>
+    <span class="n">application</span> <span class="p">=</span> <span class="k">new</span>
+    <span class="p">{</span>
+        <span class="n">name</span> <span class="p">=</span> <span class="s">&quot;My Application&quot;</span>
+    <span class="p">},</span>
+    <span class="n">web</span> <span class="p">=</span> <span class="k">new</span>
+    <span class="p">{</span>
+        <span class="n">register</span> <span class="p">=</span> <span class="k">new</span>
+        <span class="p">{</span>
+            <span class="n">enabled</span> <span class="p">=</span> <span class="k">false</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Both of these examples will use the Stormpath Application called &#8220;My Application&#8221; and disable the default <code class="docutils literal"><span class="pre">/register</span></code> route.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You&#8217;ll need to add <code class="docutils literal"><span class="pre">using</span> <span class="pre">Stormpath.Configuration.Abstractions;</span></code> to your file in order to use the type-safe <code class="docutils literal"><span class="pre">StormpathConfiguration</span></code> model in the first example.</p>
+</div>
+<p>Like all the other methods of supplying configuration, any omitted options will fall back to the <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-config/blob/master/src/Stormpath.Configuration.Abstractions/Default.cs">Web Configuration Defaults</a>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The most flexible way of providing configuration in a production environment is with YAML/JSON markup or environment variables. Inline options are useful during development.</p>
+</div>
+</div>
+<div class="section" id="default-features">
+<span id="id2"></span><h2>Default Features<a class="headerlink" href="#default-features" title="Permalink to this headline">¶</a></h2>
+<p>When you add the Stormpath middleware to your application pipeline,
+the library will automatically add the following routes to your application:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="60%" />
+<col width="26%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">URI</th>
+<th class="head">Purpose</th>
+<th class="head">Documentation</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>/forgot</td>
+<td>Request a password reset link.</td>
+<td><a class="reference internal" href="password_reset.html#password-reset"><span>Password Reset</span></a></td>
+</tr>
+<tr class="row-odd"><td>/change</td>
+<td>Reset your password (second step)</td>
+<td><a class="reference internal" href="password_reset.html#password-reset"><span>Password Reset</span></a></td>
+</tr>
+<tr class="row-even"><td>/login</td>
+<td>Login to your application with username and password.</td>
+<td><a class="reference internal" href="login.html#login"><span>Login</span></a></td>
+</tr>
+<tr class="row-odd"><td>/logout</td>
+<td>Accepts a POST request, and destroys the login session.</td>
+<td><a class="reference internal" href="logout.html#logout"><span>Logout</span></a></td>
+</tr>
+<tr class="row-even"><td>/me</td>
+<td>Returns a JSON representation of the current user.</td>
+<td><a class="reference internal" href="me_api.html#me-api"><span>Current User API</span></a></td>
+</tr>
+<tr class="row-odd"><td>/oauth/token</td>
+<td>Issue OAuth2 access and refresh tokens.</td>
+<td><a class="reference internal" href="oauth2.html#oauth2"><span>OAuth 2.0 API</span></a></td>
+</tr>
+<tr class="row-even"><td>/register</td>
+<td>Create an account within your application.</td>
+<td><a class="reference internal" href="registration.html#registration"><span>Registration</span></a></td>
+</tr>
+<tr class="row-odd"><td>/reset</td>
+<td>Reset an account password, from a password reset link.</td>
+<td><a class="reference internal" href="password_reset.html#password-reset"><span>Password Reset</span></a></td>
+</tr>
+<tr class="row-even"><td>/verify</td>
+<td>Verify a new account, from a email verification link.</td>
+<td><a class="reference internal" href="email_verification.html#email-verification"><span>Email Verification</span></a></td>
+</tr>
+</tbody>
+</table>
+<p>Each feature has its own configurable options, which are explained in the feature&#8217;s documentation. If you want to disable specific features, continue to the next section.</p>
+</div>
+<div class="section" id="disabling-features">
+<h2>Disabling Features<a class="headerlink" href="#disabling-features" title="Permalink to this headline">¶</a></h2>
+<p>The library enables many features by default, but you might not want to use all of them.
+For example, if you wanted to disable all the default features, you could use
+this configuration in code:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Web</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebConfiguration</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">ForgotPassword</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebForgotPasswordRouteConfiguration</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">Enabled</span> <span class="p">=</span> <span class="k">false</span>
+        <span class="p">},</span>
+        <span class="n">ChangePassword</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebChangePasswordRouteConfiguration</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">Enabled</span> <span class="p">=</span> <span class="k">false</span>
+        <span class="p">},</span>
+        <span class="n">Login</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebLoginRouteConfiguration</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">Enabled</span> <span class="p">=</span> <span class="k">false</span>
+        <span class="p">},</span>
+        <span class="n">Logout</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebLogoutRouteConfiguration</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">Enabled</span> <span class="p">=</span> <span class="k">false</span>
+        <span class="p">},</span>
+        <span class="n">Me</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebMeRouteConfiguration</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">Enabled</span> <span class="p">=</span> <span class="k">false</span>
+        <span class="p">},</span>
+        <span class="n">Oauth2</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebOauth2RouteConfiguration</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">Enabled</span> <span class="p">=</span> <span class="k">false</span>
+        <span class="p">},</span>
+        <span class="n">Register</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebRegisterRouteConfiguration</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">Enabled</span> <span class="p">=</span> <span class="k">false</span>
+        <span class="p">},</span>
+        <span class="n">VerifyEmail</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebVerifyEmailRouteConfiguration</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">Enabled</span> <span class="p">=</span> <span class="k">false</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The equivalent <code class="docutils literal"><span class="pre">stormpath.yaml</span></code> looks like this:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">forgotPassword</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">changePassword</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">logout</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">me</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">oauth2</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">verifyEmail</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p>You could also achieve the same result using environment variables, by setting <code class="docutils literal"><span class="pre">STORMPATH_WEB_LOGIN_ENABLED</span> <span class="pre">=</span> <span class="pre">'false'</span></code> and so on.</p>
+</div>
+<div class="section" id="disabling-content-types">
+<h2>Disabling Content Types<a class="headerlink" href="#disabling-content-types" title="Permalink to this headline">¶</a></h2>
+<p>By default, the routes provided by this library can handle requests from both browsers and clients such as Single Page Applications and mobile apps. Incoming requests are inspected for an Accept header of either <code class="docutils literal"><span class="pre">text/html</span></code> (browsers) or <code class="docutils literal"><span class="pre">application/json</span></code> (SPA/mobile).</p>
+<p>It&#8217;s possible to disable either of these modes by changing the values in <code class="docutils literal"><span class="pre">stormpath.web.produces</span></code>. For example, if you want to build a pure API that will never send HTML responses, use this configuration:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Web</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebConfiguration</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">Produces</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[]</span> <span class="p">{</span> <span class="s">&quot;application/json&quot;</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="stormpath-client-options">
+<h2>Stormpath Client Options<a class="headerlink" href="#stormpath-client-options" title="Permalink to this headline">¶</a></h2>
+<p>When you initialize this library, it creates an instance of the Stormpath SDK Client.
+The Stormpath Client is responsible for communicating with the Stormpath REST
+API and is provided by the <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet">Stormpath .NET SDK</a>.</p>
+<p>Any options you set when initializing the Stormpath middleware library are also passed down to the SDK Client.</p>
+<p>For example, to hardcode the Stormpath API credentials (not recommended!), you could use this configuration:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Client</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ClientConfiguration</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">ApiKey</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ClientApiKeyConfiguration</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">Id</span> <span class="p">=</span> <span class="s">&quot;YOUR_API_KEY_ID&quot;</span><span class="p">,</span>
+            <span class="n">Secret</span> <span class="p">=</span> <span class="s">&quot;YOUR_API_KEY_SECRET&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The Stormpath Client constructor ignores the <code class="docutils literal"><span class="pre">stormpath.web</span></code> node of the configuration. For more information about setting options on the SDK Client object, please see the
+<a class="reference external" href="https://docs.stormpath.com/dotnet/api/html/M_Stormpath_SDK_Client_IClientBuilder_SetConfiguration.htm">.NET SDK documentation</a>.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="request_objects.html" class="btn btn-neutral float-right" title="Request Objects">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="quickstart.html" class="btn btn-neutral" title="Quickstart"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath, Inc..
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.2',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+   
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-29159574-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+  </script>
+  <script type="text/javascript">
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+    function _kms(u){
+        setTimeout(function(){
+            var d = document, f = d.getElementsByTagName('script')[0],
+                    s = d.createElement('script');
+            s.type = 'text/javascript'; s.async = true; s.src = u;
+            f.parentNode.insertBefore(s, f);
+        }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+  </script>
+  <script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+
+</body>
+</html>
