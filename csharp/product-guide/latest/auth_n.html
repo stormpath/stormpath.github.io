@@ -242,7 +242,6 @@
 <li class="toctree-l1"><a class="reference internal" href="idsite.html">7. Using ID Site</a></li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Stormpath Error Codes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a></li>
 </ul>
 
             
@@ -999,6 +998,10 @@
 <p class="last">It is required that your LinkedIn application requests the <code class="docutils literal"><span class="pre">r_basicprofile</span></code> and <code class="docutils literal"><span class="pre">r_emailaddress</span></code> scopes (or &#8220;fields&#8221;) from LinkedIn. If the Authorization Code does not grant these scopes, you will not be able to get an Account. For more information about LinkedIn scopes, see <a class="reference external" href="https://developer.linkedin.com/docs/fields">LinkedIn&#8217;s &#8220;Profile Fields&#8221; documentation</a>.</p>
 </div>
 <p>Once the Authorization Code is gathered, you can send it to Stormpath:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>If you have already exchanged the code for an Access Token, you can send that instead:</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">request</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Providers</span><span class="p">()</span>
     <span class="p">.</span><span class="n">LinkedIn</span><span class="p">()</span>
     <span class="p">.</span><span class="n">Account</span><span class="p">()</span>
@@ -1007,7 +1010,6 @@
 <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="k">await</span> <span class="n">app</span><span class="p">.</span><span class="n">GetAccountAsync</span><span class="p">(</span><span class="n">request</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>If you have already exchanged the code for an Access Token, you can send that instead:</p>
 <p>Stormpath will use the <code class="docutils literal"><span class="pre">code</span></code> or <code class="docutils literal"><span class="pre">accessToken</span></code> provided to retrieve information about your LinkedIn Account, then return a Stormpath Account.</p>
 <p>The <code class="docutils literal"><span class="pre">IProviderAccountResult</span></code> response includes an <code class="docutils literal"><span class="pre">IsNewAccount</span></code> property which indicates whether the Account already existed in your Stormpath Directory or not. You can retrieve the Account details through the <code class="docutils literal"><span class="pre">Account</span></code> property.</p>
 </div>
