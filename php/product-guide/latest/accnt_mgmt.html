@@ -86,10 +86,10 @@
       <div class="">
         <a href="/rest/product-guide/latest/">REST</a>
       </div>
-      <!--
       <div class="current">
         <a href="/php/product-guide/latest/accnt_mgmt.html">PHP</a>
       </div>
+      <!--
       <div class="">
         <a href="/java/product-guide/latest/accnt_mgmt.html">Java</a>
       </div>
@@ -209,7 +209,7 @@
           
 
   
-  
+
 
         </div>
       </div>
@@ -355,7 +355,7 @@
 </pre></div>
 </div>
 <p>At this point, our current resources (<strong>not including the default ones</strong> created in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a>) can be visualized like this:</p>
-<div class="figure align-center" id="id11">
+<div class="figure align-center" id="id12">
 <a class="reference internal image-reference" href="_images/am_erd_01.png"><img alt="&lt;ERD with Directory&gt;" src="_images/am_erd_01.png" style="width: 581.0px; height: 449.0px;" /></a>
 <p class="caption"><span class="caption-text"><em>Our Stormpath Tenant, with an Application resource and our newly created &#8220;Captains&#8221; Directory</em></span></p>
 </div>
@@ -533,7 +533,7 @@
 <div class="section" id="add-a-new-account-to-a-directory">
 <span id="add-new-account"></span><h4>Add a New Account to a Directory<a class="headerlink" href="#add-a-new-account-to-a-directory" title="Permalink to this headline">¶</a></h4>
 <p>Because Accounts are &#8220;owned&#8221; by Directories, you create new Accounts by adding them to a Directory. You can add an Account to a Directory directly, or you can add it indirectly by registering an Account with an Application, like in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a>, or an Organization, like in <a class="reference internal" href="multitenancy.html#add-accnt-to-org"><span class="std std-ref">the Multi-tenancy Chapter</span></a>. This is only the case for Cloud Directories. Accounts cannot be directly added to <a class="reference internal" href="#about-mirror-dir"><span class="std std-ref">Mirror</span></a> Directories since those pull all of their Account information from external sources like Facebook or Active Directory.</p>
-<p>(php.todo) It&#8217;d be good to add some explanatory text like we have for csharp.</p>
+<p>Let’s say you want to add a new Account for user &#8220;Jean-Luc Picard&#8221; to the &#8220;Captains&#8221; Directory that you created earlier. You can use the Directory&#8217;s <code class="docutils literal"><span class="pre">createAccount()</span></code> method:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$account</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\Account</span><span class="o">::</span><span class="na">instantiate</span><span class="p">([</span>
     <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;jlpicard&#39;</span><span class="p">,</span>
     <span class="s1">&#39;givenName&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Jean-Luc&#39;</span><span class="p">,</span>
@@ -616,7 +616,7 @@
 <div class="section" id="add-an-existing-account-to-a-group">
 <span id="add-account-to-group"></span><h4>Add an Existing Account to a Group<a class="headerlink" href="#add-an-existing-account-to-a-group" title="Permalink to this headline">¶</a></h4>
 <p>So let&#8217;s say you want to add &#8220;Jean-Luc Picard&#8221; to the &#8220;Starfleet Officers&#8221; Group inside the &#8220;Captains&#8221; Directory. Once again, this is possible because we are working with a Cloud Directory. If we were working with a <a class="reference internal" href="#about-mirror-dir"><span class="std std-ref">Mirror Directory</span></a>, we would not be able to manually add Groups since that information is pulled from the external user directory.</p>
-<p>(php.todo) It&#8217;d be good to add some explanatory text like we have for csharp.</p>
+<p>This time, use the existing Account instance you created before, and the <code class="docutils literal"><span class="pre">addAccount()</span></code> method of the Group object:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$group</span> <span class="o">=</span> <span class="nv">$client</span>
             <span class="o">-&gt;</span><span class="na">dataStore</span>
             <span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span>
@@ -670,7 +670,12 @@
 <div class="section" id="importing-accounts-with-plaintext-passwords">
 <h4>Importing Accounts with Plaintext Passwords<a class="headerlink" href="#importing-accounts-with-plaintext-passwords" title="Permalink to this headline">¶</a></h4>
 <p>In this case, it is recommended that you suppress Account Verification emails.</p>
-<p>(php.todo)</p>
+<p>This can be done by setting the <code class="docutils literal"><span class="pre">RegistrationWorkflowEnabled</span></code> flag when creating the Account:</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$account</span> <span class="o">=</span> <span class="nv">$directory</span><span class="o">-&gt;</span><span class="na">createAccount</span><span class="p">(</span><span class="nv">$account</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">&#39;registrationWorkflowEnabled&#39;</span><span class="o">=&gt;</span><span class="k">false</span>
+<span class="p">]);</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="importing-accounts-with-mcf-hash-passwords">
 <span id="importing-mcf"></span><h4>Importing Accounts with MCF Hash Passwords<a class="headerlink" href="#importing-accounts-with-mcf-hash-passwords" title="Permalink to this headline">¶</a></h4>
@@ -688,7 +693,12 @@ This works as follows:</p>
 <li><strong>stormpath2</strong>: A Stormpath-specific password hash format that can be generated with common password hash information, such as algorithm, iterations, salt, and the derived cryptographic hash. For more information see <a class="reference internal" href="#stormpath2-hash"><span class="std std-ref">below</span></a>.</li>
 </ul>
 <p>Once you have a bcrypt or stormpath2 MCF password hash, you can create the Account in Stormpath with the specified hash.</p>
-<p>(php.todo) It&#8217;d be good to add some explanatory text like we have for csharp.</p>
+<p>This can be done by setting the <code class="docutils literal"><span class="pre">PasswordFormat</span></code> option when creating the Account:</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$account</span> <span class="o">=</span> <span class="nv">$directory</span><span class="o">-&gt;</span><span class="na">createAccount</span><span class="p">(</span><span class="nv">$account</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">&#39;passwordFormat&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;mcf&#39;</span>
+<span class="p">]);</span>
+</pre></div>
+</div>
 <div class="section" id="the-stormpath2-hashing-algorithm">
 <span id="stormpath2-hash"></span><h6>The stormpath2 Hashing Algorithm<a class="headerlink" href="#the-stormpath2-hashing-algorithm" title="Permalink to this headline">¶</a></h6>
 <p>stormpath2 has a format which allows you to derive an MCF hash that Stormpath can read to understand how to recreate the password hash to use during a login attempt. stormpath2 hash format is formatted as:</p>
@@ -739,7 +749,7 @@ This works as follows:</p>
 <p>While Stormpath’s default Account attributes are useful to many applications, you might want to add your own custom data to a Stormpath Account. If you want, you can store all of your custom account information in Stormpath so you don’t have to maintain another separate database to store your specific account data.</p>
 <p>One example of this could be if you wanted to add information to our &#8220;Jean-Luc Picard&#8221; Account that didn&#8217;t fit into any of the existing Account attributes.</p>
 <p>For example, you could add information about this user&#8217;s current location, like the ship this Captain is currently assigned to.</p>
-<p>(php.todo) It&#8217;d be good to add some explanatory text like we have for csharp.</p>
+<p>The Jean-Luc Picard Account you created earlier has a CustomData property that allows you to write to the resource’s Custom Data:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$account</span> <span class="o">=</span> <span class="nv">$client</span>
                 <span class="o">-&gt;</span><span class="na">dataStore</span>
                 <span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span>
@@ -753,7 +763,11 @@ This works as follows:</p>
 <span class="nv">$customData</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
 </pre></div>
 </div>
-<p>Which returns the following:</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Any Custom Data changes you make are not preserved until you call <code class="docutils literal"><span class="pre">save()</span></code> on the custom data resource to send the updates to the Stormpath API.</p>
+</div>
+<p>To retrieve the Account&#8217;s Custom Data after it&#8217;s been saved, use the <code class="docutils literal"><span class="pre">getCustomData()</span></code> method which returns the following:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Resource\CustomData</span><span class="p">)</span>
     <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/4aOb1hLvLHIB0PWObEnydJ/customData&#39;</span>
     <span class="k">public</span> <span class="s1">&#39;createdAt&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;2016-03-17T18:53:50.875Z&#39;</span>
@@ -777,7 +791,7 @@ This works as follows:</p>
 <li><code class="docutils literal"><span class="pre">status</span></code></li>
 </ul>
 </div></blockquote>
-<p>(php.todo)</p>
+<p>Any resource type that exposes a <code class="docutils literal"><span class="pre">getAccounts()</span></code> method (such as Applications, Directories, Groups, and Organizations) can be searched for Accounts.</p>
 <div class="section" id="example-account-searches">
 <h3>3.3.1. Example Account Searches<a class="headerlink" href="#example-account-searches" title="Permalink to this headline">¶</a></h3>
 <p>Below are some examples of different kinds of searches that can be performed to find Accounts.</p>
@@ -801,7 +815,7 @@ This works as follows:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Matching is case-insensitive, so (php.todo)</p>
+<p class="last">Matching is case-insensitive, so <cite>[&#8216;q&#8217;=&gt;&#8217;luc&#8217;]</cite> and <cite>[&#8216;q&#8217;=&gt;&#8217;Luc&#8217;]</cite> will return the same results.</p>
 </div>
 <p>After getting the response, you can iterate over it with a <code class="docutils literal"><span class="pre">foreach</span></code> loop</p>
 <blockquote>
@@ -839,7 +853,6 @@ This works as follows:</p>
 <div class="section" id="find-all-accounts-in-a-directory-that-were-created-on-a-particular-day">
 <h4>Find All Accounts in a Directory That Were Created on a Particular Day<a class="headerlink" href="#find-all-accounts-in-a-directory-that-were-created-on-a-particular-day" title="Permalink to this headline">¶</a></h4>
 <p>Datetime Search is used when you want to search for Accounts that have a certain point or period in time that interests you. So you could search for all of the Accounts in a Directory that were modified on Dec 1, 2015.</p>
-<p>(php.todo) Is there anything else to add here? See Dotnet above.</p>
 <p><strong>Query</strong></p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$application</span> <span class="o">=</span> <span class="nv">$client</span>
                     <span class="o">-&gt;</span><span class="na">dataStore</span>
@@ -875,7 +888,7 @@ This works as follows:</p>
 <h3>3.4.1. Manage Password Policies<a class="headerlink" href="#manage-password-policies" title="Permalink to this headline">¶</a></h3>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">This feature is not yet available in PHP.  Please use the Stormpath Admin Console UI or by using the REST calls provided below to enable or disable the password reset email. For updates, you can follow the <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/106">ticket on Github</a>.</p>
+<p class="last">This feature is not yet available in PHP.  Please use the Stormpath Admin Console UI or by the REST calls provided below to enable or disable the password reset email. For updates, you can follow this <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/106">ticket on Github</a>.</p>
 </div>
 <p>In Stormpath, password policies are defined on a Directory level. Specifically, they are controlled in a <strong>Password Policy</strong> resource associated with the Directory. Modifying this resource also modifies the behavior of all Accounts that are included in this Directory. For more information about this resource, see the <a class="reference internal" href="reference.html#ref-password-policy"><span class="std std-ref">Password Policy section in the Reference chapter</span></a>.</p>
 <div class="admonition note">
@@ -984,7 +997,7 @@ This works as follows:</p>
 </div>
 </div>
 <p>If this is a valid email in an Account associated with this Application, the request will succeed.</p>
-<p>The success response will look like:</p>
+<p>The success response will look like this:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Resource\Account</span><span class="p">)</span>
     <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/4aOb1hLvLHIB0PWObEnydJ&#39;</span>
     <span class="k">public</span> <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;jlpicard&#39;</span>
@@ -1114,20 +1127,45 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="password-reset-email-templates">
 <span id="id6"></span><h4>Password Reset Email Templates<a class="headerlink" href="#password-reset-email-templates" title="Permalink to this headline">¶</a></h4>
 <p>The contents of the password reset and the password reset success emails are both defined in an Email Templates collection.</p>
-<p>(php.todo)</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>This feature is not yet available in the PHP SDK. For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/150">ticket #150</a> on Github.</p>
+<blockquote class="last">
+<div>In the meantime, please use the Stormpath Admin Console UI, or consult the REST API documentation below.</div></blockquote>
+</div>
+<p>To modify the emails that get sent during the password reset workflow, all you have to do is send an HTTP POST with the desired property in the payload body. For more information about Email Templates, see the <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#ref-emailtemplates">Email Templates section</a> of the Reference chapter.</p>
 </div>
 </div>
 <div class="section" id="how-to-find-when-an-account-s-password-was-changed">
 <span id="password-change-timestamp-search"></span><h3>3.4.4. How to Find When An Account&#8217;s Password Was Changed<a class="headerlink" href="#how-to-find-when-an-account-s-password-was-changed" title="Permalink to this headline">¶</a></h3>
 <p>You may want to find out when an Account&#8217;s password was last changed, or return a collection of Accounts that changed their passwords within a certain timespan. This information is contained in the searchable <code class="docutils literal"><span class="pre">passwordModifiedAt</span></code> attribute found in every Account resource.</p>
 <p>If you wanted to find all Accounts that hadn&#8217;t modified their password yet in 2016 you would use <a class="reference internal" href="reference.html#search-datetime"><span class="std std-ref">Datetime search</span></a>:</p>
-<p>(php.todo)</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$accounts</span><span class="o">-&gt;</span><span class="na">setSearch</span><span class="p">([</span><span class="s1">&#39;passwordModifiedAt&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;[,2016]&#39;</span><span class="p">]);</span>
+</pre></div>
+</div>
 <p>This would then return all Accounts in the specified Directory that had their passwords modified at any time between the beginning of time and the end of 2015.</p>
 </div>
 <div class="section" id="how-to-restrict-password-reuse">
 <span id="password-reuse"></span><h3>3.4.5. How to Restrict Password Reuse<a class="headerlink" href="#how-to-restrict-password-reuse" title="Permalink to this headline">¶</a></h3>
 <p>Stormpath can store historical password information in order to allow for restrictions on password reuse. This is controlled on the Directory Password Policy&#8217;s Strength object, which has an attribute called <code class="docutils literal"><span class="pre">preventReuse</span></code>. By default this feature is disabled and set to <code class="docutils literal"><span class="pre">0</span></code>. In order to enable this feature, you have to modify the Directory Password Policy&#8217;s Strength resource, sending any value up to <code class="docutils literal"><span class="pre">25</span></code>:</p>
-<p>(php.todo)</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>This feature is not yet available in the PHP SDK. For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/151">ticket #151</a> on Github.</p>
+<blockquote class="last">
+<div>In the meantime, please use the Stormpath Admin Console UI, or consult the REST API documentation below.</div></blockquote>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/passwordPolicies/2SKhstu8Plaekcai8lghrp/strength</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+
+{
+    &quot;preventReuse&quot;: &quot;10&quot;
+}
+
+.. note::
+
+For more information on Password Policy for password Strength see :ref:`here &lt;ref-password-strength&gt;`.
+</pre></div>
+</div>
 <p>This would now allow a user to set their password to any string that matched their previous 10 passwords.</p>
 </div>
 </div>
@@ -1170,13 +1208,14 @@ This link takes you to a secure page where you can change your password.
 <div class="highlight-default"><div class="highlight"><pre><span></span>http://www.yourapplicationurl.com/path/to/validator/?sptoken=$VERIFICATION_TOKEN
 </pre></div>
 </div>
-<p>(php.todo) It would be good to add some explanatory text, like above.</p>
+<p>You can use the <code class="docutils literal"><span class="pre">verifyEmailToken()</span></code> method on the client&#8217;s <code class="docutils literal"><span class="pre">\Stormpath\Resource\Tenant</span></code> object, plus the token you capture from the query string, to verify the Account:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$token</span> <span class="o">=</span> <span class="p">{{</span> <span class="nx">SP</span> <span class="nx">Token</span> <span class="nx">From</span> <span class="nx">Query</span> <span class="nx">String</span> <span class="p">}}</span>
 <span class="nv">$tenant</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getCurrentTenant</span><span class="p">();</span>
 
 <span class="nv">$tenant</span><span class="o">-&gt;</span><span class="na">verifyEmailToken</span><span class="p">(</span><span class="nv">$token</span><span class="p">);</span>
 </pre></div>
 </div>
+<p>Which will return a result that looks like this:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Resource\Account</span><span class="p">)</span>
     <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/4aOb1hLvLHIB0PWObEnydJ&#39;</span>
     <span class="k">public</span> <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;jlpicard&#39;</span>
@@ -1231,6 +1270,8 @@ This link takes you to a secure page where you can change your password.
         <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/4aOb1hLvLHIB0PWObEnydJ/refreshTokens&#39;</span>
 </pre></div>
 </div>
+<p>If the validation succeeds, you will receive an Account instance for the account that was verified. An email confirming the verification will be automatically sent to the Account’s email address by Stormpath afterwards, and the Account will then be able to authenticate successfully.</p>
+<p>If the verification token is not found, a error is returned with a message explaining why the attempt failed.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">For more about Account Authentication you can read <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">the next chapter</span></a>.</p>
@@ -1239,7 +1280,7 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="resending-the-verification-email">
 <span id="resending-verification-email"></span><h3>3.5.5. Resending the Verification Email<a class="headerlink" href="#resending-the-verification-email" title="Permalink to this headline">¶</a></h3>
 <p>If a user accidentally deletes their verification email, or it was undeliverable for some reason, it is possible to resend the email.</p>
-<p>(php.todo) It would be good to add some explanatory text, like above.</p>
+<p>To resend the email, use the <code class="docutils literal"><span class="pre">sendVerificationEmail()</span></code> method:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$application</span> <span class="o">=</span> <span class="nv">$client</span>
                     <span class="o">-&gt;</span><span class="na">dataStore</span>
                     <span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span>
@@ -1281,8 +1322,34 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="customizing-stormpath-email-templates">
 <span id="customizing-email-templates"></span><h3>3.6.2. Customizing Stormpath Email Templates<a class="headerlink" href="#customizing-stormpath-email-templates" title="Permalink to this headline">¶</a></h3>
 <p>The emails that Stormpath sends to users be customized by modifying the <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#email-templates">Email Templates</a> resource. This can be done either via the &#8220;Directory Workflows&#8221; section of the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a>, or via the REST API.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>This feature is not yet available in the PHP SDK. For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/150">ticket #150</a> on Github.</p>
+<p class="last">In the meantime, please use the Stormpath Admin Console UI, or the REST API documentation below.</p>
+</div>
+<p>First, let&#8217;s look at the default template that comes with the Stormpath Administrator&#8217;s Directory:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/emailTemplates/2jwPxFsnjqxYrojexample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Default Verification Email Template&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;This is the verification email template that is associated with the directory.&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;fromName&quot;</span><span class="p">:</span><span class="s2">&quot;Jakub Swiatczak&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;fromEmailAddress&quot;</span><span class="p">:</span><span class="s2">&quot;change-me@stormpath.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="s2">&quot;Verify your account&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;textBody&quot;</span><span class="p">:</span><span class="s2">&quot;Hi,\nYou have been registered for an application that uses Stormpath.\n\n${url}\n\nOnce you verify, you will be able to login.\n\n---------------------\nFor general inquiries or to request support with your account, please email change-me@stormpath.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;htmlBody&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;p&gt;Hi,&lt;/p&gt;\n&lt;p&gt;You have been registered for an application that uses Stormpath.&lt;/p&gt;&lt;a href=\&quot;${url}\&quot;&gt;Click here to verify your account&lt;/a&gt;&lt;p&gt;Once you verify, you will be able to login.&lt;/p&gt;&lt;p&gt;--------------------- &lt;br /&gt;For general inquiries or to request support with your account, please email change-me@stormpath.com&lt;/p&gt;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;mimeType&quot;</span><span class="p">:</span><span class="s2">&quot;text/plain&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;defaultModel&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;linkBaseUrl&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/emailVerificationTokens&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Message Format</strong></p>
+<p>The <code class="docutils literal"><span class="pre">mimeType</span></code> designates whether the email is sent as plain text (<code class="docutils literal"><span class="pre">text/plain</span></code>), HTML (<code class="docutils literal"><span class="pre">text/html</span></code>), or both (<code class="docutils literal"><span class="pre">multipart/alternative</span></code>). This in turns tells Stormpath whether to use the <code class="docutils literal"><span class="pre">textBody</span></code> or <code class="docutils literal"><span class="pre">htmlBody</span></code> text in the email, or to let the email client decide.</p>
+<p><strong>textBody and htmlBody</strong></p>
+<p>These define the actual content of the email. The only difference is that <code class="docutils literal"><span class="pre">htmlBody</span></code> is allowed to contain HTML markup while <code class="docutils literal"><span class="pre">textBody</span></code> only accepts plaintext. Both are also able to use <a class="reference external" href="http://web.cerritos.edu/jwilson/SitePages/java_language_resources/Java_Escape_Sequences.htm">Java Escape Sequences</a>. Both <code class="docutils literal"><span class="pre">htmlBody</span></code> and <code class="docutils literal"><span class="pre">textBody</span></code> can have customized output generated using template macros.</p>
 <div class="section" id="using-email-macros">
-<span id="id10"></span><h4>Using Email Macros<a class="headerlink" href="#using-email-macros" title="Permalink to this headline">¶</a></h4>
+<span id="id11"></span><h4>Using Email Macros<a class="headerlink" href="#using-email-macros" title="Permalink to this headline">¶</a></h4>
 <p>You can use macros in your email templates. Macros are placeholder text that are converted into actual values at the time the email is generated. You could use a macro to insert your user&#8217;s first name into the email, as well as the name of your Application. This would look like this:</p>
 <div class="highlight-java"><div class="highlight"><pre><span></span><span class="s">&quot;Hi ${account.givenName}, welcome to $!{application.name}!&quot;</span>
 </pre></div>

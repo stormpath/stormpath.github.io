@@ -86,10 +86,10 @@
       <div class="">
         <a href="/rest/product-guide/latest/">REST</a>
       </div>
-      <!--
       <div class="">
         <a href="/php/product-guide/latest/auth_n.html">PHP</a>
       </div>
+      <!--
       <div class="">
         <a href="/java/product-guide/latest/auth_n.html">Java</a>
       </div>
@@ -252,7 +252,7 @@
       <a class="reference internal" href="/dotnet/api/">.NET API Reference</a>
     </li>
   
-  
+
 
         </div>
       </div>
@@ -1936,8 +1936,18 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <p>To configure your IdP for IdP-initiated authentication, you will need to get a <code class="docutils literal"><span class="pre">defaultRelayState</span></code> JWT:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to get the default relay state is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+<p class="last">The ability to get the default relay state is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or use the the REST API documentation below.
 For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+</pre></div>
+</div>
+<p>This request will return a response containing a JWT like this:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;defaultRelayState&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJ0aWQiOiIxZ0JUbmNXc3AyT2JRR2dEbjlSOTFSIiwiYWxnIjoiSFMyNTYifQ.eyJzcFVpZCI6IjZ2b0F5YTFCdnJOZUZPQW9neGJ4T2UiLCJqdGkiOiIxdjdjT1l1SE1kQzA0Z2Vucm1wU2lZIn0.WvfWRxTfjRoPxA803HyOR380u2dWpdtQiO0I2kislFY&quot;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 <p>This JWT will then need to be entered into your IdP&#8217;s configuration in order for IdP-initiated authentication to function properly.</p>
 <p>This <code class="docutils literal"><span class="pre">defaultRelayStates/</span></code> endpoint also accepts a few optional properties. These properties can be encoded in the defaultRelayState JWT that is stored on your IdP by passing them in the body of your POST:</p>
@@ -1949,8 +1959,25 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <p>A request including these optional properties looks like this:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to get the default relay state is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+<p class="last">The ability to get the default relay state is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or use the the REST API documentation below.
 For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The ability to get the default relay state is not yet available in the PHP SDK. Please use the Stormpath Admin Console, or use the the REST API documentation below.
+For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/154">ticket #154</a> on Github.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+
+{
+    &quot;callbackUri&quot;: &quot;https://org1.myapp.com&quot;,
+    &quot;organization&quot;: {
+        &quot;nameKey&quot;: &quot;org1&quot;,
+    }
+    &quot;state&quot;: &quot;IAmAState&quot;
+}
+</pre></div>
 </div>
 </div>
 </div>

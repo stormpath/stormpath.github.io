@@ -86,10 +86,10 @@
       <div class="">
         <a href="/rest/product-guide/latest/">REST</a>
       </div>
-      <!--
       <div class="current">
         <a href="/php/product-guide/latest/idsite.html">PHP</a>
       </div>
+      <!--
       <div class="">
         <a href="/java/product-guide/latest/idsite.html">Java</a>
       </div>
@@ -161,7 +161,7 @@
           
 
   
-  
+
 
         </div>
       </div>
@@ -335,7 +335,68 @@
 <li>Your server responds with an HTTP 302 which redirects the user to the ID Site SSO endpoint</li>
 <li>Stormpath will redirect the user to your ID Site</li>
 </ol>
-<p>(php.todo)</p>
+<p>The PHP SDK has built-in functionality to generate a URL to redirect your users to for login.</p>
+<p>To generate this URL, you need to first get access to your <code class="docutils literal"><span class="pre">Application</span></code> resource object:</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$application</span> <span class="o">=</span> <span class="nv">$client</span>
+                <span class="o">-&gt;</span><span class="na">dataStore</span>
+                <span class="o">-&gt;</span><span class="na">getResource</span><span class="p">(</span>
+                    <span class="s1">&#39;https://api.stormpath.com/v1/applications/16k5PC57Imx4nWXQXi74HO&#39;</span><span class="p">,</span>
+                    <span class="nx">\Stormpath\Resource\Application</span><span class="o">::</span><span class="na">class</span>
+                <span class="p">);</span>
+</pre></div>
+</div>
+<p>Once you have your Account, you get access to a <code class="docutils literal"><span class="pre">createIdSiteUrl()</span></code> method.  This method is the core of the ID Site usage in the PHP SDK. It accepts one parameter, an options array.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="12%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key</th>
+<th class="head">Required?</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">callbackUri</span></code></td>
+<td>Yes</td>
+<td>The callback URI to use once the user takes an action on the ID Site. This must match a Authorized Callback URI on Application resource.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">path</span></code></td>
+<td>No</td>
+<td>The path on the ID Site that you want the user to land on. Use <code class="docutils literal"><span class="pre">/</span></code> for login page, <code class="docutils literal"><span class="pre">/#/register</span></code> for the sign up page, <code class="docutils literal"><span class="pre">/#/forgot</span></code> for the forgot password page, <code class="docutils literal"><span class="pre">/#/reset</span></code> for the password reset page.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">state</span></code></td>
+<td>No</td>
+<td>The state of the application that you need to pass through ID Site back to your application through the callback. It is up to the developer to serialize/deserialize this value</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">organizationNameKey</span></code></td>
+<td>No</td>
+<td>The string representing the <code class="docutils literal"><span class="pre">nameKey</span></code> for an Organization that is an Account Store for your application. This is used for multi-tenant applications that use ID Site.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">showOrganizationField</span></code></td>
+<td>No</td>
+<td>A boolean representing if the &#8220;Organization&#8221; field should show on the forms that ID Site renders.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">useSubDomain</span></code></td>
+<td>No</td>
+<td>A boolean indicating whether the ID Site should be redirected to a subdomain based on an Organization nameKey.</td>
+</tr>
+</tbody>
+</table>
+<p>To use the <code class="docutils literal"><span class="pre">createIdSiteUrl()</span></code> method for login, you would need to first add the callback URI for your application. This callback URI is where ID Site is allowed to send the request back to and where you would handle the response. This will be explained in the next section.</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$loginLink</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">createIdSiteUri</span><span class="p">([</span>
+    <span class="s1">&#39;callbackUri&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;https://mysite.com/handleIdSiteCallback.php&#39;</span>
+<span class="p">]);</span>
+
+<span class="nb">header</span><span class="p">(</span><span class="s1">&#39;Location: &#39;</span> <span class="o">.</span> <span class="nv">$loginLink</span><span class="p">);</span> <span class="c1">// Or another form of redirect to generated URI</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The code above should be the only code for the login.  The <code class="docutils literal"><span class="pre">createIdSiteUri()</span></code> method will set the issued at time.  These tokens do expire and will display errors if it is generated before the user clicks to login.</p>
+</div>
 </div>
 <div class="section" id="step-2-handling-the-callback-to-your-application-from-id-site">
 <h3>Step 2: Handling the Callback to your Application from ID Site<a class="headerlink" href="#step-2-handling-the-callback-to-your-application-from-id-site" title="Permalink to this headline">¶</a></h3>
@@ -344,7 +405,36 @@
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">jwtResponse</span></code> represents a JWT that provides a signed security assertion about who the user is and what they did on ID Site.</p>
-<p>(php.todo)</p>
+<p>With the full URI that includes the <code class="docutils literal"><span class="pre">jwtResponse</span></code> query parameter, you will need to call the <code class="docutils literal"><span class="pre">handleIdSiteCallback()</span></code> method on the <code class="docutils literal"><span class="pre">Application</span></code> resource.</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$response</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">handleIdSiteCallback</span><span class="p">(</span><span class="nv">$requestUri</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This will result in a new <code class="docutils literal"><span class="pre">\StdClass</span></code> being returned with four properties:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">account</span></code></td>
+<td>The Account resource that contains all information about the user who was just returned from ID Site.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">state</span></code></td>
+<td>The state of your application, if you have chosen to have this passed back.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">isNew</span></code></td>
+<td>If the Account is a new Account to the Application.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">status</span></code></td>
+<td>The status of the request. Valid values for ID Site are <code class="docutils literal"><span class="pre">AUTHENTICATED</span></code>, <code class="docutils literal"><span class="pre">LOGOUT</span></code>, or <code class="docutils literal"><span class="pre">REGISTERED</span></code>.</td>
+</tr>
+</tbody>
+</table>
 <p>Once the JWT is validated, you can read information about the user from it. In some cases you may wish to exchange this JWT for a Stormpath OAuth 2.0 token.</p>
 <div class="section" id="exchanging-the-id-site-jwt-for-an-oauth-token">
 <span id="idsite-jwt-to-oauth"></span><h4>Exchanging the ID Site JWT for an OAuth Token<a class="headerlink" href="#exchanging-the-id-site-jwt-for-an-oauth-token" title="Permalink to this headline">¶</a></h4>
@@ -354,10 +444,26 @@
 </div>
 <p>In this situation, after the user has been authenticated via ID Site, a developer may want to control their authorization with an OAuth 2.0 Token. This is done by passing the JWT similar to the way we passed the user&#8217;s credentials as described in <a class="reference internal" href="auth_n.html#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>. The difference is that instead of using the <code class="docutils literal"><span class="pre">password</span></code> grant type and passing credentials, we will use the <code class="docutils literal"><span class="pre">id_site_token</span></code> type and pass the JWT we got from ID Site.</p>
 <p>Stormpath will validate the JWT (i.e. ensure that it has not been tampered with, is not expired, and the Account that it&#8217;s associated with is still valid) and then return an OAuth 2.0 Access Token:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$exchangeIdSiteTokenRequest</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Stormpath\Oauth\ExchangeIdSiteTokenRequest</span><span class="p">(</span><span class="nv">$jwtResponse</span><span class="p">);</span>
+<span class="nv">$auth</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Stormpath\Oauth\ExchangeIdSiteTokenAuthenticator</span><span class="p">(</span><span class="nx">app</span><span class="p">(</span><span class="s1">&#39;stormpath.application&#39;</span><span class="p">));</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$auth</span><span class="o">-&gt;</span><span class="na">authenticate</span><span class="p">(</span><span class="nv">$exchangeIdSiteRequest</span><span class="p">);</span>
 </pre></div>
 </div>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Oauth\OauthGrantAuthenticationResult</span><span class="p">)</span>
+<span class="k">private</span> <span class="s1">&#39;accessToken&#39;</span> <span class="o">=&gt;</span>
+<span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Resource\AccessToken</span><span class="p">)</span>
+<span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accessTokens/2HQNpNVD124O8muiSpOMro&#39;</span>
+
+<span class="k">private</span> <span class="s1">&#39;accessTokenString&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;eyJraWQiOiIxUE4zRlhJMFU3OUUyTUhDRjZYVVlH...&#39;</span>
+
+<span class="k">private</span> <span class="s1">&#39;refreshToken&#39;</span> <span class="o">=&gt;</span>
+<span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Resource\RefreshToken</span><span class="p">)</span>
+<span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accessTokens/2HQNpNVD124O8muiSpOMro&#39;</span>
+
+<span class="k">private</span> <span class="s1">&#39;refreshTokenString&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;eyJraWQiOiIxUE4zRlhJMFU3OUUyTUhDRjZYVVlH...&#39;</span> <span class="c1">// JWT truncated for space</span>
+<span class="k">private</span> <span class="s1">&#39;accessTokenHref&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accessTokens/2HQNpNVD124O8muiSpOMro&#39;</span>
+<span class="k">private</span> <span class="s1">&#39;tokenType&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;Bearer&#39;</span>
+<span class="k">private</span> <span class="s1">&#39;expiresIn&#39;</span> <span class="o">=&gt;</span> <span class="nx">int</span> <span class="mi">1800</span>
 </pre></div>
 </div>
 <p>For more information about Stormpath&#8217;s OAuth 2.0 tokens, please see <a class="reference internal" href="auth_n.html#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>.</p>
@@ -366,37 +472,52 @@
 <div class="section" id="step-3-optional-logging-out-of-id-site">
 <h3>Step 3: (Optional) Logging Out of ID Site<a class="headerlink" href="#step-3-optional-logging-out-of-id-site" title="Permalink to this headline">¶</a></h3>
 <p>ID Site will keep a configurable session for authenticated users. When a user is sent from your application to ID Site, it will confirm that the session is still valid for the user. If it is, they will be automatically redirected to the <code class="docutils literal"><span class="pre">cb_uri</span></code>. This <code class="docutils literal"><span class="pre">cb_uri</span></code> can be the originating application or any application supported by a Stormpath SDK.</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$application</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\Application</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;{APPLICATION_ID}&#39;</span><span class="p">);</span>
+<span class="nv">$logoutLink</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">createIdSiteUrl</span><span class="p">([</span><span class="s1">&#39;logout&#39;</span><span class="o">=&gt;</span><span class="k">true</span><span class="p">,</span> <span class="s1">&#39;callbackUri&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;{CALLBACK_URI}&#39;</span><span class="p">]);</span>
+<span class="nb">header</span><span class="p">(</span><span class="s1">&#39;Location:&#39;</span><span class="o">.</span><span class="nv">$logoutLink</span><span class="p">);</span>  <span class="c1">//or any other form of redirect to the $loginLink you want to use.</span>
 </pre></div>
 </div>
 <p>Once the user is logged out of ID Site, they are automatically redirected to the <code class="docutils literal"><span class="pre">cb_uri</span></code> which was specified in the JWT.</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
+<p>From here, you handle it the same as any other ID Site callback.  The difference here is that you should guarantee the status is <code class="docutils literal"><span class="pre">LOGOUT</span></code> from the returned object and then remove any stored cookies associated with the session.</p>
 </div>
 <div class="section" id="resetting-your-password-with-id-site">
 <span id="idsite-password-reset"></span><h3>Resetting Your Password with ID Site<a class="headerlink" href="#resetting-your-password-with-id-site" title="Permalink to this headline">¶</a></h3>
 <p>The Account Management chapter has an overview of <a class="reference internal" href="accnt_mgmt.html#password-reset-flow"><span class="std std-ref">3.4.3. Password Reset</span></a> in Stormpath. In that flow, a user chooses to reset their password, then receives an email with a link to a page on your application that allows them to set a new password. If you are using ID Site for login, then it stands to reason that you would want them to land on your ID Site for password reset as well. The issue here, however, is bridging the Password Reset Flow and the ID Site flow.</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$location</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">createIdSiteUrl</span><span class="p">([</span>
+  <span class="s1">&#39;path&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;/#/reset&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;sp_token&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;{{SP_TOKEN}}&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;callbackUri&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;https://mysite.com/handleIdSiteCallback.php&#39;</span>
+<span class="p">]);</span>
+<span class="nb">header</span><span class="p">(</span><span class="s1">&#39;Location:&#39;</span> <span class="o">.</span> <span class="nv">$location</span><span class="p">);</span>  <span class="c1">//or any other form of redirect to the $loginLink you want to use.</span>
 </pre></div>
 </div>
+<p>The above <code class="docutils literal"><span class="pre">{{SP_TOKEN}}</span></code> is the token that the user received from the forgot password email.</p>
 </div>
 </div>
 <div class="section" id="using-id-site-for-multi-tenancy">
 <span id="idsite-multitenancy"></span><h2>7.5. Using ID Site for Multi-tenancy<a class="headerlink" href="#using-id-site-for-multi-tenancy" title="Permalink to this headline">¶</a></h2>
 <p>If you are <a class="reference internal" href="multitenancy.html#create-org"><span class="std std-ref">using Organizations to model multi-tenancy</span></a>, then you will want to map these as Account Stores for your Application.</p>
 <p>From that point, ID Site is able to handle either of the multi-tenant user routing methods described in <a class="reference internal" href="multitenancy.html#multitenant-routing-users"><span class="std std-ref">the Multi-tenancy Chapter</span></a>.</p>
-<p>(php.todo)</p>
+<p>In the <code class="docutils literal"><span class="pre">options</span></code> array that can be passed in the <code class="docutils literal"><span class="pre">createIdSiteUri()</span></code>, there are a couple properties that can be used in this array to allow for multi-tenancy.</p>
 <p><strong>Organization nameKey</strong></p>
-<p>(php.todo)</p>
+<p><code class="docutils literal"><span class="pre">organizationNameKey</span></code>: Allows you to specify an Organization&#8217;s <code class="docutils literal"><span class="pre">namekey</span></code>. The user is sent to the ID Site for that Organization, and is forced to log in to that Organization.</p>
 <p><strong>Show Organization Field</strong></p>
-<p>(php.todo)</p>
+<p><code class="docutils literal"><span class="pre">showOrganizationField</span></code>: Toggles the &#8220;Organization&#8221; field on and off on ID Site. Used on its own, it will allow the user to specify the Organization that they would like to log in to.</p>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="_images/id_site_sof_empty.png"><img alt="ID Site with sof toggled on" src="_images/id_site_sof_empty.png" style="width: 632.0px; height: 473.0px;" /></a>
+<p class="caption"><span class="caption-text"><em>ID Site with Organization field on and prepopulated</em></span></p>
+</div>
+<p>If combined with <code class="docutils literal"><span class="pre">organizationNameKey</span></code>, this will pre-populate that field with the Organization&#8217;s name.</p>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="_images/id_site_sof_prepop.png"><img alt="ID Site with sof and onk toggled on" src="_images/id_site_sof_prepop.png" style="width: 633.0px; height: 478.0px;" /></a>
+<p class="caption"><span class="caption-text"><em>ID Site with Organization field on and prepopulated</em></span></p>
+</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Stormpath will only show the field when you have at least one Organization mapped as an Account Store for your Application.</p>
 </div>
 <p><strong>Use Sub-Domain</strong></p>
-<p>(php.todo)</p>
+<p><code class="docutils literal"><span class="pre">useSubDomain</span></code>: If combined with <code class="docutils literal"><span class="pre">organizationNameKey</span></code>, will redirect the user to an ID Site with the Organization&#8217;s <code class="docutils literal"><span class="pre">namekey</span></code> as a sub-domain in its URL.</p>
 <p>For example, if your ID Site configuration is <code class="docutils literal"><span class="pre">elastic-rebel.id.stormpath.io</span></code> and the Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">home-depot</span></code>, then the SSO endpoint will resolve the following URL:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>https://home-depot.elastic-rebel.id.stormpath.io/?jwt={GENERATED_JWT}
 </pre></div>
