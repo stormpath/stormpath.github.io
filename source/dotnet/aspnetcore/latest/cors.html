@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Troubleshooting &mdash; ASP.NET Core Library Guide 0.1.2 documentation</title>
+  <title>Cross-Origin Requests &mdash; ASP.NET Core Library Guide 0.1.2 documentation</title>
   
 
   
@@ -29,7 +29,8 @@
 
   
     <link rel="top" title="ASP.NET Core Library Guide 0.1.2 documentation" href="index.html"/>
-        <link rel="prev" title="View Templates" href="templates.html"/> 
+        <link rel="next" title="OAuth 2.0 API" href="oauth2.html"/>
+        <link rel="prev" title="Authentication" href="authentication.html"/> 
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
@@ -98,8 +99,8 @@
 <li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth-2-0-password-grant">OAuth 2.0 Password Grant</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cors.html">Cross-Origin Requests</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cors.html#configuring-the-pipeline">Configuring the Pipeline</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Cross-Origin Requests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuring-the-pipeline">Configuring the Pipeline</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="oauth2.html">OAuth 2.0 API</a><ul>
@@ -160,10 +161,10 @@
 <li class="toctree-l2"><a class="reference internal" href="templates.html#custom-views">Custom Views</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Troubleshooting</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#logging">Logging</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#inspecting-traffic">Inspecting Traffic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#getting-help">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="help.html#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="help.html#inspecting-traffic">Inspecting Traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="help.html#getting-help">Getting Help</a></li>
 </ul>
 </li>
 </ul>
@@ -189,10 +190,10 @@
   <ul class="wy-breadcrumbs">
     <li><a href="index.html">Docs</a> &raquo;</li>
       
-    <li>Troubleshooting</li>
+    <li>Cross-Origin Requests</li>
       <li class="wy-breadcrumbs-aside">
         
-          <a href="_sources/help.txt" rel="nofollow"> View page source</a>
+          <a href="_sources/cors.txt" rel="nofollow"> View page source</a>
         
       </li>
   </ul>
@@ -200,28 +201,40 @@
 </div>
           <div role="main">
             
-  <div class="section" id="troubleshooting">
-<span id="help"></span><h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this headline">¶</a></h1>
-<p>If you run into problems while using this library, there are a few things you can do.</p>
-<div class="section" id="logging">
-<h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">Stormpath.AspNetCore</span></code> uses the ASP.NET logging system to expose debug and trace logs. By inspecting the logs (using <code class="docutils literal"><span class="pre">AddConsole</span></code>, or another log viewer), you can follow what the Stormpath middleware is doing behind the scenes and see any exceptions that are thrown.</p>
+  <div class="section" id="cross-origin-requests">
+<span id="cors"></span><h1>Cross-Origin Requests<a class="headerlink" href="#cross-origin-requests" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">Cross-Origin Resource Sharing</a> (CORS) support on both the client and server is neccessary when your client and server are on different domains. For example, a single-page application running on <code class="docutils literal"><span class="pre">mydomain.com</span></code> but communicating to an API on <code class="docutils literal"><span class="pre">api.mydomain.com</span></code> will require CORS to be configured.</p>
+<p>The Stormpath ASP.NET Core library works with existing CORS solutions for ASP.NET Core, provided that the middleware pipeline is configured properly.</p>
+<div class="section" id="configuring-the-pipeline">
+<h2>Configuring the Pipeline<a class="headerlink" href="#configuring-the-pipeline" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order to enable CORS support for the responses sent by the Stormpath middleware, the CORS middleware must be added to the pipeline <strong>before</strong> the Stormpath middleware.</p>
 </div>
-<div class="section" id="inspecting-traffic">
-<h2>Inspecting Traffic<a class="headerlink" href="#inspecting-traffic" title="Permalink to this headline">¶</a></h2>
-<p>Using a web debugging proxy like <a class="reference external" href="http://www.telerik.com/fiddler">Fiddler</a> or <a class="reference external" href="http://www.charlesproxy.com/">Charles</a> will allow you to inspect the traffic between the Stormpath SDK and the Stormpath REST API. This can be helpful when troubleshooting communication problems.</p>
+<p>The <code class="docutils literal"><span class="pre">Microsoft.AspNetCore.Cors</span></code> package provides a simple middleware component that can be added to your application pipeline in <code class="docutils literal"><span class="pre">Startup.cs</span></code>.</p>
+<p>First, add the services needed for CORS in <code class="docutils literal"><span class="pre">ConfigureServices</span></code>:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Add other services...</span>
+
+    <span class="n">services</span><span class="p">.</span><span class="n">AddCors</span><span class="p">();</span>
+    <span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
 </div>
-<div class="section" id="getting-help">
-<h2>Getting Help<a class="headerlink" href="#getting-help" title="Permalink to this headline">¶</a></h2>
-<p>Have a question you can&#8217;t find an answer to?  Things not working as expected?
-We can help!</p>
-<p>All of the official Stormpath libraries (including this one) are
-officially supported by Stormpath&#8217;s incredibly amazing-and-helpful support team!</p>
-<p>If you have a question, or need in-depth technical help, you can drop us an
-email anytime: <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a></p>
-<p>If you visit our website (<a class="reference external" href="https://stormpath.com/">https://stormpath.com/</a>), you can also click the &#8220;Chat
-with us!&#8221; button near the bottom right of the page to chat with us live, in
-real-time!</p>
+<p>Then, add CORS to your pipeline in <code class="docutils literal"><span class="pre">Configure</span></code>:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">Configure</span><span class="p">(</span><span class="n">IApplicationBuilder</span> <span class="n">app</span><span class="p">,</span> <span class="n">IHostingEnvironment</span> <span class="n">env</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">UseCors</span><span class="p">(</span><span class="n">builder</span> <span class="p">=&gt;</span> <span class="n">builder</span>
+      <span class="p">.</span><span class="n">WithOrigins</span><span class="p">(</span><span class="s">&quot;http://localhost:56789&quot;</span><span class="p">)</span> <span class="c1">// Your API domain</span>
+      <span class="p">.</span><span class="n">AllowCredentials</span><span class="p">());</span>
+
+    <span class="n">app</span><span class="p">.</span><span class="n">UseStormpath</span><span class="p">();</span>
+
+    <span class="c1">// Other middleware here...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -231,8 +244,10 @@ real-time!</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
+        <a href="oauth2.html" class="btn btn-neutral float-right" title="OAuth 2.0 API">Next <span class="fa fa-arrow-circle-right"></span></a>
       
-        <a href="templates.html" class="btn btn-neutral" title="View Templates"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+        <a href="authentication.html" class="btn btn-neutral" title="Authentication"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

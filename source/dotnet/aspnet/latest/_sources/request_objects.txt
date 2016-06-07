@@ -14,12 +14,7 @@ these types will be available for each request:
 
   This library uses the built-in dependency injection mechanism in ASP.NET Core to provide these types.
 
-  You can request any of these objects from the container using the ``[FromServices]`` attribute:
-
-  .. literalinclude:: code/request_objects/aspnetcore/controller_fromservices.cs
-      :language: csharp
-
-  Or, if you prefer, you can use constructor injection:
+  You can use constructor injection to request these objects from the service container:
 
   .. literalinclude:: code/request_objects/aspnetcore/controller_injection.cs
       :language: csharp
@@ -91,6 +86,9 @@ This library automatically checks incoming requests for authentication informati
 
 .. only:: aspnet or aspnetcore
 
+  ClaimsIdentity
+  ''''''''''''''
+
   A subset of the user's Stormpath Account details are automatically placed in the ``IIdentity`` object for the request. This makes it possible to quickly do things like update a view if the user is logged in:
 
   .. only:: aspnetcore
@@ -110,6 +108,10 @@ This library automatically checks incoming requests for authentication informati
   * ``ClaimTypes.Name`` (Stormpath username, usually the same as email)
   * ``ClaimTypes.GivenName``
   * ``ClaimTypes.Surname``
+  * ``"FullName"`` (The computed ``fullName`` property in Stormpath)
+
+Stormpath Account
+'''''''''''''''''
 
 .. only:: aspnetcore
 
@@ -148,7 +150,7 @@ To update the user's password, for example:
 .. only:: aspnetcore
 
   .. tip::
-    If your controller or action will *always* be authenticated (see the :ref:`authentication` section), you can drop the wrapper and inject ``IAccount`` directly. Don't do this on routes that can be accessed anonymously!
+    If your route or action will *always* be authenticated (see the :ref:`authentication` section), you can drop the wrapper and inject ``IAccount`` directly. Don't do this on routes that can be accessed anonymously!
 
   You can also use the ``@inject`` directive to do the same injection directly in your views:
 
@@ -161,10 +163,7 @@ Working with the Stormpath API
 
 By accessing one of the available types (``IClient``, ``IApplication``, or ``IAccount``), you can use the `Stormpath .NET SDK`_ to interact with the Stormpath API. This allows you to easily build custom functionality beyond what is provided in the Stormpath |framework| library.
 
-For information on using the Stormpath .NET SDK, check out the `Stormpath .NET API documentation`_.
-
-.. todo::
-  Update to One Product Guide when it's ready.
+For information on using the Stormpath .NET SDK, check out the `Stormpath C# SDK`_ or `Stormpath Visual Basic SDK`_ documentation.
 
 Tasks and Cancellation
 ''''''''''''''''''''''
@@ -184,3 +183,5 @@ Simply import the ``Stormpath.SDK.Sync`` namespace at the top of your code file,
 
 .. _Stormpath .NET SDK: https://github.com/stormpath/stormpath-sdk-dotnet
 .. _Stormpath .NET API documentation: http://docs.stormpath.com/dotnet/api/
+.. _Stormpath C# SDK: https://docs.stormpath.com/csharp/product-guide/latest/
+.. _Stormpath Visual Basic SDK: https://docs.stormpath.com/vbnet/product-guide/latest/

@@ -75,6 +75,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#loading-order">Loading Order</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#required-settings">Required Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#markup-file-yaml-or-json">Markup File (YAML or JSON)</a></li>
@@ -96,6 +97,10 @@
 <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="authentication.html#cookie-authentication">Cookie Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth-2-0-password-grant">OAuth 2.0 Password Grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cors.html">Cross-Origin Requests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cors.html#configuring-the-pipeline">Configuring the Pipeline</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="oauth2.html">OAuth 2.0 API</a><ul>
@@ -156,7 +161,11 @@
 <li class="toctree-l2"><a class="reference internal" href="templates.html#custom-views">Custom Views</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="help.html">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="help.html#inspecting-traffic">Inspecting Traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="help.html#getting-help">Getting Help</a></li>
+</ul>
+</li>
 </ul>
 
         
@@ -257,6 +266,8 @@ these types will be available for each request:</p>
 <p class="first admonition-title">Tip</p>
 <p class="last">If you want to <em>require</em> authentication for a route or action, see the <a class="reference internal" href="authentication.html#authentication"><span>Authentication</span></a> section.</p>
 </div>
+<div class="section" id="claimsidentity">
+<h3>ClaimsIdentity<a class="headerlink" href="#claimsidentity" title="Permalink to this headline">¶</a></h3>
 <p>A subset of the user&#8217;s Stormpath Account details are automatically placed in the <code class="docutils literal"><span class="pre">IIdentity</span></code> object for the request. This makes it possible to quickly do things like update a view if the user is logged in:</p>
 <div class="highlight-html"><div class="highlight"><pre><span></span>@if (Context.User.Identity.IsAuthenticated)
 {
@@ -271,7 +282,11 @@ these types will be available for each request:</p>
 <li><code class="docutils literal"><span class="pre">ClaimTypes.Name</span></code> (Stormpath username, usually the same as email)</li>
 <li><code class="docutils literal"><span class="pre">ClaimTypes.GivenName</span></code></li>
 <li><code class="docutils literal"><span class="pre">ClaimTypes.Surname</span></code></li>
+<li><code class="docutils literal"><span class="pre">&quot;FullName&quot;</span></code> (The computed <code class="docutils literal"><span class="pre">fullName</span></code> property in Stormpath)</li>
 </ul>
+</div>
+<div class="section" id="stormpath-account">
+<h3>Stormpath Account<a class="headerlink" href="#stormpath-account" title="Permalink to this headline">¶</a></h3>
 <p>If you want full access to the Stormpath <code class="docutils literal"><span class="pre">IAccount</span></code> object, use the <code class="docutils literal"><span class="pre">GetStormpathAccount()</span></code> method in your MVC or Web API controller.</p>
 <p>If the request is unauthenticated, the value will be <code class="docutils literal"><span class="pre">null</span></code>. If the request represents a valid user, you&#8217;ll get an <code class="docutils literal"><span class="pre">IAccount</span></code> instance representing the user&#8217;s Stormpath Account.</p>
 <p>To update the user&#8217;s password, for example:</p>
@@ -292,10 +307,11 @@ these types will be available for each request:</p>
 </pre></div>
 </div>
 </div>
+</div>
 <div class="section" id="working-with-the-stormpath-api">
 <h2>Working with the Stormpath API<a class="headerlink" href="#working-with-the-stormpath-api" title="Permalink to this headline">¶</a></h2>
 <p>By accessing one of the available types (<code class="docutils literal"><span class="pre">IClient</span></code>, <code class="docutils literal"><span class="pre">IApplication</span></code>, or <code class="docutils literal"><span class="pre">IAccount</span></code>), you can use the <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet">Stormpath .NET SDK</a> to interact with the Stormpath API. This allows you to easily build custom functionality beyond what is provided in the Stormpath ASP.NET library.</p>
-<p>For information on using the Stormpath .NET SDK, check out the <a class="reference external" href="http://docs.stormpath.com/dotnet/api/">Stormpath .NET API documentation</a>.</p>
+<p>For information on using the Stormpath .NET SDK, check out the <a class="reference external" href="https://docs.stormpath.com/csharp/product-guide/latest/">Stormpath C# SDK</a> or <a class="reference external" href="https://docs.stormpath.com/vbnet/product-guide/latest/">Stormpath Visual Basic SDK</a> documentation.</p>
 <div class="section" id="tasks-and-cancellation">
 <h3>Tasks and Cancellation<a class="headerlink" href="#tasks-and-cancellation" title="Permalink to this headline">¶</a></h3>
 <p>Every method in the Stormpath .NET SDK that makes a network call returns a <code class="docutils literal"><span class="pre">Task</span></code> and is fully awaitable. Each method also has an optional overload that accepts a <code class="docutils literal"><span class="pre">CancellationToken</span></code>, if you need to support request cancellation.</p>

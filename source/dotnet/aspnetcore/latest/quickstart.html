@@ -75,6 +75,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#loading-order">Loading Order</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#required-settings">Required Settings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment Variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#markup-file-yaml-or-json">Markup File (YAML or JSON)</a></li>
@@ -96,6 +97,10 @@
 <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="authentication.html#cookie-authentication">Cookie Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth-2-0-password-grant">OAuth 2.0 Password Grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cors.html">Cross-Origin Requests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cors.html#configuring-the-pipeline">Configuring the Pipeline</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="oauth2.html">OAuth 2.0 API</a><ul>
@@ -156,7 +161,12 @@
 <li class="toctree-l2"><a class="reference internal" href="templates.html#custom-views">Custom Views</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="help.html">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="help.html#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="help.html#inspecting-traffic">Inspecting Traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="help.html#getting-help">Getting Help</a></li>
+</ul>
+</li>
 </ul>
 
         
@@ -256,27 +266,39 @@ allows you to make Stormpath API requests, and should be properly protected.</p>
 <div class="section" id="create-a-new-project">
 <h2>Create a New Project<a class="headerlink" href="#create-a-new-project" title="Permalink to this headline">¶</a></h2>
 <p>If you are adding Stormpath to an existing application, skip to the next section!</p>
-<p>If you are using Visual Studio, First, create a new project using the ASP.NET Core template:</p>
+<div class="section" id="creating-a-new-project-in-visual-studio">
+<h3>Creating a New Project in Visual Studio<a class="headerlink" href="#creating-a-new-project-in-visual-studio" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic simple">
 <li>Click on <strong>File - New Project</strong>.</li>
-<li>Under <strong>Visual C# - Web</strong>, pick the <strong>ASP.NET Web Application</strong> template.</li>
-<li>In the New ASP.NET Project dialog, pick <strong>Web Application</strong> or <strong>Web API</strong> from <strong>ASP.NET 5 Templates</strong>.</li>
+<li>Under <strong>Visual C# - .NET Core</strong>, pick the <strong>ASP.NET Core Web Application (.NET Core)</strong> template.</li>
+<li>In the New ASP.NET Core Project dialog, pick the <strong>Web Application</strong> template.</li>
 <li>Click <strong>Change Authentication</strong> and pick <strong>No Authentication</strong>. (You&#8217;ll be adding it yourself!)</li>
 </ol>
-<p>If you&#8217;re on Mac or Linux, or just prefer the command line, you can use the <a class="reference external" href="https://github.com/OmniSharp/generator-aspnet">ASP.NET Yeoman Generator</a> to scaffold a new project instead:</p>
+</div>
+<div class="section" id="creating-a-new-project-without-visual-studio">
+<h3>Creating a New Project Without Visual Studio<a class="headerlink" href="#creating-a-new-project-without-visual-studio" title="Permalink to this headline">¶</a></h3>
+<p>If you&#8217;re on Mac or Linux, or just prefer the command line, you can use the <a class="reference external" href="https://github.com/OmniSharp/generator-aspnet">ASP.NET Yeoman Generator</a> to scaffold a new project:</p>
 <ol class="arabic simple">
 <li>Run <code class="docutils literal"><span class="pre">yo</span> <span class="pre">aspnet</span></code>.</li>
 <li>Pick the <strong>Web Application Basic [without Membership and Authorization]</strong> template. Done!</li>
 </ol>
 </div>
+</div>
 <div class="section" id="install-the-package">
 <h2>Install the Package<a class="headerlink" href="#install-the-package" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal"><span class="pre">Stormpath.AspNetCore</span></code> package comes with everything you need to plug Stormpath into an ASP.NET Core project.</p>
-<p>The package can be installed with the NuGet Package Manager interface, or using the Package Manager Console:</p>
+<p>It includes the <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet">Stormpath .NET SDK</a>, the Stormpath OWIN middleware, and pre-rendered views that work out of the box.</p>
+<p>The package can be installed with the NuGet Package Manager interface, or using the Package Manager Console in Visual Studio:</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span>PM&gt; install-package Stormpath.AspNetCore
 </pre></div>
 </div>
-<p>It includes the <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet">Stormpath .NET SDK</a>, the Stormpath OWIN middleware, and pre-rendered views that work out of the box.</p>
+<p>If you aren&#8217;t using Visual Studio, simply edit the <code class="docutils literal"><span class="pre">project.json</span></code> file and add this line to the <code class="docutils literal"><span class="pre">dependencies</span></code> section:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;Stormpath.AspNetCore&quot;</span><span class="o">:</span> <span class="s2">&quot;*&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then, run <code class="docutils literal"><span class="pre">dotnet</span> <span class="pre">restore</span></code> to download and install the package.</p>
 </div>
 <div class="section" id="initialize-the-middleware">
 <h2>Initialize the Middleware<a class="headerlink" href="#initialize-the-middleware" title="Permalink to this headline">¶</a></h2>
@@ -290,7 +312,7 @@ allows you to make Stormpath API requests, and should be properly protected.</p>
 </pre></div>
 </div>
 <p>Next, add Stormpath to your middleware pipeline in <code class="docutils literal"><span class="pre">Configure()</span></code>:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">Configure</span><span class="p">(</span><span class="n">IApplicationBuilder</span> <span class="n">app</span><span class="p">,</span> <span class="n">IHostingEnvironment</span> <span class="n">env</span><span class="p">,</span> <span class="n">ILoggerFactory</span> <span class="n">loggerFactory</span><span class="p">)</span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">Configure</span><span class="p">(</span><span class="n">IApplicationBuilder</span> <span class="n">app</span><span class="p">,</span> <span class="n">IHostingEnvironment</span> <span class="n">env</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="c1">// Logging and static file middleware (if applicable)</span>
 
@@ -313,12 +335,12 @@ login and registration routes.</li>
 </ul>
 <p>That&#8217;s it, you&#8217;re ready to go! Compile and run your project, and try navigating to these URLs:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://localhost:50000/login">http://localhost:50000/login</a></li>
-<li><a class="reference external" href="http://localhost:50000/register">http://localhost:50000/register</a></li>
+<li><a class="reference external" href="http://localhost:5000/login">http://localhost:5000/login</a></li>
+<li><a class="reference external" href="http://localhost:5000/register">http://localhost:5000/register</a></li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Your port number will differ. To find the port assigned to your project, right-click on the project in the Solution Explorer and choose <strong>Properties</strong>. Switch to the <strong>Web</strong> tab and check the URL listed in <strong>Servers - Project Url</strong>.</p>
+<p class="last">Your port number may differ. To find the port assigned to your project, right-click on the project in the Solution Explorer and choose <strong>Properties</strong>. Switch to the <strong>Debug</strong> tab and check the URL listed under <strong>Web Server Settings - App URL</strong>.</p>
 </div>
 <p>You should be able to register for an account and log in. The newly created
 account will be placed in the directory that is mapped to &#8220;My Application&#8221;.</p>
