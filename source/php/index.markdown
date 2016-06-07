@@ -37,9 +37,9 @@ content_top: [docs_top.html]
               <div class="col-sm-12">
                 <ul class="fa-ul">
                   <li><i class="fa-li fa fa-car"></i><a href="https://github.com/stormpath/stormpath-sdk-php#getting-started/">Quickstart</a></li>
-                  <li><i class="fa-li fa fa-book"></i><a href="https://docs.stormpath.com/php/product-guide/latest/">Documentation</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/php/product-guide/latest/">Documentation</a></li>
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-php/">Project on GitHub</a></li>
-                  <li><i class="fa-li fa fa-file-text"></i><a href="https://docs.stormpath.com/php/apidocs/">API Reference</a></li>
+                  <li><i class="fa-li fa fa-file-text"></i><a href="/php/apidocs/">API Reference</a></li>
                 </ul>
               </div>
             </div>
@@ -51,9 +51,9 @@ content_top: [docs_top.html]
             <div class="row">
               <div class="col-sm-12">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="http://docs.stormpath.com/php/laravel/latest/quickstart.html">Quickstart</a></li>
+                  <li><i class="fa-li fa fa-car"></i><a href="/php/laravel/latest/quickstart.html">Quickstart</a></li>
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-laravel/">Project on GitHub</a></li>
-                  <li><i class="fa-li fa fa-book"></i><a href="https://docs.stormpath.com/php/laravel/latest/">Documentation</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/php/laravel/latest/">Documentation</a></li>
                 </ul>
               </div>
             </div>
@@ -67,14 +67,14 @@ content_top: [docs_top.html]
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-sm-offset-3">
           <div class="language-header lang3"></div>
-          <pre><code><a href="http://docs.stormpath.com/php/lumen/latest/quickstart.html">Follow the quickstart</a></code></pre>
+          <pre><code><a href="/php/lumen/latest/quickstart.html">Follow the quickstart</a></code></pre>
           <p class="body-copy">For REST APIs that use the Lumen framework, this package does it all. Stormpth-Lumen can add a complete user authentication and management system to your API in 15 minutes.</p>
             <div class="row">
               <div class="col-sm-12">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="http://docs.stormpath.com/php/lumen/latest/quickstart.html">Quickstart</a></li>
+                  <li><i class="fa-li fa fa-car"></i><a href="/php/lumen/latest/quickstart.html">Quickstart</a></li>
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-lumen">Project on GitHub</a></li>
-                  <li><i class="fa-li fa fa-book"></i><a href="https://docs.stormpath.com/php/lumen/latest/">Documentation</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/php/lumen/latest/">Documentation</a></li>
                 </ul>
               </div>
             </div>
