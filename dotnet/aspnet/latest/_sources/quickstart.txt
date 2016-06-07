@@ -95,18 +95,18 @@ If you are adding Stormpath to an existing application, skip to the next section
 
 .. only:: aspnetcore
 
-  If you are using Visual Studio, First, create a new project using the ASP.NET Core template:
+  Creating a New Project in Visual Studio
+  '''''''''''''''''''''''''''''''''''''''
 
   1. Click on **File - New Project**.
-  2. Under **Visual C# - Web**, pick the **ASP.NET Web Application** template.
-  3. In the New ASP.NET Project dialog, pick **Web Application** or **Web API** from **ASP.NET 5 Templates**.
+  2. Under **Visual C# - .NET Core**, pick the **ASP.NET Core Web Application (.NET Core)** template.
+  3. In the New ASP.NET Core Project dialog, pick the **Web Application** template.
   4. Click **Change Authentication** and pick **No Authentication**. (You'll be adding it yourself!)
 
-  .. todo::
+  Creating a New Project Without Visual Studio
+  ''''''''''''''''''''''''''''''''''''''''''''
 
-    Update "ASP.NET 5 Templates" when VS is updated.
-
-  If you're on Mac or Linux, or just prefer the command line, you can use the `ASP.NET Yeoman Generator`_ to scaffold a new project instead:
+  If you're on Mac or Linux, or just prefer the command line, you can use the `ASP.NET Yeoman Generator`_ to scaffold a new project:
 
   1. Run ``yo aspnet``.
   2. Pick the **Web Application Basic [without Membership and Authorization]** template. Done!
@@ -142,8 +142,9 @@ Install the Package
   .. todo::
     Add blurb.
 
+It includes the `Stormpath .NET SDK`_, the Stormpath OWIN middleware, and pre-rendered views that work out of the box.
 
-The package can be installed with the NuGet Package Manager interface, or using the Package Manager Console:
+The package can be installed with the NuGet Package Manager interface, or using the Package Manager Console in Visual Studio:
 
 .. only:: aspnetcore
 
@@ -159,23 +160,27 @@ The package can be installed with the NuGet Package Manager interface, or using 
 
   .. code-block:: none
 
-    PM> install-package -pre Stormpath.AspNet
-
-  .. todo::
-    Remove -pre
+    PM> install-package Stormpath.AspNet
 
   .. note::
 
-    Older versions of NuGet will sometimes fail to install the package. If you get an error, make sure `NuGet is up to date <https://docs.nuget.org/consume/installing-nuget#updating-nuget-in-visual-studio>`_.
+    Older versions of NuGet might fail to install the package. If you get an error, make sure `NuGet is up to date <https://docs.nuget.org/consume/installing-nuget#updating-nuget-in-visual-studio>`_.
 
+.. only:: aspnetcore
+
+  If you aren't using Visual Studio, simply edit the ``project.json`` file and add this line to the ``dependencies`` section::
+
+    "dependencies": {
+      "Stormpath.AspNetCore": "*"
+    }
+
+  Then, run ``dotnet restore`` to download and install the package.
 
 .. only:: nancy
 
   .. code-block:: none
 
     PM> install-package Stormpath.Nancy
-
-It includes the `Stormpath .NET SDK`_, the Stormpath OWIN middleware, and pre-rendered views that work out of the box.
 
 
 Initialize the Middleware
@@ -225,11 +230,30 @@ With this minimal configuration, the library will do the following:
 
 That's it, you're ready to go! Compile and run your project, and try navigating to these URLs:
 
-- http://localhost:50000/login
-- http://localhost:50000/register
+.. only:: aspnetcore
 
-.. note::
-  Your port number will differ. To find the port assigned to your project, right-click on the project in the Solution Explorer and choose **Properties**. Switch to the **Web** tab and check the URL listed in **Servers - Project Url**.
+  - http://localhost:5000/login
+  - http://localhost:5000/register
+
+.. only:: aspnet
+
+  - http://localhost:50000/login
+  - http://localhost:50000/register
+
+.. only:: nancy
+
+  .. todo::
+    Add info
+
+.. only:: aspnetcore
+
+  .. note::
+    Your port number may differ. To find the port assigned to your project, right-click on the project in the Solution Explorer and choose **Properties**. Switch to the **Debug** tab and check the URL listed under **Web Server Settings - App URL**.
+
+.. only:: aspnet
+
+  .. note::
+    Your port number will differ. To find the port assigned to your project, right-click on the project in the Solution Explorer and choose **Properties**. Switch to the **Web** tab and check the URL listed in **Servers - Project Url**.
 
 You should be able to register for an account and log in. The newly created
 account will be placed in the directory that is mapped to "My Application".
