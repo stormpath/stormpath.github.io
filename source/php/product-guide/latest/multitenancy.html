@@ -86,10 +86,10 @@
       <div class="">
         <a href="/rest/product-guide/latest/">REST</a>
       </div>
-      <!--
       <div class="current">
         <a href="/php/product-guide/latest/multitenancy.html">PHP</a>
       </div>
+      <!--
       <div class="">
         <a href="/java/product-guide/latest/multitenancy.html">Java</a>
       </div>
@@ -160,7 +160,7 @@
           
 
   
-  
+
 
         </div>
       </div>
@@ -289,16 +289,11 @@
 <ol class="arabic simple">
 <li>It makes it easy to find all the role Groups for that particular tenant, since you can search for the nameKey:</li>
 </ol>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$groups</span> <span class="o">=</span> <span class="nv">$directory</span><span class="o">-&gt;</span><span class="na">groups</span><span class="o">-&gt;</span><span class="na">setSearch</span><span class="p">([</span><span class="s1">&#39;name&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;bank-of-a.role.*&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p>Or, if you wanted to retrieve the tenant Group and all of its sub-Groups, make the query a little less restrictive by removing the &#8220;role&#8221;:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">..</span> <span class="n">only</span><span class="p">::</span> <span class="n">rest</span>
-</pre></div>
-</div>
-<blockquote>
-<div>GET <a class="reference external" href="https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=bank-of-a.*">https://api.stormpath.com/v1/directories/29E0XzabMwPGluegBqAl0Y/groups?name=bank-of-a.*</a></div></blockquote>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$groups</span> <span class="o">=</span> <span class="nv">$directory</span><span class="o">-&gt;</span><span class="na">groups</span><span class="o">-&gt;</span><span class="na">setSearch</span><span class="p">([</span><span class="s1">&#39;name&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;bank-of-a.*&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -319,26 +314,102 @@
 <div class="section" id="how-to-create-an-organization">
 <span id="create-org"></span><h4>How to Create an Organization<a class="headerlink" href="#how-to-create-an-organization" title="Permalink to this headline">¶</a></h4>
 <p>You can create an Organization in Stormpath by sending the following request:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$tenant</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">getCurrentTenant</span><span class="p">();</span>
+
+<span class="nv">$org</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\Organization</span><span class="o">::</span><span class="na">instantiate</span><span class="p">([</span>
+<span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Bank of A&#39;</span><span class="p">,</span>
+<span class="s1">&#39;nameKey&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;bank-of-a&#39;</span><span class="p">,</span>
+<span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">ENABLED</span>
+<span class="p">]);</span>
+
+<span class="nv">$tenant</span><span class="o">-&gt;</span><span class="na">createOrganization</span><span class="p">(</span><span class="nv">$org</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Which would return the following:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Resource\Organization</span><span class="p">)</span>
+    <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizations/4uGaK0hpXmPActPZbH4nYN&#39;</span>
+    <span class="k">public</span> <span class="s1">&#39;createdAt&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;2016-06-03T02:19:41.678Z&#39;</span>
+    <span class="k">public</span> <span class="s1">&#39;modifiedAt&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;2016-06-03T02:19:41.678Z&#39;</span>
+    <span class="k">public</span> <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;Bank of A&#39;</span>
+    <span class="k">public</span> <span class="s1">&#39;nameKey&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;bank-of-a&#39;</span>
+    <span class="k">public</span> <span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;ENABLED&#39;</span>
+    <span class="k">public</span> <span class="s1">&#39;description&#39;</span> <span class="o">=&gt;</span> <span class="k">NULL</span>
+
+    <span class="k">public</span> <span class="s1">&#39;customData&#39;</span> <span class="o">=&gt;</span>
+        <span class="nx">object</span><span class="p">(</span><span class="k">stdClass</span><span class="p">)</span>
+        <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizations/4uGaK0hpXmPActPZbH4nYN/customData&#39;</span>
+
+    <span class="k">public</span> <span class="s1">&#39;defaultAccountStoreMapping&#39;</span> <span class="o">=&gt;</span> <span class="k">NULL</span>
+    <span class="k">public</span> <span class="s1">&#39;defaultGroupStoreMapping&#39;</span> <span class="o">=&gt;</span> <span class="k">NULL</span>
+
+    <span class="k">public</span> <span class="s1">&#39;accountStoreMappings&#39;</span> <span class="o">=&gt;</span>
+        <span class="nx">object</span><span class="p">(</span><span class="k">stdClass</span><span class="p">)</span>
+        <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizations/4uGaK0hpXmPActPZbH4nYN/accountStoreMappings&#39;</span>
+
+    <span class="k">public</span> <span class="s1">&#39;groups&#39;</span> <span class="o">=&gt;</span>
+        <span class="nx">object</span><span class="p">(</span><span class="k">stdClass</span><span class="p">)</span>
+        <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizations/4uGaK0hpXmPActPZbH4nYN/groups&#39;</span>
+
+    <span class="k">public</span> <span class="s1">&#39;accounts&#39;</span> <span class="o">=&gt;</span>
+        <span class="nx">object</span><span class="p">(</span><span class="k">stdClass</span><span class="p">)</span>
+        <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizations/4uGaK0hpXmPActPZbH4nYN/accounts&#39;</span>
+
+    <span class="k">public</span> <span class="s1">&#39;tenant&#39;</span> <span class="o">=&gt;</span>
+        <span class="nx">object</span><span class="p">(</span><span class="k">stdClass</span><span class="p">)</span>
+        <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/tenants/6g1ZmmHTnCNWgdJqCD46ZO&#39;</span>
 </pre></div>
 </div>
+<p>Notice here that both the Default Account Store and Group Store are <code class="docutils literal"><span class="pre">NULL</span></code> which means that Groups and Accounts added to the Organization would fail until a default Account Store is added.</p>
 </div>
 <div class="section" id="adding-an-account-store-to-an-organization">
 <h4>Adding an Account Store to an Organization<a class="headerlink" href="#adding-an-account-store-to-an-organization" title="Permalink to this headline">¶</a></h4>
 <p>Like other Account Stores, an Organization can be mapped to an Application so that users in the Organization can log-in to that application (for more about how logging-in works with Stormpath, please see <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">the Authentication chapter</span></a>). But before you do this, you must first associate some users with the Organization so that there is someone to log in! To do this, you have to map some Account Stores to your Organization.</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$group</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\Group</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;https://api.stormpath.com/v1/groups/47RoLyCPAgzWDk5F1wevFI&#39;</span><span class="p">);</span>
+
+<span class="nv">$org</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\Organization</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;https://api.stormpath.com/v1/organizations/4uGaK0hpXmPActPZbH4nYN&#39;</span><span class="p">);</span>
+
+<span class="nv">$asm</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\AccountStoreMapping</span><span class="o">::</span><span class="na">instantiate</span><span class="p">([</span>
+    <span class="s1">&#39;organization&#39;</span> <span class="o">=&gt;</span> <span class="nv">$org</span><span class="p">,</span>
+    <span class="s1">&#39;accountStore&#39;</span> <span class="o">=&gt;</span><span class="nv">$group</span>
+<span class="p">]);</span>
+
+<span class="nv">$org</span><span class="o">-&gt;</span><span class="na">createOrganizationAccountStoreMapping</span><span class="p">(</span><span class="nv">$asm</span><span class="p">);</span>
 </pre></div>
 </div>
+<p>These two attributes, <code class="docutils literal"><span class="pre">organization</span></code> and <code class="docutils literal"><span class="pre">accountStore</span></code> are required, though you may add some optional attributes as well:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">listIndex</span></code>: Represents the priority in which this accountStore will be consulted by the Organization during an authentication attempt. This is a zero-based index, meaning that an Account Store at <code class="docutils literal"><span class="pre">listIndex</span></code> of 0 will be consulted first, followed by the Account Store at listIndex 1, etc. Setting a negative value will default the value to 0, placing it first in the list. A listIndex of larger than the current list size will place the mapping at the end of the list and then default the value to (list size – 1).</li>
+<li><code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code>: A <code class="docutils literal"><span class="pre">true</span></code> value indicates that new Accounts created by the Organization’s <code class="docutils literal"><span class="pre">/accounts</span></code> endpoint will be automatically saved to this mapping’s Directory or Group.</li>
+<li><code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code>: A <code class="docutils literal"><span class="pre">true</span></code> value indicates that new Groups created by the Organization’s <code class="docutils literal"><span class="pre">/groups</span></code> endpoint will be automatically saved to this mapping’s Directory. Note that a <code class="docutils literal"><span class="pre">true</span></code> value will only be valid here if the accountStore is a Directory.</li>
+</ul>
 <p>In order to be able to add Groups and Accounts to the Organization in the way mentioned above, we should also make sure that we mark this Account Store as our default for both Accounts and Groups:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$group</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\Group</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;https://api.stormpath.com/v1/groups/47RoLyCPAgzWDk5F1wevFI&#39;</span><span class="p">);</span>
+
+<span class="nv">$org</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\Organization</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;https://api.stormpath.com/v1/organizations/4uGaK0hpXmPActPZbH4nYN&#39;</span><span class="p">);</span>
+
+<span class="nv">$asm</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\AccountStoreMapping</span><span class="o">::</span><span class="na">instantiate</span><span class="p">([</span>
+    <span class="s1">&#39;organization&#39;</span> <span class="o">=&gt;</span> <span class="nv">$org</span><span class="p">,</span>
+    <span class="s1">&#39;accountStore&#39;</span> <span class="o">=&gt;</span> <span class="nv">$group</span><span class="p">,</span>
+    <span class="s1">&#39;isDefaultAccountStore&#39;</span> <span class="o">=&gt;</span> <span class="k">true</span>
+<span class="p">]);</span>
+
+<span class="nv">$org</span><span class="o">-&gt;</span><span class="na">createOrganizationAccountStoreMapping</span><span class="p">(</span><span class="nv">$asm</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Which would result in the following response:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Resource\AccountStoreMapping</span><span class="p">)</span>
+    <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizationAccountStoreMappings/7Y5A9weN2hsNKRk2OOG5Rd&#39;</span>
+    <span class="k">public</span> <span class="s1">&#39;listIndex&#39;</span> <span class="o">=&gt;</span> <span class="nx">int</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">public</span> <span class="s1">&#39;isDefaultAccountStore&#39;</span> <span class="o">=&gt;</span> <span class="nx">bool</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+    <span class="k">public</span> <span class="s1">&#39;isDefaultGroupStore&#39;</span> <span class="o">=&gt;</span> <span class="nx">bool</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+
+    <span class="k">public</span> <span class="s1">&#39;organization&#39;</span> <span class="o">=&gt;</span>
+        <span class="nx">object</span><span class="p">(</span><span class="k">stdClass</span><span class="p">)</span>
+        <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizations/4uGaK0hpXmPActPZbH4nYN&#39;</span>
+
+    <span class="k">public</span> <span class="s1">&#39;accountStore&#39;</span> <span class="o">=&gt;</span>
+        <span class="nx">object</span><span class="p">(</span><span class="k">stdClass</span><span class="p">)</span>
+        <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/groups/47RoLyCPAgzWDk5F1wevFI&#39;</span>
 </pre></div>
 </div>
 <p>So our Organization now has an associated Directory which can be used as an Account Store to add new Accounts and Groups. To enable login for the Accounts in this Organization, we must now map the Organization to an Application.</p>
@@ -351,8 +422,27 @@
 <div class="section" id="adding-an-account-to-an-organization">
 <span id="add-accnt-to-org"></span><h4>Adding an Account to an Organization<a class="headerlink" href="#adding-an-account-to-an-organization" title="Permalink to this headline">¶</a></h4>
 <p>Adding a new Account to an Organization is exactly the same as adding them to a Directory, except that you use the Organization to route the creation request:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$org</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\Organization</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;https://api.stormpath.com/v1/organizations/4uGaK0hpXmPActPZbH4nYN&#39;</span><span class="p">);</span>
+
+
+<span class="nv">$account</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\Account</span><span class="o">::</span><span class="na">instantiate</span><span class="p">([</span>
+    <span class="s2">&quot;givenName&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;Annie&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;surname&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;Nguyen&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;username&quot;</span> <span class="o">=&gt;</span><span class="s2">&quot;annie@nguyengland.me&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;email&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;annie@nguyengland.me&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;password&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;Changeme1&quot;</span>
+<span class="p">]);</span>
+
+<span class="nv">$defaultMapping</span> <span class="o">=</span> <span class="nv">$org</span><span class="o">-&gt;</span><span class="na">getDefaultAccountStoreMapping</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getProperty</span><span class="p">(</span><span class="s1">&#39;accountStore&#39;</span><span class="p">);</span>
+
+<span class="nv">$directory</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\Directory</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="nv">$defaultMapping</span><span class="o">-&gt;</span><span class="na">href</span><span class="p">);</span>
 </pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>Currently, you cannot create a new Account directly from the Organization resource.</p>
+<p class="last">You are also not able to create a new Account directly into a Group. The PHP SDK team is currently working on a bug fix for this.  You can follow along on
+<a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/152">github issue #152</a> for updates.</p>
 </div>
 </div>
 </div>

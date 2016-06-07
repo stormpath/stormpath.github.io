@@ -86,10 +86,10 @@
       <div class="">
         <a href="/rest/product-guide/latest/">REST</a>
       </div>
-      <!--
       <div class="current">
         <a href="/php/product-guide/latest/quickstart.html">PHP</a>
       </div>
+      <!--
       <div class="">
         <a href="/java/product-guide/latest/quickstart.html">Java</a>
       </div>
@@ -143,7 +143,7 @@
           
 
   
-  
+
 
         </div>
       </div>
@@ -230,8 +230,11 @@ $ mv ~/Downloads/apiKey.properties ~/.stormpath/
 </div>
 <div class="section" id="installing-the-sdk">
 <span id="quickstart-install-sdk"></span><h2>2.3 Installing the SDK<a class="headerlink" href="#installing-the-sdk" title="Permalink to this headline">¶</a></h2>
-<p>(php.todo)</p>
-<p>(php.todo)</p>
+<p>The Stormpath PHP SDK installs through <a class="reference external" href="http://getcomposer.org">Composer</a>.  After installing this on your system, navigate to your project folder in the terminal and run:</p>
+<div class="code console highlight-default"><div class="highlight"><pre><span></span><span class="n">composer</span> <span class="n">install</span> <span class="n">stormpath</span><span class="o">/</span><span class="n">sdk</span>
+</pre></div>
+</div>
+<p>These instructions assume that you have <a class="reference external" href="http://getcomposer.org">Composer</a> and <a class="reference external" href="http://php.net">PHP 5.5+</a> installed on your system, and that you have already completed the steps above, and now have:</p>
 <ul class="simple">
 <li>A Stormpath account</li>
 <li>A Stormpath API Key generated and downloaded onto your system</li>
@@ -244,7 +247,7 @@ $ mv ~/Downloads/apiKey.properties ~/.stormpath/
 <li>&#8220;My Application Directory&#8221; is set as the default Directory for any new Accounts added to &#8220;My Application&#8221;.</li>
 <li>An Account resource representing your Stormpath Administrator user.</li>
 </ul>
-<div class="figure align-center" id="id2">
+<div class="figure align-center" id="id3">
 <a class="reference internal image-reference" href="_images/default_resources.png"><img alt="Default Stormpath Resources" src="_images/default_resources.png" style="width: 492.0px; height: 351.0px;" /></a>
 <p class="caption"><span class="caption-text"><em>These are the default resources that exist in your Tenant right after registration</em></span></p>
 </div>
@@ -301,7 +304,6 @@ $ mv ~/Downloads/apiKey.properties ~/.stormpath/
 <div class="section" id="authenticate-a-user-account">
 <span id="quickstart-auth-user"></span><h2>2.6. Authenticate a User Account<a class="headerlink" href="#authenticate-a-user-account" title="Permalink to this headline">¶</a></h2>
 <p>Now we have a user Account that can use your Application. But how do you authenticate an Account logging in to the Application?</p>
-<p>(php.todo) Let&#8217;s make sure this section has the same sort of content as the other SDKs.</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="k">try</span> <span class="p">{</span>
 
     <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">authenticate</span><span class="p">(</span><span class="s1">&#39;johnsmith&#39;</span><span class="p">,</span> <span class="s1">&#39;4P@$$w0rd!&#39;</span><span class="p">);</span>
@@ -317,13 +319,8 @@ $ mv ~/Downloads/apiKey.properties ~/.stormpath/
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nx">int</span> <span class="mi">400</span>
-<span class="nx">int</span> <span class="mi">7104</span>
-<span class="nx">string</span> <span class="s1">&#39;Invalid username or password.&#39;</span> <span class="p">(</span><span class="nx">length</span><span class="o">=</span><span class="mi">29</span><span class="p">)</span>
-<span class="nx">string</span> <span class="s1">&#39;Login attempt failed because there is no Account in the Application&#39;</span><span class="nx">s</span> <span class="nx">associated</span> <span class="nx">Account</span> <span class="nx">Stores</span> <span class="nx">with</span> <span class="nx">the</span> <span class="nx">specified</span> <span class="nx">username</span> <span class="k">or</span> <span class="nx">email</span><span class="o">.</span><span class="s1">&#39; (length=133)</span>
-<span class="s1">string &#39;</span><span class="nx">http</span><span class="o">://</span><span class="nx">docs</span><span class="o">.</span><span class="nx">stormpath</span><span class="o">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">errors</span><span class="o">/</span><span class="mi">7104</span><span class="err">&#39;</span> <span class="p">(</span><span class="nx">length</span><span class="o">=</span><span class="mi">37</span><span class="p">)</span>
-</pre></div>
-</div>
+<p>If the authentication attempt is successful, you&#8217;ll get an <code class="docutils literal"><span class="pre">AuthenticationResult</span></code>, which contains a link to the Account details.</p>
+<p>If the authentication attempt fails, a <code class="docutils literal"><span class="pre">ResourceException</span></code> will be thrown. The <code class="docutils literal"><span class="pre">getMessage()</span></code> and <code class="docutils literal"><span class="pre">getDeveloperMessage()</span></code> methods of the exception will contain details about the authentication failure.</p>
 </div>
 <div class="section" id="next-steps">
 <h2>2.7. Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>

@@ -86,10 +86,10 @@
       <div class="">
         <a href="/rest/product-guide/latest/">REST</a>
       </div>
-      <!--
       <div class="current">
         <a href="/php/product-guide/latest/auth_n.html">PHP</a>
       </div>
+      <!--
       <div class="">
         <a href="/java/product-guide/latest/auth_n.html">Java</a>
       </div>
@@ -248,7 +248,7 @@
           
 
   
-  
+
 
         </div>
       </div>
@@ -337,7 +337,7 @@
 </pre></div>
 </div>
 </div>
-<p>If authentication succeeded, You will either see just the <code class="docutils literal"><span class="pre">href</span></code> referencing the account, or the full account object.</p>
+<p>If authentication succeeded, You will either see just the <code class="docutils literal"><span class="pre">href</span></code> referencing the Account, or the full Account object.</p>
 <blockquote>
 <div><div class="highlight-php"><div class="highlight"><pre><span></span><span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Resource\Account</span><span class="p">)</span>
 <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/623oyolNjkVAebVMlAjehl&#39;</span>
@@ -428,7 +428,7 @@
 <span id="managing-login"></span><h3><a class="toc-backref" href="#id58">4.1.3. Manage Who Can Log Into Your Application</a><a class="headerlink" href="#manage-who-can-log-into-your-application" title="Permalink to this headline">¶</a></h3>
 <p>As is hopefully evident by now, controlling which Accounts can log in to your Application is largely a matter of manipulating the Application&#8217;s Account Store Mappings.</p>
 <p>The reason why your user &#8220;Han Solo&#8221; was able to log in to your application is because the Application resource that represents your application and your &#8220;Captains&#8221; Directory are mapped to one another by an <strong>Account Store Mapping</strong>.</p>
-<p>You can find this mapping by... (php.todo)</p>
+<p>You can find all the Account Store Mappings by using the <code class="docutils literal"><span class="pre">getAccountStoreMappings()</span></code> method or the <code class="docutils literal"><span class="pre">accountStoreMappings</span></code> property on the Application resource.</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$application</span> <span class="o">=</span> <span class="nx">\Stormpath\Resource\Application</span><span class="o">::</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;https://api.stormpath.com/v1/applications/5nan67mWrYrBmLGu7nGurh&#39;</span><span class="p">);</span>
 
 <span class="nv">$accountStoreMappings</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">accountStoreMappings</span><span class="p">;</span>
@@ -571,7 +571,7 @@
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$oauthPolicy</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">oauthPolicy</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>This will return</p>
+<p>This will return:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">object</span><span class="p">(</span><span class="n">Stormpath</span>\<span class="n">Resource</span>\<span class="n">OauthPolicy</span><span class="p">)</span>
   <span class="n">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="n">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/oAuthPolicies/5nan67mWrYrBmLGu7nGurh&#39;</span>
   <span class="n">public</span> <span class="s1">&#39;accessTokenTtl&#39;</span> <span class="o">=&gt;</span> <span class="n">string</span> <span class="s1">&#39;PT1H&#39;</span>
@@ -660,19 +660,19 @@
 <tbody valign="top">
 <tr class="row-even"><td>accessToken</td>
 <td>Object (StormpathResourceAccessToken)</td>
-<td>The access token object.</td>
+<td>The Access Token as an object.</td>
 </tr>
 <tr class="row-odd"><td>accessTokenString</td>
 <td>String (JSON Web Token)</td>
-<td>The access token for the response.</td>
+<td>The Access Token as a JWT-formatted string.</td>
 </tr>
 <tr class="row-even"><td>refreshToken</td>
 <td>Object (StormpathResourceRefreshToken)</td>
-<td>The refresh token object.</td>
+<td>The Refresh Token as an object.</td>
 </tr>
 <tr class="row-odd"><td>refreshTokenString</td>
 <td>String (JSON Web Token)</td>
-<td>The refresh token that can be used to get refreshed Access Tokens.</td>
+<td>The Refresh Token as a JWT-formatted string.</td>
 </tr>
 <tr class="row-even"><td>accessTokenHref</td>
 <td>String</td>
@@ -748,18 +748,18 @@
 <p>To see how to validate tokens with Stormpath, let&#8217;s go back to the example where a user has already generated an access token.</p>
 <p>To recap, you have done the following:</p>
 <ol class="arabic simple">
-<li>Created a <code class="docutils literal"><span class="pre">PasswordGrantRequest</span></code> object with the users email/username and password.</li>
+<li>Created a <code class="docutils literal"><span class="pre">PasswordGrantRequest</span></code> object with the user&#8217;s email/username and password.</li>
 <li>Created a new <code class="docutils literal"><span class="pre">PasswordGrantAuthenticator</span></code> object and passed it the application object.</li>
 <li>Made an authenticate attempt with the <code class="docutils literal"><span class="pre">PasswordGrantAuthenticator</span></code> passing the <code class="docutils literal"><span class="pre">PasswordGrantRequest</span></code> object</li>
 <li>Received back an <strong>Access Token Response</strong>, which contained - among other things - an <strong>Access Token</strong> in JWT format.</li>
 </ol>
-<p>The user now attempts to access a secured resource by...</p>
+<p>The user now attempts to access a secured resource:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="c1">// You can pass in a JWT into the `verify` method as a string.  If not, it will look in the HTTP_AUTHORIZATION header for one, and then COOKIE with a name of access_token</span>
 
 <span class="nv">$result</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nx">\Stormpath\Oauth\VerifyAccessToken</span><span class="p">(</span><span class="nv">$application</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">verify</span><span class="p">();</span>
 </pre></div>
 </div>
-<p>If the access token can be validated, Stormpath will return...</p>
+<p>If the Access Token can be validated, Stormpath will return this:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Resource\AccessToken</span><span class="p">)</span>
 
   <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accessTokens/2HQNpNVD124O8muiSpOMro&#39;</span>
@@ -810,7 +810,7 @@
 <span class="nv">$result</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nx">\Stormpath\Oauth\VerifyAccessToken</span><span class="p">(</span><span class="nv">$application</span><span class="p">))</span><span class="o">-&gt;</span><span class="na">withLocalValidation</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">verify</span><span class="p">();</span>
 </pre></div>
 </div>
-<p>If the token can be validated locally, it will return an object with...(php.todo)</p>
+<p>If the token can be validated locally, it will return an expanded <code class="docutils literal"><span class="pre">JWT</span></code>:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nx">object</span><span class="p">(</span><span class="k">stdClass</span><span class="p">)</span>
   <span class="k">public</span> <span class="s1">&#39;jti&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;2HQNpNVD124O8muiSpOMro&#39;</span>
   <span class="k">public</span> <span class="s1">&#39;iat&#39;</span> <span class="o">=&gt;</span> <span class="nx">int</span> <span class="mi">1462283556</span>
@@ -981,6 +981,7 @@
 </pre></div>
 </div>
 <p>Either way, Stormpath will use the code or access token provided to retrieve information about your Google Account, then return a Stormpath Account.</p>
+<p>In order to know if the account was created or if it already existed in the Stormpath’s Facebook Directory you can use the <code class="docutils literal"><span class="pre">isNewAccount();</span></code> method on the result object. It will return <code class="docutils literal"><span class="pre">true</span></code> if it is a newly created account; false otherwise.</p>
 </div>
 </div>
 <div class="section" id="facebook">
@@ -1030,6 +1031,7 @@
 </pre></div>
 </div>
 <p>Stormpath will use the Access Token provided to retrieve information about your Facebook Account, then return a Stormpath Account.</p>
+<p>In order to know if the account was created or if it already existed in the Stormpath’s Facebook Directory you can use the <code class="docutils literal"><span class="pre">isNewAccount();</span></code> method on the result object. It will return <code class="docutils literal"><span class="pre">true</span></code> if it is a newly created account; false otherwise.</p>
 </div>
 </div>
 <div class="section" id="github">
@@ -1079,6 +1081,7 @@
 </pre></div>
 </div>
 <p>Stormpath will use the Access Token provided to retrieve information about your GitHub Account, then return a Stormpath Account.</p>
+<p>In order to know if the account was created or if it already existed in the Stormpath’s Facebook Directory you can use the isNewAccount(); method on the result object. It will return true if it is a newly created account; false otherwise.</p>
 </div>
 </div>
 <div class="section" id="linkedin">
@@ -1120,7 +1123,12 @@
 <p class="last">It is required that your LinkedIn application requests the <code class="docutils literal"><span class="pre">r_basicprofile</span></code> and <code class="docutils literal"><span class="pre">r_emailaddress</span></code> scopes (or &#8220;fields&#8221;) from LinkedIn. If the Authorization Code does not grant these scopes, you will not be able to get an Account. For more information about LinkedIn scopes, see <a class="reference external" href="https://developer.linkedin.com/docs/fields">LinkedIn&#8217;s &#8220;Profile Fields&#8221; documentation</a>.</p>
 </div>
 <p>Once the Authorization Code is gathered, you can send it to Stormpath:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$providerRequest</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedInProviderRequest</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s2">&quot;code&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;4/a3p_fn0sMDQlyFVTYwfl5GAj0Obd.oiruVLbQZSwU3oEBd8DOtNApQzTCiwI&quot;</span>
+<span class="p">));</span>
+
+<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">(</span><span class="nv">$providerRequest</span><span class="p">);</span>
+<span class="nv">$account</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">();</span>
 </pre></div>
 </div>
 <p>If you have already exchanged the code for an Access Token, you can send that instead:</p>
@@ -1132,6 +1140,7 @@
 </pre></div>
 </div>
 <p>Stormpath will use the <code class="docutils literal"><span class="pre">code</span></code> or <code class="docutils literal"><span class="pre">accessToken</span></code> provided to retrieve information about your LinkedIn Account, then return a Stormpath Account.</p>
+<p>In order to know if the account was created or if it already existed in the Stormpath’s Facebook Directory you can use the isNewAccount(); method on the result object. It will return true if it is a newly created account; false otherwise.</p>
 </div>
 </div>
 </div>
@@ -2110,8 +2119,18 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <p>To configure your IdP for IdP-initiated authentication, you will need to get a <code class="docutils literal"><span class="pre">defaultRelayState</span></code> JWT:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">This feature is not yet available in the PHP SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+<p class="last">This feature is not yet available in the PHP SDK. Please use the Stormpath Admin Console, or use the the REST API documentation below.
 For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/149">ticket #149</a> on Github.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+</pre></div>
+</div>
+<p>This request will return a response containing a JWT like this:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;defaultRelayState&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJ0aWQiOiIxZ0JUbmNXc3AyT2JRR2dEbjlSOTFSIiwiYWxnIjoiSFMyNTYifQ.eyJzcFVpZCI6IjZ2b0F5YTFCdnJOZUZPQW9neGJ4T2UiLCJqdGkiOiIxdjdjT1l1SE1kQzA0Z2Vucm1wU2lZIn0.WvfWRxTfjRoPxA803HyOR380u2dWpdtQiO0I2kislFY&quot;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 <p>This JWT will then need to be entered into your IdP&#8217;s configuration in order for IdP-initiated authentication to function properly.</p>
 <p>This <code class="docutils literal"><span class="pre">defaultRelayStates/</span></code> endpoint also accepts a few optional properties. These properties can be encoded in the defaultRelayState JWT that is stored on your IdP by passing them in the body of your POST:</p>
@@ -2121,6 +2140,18 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <li><strong>state</strong>: Any state that your application would like to receive. Note that the application developer will need to interpret this state.</li>
 </ul>
 <p>A request including these optional properties looks like this:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+
+{
+    &quot;callbackUri&quot;: &quot;https://org1.myapp.com&quot;,
+    &quot;organization&quot;: {
+        &quot;nameKey&quot;: &quot;org1&quot;,
+    }
+    &quot;state&quot;: &quot;IAmAState&quot;
+}
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="step-6-add-the-saml-directory-as-an-account-store">
