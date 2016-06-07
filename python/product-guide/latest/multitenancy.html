@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6. Multi-Tenancy with Stormpath &mdash; Stormpath Python Documentation  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="about.html"/>
+    <link rel="top" title="Stormpath Python Documentation  documentation" href="index.html"/>
+        <link rel="next" title="7. Using ID Site" href="idsite.html"/>
+        <link rel="prev" title="5. Authorization With Stormpath" href="auth_z.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+  
+
+          
+            <a href="index.html" class="icon icon-home"> Stormpath Python Documentation
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+
+  <div class="langpicker-container">
+    <a href="#langpicker" class="langpicker-link">
+      <i class="fa fa-code"></i>
+      Switch Language
+    </a>
+    <div id="langpicker" style="display:none;">
+      <div class="">
+        <a href="/rest/product-guide/latest/">REST</a>
+      </div>
+      <div class="">
+        <a href="/php/product-guide/latest/multitenancy.html">PHP</a>
+      </div>
+      <!--
+      <div class="">
+        <a href="/java/product-guide/latest/multitenancy.html">Java</a>
+      </div>
+      <div class="">
+        <a href="/csharp/product-guide/latest/multitenancy.html">C#</a>
+      </div>
+      <div class="">
+        <a href="/vbnet/product-guide/latest/multitenancy.html">Visual Basic</a>
+      </div>
+      <div class="current">
+        <a href="/csharp/product-guide/latest/multitenancy.html">Python</a>
+      </div>
+      <div class="">
+        <a href="/nodejs/product-guide/latest/multitenancy.html">Node.js</a>
+      </div>
+      -->
+    </div>
+  </div>
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">1. About Stormpath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">2. Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="accnt_mgmt.html">3. Account Management</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auth_n.html">4. Authenticating Accounts with Stormpath</a></li>
+<li class="toctree-l1"><a class="reference internal" href="auth_z.html">5. Authorization With Stormpath</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Multi-Tenancy with Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-a-multi-tenant-application">6.1. What Is a Multi-Tenant Application?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modeling-tenants-in-stormpath">6.2. Modeling Tenants in Stormpath</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#account-store-strategies-for-multi-tenancy">6.2.1. Account Store Strategies for Multi-Tenancy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#strategy-1-tenants-as-directories">Strategy 1: Tenants as Directories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#strategy-2-tenants-as-groups">Strategy 2: Tenants as Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#organizations">6.2.2. Organizations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-create-an-organization">How to Create an Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-an-account-store-to-an-organization">Adding an Account Store to an Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#registering-an-organization-as-an-account-store-for-an-application">Registering an Organization as an Account Store for an Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-an-account-to-an-organization">Adding an Account to an Organization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticating-an-account-against-an-organization">6.3. Authenticating an Account against an Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#routing-users-to-their-tenant">6.4 Routing Users to their Tenant</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sub-domain">6.4.1. Sub-Domain</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#separate-domain-space">Separate Domain Space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#combine-with-login-form-field">Combine With Login Form Field</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#login-form-field">6.4.2. Login Form Field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="idsite.html">7. Using ID Site</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Stormpath Error Codes</a></li>
+</ul>
+
+            
+          
+
+  
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Stormpath Python Documentation</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>6. Multi-Tenancy with Stormpath</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="multi-tenancy-with-stormpath">
+<span id="multitenancy"></span><h1>6. Multi-Tenancy with Stormpath<a class="headerlink" href="#multi-tenancy-with-stormpath" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-a-multi-tenant-application">
+<h2>6.1. What Is a Multi-Tenant Application?<a class="headerlink" href="#what-is-a-multi-tenant-application" title="Permalink to this headline">¶</a></h2>
+<p>The best way to understand the concept of multi-tenancy is by thinking of a condo: lots of residents making use of a shared infrastructure while maintaining their own private and secure living areas. Similar to this, a <strong>multi-tenant application</strong> is a single application that services multiple tenants simultaneously. For privacy and security purposes, it&#8217;s very important that the application maintain data segmentation between its multiple tenants. At Stormpath, this segmentation is baked-in to our data model.</p>
+</div>
+<div class="section" id="modeling-tenants-in-stormpath">
+<h2>6.2. Modeling Tenants in Stormpath<a class="headerlink" href="#modeling-tenants-in-stormpath" title="Permalink to this headline">¶</a></h2>
+<p>Multi-tenant applications come with special user management considerations:</p>
+<ul class="simple">
+<li>How will tenants be represented?</li>
+<li>How will user data in one tenant be kept secure and separate from other tenant partitions?</li>
+</ul>
+<p>In our <a class="reference internal" href="accnt_mgmt.html#account-mgmt"><span class="std std-ref">Account Management</span></a> chapter we discussed two kinds of Account Stores: <a class="reference internal" href="accnt_mgmt.html#directory-mgmt"><span class="std std-ref">Directories</span></a>, and <a class="reference internal" href="accnt_mgmt.html#group-mgmt"><span class="std std-ref">Groups</span></a>. For multi-tenant applications there is an additional <a class="reference internal" href="reference.html#ref-organization"><span class="std std-ref">Organization</span></a> resource, which functions like a virtual Account Store that itself wraps both Directories and Groups.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A Directory or Group can be added to multiple Organizations.</p>
+</div>
+<p>As with all user base modeling, we&#8217;ll begin with the basics: Directories and Groups. Then we will move on to an explanation of how the Organization resource is used when modeling multi-tenancy.</p>
+<div class="section" id="account-store-strategies-for-multi-tenancy">
+<span id="multitenancy-strategies"></span><h3>6.2.1. Account Store Strategies for Multi-Tenancy<a class="headerlink" href="#account-store-strategies-for-multi-tenancy" title="Permalink to this headline">¶</a></h3>
+<p>Your primary consideration when modeling users in Stormpath always begins with the Directory that will contain the user Accounts. With multi-tenancy, the additional consideration is whether you will have each one of your application&#8217;s tenants represented by a Directory or a Group.</p>
+<div class="section" id="strategy-1-tenants-as-directories">
+<h4>Strategy 1: Tenants as Directories<a class="headerlink" href="#strategy-1-tenants-as-directories" title="Permalink to this headline">¶</a></h4>
+<p>To understand the multi-tenancy considerations in modeling tenants as <a class="reference internal" href="reference.html#ref-directory"><span class="std std-ref">Directories</span></a>, there are three characteristics of Directories that are worth remembering:</p>
+<ul class="simple">
+<li>All Accounts within a Directory must have a unique <code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">username</span></code></li>
+<li>All Groups within a Directory must have a unique <code class="docutils literal"><span class="pre">name</span></code></li>
+<li>User policies, such as the <a class="reference internal" href="reference.html#ref-password-policy"><span class="std std-ref">Password Policy</span></a> and the <a class="reference internal" href="reference.html#ref-accnt-creation-policy"><span class="std std-ref">Account Creation Policy</span></a> are set at the Directory level</li>
+</ul>
+<p>From these points we can derive a few conditions where the tenants-as-Directories strategy is optimal. If your tenants satisfy one or more of these conditions:</p>
+<ul class="simple">
+<li>You do not require email uniqueness across tenants. If a user has signed up for an Account with one tenant, they are able to use that same email to create an email for another Account in another tenant.</li>
+<li>Each tenant has its own password strength policy.</li>
+<li>Each tenant has different emails that need to be sent (or not sent) as part of the user Account creation process.</li>
+<li>Each tenant requires different user Groups and/or <a class="reference internal" href="auth_z.html#role-groups"><span class="std std-ref">role Groups</span></a>. Application-wide Groups that span across tenants are not required.</li>
+</ul>
+<div class="section" id="tenants-as-directories-example">
+<h5>Tenants as Directories Example<a class="headerlink" href="#tenants-as-directories-example" title="Permalink to this headline">¶</a></h5>
+<p>Here is an example implementation that uses Directories to model tenants. It is important to note that this is just an example. Stormpath has a very flexible data model with intentionally versatile resources. If you&#8217;d like to discuss your particular implementation needs please <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">get in touch</a>!</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/ERD_TpD.png"><img alt="Tenant per Directory" src="_images/ERD_TpD.png" style="width: 2160.0px; height: 1766.0px;" /></a>
+<p class="caption"><span class="caption-text"><em>Tenants as Directories ERD.</em></span></p>
+</div>
+<p>An example implementation of the Tenants-as-Directories strategy is shown in the diagram above. Please note that everything discussed occurs inside the private data space that we refer to as your Stormpath Tenant, which is represented by the Tenant resource but does not play any part in multi-tenancy. The scenario demonstrates a multi-tenant userbase with two tenants, each of who is represented by two resources: an Organization and a Directory. There are a few points to highlight in this diagram:</p>
+<ul class="simple">
+<li>The ability to log into the &#8220;Lighting Banking&#8221; application is controlled by the accountStoreMappings that exist between the Application resource and the Organization resources. To enable or disable a tenant (and its userbase) from logging-in, all you would have to do is enable or disable this Account Store Mapping.</li>
+<li>If Claire wanted to create another Account with Bank of B using the same email address, she would be allowed to, since email uniqueness is enforced only inside a Directory.</li>
+<li>Any role Groups must be created separately, on a per-Directory basis. If you decided to create a new role, a new Group resource representing that role would have to be added to each of your tenant Directories if you wanted the Accounts in that Directory to be able to be assigned that role.</li>
+<li>In order to allow Application Administrators to log in to the app, you&#8217;d have to create a new Directory just for them, which is separately mapped to the Application as an Account Store. Since this Directory does not represent a tenant, no Organization resource is created.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="strategy-2-tenants-as-groups">
+<h4>Strategy 2: Tenants as Groups<a class="headerlink" href="#strategy-2-tenants-as-groups" title="Permalink to this headline">¶</a></h4>
+<p>The other multi-tenancy option is to have a single Directory under which each of your application&#8217;s tenants has their own Group. Choosing this strategy is likely right for you if:</p>
+<ul class="simple">
+<li>You want to guarantee <code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">username</span></code> uniqueness across all tenants. This allows for a unified user identity, which allows for things like single-sign-on and account sharing between tenants on your application.</li>
+<li>All tenants share password and email policies.</li>
+<li>You want to ensure that tenant names are unique, since the Group <code class="docutils literal"><span class="pre">name</span></code> must be unique within a Directory.</li>
+<li>You want to have application-wide roles that span across tenants.</li>
+</ul>
+<div class="section" id="tenants-as-groups-example">
+<h5>Tenants as Groups Example<a class="headerlink" href="#tenants-as-groups-example" title="Permalink to this headline">¶</a></h5>
+<p>Below we have an example of an implementation that uses Groups to model tenants. This shows just one possible scenario, and if you&#8217;d like to discuss your particular implementation needs please <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">get in touch</a>!</p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/ERD_TpG.png"><img alt="Tenant per Group" src="_images/ERD_TpG.png" style="width: 2484.0px; height: 1857.0px;" /></a>
+<p class="caption"><span class="caption-text"><em>Tenants as Groups ERD</em></span></p>
+</div>
+<p>Once again, everything here is happening inside your private Stormpath Tenant. Just as with the Tenants-as-Directories strategy, every Tenant is modeled by its own dedicated Organization, but in this case there is also one Group resource per Tenant. All of the Accounts and Groups are contained within a single Directory resource. This all means that:</p>
+<ul class="simple">
+<li>You can still control access to the Application by enabling or disabling the accountStoreMappings between the Organizations and the Application resource.</li>
+<li>If Claire tried to create another Account with Bank of B using the same email address she&#8217;d used with Bank of A, she would be unable to, since emails must be unique within a Directory.</li>
+<li>If there were a role Group that you wanted to be shared among the tenants, it is as simple as creating one instance of it and then associating Accounts with it.</li>
+<li>Application Administrators just need their own Role Group, which is then mapped as an Account Store with the Application.</li>
+<li>Claire and Esther do not have access to your application&#8217;s Admin Console, because that is only allowed for members of the &#8220;App Admins&#8221; role Group. If, however, Claire were hired as an Application Administrator, then she could be easily added to the &#8220;App Admins&#8221; Group and inherit all of its permissions.</li>
+</ul>
+</div>
+<div class="section" id="naming-your-tenant-groups">
+<h5>Naming Your Tenant Groups<a class="headerlink" href="#naming-your-tenant-groups" title="Permalink to this headline">¶</a></h5>
+<p>As this is the most common strategy used by our customers, we have found some minor naming conventions that are very powerful and we consider to be best-practice.</p>
+<p>First of all, the name of your tenant Organization will have a unique <code class="docutils literal"><span class="pre">nameKey</span></code>, for example <code class="docutils literal"><span class="pre">bank-of-a</span></code>. This <code class="docutils literal"><span class="pre">nameKey</span></code> this can be used for organizing tenant Groups and sub-Groups.</p>
+<p>For example, if your Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">bank-of-a</span></code>, you could name the Group <code class="docutils literal"><span class="pre">bank-of-a.tenant</span></code>. If you want to create sub-Groups for roles like <code class="docutils literal"><span class="pre">users</span></code> and <code class="docutils literal"><span class="pre">admins</span></code>, we recommend that you prepend the <code class="docutils literal"><span class="pre">nameKey</span></code> to their <code class="docutils literal"><span class="pre">name</span></code> Attribute, along with a descriptive name of what kind of Group it is:</p>
+<p><code class="docutils literal"><span class="pre">bank-of-a.role.users</span></code></p>
+<p><code class="docutils literal"><span class="pre">bank-of-a.role.admin</span></code></p>
+<p>This has two benefits:</p>
+<ol class="arabic simple">
+<li>It makes it easy to find all the role Groups for that particular tenant, since you can search for the nameKey:</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>Or, if you wanted to retrieve the tenant Group and all of its sub-Groups, make the query a little less restrictive by removing the &#8220;role&#8221;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>It ensures that no tenant sub-Groups have name collisions between tenants.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="organizations">
+<h3>6.2.2. Organizations<a class="headerlink" href="#organizations" title="Permalink to this headline">¶</a></h3>
+<p>Once you have your application&#8217;s tenants modeled as Directories or Groups, the final tool that Stormpath gives you is the Organization resource. These are umbrella entities that allow you to better structure and control multi-tenant applications.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <a class="reference internal" href="reference.html#ref-organization"><span class="std std-ref">Organization</span></a> resource is not to be confused with the Tenant resource. While the <a class="reference internal" href="reference.html#ref-tenant"><span class="std std-ref">Tenant</span></a> resource is so-called because it represents your tenancy inside the Stormpath server, the Organization resource represents the space alloted for a tenant of your application.</p>
+</div>
+<p>The Organization resource allows your application&#8217;s tenants to have as many, or as few, Directories and Groups as they want, while also maintaining strict data segregation. So if a tenant requires a Cloud Directory, a Google Social Directory, and an LDAP Directory, all of these can sit under the umbrella of a single Organization resource that represents their data space in your app.</p>
+<p>Although Organizations do not themselves own Accounts in the same way as Directories and Groups, they can be mapped to Applications as Account Stores for the purposes of user log in. This means that they can be used as, among other things, a single-point of access control to an Application. For example, if you wanted to enable login for a new tenant in your multi-tenant application, all you would have to do is map all of the relevant Directories and/or Groups to your Organization, and then map that Organization to your Application as an Account Store. If at some future point you want to disable that tenant, all you have to do is remove the Account Store Mapping between that Organization and your Application, and the tenant&#8217;s users would no longer be able to log in.</p>
+<div class="section" id="how-to-create-an-organization">
+<span id="create-org"></span><h4>How to Create an Organization<a class="headerlink" href="#how-to-create-an-organization" title="Permalink to this headline">¶</a></h4>
+<p>You can create an Organization in Stormpath by sending the following request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>Which would return the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-an-account-store-to-an-organization">
+<h4>Adding an Account Store to an Organization<a class="headerlink" href="#adding-an-account-store-to-an-organization" title="Permalink to this headline">¶</a></h4>
+<p>Like other Account Stores, an Organization can be mapped to an Application so that users in the Organization can log-in to that application (for more about how logging-in works with Stormpath, please see <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">the Authentication chapter</span></a>). But before you do this, you must first associate some users with the Organization so that there is someone to log in! To do this, you have to map some Account Stores to your Organization.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>In order to be able to add Groups and Accounts to the Organization in the way mentioned above, we should also make sure that we mark this Account Store as our default for both Accounts and Groups:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>Which would result in the following response:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>So our Organization now has an associated Directory which can be used as an Account Store to add new Accounts and Groups. To enable login for the Accounts in this Organization, we must now map the Organization to an Application.</p>
+</div>
+<div class="section" id="registering-an-organization-as-an-account-store-for-an-application">
+<h4>Registering an Organization as an Account Store for an Application<a class="headerlink" href="#registering-an-organization-as-an-account-store-for-an-application" title="Permalink to this headline">¶</a></h4>
+<p>As described in <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">the Authentication chapter</span></a>, in order to allow users to log-in to an Application, you must map some kind of Account Store (e.g. a Group or Directory) to it. One approach is to go one-by-one and map each Directory and/or Group to the Application. However, since we are building a multi-tenant app, and the Organization is itself an Account Store, we can just map our Organization resource to our Application resource. This would enable login for all of the Directories and Groups currently inside that Organization, as well as any we add in the future.</p>
+<p>To map an Organization to an Application, follow the steps you would for any Account Store, as described in <a class="reference internal" href="auth_n.html#create-asm"><span class="std std-ref">Mapping a new Account Store</span></a>.</p>
+</div>
+<div class="section" id="adding-an-account-to-an-organization">
+<span id="add-accnt-to-org"></span><h4>Adding an Account to an Organization<a class="headerlink" href="#adding-an-account-to-an-organization" title="Permalink to this headline">¶</a></h4>
+<p>Adding a new Account to an Organization is exactly the same as adding them to a Directory, except that you use the Organization to route the creation request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="authenticating-an-account-against-an-organization">
+<h2>6.3. Authenticating an Account against an Organization<a class="headerlink" href="#authenticating-an-account-against-an-organization" title="Permalink to this headline">¶</a></h2>
+<p>Authenticating an Account against an Organization works essentially the same way as described in <a class="reference internal" href="auth_n.html#how-login-works"><span class="std std-ref">4.1.2. How Login Attempts Work in Stormpath</span></a>. The only difference is that adding the Organization resource allows for an additional level of Account Stores.</p>
+<p>When a login attempt is made against an Application’s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint without specifying an Account Store, Stormpath will iterate through the index of Account Stores mapped to the Application, in priority order. For every Account Store entry:</p>
+<ul class="simple">
+<li>If it is a Directory or Group, attempt to log in on that resource.</li>
+<li>If it is an Organization:<ul>
+<li>Iterate through the index of Account Stores mapped to the Organization, in priority order. For every Account Store entry:<ul>
+<li>If it is a Directory or Group, attempt to log in on that resource.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>If the login attempt does specify an Organization, then we simply jump to that point in the steps, and the Organization&#8217;s Account Stores are iterated through as described above.</p>
+</div>
+<div class="section" id="routing-users-to-their-tenant">
+<span id="multitenant-routing-users"></span><h2>6.4 Routing Users to their Tenant<a class="headerlink" href="#routing-users-to-their-tenant" title="Permalink to this headline">¶</a></h2>
+<p>If you are designing a public multi-tenant web application that supports multiple application tenants with private data partitioning, then you will probably want some way for users to specify which tenant they are logging in to.</p>
+<p>This tenant selection also extends to the requests that the user makes. For example, let&#8217;s say we have a multi-tenant e-commerce SaaS application that shows purchase history. If a user requests the <code class="docutils literal"><span class="pre">/purchases</span></code> view, they should only be able to see the purchases specific to their organization. This means that instead of executing a query like this to a database:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">purchases</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The application needs to know the request user’s tenant identifier so they can show only the purchases for that tenant. The application might instead execute the following query:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">purchases</span> <span class="k">where</span> <span class="n">tenant_id</span> <span class="o">=</span> <span class="o">?</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>where ? is the <code class="docutils literal"><span class="pre">tenant_id</span></code> value obtained by inspecting the request.</p>
+<p>So if an application needs this identifier with every request, how do you ensure it is transmitted to the application in the easiest possible way for your end users? The best method is to use the <a class="reference internal" href="reference.html#ref-organization"><span class="std std-ref">Organization resource</span></a> and it&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> attribute.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Stormpath&#8217;s ID Site supports multi-tenancy right out of the box. For more information about how to handle user login in a multi-tenant set-up with ID Site, please see <a class="reference internal" href="idsite.html#idsite-multitenancy"><span class="std std-ref">the ID Site chapter</span></a>.</p>
+</div>
+<p>We present here two possible solutions that use this <code class="docutils literal"><span class="pre">nameKey</span></code>. You may support both if you wish to give your customers convenience options.</p>
+<div class="section" id="sub-domain">
+<h3>6.4.1. Sub-Domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h3>
+<p>The first solution is to allow your users to access your application via a unique subdomain URL:</p>
+<p><code class="docutils literal"><span class="pre">https://organizationNameKey.myapplication.io</span></code></p>
+<p>The primary benefit here is that the application never needs to ask the user for the tenant identifier, because it is inherently part of every request in the <code class="docutils literal"><span class="pre">HOST</span></code> header. Also, since we are using the Organization resource&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code>, we can guarantee that the URL is unique.</p>
+<p>There are also a few other things that we recommend with this approach:</p>
+<div class="section" id="separate-domain-space">
+<h4>Separate Domain Space<a class="headerlink" href="#separate-domain-space" title="Permalink to this headline">¶</a></h4>
+<p>Keep your customer organization subdomains space completely separate from your company&#8217;s subdomain space by using a different top-level domain name for your SaaS application.</p>
+<p>So if your company&#8217;s website URL is <code class="docutils literal"><span class="pre">http://mycompany.com</span></code>, then your customers could use the <code class="docutils literal"><span class="pre">http://mycompany.io</span></code> domain space:</p>
+<p><code class="docutils literal"><span class="pre">http://customerA.mycompany.io</span></code></p>
+<p>If you use the same domain space, it is possible that one of your customer&#8217;s will end up using a subdomain that you might want to use for your company.</p>
+<p>If you didn&#8217;t want to use a separate top-level domain, you could also use sub-subdomains. For example, the app could be accessible here:</p>
+<p><code class="docutils literal"><span class="pre">http://myapp.mycompany.com</span></code></p>
+<p>And customer organization subdomains for that app would be accessible via:</p>
+<p><code class="docutils literal"><span class="pre">http://customerA.myapp.mycompany.com</span></code></p>
+<p>It is our opinion that the separate top-level domain (e.g. <code class="docutils literal"><span class="pre">http://mycompany.io</span></code>) is the nicer alternative: it is shorter, easier to remember, easier to type, and it also looks better.</p>
+</div>
+<div class="section" id="combine-with-login-form-field">
+<h4>Combine With Login Form Field<a class="headerlink" href="#combine-with-login-form-field" title="Permalink to this headline">¶</a></h4>
+<p>If a user from a customer organization ever accesses your app directly (<code class="docutils literal"><span class="pre">https://mycompany.io</span></code>) instead of using their subdomain (<code class="docutils literal"><span class="pre">https://customerA.mycompany.io</span></code>), you still might need to provide a tenant-aware login form (described below). After login, you can redirect them to their tenant-specific URL for all subsequent requests.</p>
+</div>
+</div>
+<div class="section" id="login-form-field">
+<h3>6.4.2. Login Form Field<a class="headerlink" href="#login-form-field" title="Permalink to this headline">¶</a></h3>
+<p>An alternative, or complimentary, approach to tenant subdomains is to allow the user to specify their tenant on the login page, then storing that information. Then, for all subsequent requests to your application, you can:</p>
+<ul class="simple">
+<li>Inspect the session</li>
+<li>Look up the tenant ID</li>
+<li>Customize data views and queries based on the session&#8217;s Organization</li>
+</ul>
+<p>We advise that you auto-remember the login form tenant ID value so that field is pre-populated whenever a user returns to log in. Users don’t like having to remember and type that value in every time they log in.</p>
+<p>As already mentioned, it is strongly recommended that your tenant identifier be an Organization <code class="docutils literal"><span class="pre">nameKey</span></code>. Firstly because Organizations are the recommended resource to use to model multi-tenancy, but also because the <code class="docutils literal"><span class="pre">nameKey</span></code> attribute is unique and follows the DNS specification, which means that you could at any time adopt the Sub-Domain approach mentioned above.</p>
+<p>Stormpath supports quick implementation of all of these strategies with ID Site. For more information, please see <a class="reference internal" href="idsite.html#idsite-multitenancy"><span class="std std-ref">the ID Site chapter</span></a>.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="idsite.html" class="btn btn-neutral float-right" title="7. Using ID Site" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="auth_z.html" class="btn btn-neutral" title="5. Authorization With Stormpath" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/javascript_for_java.js"></script>
+      <script type="text/javascript" src="_static/langpicker.js"></script>
+      <script type="text/javascript" src="_static/scrollspy.js"></script>
+      <script type="text/javascript" src="_static/gumshoe.min.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
