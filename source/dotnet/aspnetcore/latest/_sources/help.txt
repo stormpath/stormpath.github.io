@@ -6,18 +6,18 @@ Troubleshooting
 
 If you run into problems while using this library, there are a few things you can do.
 
-.. only:: aspnetcore
+Logging
+-------
 
-  Logging
-  -------
+.. only:: aspnetcore
 
   ``Stormpath.AspNetCore`` uses the ASP.NET logging system to expose debug and trace logs. By inspecting the logs (using ``AddConsole``, or another log viewer), you can follow what the Stormpath middleware is doing behind the scenes and see any exceptions that are thrown.
 
 .. only:: aspnet
 
-  .. todo::
+  The ``Stormpath.AspNet`` library includes an internal logging mechanism that outputs debug and trace logs. If you are using a logging framework in your project, you can attach to it by writing a simple adapter.
 
-    Add logging info
+  The `sample application <https://github.com/stormpath/stormpath-aspnet-example/blob/master/StormpathExample/Startup.cs>`_ includes an example of an adapter that writes to a file.
 
 .. only:: nancy
 
