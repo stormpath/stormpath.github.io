@@ -128,6 +128,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#rest-api-core-concepts">REST API Core Concepts</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#base-url">Base URL</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#resource-format">Resource Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#request-identifiers">Request Identifiers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#authentication">Authentication</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#basic-authentication-over-https">Basic Authentication over HTTPS</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#digest-authentication">Digest Authentication</a></li>
@@ -345,8 +346,9 @@
 <p>The following information is essential to understanding how the Stormpath API functions. You should familiarize yourself with it before moving on to the rest of this reference.</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#base-url" id="id39">Base URL</a></li>
-<li><a class="reference internal" href="#resource-format" id="id40">Resource Format</a></li>
+<li><a class="reference internal" href="#base-url" id="id38">Base URL</a></li>
+<li><a class="reference internal" href="#resource-format" id="id39">Resource Format</a></li>
+<li><a class="reference internal" href="#request-identifiers" id="id40">Request Identifiers</a></li>
 <li><a class="reference internal" href="#authentication" id="id41">Authentication</a><ul>
 <li><a class="reference internal" href="#basic-authentication-over-https" id="id42">Basic Authentication over HTTPS</a></li>
 <li><a class="reference internal" href="#digest-authentication" id="id43">Digest Authentication</a></li>
@@ -370,7 +372,7 @@
 </ul>
 </div>
 <div class="section" id="base-url">
-<h3><a class="toc-backref" href="#id39">Base URL</a><a class="headerlink" href="#base-url" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id38">Base URL</a><a class="headerlink" href="#base-url" title="Permalink to this headline">¶</a></h3>
 <p>All URLs referenced in the API documentation begin with the following base URL:</p>
 <blockquote>
 <div><code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/</span></code></div></blockquote>
@@ -382,8 +384,12 @@
 <div><code class="docutils literal"><span class="pre">https://yourOrganization.stormpath.io/v1/</span></code></div></blockquote>
 </div>
 <div class="section" id="resource-format">
-<h3><a class="toc-backref" href="#id40">Resource Format</a><a class="headerlink" href="#resource-format" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id39">Resource Format</a><a class="headerlink" href="#resource-format" title="Permalink to this headline">¶</a></h3>
 <p>The Stormpath REST API currently only supports JSON resource representations. If you would like other formats supported, please email us at <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a> to let us know!</p>
+</div>
+<div class="section" id="request-identifiers">
+<span id="request-id"></span><h3><a class="toc-backref" href="#id40">Request Identifiers</a><a class="headerlink" href="#request-identifiers" title="Permalink to this headline">¶</a></h3>
+<p>Every request to Stormpath has a universally unique identifier (UUID). In the case of a successful API request, this UUID is passed as a <code class="docutils literal"><span class="pre">Stormpath-Request-Id</span></code> header in the response. In the case of an error response, the UUID will be returned in <a class="reference internal" href="#ref-error-responses"><span class="std std-ref">the body of the error message</span></a>.</p>
 </div>
 <div class="section" id="authentication">
 <h3><a class="toc-backref" href="#id41">Authentication</a><a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h3>
@@ -656,7 +662,7 @@
 </div>
 </div>
 <div class="section" id="rest-error-responses">
-<h3><a class="toc-backref" href="#id49">REST Error Responses</a><a class="headerlink" href="#rest-error-responses" title="Permalink to this headline">¶</a></h3>
+<span id="ref-error-responses"></span><h3><a class="toc-backref" href="#id49">REST Error Responses</a><a class="headerlink" href="#rest-error-responses" title="Permalink to this headline">¶</a></h3>
 <p>REST API responses indicating an error or warning are represented by a proper response HTTP status code (403, 404, etc) along with a response body containing the following information:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -677,7 +683,7 @@
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">code</span></code></td>
 <td>Number</td>
-<td>A <a class="reference external" href="http://docs.stormpath.com/errors">Stormpath-specific error code</a> that can be used to obtain more information.</td>
+<td>A <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/errors.html">Stormpath-specific error code</a> that can be used to obtain more information.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">message</span></code></td>
 <td>String</td>
@@ -690,6 +696,10 @@
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">moreInfo</span></code></td>
 <td>String</td>
 <td>A fully qualified URL that may be accessed to obtain more information about the error.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">requestId</span></code></td>
+<td>String</td>
+<td>The universally unique identifier of the request that generated this error.</td>
 </tr>
 </tbody>
 </table>
@@ -1957,13 +1967,13 @@
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">accessTokenTtl</span></code></td>
 <td>String</td>
-<td>ISO-8601</td>
-<td>The time-to-live for the OAuth Access Token, represented as an <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Duration</a>.</td>
+<td>ISO-8601 Duration</td>
+<td>The time-to-live for the OAuth Access Token, represented as an <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Duration</a> between 1 second (<code class="docutils literal"><span class="pre">PT1S</span></code>) and 10 years (<code class="docutils literal"><span class="pre">P10Y</span></code>).</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">refreshTokenTtl</span></code></td>
 <td>String</td>
-<td>ISO-8601</td>
-<td>The time-to-live for the OAuth Refresh Token, represented as an <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Duration</a>.</td>
+<td>ISO-8601 Duration</td>
+<td>The time-to-live for the OAuth Refresh Token, represented as an <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Duration</a> between 1 second (<code class="docutils literal"><span class="pre">PT1S</span></code>) and 10 years (<code class="docutils literal"><span class="pre">P10Y</span></code>).</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">createdAt</span></code></td>
 <td>String</td>
@@ -4991,6 +5001,16 @@
 <td><code class="docutils literal"><span class="pre">ENABLED</span></code> or <code class="docutils literal"><span class="pre">DISABLED</span></code></td>
 <td>Indicates whether this API Key is enabled or not.</td>
 </tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">name</span></code></td>
+<td>String</td>
+<td>N/A</td>
+<td>(Optional) The name of this API Key.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">description</span></code></td>
+<td>String</td>
+<td>N/A</td>
+<td>(Optional) The description of this API Key.</td>
+</tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">account</span></code></td>
 <td>Link</td>
 <td>N/A</td>
@@ -5005,15 +5025,17 @@
 </table>
 <p><strong>apiKeys Example</strong></p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/apiKeys/5G5KR4W3K1BP235X8KEXAMPLE&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;5G5KR4W3K1BP235X8K6EXPL93&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;secret&quot;</span><span class="p">:</span> <span class="s2">&quot;GRiCelvExamplel4l3oOCw30c72Rwj8TkRn8cUQCreX&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/apiKeys/2ZFMV4WVVCVG35XATII9T96J7&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;2ZFMV4WVVCVG35XATIEXAMPLE&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;secret&quot;</span><span class="p">:</span> <span class="s2">&quot;XEPJolhnMYEDw2bSCfRnD+nyqK+OTdlQp8C/EXAMPLE&quot;</span><span class="p">,</span>
   <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;An Optional Name&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An Optional Description&quot;</span><span class="p">,</span>
   <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spexaMple&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/1gCwajgjFAHzvFXexample&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;tenant&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgDexAMPLE&quot;</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgexample&quot;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -5096,9 +5118,9 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>POST /v1/accounts/$ACCOUNT_ID/apiKeys</td>
-<td><code class="docutils literal"><span class="pre">status</span></code></td>
-<td>Can be used to update the <code class="docutils literal"><span class="pre">status</span></code> field for an API Key to either <code class="docutils literal"><span class="pre">ENABLED</span></code> or <code class="docutils literal"><span class="pre">DISABLED</span></code>.</td>
+<tr class="row-even"><td>POST /v1/apiKeys/$API_KEY_ID</td>
+<td><code class="docutils literal"><span class="pre">status</span></code>, <code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">description</span></code></td>
+<td>Can be used to update the the API Key.</td>
 </tr>
 </tbody>
 </table>
@@ -5118,7 +5140,7 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>DELETE /v1/apiKeys/$SP_API_KEY_ID</td>
+<tr class="row-even"><td>DELETE /v1/apiKeys/$API_KEY_ID</td>
 <td>N/A</td>
 <td>Deletes the specified API Key resource.</td>
 </tr>
@@ -5128,7 +5150,7 @@
 </div>
 </div>
 <div class="section" id="access-tokens">
-<span id="id35"></span><h4><a class="toc-backref" href="#id155">Access Tokens</a><a class="headerlink" href="#access-tokens" title="Permalink to this headline">¶</a></h4>
+<span id="ref-access-token"></span><h4><a class="toc-backref" href="#id155">Access Tokens</a><a class="headerlink" href="#access-tokens" title="Permalink to this headline">¶</a></h4>
 <p>This collection stores any OAuth 2.0 Access Tokens that have been generated for this Account.</p>
 <p><strong>accessTokens URL</strong></p>
 <p><code class="docutils literal"><span class="pre">/v1/accessTokens/$ACCESS_TOKEN_ID</span></code></p>
@@ -5193,6 +5215,7 @@
   <span class="nt">&quot;expandedJwt&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;header&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;2ZFMV4WVVCVG35XATII9T96J7&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;stt&quot;</span><span class="p">:</span> <span class="s2">&quot;access&quot;</span><span class="p">,</span>
       <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;HS256&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;claims&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -5314,7 +5337,8 @@
   <span class="nt">&quot;expandedJwt&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;header&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;2ZFMV4WVVCVG35XATII9T96J7&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;HS256&quot;</span>
+      <span class="nt">&quot;stt&quot;</span><span class="p">:</span> <span class="s2">&quot;refresh,&quot;</span>
+      <span class="s2">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;HS256&quot;</span>
     <span class="p">},</span>
     <span class="nt">&quot;claims&quot;</span><span class="p">:</span> <span class="p">{</span>
       <span class="nt">&quot;jti&quot;</span><span class="p">:</span> <span class="s2">&quot;6TVcnnaBXNwbDBn1m25YrJ&quot;</span><span class="p">,</span>
@@ -5462,15 +5486,20 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">typ</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">kid</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>The type of Token.</td>
+<td>The API Key ID used to sign the JWT.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">alg</span></code></td>
 <td>String</td>
 <td>N/A</td>
 <td>The hashing algorithm that is being used for this token. For JWT, this is HMAC-SHA-256.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">stt</span></code></td>
+<td>String</td>
+<td><code class="docutils literal"><span class="pre">access</span></code>, <code class="docutils literal"><span class="pre">refresh</span></code></td>
+<td>The Stormpath Token Type.</td>
 </tr>
 </tbody>
 </table>
@@ -5533,7 +5562,7 @@
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>signature</td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">signature</span></code></td>
 <td>String</td>
 <td>N/A</td>
 <td>A hash of the header, claims, and the issuing server&#8217;s hashing secret.</td>
@@ -5544,7 +5573,8 @@
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;header&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;kid&quot;</span><span class="p">:</span> <span class="s2">&quot;2ZFMV4WVVCVG35XATII9T96J7&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;HS256&quot;</span>
+    <span class="nt">&quot;stt&quot;</span><span class="p">:</span> <span class="s2">&quot;refresh&quot;</span>
+    <span class="s2">&quot;alg&quot;</span><span class="p">:</span> <span class="s2">&quot;HS256&quot;</span>
   <span class="p">},</span>
   <span class="nt">&quot;claims&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">&quot;jti&quot;</span><span class="p">:</span> <span class="s2">&quot;6TVcnnaBXNwbDBn1m25YrJ&quot;</span><span class="p">,</span>
@@ -5553,7 +5583,7 @@
     <span class="nt">&quot;sub&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdexaMple&quot;</span><span class="p">,</span>
     <span class="nt">&quot;exp&quot;</span><span class="p">:</span> <span class="mi">1448478972</span>
   <span class="p">},</span>
-  <span class="nt">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;jwb8UYfmGeqGT42wUjB1ymZp6c4ofJaqdkM6ZHRG_tk&quot;</span>
+  <span class="nt">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;jwb8UYfmGeqGT42wUjB1ymZp6c4ofJexampleM6ZHRG_tk&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -5562,7 +5592,7 @@
 </div>
 <div class="section" id="custom-data">
 <span id="ref-customdata"></span><h2>Custom Data<a class="headerlink" href="#custom-data" title="Permalink to this headline">¶</a></h2>
-<div class="contents local topic" id="id36">
+<div class="contents local topic" id="id35">
 <ul class="simple">
 <li><a class="reference internal" href="#custom-data-operations" id="id164">Custom Data Operations</a><ul>
 <li><a class="reference internal" href="#create-a-customdata" id="id165">Create a customData</a></li>
@@ -5642,7 +5672,7 @@
 </div>
 <div class="section" id="custom-data-operations">
 <span id="customdata-operations"></span><h3><a class="toc-backref" href="#id164">Custom Data Operations</a><a class="headerlink" href="#custom-data-operations" title="Permalink to this headline">¶</a></h3>
-<div class="contents local topic" id="id37">
+<div class="contents local topic" id="id36">
 <ul class="simple">
 <li><a class="reference internal" href="#create-a-customdata" id="id169">Create a customData</a></li>
 <li><a class="reference internal" href="#retrieve-a-customdata" id="id170">Retrieve a customData</a></li>
@@ -5728,8 +5758,8 @@
 <p class="first admonition-title">Note</p>
 <p class="last">Deleting a customData resource still leaves an empty customData placeholder resource.</p>
 </div>
-<div class="section" id="id38">
-<h5>Example Queries<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="id37">
+<h5>Example Queries<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h5>
 <p id="accnt-create-with-customdata"><strong>Create an Account and simultaneously populate its Custom Data</strong></p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>curl --request GET <span class="se">\</span>
 --user <span class="nv">$SP_API_KEY_ID</span>:<span class="nv">$SP_API_KEY_SECRET</span> <span class="se">\</span>
