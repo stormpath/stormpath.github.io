@@ -16,9 +16,12 @@ This documentation will show you how to get started with Stormpath and |framewor
    quickstart
    configuration
    request_objects
+   cors
    authentication
    .. authorization
-   cors
+   .. id_site
+   .. multi_environments
+   templates
    oauth2
    me_api
    registration
@@ -27,8 +30,6 @@ This documentation will show you how to get started with Stormpath and |framewor
    logout
    password_reset
    email_verification
-   .. id_site
-   templates
    help
 
 
