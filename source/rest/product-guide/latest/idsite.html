@@ -83,21 +83,21 @@
       Switch Language
     </a>
     <div id="langpicker" style="display:none;">
-      <div class="current">
-        <a href="/rest/product-guide/latest/">REST</a>
-      </div>
-      <div class="">
-        <a href="/php/product-guide/latest/idsite.html">PHP</a>
-      </div>
-      <!--
-      <div class="">
-        <a href="/java/product-guide/latest/idsite.html">Java</a>
-      </div>
       <div class="">
         <a href="/csharp/product-guide/latest/idsite.html">C#</a>
       </div>
       <div class="">
+        <a href="/php/product-guide/latest/idsite.html">PHP</a>
+      </div>
+      <div class="current">
+        <a href="/rest/product-guide/latest/">REST</a>
+      </div>
+      <div class="">
         <a href="/vbnet/product-guide/latest/idsite.html">Visual Basic</a>
+      </div>
+      <!--
+      <div class="">
+        <a href="/java/product-guide/latest/idsite.html">Java</a>
       </div>
       <div class="">
         <a href="/csharp/product-guide/latest/idsite.html">Python</a>
@@ -541,9 +541,10 @@ Location: https://api.stormpath.com/sso?jwtRequest=$GENERATED_JWT
 </tbody>
 </table>
 </div>
-<p>Once the JWT is validated, you can read information about the user from it. In some cases you may wish to exchange this JWT for a Stormpath OAuth 2.0 token.</p>
+<p>Once the ID Site assertion is validated, you can read information about the user from it.</p>
 <div class="section" id="exchanging-the-id-site-jwt-for-an-oauth-token">
 <span id="idsite-jwt-to-oauth"></span><h4>Exchanging the ID Site JWT for an OAuth Token<a class="headerlink" href="#exchanging-the-id-site-jwt-for-an-oauth-token" title="Permalink to this headline">¶</a></h4>
+<p>In some cases you may wish to exchange the ID Site assertion (JWT) for a Stormpath OAuth 2.0 token.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">For background information, please see <a class="reference internal" href="auth_n.html#token-authn"><span class="std std-ref">4.2. How Token-Based Authentication Works</span></a>.</p>
@@ -586,7 +587,8 @@ Location: https://api.stormpath.com/sso/logout?jwtRequest=%GENERATED_JWT%
 </div>
 <div class="section" id="resetting-your-password-with-id-site">
 <span id="idsite-password-reset"></span><h3>Resetting Your Password with ID Site<a class="headerlink" href="#resetting-your-password-with-id-site" title="Permalink to this headline">¶</a></h3>
-<p>The Account Management chapter has an overview of <a class="reference internal" href="accnt_mgmt.html#password-reset-flow"><span class="std std-ref">3.4.3. Password Reset</span></a> in Stormpath. In that flow, a user chooses to reset their password, then receives an email with a link to a page on your application that allows them to set a new password. If you are using ID Site for login, then it stands to reason that you would want them to land on your ID Site for password reset as well. The issue here, however, is bridging the Password Reset Flow and the ID Site flow.</p>
+<p>The Account Management chapter has an overview of <a class="reference internal" href="accnt_mgmt.html#password-reset-flow"><span class="std std-ref">Password Reset</span></a> in Stormpath. In that flow, a user chooses to reset their password, then receives an email with a link to a page on your application that allows them to set a new password.</p>
+<p>If you are using ID Site for login, then it stands to reason that you would want them to land on your ID Site for password reset as well. All you have to do is send the user to ID Site with a special path (<code class="docutils literal"><span class="pre">/#/reset</span></code>) and a claim containing the password reset token from the email link.</p>
 <p>Using a JWT library, you have to generate a new JWT, with all of <a class="reference internal" href="#idsite-auth-jwt"><span class="std std-ref">the usual required claims</span></a>. The <code class="docutils literal"><span class="pre">path</span></code> claim should be set to <code class="docutils literal"><span class="pre">/#/reset</span></code> and you will also have to include an additional claim: <code class="docutils literal"><span class="pre">sp_token</span></code>. This is the <code class="docutils literal"><span class="pre">sp_token</span></code> value that you will have received from the link that the user clicked in their password reset email. This JWT is then passed to the <code class="docutils literal"><span class="pre">/sso</span></code> endpoint (as described in Step 1 above), and the user is taken to the Password Reset page on your ID Site.</p>
 </div>
 </div>
@@ -613,7 +615,7 @@ Location: https://api.stormpath.com/sso/logout?jwtRequest=%GENERATED_JWT%
 <p class="last">Stormpath will only show the field when you have at least one Organization mapped as an Account Store for your Application.</p>
 </div>
 <p><strong>Use Sub-Domain</strong></p>
-<p><code class="docutils literal"><span class="pre">usd</span></code>: If combined with <code class="docutils literal"><span class="pre">onk</span></code>, will redirect the user to an ID Site with the Organization&#8217;s <code class="docutils literal"><span class="pre">namekey</span></code> as a sub-domain in its URL.</p>
+<p><code class="docutils literal"><span class="pre">usd</span></code>: If combined with <code class="docutils literal"><span class="pre">onk</span></code>, will redirect the user to an ID Site with the Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> as a sub-domain in its URL.</p>
 <p>For example, if your ID Site configuration is <code class="docutils literal"><span class="pre">elastic-rebel.id.stormpath.io</span></code> and the Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">home-depot</span></code>, then the SSO endpoint will resolve the following URL:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>https://home-depot.elastic-rebel.id.stormpath.io/?jwt={GENERATED_JWT}
 </pre></div>

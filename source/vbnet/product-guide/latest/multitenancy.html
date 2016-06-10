@@ -84,20 +84,20 @@
     </a>
     <div id="langpicker" style="display:none;">
       <div class="">
-        <a href="/rest/product-guide/latest/">REST</a>
+        <a href="/csharp/product-guide/latest/multitenancy.html">C#</a>
       </div>
       <div class="">
         <a href="/php/product-guide/latest/multitenancy.html">PHP</a>
       </div>
-      <!--
       <div class="">
-        <a href="/java/product-guide/latest/multitenancy.html">Java</a>
-      </div>
-      <div class="">
-        <a href="/csharp/product-guide/latest/multitenancy.html">C#</a>
+        <a href="/rest/product-guide/latest/">REST</a>
       </div>
       <div class="current">
         <a href="/vbnet/product-guide/latest/multitenancy.html">Visual Basic</a>
+      </div>
+      <!--
+      <div class="">
+        <a href="/java/product-guide/latest/multitenancy.html">Java</a>
       </div>
       <div class="">
         <a href="/csharp/product-guide/latest/multitenancy.html">Python</a>
@@ -293,11 +293,15 @@
 <ol class="arabic simple">
 <li>It makes it easy to find all the role Groups for that particular tenant, since you can search for the nameKey:</li>
 </ol>
-<div class="highlight-vbnet"><div class="highlight"><pre><span></span>
+<div class="highlight-vbnet"><div class="highlight"><pre><span></span><span class="k">Dim</span> <span class="n">roleGroups</span> <span class="o">=</span> <span class="n">Await</span> <span class="n">myDirectory</span><span class="p">.</span><span class="n">GetGroups</span><span class="p">()</span> _
+    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">Function</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="n">group</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">StartsWith</span><span class="p">(</span><span class="s">&quot;bank-of-a.role.&quot;</span><span class="p">))</span> _
+    <span class="p">.</span><span class="n">ToListAsync</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Or, if you wanted to retrieve the tenant Group and all of its sub-Groups, make the query a little less restrictive by removing the &#8220;role&#8221;:</p>
-<div class="highlight-vbnet"><div class="highlight"><pre><span></span>
+<div class="highlight-vbnet"><div class="highlight"><pre><span></span><span class="k">Dim</span> <span class="n">tenantGroups</span> <span class="o">=</span> <span class="n">Await</span> <span class="n">myDirectory</span><span class="p">.</span><span class="n">GetGroups</span><span class="p">()</span> _
+    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">Function</span><span class="p">(</span><span class="n">group</span><span class="p">)</span> <span class="n">group</span><span class="p">.</span><span class="n">Name</span><span class="p">.</span><span class="n">StartsWith</span><span class="p">(</span><span class="s">&quot;bank-of-a.&quot;</span><span class="p">))</span> _
+    <span class="p">.</span><span class="n">ToListAsync</span><span class="p">()</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
@@ -318,29 +322,53 @@
 <div class="section" id="how-to-create-an-organization">
 <span id="create-org"></span><h4>How to Create an Organization<a class="headerlink" href="#how-to-create-an-organization" title="Permalink to this headline">¶</a></h4>
 <p>You can create an Organization in Stormpath by sending the following request:</p>
-<div class="highlight-vbnet"><div class="highlight"><pre><span></span>
+<div class="highlight-vbnet"><div class="highlight"><pre><span></span><span class="k">Dim</span> <span class="n">bankOfAOrg</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Instantiate</span><span class="p">(</span><span class="k">Of</span> <span class="n">IOrganization</span><span class="p">)()</span> _
+    <span class="p">.</span><span class="n">SetName</span><span class="p">(</span><span class="s">&quot;Bank of A&quot;</span><span class="p">)</span> _
+    <span class="p">.</span><span class="n">SetNameKey</span><span class="p">(</span><span class="s">&quot;bank-of-a&quot;</span><span class="p">)</span> _
+    <span class="p">.</span><span class="n">SetStatus</span><span class="p">(</span><span class="n">OrganizationStatus</span><span class="p">.</span><span class="n">Enabled</span><span class="p">)</span>
+
+<span class="n">Await</span> <span class="n">bankOfAOrg</span><span class="p">.</span><span class="n">SaveAsync</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Which would return the following:</p>
-<div class="highlight-vbnet"><div class="highlight"><pre><span></span>
-</pre></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A new Organization resource will have <code class="docutils literal"><span class="pre">null</span></code> Default Account and Group stores. That means adding new Groups and Accounts to the Organization will fail until a default Account Store is added.</p>
 </div>
 </div>
 <div class="section" id="adding-an-account-store-to-an-organization">
 <h4>Adding an Account Store to an Organization<a class="headerlink" href="#adding-an-account-store-to-an-organization" title="Permalink to this headline">¶</a></h4>
 <p>Like other Account Stores, an Organization can be mapped to an Application so that users in the Organization can log-in to that application (for more about how logging-in works with Stormpath, please see <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">the Authentication chapter</span></a>). But before you do this, you must first associate some users with the Organization so that there is someone to log in! To do this, you have to map some Account Stores to your Organization.</p>
-<div class="highlight-vbnet"><div class="highlight"><pre><span></span>
+<div class="highlight-vbnet"><div class="highlight"><pre><span></span><span class="c">&#39; With a reference to an IDirectory:</span>
+<span class="k">Dim</span> <span class="n">newMapping</span> <span class="o">=</span> <span class="n">Await</span> <span class="n">bankOfAOrg</span><span class="p">.</span><span class="n">AddAccountStoreAsync</span><span class="p">(</span><span class="n">existingDirectory</span><span class="p">)</span>
+
+<span class="c">&#39; Or simply by href:</span>
+<span class="n">newMapping</span> <span class="o">=</span> <span class="n">Await</span> <span class="n">bankOfAOrg</span><span class="p">.</span><span class="n">AddAccountStoreAsync</span><span class="p">(</span><span class="s">&quot;directory_href&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>In order to be able to add Groups and Accounts to the Organization in the way mentioned above, we should also make sure that we mark this Account Store as our default for both Accounts and Groups:</p>
-<div class="highlight-vbnet"><div class="highlight"><pre><span></span>
+<div class="highlight-vbnet"><div class="highlight"><pre><span></span><span class="n">newMapping</span><span class="p">.</span><span class="n">SetDefaultAccountStore</span><span class="p">(</span><span class="k">True</span><span class="p">)</span> _
+    <span class="p">.</span><span class="n">SetDefaultGroupStore</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
+
+<span class="n">Await</span> <span class="n">newMapping</span><span class="p">.</span><span class="n">SaveAsync</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Which would result in the following response:</p>
-<div class="highlight-vbnet"><div class="highlight"><pre><span></span>
+<p>A mapping between an Organization and an Account Store is represented by an <code class="docutils literal"><span class="pre">IOrganizationAccountStoreMapping</span></code> object. There are a few optional properties that can be set:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">ListIndex</span></code>: Represents the priority in which this Account Store will be consulted by the Organization during an authentication attempt. This is a zero-based index, meaning that an Account Store at <code class="docutils literal"><span class="pre">ListIndex</span></code> of 0 will be consulted first, followed by the Account Store at index 1, etc. Setting a negative value will default the value to 0, placing it first in the list. An index larger than the current list size will place the mapping at the end of the list and then set the value to (list size – 1).</li>
+<li><code class="docutils literal"><span class="pre">IsDefaultAccountStore</span></code>: A <code class="docutils literal"><span class="pre">true</span></code> value indicates that new Accounts created in the Organizationn will be automatically saved to this mapping’s Directory or Group.</li>
+<li><code class="docutils literal"><span class="pre">IsDefaultGroupStore</span></code>: A <code class="docutils literal"><span class="pre">true</span></code> value indicates that new Groups created in the Organization will be automatically saved to this mapping’s Directory. Note that a <code class="docutils literal"><span class="pre">true</span></code> value will only be valid here if the Account Store is a Directory.</li>
+</ul>
+<p>This example sets all the properties of the Organization Account Store Mapping at creation time:</p>
+<div class="highlight-vbnet"><div class="highlight"><pre><span></span><span class="k">Dim</span> <span class="n">newMapping</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Instantiate</span><span class="p">(</span><span class="k">Of</span> <span class="n">IOrganizationAccountStoreMapping</span><span class="p">)()</span> _
+    <span class="p">.</span><span class="n">SetAccountStore</span><span class="p">(</span><span class="n">existingDirectory</span><span class="p">)</span> _
+    <span class="p">.</span><span class="n">SetListIndex</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> _
+    <span class="p">.</span><span class="n">SetDefaultAccountStore</span><span class="p">(</span><span class="k">True</span><span class="p">)</span> _
+    <span class="p">.</span><span class="n">SetDefaultGroupStore</span><span class="p">(</span><span class="k">True</span><span class="p">)</span>
+
+<span class="n">Await</span> <span class="n">bankOfAOrg</span><span class="p">.</span><span class="n">CreateAccountStoreMappingAsync</span><span class="p">(</span><span class="n">newMapping</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>So our Organization now has an associated Directory which can be used as an Account Store to add new Accounts and Groups. To enable login for the Accounts in this Organization, we must now map the Organization to an Application.</p>
+<p>Our Organization now has an associated Directory which can be used as an Account Store to add new Accounts and Groups. To enable login for the Accounts in this Organization, we must now map the Organization to an Application.</p>
 </div>
 <div class="section" id="registering-an-organization-as-an-account-store-for-an-application">
 <h4>Registering an Organization as an Account Store for an Application<a class="headerlink" href="#registering-an-organization-as-an-account-store-for-an-application" title="Permalink to this headline">¶</a></h4>
@@ -349,8 +377,16 @@
 </div>
 <div class="section" id="adding-an-account-to-an-organization">
 <span id="add-accnt-to-org"></span><h4>Adding an Account to an Organization<a class="headerlink" href="#adding-an-account-to-an-organization" title="Permalink to this headline">¶</a></h4>
-<p>Adding a new Account to an Organization is exactly the same as adding them to a Directory, except that you use the Organization to route the creation request:</p>
-<div class="highlight-vbnet"><div class="highlight"><pre><span></span>
+<p>Adding a new Account to an Organization is exactly the same as adding them to a Directory, except that you use the Organization to handle the creation request:</p>
+<div class="highlight-vbnet"><div class="highlight"><pre><span></span><span class="k">Dim</span> <span class="n">chewie</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Instantiate</span><span class="p">(</span><span class="k">Of</span> <span class="n">IAccount</span><span class="p">)()</span> _
+    <span class="p">.</span><span class="n">SetGivenName</span><span class="p">(</span><span class="s">&quot;Chewbacca&quot;</span><span class="p">)</span> _
+    <span class="p">.</span><span class="n">SetSurname</span><span class="p">(</span><span class="s">&quot;the Wookiee&quot;</span><span class="p">)</span> _
+    <span class="p">.</span><span class="n">SetUsername</span><span class="p">(</span><span class="s">&quot;rrwwgggh&quot;</span><span class="p">)</span> _
+    <span class="p">.</span><span class="n">SetEmail</span><span class="p">(</span><span class="s">&quot;chewie@kashyyyk.rim&quot;</span><span class="p">)</span> _
+    <span class="p">.</span><span class="n">SetPassword</span><span class="p">(</span><span class="s">&quot;Changeme123!&quot;</span><span class="p">)</span>
+<span class="n">chewie</span><span class="p">.</span><span class="n">CustomData</span><span class="p">.</span><span class="n">Put</span><span class="p">(</span><span class="s">&quot;favoriteShip&quot;</span><span class="p">,</span> <span class="s">&quot;Millennium Falcon&quot;</span><span class="p">)</span>
+
+<span class="n">Await</span> <span class="n">bankOfAOrg</span><span class="p">.</span><span class="n">CreateAccountAsync</span><span class="p">(</span><span class="n">chewie</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

@@ -83,21 +83,21 @@
       Switch Language
     </a>
     <div id="langpicker" style="display:none;">
-      <div class="">
-        <a href="/rest/product-guide/latest/">REST</a>
-      </div>
-      <div class="">
-        <a href="/php/product-guide/latest/idsite.html">PHP</a>
-      </div>
-      <!--
-      <div class="">
-        <a href="/java/product-guide/latest/idsite.html">Java</a>
-      </div>
       <div class="current">
         <a href="/csharp/product-guide/latest/idsite.html">C#</a>
       </div>
       <div class="">
+        <a href="/php/product-guide/latest/idsite.html">PHP</a>
+      </div>
+      <div class="">
+        <a href="/rest/product-guide/latest/">REST</a>
+      </div>
+      <div class="">
         <a href="/vbnet/product-guide/latest/idsite.html">Visual Basic</a>
+      </div>
+      <!--
+      <div class="">
+        <a href="/java/product-guide/latest/idsite.html">Java</a>
       </div>
       <div class="">
         <a href="/csharp/product-guide/latest/idsite.html">Python</a>
@@ -339,7 +339,20 @@
 <li>Your server responds with an HTTP 302 which redirects the user to the ID Site SSO endpoint</li>
 <li>Stormpath will redirect the user to your ID Site</li>
 </ol>
-<p>(dotnet.todo)</p>
+<p>This is typically done by creating a controller or action that the login button redirects to. Inside this controller, the ID Site request can be created using the SDK:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">app</span> <span class="p">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">.</span><span class="n">GetApplicationAsync</span><span class="p">(</span><span class="s">&quot;application_url&quot;</span><span class="p">);</span>
+
+<span class="kt">var</span> <span class="n">idSiteUrl</span> <span class="p">=</span> <span class="n">app</span><span class="p">.</span><span class="n">NewIdSiteUrlBuilder</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">SetCallbackUri</span><span class="p">(</span><span class="s">&quot;http://mysite.foo/idsiteCallback&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">Build</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">SetCallbackUri</span></code> method sets the location in your application the user will be returned to when they complete the ID Site flow.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To view all of the options available for building ID Site URLs, see the <a class="reference external" href="https://docs.stormpath.com/dotnet/api/html/T_Stormpath_SDK_IdSite_IIdSiteUrlBuilder.htm">IIdSiteBuilder API documentation</a>.</p>
+</div>
+<p>Once the URL is built, redirect the user in order to send them to ID Site.</p>
 </div>
 <div class="section" id="step-2-handling-the-callback-to-your-application-from-id-site">
 <h3>Step 2: Handling the Callback to your Application from ID Site<a class="headerlink" href="#step-2-handling-the-callback-to-your-application-from-id-site" title="Permalink to this headline">¶</a></h3>
@@ -348,20 +361,42 @@
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">jwtResponse</span></code> represents a JWT that provides a signed security assertion about who the user is and what they did on ID Site.</p>
-<p>(dotnet.todo)</p>
-<p>Once the JWT is validated, you can read information about the user from it. In some cases you may wish to exchange this JWT for a Stormpath OAuth 2.0 token.</p>
+<p>You&#8217;ll need to create a controller or action that handles the Callback URI. Then, you can use the SDK to consume this assertion:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">requestDescriptor</span> <span class="p">=</span> <span class="n">HttpRequests</span><span class="p">.</span><span class="n">NewRequestDescriptor</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">WithMethod</span><span class="p">(</span><span class="s">&quot;GET&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">WithUri</span><span class="p">(</span><span class="s">&quot;incoming_uri&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">Build</span><span class="p">();</span>
+
+<span class="kt">var</span> <span class="n">idSiteListener</span> <span class="p">=</span> <span class="n">app</span><span class="p">.</span><span class="n">NewIdSiteAsyncCallbackHandler</span><span class="p">(</span><span class="n">requestDescriptor</span><span class="p">);</span>
+
+<span class="kt">var</span> <span class="n">accountResult</span> <span class="p">=</span> <span class="k">await</span> <span class="n">idSiteListener</span><span class="p">.</span><span class="n">GetAccountResultAsync</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>The SDK will throw an error if the ID Site assertion is expired or invalid. If the assertion is valid, you&#8217;ll get an <code class="docutils literal"><span class="pre">IAccountResult</span></code> instance with the following properties:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">State</span></code> - An arbitrary string set by the <code class="docutils literal"><span class="pre">SetState()</span></code> method, if any.</li>
+<li><code class="docutils literal"><span class="pre">IsNewAccount</span></code> - <code class="docutils literal"><span class="pre">true</span></code> if the account was newly registered on ID Site, <code class="docutils literal"><span class="pre">false</span></code> if an existing account signed in.</li>
+<li><code class="docutils literal"><span class="pre">Status</span></code> - One of <code class="docutils literal"><span class="pre">IdSiteResultStatus.Registered</span></code>, <code class="docutils literal"><span class="pre">IdSiteResultStatus.Authenticated</span></code>, <code class="docutils literal"><span class="pre">IdSiteResultStatus.Logout</span></code>.</li>
+</ul>
+<p>You can call the <code class="docutils literal"><span class="pre">GetAccountAsync</span></code> method to obtain the Stormpath Account itself.</p>
 <div class="section" id="exchanging-the-id-site-jwt-for-an-oauth-token">
 <span id="idsite-jwt-to-oauth"></span><h4>Exchanging the ID Site JWT for an OAuth Token<a class="headerlink" href="#exchanging-the-id-site-jwt-for-an-oauth-token" title="Permalink to this headline">¶</a></h4>
+<p>In some cases you may wish to exchange the ID Site assertion (JWT) for a Stormpath OAuth 2.0 token.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">For background information, please see <a class="reference internal" href="auth_n.html#token-authn"><span class="std std-ref">4.2. How Token-Based Authentication Works</span></a>.</p>
 </div>
 <p>In this situation, after the user has been authenticated via ID Site, a developer may want to control their authorization with an OAuth 2.0 Token. This is done by passing the JWT similar to the way we passed the user&#8217;s credentials as described in <a class="reference internal" href="auth_n.html#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>. The difference is that instead of using the <code class="docutils literal"><span class="pre">password</span></code> grant type and passing credentials, we will use the <code class="docutils literal"><span class="pre">id_site_token</span></code> type and pass the JWT we got from ID Site.</p>
 <p>Stormpath will validate the JWT (i.e. ensure that it has not been tampered with, is not expired, and the Account that it&#8217;s associated with is still valid) and then return an OAuth 2.0 Access Token:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">jwt</span> <span class="p">=</span> <span class="n">incoming_uri</span><span class="p">.</span><span class="n">Split</span><span class="p">(</span><span class="sc">&#39;=&#39;</span><span class="p">)[</span><span class="m">1</span><span class="p">];</span>
+
+<span class="kt">var</span> <span class="n">idSiteTokenExchangeRequest</span> <span class="p">=</span> <span class="n">OauthRequests</span>
+    <span class="p">.</span><span class="n">NewIdSiteTokenAuthenticationRequest</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">SetJwt</span><span class="p">(</span><span class="n">jwt</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">Build</span><span class="p">();</span>
+
+<span class="kt">var</span> <span class="n">grantResponse</span> <span class="p">=</span> <span class="k">await</span> <span class="n">app</span><span class="p">.</span><span class="n">NewIdSiteTokenAuthenticator</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">AuthenticateAsync</span><span class="p">(</span><span class="n">idSiteTokenExchangeRequest</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>For more information about Stormpath&#8217;s OAuth 2.0 tokens, please see <a class="reference internal" href="auth_n.html#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>.</p>
@@ -370,37 +405,63 @@
 <div class="section" id="step-3-optional-logging-out-of-id-site">
 <h3>Step 3: (Optional) Logging Out of ID Site<a class="headerlink" href="#step-3-optional-logging-out-of-id-site" title="Permalink to this headline">¶</a></h3>
 <p>ID Site will keep a configurable session for authenticated users. When a user is sent from your application to ID Site, it will confirm that the session is still valid for the user. If it is, they will be automatically redirected to the <code class="docutils literal"><span class="pre">cb_uri</span></code>. This <code class="docutils literal"><span class="pre">cb_uri</span></code> can be the originating application or any application supported by a Stormpath SDK.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span>
+<p>To log the user out and remove the session that ID Site creates, you must build another ID Site redirect URL. In this case, use the <code class="docutils literal"><span class="pre">ForLogout</span></code> method to create a logout request:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">logoutUrl</span> <span class="p">=</span> <span class="n">app</span><span class="p">.</span><span class="n">NewIdSiteUrlBuilder</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">SetCallbackUri</span><span class="p">(</span><span class="s">&quot;http://mysite.foo/idsiteCallback&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">ForLogout</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">Build</span><span class="p">();</span>
 </pre></div>
 </div>
 <p>Once the user is logged out of ID Site, they are automatically redirected to the <code class="docutils literal"><span class="pre">cb_uri</span></code> which was specified in the JWT.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span>
+<p>When the response is handled, the <code class="docutils literal"><span class="pre">Status</span></code> property will have a value of <code class="docutils literal"><span class="pre">IdSiteResultStatus.Logout</span></code>:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="c1">// In your callback handler, after GetAccountResultAsync()</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">accountResult</span><span class="p">.</span><span class="n">Status</span> <span class="p">==</span> <span class="n">IdSiteResultStatus</span><span class="p">.</span><span class="n">Logout</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// This was a logout! Proceed accordingly...</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="resetting-your-password-with-id-site">
 <span id="idsite-password-reset"></span><h3>Resetting Your Password with ID Site<a class="headerlink" href="#resetting-your-password-with-id-site" title="Permalink to this headline">¶</a></h3>
-<p>The Account Management chapter has an overview of <a class="reference internal" href="accnt_mgmt.html#password-reset-flow"><span class="std std-ref">3.4.3. Password Reset</span></a> in Stormpath. In that flow, a user chooses to reset their password, then receives an email with a link to a page on your application that allows them to set a new password. If you are using ID Site for login, then it stands to reason that you would want them to land on your ID Site for password reset as well. The issue here, however, is bridging the Password Reset Flow and the ID Site flow.</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span>
+<p>The Account Management chapter has an overview of <a class="reference internal" href="accnt_mgmt.html#password-reset-flow"><span class="std std-ref">Password Reset</span></a> in Stormpath. In that flow, a user chooses to reset their password, then receives an email with a link to a page on your application that allows them to set a new password.</p>
+<p>If you are using ID Site for login, then it stands to reason that you would want them to land on your ID Site for password reset as well. All you have to do is send the user to ID Site with a special path (<code class="docutils literal"><span class="pre">/#/reset</span></code>) and a claim containing the password reset token from the email link.</p>
+<p>The password token should be pulled out of the request URL (the <code class="docutils literal"><span class="pre">sptoken=</span></code> parameter). Then, the path and token can be supplied when building the ID Site redirect URL:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">logoutUrl</span> <span class="p">=</span> <span class="n">app</span><span class="p">.</span><span class="n">NewIdSiteUrlBuilder</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">SetCallbackUri</span><span class="p">(</span><span class="s">&quot;http://mysite.foo/idsiteCallback&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetPath</span><span class="p">(</span><span class="s">&quot;/#/reset&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">SetSpToken</span><span class="p">(</span><span class="n">sptoken_from_url</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">Build</span><span class="p">();</span>
 </pre></div>
 </div>
+<p>Once the URL is generated, redirect the user to that URL to start the Password Reset flow on ID Site.</p>
 </div>
 </div>
 <div class="section" id="using-id-site-for-multi-tenancy">
 <span id="idsite-multitenancy"></span><h2>7.5. Using ID Site for Multi-tenancy<a class="headerlink" href="#using-id-site-for-multi-tenancy" title="Permalink to this headline">¶</a></h2>
 <p>If you are <a class="reference internal" href="multitenancy.html#create-org"><span class="std std-ref">using Organizations to model multi-tenancy</span></a>, then you will want to map these as Account Stores for your Application.</p>
 <p>From that point, ID Site is able to handle either of the multi-tenant user routing methods described in <a class="reference internal" href="multitenancy.html#multitenant-routing-users"><span class="std std-ref">the Multi-tenancy Chapter</span></a>.</p>
-<p>(dotnet.todo)</p>
+<p>There are a few methods on <code class="docutils literal"><span class="pre">IIdSiteUrlBuilder</span></code> that you can use to implement your particular multi-tenancy strategy:</p>
 <p><strong>Organization nameKey</strong></p>
-<p>(dotnet.todo)</p>
+<p><code class="docutils literal"><span class="pre">SetOrganizationNameKey</span></code>: Allows you to specify an Organization&#8217;s <code class="docutils literal"><span class="pre">namekey</span></code>. The user is sent to the ID Site for that Organization, and is forced to log in to that Organization.</p>
 <p><strong>Show Organization Field</strong></p>
-<p>(dotnet.todo)</p>
+<p><code class="docutils literal"><span class="pre">SetShowOrganizationField</span></code>: Toggles the &#8220;Organization&#8221; field on and off on ID Site. Used on its own, it will allow the user to specify the Organization that they would like to log in to.</p>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="_images/id_site_sof_empty.png"><img alt="ID Site with sof toggled on" src="_images/id_site_sof_empty.png" style="width: 632.0px; height: 473.0px;" /></a>
+<p class="caption"><span class="caption-text"><em>ID Site with Organization field on and prepopulated</em></span></p>
+</div>
+<p>If combined with <code class="docutils literal"><span class="pre">SetOrganizationNameKey</span></code>, this will pre-populate that field with the Organization&#8217;s name.</p>
+<div class="figure align-center" id="id6">
+<a class="reference internal image-reference" href="_images/id_site_sof_prepop.png"><img alt="ID Site with sof and onk toggled on" src="_images/id_site_sof_prepop.png" style="width: 633.0px; height: 478.0px;" /></a>
+<p class="caption"><span class="caption-text"><em>ID Site with Organization field on and prepopulated</em></span></p>
+</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Stormpath will only show the field when you have at least one Organization mapped as an Account Store for your Application.</p>
 </div>
 <p><strong>Use Sub-Domain</strong></p>
-<p>(dotnet.todo)</p>
+<p><code class="docutils literal"><span class="pre">SetUseSubdomain</span></code>: If combined with <code class="docutils literal"><span class="pre">SetOrganizationNameKey</span></code>, will redirect the user to an ID Site with the Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> as a sub-domain in its URL.</p>
 <p>For example, if your ID Site configuration is <code class="docutils literal"><span class="pre">elastic-rebel.id.stormpath.io</span></code> and the Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">home-depot</span></code>, then the SSO endpoint will resolve the following URL:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>https://home-depot.elastic-rebel.id.stormpath.io/?jwt={GENERATED_JWT}
 </pre></div>
