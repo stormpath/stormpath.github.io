@@ -83,21 +83,21 @@
       Switch Language
     </a>
     <div id="langpicker" style="display:none;">
-      <div class="">
-        <a href="/rest/product-guide/latest/">REST</a>
-      </div>
-      <div class="">
-        <a href="/php/product-guide/latest/auth_n.html">PHP</a>
-      </div>
-      <!--
-      <div class="">
-        <a href="/java/product-guide/latest/auth_n.html">Java</a>
-      </div>
       <div class="current">
         <a href="/csharp/product-guide/latest/auth_n.html">C#</a>
       </div>
       <div class="">
+        <a href="/php/product-guide/latest/auth_n.html">PHP</a>
+      </div>
+      <div class="">
+        <a href="/rest/product-guide/latest/">REST</a>
+      </div>
+      <div class="">
         <a href="/vbnet/product-guide/latest/auth_n.html">Visual Basic</a>
+      </div>
+      <!--
+      <div class="">
+        <a href="/java/product-guide/latest/auth_n.html">Java</a>
       </div>
       <div class="">
         <a href="/csharp/product-guide/latest/auth_n.html">Python</a>
@@ -334,7 +334,7 @@
 </pre></div>
 </div>
 <p>If the authentication succeeds, you receive an <code class="docutils literal"><span class="pre">IAuthenticationResult</span></code> that contains a link you can traverse to retrieve the Account details. If the authentication fails, a <code class="docutils literal"><span class="pre">ResourceException</span></code> will be thrown.</p>
-<p>To retreive Account details, call <code class="docutils literal"><span class="pre">GetAccountAsync()</span></code>. To avoid making a separate network request, you can request the Account details during authentication by making an <em>expanded</em> request (assuming you have caching enabled):</p>
+<p>To retrieve Account details, call <code class="docutils literal"><span class="pre">GetAccountAsync()</span></code>. To avoid making a separate network request, you can request the Account details during authentication by making an expanded request (assuming you have caching enabled):</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">Dim</span> <span class="n">loginRequest</span> <span class="p">=</span> <span class="n">New</span> <span class="n">UsernamePasswordRequestBuilder</span><span class="p">()</span> <span class="n">_</span>
     <span class="p">.</span><span class="n">SetUsernameOrEmail</span><span class="p">(</span><span class="s">&quot;han@newrepublic.gov&quot;</span><span class="p">)</span> <span class="n">_</span>
     <span class="p">.</span><span class="n">SetPassword</span><span class="p">(</span><span class="s">&quot;first2shoot!&quot;</span><span class="p">)</span> <span class="n">_</span>
@@ -383,7 +383,7 @@
 <span id="managing-login"></span><h3><a class="toc-backref" href="#id58">4.1.3. Manage Who Can Log Into Your Application</a><a class="headerlink" href="#manage-who-can-log-into-your-application" title="Permalink to this headline">¶</a></h3>
 <p>As is hopefully evident by now, controlling which Accounts can log in to your Application is largely a matter of manipulating the Application&#8217;s Account Store Mappings.</p>
 <p>The reason why your user &#8220;Han Solo&#8221; was able to log in to your application is because the Application resource that represents your application and your &#8220;Captains&#8221; Directory are mapped to one another by an <strong>Account Store Mapping</strong>.</p>
-<p>You can find all the Account Store Mappings for an application by using the <code class="docutils literal"><span class="pre">GetAccountStoreMappings()</span></code> collection:</p>
+<p>You can find all the Account Store Mappings for an Application by using the <code class="docutils literal"><span class="pre">GetAccountStoreMappings()</span></code> collection:</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">app</span> <span class="p">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">.</span><span class="n">GetApplicationAsync</span><span class="p">(</span>
     <span class="s">&quot;https://api.stormpath.com/v1/applications/5nan67mWrYrBmLGu7nGurh&quot;</span><span class="p">);</span>
 
@@ -652,7 +652,7 @@
     <span class="p">.</span><span class="n">AuthenticateAsync</span><span class="p">(</span><span class="n">validationRequest</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>If the access token can be validated, Stormpath will return the access token to you as an <code class="docutils literal"><span class="pre">IAccessToken</span></code>. If the access token is invalid or expired, a <code class="docutils literal"><span class="pre">ResourceException</span></code> will be thrown.</p>
+<p>If the Access Token can be validated, Stormpath will return the token to you as an <code class="docutils literal"><span class="pre">IAccessToken</span></code>. If the Access Token is invalid or expired, a <code class="docutils literal"><span class="pre">ResourceException</span></code> will be thrown.</p>
 <p>With the confirmation that the token is valid, you can now allow the user to access the secured resource that they requested.</p>
 </div>
 <div class="section" id="validating-the-token-locally">
@@ -715,7 +715,7 @@
 </pre></div>
 </div>
 </div>
-<p>After you retrieve the tokens, it&#8217;s a simple matter of telling Stormpath to delete them:</p>
+<p>After you retrieve the tokens, it&#8217;s just a matter of telling Stormpath to delete them:</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">await</span> <span class="n">accessTokenToDelete</span><span class="p">.</span><span class="n">DeleteAsync</span><span class="p">();</span>
 <span class="k">await</span> <span class="n">refreshTokenToDelete</span><span class="p">.</span><span class="n">DeleteAsync</span><span class="p">();</span>
 </pre></div>
@@ -998,8 +998,9 @@
 <p class="last">It is required that your LinkedIn application requests the <code class="docutils literal"><span class="pre">r_basicprofile</span></code> and <code class="docutils literal"><span class="pre">r_emailaddress</span></code> scopes (or &#8220;fields&#8221;) from LinkedIn. If the Authorization Code does not grant these scopes, you will not be able to get an Account. For more information about LinkedIn scopes, see <a class="reference external" href="https://developer.linkedin.com/docs/fields">LinkedIn&#8217;s &#8220;Profile Fields&#8221; documentation</a>.</p>
 </div>
 <p>Once the Authorization Code is gathered, you can send it to Stormpath:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span>
-</pre></div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The ability to post an authorization code to LinkedIn is not yet available in the .NET SDK. For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/183">ticket #183</a> on Github.</p>
 </div>
 <p>If you have already exchanged the code for an Access Token, you can send that instead:</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">request</span> <span class="p">=</span> <span class="n">client</span><span class="p">.</span><span class="n">Providers</span><span class="p">()</span>
@@ -1036,9 +1037,67 @@
 <span id="authn-ldap-dir-creation"></span><h4><a class="toc-backref" href="#id75">Step 1: Create an LDAP Directory</a><a class="headerlink" href="#step-1-create-an-ldap-directory" title="Permalink to this headline">¶</a></h4>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to create an LDAP directory is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/167">ticket #167</a> on Github.</p>
+<p>The ability to create an LDAP directory is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or see below for the REST API instructions.</p>
+<p class="last">For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/167">ticket #167</a> on Github.</p>
 </div>
+<p>HTTP POST a new Directory resource to the <code class="docutils literal"><span class="pre">/directories</span></code> endpoint. This Directory will contain a <a class="reference internal" href="reference.html#ref-provider"><span class="std std-ref">Provider</span></a> resource with <code class="docutils literal"><span class="pre">providerId</span></code> set to <code class="docutils literal"><span class="pre">ldap</span></code> or <code class="docutils literal"><span class="pre">ad</span></code>. This Provider resource will in turn contain an <a class="reference internal" href="reference.html#ref-ldap-agent"><span class="std std-ref">LDAP Agent</span></a> object, which in turn also contains a few nested configuration resources.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>All of these must be passed at the same time:</p>
+<div class="last highlight-none"><div class="highlight"><pre><span></span>directory
+  └──provider
+      └──agent
+          └──config
+              ├──accountConfig
+              └──groupConfig
+</pre></div>
+</div>
+</div>
+<p>The full Directory object, with all of the required resources, will look like this:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;My LDAP Directory&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;An LDAP Directory created with the Stormpath API&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;provider&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;ldap&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;agent&quot;</span><span class="p">:{</span>
+      <span class="nt">&quot;config&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;directoryHost&quot;</span><span class="p">:</span><span class="s2">&quot;ldap.local&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;directoryPort&quot;</span><span class="p">:</span><span class="s2">&quot;636&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;sslRequired&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;agentUserDn&quot;</span><span class="p">:</span><span class="s2">&quot;tom@stormpath.com&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;agentUserDnPassword&quot;</span><span class="p">:</span><span class="s2">&quot;StormpathRulez&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;baseDn&quot;</span><span class="p">:</span><span class="s2">&quot;dc=example,dc=com&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;pollInterval&quot;</span><span class="p">:</span><span class="mi">60</span><span class="p">,</span>
+        <span class="nt">&quot;accountConfig&quot;</span><span class="p">:{</span>
+          <span class="nt">&quot;dnSuffix&quot;</span><span class="p">:</span><span class="s2">&quot;ou=employees&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;objectClass&quot;</span><span class="p">:</span><span class="s2">&quot;person&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;objectFilter&quot;</span><span class="p">:</span><span class="s2">&quot;(cn=finance)&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;emailRdn&quot;</span><span class="p">:</span><span class="s2">&quot;email&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;givenNameRdn&quot;</span><span class="p">:</span><span class="s2">&quot;givenName&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;middleNameRdn&quot;</span><span class="p">:</span><span class="s2">&quot;middleName&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;surnameRdn&quot;</span><span class="p">:</span><span class="s2">&quot;sn&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;usernameRdn&quot;</span><span class="p">:</span><span class="s2">&quot;uid&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;passwordRdn&quot;</span><span class="p">:</span><span class="s2">&quot;userPassword&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;groupConfig&quot;</span><span class="p">:{</span>
+          <span class="nt">&quot;dnSuffix&quot;</span><span class="p">:</span><span class="s2">&quot;ou=groups&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;objectClass&quot;</span><span class="p">:</span><span class="s2">&quot;groupOfUniqueNames&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;objectFilter&quot;</span><span class="p">:</span><span class="s2">&quot;(ou=*-group)&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;nameRdn&quot;</span><span class="p">:</span><span class="s2">&quot;cn&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;descriptionRdn&quot;</span><span class="p">:</span><span class="s2">&quot;description&quot;</span><span class="p">,</span>
+          <span class="nt">&quot;membersRdn&quot;</span><span class="p">:</span><span class="s2">&quot;uniqueMember&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For more information about all of these values, please see the Reference chapter&#8217;s <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#directory">Directory</a> section.</p>
 </div>
 <div class="section" id="step-2-install-your-ldap-agent">
 <h4><a class="toc-backref" href="#id76">Step 2: Install your LDAP Agent</a><a class="headerlink" href="#step-2-install-your-ldap-agent" title="Permalink to this headline">¶</a></h4>
@@ -1271,9 +1330,22 @@ $ startup.sh
 <p>Specifically, you want that Account&#8217;s Provider Data:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to inspect SAML Provider Data is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+<p class="last">The ability to inspect SAML Provider Data is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or read the REST documentation below.
 For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/171">ticket #171</a> on Github.</p>
 </div>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/xbKQemsqSForceXAMPLE/providerData&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-01-20T17:56:25.532Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-01-20T17:57:22.530Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="s2">&quot;saml+testuser@email.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;is_portal_user&quot;</span><span class="p">:</span><span class="s2">&quot;false&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;saml&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;userId&quot;</span><span class="p">:</span><span class="s2">&quot;00536000000G4ft&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="s2">&quot;saml+testuser@email.com&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Everything here other than <code class="docutils literal"><span class="pre">href</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code> and <code class="docutils literal"><span class="pre">modifiedAt</span></code> are Attributes passed by Salesforce.</p>
 <p>Now the <code class="docutils literal"><span class="pre">email</span></code> Attribute has already been passed as part of the Account creation, but you can also map the other SAML Attributes to Stormpath Account attributes as well.</p>
 </div>
 <div class="section" id="optional-add-any-additional-attributes-you-want">
@@ -1425,9 +1497,22 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <p>Specifically, you want that Account&#8217;s <code class="docutils literal"><span class="pre">providerData</span></code> resource:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to inspect SAML Provider Data is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+<p class="last">The ability to inspect SAML Provider Data is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or read the REST documentation below..
 For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/171">ticket #171</a> on Github.</p>
 </div>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/2i6RxkcOneLogineXaMPle/providerData&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-01-21T18:11:09.838Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-01-21T18:13:39.102Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;PersonImmutableID&quot;</span><span class="p">:</span><span class="s2">&quot;samltestuser&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;User.FirstName&quot;</span><span class="p">:</span><span class="s2">&quot;John&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;User.LastName&quot;</span><span class="p">:</span><span class="s2">&quot;Samlton&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;User.email&quot;</span><span class="p">:</span><span class="s2">&quot;saml+testuser@example.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;saml&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Everything here other than <code class="docutils literal"><span class="pre">href</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code> and <code class="docutils literal"><span class="pre">modifiedAt</span></code> are Attributes passed by OneLogin.</p>
 <p>Now the <code class="docutils literal"><span class="pre">email</span></code> Attribute has already been passed as part of the Account creation, but you can also map the other attributes to Stormpath Account attributes as well.</p>
 </div>
 <div class="section" id="id17">
@@ -1574,8 +1659,16 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <p>Specifically, you want that Account&#8217;s <code class="docutils literal"><span class="pre">providerData</span></code> resource:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to inspect SAML Provider Data is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
+<p class="last">The ability to inspect SAML Provider Data is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or read the REST documentation below.
 For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/171">ticket #171</a> on Github.</p>
+</div>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/6Y2ViNhE5GOktaExample/providerData&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-03-09T18:16:16.116Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-03-25T14:49:30.098Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;saml&quot;</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 <p>As you can see there are no default attributes passed by Okta, but you can map any attributes you like to the Stormpath Account attributes as well.</p>
 </div>
@@ -1852,8 +1945,25 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <p>Input the data you gathered in Step 1 above into your Directory&#8217;s Provider resource, and then pass that along as part of the Directory creation request:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to create SAML Directories is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+<p>The ability to create SAML Directories is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or see the REST documentation below.</p>
+<p class="last">For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span> <span class="p">:</span> <span class="s2">&quot;My SAML Directory&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span> <span class="p">:</span> <span class="s2">&quot;A Directory used for SAML Authorization&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;provider&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;saml&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ssoLoginUrl&quot;</span><span class="p">:</span><span class="s2">&quot;https://yourIdp.com/saml2/sso/login&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;ssoLogoutUrl&quot;</span><span class="p">:</span><span class="s2">&quot;https://yourIdp.com/saml2/sso/logout&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;encodedX509SigningCert&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN CERTIFICATE-----\n...Certificate goes here...\n-----END CERTIFICATE-----&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;requestSignatureAlgorithm&quot;</span><span class="p">:</span><span class="s2">&quot;RSA-SHA256&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1866,14 +1976,47 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <p>In order to retrieve the required values, start by sending this request:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to retrieve SAML Provider metadata is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+<p>The ability to retrieve SAML Provider metadata is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or see the REST API instructions below.</p>
+<p class="last">For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/directories/$DIRECTORY_ID/provider</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/xml</span>
+</pre></div>
+</div>
+<p>This will return the Provider:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/1joyMCilyf1xSravQxaHxy/provider&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-12-21T20:27:16.190Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-12-21T20:27:16.190Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;saml&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ssoLoginUrl&quot;</span><span class="p">:</span><span class="s2">&quot;https://stormpathsaml-dev-ed.my.salesforce.com/idp/endpoint/HttpRedirect&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;ssoLogoutUrl&quot;</span><span class="p">:</span><span class="s2">&quot;https://stormpathsaml-dev-ed.my.salesforce.com/idp/endpoint/HttpRedirect&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;encodedX509SigningCert&quot;</span><span class="p">:</span><span class="s2">&quot;-----BEGIN CERTIFICATE-----\nexample\n-----END CERTIFICATE-----&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;requestSignatureAlgorithm&quot;</span><span class="p">:</span><span class="s2">&quot;RSA-SHA256&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;attributeStatementMappingRules&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/attributeStatementMappingRules/1jq5X3PhdEZJ5EL5MORdTG&quot;</span>
+  <span class="p">},</span>
+<span class="hll">  <span class="nt">&quot;serviceProviderMetadata&quot;</span><span class="p">:{</span>
+</span><span class="hll">    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/samlServiceProviderMetadatas/1l4aLK8aJPNtwslBgXBjGE&quot;</span>
+</span>  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 <p>Now you will need to retrieve your Directory Provider&#8217;s Service Provider Metadata:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to retrieve SAML Provider metadata is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+<p>The ability to retrieve SAML Provider metadata is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or see the REST API instructions below.</p>
+<p class="last">For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/samlServiceProviderMetadatas/$METADATA_ID</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/xml</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This will return XML by default, but you can also specify <code class="docutils literal"><span class="pre">application/json</span></code> if you&#8217;d like to receive JSON instead.</p>
 </div>
 <p><strong>Example XML</strong></p>
 <div class="highlight-xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span>
@@ -1916,8 +2059,20 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <p>You should create any URIs here that you would like included as authorized callback URIs.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to update the authorized callbackURIs is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/172">ticket #172</a> on Github.</p>
+<p>The ability to update the authorized callbackURIs is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or see the REST API instructions below.</p>
+<p class="last">For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/172">ticket #172</a> on Github.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;authorizedCallbackUris&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;https://myapplication.com/whatever/callback&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;https://myapplication.com/whatever/callback2&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 <ol class="arabic simple" start="2">
 <li>There is also an embedded <code class="docutils literal"><span class="pre">samlPolicy</span></code> object that contains information about the SAML flow configuration and endpoints:</li>
@@ -1936,8 +2091,8 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <p>To configure your IdP for IdP-initiated authentication, you will need to get a <code class="docutils literal"><span class="pre">defaultRelayState</span></code> JWT:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to get the default relay state is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or use the the REST API documentation below.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+<p>The ability to get the default relay state is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or use the the REST API instructions below.</p>
+<p class="last">For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
 </div>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
@@ -1959,13 +2114,8 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <p>A request including these optional properties looks like this:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to get the default relay state is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or use the the REST API documentation below.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
-</div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">The ability to get the default relay state is not yet available in the PHP SDK. Please use the Stormpath Admin Console, or use the the REST API documentation below.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/154">ticket #154</a> on Github.</p>
+<p>The ability to get the default relay state is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or use the the REST API instructions below.</p>
+<p class="last">For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
 </div>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
@@ -2014,14 +2164,61 @@ For updates, you can follow <a class="reference external" href="https://github.c
 <p><strong>Example Rule</strong></p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to modify attribute mapping is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+<p>The ability to modify attribute mappings is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or see the REST API instructions below.</p>
+<p class="last">For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+</div>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;uid&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;nameFormat&quot;</span><span class="p">:</span> <span class="s2">&quot;urn:oasis:names:tc:SAML:2.0:attrname-format:basic&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:[</span>
+    <span class="s2">&quot;username&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The rule expressed here is as follows:</p>
+<ul class="simple">
+<li>A SAML Assertion with the name <code class="docutils literal"><span class="pre">uid</span></code> AND</li>
+<li>the name format <code class="docutils literal"><span class="pre">urn:oasis:names:tc:SAML:2.0:attrname-format:basic</span></code></li>
+<li>maps to the Account Attribute <code class="docutils literal"><span class="pre">username</span></code>.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is possible to specify only a <code class="docutils literal"><span class="pre">name</span></code> or <code class="docutils literal"><span class="pre">nameFormat</span></code> in your rule, instead of both.</p>
 </div>
 <p>In order to create the mapping rules, you send the following request:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The ability to modify attribute mapping is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or switch this page to the REST API documentation.
-For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+<p>The ability to modify attribute mapping is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or see the REST API instructions below.</p>
+<p class="last">For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/111">ticket #111</a> on Github.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/attributeStatementMappingRules/$MAPPING_RULES_ID&quot;,</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;items&quot;</span><span class="p">:[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;uid&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;username&quot;</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;mail&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;email&quot;</span>
+      <span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;location&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;customData.location&quot;</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 <p>Now that we&#8217;ve configured everything, you can take a look at what the actual SAML authentication flow looks like.</p>
 </div>

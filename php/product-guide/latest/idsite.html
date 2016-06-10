@@ -84,20 +84,20 @@
     </a>
     <div id="langpicker" style="display:none;">
       <div class="">
-        <a href="/rest/product-guide/latest/">REST</a>
+        <a href="/csharp/product-guide/latest/idsite.html">C#</a>
       </div>
       <div class="current">
         <a href="/php/product-guide/latest/idsite.html">PHP</a>
       </div>
-      <!--
       <div class="">
-        <a href="/java/product-guide/latest/idsite.html">Java</a>
-      </div>
-      <div class="">
-        <a href="/csharp/product-guide/latest/idsite.html">C#</a>
+        <a href="/rest/product-guide/latest/">REST</a>
       </div>
       <div class="">
         <a href="/vbnet/product-guide/latest/idsite.html">Visual Basic</a>
+      </div>
+      <!--
+      <div class="">
+        <a href="/java/product-guide/latest/idsite.html">Java</a>
       </div>
       <div class="">
         <a href="/csharp/product-guide/latest/idsite.html">Python</a>
@@ -435,9 +435,9 @@
 </tr>
 </tbody>
 </table>
-<p>Once the JWT is validated, you can read information about the user from it. In some cases you may wish to exchange this JWT for a Stormpath OAuth 2.0 token.</p>
 <div class="section" id="exchanging-the-id-site-jwt-for-an-oauth-token">
 <span id="idsite-jwt-to-oauth"></span><h4>Exchanging the ID Site JWT for an OAuth Token<a class="headerlink" href="#exchanging-the-id-site-jwt-for-an-oauth-token" title="Permalink to this headline">¶</a></h4>
+<p>In some cases you may wish to exchange the ID Site assertion (JWT) for a Stormpath OAuth 2.0 token.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">For background information, please see <a class="reference internal" href="auth_n.html#token-authn"><span class="std std-ref">4.2. How Token-Based Authentication Works</span></a>.</p>
@@ -482,7 +482,8 @@
 </div>
 <div class="section" id="resetting-your-password-with-id-site">
 <span id="idsite-password-reset"></span><h3>Resetting Your Password with ID Site<a class="headerlink" href="#resetting-your-password-with-id-site" title="Permalink to this headline">¶</a></h3>
-<p>The Account Management chapter has an overview of <a class="reference internal" href="accnt_mgmt.html#password-reset-flow"><span class="std std-ref">3.4.3. Password Reset</span></a> in Stormpath. In that flow, a user chooses to reset their password, then receives an email with a link to a page on your application that allows them to set a new password. If you are using ID Site for login, then it stands to reason that you would want them to land on your ID Site for password reset as well. The issue here, however, is bridging the Password Reset Flow and the ID Site flow.</p>
+<p>The Account Management chapter has an overview of <a class="reference internal" href="accnt_mgmt.html#password-reset-flow"><span class="std std-ref">Password Reset</span></a> in Stormpath. In that flow, a user chooses to reset their password, then receives an email with a link to a page on your application that allows them to set a new password.</p>
+<p>If you are using ID Site for login, then it stands to reason that you would want them to land on your ID Site for password reset as well. All you have to do is send the user to ID Site with a special path (<code class="docutils literal"><span class="pre">/#/reset</span></code>) and a claim containing the password reset token from the email link.</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$location</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">createIdSiteUrl</span><span class="p">([</span>
   <span class="s1">&#39;path&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;/#/reset&#39;</span><span class="p">,</span>
   <span class="s1">&#39;sp_token&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;{{SP_TOKEN}}&#39;</span><span class="p">,</span>
@@ -503,12 +504,12 @@
 <p><code class="docutils literal"><span class="pre">organizationNameKey</span></code>: Allows you to specify an Organization&#8217;s <code class="docutils literal"><span class="pre">namekey</span></code>. The user is sent to the ID Site for that Organization, and is forced to log in to that Organization.</p>
 <p><strong>Show Organization Field</strong></p>
 <p><code class="docutils literal"><span class="pre">showOrganizationField</span></code>: Toggles the &#8220;Organization&#8221; field on and off on ID Site. Used on its own, it will allow the user to specify the Organization that they would like to log in to.</p>
-<div class="figure align-center" id="id5">
+<div class="figure align-center" id="id7">
 <a class="reference internal image-reference" href="_images/id_site_sof_empty.png"><img alt="ID Site with sof toggled on" src="_images/id_site_sof_empty.png" style="width: 632.0px; height: 473.0px;" /></a>
 <p class="caption"><span class="caption-text"><em>ID Site with Organization field on and prepopulated</em></span></p>
 </div>
 <p>If combined with <code class="docutils literal"><span class="pre">organizationNameKey</span></code>, this will pre-populate that field with the Organization&#8217;s name.</p>
-<div class="figure align-center" id="id6">
+<div class="figure align-center" id="id8">
 <a class="reference internal image-reference" href="_images/id_site_sof_prepop.png"><img alt="ID Site with sof and onk toggled on" src="_images/id_site_sof_prepop.png" style="width: 633.0px; height: 478.0px;" /></a>
 <p class="caption"><span class="caption-text"><em>ID Site with Organization field on and prepopulated</em></span></p>
 </div>
@@ -517,7 +518,7 @@
 <p class="last">Stormpath will only show the field when you have at least one Organization mapped as an Account Store for your Application.</p>
 </div>
 <p><strong>Use Sub-Domain</strong></p>
-<p><code class="docutils literal"><span class="pre">useSubDomain</span></code>: If combined with <code class="docutils literal"><span class="pre">organizationNameKey</span></code>, will redirect the user to an ID Site with the Organization&#8217;s <code class="docutils literal"><span class="pre">namekey</span></code> as a sub-domain in its URL.</p>
+<p><code class="docutils literal"><span class="pre">useSubDomain</span></code>: If combined with <code class="docutils literal"><span class="pre">organizationNameKey</span></code>, will redirect the user to an ID Site with the Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> as a sub-domain in its URL.</p>
 <p>For example, if your ID Site configuration is <code class="docutils literal"><span class="pre">elastic-rebel.id.stormpath.io</span></code> and the Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">home-depot</span></code>, then the SSO endpoint will resolve the following URL:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>https://home-depot.elastic-rebel.id.stormpath.io/?jwt={GENERATED_JWT}
 </pre></div>
