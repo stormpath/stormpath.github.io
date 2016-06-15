@@ -232,6 +232,12 @@
 <p>You can customize the cache item time-to-live (TTL) and time-to-idle (TTI) of specific cache regions. For example, you might want cached Account resources to expire quickly, but cached Directory resources to stick around longer.</p>
 <p>For any regions that are not specifically configured, the SDK will use default time-to-live and time-to-idle values.</p>
 <p>See <a class="reference internal" href="#caching-config"><span class="std std-ref">Cache Manager</span></a> in the Configuration Reference to understand how to set these configuration values.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The PHP SDK follows PSR-6 caching.  By default, the SDK ships with <code class="docutils literal"><span class="pre">Array</span></code>, <code class="docutils literal"><span class="pre">Redis</span></code>, <code class="docutils literal"><span class="pre">Memcached</span></code>, and <code class="docutils literal"><span class="pre">Null</span></code> caching.
+Because of the implementation of PSR-6 in the SDK, you are able to use any caching that follows the standard that can be found
+on the <a class="reference external" href="http://php-cache.readthedocs.io/en/latest/">PHP Cache Documentation</a>.</p>
+</div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">By default, the PHP SDK uses array caching.  Because of this, the cache is cleared on each page request.</p>
@@ -421,6 +427,12 @@
 </div>
 <div class="section" id="cache-manager">
 <span id="caching-config"></span><h3>Cache Manager<a class="headerlink" href="#cache-manager" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The PHP SDK follows PSR-6 caching.  By default, the SDK ships with <code class="docutils literal"><span class="pre">Array</span></code>, <code class="docutils literal"><span class="pre">Redis</span></code>, <code class="docutils literal"><span class="pre">Memcached</span></code>, and <code class="docutils literal"><span class="pre">Null</span></code> caching.
+Because of the implementation of PSR-6 in the SDK, you are able to use any caching that follows the standard that can be found
+on the <a class="reference external" href="http://php-cache.readthedocs.io/en/latest/">PHP Cache Documentation</a>.</p>
+</div>
 <div class="section" id="id12">
 <h4>Inline Code<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
 <p>To disable caching entirely:</p>
@@ -431,7 +443,7 @@
 </div>
 <p>Or, to change the default TTL and TTI for cached resources and override the defaults for specific resources:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$cacheManagerOptions</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-  <span class="s1">&#39;cachemanager&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Array&#39;</span><span class="p">,</span> <span class="c1">//Array, Memcached, Redis, Null, or the full namespaced CacheManager instance</span>
+  <span class="s1">&#39;cachemanager&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Array&#39;</span><span class="p">,</span> <span class="c1">//Array, Memcached, Redis, Null, or the full namespaced PSR6CacheManager instance</span>
   <span class="s1">&#39;memcached&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span>
   <span class="k">array</span><span class="p">(</span>
     <span class="s1">&#39;host&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="s1">&#39;port&#39;</span> <span class="o">=&gt;</span> <span class="mi">11211</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span> <span class="o">=&gt;</span> <span class="mi">100</span><span class="p">),</span>
