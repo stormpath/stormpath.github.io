@@ -297,20 +297,20 @@
 <span id="password-authn"></span><h2>4.1. How Password Authentication Works in Stormpath<a class="headerlink" href="#how-password-authentication-works-in-stormpath" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#authenticating-an-account" id="id56">4.1.1. Authenticating An Account</a><ul>
-<li><a class="reference internal" href="#how-login-attempts-work-in-stormpath" id="id57">4.1.2. How Login Attempts Work in Stormpath</a></li>
+<li><a class="reference internal" href="#authenticating-an-account" id="id53">4.1.1. Authenticating An Account</a><ul>
+<li><a class="reference internal" href="#how-login-attempts-work-in-stormpath" id="id54">4.1.2. How Login Attempts Work in Stormpath</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#manage-who-can-log-into-your-application" id="id58">4.1.3. Manage Who Can Log Into Your Application</a><ul>
-<li><a class="reference internal" href="#mapping-a-new-account-store" id="id59">Mapping a new Account Store</a></li>
-<li><a class="reference internal" href="#updating-an-existing-account-store" id="id60">Updating an Existing Account Store</a></li>
+<li><a class="reference internal" href="#manage-who-can-log-into-your-application" id="id55">4.1.3. Manage Who Can Log Into Your Application</a><ul>
+<li><a class="reference internal" href="#mapping-a-new-account-store" id="id56">Mapping a new Account Store</a></li>
+<li><a class="reference internal" href="#updating-an-existing-account-store" id="id57">Updating an Existing Account Store</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <p>Probably the single most common way of authenticating a user is to ask them for their account credentials. When a user creates an Account in Stormpath, it is required that they provide a username (or email) and a password. Those credentials can then be provided in order to authenticate that Account.</p>
 <div class="section" id="authenticating-an-account">
-<h3><a class="toc-backref" href="#id56">4.1.1. Authenticating An Account</a><a class="headerlink" href="#authenticating-an-account" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id53">4.1.1. Authenticating An Account</a><a class="headerlink" href="#authenticating-an-account" title="Permalink to this headline">¶</a></h3>
 <p>After an Account resource has been created, you can authenticate it given an input of a <code class="docutils literal"><span class="pre">username</span></code>/<code class="docutils literal"><span class="pre">email</span></code> and a <code class="docutils literal"><span class="pre">password</span></code> from the end-user. When authentication occurs, you are authenticating an Account within a specific Application against that Application’s Organizations, Directories and Groups (more on that <a class="reference internal" href="#how-login-works"><span class="std std-ref">below</span></a>). The key point is that the Application resource is the starting point for authentication attempts.</p>
 <p>So, if you had a user Account &#8220;Han Solo&#8221; in the &#8220;Captains&#8221; Directory, and you wanted to log him in, you would use the <code class="docutils literal"><span class="pre">UsernamePasswordRequest</span></code> class</p>
 <blockquote>
@@ -396,11 +396,11 @@
 </div>
 </div></blockquote>
 <div class="section" id="how-login-attempts-work-in-stormpath">
-<span id="how-login-works"></span><h4><a class="toc-backref" href="#id57">4.1.2. How Login Attempts Work in Stormpath</a><a class="headerlink" href="#how-login-attempts-work-in-stormpath" title="Permalink to this headline">¶</a></h4>
+<span id="how-login-works"></span><h4><a class="toc-backref" href="#id54">4.1.2. How Login Attempts Work in Stormpath</a><a class="headerlink" href="#how-login-attempts-work-in-stormpath" title="Permalink to this headline">¶</a></h4>
 <p>When the &#8220;Han Solo&#8221; Account tries to log in to the Application, the user submits a request to the Application’s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint. Stormpath then consults the Application’s assigned <strong>Account Stores</strong> (Organizations, Directories, and Groups) in the order that they are assigned to the Application. When a matching Account is discovered in a mapped Account Store, it is used to verify the authentication attempt and all subsequent Account Stores are ignored. In other words, Accounts are matched for Application login based on a &#8220;first match wins&#8221; policy.</p>
 <p>Let&#8217;s look at an example to illustrate this behavior. Assume that two Account Stores, a &#8220;Customers&#8221; Directory and an &#8220;Employees&#8221; Directory, have been assigned (mapped) to a &#8220;Foo&#8221; application. &#8220;Customers&#8221; was assigned first, and &#8220;Employees&#8221; was assigned next, and this will dictate the order in which they are checked.</p>
 <p>The following flow chart shows what happens when an Account attempts to log in to the Foo application:</p>
-<div class="figure align-center" id="id53">
+<div class="figure align-center" id="id50">
 <a class="reference internal image-reference" href="_images/LoginAttemptFlow.png"><img alt="Login Attempt Flow" src="_images/LoginAttemptFlow.png" style="width: 466.0px; height: 597.0px;" /></a>
 <p class="caption"><span class="caption-text"><em>The Login Attempt Flow</em></span></p>
 </div>
@@ -426,7 +426,7 @@
 </div>
 </div>
 <div class="section" id="manage-who-can-log-into-your-application">
-<span id="managing-login"></span><h3><a class="toc-backref" href="#id58">4.1.3. Manage Who Can Log Into Your Application</a><a class="headerlink" href="#manage-who-can-log-into-your-application" title="Permalink to this headline">¶</a></h3>
+<span id="managing-login"></span><h3><a class="toc-backref" href="#id55">4.1.3. Manage Who Can Log Into Your Application</a><a class="headerlink" href="#manage-who-can-log-into-your-application" title="Permalink to this headline">¶</a></h3>
 <p>As is hopefully evident by now, controlling which Accounts can log in to your Application is largely a matter of manipulating the Application&#8217;s Account Store Mappings.</p>
 <p>The reason why your user &#8220;Han Solo&#8221; was able to log in to your application is because the Application resource that represents your application and your &#8220;Captains&#8221; Directory are mapped to one another by an <strong>Account Store Mapping</strong>.</p>
 <p>You can find all the Account Store Mappings by using the <code class="docutils literal"><span class="pre">getAccountStoreMappings()</span></code> method or the <code class="docutils literal"><span class="pre">accountStoreMappings</span></code> property on the Application resource.</p>
@@ -452,7 +452,7 @@
 </pre></div>
 </div>
 <div class="section" id="mapping-a-new-account-store">
-<span id="create-asm"></span><h4><a class="toc-backref" href="#id59">Mapping a new Account Store</a><a class="headerlink" href="#mapping-a-new-account-store" title="Permalink to this headline">¶</a></h4>
+<span id="create-asm"></span><h4><a class="toc-backref" href="#id56">Mapping a new Account Store</a><a class="headerlink" href="#mapping-a-new-account-store" title="Permalink to this headline">¶</a></h4>
 <p>We would now like to map a new Account Store that will have the following characteristics:</p>
 <ol class="arabic simple">
 <li>It will have the highest login priority. This means that it will be consulted first during <a class="reference internal" href="#how-login-works"><span class="std std-ref">the login process</span></a>, before any other Account Stores.</li>
@@ -477,7 +477,7 @@
 </div>
 </div>
 <div class="section" id="updating-an-existing-account-store">
-<h4><a class="toc-backref" href="#id60">Updating an Existing Account Store</a><a class="headerlink" href="#updating-an-existing-account-store" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id57">Updating an Existing Account Store</a><a class="headerlink" href="#updating-an-existing-account-store" title="Permalink to this headline">¶</a></h4>
 <p>Updating an existing Account Store simply involves sending a request with the attributes that you would like to update.</p>
 <p><strong>Changing Login Priority</strong></p>
 <p>For example, if you want to update an existing Account Store to now have highest login priority, send this request that sets the Mapping&#8217;s list index value as <code class="docutils literal"><span class="pre">0</span></code>:</p>
@@ -518,29 +518,29 @@
 <span id="token-authn"></span><h2>4.2. How Token-Based Authentication Works<a class="headerlink" href="#how-token-based-authentication-works" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id1">
 <ul class="simple">
-<li><a class="reference internal" href="#introduction-to-token-based-authentication" id="id61">4.2.1. Introduction to Token-Based Authentication</a><ul>
-<li><a class="reference internal" href="#why-oauth-2-0" id="id62">Why OAuth 2.0?</a></li>
-<li><a class="reference internal" href="#what-tokens-are-available-for-token-based-authentication" id="id63">What Tokens Are Available for Token-Based Authentication?</a></li>
+<li><a class="reference internal" href="#introduction-to-token-based-authentication" id="id58">4.2.1. Introduction to Token-Based Authentication</a><ul>
+<li><a class="reference internal" href="#why-oauth-2-0" id="id59">Why OAuth 2.0?</a></li>
+<li><a class="reference internal" href="#what-tokens-are-available-for-token-based-authentication" id="id60">What Tokens Are Available for Token-Based Authentication?</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#using-stormpath-for-token-based-authentication" id="id64">4.2.2. Using Stormpath for Token-Based Authentication</a><ul>
-<li><a class="reference internal" href="#configuring-token-based-authentication" id="id65">Configuring Token-Based Authentication</a></li>
-<li><a class="reference internal" href="#generating-an-oauth-2-0-access-token" id="id66">Generating an OAuth 2.0 Access Token</a></li>
-<li><a class="reference internal" href="#validating-an-access-token" id="id67">Validating an Access Token</a></li>
-<li><a class="reference internal" href="#refreshing-access-tokens" id="id68">Refreshing Access Tokens</a></li>
-<li><a class="reference internal" href="#revoking-access-and-refresh-tokens" id="id69">Revoking Access and Refresh Tokens</a></li>
+<li><a class="reference internal" href="#using-stormpath-for-token-based-authentication" id="id61">4.2.2. Using Stormpath for Token-Based Authentication</a><ul>
+<li><a class="reference internal" href="#configuring-token-based-authentication" id="id62">Configuring Token-Based Authentication</a></li>
+<li><a class="reference internal" href="#generating-an-oauth-2-0-access-token" id="id63">Generating an OAuth 2.0 Access Token</a></li>
+<li><a class="reference internal" href="#validating-an-access-token" id="id64">Validating an Access Token</a></li>
+<li><a class="reference internal" href="#refreshing-access-tokens" id="id65">Refreshing Access Tokens</a></li>
+<li><a class="reference internal" href="#revoking-access-and-refresh-tokens" id="id66">Revoking Access and Refresh Tokens</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <p>In this section, you will discuss how to use Stormpath to generate and manage OAuth 2.0 Access Token.</p>
 <div class="section" id="introduction-to-token-based-authentication">
-<h3><a class="toc-backref" href="#id61">4.2.1. Introduction to Token-Based Authentication</a><a class="headerlink" href="#introduction-to-token-based-authentication" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id58">4.2.1. Introduction to Token-Based Authentication</a><a class="headerlink" href="#introduction-to-token-based-authentication" title="Permalink to this headline">¶</a></h3>
 <p>Since HTTP is considered a stateless protocol, if your application authenticates a user for one HTTP request, a problem arises when the next request is sent and your application doesn&#8217;t know who the user is. This is why many applications today pass some information to tie the request to a user. Traditionally, this requires <strong>Server-based authentication</strong>, where state is stored on the server and only a session identifier is stored on the client.</p>
 <p><strong>Token-based authentication</strong> is a alternate, stateless strategy. With token-based authentication, you secure an application based on a security token that is generated for the user on authentication and then stored on the client-side. Token-based Authentication is all about removing the need to store information on the server while giving extra security to keep the token secure on the client. This helps you as a developer build stateless and scalable applications.</p>
 <p>Stormpath&#8217;s approach to token-based authentication has two elements: JSON Web Tokens (JWTs) for authentication, and OAuth 2.0 for authorization.</p>
 <div class="section" id="why-oauth-2-0">
-<h4><a class="toc-backref" href="#id62">Why OAuth 2.0?</a><a class="headerlink" href="#why-oauth-2-0" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id59">Why OAuth 2.0?</a><a class="headerlink" href="#why-oauth-2-0" title="Permalink to this headline">¶</a></h4>
 <p>OAuth 2.0 is an authorization framework and provides a protocol to interact with a service that can delegate authentication or provide authorization. Its primary advantage as a standard is its wide adoption rate across many mobile and web applications today. If you have ever logged-in to a website using Facebook or Google, you have used one of OAuth 2.0&#8217;s many authorization flows. You can read more about the different OAuth 2.0 authorization flows or grant types in depth on <a class="reference external" href="https://stormpath.com/blog/what-the-heck-is-oauth/">Stormpath’s blog</a>.</p>
 <p>Even though OAuth 2.0 has many authorization modes or &#8220;grant types&#8221;, Stormpath currently supports three of them:</p>
 <ul class="simple">
@@ -551,7 +551,7 @@
 <p>To understand how to use Token-based Authentication, you need to talk about the different types of tokens that are available.</p>
 </div>
 <div class="section" id="what-tokens-are-available-for-token-based-authentication">
-<h4><a class="toc-backref" href="#id63">What Tokens Are Available for Token-Based Authentication?</a><a class="headerlink" href="#what-tokens-are-available-for-token-based-authentication" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id60">What Tokens Are Available for Token-Based Authentication?</a><a class="headerlink" href="#what-tokens-are-available-for-token-based-authentication" title="Permalink to this headline">¶</a></h4>
 <p>For Token Based Authentication, there are a two different types of tokens that need to be managed. These are:</p>
 <ul class="simple">
 <li>Access Token</li>
@@ -563,10 +563,10 @@
 </div>
 </div>
 <div class="section" id="using-stormpath-for-token-based-authentication">
-<span id="token-authn-config"></span><h3><a class="toc-backref" href="#id64">4.2.2. Using Stormpath for Token-Based Authentication</a><a class="headerlink" href="#using-stormpath-for-token-based-authentication" title="Permalink to this headline">¶</a></h3>
+<span id="token-authn-config"></span><h3><a class="toc-backref" href="#id61">4.2.2. Using Stormpath for Token-Based Authentication</a><a class="headerlink" href="#using-stormpath-for-token-based-authentication" title="Permalink to this headline">¶</a></h3>
 <p>Stormpath can be used to generate, manage, check, and revoke both Access and Refresh Tokens. Before diving in, let&#8217;s talk about configuration.</p>
 <div class="section" id="configuring-token-based-authentication">
-<h4><a class="toc-backref" href="#id65">Configuring Token-Based Authentication</a><a class="headerlink" href="#configuring-token-based-authentication" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id62">Configuring Token-Based Authentication</a><a class="headerlink" href="#configuring-token-based-authentication" title="Permalink to this headline">¶</a></h4>
 <p>Stormpath is configurable so you can set the time to live (TTL) for both the Access and Refresh tokens. This is important for many applications because it gives the ability to define how the tokens expire. For example, you could decide that your application requires a user to log in daily, but the access should only live for 10 minutes. Or, you could decide that for your application, users should be able to stay logged-in for two months and the access token expires in an hour.</p>
 <p>Each Application resource in Stormpath has an associated <a class="reference internal" href="reference.html#ref-oauth-policy"><span class="std std-ref">OAuth Policy resource</span></a> where the TTLs for a particular Application&#8217;s tokens are stored:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$oauthPolicy</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">oauthPolicy</span><span class="p">;</span>
@@ -611,7 +611,7 @@
 </div>
 </div>
 <div class="section" id="generating-an-oauth-2-0-access-token">
-<span id="generate-oauth-token"></span><h4><a class="toc-backref" href="#id66">Generating an OAuth 2.0 Access Token</a><a class="headerlink" href="#generating-an-oauth-2-0-access-token" title="Permalink to this headline">¶</a></h4>
+<span id="generate-oauth-token"></span><h4><a class="toc-backref" href="#id63">Generating an OAuth 2.0 Access Token</a><a class="headerlink" href="#generating-an-oauth-2-0-access-token" title="Permalink to this headline">¶</a></h4>
 <p>Stormpath can generate Access Tokens using the above-mentioned OAuth 2.0 <strong>Password Grant</strong> flow.</p>
 <p>Your application will act as a proxy to the Stormpath API. For example:</p>
 <ul class="simple">
@@ -690,7 +690,7 @@
 </table>
 </div>
 <div class="section" id="validating-an-access-token">
-<h4><a class="toc-backref" href="#id67">Validating an Access Token</a><a class="headerlink" href="#validating-an-access-token" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id64">Validating an Access Token</a><a class="headerlink" href="#validating-an-access-token" title="Permalink to this headline">¶</a></h4>
 <p>Once an Access Token has been generated, you have taken care of the Authentication part of your workflow. Now, the OAuth token can be used to authorize individual requests that the user makes. To do this, the client will need to pass it to your application.</p>
 <p>For example, if you have a route <code class="docutils literal"><span class="pre">https://yourapplication.com/secure-resource</span></code>, the client would request authorization to access the resource by passing the access token as follows:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
@@ -823,7 +823,7 @@
 </div>
 </div>
 <div class="section" id="refreshing-access-tokens">
-<h4><a class="toc-backref" href="#id68">Refreshing Access Tokens</a><a class="headerlink" href="#refreshing-access-tokens" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id65">Refreshing Access Tokens</a><a class="headerlink" href="#refreshing-access-tokens" title="Permalink to this headline">¶</a></h4>
 <p>In the event that the Access Token expires, the user can generate a new one using the Refresh Token without re-entering their credentials.</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$refreshGrant</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Stormpath\Oauth\RefreshGrantRequest</span><span class="p">(</span><span class="nv">$refreshTokenJwt</span><span class="p">);</span>
 
@@ -852,7 +852,7 @@
 <p>Note that this response contains the same Refresh Token as was in the request. This is because when Stormpath generates a new Access Token for a Refresh Token it does not generate a new Refresh token, nor does it modify its expiration time. This means that once the Refresh Token expires, the user must authenticate again to get a new Access and Refresh Tokens.</p>
 </div>
 <div class="section" id="revoking-access-and-refresh-tokens">
-<h4><a class="toc-backref" href="#id69">Revoking Access and Refresh Tokens</a><a class="headerlink" href="#revoking-access-and-refresh-tokens" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id66">Revoking Access and Refresh Tokens</a><a class="headerlink" href="#revoking-access-and-refresh-tokens" title="Permalink to this headline">¶</a></h4>
 <p>There are cases where you might want to revoke the Access and Refresh Tokens that you have generated for a user. For example:</p>
 <ul class="simple">
 <li>The user has explicitly logged out, and your application needs to revoke their access, requiring re-authentication.</li>
@@ -871,10 +871,10 @@
 <span id="social-authn"></span><h2>4.3. How Social Authentication Works<a class="headerlink" href="#how-social-authentication-works" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id5">
 <ul class="simple">
-<li><a class="reference internal" href="#google" id="id70">4.3.1. Google</a></li>
-<li><a class="reference internal" href="#facebook" id="id71">4.3.2. Facebook</a></li>
-<li><a class="reference internal" href="#github" id="id72">4.3.3. Github</a></li>
-<li><a class="reference internal" href="#linkedin" id="id73">4.3.4 LinkedIn</a></li>
+<li><a class="reference internal" href="#google" id="id67">4.3.1. Google</a></li>
+<li><a class="reference internal" href="#facebook" id="id68">4.3.2. Facebook</a></li>
+<li><a class="reference internal" href="#github" id="id69">4.3.3. Github</a></li>
+<li><a class="reference internal" href="#linkedin" id="id70">4.3.4 LinkedIn</a></li>
 </ul>
 </div>
 <p>Social authentication essentially means using the &#8220;Log in with x&#8221; button in your application, where &#8220;x&#8221; is a Social Login Provider of some kind. The Social Login Providers currently supported by Stormpath are:</p>
@@ -916,7 +916,7 @@
 <li>Include the provider-specific logic that will access the social account (e.g. embed the appropriate link in your site that will send an authentication request to the social provider)</li>
 </ol>
 <div class="section" id="google">
-<span id="authn-google"></span><h3><a class="toc-backref" href="#id70">4.3.1. Google</a><a class="headerlink" href="#google" title="Permalink to this headline">¶</a></h3>
+<span id="authn-google"></span><h3><a class="toc-backref" href="#id67">4.3.1. Google</a><a class="headerlink" href="#google" title="Permalink to this headline">¶</a></h3>
 <p>Before you integrate Google Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application in the <a class="reference external" href="https://console.developers.google.com/start">Google Developer Console</a></li>
@@ -985,7 +985,7 @@
 </div>
 </div>
 <div class="section" id="facebook">
-<span id="authn-facebook"></span><h3><a class="toc-backref" href="#id71">4.3.2. Facebook</a><a class="headerlink" href="#facebook" title="Permalink to this headline">¶</a></h3>
+<span id="authn-facebook"></span><h3><a class="toc-backref" href="#id68">4.3.2. Facebook</a><a class="headerlink" href="#facebook" title="Permalink to this headline">¶</a></h3>
 <p>Before you integrate Facebook Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application on the <a class="reference external" href="https://developers.facebook.com/">Facebook Developer Site</a></li>
@@ -1035,7 +1035,7 @@
 </div>
 </div>
 <div class="section" id="github">
-<span id="authn-github"></span><h3><a class="toc-backref" href="#id72">4.3.3. Github</a><a class="headerlink" href="#github" title="Permalink to this headline">¶</a></h3>
+<span id="authn-github"></span><h3><a class="toc-backref" href="#id69">4.3.3. Github</a><a class="headerlink" href="#github" title="Permalink to this headline">¶</a></h3>
 <p>Before you integrate GitHub Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application in the <a class="reference external" href="https://developer.github.com/">GitHub Developer Site</a></li>
@@ -1085,7 +1085,7 @@
 </div>
 </div>
 <div class="section" id="linkedin">
-<span id="authn-linkedin"></span><h3><a class="toc-backref" href="#id73">4.3.4 LinkedIn</a><a class="headerlink" href="#linkedin" title="Permalink to this headline">¶</a></h3>
+<span id="authn-linkedin"></span><h3><a class="toc-backref" href="#id70">4.3.4 LinkedIn</a><a class="headerlink" href="#linkedin" title="Permalink to this headline">¶</a></h3>
 <p>Before you integrate LinkedIn Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application in the <a class="reference external" href="https://www.linkedin.com/secure/developer?newapp=">LinkedIn Developer Site</a></li>
@@ -1148,21 +1148,21 @@
 <span id="ldap-dir-authn"></span><h2>4.4. Authenticating Against an LDAP Directory<a class="headerlink" href="#authenticating-against-an-ldap-directory" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id6">
 <ul class="simple">
-<li><a class="reference internal" href="#mirror-directories-and-ldap" id="id74">Mirror Directories and LDAP</a><ul>
-<li><a class="reference internal" href="#step-1-create-an-ldap-directory" id="id75">Step 1: Create an LDAP Directory</a></li>
-<li><a class="reference internal" href="#step-2-install-your-ldap-agent" id="id76">Step 2: Install your LDAP Agent</a></li>
-<li><a class="reference internal" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" id="id77">Step 3: Map the LDAP Directory as an Account Store for Your Application</a></li>
+<li><a class="reference internal" href="#mirror-directories-and-ldap" id="id71">Mirror Directories and LDAP</a><ul>
+<li><a class="reference internal" href="#step-1-create-an-ldap-directory" id="id72">Step 1: Create an LDAP Directory</a></li>
+<li><a class="reference internal" href="#step-2-install-your-ldap-agent" id="id73">Step 2: Install your LDAP Agent</a></li>
+<li><a class="reference internal" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" id="id74">Step 3: Map the LDAP Directory as an Account Store for Your Application</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <p>This section assumes that you are already familiar both with <a class="reference internal" href="#how-login-works"><span class="std std-ref">4.1.2. How Login Attempts Work in Stormpath</span></a> and the concept of Stormpath <a class="reference internal" href="accnt_mgmt.html#about-ldap-dir"><span class="std std-ref">LDAP Directories</span></a>.</p>
 <div class="section" id="mirror-directories-and-ldap">
-<h3><a class="toc-backref" href="#id74">Mirror Directories and LDAP</a><a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id71">Mirror Directories and LDAP</a><a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
 <p>To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory. If this fulfills your requirements, then the story ends here. However, if you need to support other kinds of login (and therefore other kinds of Directories) it is recommended that you maintain a &#8220;master&#8221; Directory alongside your Mirror Directory. For more about this, see <a class="reference internal" href="#mirror-login"><span class="std std-ref">How Login Works with Master Directories</span></a> above.</p>
 <p>The step-by-step process for setting-up LDAP login is as follows:</p>
 <div class="section" id="step-1-create-an-ldap-directory">
-<span id="authn-ldap-dir-creation"></span><h4><a class="toc-backref" href="#id75">Step 1: Create an LDAP Directory</a><a class="headerlink" href="#step-1-create-an-ldap-directory" title="Permalink to this headline">¶</a></h4>
+<span id="authn-ldap-dir-creation"></span><h4><a class="toc-backref" href="#id72">Step 1: Create an LDAP Directory</a><a class="headerlink" href="#step-1-create-an-ldap-directory" title="Permalink to this headline">¶</a></h4>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>This feature is not yet available in the PHP SDK. Please use the Stormpath Admin Console, or see below for the REST API instructions.</p>
@@ -1228,7 +1228,7 @@
 <p>For more information about all of these values, please see the Reference chapter&#8217;s <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#directory">Directory</a> section.</p>
 </div>
 <div class="section" id="step-2-install-your-ldap-agent">
-<h4><a class="toc-backref" href="#id76">Step 2: Install your LDAP Agent</a><a class="headerlink" href="#step-2-install-your-ldap-agent" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id73">Step 2: Install your LDAP Agent</a><a class="headerlink" href="#step-2-install-your-ldap-agent" title="Permalink to this headline">¶</a></h4>
 <p>Once the Directory, Provider and Agent are created, installing your Agent is done in three steps.</p>
 <p><strong>1. Download</strong></p>
 <p>Download your Agent by following the Download link on the Agent page in the Admin Console.</p>
@@ -1260,7 +1260,7 @@ $ startup.sh
 <p>The Agent will start synchronizing immediately, pushing the configured data to Stormpath. You will see the synchronized user Accounts and Groups appear in the Stormpath Directory, and the Accounts will be able to log in to any Stormpath-enabled application that you assign. When the Agent detects local changes, additions or deletions to the mirrored Accounts or Groups, it will automatically propagate those changes to Stormpath.</p>
 </div>
 <div class="section" id="step-3-map-the-ldap-directory-as-an-account-store-for-your-application">
-<h4><a class="toc-backref" href="#id77">Step 3: Map the LDAP Directory as an Account Store for Your Application</a><a class="headerlink" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id74">Step 3: Map the LDAP Directory as an Account Store for Your Application</a><a class="headerlink" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
 <p>Creating an Account Store Mapping between your new LDAP Directory and your Stormpath Application can be done as described in <a class="reference internal" href="#create-asm"><span class="std std-ref">Mapping a new Account Store</span></a>.</p>
 <p>The log-in process will now proceed as it would for <a class="reference internal" href="#how-login-works"><span class="std std-ref">any other kind of Directory</span></a>.</p>
 <div class="admonition note">
@@ -1274,19 +1274,19 @@ $ startup.sh
 <span id="saml-authn"></span><h2>4.5. Authenticating Against a SAML Directory<a class="headerlink" href="#authenticating-against-a-saml-directory" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id7">
 <ul class="simple">
-<li><a class="reference internal" href="#stormpath-as-a-service-provider" id="id78">4.5.1. Stormpath as a Service Provider</a></li>
-<li><a class="reference internal" href="#configuring-saml" id="id79">4.5.2. Configuring SAML</a></li>
-<li><a class="reference internal" href="#configuring-saml-via-rest" id="id80">4.5.3. Configuring SAML via REST</a></li>
-<li><a class="reference internal" href="#the-stormpath-saml-flow" id="id81">4.5.4. The Stormpath SAML Flow</a></li>
+<li><a class="reference internal" href="#stormpath-as-a-service-provider" id="id75">4.5.1. Stormpath as a Service Provider</a></li>
+<li><a class="reference internal" href="#configuring-saml" id="id76">4.5.2. Configuring SAML</a></li>
+<li><a class="reference internal" href="#configuring-saml-via-rest" id="id77">4.5.3. Configuring SAML via REST</a></li>
+<li><a class="reference internal" href="#the-stormpath-saml-flow" id="id78">4.5.4. The Stormpath SAML Flow</a></li>
 </ul>
 </div>
 <p>SAML is an XML-based standard for exchanging authentication and authorization data between security domains. Stormpath enables you to allow customers to log-in by authenticating with an external SAML Identity Provider. Stormpath supports both the Service Provider initiated flow and the Identity Provider initiated flow.</p>
 <p>If you&#8217;d like a high-level description of Stormpath&#8217;s SAML support, see <a class="reference internal" href="#saml-overview"><span class="std std-ref">Stormpath as a Service Provider</span></a>.</p>
-<p>If you want a step-by-step guide to configuring Stormpath to work with Identity Providers like Salesforce, OneLogin and Okta, see <a class="reference internal" href="#saml-configuration"><span class="std std-ref">Configuring SAML</span></a>.</p>
+<p>If you want a step-by-step guide to configuring Stormpath to work with Identity Providers like Salesforce, OneLogin and Okta, as well as with your ADFS deployment, see <a class="reference internal" href="#saml-configuration"><span class="std std-ref">Configuring SAML</span></a>.</p>
 <p>If you&#8217;d like to know about how to configure SAML using just the REST API, please see <a class="reference internal" href="#saml-configuration-rest"><span class="std std-ref">Configuring SAML via REST</span></a>.</p>
 <p>If you&#8217;d like to understand the steps involved in a SAML login, see the <a class="reference internal" href="#saml-flow"><span class="std std-ref">SAML Login Flow section</span></a>.</p>
 <div class="section" id="stormpath-as-a-service-provider">
-<span id="saml-overview"></span><h3><a class="toc-backref" href="#id78">4.5.1. Stormpath as a Service Provider</a><a class="headerlink" href="#stormpath-as-a-service-provider" title="Permalink to this headline">¶</a></h3>
+<span id="saml-overview"></span><h3><a class="toc-backref" href="#id75">4.5.1. Stormpath as a Service Provider</a><a class="headerlink" href="#stormpath-as-a-service-provider" title="Permalink to this headline">¶</a></h3>
 <p>As mentioned above, Stormpath supports both Service Provider (SP) initiated and Identity Provider (IdP) initiated SAML authentication.  In SAML terminology, the user is the <strong>User Agent</strong>, your application (along with Stormpath) is the <strong>Service Provider</strong>, and the third-party SAML authentication site is the <strong>Identity Provider</strong> or <strong>IdP</strong>.</p>
 <div class="section" id="identity-provider-initiated-saml-authentication">
 <h4>Identity Provider Initiated SAML Authentication<a class="headerlink" href="#identity-provider-initiated-saml-authentication" title="Permalink to this headline">¶</a></h4>
@@ -1315,7 +1315,7 @@ $ startup.sh
 </div>
 </div>
 <div class="section" id="configuring-saml">
-<span id="saml-configuration"></span><h3><a class="toc-backref" href="#id79">4.5.2. Configuring SAML</a><a class="headerlink" href="#configuring-saml" title="Permalink to this headline">¶</a></h3>
+<span id="saml-configuration"></span><h3><a class="toc-backref" href="#id76">4.5.2. Configuring SAML</a><a class="headerlink" href="#configuring-saml" title="Permalink to this headline">¶</a></h3>
 <p>This section will show you how to set-up Stormpath to allow your users to log in with a SAML-enabled Identity Provider (IdP). It assumes that you have two things:</p>
 <ul>
 <li><p class="first">A Stormpath account with at least an Advanced plan</p>
@@ -1341,28 +1341,28 @@ $ startup.sh
 <span id="id8"></span><h4>Salesforce<a class="headerlink" href="#salesforce" title="Permalink to this headline">¶</a></h4>
 <div class="contents local topic" id="id9">
 <ul class="simple">
-<li><a class="reference internal" href="#step-1-set-up-salesforce" id="id82">Step 1: Set-up Salesforce</a></li>
-<li><a class="reference internal" href="#step-2-create-your-saml-directory-in-stormpath" id="id83">Step 2: Create Your SAML Directory in Stormpath</a></li>
-<li><a class="reference internal" href="#step-3-configure-your-service-provider-in-your-idp" id="id84">Step 3: Configure Your Service Provider in Your IdP</a></li>
-<li><a class="reference internal" href="#step-4-configure-your-application-in-stormpath" id="id85">Step 4: Configure Your Application in Stormpath</a></li>
-<li><a class="reference internal" href="#step-5-configure-your-attribute-mappings" id="id86">Step 5: Configure Your Attribute Mappings</a></li>
+<li><a class="reference internal" href="#step-1-set-up-salesforce" id="id79">Step 1: Set-up Salesforce</a></li>
+<li><a class="reference internal" href="#step-2-create-your-saml-directory-in-stormpath" id="id80">Step 2: Create Your SAML Directory in Stormpath</a></li>
+<li><a class="reference internal" href="#step-3-configure-your-service-provider-in-salesforce" id="id81">Step 3: Configure Your Service Provider in Salesforce</a></li>
+<li><a class="reference internal" href="#step-4-configure-your-application-in-stormpath" id="id82">Step 4: Configure Your Application in Stormpath</a></li>
+<li><a class="reference internal" href="#step-5-configure-your-attribute-mappings" id="id83">Step 5: Configure Your Attribute Mappings</a></li>
 </ul>
 </div>
 <div class="section" id="step-1-set-up-salesforce">
-<h5><a class="toc-backref" href="#id82">Step 1: Set-up Salesforce</a><a class="headerlink" href="#step-1-set-up-salesforce" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id79">Step 1: Set-up Salesforce</a><a class="headerlink" href="#step-1-set-up-salesforce" title="Permalink to this headline">¶</a></h5>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Before you start, make sure that you have set-up a Salesforce subdomain for your organization. You can do this under <strong>Administer</strong> &gt; <strong>Domain Management</strong> &gt; <strong>My Domain</strong>.</p>
 </div>
-<div class="section" id="set-up-your-identity-provider">
-<h6>1.1. Set-up Your Identity Provider<a class="headerlink" href="#set-up-your-identity-provider" title="Permalink to this headline">¶</a></h6>
+<div class="section" id="set-up-salesforce">
+<h6>1.1. Set-up Salesforce<a class="headerlink" href="#set-up-salesforce" title="Permalink to this headline">¶</a></h6>
 <ol class="arabic simple">
 <li>Under <strong>Administer</strong>, click on <strong>Security Controls</strong> &gt; <strong>Identity Provider</strong></li>
 <li>Click on <strong>Enable Identity Provider</strong>.</li>
 <li>You should now be on the &#8220;Identity Provider Setup&#8221; page, with a single security certificate in the drop down menu. Click on <strong>Save</strong>.</li>
 <li>You will now be back on the &#8220;Identity Provider&#8221; page. Click <strong>Download Certificate</strong>, which will download a .crt file with a name starting with <code class="docutils literal"><span class="pre">SelfSignedCert</span></code>.</li>
 <li>Open this file in your text editor of choice. The contents will be an x509 certificate starting with the line <code class="docutils literal"><span class="pre">-----BEGIN</span> <span class="pre">CERTIFICATE-----</span></code> and ending with <code class="docutils literal"><span class="pre">-----END</span> <span class="pre">CERTIFICATE-----</span></code>. The contents of this file are your &#8220;SAML X.509 Signing Cert&#8221;.</li>
-<li>Also click on <strong>Download Metadata</strong>, which will download an XML file which you will use in the very next step.</li>
+<li>Also click on <strong>Download Metadata</strong>, which will download an XML file which you will use in step 2.</li>
 </ol>
 </div>
 <div class="section" id="set-up-single-sign-on">
@@ -1376,6 +1376,11 @@ $ startup.sh
 </div>
 <div class="section" id="create-a-connected-app">
 <h6>1.3. Create a Connected App<a class="headerlink" href="#create-a-connected-app" title="Permalink to this headline">¶</a></h6>
+<p>Every Salesforce app will need its own Stormpath Directory. The users for that Salesforce app will only be able to log in if that application&#8217;s information is properly entered into a corresponding Stormpath Directory.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you already have a Salesforce application with SAML enabled, you can skip to Step 4 here.</p>
+</div>
 <ol class="arabic simple">
 <li>In the navigation pane on the left, under <strong>Build</strong>, find the <strong>Create</strong> section, then click on <strong>Apps</strong>.</li>
 <li>From the &#8220;Apps&#8221; page, find the &#8220;Connected Apps&#8221; section and click the <strong>New</strong> button.</li>
@@ -1397,8 +1402,8 @@ $ startup.sh
 </div>
 </div>
 <div class="section" id="step-2-create-your-saml-directory-in-stormpath">
-<h5><a class="toc-backref" href="#id83">Step 2: Create Your SAML Directory in Stormpath</a><a class="headerlink" href="#step-2-create-your-saml-directory-in-stormpath" title="Permalink to this headline">¶</a></h5>
-<p>You will now create your SAML Directory in Stormpath, using the values you gathered in the previous step. Then you will use information from this newly-created Directory to configure Stormpath as a Service Provider in the IdP in the next step.</p>
+<h5><a class="toc-backref" href="#id80">Step 2: Create Your SAML Directory in Stormpath</a><a class="headerlink" href="#step-2-create-your-saml-directory-in-stormpath" title="Permalink to this headline">¶</a></h5>
+<p>You will now create your SAML Directory in Stormpath, using the values you gathered in the previous step. Then you will use information from this newly-created Directory to configure Stormpath as a Service Provider in Salesforce in the next step.</p>
 <div class="section" id="create-your-saml-directory">
 <h6>2.1. Create Your SAML Directory<a class="headerlink" href="#create-your-saml-directory" title="Permalink to this headline">¶</a></h6>
 <ol class="arabic simple">
@@ -1424,11 +1429,9 @@ $ startup.sh
 <p>We will now input these values into the Identity Provider.</p>
 </div>
 </div>
-<div class="section" id="step-3-configure-your-service-provider-in-your-idp">
-<h5><a class="toc-backref" href="#id84">Step 3: Configure Your Service Provider in Your IdP</a><a class="headerlink" href="#step-3-configure-your-service-provider-in-your-idp" title="Permalink to this headline">¶</a></h5>
-<ol class="arabic simple">
-<li>Back on your Connected App&#8217;s page (found under <strong>Administer</strong> &gt; <strong>Connected Apps</strong>), click <strong>Edit</strong>.</li>
-</ol>
+<div class="section" id="step-3-configure-your-service-provider-in-salesforce">
+<h5><a class="toc-backref" href="#id81">Step 3: Configure Your Service Provider in Salesforce</a><a class="headerlink" href="#step-3-configure-your-service-provider-in-salesforce" title="Permalink to this headline">¶</a></h5>
+<p>Back on your Connected App&#8217;s page (found under <strong>Administer</strong> &gt; <strong>Connected Apps</strong>), click <strong>Edit</strong>.</p>
 <p>You will now enter in your Directory information:</p>
 <ol class="arabic simple">
 <li>For the &#8220;Entity ID&#8221;, you will need to enter in the Directory &#8220;HREF&#8221; for your SAML Directory.</li>
@@ -1438,8 +1441,8 @@ $ startup.sh
 </ol>
 </div>
 <div class="section" id="step-4-configure-your-application-in-stormpath">
-<h5><a class="toc-backref" href="#id85">Step 4: Configure Your Application in Stormpath</a><a class="headerlink" href="#step-4-configure-your-application-in-stormpath" title="Permalink to this headline">¶</a></h5>
-<p>We will now complete the final steps in the Stormpath Admin Console: adding one or more Callback URIs to the Application, and mapping your SAML Directory to your Application.</p>
+<h5><a class="toc-backref" href="#id82">Step 4: Configure Your Application in Stormpath</a><a class="headerlink" href="#step-4-configure-your-application-in-stormpath" title="Permalink to this headline">¶</a></h5>
+<p>We will now complete the final steps in the Stormpath Admin Console: adding one or more Callback URIs to the Stormpath Application, and mapping your SAML Directory to your Application.</p>
 <ol class="arabic simple">
 <li>Switch back to the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a> and go to the <strong>Applications</strong> tab.</li>
 <li>Select the Application that will be using the SAML Directory.</li>
@@ -1449,10 +1452,11 @@ $ startup.sh
 <li>Ensure that you are in the &#8220;Directories&#8221; tab and select your SAML Directory from the list.</li>
 <li>Click <strong>Create Mappings</strong>.</li>
 </ol>
+<p>You have now completed the initial steps of setting-up log in via Salesforce.</p>
 </div>
 <div class="section" id="step-5-configure-your-attribute-mappings">
-<h5><a class="toc-backref" href="#id86">Step 5: Configure Your Attribute Mappings</a><a class="headerlink" href="#step-5-configure-your-attribute-mappings" title="Permalink to this headline">¶</a></h5>
-<p>When a new Account logs in via SAML, the IdP sends along a number of SAML attributes. These attributes are mapped to Stormpath <a class="reference internal" href="reference.html#ref-account"><span class="std std-ref">Account attributes</span></a> (such as <code class="docutils literal"><span class="pre">givenName</span></code> or <code class="docutils literal"><span class="pre">email</span></code>) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step you will configure how these IdP SAML Attributes are mapped to Stormpath attributes.</p>
+<h5><a class="toc-backref" href="#id83">Step 5: Configure Your Attribute Mappings</a><a class="headerlink" href="#step-5-configure-your-attribute-mappings" title="Permalink to this headline">¶</a></h5>
+<p>When a new Account logs in via SAML, Salesforce sends along a number of SAML attributes. These attributes are mapped to Stormpath <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#account">Account attributes</a> (such as <code class="docutils literal"><span class="pre">givenName</span></code> or <code class="docutils literal"><span class="pre">email</span></code>) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step you will configure how these Salesforce SAML Attributes are mapped to Stormpath attributes.</p>
 <div class="section" id="find-the-existing-saml-attributes">
 <h6>4.1. Find the Existing SAML Attributes<a class="headerlink" href="#find-the-existing-saml-attributes" title="Permalink to this headline">¶</a></h6>
 <p>If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that Salesforce sends by retrieving the new user Account that was created inside Stormpath.</p>
@@ -1464,7 +1468,7 @@ $ startup.sh
 </div>
 <div class="section" id="optional-add-any-additional-attributes-you-want">
 <h6>4.2. (Optional) Add Any Additional Attributes You Want<a class="headerlink" href="#optional-add-any-additional-attributes-you-want" title="Permalink to this headline">¶</a></h6>
-<p>If there are other attributes that you would like Salesforce to pass other attributes, you can configure this. From your Salesforce settings page:</p>
+<p>If there are other attributes that you would like Salesforce to pass, you can configure this. From your Salesforce settings page:</p>
 <ol class="arabic simple">
 <li>Under <strong>Administer</strong>, click on <strong>Connected Apps</strong>.</li>
 <li>Select the App you would like to configure.</li>
@@ -1492,13 +1496,12 @@ $ startup.sh
 <li>(Optional) Under &#8220;Name Format&#8221; you can enter <code class="docutils literal"><span class="pre">urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified</span></code></li>
 <li>Finally, enter the Account attribute(s) that you would like this Salesforce attribute to map to</li>
 </ol>
-<p>For example, you could enter, using the custom attribute from Step 4.2 above:</p>
+<p>For example, using the custom attribute from Step 4.2 above:</p>
 <ul class="simple">
 <li>For the &#8220;Name&#8221; enter <code class="docutils literal"><span class="pre">firstname</span></code></li>
 <li>For &#8220;Stormpath Attributes&#8221; enter <code class="docutils literal"><span class="pre">givenName</span></code></li>
 </ul>
-<p>If a user now logs in, Stormpath will take the <code class="docutils literal"><span class="pre">firstname</span></code> attribute and map it to the <code class="docutils literal"><span class="pre">givenName</span></code> field on the Account resource.</p>
-<p>You have now completed the initial steps of setting-up log in via Salesforce.</p>
+<p>If a user now logs in, Stormpath will take the <code class="docutils literal"><span class="pre">firstname</span></code> SAML attribute and map it to the <code class="docutils literal"><span class="pre">givenName</span></code> field on the Stormpath Account resource.</p>
 </div>
 </div>
 </div>
@@ -1506,16 +1509,21 @@ $ startup.sh
 <span id="id10"></span><h4>OneLogin<a class="headerlink" href="#onelogin" title="Permalink to this headline">¶</a></h4>
 <div class="contents local topic" id="id11">
 <ul class="simple">
-<li><a class="reference internal" href="#step-1-set-up-onelogin" id="id87">Step 1: Set-up OneLogin</a></li>
-<li><a class="reference internal" href="#step-2-gather-your-identity-provider-information" id="id88">Step 2: Gather Your Identity Provider Information</a></li>
-<li><a class="reference internal" href="#step-3-create-your-saml-directory-in-stormpath" id="id89">Step 3: Create Your SAML Directory in Stormpath</a></li>
-<li><a class="reference internal" href="#step-4-configure-your-service-provider-in-your-idp" id="id90">Step 4: Configure Your Service Provider in Your IdP</a></li>
-<li><a class="reference internal" href="#step-5-configure-your-application-in-stormpath" id="id91">Step 5: Configure Your Application in Stormpath</a></li>
-<li><a class="reference internal" href="#step-6-configure-your-attribute-mappings" id="id92">Step 6: Configure Your Attribute Mappings</a></li>
+<li><a class="reference internal" href="#step-1-set-up-onelogin" id="id84">Step 1: Set-up OneLogin</a></li>
+<li><a class="reference internal" href="#step-2-gather-your-onelogin-information" id="id85">Step 2: Gather Your OneLogin Information</a></li>
+<li><a class="reference internal" href="#step-3-create-your-saml-directory-in-stormpath" id="id86">Step 3: Create Your SAML Directory in Stormpath</a></li>
+<li><a class="reference internal" href="#step-4-configure-your-service-provider-in-onelogin" id="id87">Step 4: Configure Your Service Provider in OneLogin</a></li>
+<li><a class="reference internal" href="#step-5-configure-your-application-in-stormpath" id="id88">Step 5: Configure Your Application in Stormpath</a></li>
+<li><a class="reference internal" href="#step-6-configure-your-attribute-mappings" id="id89">Step 6: Configure Your Attribute Mappings</a></li>
 </ul>
 </div>
 <div class="section" id="step-1-set-up-onelogin">
-<h5><a class="toc-backref" href="#id87">Step 1: Set-up OneLogin</a><a class="headerlink" href="#step-1-set-up-onelogin" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id84">Step 1: Set-up OneLogin</a><a class="headerlink" href="#step-1-set-up-onelogin" title="Permalink to this headline">¶</a></h5>
+<p>Every OneLogin application will need its own Stormpath Directory. The users for that OneLogin application will only be able to log in if that application&#8217;s information is properly entered into a corresponding Stormpath Directory.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you already have a OneLogin application of this type (<code class="docutils literal"><span class="pre">SAML</span> <span class="pre">Test</span> <span class="pre">Connector</span> <span class="pre">(IdP</span> <span class="pre">w/</span> <span class="pre">attr</span> <span class="pre">w/</span> <span class="pre">sign</span> <span class="pre">response)</span></code>), you can skip this step.</p>
+</div>
 <ol class="arabic simple">
 <li>Complete the OneLogin set-up, including adding your subdomain, users, etc.</li>
 <li>On the &#8220;Find Applications&#8221; page, search for &#8220;SAML&#8221;</li>
@@ -1523,16 +1531,16 @@ $ startup.sh
 <li>Give your app a name and click <strong>Save</strong></li>
 </ol>
 </div>
-<div class="section" id="step-2-gather-your-identity-provider-information">
-<h5><a class="toc-backref" href="#id88">Step 2: Gather Your Identity Provider Information</a><a class="headerlink" href="#step-2-gather-your-identity-provider-information" title="Permalink to this headline">¶</a></h5>
-<p>You will now need to gather the following pieces of information:</p>
+<div class="section" id="step-2-gather-your-onelogin-information">
+<h5><a class="toc-backref" href="#id85">Step 2: Gather Your OneLogin Information</a><a class="headerlink" href="#step-2-gather-your-onelogin-information" title="Permalink to this headline">¶</a></h5>
+<p>You will now need to gather the following pieces of information from your OneLogin application:</p>
 <ul class="simple">
 <li>X.509 Signing Certificate</li>
 <li>SSO Login URL</li>
 <li>SSO Logout URL</li>
 <li>Request Signature Algorithm</li>
 </ul>
-<p>Click on <strong>SSO</strong> in your App&#8217;s navigation pane.</p>
+<p>To start, click on <strong>SSO</strong> in your App&#8217;s navigation pane.</p>
 <div class="section" id="idp-signing-certificate">
 <h6>2.1 IdP Signing Certificate<a class="headerlink" href="#idp-signing-certificate" title="Permalink to this headline">¶</a></h6>
 <ol class="arabic simple">
@@ -1550,8 +1558,8 @@ $ startup.sh
 </div>
 </div>
 <div class="section" id="step-3-create-your-saml-directory-in-stormpath">
-<h5><a class="toc-backref" href="#id89">Step 3: Create Your SAML Directory in Stormpath</a><a class="headerlink" href="#step-3-create-your-saml-directory-in-stormpath" title="Permalink to this headline">¶</a></h5>
-<p>We will now create your SAML Directory in Stormpath, using the values you gathered in the previous step. Then you will use information from this newly-created Directory to configure Stormpath as a Service Provider in the IdP in the next step.</p>
+<h5><a class="toc-backref" href="#id86">Step 3: Create Your SAML Directory in Stormpath</a><a class="headerlink" href="#step-3-create-your-saml-directory-in-stormpath" title="Permalink to this headline">¶</a></h5>
+<p>We will now create your SAML Directory in Stormpath, using the values you gathered in the previous step. Then you will use information from this newly-created Directory to configure Stormpath as a Service Provider in OneLogin in the next step.</p>
 <div class="section" id="id12">
 <h6>3.1. Create Your SAML Directory<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h6>
 <ol class="arabic simple">
@@ -1580,16 +1588,16 @@ $ startup.sh
 <p>We will now input this value into the Identity Provider.</p>
 </div>
 </div>
-<div class="section" id="step-4-configure-your-service-provider-in-your-idp">
-<h5><a class="toc-backref" href="#id90">Step 4: Configure Your Service Provider in Your IdP</a><a class="headerlink" href="#step-4-configure-your-service-provider-in-your-idp" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="step-4-configure-your-service-provider-in-onelogin">
+<h5><a class="toc-backref" href="#id87">Step 4: Configure Your Service Provider in OneLogin</a><a class="headerlink" href="#step-4-configure-your-service-provider-in-onelogin" title="Permalink to this headline">¶</a></h5>
 <ol class="arabic simple">
-<li>Back in your App&#8217;s settings page (found under <strong>Apps</strong> &gt; <strong>Company Apps</strong>), click <strong>Configuration</strong> in the App&#8217;s navigation pane.</li>
+<li>Back in your OneLogin App&#8217;s settings page (found under <strong>Apps</strong> &gt; <strong>Company Apps</strong>), click <strong>Configuration</strong> in the App&#8217;s navigation pane.</li>
 <li>Copy your Directory&#8217;s &#8220;Assertion Consumer Service URL&#8221; into both the &#8220;ACS (Consumer) URL Validator&#8221; and &#8220;ACS (Consumer) URL&#8221; fields.</li>
 <li>Now click on <strong>Parameters</strong> in the App navigation pane. On this page, you need to ensure that your &#8220;Email (SAML NameID)&#8221; field has the value &#8220;Email&#8221;, which it should by default.</li>
 </ol>
 </div>
 <div class="section" id="step-5-configure-your-application-in-stormpath">
-<h5><a class="toc-backref" href="#id91">Step 5: Configure Your Application in Stormpath</a><a class="headerlink" href="#step-5-configure-your-application-in-stormpath" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id88">Step 5: Configure Your Application in Stormpath</a><a class="headerlink" href="#step-5-configure-your-application-in-stormpath" title="Permalink to this headline">¶</a></h5>
 <p>We will now complete the final steps in the Stormpath Admin Console: adding one or more Callback URIs to the Application, and mapping your SAML Directory to your Application.</p>
 <ol class="arabic simple">
 <li>Switch back to the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a> and go to the <strong>Applications</strong> tab.</li>
@@ -1603,8 +1611,8 @@ $ startup.sh
 <p>You have now completed the initial steps of setting-up log in via OneLogin.</p>
 </div>
 <div class="section" id="step-6-configure-your-attribute-mappings">
-<h5><a class="toc-backref" href="#id92">Step 6: Configure Your Attribute Mappings</a><a class="headerlink" href="#step-6-configure-your-attribute-mappings" title="Permalink to this headline">¶</a></h5>
-<p>When a new Account logs in via SAML, the IdP sends along a number of SAML attributes. These attributes are mapped to Stormpath <a class="reference internal" href="reference.html#ref-account"><span class="std std-ref">Account attributes</span></a> (such as <code class="docutils literal"><span class="pre">givenName</span></code> or <code class="docutils literal"><span class="pre">email</span></code>) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step you will configure how these IdP SAML Attributes are mapped to Stormpath attributes.</p>
+<h5><a class="toc-backref" href="#id89">Step 6: Configure Your Attribute Mappings</a><a class="headerlink" href="#step-6-configure-your-attribute-mappings" title="Permalink to this headline">¶</a></h5>
+<p>When a new Account logs in via SAML, OneLogin sends along a number of SAML attributes. These attributes are mapped to Stormpath <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#account">Account attributes</a> (such as <code class="docutils literal"><span class="pre">givenName</span></code> or <code class="docutils literal"><span class="pre">email</span></code>) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step you will configure how these OneLogin SAML Attributes are mapped to Stormpath attributes.</p>
 <div class="section" id="id14">
 <h6>6.1. Find the Existing SAML Attributes<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h6>
 <p>If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that OneLogin sends by retrieving the new user Account that was created inside Stormpath.</p>
@@ -1616,7 +1624,7 @@ $ startup.sh
 </div>
 <div class="section" id="id16">
 <h6>6.2. (Optional) Add Any Additional Attributes You Want<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h6>
-<p>If there are other attributes that you would like OneLogin to pass other attributes, you can configure this. From your OneLogin settings page:</p>
+<p>If there are other attributes that you would like OneLogin to pass, you can configure this. From your OneLogin settings page:</p>
 <ol class="arabic simple">
 <li>Click on <strong>Apps</strong> &gt; <strong>Company Apps</strong></li>
 <li>Select the App that you want to configure</li>
@@ -1658,16 +1666,21 @@ $ startup.sh
 <span id="id18"></span><h4>Okta<a class="headerlink" href="#okta" title="Permalink to this headline">¶</a></h4>
 <div class="contents local topic" id="id19">
 <ul class="simple">
-<li><a class="reference internal" href="#step-1-set-up-okta" id="id93">Step 1: Set-up Okta</a></li>
-<li><a class="reference internal" href="#step-2-gather-information-from-your-identity-provider" id="id94">Step 2: Gather Information From Your Identity Provider</a></li>
-<li><a class="reference internal" href="#id20" id="id95">Step 3: Create Your SAML Directory in Stormpath</a></li>
-<li><a class="reference internal" href="#id23" id="id96">Step 4: Configure Your Service Provider in Your IdP</a></li>
-<li><a class="reference internal" href="#id24" id="id97">Step 5: Configure Your Application in Stormpath</a></li>
-<li><a class="reference internal" href="#okta-attribute-mapping" id="id98">Step 6: Configure Your Attribute Mappings</a></li>
+<li><a class="reference internal" href="#step-1-set-up-okta" id="id90">Step 1: Set-up Okta</a></li>
+<li><a class="reference internal" href="#step-2-gather-information-from-okta" id="id91">Step 2: Gather Information From Okta</a></li>
+<li><a class="reference internal" href="#id20" id="id92">Step 3: Create Your SAML Directory in Stormpath</a></li>
+<li><a class="reference internal" href="#step-4-configure-your-service-provider-in-okta" id="id93">Step 4: Configure Your Service Provider in Okta</a></li>
+<li><a class="reference internal" href="#id23" id="id94">Step 5: Configure Your Application in Stormpath</a></li>
+<li><a class="reference internal" href="#okta-attribute-mapping" id="id95">Step 6: Configure Your Attribute Mappings</a></li>
 </ul>
 </div>
 <div class="section" id="step-1-set-up-okta">
-<h5><a class="toc-backref" href="#id93">Step 1: Set-up Okta</a><a class="headerlink" href="#step-1-set-up-okta" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id90">Step 1: Set-up Okta</a><a class="headerlink" href="#step-1-set-up-okta" title="Permalink to this headline">¶</a></h5>
+<p>Every Okta application will need its own Stormpath Directory. The users for that Okta application will only be able to log in if that application&#8217;s information is properly entered into a corresponding Stormpath Directory.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you already have an Okta application, you can skip to Step 5.</p>
+</div>
 <ol class="arabic simple">
 <li>Log in to your Okta Administrator Account. From the landing page click on <strong>Admin</strong> to go to your Admin Dashboard.</li>
 <li>From here, click on <strong>Add Applications</strong> in the shortcuts on the right.</li>
@@ -1684,9 +1697,9 @@ $ startup.sh
 <li>Click on <strong>View Setup Instructions</strong></li>
 </ol>
 </div>
-<div class="section" id="step-2-gather-information-from-your-identity-provider">
-<h5><a class="toc-backref" href="#id94">Step 2: Gather Information From Your Identity Provider</a><a class="headerlink" href="#step-2-gather-information-from-your-identity-provider" title="Permalink to this headline">¶</a></h5>
-<p>You will now need to gather the required IdP information:</p>
+<div class="section" id="step-2-gather-information-from-okta">
+<h5><a class="toc-backref" href="#id91">Step 2: Gather Information From Okta</a><a class="headerlink" href="#step-2-gather-information-from-okta" title="Permalink to this headline">¶</a></h5>
+<p>You will now need to gather the required information from Okta:</p>
 <ol class="arabic simple">
 <li>Copy the &#8220;Identity Provider Single Sign-On URL&#8221;. This will be the value for both the &#8220;SSO Login URL&#8221; and &#8220;SSO Logout URL&#8221; in your Stormpath configuration.</li>
 <li>Copy the contents of the &#8220;X.509 Certificate&#8221; text box, starting with the line <code class="docutils literal"><span class="pre">-----BEGIN</span> <span class="pre">CERTIFICATE-----</span></code> and ending with <code class="docutils literal"><span class="pre">-----END</span> <span class="pre">CERTIFICATE-----</span></code>. The contents of this file are your &#8220;SAML X.509 Signing Cert&#8221;.</li>
@@ -1698,7 +1711,7 @@ $ startup.sh
 </div>
 </div>
 <div class="section" id="id20">
-<h5><a class="toc-backref" href="#id95">Step 3: Create Your SAML Directory in Stormpath</a><a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id92">Step 3: Create Your SAML Directory in Stormpath</a><a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h5>
 <p>We will now create your SAML Directory in Stormpath, using the values you gathered in the previous step. Then you will use information from this newly-created Directory to configure Stormpath as a Service Provider in the IdP in the next step.</p>
 <div class="section" id="id21">
 <h6>3.1. Create Your SAML Directory<a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h6>
@@ -1727,8 +1740,8 @@ $ startup.sh
 <p>We will now input these values into the Identity Provider.</p>
 </div>
 </div>
-<div class="section" id="id23">
-<h5><a class="toc-backref" href="#id96">Step 4: Configure Your Service Provider in Your IdP</a><a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="step-4-configure-your-service-provider-in-okta">
+<h5><a class="toc-backref" href="#id93">Step 4: Configure Your Service Provider in Okta</a><a class="headerlink" href="#step-4-configure-your-service-provider-in-okta" title="Permalink to this headline">¶</a></h5>
 <ol class="arabic simple">
 <li>Back in your App&#8217;s &#8220;General&#8221; tab, find the &#8220;SAML Settings&#8221; section and click <strong>Edit</strong>.</li>
 <li>From the &#8220;General Settings&#8221; page click <strong>Next</strong>.</li>
@@ -1736,8 +1749,8 @@ $ startup.sh
 <li>Copy the &#8220;Entity ID&#8221; URN into the &#8220;Audience URI (SP Entity ID)&#8221;, also replacing the dummy value.</li>
 </ol>
 </div>
-<div class="section" id="id24">
-<h5><a class="toc-backref" href="#id97">Step 5: Configure Your Application in Stormpath</a><a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="id23">
+<h5><a class="toc-backref" href="#id94">Step 5: Configure Your Application in Stormpath</a><a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h5>
 <p>We will now complete the final steps in the Stormpath Admin Console: adding one or more Callback URIs to the Application, and mapping your SAML Directory to your Application.</p>
 <ol class="arabic simple">
 <li>Switch back to the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a> and go to the <strong>Applications</strong> tab.</li>
@@ -1748,12 +1761,13 @@ $ startup.sh
 <li>Ensure that you are in the &#8220;Directories&#8221; tab and select your SAML Directory from the list.</li>
 <li>Click <strong>Create Mappings</strong>.</li>
 </ol>
+<p>You have now completed the initial steps of setting-up login via Okta.</p>
 </div>
 <div class="section" id="okta-attribute-mapping">
-<span id="id25"></span><h5><a class="toc-backref" href="#id98">Step 6: Configure Your Attribute Mappings</a><a class="headerlink" href="#okta-attribute-mapping" title="Permalink to this headline">¶</a></h5>
-<p>When a new Account logs in via SAML, the IdP sends along a number of SAML attributes. These attributes are mapped to Stormpath <a class="reference internal" href="reference.html#ref-account"><span class="std std-ref">Account attributes</span></a> (such as <code class="docutils literal"><span class="pre">givenName</span></code> or <code class="docutils literal"><span class="pre">email</span></code>) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step you will configure how these IdP SAML Attributes are mapped to Stormpath attributes.</p>
-<div class="section" id="id26">
-<h6>6.1. Find the Existing SAML Attributes<a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h6>
+<span id="id24"></span><h5><a class="toc-backref" href="#id95">Step 6: Configure Your Attribute Mappings</a><a class="headerlink" href="#okta-attribute-mapping" title="Permalink to this headline">¶</a></h5>
+<p>When a new Account logs in via SAML, Okta sends along a number of SAML attributes. These attributes are mapped to Stormpath <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#account">Account attributes</a> (such as <code class="docutils literal"><span class="pre">givenName</span></code> or <code class="docutils literal"><span class="pre">email</span></code>) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step you will configure how these IdP SAML Attributes are mapped to Stormpath attributes.</p>
+<div class="section" id="id25">
+<h6>6.1. Find the Existing SAML Attributes<a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h6>
 <p>If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that Okta sends by retrieving the new user Account that was created inside Stormpath.</p>
 <p>Specifically, you want that Account&#8217;s <code class="docutils literal"><span class="pre">providerData</span></code> resource:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$provideraData</span> <span class="o">=</span> <span class="nv">$account</span><span class="o">-&gt;</span><span class="na">providerData</span><span class="p">;</span>
@@ -1761,9 +1775,9 @@ $ startup.sh
 </div>
 <p>As you can see there are no default attributes passed by Okta, but you can map any attributes you like to the Stormpath Account attributes as well.</p>
 </div>
-<div class="section" id="id28">
-<h6>6.2. (Optional) Add Any Additional Attributes You Want<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h6>
-<p>If there are attributes that you would like Okta to pass other attributes, you can configure this. From your Okta Admin settings page:</p>
+<div class="section" id="id27">
+<h6>6.2. (Optional) Add Any Additional Attributes You Want<a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h6>
+<p>If there are attributes that you would like Okta to pass, you can configure this. From your Okta Admin settings page:</p>
 <ol class="arabic simple">
 <li>Click on the <strong>Applications</strong> tab in the top navigation pane</li>
 <li>Select your Application</li>
@@ -1780,15 +1794,15 @@ $ startup.sh
 </ul>
 <p>You will now be returned to your App&#8217;s &#8220;Sign on&#8221; page. If you click on the &#8220;General&#8221; tab, you will see the attribute you just added in the &#8220;Attribute Statements&#8221; section. You can add as many attributes as you wish.</p>
 </div>
-<div class="section" id="id29">
-<h6>6.3. Specify Your Mapping<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h6>
+<div class="section" id="id28">
+<h6>6.3. Specify Your Mapping<a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h6>
 <ol class="arabic simple">
 <li>Go to your <a class="reference external" href="https://api.stormpath.com/">Stormpath Admin Console</a></li>
 <li>Click on the <strong>Directories</strong> tab</li>
 <li>Select your Okta SAML Directory</li>
 <li>Under the &#8220;SAML Attribute Statement Mapping Rules&#8221; section you will see three fields: &#8220;Name&#8221;, &#8220;Name Format&#8221;, and &#8220;Stormpath Attributes&#8221;</li>
 <li>Here you will enter the Okta attribute name under &#8220;Name&#8221;</li>
-<li>(Optional) Under &#8220;Name Format&#8221; you can enter <code class="docutils literal"><span class="pre">Basic</span></code></li>
+<li>(Optional) Under &#8220;Name Format&#8221; you can enter <code class="docutils literal"><span class="pre">Basic</span></code>.</li>
 <li>Finally, enter the Account attribute(s) that you would like this Okta attribute to map to.</li>
 </ol>
 <p>For example, you could enter:</p>
@@ -1797,19 +1811,14 @@ $ startup.sh
 <li>For &#8220;Stormpath Attributes&#8221; enter <code class="docutils literal"><span class="pre">givenName</span></code></li>
 </ul>
 <p>If a user now logs in, Stormpath will take the <code class="docutils literal"><span class="pre">firstName</span></code> attribute and map it to the <code class="docutils literal"><span class="pre">givenName</span></code> field on the Account resource.</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/6Y2ViNhE5GTDBIGsTMgMD/providerData&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-03-09T18:16:16.116Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-03-25T14:49:30.098Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;saml&quot;</span>
-<span class="p">}</span>
-</pre></div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you do choose to enter in an &#8220;Attribute Name Format&#8221; in Stormpath, it must match the SAML &#8220;NameFormat&#8221; passed by Okta. To ensure that you are entering the right one you can click on <strong>Preview the SAML Assertion</strong> on the &#8220;Configure SAML&#8221; page in your Okta application.</p>
 </div>
-<p>As you can see, by default Okta does not pass any attributes.</p>
 </div>
-<div class="section" id="id30">
-<h6>6.2. (Optional) Add Any Additional Attributes You Want<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h6>
-<p>If there are attributes that you would like Okta, you can configure this. From your Okta Admin settings page:</p>
+<div class="section" id="id29">
+<h6>6.2. (Optional) Add Any Additional Attributes You Want<a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h6>
+<p>If there are attributes that you would like Okta to pass to Stormpath, you can configure this. From your Okta Admin settings page:</p>
 <ol class="arabic simple">
 <li>Click on the <strong>Applications</strong> tab in the top navigation pane</li>
 <li>Select your Application</li>
@@ -1826,8 +1835,8 @@ $ startup.sh
 </ul>
 <p>You will now be take to your App&#8217;s &#8220;Sign On&#8221; tab, but if you return to the &#8220;General&#8221; tab you can scroll down and see the attribute you just added in the &#8220;SAML Settings&#8221; section, under &#8220;Attribute Statements&#8221;. You can add as many attributes as you wish.</p>
 </div>
-<div class="section" id="id31">
-<h6>6.3. Specify Your Mapping<a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h6>
+<div class="section" id="id30">
+<h6>6.3. Specify Your Mapping<a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h6>
 <ol class="arabic simple">
 <li>Go to your <a class="reference external" href="https://api.stormpath.com/">Stormpath Admin Console</a></li>
 <li>Click on the <strong>Directories</strong> tab</li>
@@ -1847,19 +1856,19 @@ $ startup.sh
 </div>
 </div>
 <div class="section" id="ping">
-<span id="id32"></span><h4>Ping<a class="headerlink" href="#ping" title="Permalink to this headline">¶</a></h4>
-<div class="contents local topic" id="id33">
+<span id="id31"></span><h4>Ping<a class="headerlink" href="#ping" title="Permalink to this headline">¶</a></h4>
+<div class="contents local topic" id="id32">
 <ul class="simple">
-<li><a class="reference internal" href="#step-1-set-up-ping" id="id99">Step 1: Set-up Ping</a></li>
-<li><a class="reference internal" href="#id34" id="id100">Step 2: Gather Your Identity Provider Information</a></li>
-<li><a class="reference internal" href="#id37" id="id101">Step 3: Create Your SAML Directory in Stormpath</a></li>
-<li><a class="reference internal" href="#id40" id="id102">Step 3: Configure Your Service Provider in Your IdP</a></li>
-<li><a class="reference internal" href="#id41" id="id103">Step 4: Configure Your Application in Stormpath</a></li>
-<li><a class="reference internal" href="#id42" id="id104">Step 5: Configure Your Attribute Mappings</a></li>
+<li><a class="reference internal" href="#step-1-set-up-ping" id="id96">Step 1: Set-up Ping</a></li>
+<li><a class="reference internal" href="#step-2-gather-your-ping-information" id="id97">Step 2: Gather Your Ping Information</a></li>
+<li><a class="reference internal" href="#id35" id="id98">Step 3: Create Your SAML Directory in Stormpath</a></li>
+<li><a class="reference internal" href="#step-3-configure-your-service-provider-in-ping" id="id99">Step 3: Configure Your Service Provider in Ping</a></li>
+<li><a class="reference internal" href="#id38" id="id100">Step 4: Configure Your Application in Stormpath</a></li>
+<li><a class="reference internal" href="#id39" id="id101">Step 5: Configure Your Attribute Mappings</a></li>
 </ul>
 </div>
 <div class="section" id="step-1-set-up-ping">
-<h5><a class="toc-backref" href="#id99">Step 1: Set-up Ping</a><a class="headerlink" href="#step-1-set-up-ping" title="Permalink to this headline">¶</a></h5>
+<h5><a class="toc-backref" href="#id96">Step 1: Set-up Ping</a><a class="headerlink" href="#step-1-set-up-ping" title="Permalink to this headline">¶</a></h5>
 <ol class="arabic simple">
 <li>Log in to your PingOne account: <a class="reference external" href="https://admin.pingone.com/web-portal/login">https://admin.pingone.com/web-portal/login</a></li>
 <li>Click on the <strong>Applications</strong> tab on the top navigate pane.</li>
@@ -1867,8 +1876,8 @@ $ startup.sh
 <li>Fill in the information, the click on <strong>Continue to Next Step</strong></li>
 </ol>
 </div>
-<div class="section" id="id34">
-<h5><a class="toc-backref" href="#id100">Step 2: Gather Your Identity Provider Information</a><a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="step-2-gather-your-ping-information">
+<h5><a class="toc-backref" href="#id97">Step 2: Gather Your Ping Information</a><a class="headerlink" href="#step-2-gather-your-ping-information" title="Permalink to this headline">¶</a></h5>
 <p>You will now need to gather the following pieces of information:</p>
 <ul class="simple">
 <li>X.509 Signing Certificate</li>
@@ -1876,8 +1885,8 @@ $ startup.sh
 <li>SSO Logout URL</li>
 </ul>
 <p>Click on <strong>Download</strong> beside SAML Metadata, this will download <code class="docutils literal"><span class="pre">saml2-metadata-idp.xml</span></code>, which you need to open in a text editor of your choice. We will now retrieve the above information from this XML file.</p>
-<div class="section" id="id35">
-<h6>2.1 IdP Signing Certificate<a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h6>
+<div class="section" id="id33">
+<h6>2.1 IdP Signing Certificate<a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h6>
 <ol class="arabic simple">
 <li>Inside the <code class="docutils literal"><span class="pre">&lt;ds:X509Certificate&gt;</span></code> assertion you will find the text of the x509 certificate. Unfortunately it is not in the PEM encoded format that Stormpath requires.</li>
 <li>Copy and paste the content of this certificate into a new text file, ensuring that all of the text is fully left-justified.</li>
@@ -1894,19 +1903,19 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </pre></div>
 </div>
 </div>
-<div class="section" id="id36">
-<h6>2.2. The SSO Login / Logout URLs<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h6>
+<div class="section" id="id34">
+<h6>2.2. The SSO Login / Logout URLs<a class="headerlink" href="#id34" title="Permalink to this headline">¶</a></h6>
 <ol class="arabic simple">
 <li>For the &#8220;SSO Login URL&#8221;, find the <code class="docutils literal"><span class="pre">SingleSignOnService</span> <span class="pre">Location</span></code> assertion, which should look something like this: <code class="docutils literal"><span class="pre">https://sso.connect.pingidentity.com/sso/idp/SSO.saml2?idpid={hash}</span></code></li>
 <li>For the &#8220;SSO Logout URL&#8221;, find the <code class="docutils literal"><span class="pre">SingleLogoutService</span> <span class="pre">Location</span></code> assertion, which should be exactly this: <code class="docutils literal"><span class="pre">https://sso.connect.pingidentity.com/sso/SLO.saml2</span></code></li>
 </ol>
 </div>
 </div>
-<div class="section" id="id37">
-<h5><a class="toc-backref" href="#id101">Step 3: Create Your SAML Directory in Stormpath</a><a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h5>
-<p>You will now create our SAML Directory in Stormpath, using the values you gathered in the previous step. Then you will use information from this newly-created Directory to configure Stormpath as a Service Provider in the IdP in the next step.</p>
-<div class="section" id="id38">
-<h6>2.1. Create Your SAML Directory<a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h6>
+<div class="section" id="id35">
+<h5><a class="toc-backref" href="#id98">Step 3: Create Your SAML Directory in Stormpath</a><a class="headerlink" href="#id35" title="Permalink to this headline">¶</a></h5>
+<p>You will now create your SAML Directory in Stormpath, using the values you gathered in the previous step. Then you will use information from this newly-created Directory to configure Stormpath as a Service Provider in the IdP in the next step.</p>
+<div class="section" id="id36">
+<h6>2.1. Create Your SAML Directory<a class="headerlink" href="#id36" title="Permalink to this headline">¶</a></h6>
 <ol class="arabic simple">
 <li>Log in to the Stormpath Admin Console: <a class="reference external" href="https://api.stormpath.com">https://api.stormpath.com</a></li>
 <li>Click on the <strong>Directories</strong> tab.</li>
@@ -1919,8 +1928,8 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <li>Once all this information is entered, click on <strong>Create Directory</strong>. At this point, you will arrive back on the main Directories page.</li>
 </ol>
 </div>
-<div class="section" id="id39">
-<h6>2.2. Gather Your SAML Directory Information<a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h6>
+<div class="section" id="id37">
+<h6>2.2. Gather Your SAML Directory Information<a class="headerlink" href="#id37" title="Permalink to this headline">¶</a></h6>
 <p>Find and click on your new SAML Directory.</p>
 <p>From this page, you will need the follow information:</p>
 <ul class="simple">
@@ -1930,17 +1939,17 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <p>We will now input these values into the Identity Provider.</p>
 </div>
 </div>
-<div class="section" id="id40">
-<h5><a class="toc-backref" href="#id102">Step 3: Configure Your Service Provider in Your IdP</a><a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="step-3-configure-your-service-provider-in-ping">
+<h5><a class="toc-backref" href="#id99">Step 3: Configure Your Service Provider in Ping</a><a class="headerlink" href="#step-3-configure-your-service-provider-in-ping" title="Permalink to this headline">¶</a></h5>
 <p>Back on your Ping Application&#8217;s page (where we previously downloaded the SAML Metadata), you will now enter in your Directory information:</p>
 <ol class="arabic simple">
-<li>The &#8220;Assertion Consumer Service (ACS)&#8221; is the &#8220;Assertion Consumer Service URL&#8221; from the previous step.</li>
-<li>The &#8220;Entity ID&#8221; is the Directory &#8220;HREF&#8221; for your SAML Directory.</li>
+<li>The &#8220;Assertion Consumer Service (ACS)&#8221; is the Stormpath &#8220;Assertion Consumer Service URL&#8221; from the previous step.</li>
+<li>The &#8220;Entity ID&#8221; is the Directory &#8220;HREF&#8221; for your Stormpth SAML Directory.</li>
 <li>Click <strong>Continue to Next Step</strong>, then click <strong>Save &amp; Publish</strong></li>
 </ol>
 </div>
-<div class="section" id="id41">
-<h5><a class="toc-backref" href="#id103">Step 4: Configure Your Application in Stormpath</a><a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="id38">
+<h5><a class="toc-backref" href="#id100">Step 4: Configure Your Application in Stormpath</a><a class="headerlink" href="#id38" title="Permalink to this headline">¶</a></h5>
 <p>We will now complete the final steps in the Stormpath Admin Console: adding one or more Callback URIs to the Application, and mapping your SAML Directory to your Application.</p>
 <ol class="arabic simple">
 <li>Switch back to the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a> and go to the <strong>Applications</strong> tab.</li>
@@ -1951,12 +1960,13 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <li>Ensure that you are in the &#8220;Directories&#8221; tab and select your Ping Identity Directory from the list.</li>
 <li>Click <strong>Create Mappings</strong>.</li>
 </ol>
+<p>You have now completed the initial steps of configuring login via SAML for Ping Identity.</p>
 </div>
-<div class="section" id="id42">
-<h5><a class="toc-backref" href="#id104">Step 5: Configure Your Attribute Mappings</a><a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h5>
-<p>When a new Account logs in via SAML, the IdP sends along a number of SAML attributes. These attributes are mapped to Stormpath <a class="reference internal" href="reference.html#ref-account"><span class="std std-ref">Account attributes</span></a> (such as <code class="docutils literal"><span class="pre">givenName</span></code> or <code class="docutils literal"><span class="pre">email</span></code>) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step we will configure how these IdP SAML Attributes are mapped to Stormpath attributes.</p>
-<div class="section" id="id43">
-<h6>4.1. Find the Existing SAML Attributes<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h6>
+<div class="section" id="id39">
+<h5><a class="toc-backref" href="#id101">Step 5: Configure Your Attribute Mappings</a><a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h5>
+<p>When a new Account logs in via SAML, Ping sends along a number of SAML attributes. These attributes are mapped to Stormpath <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#account">Account attributes</a> (such as <code class="docutils literal"><span class="pre">givenName</span></code> or <code class="docutils literal"><span class="pre">email</span></code>) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step we will configure how these Ping SAML Attributes are mapped to Stormpath attributes.</p>
+<div class="section" id="id40">
+<h6>4.1. Find the Existing SAML Attributes<a class="headerlink" href="#id40" title="Permalink to this headline">¶</a></h6>
 <p>If you have already successfully set-up SAML and authenticated a user with your app, you will be able to retrieve the SAML Attributes that Ping sends by retrieving the new user Account that was created inside Stormpath.</p>
 <p>Specifically, you want that Account&#8217;s <code class="docutils literal"><span class="pre">providerData</span></code> resource:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -1972,8 +1982,8 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <p>Everything here other than <code class="docutils literal"><span class="pre">href</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code> and <code class="docutils literal"><span class="pre">modifiedAt</span></code> are Attributes passed by Ping.</p>
 <p>If you want, you can map other SAML Attributes to Stormpath Account attributes.</p>
 </div>
-<div class="section" id="id44">
-<h6>4.2. (Optional) Add Any Additional Attributes You Want<a class="headerlink" href="#id44" title="Permalink to this headline">¶</a></h6>
+<div class="section" id="id41">
+<h6>4.2. (Optional) Add Any Additional Attributes You Want<a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h6>
 <p>If there are other attributes that you would like Ping to pass, you can configure this.</p>
 <ol class="arabic simple">
 <li>Make sure you are on the Ping Identity Admin Settings page, in the &#8220;My Applications&#8221; section: <a class="reference external" href="https://admin.pingone.com/web-portal/cas/connections">https://admin.pingone.com/web-portal/cas/connections</a></li>
@@ -1988,8 +1998,8 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <li>Finally click on <strong>Save &amp; Publish</strong> and, on the next page, <strong>Finish</strong>.</li>
 </ol>
 </div>
-<div class="section" id="id45">
-<h6>4.3. Specify Your Mapping<a class="headerlink" href="#id45" title="Permalink to this headline">¶</a></h6>
+<div class="section" id="id42">
+<h6>4.3. Specify Your Mapping<a class="headerlink" href="#id42" title="Permalink to this headline">¶</a></h6>
 <ol class="arabic simple">
 <li>Go to your <a class="reference external" href="https://api.stormpath.com/">Stormpath Admin Console</a></li>
 <li>Click on the <strong>Directories</strong> tab</li>
@@ -2004,7 +2014,6 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <li>For &#8220;Stormpath Attributes&#8221; enter <code class="docutils literal"><span class="pre">givenName</span></code></li>
 </ul>
 <p>If a user now logs in, Stormpath will take the <code class="docutils literal"><span class="pre">firstname</span></code> attribute and map it to the <code class="docutils literal"><span class="pre">givenName</span></code> field on the Account resource.</p>
-<p>You have now completed the initial steps of setting-up log in via Ping.</p>
 </div>
 </div>
 </div>
@@ -2082,8 +2091,8 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </ol>
 </div>
 </div>
-<div class="section" id="id46">
-<h5>Step 4: Configure Your Application in Stormpath<a class="headerlink" href="#id46" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="id43">
+<h5>Step 4: Configure Your Application in Stormpath<a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h5>
 <ol class="arabic simple">
 <li>Switch back to the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a> and go to the <strong>Applications</strong> tab.</li>
 <li>Select the Application that will be using the ADFS Directory.</li>
@@ -2118,7 +2127,7 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </div>
 </div>
 <div class="section" id="configuring-saml-via-rest">
-<span id="saml-configuration-rest"></span><h3><a class="toc-backref" href="#id80">4.5.3. Configuring SAML via REST</a><a class="headerlink" href="#configuring-saml-via-rest" title="Permalink to this headline">¶</a></h3>
+<span id="saml-configuration-rest"></span><h3><a class="toc-backref" href="#id77">4.5.3. Configuring SAML via REST</a><a class="headerlink" href="#configuring-saml-via-rest" title="Permalink to this headline">¶</a></h3>
 <p>Here you will explain to you the steps that are required to configure Stormpath as a SAML Service Provider using only the REST API.</p>
 <p>It is recommend that you configure SAML using the Stormpath Admin console, as explained in the above <a class="reference internal" href="#saml-configuration"><span class="std std-ref">IdP-specific configuration instructions</span></a>. However, understanding the REST underpinnings of those instructions will allow you to automate some or all of the configuration process, if that is something that your application requires.</p>
 <p>Also, currently the IdP-initiated flow can only be configured via REST, and not yet via the Stormpath Admin Console.</p>
@@ -2403,11 +2412,12 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </div>
 </div>
 <div class="section" id="the-stormpath-saml-flow">
-<span id="saml-flow"></span><h3><a class="toc-backref" href="#id81">4.5.4. The Stormpath SAML Flow</a><a class="headerlink" href="#the-stormpath-saml-flow" title="Permalink to this headline">¶</a></h3>
-<p>The two SAML authentication flows that Stormpath supports differ primarily in their starting points, and so the Service Provider (SP) initiated flow is really just the Identity Provider (IdP) initiated flow with a few extra steps at the beginning.</p>
+<span id="saml-flow"></span><h3><a class="toc-backref" href="#id78">4.5.4. The Stormpath SAML Flow</a><a class="headerlink" href="#the-stormpath-saml-flow" title="Permalink to this headline">¶</a></h3>
+<p>The two SAML authentication flows that Stormpath supports differ primarily in their starting points, and so <a class="reference internal" href="#saml-sp-init-flow"><span class="std std-ref">the Service Provider (SP) initiated flow</span></a> is really just the Identity Provider (IdP) initiated flow with a different starting point.</p>
 <div class="section" id="the-identity-provider-initiated-flow">
-<h4>The Identity Provider Initiated Flow<a class="headerlink" href="#the-identity-provider-initiated-flow" title="Permalink to this headline">¶</a></h4>
-<div class="figure align-center" id="id54">
+<span id="saml-idp-init-flow"></span><h4>The Identity Provider Initiated Flow<a class="headerlink" href="#the-identity-provider-initiated-flow" title="Permalink to this headline">¶</a></h4>
+<p>In the Identity Provider Initiated flow, the user starts at the Identity Provider (IdP). After logging-in to the IdP, the user selects the Stormpath-enabled web application from within the IdP&#8217;s site, and is redirected to the application in an authenticated state.</p>
+<div class="figure align-center" id="id51">
 <a class="reference internal image-reference" href="_images/SamlFlow_IdpInit.png"><img alt="IdP Initiated SAML Flow" src="_images/SamlFlow_IdpInit.png" style="width: 746.0px; height: 331.0px;" /></a>
 <p class="caption"><span class="caption-text"><em>The IdP Initiated SAML Flow</em></span></p>
 </div>
@@ -2515,7 +2525,8 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </div>
 <div class="section" id="the-service-provider-initiated-flow">
 <span id="saml-sp-init-flow"></span><h4>The Service Provider Initiated Flow<a class="headerlink" href="#the-service-provider-initiated-flow" title="Permalink to this headline">¶</a></h4>
-<div class="figure align-center" id="id55">
+<p>In the Service Provider Initiated flow, the user starts at a login page (either ID Site or one inside a Stormpath-powered application), then is redirected to the Identity Provider. After authenticating with the Identity Provider, the user is returned to the application in an authenticate state.</p>
+<div class="figure align-center" id="id52">
 <a class="reference internal image-reference" href="_images/SamlFlow_SpInit.png"><img alt="Service Provider Initiated SAML Flow" src="_images/SamlFlow_SpInit.png" style="width: 775.0px; height: 503.0px;" /></a>
 <p class="caption"><span class="caption-text"><em>The Service Provider Initiated SAML Flow</em></span></p>
 </div>
