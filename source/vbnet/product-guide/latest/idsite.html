@@ -151,6 +151,16 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#using-id-site-for-multi-tenancy">7.5. Using ID Site for Multi-tenancy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#idsite-sso">7.6. ID Site &amp; Single Sign-On</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#idsite-hosting">7.7. ID Site Hosting Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-build-id-site">Step 1: Build ID Site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-host-id-site-on-s3">Step 2: Host ID Site on S3</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-set-up-cloudfront">Step 3: Set up Cloudfront</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-setup-dns-to-point-to-cloudfront">Step 4: Setup DNS to point to Cloudfront</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-5-install-ssl-cert-with-let-s-encrypt">Step 5: Install SSL Cert with Let&#8217;s Encrypt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-6-configure-stormpath-to-use-your-id-site">Step 6: Configure Stormpath to use your ID Site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-7-make-a-test-change">Step 7: Make a test change</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
@@ -482,6 +492,297 @@
 <li>User is redirected to ID Site.</li>
 <li>ID Site detects the user&#8217;s authenticated session and redirects them back to Application B with an ID Site Assertion for Application B.</li>
 </ol>
+</div>
+<div class="section" id="idsite-hosting">
+<span id="id-site-hosting-guide"></span><h2>7.7. ID Site Hosting Guide<a class="headerlink" href="#idsite-hosting" title="Permalink to this headline">¶</a></h2>
+<p>In Stormpath&#8217;s public cloud (api.stormpath.com), ID Site is automatically setup and hosted for you. When you are on Stormpath&#8217;s Enterprise environment (enterprise.stormpath.io) or on a Private Deployment, you will need to host ID Site in your infrastructure. This is a best practice for security and is very easy to accomplish.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">These instructions can be followed for public cloud users as well if you determine that you want to host ID Site on your own.</p>
+</div>
+<p>ID Site is a static website and thus can be easily hosted on any type of web server. It must be secured with https. Below is one approach that is both robust and very low cost. It does require some knowledge of working on the command line and setting DNS (Domain Name Service) records.</p>
+<p>The approach outlined below uses:</p>
+<ol class="arabic simple">
+<li>Amazon S3 to store and serve ID Site</li>
+<li>Amazon Cloudfront to provide robust distributed delivery</li>
+<li>Letsencrypt to create free SSL certificates for your ID Site</li>
+</ol>
+<div class="section" id="step-1-build-id-site">
+<span id="build-id-site"></span><h3>Step 1: Build ID Site<a class="headerlink" href="#step-1-build-id-site" title="Permalink to this headline">¶</a></h3>
+<p>An in-depth discussion of customizing ID Site is out of scope for this documentation. More information can be found <a class="reference external" href="https://github.com/stormpath/idsite-src">here</a>.</p>
+<p>Before you start, ensure that you have the following installed:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://docs.npmjs.com/getting-started/installing-node">npm</a></li>
+<li><a class="reference external" href="https://bower.io/">bower</a></li>
+<li><a class="reference external" href="http://gruntjs.com/">grunt</a></li>
+</ul>
+<p>To build ID Site, follow these steps:</p>
+<div class="highlight-bash"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>git clone https://github.com/stormpath/idsite-src.git
+<span class="nb">cd</span> idsite-src
+npm install
+bower install
+grunt build
+</pre></div>
+</td></tr></table></div>
+<p>If you&#8217;ve followed the steps above, you will now have a built and minified ID Site in the <code class="docutils literal"><span class="pre">dist</span></code> folder.</p>
+</div>
+<div class="section" id="step-2-host-id-site-on-s3">
+<span id="host-id-site-on-s3"></span><h3>Step 2: Host ID Site on S3<a class="headerlink" href="#step-2-host-id-site-on-s3" title="Permalink to this headline">¶</a></h3>
+<p>You will need to have an <a class="reference external" href="http://aws.amazon.com/">AWS</a> account setup for this step.</p>
+<ol class="arabic simple">
+<li>Log in to the Amazon AWS <a class="reference external" href="http://aws.amazon.com/console">Console</a>.</li>
+<li>Go to the <a class="reference external" href="https://console.aws.amazon.com/s3">S3 services page</a>.</li>
+<li>Click the <strong>Create Bucket</strong> button.</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="_images/create_bucket.png"><img alt="Create Bucket button" src="_images/create_bucket.png" style="width: 345.0px; height: 99.0px;" /></a>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li>Enter a name for the bucket and choose a region.</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="_images/bucket_name.png"><img alt="Name the Bucket" src="_images/bucket_name.png" style="width: 724.0px; height: 346.0px;" /></a>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="5">
+<li>Enable <strong>Static Website Hosting</strong> on the right side of the page, then click <strong>Save</strong>.</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="_images/enable_website.png"><img alt="Name the Bucket" src="_images/enable_website.png" style="width: 994.0px; height: 633.0px;" /></a>
+</div>
+</div></blockquote>
+<ol class="arabic" start="6">
+<li><p class="first">Update the bucket policy</p>
+<ol class="loweralpha simple">
+<li>Open the <strong>Permissions</strong> section of the console</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="_images/bucket_permissions.png"><img alt="Bucket permissions" src="_images/bucket_permissions.png" style="width: 996.0px; height: 368.0px;" /></a>
+</div>
+</div></blockquote>
+<ol class="loweralpha simple" start="2">
+<li>Click the <strong>Add bucket policy</strong> button</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="_images/bucket_policy_empty.png"><img alt="Add bucket policy" src="_images/bucket_policy_empty.png" style="width: 609.0px; height: 448.0px;" /></a>
+</div>
+</div></blockquote>
+<ol class="loweralpha simple" start="3">
+<li>Enter the policy information</li>
+</ol>
+<blockquote>
+<div><div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;Version&quot;</span><span class="o">:</span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;Statement&quot;</span><span class="o">:</span><span class="p">[{</span>
+      <span class="s2">&quot;Sid&quot;</span><span class="o">:</span><span class="s2">&quot;PublicReadGetObject&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;Effect&quot;</span><span class="o">:</span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;Principal&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;AWS&quot;</span><span class="o">:</span> <span class="s2">&quot;*&quot;</span>
+      <span class="p">},</span>
+      <span class="s2">&quot;Action&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;s3:GetObject&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;Resource&quot;</span><span class="o">:</span><span class="p">[</span><span class="s2">&quot;arn:aws:s3:::custom-idsite-host/*&quot;</span><span class="p">]</span>
+  <span class="p">}]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Make sure that you use the name of your bucket for the &#8220;Resource&#8221; attribute.</p>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first">Transfer the ID Site content to your bucket</p>
+</li>
+</ol>
+<blockquote>
+<div><p>There are numerous tools you can use to transfer files to your S3 bucket.
+Below is an example using the AWS Command Line Interface.</p>
+<p>Here&#8217;s the command to transfer the ID Site minified files to your S3 bucket:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span>&lt;your AWS access key&gt; <span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span>&lt;your AWS secret&gt; <span class="se">\</span>
+aws s3 sync dist/ s3://&lt;your bucket name&gt;
+
+upload: dist/images/logo.png to s3://&lt;your bucket name&gt;/images/logo.png
+upload: dist/favicon.ico to s3://&lt;your bucket name&gt;/favicon.ico
+upload: dist/robots.txt to s3://&lt;your bucket name&gt;/robots.txt
+upload: dist/error.html to s3://&lt;your bucket name&gt;/error.html
+upload: dist/styles/main.css to s3://&lt;your bucket name&gt;/styles/main.css
+upload: dist/scripts/iecompat.js to s3://&lt;your bucket name&gt;/scripts/iecompat.js
+upload: dist/scripts/app.js to s3://&lt;your bucket name&gt;/scripts/app.js
+upload: dist/index.html to s3://&lt;your bucket name&gt;/index.html
+upload: dist/scripts/vendor.js to s3://&lt;your bucket name&gt;/scripts/vendor.js
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="8">
+<li>Confirm that ID Site is being served</li>
+</ol>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>Make note of the <strong>Endpoint</strong> assigned to your S3 bucket</li>
+</ol>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/website_domain_name.png"><img alt="Endpoint" src="_images/website_domain_name.png" style="width: 996.0px; height: 639.0px;" /></a>
+</div>
+<ol class="loweralpha simple" start="2">
+<li>Put that endpoint into your browser. You should see the &#8220;Sorry! There was a problem.&#8221; message. This indicates that ID Site is, in fact, being served as a static website from Amazon S3.</li>
+</ol>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/sorry.png"><img alt="Sorry Message" src="_images/sorry.png" style="width: 973.0px; height: 603.0px;" /></a>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="step-3-set-up-cloudfront">
+<span id="setup-cloudfront"></span><h3>Step 3: Set up Cloudfront<a class="headerlink" href="#step-3-set-up-cloudfront" title="Permalink to this headline">¶</a></h3>
+<p>Cloudfront speeds up response times for your static website and provides fault tolerance by automatically distributing it through a worldwide network of edge servers.</p>
+<p>Follow these steps to set up Cloudfront:</p>
+<ol class="arabic simple">
+<li>Go the <a class="reference external" href="https://console.aws.amazon.com/cloudfront">Cloudfront Admin Console</a></li>
+</ol>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="_images/cloudfront_console.png"><img alt="The CloudFront Console" src="_images/cloudfront_console.png" style="width: 642.0px; height: 111.0px;" /></a>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Click the <strong>Create Distribution</strong> button</li>
+</ol>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="_images/cloudfront_delivery.png"><img alt="Create Distribution" src="_images/cloudfront_delivery.png" style="width: 1028.0px; height: 541.0px;" /></a>
+</div>
+</div></blockquote>
+<ol class="arabic" start="3">
+<li><p class="first">Click the <strong>Get Started</strong> button in the <code class="docutils literal"><span class="pre">Web</span></code> section</p>
+<p>Fill out the following on the form (leave the rest as defaults):</p>
+<ol class="arabic simple">
+<li>Origin Domain Name: click in the field and you&#8217;ll be able to select your S3 bucket</li>
+<li>Viewer Protocol Policy: Choose <code class="docutils literal"><span class="pre">HTTP</span> <span class="pre">and</span> <span class="pre">HTTPS</span></code> (we will circle back to this later to update)</li>
+<li>Object Caching: Choose <strong>Customize</strong></li>
+<li>Default TTL: Set to <code class="docutils literal"><span class="pre">360</span></code> (you can make this a larger value once everything is set and working)</li>
+<li>Alternate Domain Names: Enter your custom domain name for your ID Site. You will need to setup a DNS CNAME for this later on.</li>
+<li>Default Root Object: Enter <code class="docutils literal"><span class="pre">index.html</span></code> here</li>
+</ol>
+<p>Scroll to the bottom and click the <strong>Create Distribution</strong> button.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Pay attention to the Status column in the table of Cloudfront distributions. It can take some time until it&#8217;s fully deployed. During this time, it will say: In Progress</p>
+</div>
+<p>When the distribution is fully deployed, you should be able to browse to the assigned domain name. It will be something like: <code class="docutils literal"><span class="pre">&lt;random</span> <span class="pre">string&gt;.cloudfront.net</span></code>. When you browse to <code class="docutils literal"><span class="pre">https://&lt;random</span> <span class="pre">string&gt;.cloudfront.net</span></code> you should see the &#8220;Sorry! There was a problem.&#8221; message as before.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="step-4-setup-dns-to-point-to-cloudfront">
+<span id="setup-dns"></span><h3>Step 4: Setup DNS to point to Cloudfront<a class="headerlink" href="#step-4-setup-dns-to-point-to-cloudfront" title="Permalink to this headline">¶</a></h3>
+<p>You need to create a CNAME entry with your DNS provider. The source should be the domain you want to use for your ID Site, like: <code class="docutils literal"><span class="pre">idsite.example.com</span></code>. The destination should be the assigned domain from Cloudfront, like: <code class="docutils literal"><span class="pre">&lt;random</span> <span class="pre">string&gt;.cloudfront.net</span></code></p>
+<p>You should now be able to browse to the CNAME you setup. If you make an HTTPS connection to this domain name at this stage, you will see a certificate error in your browser. This is because the SSL certificate bound to <code class="docutils literal"><span class="pre">cloudfront.net</span></code> does not match your domain name. We will resolve this in the next step.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/privacy_error.png"><img alt="Privacy error" src="_images/privacy_error.png" style="width: 735.0px; height: 582.0px;" /></a>
+</div>
+</div>
+<div class="section" id="step-5-install-ssl-cert-with-let-s-encrypt">
+<span id="create-ssl-cert"></span><h3>Step 5: Install SSL Cert with Let&#8217;s Encrypt<a class="headerlink" href="#step-5-install-ssl-cert-with-let-s-encrypt" title="Permalink to this headline">¶</a></h3>
+<p>There are any number of commercial SSL certificate providers with varying costs. For the purposes of this example, we are going to use the <a class="reference external" href="https://letsencrypt.org/">Let&#8217;s Encrypt</a> service. There are two primary benefits:</p>
+<ol class="arabic simple">
+<li>Completely free SSL certificates and</li>
+<li>There&#8217;s a plugin for the Let&#8217;s Encrypt client that will automatically install the SSL certificate into your Cloudfront distribution.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You will need the <code class="docutils literal"><span class="pre">pip</span></code> Python package installer to follow the steps in this section.</p>
+</div>
+<p>We&#8217;ll start by installing the <code class="docutils literal"><span class="pre">letsencrypt</span></code> client and the <code class="docutils literal"><span class="pre">s3front</span></code> plugin.</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">letsencrypt</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">letsencrypt</span><span class="o">-</span><span class="n">s3front</span>
+</pre></div>
+</div>
+<p>Next, we&#8217;ll use the s3front plugin to generate and install the certificate in your Cloudfront distribution</p>
+<div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">AWS_ACCESS_KEY_ID</span><span class="o">=&lt;</span><span class="n">your</span> <span class="n">AWS</span> <span class="n">access</span> <span class="n">key</span><span class="o">&gt;</span> \
+<span class="n">AWS_SECRET_ACCESS_KEY</span><span class="o">=&lt;</span><span class="n">your</span> <span class="n">AWS</span> <span class="n">secret</span><span class="o">&gt;</span> \
+<span class="n">letsencrypt</span> <span class="o">--</span><span class="n">agree</span><span class="o">-</span><span class="n">tos</span> <span class="o">-</span><span class="n">a</span> <span class="n">letsencrypt</span><span class="o">-</span><span class="n">s3front</span><span class="p">:</span><span class="n">auth</span> \
+<span class="o">--</span><span class="n">letsencrypt</span><span class="o">-</span><span class="n">s3front</span><span class="p">:</span><span class="n">auth</span><span class="o">-</span><span class="n">s3</span><span class="o">-</span><span class="n">bucket</span> <span class="o">&lt;</span><span class="n">your</span> <span class="n">S3</span> <span class="n">bucket</span> <span class="n">name</span><span class="o">&gt;</span> \
+<span class="o">-</span><span class="n">i</span> <span class="n">letsencrypt</span><span class="o">-</span><span class="n">s3front</span><span class="p">:</span><span class="n">installer</span> \
+<span class="o">--</span><span class="n">letsencrypt</span><span class="o">-</span><span class="n">s3front</span><span class="p">:</span><span class="n">installer</span><span class="o">-</span><span class="n">cf</span><span class="o">-</span><span class="n">distribution</span><span class="o">-</span><span class="nb">id</span> <span class="o">&lt;</span><span class="n">your</span> <span class="n">cloudfront</span> <span class="n">distribution</span> <span class="nb">id</span><span class="o">&gt;</span> \
+<span class="o">-</span><span class="n">d</span> <span class="o">&lt;</span><span class="n">your</span> <span class="n">custom</span> <span class="n">domain</span> <span class="n">name</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>If all goes well, you will see a text-based confirmation screen.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/letsencrypt_success.png"><img alt="Letsencrypt Success" src="_images/letsencrypt_success.png" style="width: 698.0px; height: 254.0px;" /></a>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The Let&#8217;s Encrypt SSL certificate is only valid for 90 days (that&#8217;s what you get for free). However, you can simply re-run the command to install a new SSL certificate.</p>
+</div>
+<p>You can verify that your SSL backed ID Site is properly configured by going to the <code class="docutils literal"><span class="pre">ssllabs</span></code> test site:</p>
+<p><code class="docutils literal"><span class="pre">https://www.ssllabs.com/ssltest/analyze.html?d=&lt;your</span> <span class="pre">DNS</span> <span class="pre">CNAME&gt;</span></code></p>
+<p>To close out this section, we need to update the Cloudfront settings so that HTTP connections redirect to HTTPS.</p>
+<ol class="arabic simple">
+<li>Click on the the Cloudfront ID for your distribution to get into its settings.</li>
+<li>Click the <code class="docutils literal"><span class="pre">Behaviors</span></code> tab.</li>
+<li>Click the checkbox to the left of the configuration and click the <code class="docutils literal"><span class="pre">Edit</span></code> button.</li>
+<li>Change the <code class="docutils literal"><span class="pre">Viewer</span> <span class="pre">Protocol</span> <span class="pre">Policy</span></code> to <code class="docutils literal"><span class="pre">Redirect</span> <span class="pre">HTTP</span> <span class="pre">to</span> <span class="pre">HTTPS</span></code> and click the <code class="docutils literal"><span class="pre">Yes,</span> <span class="pre">Edit</span></code> button on the bottom of the screen to save it.</li>
+</ol>
+</div>
+<div class="section" id="step-6-configure-stormpath-to-use-your-id-site">
+<span id="configure-stormpath"></span><h3>Step 6: Configure Stormpath to use your ID Site<a class="headerlink" href="#step-6-configure-stormpath-to-use-your-id-site" title="Permalink to this headline">¶</a></h3>
+<p>The last step is to set your Stormpath Admin Console to use your newly configured ID Site.</p>
+<p>Browse to the <a class="reference external" href="https://api.stormpath.com">Admin Console</a> and click the ID Site tab. Enter your ID Site domain in the Domain Name field.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/admin_console_idsite.png"><img alt="Create distribution" src="_images/admin_console_idsite.png" style="width: 2112.0px; height: 958.0px;" /></a>
+</div>
+<p>Scroll to the bottom and click the <code class="docutils literal"><span class="pre">Save</span></code> button. That&#8217;s all there is to it!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">After ID Site is set up in this way, the <code class="docutils literal"><span class="pre">SSL</span> <span class="pre">Public</span> <span class="pre">Certificate</span> <span class="pre">/</span> <span class="pre">Chain</span></code>, <code class="docutils literal"><span class="pre">SSL</span> <span class="pre">Private</span> <span class="pre">Key</span></code>, <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Repository</span> <span class="pre">HTTPS</span> <span class="pre">URL</span></code>, and <code class="docutils literal"><span class="pre">Git</span> <span class="pre">Repository</span> <span class="pre">Branch</span> <span class="pre">Name</span></code> fields are all no longer used.</p>
+</div>
+<p>From this point forward, all you need to do to update your ID Site is to publish the minified contents to the S3 bucket like you did earlier. It may take some time for the updates to propagate to all the Cloudfront edge nodes.</p>
+</div>
+<div class="section" id="step-7-make-a-test-change">
+<h3>Step 7: Make a test change<a class="headerlink" href="#step-7-make-a-test-change" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s test making a change to the ID Site content and see it in action.</p>
+<ol class="arabic simple">
+<li>Edit the <code class="docutils literal"><span class="pre">app/views/login.html</span></code></li>
+</ol>
+<blockquote>
+<div><p>Add <code class="docutils literal"><span class="pre">&lt;h2&gt;Custom!&lt;/h2&gt;</span></code> just before the line containing <code class="docutils literal"><span class="pre">&lt;span&gt;Log</span> <span class="pre">In&lt;/span&gt;</span></code>.</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/custom_login.png"><img alt="Custom login" src="_images/custom_login.png" style="width: 1926.0px; height: 362.0px;" /></a>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="2">
+<li>Build ID Site as before</li>
+</ol>
+<blockquote>
+<div><div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">grunt</span> <span class="n">build</span>
+</pre></div>
+</div>
+</div></blockquote>
+<ol class="arabic simple" start="3">
+<li>Publish the <code class="docutils literal"><span class="pre">dist</span></code> contents to your S3 bucket as before</li>
+</ol>
+<blockquote>
+<div><div class="code bash highlight-default"><div class="highlight"><pre><span></span><span class="n">AWS_ACCESS_KEY_ID</span><span class="o">=&lt;</span><span class="n">your</span> <span class="n">AWS</span> <span class="n">access</span> <span class="n">key</span><span class="o">&gt;</span> <span class="n">AWS_SECRET_ACCESS_KEY</span><span class="o">=&lt;</span><span class="n">your</span> <span class="n">AWS</span> <span class="n">secret</span><span class="o">&gt;</span> \
+<span class="n">aws</span> <span class="n">s3</span> <span class="n">sync</span> <span class="n">dist</span><span class="o">/</span> <span class="n">s3</span><span class="p">:</span><span class="o">//&lt;</span><span class="n">your</span> <span class="n">bucket</span> <span class="n">name</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Now, we can see our change in action. You&#8217;ll need to fire up an example application that uses ID Site.</p>
+<p>The screenshot below shows the <code class="docutils literal"><span class="pre">/login</span></code> endpoint response from ID Site:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/custom_login_response.png"><img alt="Custom login response" src="_images/custom_login_response.png" style="width: 2152.0px; height: 1302.0px;" /></a>
+</div>
+<p>As you can see, ID Site is using the custom domain we set up and is showing the customized content.</p>
+</div>
 </div>
 </div>
 
