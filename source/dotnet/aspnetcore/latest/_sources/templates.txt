@@ -18,7 +18,7 @@ By default, this library will use pre-built views for the following routes:
 * Change Password Page (``/change``)
 * Email Verifiation Page (``/verify``)
 
-In the case of the the :ref:`Registration <register_customizing_form>` and :ref:`Login <login_customizing_form>` routes, the forms fields can be customized simply by changing their configuration.
+In the case of the the :ref:`Registration <register_customizing_form>` and :ref:`Login <login_customizing_form>` routes, the form fields can be customized simply by changing their configuration, no view code required!
 
 
 .. _templates_custom_views:
@@ -26,7 +26,10 @@ In the case of the the :ref:`Registration <register_customizing_form>` and :ref:
 Custom Views
 ------------
 
-If you want full control over the look and feel of the view, you can set a route's ``view`` option to the name of (or the path to) a Razor view available in your project.
+If you want full control over the look and feel of the view, you can set a route's ``view`` option to the name of (or the path to) a Razor view available in your project:
+
+* If you supply a **view name**, Razor will attempt to load ``~/Views/Stormpath/[viewname].cshtml``.
+* If you supply a fully-qualified path starting with ``~/``, that view will be loaded.
 
 For example, to use a custom view for the login route, use this configuration (shown as YAML):
 
@@ -47,9 +50,6 @@ You could also set this configuration via code:
 
   .. literalinclude:: code/templates/aspnet/custom_view.cs
     :language: csharp
-
-  .. warning::
-    This feature is not yet available in ASP.NET 4.x Please subscribe to `this Github issue <https://github.com/stormpath/stormpath-aspnet/issues/1>`_ to be notified when it is available.
 
 .. only:: nancy
 

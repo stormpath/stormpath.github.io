@@ -47,20 +47,19 @@ Stormpath is a great service, but it's not for everyone!
 You might *not* want to use Stormpath if:
 
 - You are building an application that does not need user accounts.
-- Security and availability aren't high priorities.
+- Security and availability are low priorities.
 - You want to roll your own custom user authentication.
 
 On the other hand, you might want to use Stormpath if:
 
 - You want to make user creation, management, and security as simple as possible.
-  (You can get started in |framework| with only a couple of lines of code!)
+  (You can get started in |framework| with only a few lines of code!)
 - User security is a top priority. We're security experts so you don't have to be.
-- Scaling your user base is a concern (Stormpath handles scaling transparently).
-- You need to store custom user data along with your user's basic information
-  (email, password), but you don't want a separate database.
-- You would like to have automatic email verification for new user accounts.
-- You would like to configure and customize password strength rules and have them enforced automatically.
-- You'd like to keep your user data separate from your other application concerns to increase platform stability/availability.
+- Scaling your user base is a potential problem. Stormpath handles scaling transparently.
+- You need to store custom user data along with your user's basic information, but you don't want a separate database.
+- You need automatic email verification for new user accounts.
+- You want to configure and customize password strength rules and have them enforced automatically.
+- You'd like to keep your user data separate from your other application concerns to increase platform stability and availability.
 - You are building a service-oriented application, in which multiple
   independent services need access to the same user data.
 
