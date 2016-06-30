@@ -8,8 +8,22 @@ If you are using browser-based sessions, you'll need a way for the user to log o
 By default, this library will provide a POST route at ``/logout``.
 Simply make a POST request to this URI and the user's tokens and cookies will be destroyed. You can change this URI, or disable the feature entirely if you wish.
 
-.. note::
-  For security purposes, GET requests to the logout route are not supported.
+
+How it Works
+----------
+
+For security reasons, GET requests to the logout route are **not supported**. The endpoint only responds to POST.
+
+In a browser-based application, you can create a Log Out link with the following HTML:
+
+.. code-block:: html
+
+  <form action="/logout" method="post" id="logout_form">
+    <a onclick="document.getElementById('logout_form').submit();" style="cursor: pointer;">
+      Log Out
+    </a>
+  </form>
+
 
 Configuration Options
 ---------------------
