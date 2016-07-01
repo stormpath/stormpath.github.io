@@ -157,6 +157,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#find-all-accounts-in-a-directory-that-were-created-on-a-particular-day">Find All Accounts in a Directory That Were Created on a Particular Day</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#searching-for-accounts-with-custom-data">3.3.2. Searching for Accounts with Custom Data</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-manage-an-account-s-password">3.4. How to Manage an Account&#8217;s Password</a><ul>
@@ -748,7 +749,7 @@ This works as follows:</p>
 </div>
 </div>
 <div class="section" id="how-to-search-accounts">
-<h2>3.3. How to Search Accounts<a class="headerlink" href="#how-to-search-accounts" title="Permalink to this headline">¶</a></h2>
+<span id="howto-search-accounts"></span><h2>3.3. How to Search Accounts<a class="headerlink" href="#how-to-search-accounts" title="Permalink to this headline">¶</a></h2>
 <p>You can search Stormpath Accounts, just like all Resource collections, using Filter, Attribute, and Datetime search.</p>
 <p>The Account resource&#8217;s <strong>searchable attributes</strong> are:</p>
 <blockquote>
@@ -900,9 +901,25 @@ This works as follows:</p>
 </div>
 </div>
 </div>
+<div class="section" id="searching-for-accounts-with-custom-data">
+<span id="howto-search-account-customdata"></span><h3>3.3.2. Searching for Accounts with Custom Data<a class="headerlink" href="#searching-for-accounts-with-custom-data" title="Permalink to this headline">¶</a></h3>
+<p>It is also possible to retrieve a collection of Accounts by searching the data stored in their Custom Data.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Currently, only Directory Accounts can have their customData searched.</p>
+</div>
+<p>If, for example, we wanted all Accounts in the Directory that had started between 2012-01-01 and 2015-12-31, and we wanted to paginate the results by limiting the returned number of Accounts to 5 and an offset of 0, we would send the following query:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/accounts?customData.startDate=[2012,2015]&amp;limit=5&amp;offset=0</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p>For a full description please see <a class="reference internal" href="reference.html#search-customdata"><span class="std std-ref">the Reference chapter</span></a>.</p>
+</div>
 </div>
 <div class="section" id="how-to-manage-an-account-s-password">
 <span id="managing-account-pwd"></span><h2>3.4. How to Manage an Account&#8217;s Password<a class="headerlink" href="#how-to-manage-an-account-s-password" title="Permalink to this headline">¶</a></h2>
+<p>One of the major categories of user management tasks that Stormpath handles and simplifies for you is managing user passwords. All of these different use cases are discussed in the section below.</p>
 <div class="section" id="manage-password-policies">
 <h3>3.4.1. Manage Password Policies<a class="headerlink" href="#manage-password-policies" title="Permalink to this headline">¶</a></h3>
 <p>In Stormpath, password policies are defined on a Directory level. Specifically, they are controlled in a <strong>Password Policy</strong> resource associated with the Directory. Modifying this resource also modifies the behavior of all Accounts that are included in this Directory. For more information about this resource, see the <a class="reference internal" href="reference.html#ref-password-policy"><span class="std std-ref">Password Policy section in the Reference chapter</span></a>.</p>
