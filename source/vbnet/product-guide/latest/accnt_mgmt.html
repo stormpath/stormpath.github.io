@@ -961,7 +961,10 @@ This link takes you to a secure page where you can change your password.
 <p>This feature is not yet available in the .NET SDK. For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/158">ticket #158</a> on Github.</p>
 <p class="last">In the meantime, please use the Stormpath Admin Console UI, or the REST API documentation below.</p>
 </div>
-<p>First, let&#8217;s look at the default template that comes with the Stormpath Administrator&#8217;s Directory:</p>
+<p><strong>Verification</strong>, <strong>Verification Success</strong>, and <strong>Welcome</strong> Email Templates can all be found under the Directory&#8217;s <strong>Account Creation Policies</strong>.</p>
+<p><strong>Password Reset</strong>, and <strong>Reset Success</strong> Email Templates can be found under the Directory&#8217;s <strong>Password Policies</strong>.</p>
+<p>To modify any of these emails via REST, it is just a matter of updating the appropriate <code class="docutils literal"><span class="pre">/emailTemplates/$TEMPLATE_ID</span></code> resource with a POST.</p>
+<p>As an example, let&#8217;s look at a default Verification Email template that comes with the Stormpath Administrator Directory&#8217;s Account Creation Policies:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/emailTemplates/2jwPxFsnjqxYrojexample&quot;</span><span class="p">,</span>
   <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Default Verification Email Template&quot;</span><span class="p">,</span>
@@ -978,13 +981,24 @@ This link takes you to a secure page where you can change your password.
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>If you wanted to change the <code class="docutils literal"><span class="pre">fromEmailAddress</span></code> attribute, you would just update this attribute:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/emailTemplates/2jwPxFsnjqxYrojexample</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+
+{
+    &quot;fromEmailAddress&quot;:&quot;jakub@stormpath.com&quot;
+}
+</pre></div>
+</div>
+<p>You would then receive a <code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with the updated template.</p>
+<p>For more information about Stormpath&#8217;s email templates, keep reading!</p>
 <p><strong>Message Format</strong></p>
 <p>The <code class="docutils literal"><span class="pre">mimeType</span></code> designates whether the email is sent as plain text (<code class="docutils literal"><span class="pre">text/plain</span></code>), HTML (<code class="docutils literal"><span class="pre">text/html</span></code>), or both (<code class="docutils literal"><span class="pre">multipart/alternative</span></code>). This in turns tells Stormpath whether to use the <code class="docutils literal"><span class="pre">textBody</span></code> or <code class="docutils literal"><span class="pre">htmlBody</span></code> text in the email, or to let the email client decide.</p>
 <p><strong>textBody and htmlBody</strong></p>
-<p>These define the actual content of the email. The only difference is that <code class="docutils literal"><span class="pre">htmlBody</span></code> is allowed to contain HTML markup while <code class="docutils literal"><span class="pre">textBody</span></code> only accepts plaintext. Both are also able to use <a class="reference external" href="http://web.cerritos.edu/jwilson/SitePages/java_language_resources/Java_Escape_Sequences.htm">Java Escape Sequences</a>. Both <code class="docutils literal"><span class="pre">htmlBody</span></code> and <code class="docutils literal"><span class="pre">textBody</span></code> can have customized output generated using template macros.</p>
+<p>These define the actual content of the email. The only difference is that <code class="docutils literal"><span class="pre">htmlBody</span></code> is allowed to contain HTML markup while <code class="docutils literal"><span class="pre">textBody</span></code> only accepts plaintext. Both are also able to use <a class="reference external" href="http://web.cerritos.edu/jwilson/SitePages/java_language_resources/Java_Escape_Sequences.htm">Java Escape Sequences</a>. Both <code class="docutils literal"><span class="pre">htmlBody</span></code> and <code class="docutils literal"><span class="pre">textBody</span></code> can have customized output generated using template macros. For more on those, see the very next section.</p>
 <div class="section" id="using-email-macros">
 <span id="id8"></span><h4>Using Email Macros<a class="headerlink" href="#using-email-macros" title="Permalink to this headline">¶</a></h4>
-<p>You can use macros in your email templates. Macros are placeholder text that are converted into actual values at the time the email is generated. You could use a macro to insert your user&#8217;s first name into the email, as well as the name of your Application. This would look like this:</p>
+<p>Macros are placeholder text that are converted into actual values at the time the email is generated. You could use a macro to insert your user&#8217;s first name into the email, as well as the name of your Application. This would look like this:</p>
 <div class="highlight-java"><div class="highlight"><pre><span></span><span class="s">&quot;Hi ${account.givenName}, welcome to $!{application.name}!&quot;</span>
 </pre></div>
 </div>
