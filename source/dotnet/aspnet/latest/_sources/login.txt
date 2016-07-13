@@ -12,6 +12,8 @@ The login feature of this library allows you to accept login attempts from any a
 By default, this library will serve an HTML login page at ``/login``.  You can change this URI, or disable the feature entirely if you wish.
 
 
+.. _login_configuration:
+
 Configuration Options
 ---------------------
 
