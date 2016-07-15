@@ -93,6 +93,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#default-features">Default Features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#disabling-features">Disabling Features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#disabling-content-types">Disabling Content Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specifying-the-server-uri">Specifying the Server URI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#stormpath-client-options">Stormpath Client Options</a></li>
 </ul>
 </li>
@@ -219,7 +220,7 @@ variables, to avoid hard-coding it into your application. We recommend you store
 <p>Any configuration option can be set using environment variables. The above are just examples!</p>
 </div>
 <div class="section" id="markup-file-yaml-or-json">
-<h2>Markup File (YAML or JSON)<a class="headerlink" href="#markup-file-yaml-or-json" title="Permalink to this headline">¶</a></h2>
+<span id="config-markup"></span><h2>Markup File (YAML or JSON)<a class="headerlink" href="#markup-file-yaml-or-json" title="Permalink to this headline">¶</a></h2>
 <p>Configuration options can also be set by placing a file called <code class="docutils literal"><span class="pre">stormpath.yaml</span></code> or <code class="docutils literal"><span class="pre">stormpath.json</span></code> in one of these locations:</p>
 <ul class="simple">
 <li><strong>Hidden .stormpath Directory</strong></li>
@@ -452,6 +453,27 @@ this configuration in code:</p>
     <span class="n">Web</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebConfiguration</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="n">Produces</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">string</span><span class="p">[]</span> <span class="p">{</span> <span class="s">&quot;application/json&quot;</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="specifying-the-server-uri">
+<h2>Specifying the Server URI<a class="headerlink" href="#specifying-the-server-uri" title="Permalink to this headline">¶</a></h2>
+<p>Some <a class="reference internal" href="social_login.html#social-login"><span>Social Login</span></a> providers require the base URI of your server to be set in configuration. To do this, you can set the <code class="docutils literal"><span class="pre">stormpath.web.serverUri</span></code> property using one of the configuration methods described in this section.</p>
+<p>For example, in YAML:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="nn">---</span>
+  <span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">serverUri</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost:5000</span>
+</pre></div>
+</div>
+<p>Alternatively, you can set this property in code when you configure the Stormpath middleware:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Web</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebConfiguration</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">ServerUri</span> <span class="p">=</span> <span class="s">&quot;http://localhost:5000&quot;</span>
     <span class="p">}</span>
 <span class="p">});</span>
 </pre></div>
