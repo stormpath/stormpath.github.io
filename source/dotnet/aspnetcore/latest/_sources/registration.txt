@@ -11,6 +11,8 @@ By default, this library will serve an HTML registration page at ``/register``.
 You can change this URI, or disable the feature entirely if you wish.
 
 
+.. _registration_configuration:
+
 Configuration Options
 ---------------------
 
@@ -19,7 +21,7 @@ This feature supports several options that you can configure using code or marku
 * **enabled**: Whether the feature is enabled. (Default: ``true``)
 * **uri**: The path for this feature. (Default: ``/register``)
 * **autoLogin**: Whether the user should be logged in after registering. (Default: ``false``)
-* **nextUri**: The location to send the user after registering, if **autoLogin** is on. (Default: ``/``)
+* **nextUri**: The location to send the user after registering, if **autoLogin** is on. :ref:`social_login` uses this value regardless of **autoLogin**. (Default: ``/``)
 * **view**: The view to render; see :ref:`templates`. (Default: ``register``)
 * **form**: The fields that will be displayed on the form; see :ref:`register_customizing_form`.
 

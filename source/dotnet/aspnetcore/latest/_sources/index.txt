@@ -26,7 +26,7 @@ This documentation will show you how to get started with Stormpath and |framewor
    me_api
    registration
    login
-   .. social_login
+   social_login
    logout
    password_reset
    email_verification

@@ -71,6 +71,8 @@ On Windows, the commands are:
 Any configuration option can be set using environment variables. The above are just examples!
 
 
+.. _config_markup:
+
 Markup File (YAML or JSON)
 --------------------------
 
@@ -292,6 +294,38 @@ It's possible to disable either of these modes by changing the values in ``storm
 
   .. .literalinclude:: code/configuration/nancy/disable_html_produces.cs
       :language: csharp
+
+Specifying the Server URI
+-------------------------
+
+Some :ref:`social_login` providers require the base URI of your server to be set in configuration. To do this, you can set the ``stormpath.web.serverUri`` property using one of the configuration methods described in this section.
+
+For example, in YAML:
+
+.. code-block:: yaml
+
+ ---
+   stormpath:
+     web:
+       serverUri: http://localhost:5000
+
+Alternatively, you can set this property in code when you configure the Stormpath middleware:
+
+.. only:: aspnetcore
+
+ .. literalinclude:: code/configuration/aspnetcore/server_uri.cs
+   :language: csharp
+
+.. only:: aspnet
+
+ .. literalinclude:: code/configuration/aspnet/server_uri.cs
+   :language: csharp
+
+.. only:: nancy
+
+ .. .literalinclude:: code/configuration/nancy/anonymous_inline_config.cs
+   :language: csharp
+
 
 Stormpath Client Options
 ------------------------
