@@ -10,7 +10,7 @@ Simply make a POST request to this URI and the user's tokens and cookies will be
 
 
 How it Works
-----------
+------------
 
 For security reasons, GET requests to the logout route are **not supported**. The endpoint only responds to POST.
 
