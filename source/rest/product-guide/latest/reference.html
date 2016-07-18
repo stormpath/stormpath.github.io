@@ -299,10 +299,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#custom-data">Custom Data</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#custom-data-operations">Custom Data Operations</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#create-a-customdata">Create a customData</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#retrieve-a-customdata">Retrieve a customData</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#update-a-customdata">Update a customData</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#delete-a-customdata">Delete a customData</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-custom-data">Create Custom Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#retrieve-custom-data">Retrieve Custom Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#update-custom-data">Update Custom Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#delete-custom-data">Delete Custom Data</a></li>
 </ul>
 </li>
 </ul>
@@ -1183,6 +1183,30 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+</div>
+<div class="section" id="searching-objects-in-custom-data">
+<h6>Searching Objects in Custom Data<a class="headerlink" href="#searching-objects-in-custom-data" title="Permalink to this headline">¶</a></h6>
+<p>If you are storing JSON objects in your Custom Data, then the query has the following form:</p>
+<p><code class="docutils literal"><span class="pre">?customData.{objectName}.{key}=value</span></code></p>
+<p>So in the following Custom Data, we have an object named <code class="docutils literal"><span class="pre">greetings</span></code> and another named <code class="docutils literal"><span class="pre">phoneNumbers</span></code>:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/2o33FbmQzqAa88cexample/customData&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-04-27T15:47:34.872Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-07-18T19:34:11.308Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;greetings&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;morning&quot;</span><span class="p">:</span> <span class="s2">&quot;Good morning&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;afternoon&quot;</span><span class="p">:</span> <span class="s2">&quot;Good afternoon&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;evening&quot;</span><span class="p">:</span> <span class="s2">&quot;Good evening&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;phoneNumbers&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;home&quot;</span><span class="p">:</span> <span class="mi">9054586867</span><span class="p">,</span>
+    <span class="nt">&quot;mobile&quot;</span><span class="p">:</span> <span class="mi">4168993119</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We could search for a key-value pair in the <code class="docutils literal"><span class="pre">greetings</span></code> object like so:</p>
+<p><code class="docutils literal"><span class="pre">?customData.greetings.morning=good*</span></code></p>
 </div>
 <div class="section" id="searching-datetime-in-custom-data">
 <h6>Searching Datetime in Custom Data<a class="headerlink" href="#searching-datetime-in-custom-data" title="Permalink to this headline">¶</a></h6>
@@ -5890,10 +5914,10 @@
 <div class="contents local topic" id="id36">
 <ul class="simple">
 <li><a class="reference internal" href="#custom-data-operations" id="id166">Custom Data Operations</a><ul>
-<li><a class="reference internal" href="#create-a-customdata" id="id167">Create a customData</a></li>
-<li><a class="reference internal" href="#retrieve-a-customdata" id="id168">Retrieve a customData</a></li>
-<li><a class="reference internal" href="#update-a-customdata" id="id169">Update a customData</a></li>
-<li><a class="reference internal" href="#delete-a-customdata" id="id170">Delete a customData</a></li>
+<li><a class="reference internal" href="#create-custom-data" id="id167">Create Custom Data</a></li>
+<li><a class="reference internal" href="#retrieve-custom-data" id="id168">Retrieve Custom Data</a></li>
+<li><a class="reference internal" href="#update-custom-data" id="id169">Update Custom Data</a></li>
+<li><a class="reference internal" href="#delete-custom-data" id="id170">Delete Custom Data</a></li>
 </ul>
 </li>
 </ul>
@@ -5944,7 +5968,7 @@
 </tr>
 </tbody>
 </table>
-<p>You can store an unlimited number of additional name/value pairs in the customData resource, with the following restrictions:</p>
+<p>You can store an unlimited number of additional key/value pairs or entire JSON objects in the customData resource, with the following restrictions:</p>
 <ul class="simple">
 <li>The total storage size of a single customData resource cannot exceed 10 MB (megabytes). The <code class="docutils literal"><span class="pre">href</span></code>, <code class="docutils literal"><span class="pre">createdAt</span></code> and <code class="docutils literal"><span class="pre">modifiedAt</span></code> field names and values do not count against your resource size quota.</li>
 <li>Field names must:
@@ -5954,14 +5978,19 @@
 </ul>
 <p><strong>customData Example</strong></p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spexaMple/customData&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/3apenYvL0Z9v9spdzpFfey/customData&quot;</span><span class="p">,</span>
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-08-25T19:57:05.976Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2015-08-26T19:27:29.699Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-07-18T20:05:02.283Z&quot;</span><span class="p">,</span>
   <span class="nt">&quot;birthDate&quot;</span><span class="p">:</span><span class="s2">&quot;2305-07-13&quot;</span><span class="p">,</span>
   <span class="nt">&quot;birthPlace&quot;</span><span class="p">:</span><span class="s2">&quot;La Barre, France&quot;</span><span class="p">,</span>
   <span class="nt">&quot;currentAssignment&quot;</span><span class="p">:</span><span class="s2">&quot;USS Enterprise (NCC-1701-E)&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;favoriteDrink&quot;</span><span class="p">:</span><span class="s2">&quot;Earl Grey tea&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;rank&quot;</span><span class="p">:</span><span class="s2">&quot;Captain&quot;</span>
+  <span class="nt">&quot;preferences&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;favoriteColor&quot;</span><span class="p">:</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;favoriteDrink&quot;</span><span class="p">:</span><span class="s2">&quot;tea&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;rank&quot;</span><span class="p">:</span><span class="s2">&quot;Captain&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;startDate&quot;</span><span class="p">:</span><span class="s2">&quot;2014-10-01&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;topScore&quot;</span><span class="p">:</span><span class="mi">1000</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -5969,19 +5998,19 @@
 <span id="customdata-operations"></span><h3><a class="toc-backref" href="#id166">Custom Data Operations</a><a class="headerlink" href="#custom-data-operations" title="Permalink to this headline">¶</a></h3>
 <div class="contents local topic" id="id37">
 <ul class="simple">
-<li><a class="reference internal" href="#create-a-customdata" id="id171">Create a customData</a></li>
-<li><a class="reference internal" href="#retrieve-a-customdata" id="id172">Retrieve a customData</a></li>
-<li><a class="reference internal" href="#update-a-customdata" id="id173">Update a customData</a></li>
-<li><a class="reference internal" href="#delete-a-customdata" id="id174">Delete a customData</a></li>
+<li><a class="reference internal" href="#create-custom-data" id="id171">Create Custom Data</a></li>
+<li><a class="reference internal" href="#retrieve-custom-data" id="id172">Retrieve Custom Data</a></li>
+<li><a class="reference internal" href="#update-custom-data" id="id173">Update Custom Data</a></li>
+<li><a class="reference internal" href="#delete-custom-data" id="id174">Delete Custom Data</a></li>
 </ul>
 </div>
-<div class="section" id="create-a-customdata">
-<h4><a class="toc-backref" href="#id171">Create a customData</a><a class="headerlink" href="#create-a-customdata" title="Permalink to this headline">¶</a></h4>
-<p>Whenever you create an Stormpath resource, an empty customData resource is created for that resource automatically – you do not need to explicitly execute a request to create it.</p>
-<p>However, it is often useful to populate custom data at the same time you create a resource. You can do this by embedding the customData directly in the resource. For an example, see <a class="reference internal" href="#accnt-create-with-customdata"><span class="std std-ref">below</span></a>.</p>
+<div class="section" id="create-custom-data">
+<h4><a class="toc-backref" href="#id171">Create Custom Data</a><a class="headerlink" href="#create-custom-data" title="Permalink to this headline">¶</a></h4>
+<p>Whenever you create a Stormpath resource, an empty customData resource is created for that resource automatically – you do not need to explicitly execute a request to create it.</p>
+<p>However, it is often useful to populate custom data at the same time you create a resource. You can do this by embedding the customData directly into the resource creation request. For an example, see <a class="reference internal" href="#accnt-create-with-customdata"><span class="std std-ref">below</span></a>.</p>
 </div>
-<div class="section" id="retrieve-a-customdata">
-<h4><a class="toc-backref" href="#id172">Retrieve a customData</a><a class="headerlink" href="#retrieve-a-customdata" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="retrieve-custom-data">
+<h4><a class="toc-backref" href="#id172">Retrieve Custom Data</a><a class="headerlink" href="#retrieve-custom-data" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -6002,8 +6031,8 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="update-a-customdata">
-<h4><a class="toc-backref" href="#id173">Update a customData</a><a class="headerlink" href="#update-a-customdata" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="update-custom-data">
+<h4><a class="toc-backref" href="#id173">Update Custom Data</a><a class="headerlink" href="#update-custom-data" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -6019,13 +6048,13 @@
 <tbody valign="top">
 <tr class="row-even"><td>POST /v1/$RESOURCE_TYPE/$RESOURCE_ID/customData</td>
 <td>N/A</td>
-<td>Updates the specified attributes with the values provided.</td>
+<td>Updates the specified attributes with the values provided. Can also be used to add new JSON objects and/or key-value pairs. (See example queries below)</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="section" id="delete-a-customdata">
-<h4><a class="toc-backref" href="#id174">Delete a customData</a><a class="headerlink" href="#delete-a-customdata" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="delete-custom-data">
+<h4><a class="toc-backref" href="#id174">Delete Custom Data</a><a class="headerlink" href="#delete-custom-data" title="Permalink to this headline">¶</a></h4>
 <table border="1" class="docutils">
 <colgroup>
 <col width="40%" />
@@ -6043,9 +6072,9 @@
 <td>N/A</td>
 <td>Deletes the specified customData resource.</td>
 </tr>
-<tr class="row-odd"><td>DELETE /v1/$RESOURCE_TYPE/$RESOURCE_ID/customData/$FIELD_NAME</td>
+<tr class="row-odd"><td>DELETE /v1/$RESOURCE_TYPE/$RESOURCE_ID/customData/$KEY_OR_OBJECT_NAME</td>
 <td><code class="docutils literal"><span class="pre">&quot;$FIELD_NAME&quot;:</span> <span class="pre">null</span></code></td>
-<td>Deletes only the specified Custom Data field. You must specify the value of the field as <code class="docutils literal"><span class="pre">null</span></code> in order for the call to succeed.</td>
+<td>Deletes only the specified Custom Data field or object. If you are deleting a key, you must specify the value of the key as <code class="docutils literal"><span class="pre">null</span></code> in order for the call to succeed. If you are deleting an object you can just pass the object name without adding anything to the request body.</td>
 </tr>
 </tbody>
 </table>
@@ -6090,6 +6119,21 @@
 </pre></div>
 </div>
 <p>This query would delete only the <code class="docutils literal"><span class="pre">favoriteColor</span></code> field from this customData resource.</p>
+<p><strong>Add a JSON object along with a key-value pair to an Account&#8217;s Custom Data</strong></p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>curl --request POST <span class="se">\</span>
+--url https://api.stormpath.com/v1/accounts/2o33FbmQzqAa88cexample/customData <span class="se">\</span>
+--header <span class="s1">&#39;authorization: Basic NE5YUT...&#39;</span> <span class="se">\</span>
+--header <span class="s1">&#39;content-type: application/json&#39;</span> <span class="se">\</span>
+--data <span class="s1">&#39;{</span>
+<span class="s1">    &quot;object&quot;: {</span>
+<span class="s1">        &quot;key1&quot;:&quot;value1&quot;,</span>
+<span class="s1">        &quot;key2&quot;:&quot;value2&quot;</span>
+<span class="s1">    },</span>
+<span class="s1">    &quot;keyA&quot;:&quot;valueA&quot;</span>
+<span class="s1">}&#39;</span>
+</pre></div>
+</div>
+<p>This query would add a JSON object called <code class="docutils literal"><span class="pre">object</span></code> to this Account&#8217;s Custom Data resource. It would also add a separate <code class="docutils literal"><span class="pre">keyA</span></code> key.</p>
 </div>
 </div>
 </div>
