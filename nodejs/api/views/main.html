@@ -1,0 +1,129 @@
+<h1 id="stormpath-node-js-api">Stormpath Node.js API</h1><p>This is the Stormpath Node.js module&#39;s API documentation.</p><p><a href="https://stormpath.com/" title="Stormpath">Stormpath</a> is a cloud-hosted user management service that automates best-in-class user security for your applications so you can ship your application faster and more securely.</p><p>This module provides abstractions around applications, safe user account and group / role management, authentication, best-practices password security, access control, social login with services like Facebook and Google, automated security workflows (<em>user registration, account email verification, password reset</em>), secure sync for on-premise LDAP and Active Directory accounts, custom user and group data, and much more.</p><h2 id="-a-name-install-a-install"><a name="install"></a>Install</h2><p>Installing the <a href="https://www.npmjs.org/package/stormpath" title="Stormpath on npm">stormpath module</a> is simple via <a href="https://www.npmjs.org/" title="npm">npm</a>. Just run:</p><pre><code class="lang-console">$ npm install stormpath</code></pre><p>And the module will be installed and ready for use!</p><h2 id="-a-name-quickstart-a-quickstart"><a name="quickstart"></a>Quickstart</h2><p>This quickstart assumes you have <a href="http://docs.stormpath.com/rest/quickstart/#sign-up-for-stormpath" title="Sign Up For Stormpath">signed up for Stormpath</a>, <a href="http://docs.stormpath.com/rest/quickstart/#get-an-api-key" title="Get a Stormpath API Key">downloaded your API key file</a>, and saved it to <code>~/.stormpath/apiKey.properties</code>.</p><h3 id="create-a-stormpath-client">Create a Stormpath Client</h3><p>The Stormpath <code>Client</code> object is your starting point for all interactions with the Stormpath REST API. You can create (<em>and customize</em>) the Stormpath Client in a number of ways, but at a bare minimum you need to specify your Stormpath API credentials.</p><p>You can do this easily in one of two ways:</p><ul><li><p>Reference your downloaded <code>apiKey.properties</code> file:</p><pre><code class="lang-javascript">var stormpath = require(&#39;stormpath&#39;);
+
+// Find the user&#39;s home directory (works on both Windows and *nix):
+var home = process.env[(process.platform === &#39;win32&#39; ? &#39;USERPROFILE&#39; : &#39;HOME&#39;)];
+var apiKeyFilePath = home + &#39;/.stormpath/apiKey.properties&#39;;
+
+// Will be available after the properties file is asynchronously loaded from
+// disk:
+var client;
+
+stormpath.loadApiKey(apiKeyFilePath, function apiKeyFileLoaded(err, apiKey) {
+  client = new stormpath.Client({ apiKey: apiKey });
+});</code></pre></li><li><p>Create an ApiKey object manually:</p><pre><code class="lang-javascript">var stormpath = require(&#39;stormpath&#39;);
+
+// In this example, we&#39;ll reference the API credentials from environment
+// variables (*NEVER HARDCODE API KEY VALUES IN SOURCE CODE!*).
+var apiKey = new stormpath.ApiKey(
+  process.env[&#39;STORMPATH_CLIENT_APIKEY_ID&#39;],
+  process.env[&#39;STORMPATH_CLIENT_APIKEY_SECRET&#39;]
+);
+
+var client = new stormpath.Client({ apiKey: apiKey });</code></pre></li></ul><h3 id="list-your-applications-and-directories">List Your Applications and Directories</h3><p>In order to get a list of all your Stormpath <a href="https://api.stormpath.com/v#!applications" title="Your Stormpath Applications">Applications</a> and <a href="https://api.stormpath.com/v#!directories" title="Your Stormpath Directories">Directories</a>, you can use the following code snippet:</p><pre><code class="lang-javascript">client.getApplications(function(err, apps) {
+  apps.each(function(app, cb) {
+    console.log(&#39;app:&#39;, app);
+    cb();
+  }, function(err) {
+    console.log(&#39;Finished iterating over apps.&#39;);
+  });
+});
+
+
+client.getDirectories({ expand: &#39;groups&#39; }, function(err, dirs) {
+  dirs.each(function(dir, cb) {
+    console.log(dir);
+    cb();
+  }, function(err) {
+    console.log(&#39;Finished iterating over directories.&#39;);
+  });
+});</code></pre><p><strong>NOTE</strong>: You can <em>expand</em> any linked properties available when listing Stormpath resources. This is a great way to reduce the amount of network calls you make to Stormpath when developing fast applications.</p><h3 id="retrieve-a-specific-resource">Retrieve a Specific Resource</h3><p>If you know a resource&#39;s <code>href</code>, you can retrieve it directly:</p><pre><code class="lang-javascript">client.getApplication(&#39;https://api.stormpath.com/v1/applications/xxx&#39;, callback);
+client.getDirectory(&#39;https://api.stormpath.com/v1/directories/xxx&#39;, callback);
+client.getAccount(&#39;https://api.stormpath.com/v1/accounts/xxx&#39;, callback);
+client.getGroup(&#39;https://api.stormpath.com/v1/groups/xxx&#39;, callback);
+client.getGroupMembership(&#39;https://api.stormpath.com/v1/groupMemberships/xxx&#39;, callback);</code></pre><p>In each of the above cases, <code>callback</code> should be a function which accepts two arguments:</p><ul><li>An <code>Error</code> object.</li><li>The resource object.</li></ul><p>For example:</p><pre><code class="lang-javascript">var appHref = &#39;https://api.stormpath.com/v1/applications/xxx&#39;;
+
+client.getApplication(appHref, function(err, app) {
+  if (err) throw err;
+  console.log(app);
+});</code></pre><h3 id="update-a-specific-resource">Update a Specific Resource</h3><p>Once you have retrieved a resource, you can update it&#39;s properties and then call it&#39;s <code>save()</code> method. This will persist the changes to Stormpath by making the necessary call to the REST API. For example, if you need to update the surname of an Account:</p><pre><code class="lang-javascript">// Update an account resource
+client.getAccount(accountHref, function(err, account) {
+  account.surname = &#39;my new last name&#39;;
+  account.save(function(err) {
+    console.log(account);
+  });
+});</code></pre><h3 id="delete-a-specific-resource">Delete a Specific Resource</h3><p>All resources have a <code>delete()</code> method which will send an <code>DELETE</code> request to the REST API. <strong>This operation cannot be undone.</strong></p><pre><code class="lang-javascript">// Delete an account resource.
+client.getAccount(accountHref, function(err, account) {
+  account.delete(function(err) {
+    // handle error, if exists
+  });
+});</code></pre><h3 id="create-an-application">Create an Application</h3><p>Creating a Stormpath Application is simple:</p><pre><code class="lang-javascript">var app = {
+  name: &#39;My Awesome Application!&#39;,
+  description: &quot;No, Srsly. It&#39;s Awesome.&quot;
+};
+
+client.createApplication(app, { createDirectory: true }, function(err, createdApp) {
+  console.log(createdApp);
+});</code></pre><p><strong>NOTE</strong>: The optional argument we specified, <code>{createDirectory: true}</code>, will automatically create a new Directory to hold all Accounts and Groups for that Application automatically. Nice, right?</p><p>For more advanced use cases, you can omit the <code>options</code> argument and set up different account stores for your Application later. For example:</p><pre><code class="lang-javascript">var app = {
+  name: &#39;Cooler App&#39;,
+  description: &#39;The coolest app ever made.&#39;
+};
+
+client.createApplication(app, function(err, createdApp) {
+  console.log(createdApp);
+});</code></pre><h3 id="create-an-account">Create an Account</h3><p>Now that you&#39;ve created an Application (<em>and assigned it a Directory</em>), you can create a user account!</p><pre><code class="lang-javascript">var account = {
+  givenName: &#39;Jean-Luc&#39;,
+  surname: &#39;Picard&#39;,
+  username: &#39;jlpicard&#39;,
+  email: &#39;jlpicard@starfleet.com&#39;,
+  password: &#39;Changeme1!&#39;
+};
+
+createdApp.createAccount(account, function(err, createdAccount) {
+  console.log(createdAccount);
+});</code></pre><h3 id="update-an-account">Update an Account</h3><p>You can update an Account object by modifying the fields you want to change, then calling the <code>save</code> method:</p><pre><code class="lang-javascript">createdAccount.middleName = &#39;Make it so.&#39;;
+createdAccount.save(function(err) {
+  console.log(createdAccount);
+});</code></pre><h3 id="authenticate-an-account">Authenticate an Account</h3><p>You can authenticate an Account (<em>retrieve an Account object given a username (or email address) and password</em>) using the <code>authenticateAccount</code> method of and Application or Directory:</p><pre><code class="lang-javascript">// NOTE: The username field could also be an email address.
+var authcRequest = {
+  username: &#39;jlpicard&#39;,
+  password: &#39;Changeme1!&#39;
+};
+
+createdApp.authenticateAccount(authcRequest, function(err, result) {
+  // If successful, you can obtain the account by calling result.getAccount:
+  // This is cached and will return immediately without an API request.
+  result.getAccount(function(err, account) {
+    if (err) throw err;
+    console.log(account);
+  });
+});</code></pre><p><strong>NOTE</strong>: The call to <code>result.getAccount</code> is cached, and will execute immediately (<em>no HTTP request necessary</em>).</p><h3 id="send-a-password-reset-email">Send a Password Reset Email</h3><p>If one of your end-users forgets their password, you can trigger the <em>&quot;Forgot Password&quot;</em> reset workflow, and we&#39;ll send the user an email:</p><pre><code class="lang-javascript">var email = &#39;jlpicard@starfleet.com&#39;;
+
+createdApp.sendPasswordResetEmail(email, function(err, token) {
+  console.log(token);
+});</code></pre><p>For more information on resetting a user&#39;s password, you might want to read about Stormpath&#39;s <a href="http://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#password-reset" title="Stormpath Docs - Reset an Account&#39;s Password">Password Reset Workflow</a> (<em>and yes, you can customize the password reset emails!</em>).</p><h3 id="create-a-group">Create a Group</h3><p>In Stormpath, the best way to think about roles and permissions is via <a href="http://docs.stormpath.com/rest/product-guide/#groups" title="Stormpath Groups">Groups</a>. Groups allow you to categorize Accounts and build complex permission systems.</p><p>Creating a new Group is easy:</p><pre><code class="lang-javascript">var group = { name: &#39;Administrators&#39; };
+
+createdApp.createGroup(group, function(err, createdGroup) {
+  console.log(createdGroup);
+});</code></pre><h3 id="assign-an-account-to-a-group">Assign an Account to a Group</h3><p>You can do easily assign a Group to an Account in two ways: by interacting with the Account, or by interacting with the Group:</p><pre><code class="lang-javascript">// via the account
+// groupOrGroupHref may be the actual group or the group&#39;s href:
+
+account.addToGroup(groupOrGroupHref, function(err, membership) {
+  // membership is a GroupMembership resource that represents the pairing of the group to the account:
+  console.log(membership);
+});
+
+// via the group:
+group.addAccount(accountOrAccountHref, function(err, membership) {
+  // membership is a GroupMembership resource that represents the pairing of the group to the account:
+  console.log(membership);
+});</code></pre><p><strong>NOTE</strong>: In both examples above, <code>membership</code> is a <a href="http://docs.stormpath.com/rest/product-guide/#group-memberships" title="Stormpath GroupMembership">GroupMembership</a> resource that represents the pairing of the Group to the Account -- in most cases, you don&#39;t need to worry about using this directly.</p><h3 id="retrieve-an-account-s-groups">Retrieve an Account&#39;s Groups</h3><p>It is often useful to obtain an Account&#39;s Groups so you can perform access control. For example, you might want to see if an Account is in the &#39;Administrators&#39; Group before allowing them to see certain data.</p><p>You can do this by iterating over an Account&#39;s groups like so:</p><pre><code class="lang-javascript">account.getGroups(function(err, groups) {
+  groups.each(function(group, cb) {
+    if (group.name === &#39;Administrators&#39;) {
+      console.log(&#39;We have an administrator!&#39;);
+    }
+
+    cb();
+  }, function(err) {
+    console.log(&#39;Finished iterating over groups.&#39;);
+  });
+});</code></pre>

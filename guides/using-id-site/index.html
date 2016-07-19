@@ -1,0 +1,2226 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Using Stormpath's ID Site to Host your User Management UI - Stormpath</title>
+  <meta name="author" content="Stormpath, Inc.">
+
+  
+  <meta name="description" content="Stormpath Hosted Subdomains provide pre-built screens for login, registration, password reset and SSO.">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  
+  <link rel="canonical" href="http://stormpath.github.io/guides/using-id-site">
+  <link href="/favicon.ico" rel="icon">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style>
+@import url("/stylesheets/normalize.css?mrrrji");
+@import url("/stylesheets/wireframes.css?mrrrji");
+@import url("/stylesheets/html-elements.css?mrrrji");
+@import url("/stylesheets/tabs.css?mrrrji");
+@import url("/stylesheets/tinybox2.css?mrrrji");
+@import url("/stylesheets/flexnav.css?mrrrji");
+@import url("/stylesheets/pages.css?mrrrji");
+@import url("/stylesheets/docs.css?mrrrji");
+@import url("/stylesheets/blocks.css?mrrrji");
+@import url("/stylesheets/navigation.css?mrrrji");
+@import url("/stylesheets/views-styles.css?mrrrji");
+@import url("/stylesheets/nodes.css?mrrrji");
+@import url("/stylesheets/comments.css?mrrrji");
+@import url("/stylesheets/forms.css?mrrrji");
+@import url("/stylesheets/fields.css?mrrrji");
+@import url("/stylesheets/layouts/responsive-sidebars.css?mrrrji");
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/atom.xml" rel="alternate" title="Stormpath" type="application/atom+xml">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Covered+By+Your+Grace|Open+Sans:300italic,400italic,600italic,700italic,800italic,300,400,600,700,800" media="all" />
+
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/cupertino/jquery-ui.css" />
+<link rel="stylesheet" href="/stylesheets/mono-blue.min.css" />
+
+<!--[if lt IE 9]>
+<script src="/javascripts/html5-respond.js"></script>
+<![endif]-->
+
+<link rel="publisher" href="https://plus.google.com/117307959654441669381" />
+<!-- twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="goStormpath">
+<meta name="twitter:title" content="Using Stormpath's ID Site to Host your User Management UI - Stormpath">
+<meta name="twitter:description" content="Stormpath Hosted Subdomains provide pre-built screens for login, registration, password reset and SSO.">
+<meta name="twitter:image:src" content="https://docs.stormpath.com/images/icons/twitter-stormpath-icon.jpg">
+<!-- opengraph -->
+<meta property="og:title" content="Using Stormpath's ID Site to Host your User Management UI - Stormpath" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://stormpath.github.io/guides/using-id-site" />
+<meta property="og:image" content="https://docs.stormpath.com/images/icons/og-stormpath-icon.jpg" />
+<meta property="og:description" content="Stormpath Hosted Subdomains provide pre-built screens for login, registration, password reset and SSO." />
+<meta property="og:site_name" content="Stormpath" />
+<meta property="fb:admins" content="3230401" />
+
+
+<!-- kissmetrics -->
+<script type="text/javascript">
+  var _kmq = _kmq || [];
+  var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+  function _kms(u){
+    setTimeout(function(){
+      var d = document, f = d.getElementsByTagName('script')[0],
+      s = d.createElement('script');
+      s.type = 'text/javascript'; s.async = true; s.src = u;
+      f.parentNode.insertBefore(s, f);
+    }, 1);
+  }
+  _kms('//i.kissmetrics.com/i.js');
+  _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+</script>
+
+<!-- Optimizely -->
+<script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-29159574-1', 'auto');
+  // Optimizely Universal Analytics Integration
+  //https://help.optimizely.com/hc/en-us/articles/200039995-Integrating-Optimizely-with-Google-Analytics
+  window.optimizely = window.optimizely || [];
+  window.optimizely.push("activateUniversalAnalytics");
+    ga('send', 'pageview');
+
+</script>
+
+
+  
+
+</head>
+
+<body  class="not-front  node-type-documentation  ">
+<!-- Qualaroo for stormpath.com -->
+<script type="text/javascript">var _kiq = _kiq || [];</script>
+<script type="text/javascript" src="//s3.amazonaws.com/ki.js/47725/9JM.js" async="true"></script>
+
+<!-- Start of stormpath Zendesk Widget script -->
+<script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","stormpath.zendesk.com");
+/*]]>*/</script>
+<!-- End of stormpath Zendesk Widget script -->
+
+
+<script src="/javascripts/stormpath_docs.js"></script>
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['android'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['csharp'] = [];
+		
+	
+		sp_docs_menu['dotnet'] = [];
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('10010');
+		
+			sp_docs_menu['errors'].push('10011');
+		
+			sp_docs_menu['errors'].push('10012');
+		
+			sp_docs_menu['errors'].push('10013');
+		
+			sp_docs_menu['errors'].push('10014');
+		
+			sp_docs_menu['errors'].push('10015');
+		
+			sp_docs_menu['errors'].push('10016');
+		
+			sp_docs_menu['errors'].push('10017');
+		
+			sp_docs_menu['errors'].push('10100');
+		
+			sp_docs_menu['errors'].push('10101');
+		
+			sp_docs_menu['errors'].push('10102');
+		
+			sp_docs_menu['errors'].push('11001');
+		
+			sp_docs_menu['errors'].push('11002');
+		
+			sp_docs_menu['errors'].push('11003');
+		
+			sp_docs_menu['errors'].push('11004');
+		
+			sp_docs_menu['errors'].push('11005');
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['ios'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['vbnet'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+</script>
+
+<div id="page">
+    <div class="fixed-header" id="wrap">
+      
+
+<nav class="navbar navbar-storm" role="navigation">
+  <div class="navbar-container">
+
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://stormpath.com/">
+        <img src="/images/template/logo_nav.png"/>
+      </a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="main-nav">
+      <a type="button" class="btn navbar-btn button-primary-bordered button-signup navbar-right" href="https://api.stormpath.com/register" onClick="ga('send', 'event', { eventCategory: 'sign up', eventAction: 'sign up button click', eventLabel: 'www', eventValue: 1});">Sign Up Now</a>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="http://docs.stormpath.com/">Docs</a></li>
+        <li><a href="https://stormpath.com/product/">Product</a></li>
+        <li><a href="https://stormpath.com/pricing/">Pricing</a></li>
+        <li><a href="https://stormpath.com/customers/">Customers</a></li>
+        <li><a href="https://boards.greenhouse.io/stormpath/">Jobs</a></li>
+        <li><a href="https://api.stormpath.com/login/">Login</a></li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</nav>
+
+
+
+
+      
+      
+    </div>
+
+<!--
+  <div id="header-wrapper">
+  	<header id="header" role="banner" class="container">
+      
+    </header>
+  </div>-->
+  <div id="main-wrapper">
+    <div id="main">
+      <div id="main-inner">
+        <div id="main-inner-inner">
+          <div id="content" class="column" role="main">
+            <div class="col-md-11">
+              <a id="main-content"></a>
+              
+                <h1 class="title" id="page-title">Using Stormpath's ID Site to Host your User Management UI</h1>
+              
+              <div class="sharing">
+
+  <!-- AddThis Button BEGIN -->
+  <div class="addthis_toolbox addthis_default_style addthis_16x16_style">
+    <a class="addthis_button_twitter"></a>
+    <a class="addthis_button_reddit"></a>
+    <a class="addthis_button_hackernews"></a>
+    <a class="addthis_button_google_plusone_share"></a>
+    <a class="addthis_button_linkedin"></a>
+    <a class="addthis_button_facebook"></a>
+    <a class="addthis_button_email"></a>
+  </div>
+  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+  <!-- AddThis Button END -->
+
+</div>
+            	<p>In this guide, we discuss how to set up Stormpath to host a set of web pages that enable your applications to quickly and securely offer common identity management functions like login, registration, and password reset.</p>
+
+<div class='docs-tip'><p>ID site pages are a convenience feature in Stormpath.  If you prefer to build and host your own pages, you can recreate much of the functionality using Stormpath&#8217;s SDKs and Core API.</p>
+</div>
+
+
+<h2><a id="what-is-an-id-site"></a>What is an ID Site?</h2>
+
+<p>Stormpath ID Site is a set of hosted and pre-built user interface screens that take care of common identity functions for your applications &mdash; login, registration, and password reset.  ID Site can be accessed via your own custom domain like id.mydomain.com and shared across multiple applications to create centralized authentication if needed.</p>
+
+<p>The screens, and even the functionality, of ID site are completely customizable.  You have full access to the source code of the ID Site screens so you can make simple changes like adding your own logo and changing CSS or more complex changes like adding fields, adding JavaScript code, adding screens, removing screens, and even changing how the screens behave.</p>
+
+<h2><a id="why-should-i-use-stormpath-id-site"></a>Why should I use Stormpath ID Site?</h2>
+
+<p>Building, securing, and maintaining identity screens for your users is time consuming, full of security concerns, and often more complex than many developers estimate.  Stormpath ID Site gives you and your development team peace of mind that you will have best in class user security quickly and easily, with very little code&mdash; minimizing risk to your project timeline.</p>
+
+<p>Stormpath ID Site fully decouples your identity screens from your applications, making it incredibly easy to provide the same login / registration pages for multiple applications &mdash; achieving centralized user management and authentication with a clean and easy user experience.</p>
+
+<h2><a id="how-does-id-site-work"></a>How does ID Site Work?</h2>
+
+<p>To demonstrate how the SDK works, we’ll use an example. Imagine you are building a Stormtrooper application for managing Stormtrooper equipment — like awesome helmets and blasters. The application is trooperapp.com and is using Stormpath ID Site for login and registration.</p>
+
+<p>Once trooperapp.com is rendered by the browser, login and registration buttons are available for the unauthenticated user.  Clicking on these buttons will call your server-side application at specific endpoints.  For illustration, the login button will invoke <code>/login</code> and registration will invoke <code>/register</code>. Your application using the Stormpath SDK will securely redirect the user to the ID Site along with a cryptographically signed JSON Web Token (JWT) that includes information like the <code>Callback URI</code>, <code>Path</code> to a specific ID Site page, and any <code>State</code> you think is important for your application.</p>
+
+<p>On the ID Site, the user will enter their data and complete the appropriate action, like login.  ID Site will automatically detect any Workflow or Social Login configurations set in Stormpath and show the appropriate buttons, messaging, and behavior.</p>
+
+<p>After the user has logged in successfully, they will be redirected back to your application&rsquo;s <code>Callback URI</code>.  For illustration purposes, this could be <code>http://trooperapp.com/handle-id-site-redirect</code>.  When the ID Site redirects back to your application, it will pass a secure JWT that represents the account in Stormpath.  Using the Stormpath SDK, your application will handle the request to <code>/handle-id-site-redirect</code>, validate that the JWT is correct, and return an <code>ID Site Account Result</code>. The <code>ID Site Account Result</code> will include the Stormpath <code>Account</code> object and additional information, such as any state that was passed by your application or if the account returned is newly created.</p>
+
+<!-- When a user wants to login to or register for your application, your application will redirect them to your ID Site.  On your ID Site, the user will enter their data and complete the appropriate action, like login.  ID Site will automatically detect any Workflow or Social Login configurations you have set in Stormpath and show the appropriate buttons, messaging, and behavior.
+
+On a Login, your ID Site will validate the user's credentials and create a security assertion that will be sent back to your application letting your application know that the current user is authenticated and should be trusted.  That security assertion is cryptographically signed by Stormpath using a shared secret known by your application.  This means that only Stormpath and your application can understand the assertion, thwarting certain attack vectors including [man-in-the-middle attacks](http://en.wikipedia.org/wiki/Man-in-the-middle_attack).
+
+Once your application receives the security assertion, your application will use the Stormpath SDK to verify and unpack the user data.  -->
+
+
+<p><img src="/images/docs/ID-diagram.png" alt="" /></p>
+
+<!-- sequence diagram -->
+
+
+<h2><a id="setting-up-your-id-site"></a>Setting up your ID Site</h2>
+
+<p>Your ID Site uses a default configuration for testing purposes, but can be fully configured to host customized code or to use your own custom domain.</p>
+
+<p>To set up your ID Site, log into the <a href="https://api.stormpath.com">Administrator Console</a> and:</p>
+
+<ol>
+<li>Click on the <code>ID Site</code> Tab</li>
+<li>Add your application URLs that will be allowed to process the callbacks from the ID Site to the <code>Authorized Redirect URIs</code> property.  These URLs will be hosted by your application and will use the Stormpath SDK to process the security assertions about the user that ID Site sends back.</li>
+<li>Click the <code>Update</code> button at the bottom of the page</li>
+</ol>
+
+
+<!-- I feel like we really need to better explain Authorized Redirect URIs.  With an example perhaps. -->
+
+
+
+
+<!-- screen shot -->
+
+
+<p>Once you configure your ID site, a default subdomain will be created on <code>stormpath.io</code>.  The default ID Site URL follows the format of <code>tenant-name.id.stormpath.io</code> where tenant-name is the name of your Stormpath <code>Tenant</code>.</p>
+
+<div class='docs-warning'><p>Your ID Site URL can only be accessed via a redirect from a Stormpath enabled application because ID Site expects a cryptographically signed token with specific data in it.  Simply visiting your ID Site URL in a browser will give you an error.</p>
+</div>
+
+
+<p>For more advanced configurations, there are additional properties in the ID Site configuration that can help:</p>
+
+<ul>
+<li>Set a Logo to appear at the top of the default ID Site</li>
+<li>Set a custom domain name (like id.mydomain.com) and SSL certificate to host your ID Site from your domain, securely</li>
+<li>Set a custom GitHub repo to host your ID Site (to host custom code)</li>
+</ul>
+
+
+<!-- I feel like we need to talk about this more -->
+
+
+<h3><a id="setting-your-own-custom-domain-name-and-ssl-certificate"></a>Setting your own Custom Domain Name and SSL certificate</h3>
+
+<p>By default, the address of your ID Site is tenant-name.id.stormpath.io. However, you can change the address to a subdomain of your own website, such as id.mysite.com. This is called setting up a custom domain name.</p>
+
+<p>For example, the Stormtrooper equipment application&rsquo;s main website is trooperapp.com. After signing up for Stormpath, the initial address of the ID Site might be something like happy-rebel.id.stormpath.io. You can change the ID Site&rsquo;s address to a subdomain of your company website, like id.trooperapp.com.</p>
+
+<p>The workflow for changing the address consists of the following steps:</p>
+
+<ul>
+<li>Get a domain name and a subdomain (if not already done)</li>
+<li>Make the subdomain an alias of your ID Site on Stormpath</li>
+<li>Enable the custom domain in Stormpath&rsquo;s ID Site configuration</li>
+<li>Input SSL information for Stormpath to host</li>
+</ul>
+
+
+<h4>Getting a Domain Name and a Subdomain</h4>
+
+<p>If not already done, you must register a domain name and add an ID subdomain to it.</p>
+
+<div class='docs-note'><p>Working with domain names and subdomains can be confusing because it&#8217;s something most of us rarely do. Consult your system administrator, if you have one, before proceeding.</p>
+</div>
+
+
+<ul>
+<li><p><em>Purchase and register a domain name with a domain registrar.</em> You can purchase and register a domain name from any domain registrar, including GoDaddy, Yahoo! Domains, 1&amp;1, Netregistry, or Register.com. For instructions, see the Help on the registrar&rsquo;s website.</p></li>
+<li><p><em>Create a subdomain for your domain for your ID Site.</em> See the Help on the registrar&rsquo;s website for instructions on adding a subdomain. You can call the subdomain &ldquo;id&rdquo;, &ldquo;login&rdquo; or something similar. Example: id.trooperapp.com.</p></li>
+</ul>
+
+
+<h4>Making the Subdomain an Alias of your ID Site on Stormpath</h4>
+
+<p>The next step is to make your subdomain an alias of your ID Site on Stormpath. An alias is simply an alternate address for a website. For example, you can make the addresses &ldquo;id.trooperapp.com&rdquo; and &ldquo;happy-rebel.id.stormpath.io&rdquo; interchangeable as far as web browsers are concerned.</p>
+
+<div class='docs-note'><p>Consult your system administrator, if you have one, before proceeding.</p>
+</div>
+
+
+<p>To make your subdomain an alias of your ID Site website on Stormpath, you must use your domain registrar&rsquo;s tools and UI.  These steps will generally include:</p>
+
+<ul>
+<li>Log in to your domain registrar&rsquo;s control panel.</li>
+<li>Look for the option to change DNS records.</li>
+<li>Locate or create the CNAME records for your domain.</li>
+<li>Point the CNAME record from your subdomain (ex. &ldquo;id&rdquo; or &ldquo;login&rdquo;) to your ID Site subdomain (ex. happy-rebel.id.stormpath.io)</li>
+</ul>
+
+
+<div class='docs-note'><p>It takes time for changes to the DNS system to be implemented. Typically, it can take anywhere from a few hours to a day, depending on your Time To Live (TTL) settings in the registrar&#8217;s control panel. In the example above, the TTL is 14,400 seconds, or 4 hours.</p>
+</div>
+
+
+<h4>Enabling the Custom Domain in Stormpath&rsquo;s ID Site Configuration</h4>
+
+<p>After making your subdomain an alias of your support ID Site on Stormpath, you must enable a custom domain in the Stormpath. If you omit this step, your subdomain will point to a error page rather than your ID Site.</p>
+
+<p>To set up a custom domain on ID Site, log into the <a href="https://api.stormpath.com">Administrator Console</a> and:</p>
+
+<ol>
+<li>Click on the <code>ID Site</code> Tab</li>
+<li>Click the <code>Custom</code> option under <code>Domain Name</code></li>
+<li>Type in the subdomain for your ID Site (ex: id.trooperapp.com)</li>
+<li>Click the <code>Update</code> button at the bottom of the page</li>
+</ol>
+
+
+<h4>Setting up SSL on your ID Site</h4>
+
+<p>Since Stormpath is hosting the ID Site under your custom subdomain, to secure it using SSL you must provide the SSL certificate information to Stormpath. Creating SSL certificates is an involved task which requires working with a certificate authority such as Verisign and includes:</p>
+
+<ol>
+<li>Generating a certificate request (CSR) with a Distinguished Name (DN) that matches your subdomain (ex. id.trooperapp.com)</li>
+<li>Provide the CSR file to a certificate authority such as Verisign. The certificate authority generates a SSL certificate and gives it to you so that it can be installed on Stormpath&rsquo;s servers.</li>
+</ol>
+
+
+<p>Once the SSL certificate is retrieved from the certificate authority, you can log into the <a href="https://api.stormpath.com">Administrator Console</a> and configure SSL by:</p>
+
+<ol>
+<li>Click on the <code>ID Site</code> Tab</li>
+<li>Open the zip to retrieve your .pem file if needed.</li>
+<li>Copy the text for the SSL certificate and Private Key to the appropriate text boxes on the <code>ID Site</code> Tab</li>
+<li>Click the <code>Update</code> button at the bottom of the page</li>
+</ol>
+
+
+<p>When the ID Site is updated, the SSL information is uploaded to Stormpath and will update your ID Site automatically.</p>
+
+<h3><a id="customizing-id-site-look-feel-and-behavior"></a>Customizing ID Site look, feel, and behavior</h3>
+
+<p>Your ID Site can be customized to have your own look and feel. Simple customization, like adding a logo, can be done via Stormpath&rsquo;s Admin Console.</p>
+
+<p>Below is the default look and feel for your ID Site:</p>
+
+<p><img src="/images/guides/Login.png" width="700" alt="" /></p>
+
+<p>More advanced customization can be achieved by forking the <a href="https://github.com/stormpath/idsite-src">default ID Site source code found on GitHub</a> and then pointing ID Site to your new GitHub repository.  Stormpath infrastructure can detect any changes to a specific branch in your GitHub repository and automatically sync your file to the Stormpath infrastructure. More information on this is included at the <a href="#customizing-the-default-id-site">bottom of this guide</a></p>
+
+<!-- anything we want to add here? Angular SPA? Stormpath.js? Fluffy kittens, rainbows, and unicorns? -->
+
+
+<h2><a id="setting-up-your-application-to-use-id-site"></a>Setting up your Application to use ID Site</h2>
+
+<p>In order to set up your application to use ID Site, you will need to install the Stormpath SDK and register the application in Stormpath.  The Stormpath SDK and hosted ID Site will do most of the work for your application, including signing and unpacking secure communication between themselves.  With the SDK installed, you will need to implement two steps:</p>
+
+<ul>
+<li>Send a User to the ID Site to Login, Register, etc.</li>
+<li>Consume responses from the ID Site to your Application</li>
+</ul>
+
+
+<h3><a id="sending-a-user-to-the-id-site-to-authenticate--sign-up"></a>Sending a User to the ID Site to Authenticate / Sign up</h3>
+
+<p>When a user wants to login to or register for your application, you will need to redirect them to your ID Site. The Stormpath SDK will generate a secure URL for the HTTP redirect on your application&rsquo;s behalf and include data needed by ID Site.</p>
+
+<p>A typical set of steps in your application are as follows:</p>
+
+<ol>
+<li>You render your application with a login button</li>
+<li>The user clicks the login button which will send a request to your server</li>
+<li>Your server will use the Stormpath SDK to get the redirection URL for the ID Site</li>
+<li>Your server responds with an HTTP 302 which redirects the user to the ID Site URL</li>
+</ol>
+
+
+<p>To build an ID Site URL for redirection, you must ask the Stormpath <code>Application</code> object for an <code>ID Site URL Builder</code>.  From the builder, you can set important properties to pass information and make sure the ID Site can call back to your application.</p>
+
+<p>To get an <code>ID Site URL Builder</code>:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-id-site-builder-java">java</a></li><li><a href="#tabs-id-site-builder-node">node</a></li><li><a href="#tabs-id-site-builder-python">python</a></li><li><a href="#tabs-id-site-builder-php">php</a></li></ul><div id="tabs-id-site-builder-java"><pre lang="java"><code>
+Application application = client.getResource(applicationRestUrl, Application.class);
+
+IdSiteUrlBuilder idSiteBuilder = application.newIdSiteUrlBuilder();
+</code> </pre> </div><div id="tabs-id-site-builder-node"><pre lang="node"><code>
+client.getApplication(applicationRestUrl, function(err, application) {
+  var url = application.createIdSiteUrl({
+    callbackUri: 'https://www.mysite.com/dashboard'
+  });
+});
+</code> </pre> </div><div id="tabs-id-site-builder-python"><pre lang="python"><code>
+url = app.build_id_site_redirect_url("https://www.mysite.com/dashboard")
+</code> </pre> </div><div id="tabs-id-site-builder-php"><pre lang="php"><code>
+$application = \Stormpath\Resource\Application::get($applicationHref);
+
+$application->createIdSiteUrl([
+    'callbackUri' => 'https://trooperapp.com/callback'
+]);
+</code> </pre> </div></div>
+
+
+
+
+<div class='docs-info'><p><strong>Reminder</strong> - An <code>Application</code> in Stormpath is a representation of your real world application.  For more info check out our <a href="https://stormpath.com/tutorial/">Tutorial</a> or <a href="/java/product-guide/">Product Guide</a>.</p>
+</div>
+
+
+<p>The <code>ID Site URL Builder</code> will allow you to configure the URL to include:</p>
+
+<ul>
+<li><code>Callback URI</code> (required)&ndash; The callback URI will be called by ID Site when a successful login or registration event occurs. The Callback URI is <strong>required</strong> for the builder and it must match an <code>Authorized Redirect URI</code> in the Admin Console&rsquo;s ID Site settings.  See the <a href="#setting-up-your-id-site">Setting up your ID Site</a> section in this guide.</li>
+<li><code>Path</code> (optional)&ndash; a relative link to a page in your ID Site.  The default ID Site does not require a path and will default to the login page.  If you would like to send the user to a specific page in ID site, like the registration page or the forgot password page, you would set that in the <code>Path</code>.  If you are using the default ID Site, the URLs are:
+
+<ul>
+<li>Registration &ndash; <code>/#/register</code></li>
+<li>Forgot Password &ndash; <code>/#/forgot</code></li>
+</ul>
+</li>
+<li><code>State</code> (optional) &ndash; a string that stores information that your application needs <em>after</em> the user is redirected back to your application.  You may need to store information about what page the user was on, or any variables that are important for your application.</li>
+</ul>
+
+
+<p>Once the parameters are configured on your <code>ID Site URL Builder</code>, you can call the <code>build</code> method to get a string representation of the URL.</p>
+
+<p>The HTTP response to the user should resemble:</p>
+
+<pre><code>HTTP/1.1 302 Found
+
+Cache-Control: no-store no-cache
+Pragma: no-cache
+Expires: -1
+Location: %%GENERATED_ID_SITE_URL_FROM_BUILDER%%
+</code></pre>
+
+<p>Creating the redirection with an <code>HTTPServletResponse</code> would follow:</p>
+
+<pre><code>response.setStatus(HTTPServletResponse.SC_FOUND);
+response.setHeader("Cache-control", "no-cache, no-store");
+response.setHeader("Pragma", "no-cache");
+response.setHeader("Expires", "-1");
+response.setHeader("Location", idSiteBuilder.build());
+</code></pre>
+
+<!-- do we want to include the example? -->
+
+
+<!--
+To demonstrate how the SDK works, we’ll use an example. Imagine you are  building a Stormtrooper application for managing Stormtrooper equipment— like awesome helmets and blasters. The application is using Stormpath's ID Site for authentication.
+-->
+
+
+<h3><a id="consuming-responses-from-the-id-site-to-your-application"></a>Consuming Responses from the ID Site to your Application</h3>
+
+<p>Once the user has logged in, created an account, or verified an account, the ID Site will redirect the user along with a security assertion back to your application.  ID Site will use the <code>Callback URI</code> you included when you first redirected the user to ID Site.  The Stormpath SDK will verify the cryptographic signature on the assertion and and unpacks the user information.</p>
+
+<p>For example:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-handle-response-java">java</a></li><li><a href="#tabs-handle-response-node">node</a></li><li><a href="#tabs-handle-response-python">python</a></li><li><a href="#tabs-handle-response-php">php</a></li></ul><div id="tabs-handle-response-java"><pre lang="java"><code>
+public void dashboard(HttpServletRequest request, HttpServletResponse response) {
+     Application application = client.getResource(applicationRestUrl, Application.class);
+
+     AccountResult accountResult = application.newIdSiteCallbackHandler(request).getAccountResult();
+
+     Account account = accountResult.getAccount();
+}   
+</code> </pre> </div><div id="tabs-handle-response-node"><pre lang="node"><code>
+app.get('/dashboard',function(req,res) {
+  client.getApplication(applicationRestUrl, function(err, application) {
+
+    application.handleIdSiteCallback(req.url,function(err,idSiteResult) {
+        var account = idSiteResult.account;
+        // render the user dashboard for this account
+    });
+
+  });
+});
+</code> </pre> </div><div id="tabs-handle-response-python"><pre lang="python"><code>
+result = app.handle_id_site_callback(url_response) # feed the whole URI to the method (with parameters and all)
+if result is not None:
+    print result.account
+    print result.account.is_new_account # if the user came to the callback uri from the register screen
+    print result.state # if any state was set during the creation of the redirect URI
+
+</code> </pre> </div><div id="tabs-handle-response-php"><pre lang="php"><code>
+$response = $application->handleIdSiteCallback($requestUri);
+
+$account = $response->account;
+</code> </pre> </div></div>
+
+
+<p>The <code>AccountResult</code> will be able to give your application the ability to understand:</p>
+
+<ul>
+<li>The <code>Account</code> for the successful account result</li>
+<li>A <code>boolean</code> that will return true for a newly created account</li>
+<li>A <code>String</code> of the state that was set when using the <code>ID Site URL Builder</code></li>
+</ul>
+
+
+<p>Once the account is retrieved, you can get access to additional account properties that are important to your application, such as <code>Groups</code> or <code>CustomData</code></p>
+
+<h4>Handling Errors from ID Site</h4>
+
+<p>During communication from your application to ID Site, there are specific errors that can occur.  These errors will redirect back to your application through the specified <code>callbackUri</code>.  Your application has the ability to handle these errors or even send the user back to ID Site.</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Error Code </th>
+<th align="left"> Message </th>
+<th align="left"> Developer Message </th>
+<th align="left"> Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><code>10011</code> </td>
+<td align="left"> Token is invalid </td>
+<td align="left"> Token is no longer valid because it has expired </td>
+<td align="left"> Stormpath uses a token with signed information to take the user from your application to ID Site, if the redirect takes too long, the token will expire.  This usually can occur if your user experiencing severe internet connectivity problems.</td>
+</tr>
+<tr>
+<td align="left"><code>11001</code> </td>
+<td align="left"> Token is invalid </td>
+<td align="left"> Token is invalid because the specified organization name key does not exist in your Stormpath Tenant </td>
+<td align="left"> When using ID Site for <a href="#using-id-site-for-multitenancy">multitenancy</a>, if you specify an <code>organizationNameKey</code> for an organization that does not exist, this error will occur.</td>
+</tr>
+<tr>
+<td align="left"><code>11002</code> </td>
+<td align="left"> Token is invalid </td>
+<td align="left"> Token is invalid because the specified organization is disabled </td>
+<td align="left"> When using ID Site for <a href="#using-id-site-for-multitenancy">multitenancy</a>, if you specify an <code>organizationNameKey</code> for an organization that is disabled, this error will occur.  Disabled organizations can not be logged into.</td>
+</tr>
+<tr>
+<td align="left"><code>11003</code> </td>
+<td align="left"> Token is invalid </td>
+<td align="left"> Token is invalid because the specified organization nameKey is not one of the application&rsquo;s assigned account stores </td>
+<td align="left"> When using ID Site for <a href="#using-id-site-for-multitenancy">multitenancy</a>, if you specify an <code>organizationNameKey</code> for an organization that isn&rsquo;t an account store for the application, this error will occur.</td>
+</tr>
+<tr>
+<td align="left"><code>12001</code> </td>
+<td align="left"> The session on ID Site has timed out. </td>
+<td align="left"> The session on ID Site has timed out. This can occur if the user stays on ID Site without logging in, registering, or resetting a password. </td>
+<td align="left"> When your user arrives to ID Site, there is a 5 minute session where they need to take an action (login, register, or reset their password), if they timeout, the next action will redirect to your <code>callbackUri</code> with this error</td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a id="single-sign-on-for-multiple-applications"></a>Single Sign On for Multiple Applications</h3>
+
+<p>ID Site supports single-sign-on (SSO) for multiple applications.  SSO allows your user to log into ID Site once, and allows ID Site to make send a cryptographically signed JSON Web Token (JWT) to other applications.</p>
+
+<p>The way that SSO works is that ID Site will keep a configurable session for authenticated users.  When a user is sent from your application to ID Site, if ID Site can confirm that the session is still valid for the user, they will be automatically redirected to the <code>callbackUri</code>.  This <code>callbackUri</code> can be the originating application or any application supported by a Stormpath SDK.</p>
+
+<p>To enable these applications for SSO, there is some configuration needed in the Admin Console.  This includes setting up the <code>Authorized Redirect URIs</code> and configuring session properties.</p>
+
+<p>To set up the <code>Authorized Redirect URIs</code>, log into the Admin Console and:</p>
+
+<ul>
+<li>Click on the <code>ID Site</code> tab</li>
+<li>Add <code>Authorized Redirect URIs</code> for each of your applications you want to use for SSO.  This allows Stormpath to only redirect the user to applications that you configuration.</li>
+</ul>
+
+
+<p>When on the <code>ID Site</code> tab, configure the <code>Session Max Age</code> and <code>Session Time to Live</code> to meet your application&rsquo;s needs.</p>
+
+<ul>
+<li>Session Max Age &ndash; The maximum time the session is allowed to be valid, regardless on how often the user visits ID Site</li>
+<li>Session Time to Live &ndash; The maximum time that the session is allowed to idle.</li>
+</ul>
+
+
+<p>To show how you would configure a couple application for SSO, let&rsquo;s use two sample applications <code>trooperapp.com</code> and <code>darksidecentral.com</code>.   Both of these applications have <code>Authorized Redirect URIs</code> configured in the Stormpath Admin Console to receive callbacks from the ID Site:</p>
+
+<ul>
+<li><a href="http://trooperapp.com/id-site-sso">http://trooperapp.com/id-site-sso</a></li>
+<li><a href="http://darksidecentral.com/id-site-sso">http://darksidecentral.com/id-site-sso</a></li>
+</ul>
+
+
+<p>To get a user from <code>trooperapp.com</code> to <code>darksidecentral.com</code>, we can use the <code>ID Site URL Builder</code></p>
+
+<div class="tabs"><ul><li><a href="#tabs-id-site-builder-java">java</a></li><li><a href="#tabs-id-site-builder-node">node</a></li><li><a href="#tabs-id-site-builder-python">python</a></li><li><a href="#tabs-id-site-builder-php">php</a></li></ul><div id="tabs-id-site-builder-java"><pre lang="java"><code>
+Application application = client.getResource(trooperAppStormpathHref, Application.class);
+
+IdSiteUrlBuilder idSiteBuilder = application.newIdSiteUrlBuilder();
+idSiteBuilder.setCallbackUri('http://darksidecentral.com/id-site-sso');
+
+</code> </pre> </div><div id="tabs-id-site-builder-node"><pre lang="node"><code>
+client.getApplication(trooperAppStormpathHref, function(err, application) {
+  var url = application.createIdSiteUrl({
+    callbackUri: 'http://darksidecentral.com/id-site-sso'
+  });
+});
+</code> </pre> </div><div id="tabs-id-site-builder-python"><pre lang="python"><code>
+url = app.build_id_site_redirect_url("http://darksidecentral.com/id-site-sso")
+</code> </pre> </div><div id="tabs-id-site-builder-php"><pre lang="php"><code>
+$application = \Stormpath\Resource\Application::get($applicationHref);
+
+$application->createIdSiteUrl([
+    'callbackUri' => 'http://darksidecentral.com/id-site-sso'
+]);
+</code> </pre> </div></div>
+
+
+<p>When redirecting the user to the URL that the <code>ID Site URL Builder</code> generates, the user if the user has a valid session based on the <code>Session Max Age</code> and <code>Session Idle Time</code>, they will be automatically redirected to the callbackUri, which is <code>http://darksidecentral.com/id-site-sso</code>.  Darksidecentral can then use the <a href="#consuming-responses-from-the-id-site-to-your-application">Stormpath SDK to consume the response</a> from the ID Site to get the authenticated account and its properties.</p>
+
+<h3><a id="logging-out-of-id-site"></a>Logging out of ID Site</h3>
+
+<p>Since ID Site keeps a session for a user if the <code>Session Max Age</code> and <code>Session Idle Time</code> is configured, ID Site also gives you the ability to log the user out.  This will ultimately remove the session from ID Site.</p>
+
+<div class="tabs"><ul><li><a href="#tabs-id-site-builder-java">java</a></li><li><a href="#tabs-id-site-builder-node">node</a></li><li><a href="#tabs-id-site-builder-python">python</a></li><li><a href="#tabs-id-site-builder-php">php</a></li></ul><div id="tabs-id-site-builder-java"><pre lang="java"><code>
+Application application = client.getResource(trooperAppStormpathHref, Application.class);
+
+IdSiteUrlBuilder idSiteBuilder = application.newIdSiteUrlBuilder();
+idSiteBuilder.setCallbackUri('http://darksidecentral.com/id-site-callback');
+idSiteBuilder.forLogout();
+
+</code> </pre> </div><div id="tabs-id-site-builder-node"><pre lang="node"><code>
+client.getApplication(trooperAppStormpathHref, function(err, application) {
+  var url = application.createIdSiteUrl({
+    'callbackUri': 'http://darksidecentral.com/id-site-callback',
+    'logout': true
+  });
+});
+</code> </pre> </div><div id="tabs-id-site-builder-python"><pre lang="python"><code>
+url = application.build_id_site_redirect_url(callback_uri='http://darksidecentral.com/id-site-callback', logout=True)
+</code> </pre> </div><div id="tabs-id-site-builder-php"><pre lang="php"><code>
+$application = \Stormpath\Resource\Application::get($applicationHref);
+
+$application->createIdSiteUrl([
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'logout' => true
+]);
+</code> </pre> </div></div>
+
+
+<p>Once the user is logged out of ID Site, they are automatically redirected to the <code>callbackUri</code> which was specified using the <code>ID Site URL Builder</code>.  Your application will know that the user logged out because the resulting <code>ID Site Account Result</code> will contain a status claim of <code>LOGOUT</code>.  From here, your application can let the user know they have successfully logged out or show them a homepage.</p>
+
+<h3><a id="using-id-site-for-multitenancy"></a>Using ID Site for Multitenancy</h3>
+
+<p>When a user wants to login to your application, you may want to specify an organization for the user to login to.  Stormpath ID Site is configurable to support multitenancy with <code>Organization</code> resources.  An <a href="/rest/product-guide/latest/reference.html#organization"><code>Organization</code></a> in Stormpath is a resource used to group together <code>Account Stores</code> for an <code>Application</code> and can represent a tenant for your application.  These <code>Organization</code> resources can be mapped to your <code>Application</code> as account stores</p>
+
+<p>To imagine how this works, take the following example.  You are building a trooper application, <code>trooperapp.com</code> where you have three different <code>Organizations</code>:</p>
+
+<ul>
+<li>Stormtroopers</li>
+<li>Snowtroopers</li>
+<li>Sandtroopers</li>
+</ul>
+
+
+<p>Each of these types of troopers can only access their own <code>Organization</code>. To be able to support this, you create three <a href="/rest/product-guide/latest/reference.html#organization"><code>Organization</code></a> resources in Stormpath, specifying the <code>nameKey</code> that matches the subdomain.</p>
+
+<p>For example:</p>
+
+<ul>
+<li><a href="/rest/product-guide/latest/reference.html#create-an-organization">REST</a></li>
+</ul>
+
+
+<p>Once these organizations are mapped to your application as an account store, you can use ID Site in a multitenant fashion.  Including:</p>
+
+<ul>
+<li><a href="#specifying-the-organization">Specifying the organization</a>, which forcing the user to log into a particular organization in the application.</li>
+<li><a href="#allow-the-user-to-specify-organization">Allowing the user to specify their organization</a>, which gives an additional login form field for the user to fill out while logging in or resetting their password.</li>
+</ul>
+
+
+<p><a class="anchor" name="specifying-the-organization"></a></p>
+
+<h4>Specifying the Organization</h4>
+
+<p>In the case where you are using a subdomain to designate the organization, you can tell ID Site which organization the user is logging into to.  For example, when the user is logging into the subdomain of <code>stormtropper.trooperapp.com</code>, they would be logging into the <code>Organization</code> with the <code>nameKey</code> of <code>stormtrooper</code>.</p>
+
+<p>To specify which organization to log into:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-id-site-specify-an-org-node">node</a></li><li><a href="#tabs-id-site-specify-an-org-php">php</a></li></ul><div id="tabs-id-site-specify-an-org-node"><pre lang="node"><code>
+application.createIdSiteUrl({
+    'callbackUri': 'https://trooperapp.com/callback',
+    'organizationNameKey': 'stormtrooper',
+    'showOrganizationField': true
+});
+</code> </pre> </div><div id="tabs-id-site-specify-an-org-php"><pre lang="php"><code>
+$application->createIdSiteUrl([
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'organizationNameKey' => 'stormtrooper',
+    'showOrganizationField' => true
+]);
+</code> </pre> </div></div>
+
+
+
+
+<br />
+
+
+<p>This will display the organization field, with the organization name:</p>
+
+<p><img src="/images/organizationfield.png" alt="" /></p>
+
+<p>When the user logs in, they will be logging into the specified organization.  If the account does not exist, exists in another organization, or account store, the authentication attempt will not be successful.</p>
+
+<p><code>showOrganizationField</code> is an optional boolean field that controls if the organization field on the login form will be present. If <code>showOrganizationField</code> is false when the <code>organizationNameKey</code> is specified, the user will still be logging into a particular organization.</p>
+
+<p><a class="anchor" name="allow-the-user-to-specify-organization"></a></p>
+
+<h4>Allowing the User to Specify their Organization on ID Site</h4>
+
+<p>In some cases, you may want your users to specify the organization when they are on ID Site.  This will require that your users know their organization name key when logging into ID Site. To achieve this, your application will specify to show the organization field:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-allow-user-to-specify-org-node">node</a></li><li><a href="#tabs-allow-user-to-specify-org-php">php</a></li></ul><div id="tabs-allow-user-to-specify-org-node"><pre lang="node"><code>
+application.createIdSiteUrl({
+    'callbackUri': 'https://trooperapp.com/callback',
+    'showOrganizationField': true
+});
+</code> </pre> </div><div id="tabs-allow-user-to-specify-org-php"><pre lang="php"><code>
+$application->createIdSiteUrl([
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'showOrganizationField' => true
+]);
+</code> </pre> </div></div>
+
+
+
+
+<div class='docs-note'><p>Stormpath will only show the organization field when you have at least one organization as an account store for your application.</p>
+</div>
+
+
+<h4>Using Subdomains</h4>
+
+<p>In some cases, you may want to show the organization that the user is logging into as a subdomain instead of an form field.  To configuring this, you need to use a <a href="https://en.wikipedia.org/wiki/Wildcard_certificate">wildcard certificate</a> when setting up your <a href="#setting-your-own-custom-domain-name-and-ssl-certificate">custom domain with ID Site</a>.  Otherwise, the Stormpath infrastructure will cause browser SSL errors.</p>
+
+<p>Once a wildcard certificate is configured on your domain, you can tell ID Site to use a subdomain to represent the organization:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-id-site-builder-node">node</a></li><li><a href="#tabs-id-site-builder-php">php</a></li></ul><div id="tabs-id-site-builder-node"><pre lang="node"><code>
+application.createIdSiteUrl({
+    'callbackUri': 'https://trooperapp.com/callback',
+    'organizationNameKey': 'stormtrooper',
+    'useSubDomain': true
+});
+</code> </pre> </div><div id="tabs-id-site-builder-php"><pre lang="php"><code>
+$application->createIdSiteUrl([
+    'callbackUri' => 'https://trooperapp.com/callback',
+    'organizationNameKey' => 'stormtrooper',
+    'useSubDomain' => true
+]);
+</code> </pre> </div></div>
+
+
+<h2><a id="customizing-the-default-id-site"></a>Customizing the Default ID Site</h2>
+
+<p>Based on your ID Site requirements, you may need to customize the ID Site&rsquo;s look and feel or use the default ID site as a base for enhancements.  This section will explain how you can leverage the existing Stormpath ID Site source code to make modifications.</p>
+
+<div class='docs-info'><p>ID Site Customization requires features that are available on Lite Plans and above.  More information about pricing can be found <a href="https://stormpath.com/pricing/">here</a></p>
+</div>
+
+
+
+
+<div class='docs-info'><p><strong>Prerequisites</strong> Customizing and creating your own ID Site requires that you have already follow the <a href="/guides/using-id-site">Using Stormpath&#8217;s ID Site</a>.  Having ID Site set up and working with the default Stormpath ID Site is required to work with this guide.</p>
+
+<p>Installation prerequisites include:</p>
+
+<ul>
+<li><a href="http://nodejs.org/download/">NodeJS</a></li>
+<li><a href="http://bower.io/">Bower</a></li>
+</ul>
+
+</div>
+
+
+<h3><a id="getting-set-up"></a>Getting Set Up</h3>
+
+<p>Stormpath hosts the ID Site&rsquo;s source on <a href="https://github.com/stormpath/idsite-src">Github</a>.  This repository is the development environment for the Stormpath hosted ID Site. You can use this repository to build the same single page application that Stormpath provides, or you can modify it to suit your needs. The single page application uses <a href="https://angularjs.org/">AngularJS</a> and <a href="http://browserify.org/">Browserify</a>. It is built using <a href="http://gruntjs.com/">Grunt</a> and Yeoman (<a href="http://yeoman.io/">http://yeoman.io/</a>).</p>
+
+<p>The ID Site contains all HTML, CSS, JavaScript assets, and scripts needed to build and maintain your own ID Site.  To get started, there are four steps required:</p>
+
+<ol>
+<li>Set up a fork of ID Site in Github to clone locally</li>
+<li>Install dependencies and build the ID Site using grunt</li>
+<li>Host the built ID Site on Github</li>
+<li>Configure Stormpath to use your ID Site</li>
+</ol>
+
+
+<h4>Set up a Fork of ID Site in Github to Clone Locally</h4>
+
+<p>First, it is required to fork Stormpath&rsquo;s ID Site source git repository.  This will allow you to have a fork of the git repository that you can modify when customizing.  To fork a Github repository it is required that you have a Github account.</p>
+
+<p>To fork the ID Site source git repository, click <a href="https://github.com/stormpath/idsite-src/fork">here</a> and select the destination for the fork.</p>
+
+<p>Once Github forks the repository, you can clone it locally by running this command from the terminal:</p>
+
+<pre><code>git clone https://github.com/YOUR_USERNAME/idsite-src/
+</code></pre>
+
+<h4>Install Dependencies and Build the ID Site Using Grunt</h4>
+
+<p>Once you have a local clone of a fork of the ID Site source repository, you need to install the dependencies required to build and run the ID Site.  To accomplish this, in your terminal:</p>
+
+<ol>
+<li>Install grunt if necessary <code>npm install -g grunt-cli</code></li>
+<li>Navigate to the local idsite-src folder</li>
+<li>Run: <code>npm install</code></li>
+<li>Run: <code>bower install</code></li>
+</ol>
+
+
+<p>After installing the dependencies, you can build the site by running:</p>
+
+<pre><code>grunt build
+</code></pre>
+
+<p>This will produce a <code>dist</code> folder with the compiled and minified ID Site.</p>
+
+<h4>Host the built ID Site on Github</h4>
+
+<p>Once the ID Site is built to the <code>dist</code> folder, it needs to be hosted on Github.  This will allow Stormpath to clone and host the ID Site once configured in the Admin Console.</p>
+
+<p>To host the built ID Site on Github:</p>
+
+<ol>
+<li>Create a new Github repo by visiting <a href="https://github.com/new">this link</a>
+
+<ul>
+<li>Make sure the git repository is marked as public</li>
+<li>Once created &ndash; note the URL for the git repo (it will end with .git). It will be used in the next couple steps</li>
+</ul>
+</li>
+<li>Create a new git repo for the build ID Site
+
+<ul>
+<li>Navigate into the <code>dist</code> folder</li>
+<li>Run: <code>git init</code> to initialize the git repository</li>
+<li>Run: <code>git add .</code> to add the built files to staging</li>
+<li>Run: <code>git commit</code> to commit these to the repository</li>
+</ul>
+</li>
+<li>Create a remote for your <code>dist</code> git repo for Github and push your ID Site to Github
+
+<ul>
+<li>Run: <code>git remote add origin YOUR_GIT_REPO_URL</code></li>
+<li>Run: <code>git push -u origin master</code></li>
+</ul>
+</li>
+</ol>
+
+
+<h4>Configure Stormpath to use your ID Site</h4>
+
+<p>Once the built ID Site is hosted on Github, you can use the Stormpath <a href="https://api.stormpath.com">Administrator Console</a> to point to your git repository.</p>
+
+<p>To update your ID Site configuration to use your fork:</p>
+
+<ol>
+<li>Log into the <a href="https://api.stormpath.com/login">Stormpath Admin Console</a></li>
+<li>Click on the ID Site tab</li>
+<li>Under Git Repository HTTPS URL
+
+<ul>
+<li>Click the <code>Custom</code> radio button</li>
+<li>Add your Github repository URL to the textbox.  For ex: <code>https://github.com/stormpath/my-custom-id-site.git</code></li>
+</ul>
+</li>
+<li>Scroll to the bottom of the dialog and click <code>Update</code></li>
+</ol>
+
+
+<p>Once the configuration is updated, Stormpath will clone your repository and host it on Stormpath infrastructure to provide hosting your ID Site.</p>
+
+<div class='docs-note'><p>Stormpath can also be pointed to a specific branch to use for the ID Site, by default Stormpath uses the <code>master</code> branch.  To configure this, update the <code>Git Repository Branch Name</code> property of the ID Site confguration page in the Administrator Console</p>
+</div>
+
+
+<p>Once the ID Site configuration is updated, you can view the ID Site by visiting an web application that was set up to use ID Site using the instructions for <a href="/guides/using-id-site#setting-up-your-application-to-use-id-site">setting up an application to use an ID Site</a></p>
+
+<h3><a id="customizing-an-id-site"></a>Customizing an ID Site</h3>
+
+<p>Once Stormpath has been set up to use your own ID site, it is now possible to make modifications to your ID site to meet your requirements. The ID Site repository is an <a href="https://angularjs.org/">AngularJS</a> application and follows common angular design patterns.</p>
+
+<p>There are three distinct areas where you can customize the ID Site:</p>
+
+<ul>
+<li>HTML</li>
+<li>CSS</li>
+<li>JavaScript</li>
+</ul>
+
+
+<h3><a id="customizing-html"></a>Customizing HTML</h3>
+
+<p>The ID Site HTML contains multiple HTML assets that provide the markdown for the ID Site.  These can be broken down into two distinct groups, the <code>master index</code> and the <code>views</code>.</p>
+
+<p>The <code>master index</code> location is <code>idsite-src/app/index.html</code> and contains the definitions of the individual template views, CSS references, and JavaScript references.  This file would be the location for any global HTML changes to apply to your ID Site.  For example:</p>
+
+<ul>
+<li>Modifications of the meta tags</li>
+<li>Modifications of the favicon</li>
+<li>Additional JavaScript/CSS assets</li>
+<li>Additional HTML needed for all views, such as a footer or copyright</li>
+</ul>
+
+
+<p>The <code>master index</code> is already wired for Google Analytics and can quickly be used by adding your Google Analytic&rsquo;s site ID into the script.</p>
+
+<pre><code>&lt;!-- Google Analytics: change UA-XXXXX-X to be your site's ID --&gt;
+&lt;script&gt;
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-XXXXX-X');
+  ga('send', 'pageview');
+&lt;/script&gt;
+</code></pre>
+
+<p>The <code>views</code> location is <code>idsite-src/app/views</code> and contains the templates for individual functionality.  These views are loaded at runtime into the main <code>master index</code> based on the path accessed on the ID Site. The following views can be modified to effect their distinct functionality and include:</p>
+
+<ul>
+<li><code>login.html</code> &ndash; The HTML for the login form for the ID Site.  This contains the HTML form that displays all of the fields associated with login.  By default, the root path <code>/</code> will display the login page.</li>
+<li><code>registration.html</code> &ndash; The HTML the registration form for the ID Site. This contains the HTML form that displays the fields associated with registration.  By default, the URL path <code>/register</code> will display the registration page</li>
+<li><code>forgot.html</code> &ndash; The HTML for the first step of the password reset workflow.  This includes the HTML that displays a form with fields for a end user to input his email address.  By default, the URL path <code>/forgot</code> will display the forgot password page</li>
+<li><code>reset.html</code> &ndash; The HTML for the second step of the password reset workflow.  This page is displayed when the user clicks on the password reset link that is sent to the end user&rsquo;s email.  This contains the HTML form to collect the new password and password confirmation.</li>
+<li><code>unverified.html</code> &ndash; The HTML for the &lsquo;check your email&rsquo; message when a newly created account needs to be verified.</li>
+<li><code>verify.html</code> &ndash; The HTML for the verification message when a user registers for an account and clicks on the email verification link.</li>
+<li><code>error.html</code> &ndash; The HTML for the error page when a fatal error occurs when using the ID Site.  This page is displayed when there is a problem with the redirection from your application to the ID Site</li>
+<li><code>password-error-messages.html</code> &ndash; The HTML template used for displaying password related error messages when validating passwords during registration.  For example, &lsquo;Password is too short&rsquo;.</li>
+</ul>
+
+
+<p>After making your HTML modifications, you can <a href="#updating-your-id-site">update your ID Site</a>.</p>
+
+<h3><a id="customizing-css"></a>Customizing CSS</h3>
+
+<p>Your ID Site&rsquo;s CSS is built using LESS, a dynamic stylesheet language.  LESS is very similar to CSS but has more advanced functionality like variables, mixins, and nesting.  When your ID Site is built using the <code>build</code> grunt, the LESS files are built into CSS for the ID Site.</p>
+
+<p>Common CSS customizations include:</p>
+
+<ul>
+<li>Modifying colors of text, background, inputs</li>
+<li>Modifying the sizing of components, including height / width / margins / padding</li>
+<li>Modifying the position of components and where they render on the page.</li>
+</ul>
+
+
+<p>The CSS for the site is generated by a set of LESS files, but the main file that holds the ID Site specific CSS is <code>main.less</code> in the <code>idsite-src/app/styles</code> folder.  This file includes colors, images, borders, positioning, and fonts for the ID Site.</p>
+
+<p>Below are some common areas of <code>main.less</code> that you may want to modify for your ID site.</p>
+
+<p>Common variables for input fields on forms:</p>
+
+<pre><code>@boxBorderRadius: 3px;
+@inputHeight: 45px;
+@gray1: #f6f6f6;
+@baseFontSize: 14px;
+@boxGutter: 30px;
+</code></pre>
+
+<p>Default font, font size, font color:</p>
+
+<pre><code>body,div,p,a,label {
+  font-family: "Open Sans";
+  font-size: @baseFontSize;
+  font-weight: 400;
+  color: #484848;
+}
+</code></pre>
+
+<p>Default maximum width of the content on ID Site:</p>
+
+<pre><code>.container{
+  max-width: 620px;
+}
+</code></pre>
+
+<p>Default style for the green login, sign up, reset password button:</p>
+
+<pre><code>.btn-sp-green{
+  height: 45px;
+  line-height: 45px/2;
+  padding: 0 40px;
+  color: #fff;
+  font-size: 17px;
+  .flatTwoColorGradient(#42c41a,#2dbd00,#43cd1a,#2ec700);
+}
+</code></pre>
+
+<p>Once your modifications are made to your ID Site locally, you can <a href="#updating-your-id-site">update your changes</a>.</p>
+
+<h3><a id="customizing-javascript"></a>Customizing JavaScript</h3>
+
+<p>Your ID Site contains JavaScript to handle the client-side logic.  Since your ID Site is a AngularJS application, this includes single-page-application logic such as URL routing, controllers for individual page logic, directives for input validation, and services across controllers for communication to Stormpath.</p>
+
+<h4>Customizing URL Routing</h4>
+
+<p>By default, your ID Site has built in routing so that particular URLs such as <code>/register</code> render the correct HTML view template and controller into the <code>master index</code>.  This logic is defined in <code>idsite-src/app/scripts/app.js</code> using an AngularJS <code>routeProvider</code>.</p>
+
+<p>For example, looking at the following snippet from <code>app.js</code>:</p>
+
+<pre><code>  .when('/register', {
+    templateUrl: 'views/registration.html',
+    controller: 'RegistrationCtrl'
+  })
+</code></pre>
+
+<p>This code instructs the AngularJS application to load a particular template and controller to display the <code>/register</code> page.  If you want to modify the name of endpoint <code>/register</code> to <code>/signup</code> you would change it in <code>app.js</code>.</p>
+
+<p><code>app.js</code> also configures where the default route <code>/</code> should load and what to load when no route is matched (<code>otherwise</code>).</p>
+
+<h4>Customizing Controllers</h4>
+
+<p>A controller is an AngularJS concept that is a constructor that defines initial parameters and behaviors for a view that is loaded into the <code>master index</code>.  Each view that is rendered by the ID Site (login, register, forgot password, etc) has a backing controller.</p>
+
+<p>Your ID Site has the controllers defined in <code>idsite-src/app/scripts/controllers</code> and has a naming convention to match the view&rsquo;s name with the controller&rsquo;s name.  For example <code>/register</code> route will render a <code>registration.html</code> view with a <code>registration.js</code> controller.  The logic defined in each controller is needed for the default functionality for the ID Site, but additional functionality can be added as needed.</p>
+
+<h4>Customizing Input Validation with Directives</h4>
+
+<p>Directives are markers on a DOM element that attach a specific set of behaviors in AngularJS.  Your ID Site uses directives for input validation since the behavior for each individual form input can be defined separately. Directives for input validation are defined in <code>idsite-src/app/scripts/directives</code> and include:</p>
+
+<ul>
+<li><code>emailvalidation.js</code>: Defines validation rules and is attached to the <code>email</code> form input on the registration page</li>
+<li><code>namevalidation.js</code>: Defines validation rules and is attached to the <code>givenName</code> and surname form input on the registration page</li>
+<li><code>passwordpolicyvalidation.js</code>: Defines validation rules and is attached to the <code>password</code> form input on the registration page.  These rules are read from the directory&rsquo;s <code>Password Strength Policy</code></li>
+<li><code>validateonblur.js</code>:  Defines the behavior on when to validate each form element.  By default, each form value is validated on blur, or when the DOM element loses focus.</li>
+</ul>
+
+
+<h3><a id="updating-your-id-site"></a>Updating your ID Site</h3>
+
+<p>Once modifications are made to your ID Site, you will need to rebuild and deploy your changes to Github.</p>
+
+<p>In the terminal, to update your changes:</p>
+
+<ol>
+<li>Navigate to the local idsite-src folder</li>
+<li>Run: <code>grunt build</code></li>
+<li>Navigate to the <code>dist</code> folder</li>
+<li>Run: <code>git add .</code> to add all changes to staging</li>
+<li>Run: <code>git commit</code> to commit your changes to the local git repository</li>
+<li>Run: <code>git push -u origin master</code> to push your changes to Github</li>
+</ol>
+
+
+<p>Once your changes have been pushed to Github:</p>
+
+<ol>
+<li>Login to the <a href="https://api.stormpath.com">Stormpath Admin Console</a></li>
+<li>Navigate to the <code>ID Site</code> tab</li>
+<li>Click the <code>Sync Now</code> button next to the <code>Git Repository Branch Name</code></li>
+</ol>
+
+
+<div class='docs-info'><p>To automatically sync your ID Site changes from Github to Stormpath, you can setup the Stormpath Service in Github to handle the sync.  To configure this option, navigate to your Github repository that hosts your ID Site and click on <code>Settings</code>.  Under <code>Webhooks &amp; Services</code>, click <code>Add Service</code>, select Stormpath and follow the instructions in Github.</p>
+</div>
+
+
+<h2><a id="building-an-id-site-with-stormpathjs"></a>Building an ID Site with stormpath.js</h2>
+
+<p>Stormpath provides a library to enable developers to build their own ID Site outside of Stormpath&rsquo;s default AngularJS ID Site.  This is hosted on <a href="https://github.com/stormpath/stormpath.js">Github</a> with installation and instructions.  This is useful for developers that want to Stormpath to host your login and user management screens but require full control of the site or want to leverage another JavaScript framework for building out their site.</p>
+
+<h2><a id="using-id-site-without-a-stormpath-sdk"></a>Using ID Site without a Stormpath SDK</h2>
+
+<p>The Stormpath SDKs for Java, Node, and Python provide a service to developers to communicate correctly from ID Site and your application.  It is possible to use ID Site without a Stormpath SDK using the REST API.  To use ID Site with the REST API, it is required to understand how to generate and sign JSON Web Tokens (JWT).</p>
+
+<p>Below are language specific libraries that Stormpath has sanity tested with ID Site.</p>
+
+<ul>
+<li><a href="https://github.com/johnsheehan/jwt">.NET JWT</a></li>
+<li><a href="https://github.com/progrium/ruby-jwt">Ruby JWT</a></li>
+<li><a href="https://github.com/dgrijalva/jwt-go">Go JWT</a></li>
+<li><a href="https://github.com/firebase/php-jwt">PHP JWT</a></li>
+<li><a href="https://github.com/jpadilla/pyjwt">Python JWT</a></li>
+<li><a href="https://github.com/jwtk/jjwt">Java JWT</a></li>
+</ul>
+
+
+<p>To use ID Site without an Stormpath SDK their are two flows that need to be implemented:</p>
+
+<ul>
+<li><a href="#getting-a-user-to-id-site">Getting a user to ID Site</a></li>
+<li><a href="#handling-the-callback-to-your-application-from-id-site">Handling the Callback to your Application from ID Site</a></li>
+</ul>
+
+
+<h3><a id="getting-a-user-to-id-site"></a>Getting a User to ID Site</h3>
+
+<p>When a user wants to login to or register for your application, you will need to redirect them to your ID Site.</p>
+
+<p>A typical set of steps in your application are as follows:</p>
+
+<ol>
+<li>You render your application with a login button</li>
+<li>The user clicks the login button which will send a request to your server</li>
+<li>Your server will generate a JWT and include the valid information</li>
+<li>Your server responds with an HTTP 302 which redirects the user to the ID Site SSO endpoint</li>
+<li>Stormpath will redirect the user to your ID Site</li>
+</ol>
+
+
+<p>The JWT must meet these specifications</p>
+
+<ul>
+<li>Signed using your Stormpath API Key Secret</li>
+<li>Signed using the HS256 algorithm</li>
+</ul>
+
+
+<p>The claims for the JWT are as follows:</p>
+
+<table>
+<thead>
+<tr>
+<th> Claim Name </th>
+<th> Required </th>
+<th> Valid Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>iat</code></td>
+<td> true </td>
+<td> The issued at time is the time that the token is issued in seconds since epoch. Similar to <code>var seconds = new Date() / 1000;</code> in JavaScript</td>
+</tr>
+<tr>
+<td><code>iss</code> </td>
+<td> true </td>
+<td> The issuer of the token as your API Key ID from Stormpath</td>
+</tr>
+<tr>
+<td><code>sub</code> </td>
+<td> true </td>
+<td> The subject of the token as your <code>Application</code> href</td>
+</tr>
+<tr>
+<td><code>cb_uri</code> </td>
+<td> true </td>
+<td> The callback URI once the user takes an action on the ID Site.  This must match a <code>Authorized Redirect URI</code> in the ID Site configuration.</td>
+</tr>
+<tr>
+<td><code>jti</code> </td>
+<td> true </td>
+<td> A universally unique identifier for the token.  This can be generated using a GUID or UUID function of your choice.</td>
+</tr>
+<tr>
+<td><code>path</code> </td>
+<td> false </td>
+<td> The path on the ID Site that you want the user to land on. <code>/</code> for login page, <code>/#/register</code> for the sign up page, <code>/#/forgot</code> for the password reset page</td>
+</tr>
+<tr>
+<td><code>state</code> </td>
+<td> false </td>
+<td> The state of the application that you need to pass through the ID Site back to your application through the callback, once the user makes an action on the ID Site.  It is up to the developer to serialize/deserialize this value</td>
+</tr>
+<tr>
+<td><code>organizationNameKey</code> </td>
+<td> false </td>
+<td> The string representing the <code>nameKey</code> for an organization that is an account store for your application.  This is used for <a href="#using-id-site-for-multitenancy">multitenant</a> applications using ID Site</td>
+</tr>
+<tr>
+<td><code>showOrganiztaionField</code> </td>
+<td> false </td>
+<td> A boolean representing if the organization field should show on the forms that ID Site renders when specifying the <code>organizationNameKey</code></td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Once the JWT is generated by your server, you must respond with or send the browser to:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Location: https://api.stormpath.com/sso?jwtRequest=%GENERATED_JWT%
+</code></pre>
+
+<p>The Stormpath <code>/sso</code> endpoint will validate the JWT, and redirect the user to your tenant&rsquo;s ID Site.</p>
+
+<h3><a id="handling-the-callback-to-your-application-from-id-site"></a>Handling the Callback to your Application from ID Site</h3>
+
+<p>Once the user signs up or logs in to your application, they will be redirected back to your application using the <code>cb_uri</code> callback property that was set in the JWT.  In addition to the callback URI, ID Site will include a <code>jwtResponse</code> parameter in the query.  For example, if the specified <code>cb_uri</code> is <code>https://yourapp.com/dashboard</code> then the user will be redirected to:</p>
+
+<pre><code>https://yourapp.com/dashboard?jwtResponse={GENERATED_ID_SITE_ASSERTION_JWT}
+</code></pre>
+
+<p>The <code>jwtResponse</code> represents a JWT that provides a signed security assertion about who the user is and what they did on ID Site.</p>
+
+<p>Before you trust any of the information in the JWT, you <strong>MUST</strong>:</p>
+
+<ul>
+<li>Validate the signature with your <code>API Key Secret</code> from Stormpath.  This will prove that the information stored in the JWT has not been tampered with during transit.</li>
+<li>Validate that the JWT has not expired</li>
+</ul>
+
+
+<div class='docs-note'><p>If you are using a library to generate a JWT, these usually have methods to help you validate the JWT.  Some libraries will only validate the signature, but not the expiration time.  Please review your JWT library to verify what it can help you verify</p>
+</div>
+
+
+<p>Once the JWT is validated, you can read information about the user from the JWT.  The JWT contains the following information:</p>
+
+<table>
+<thead>
+<tr>
+<th>Claim Name  </th>
+<th> Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>iss</code>       </td>
+<td> The issuer of the JWT.  This will match your ID Site domain, and can be used for additional validation for the JWT</td>
+</tr>
+<tr>
+<td><code>sub</code>       </td>
+<td> The subject of the JWT.  This will be an HREF for the Stormpath account that signed up or logged into the ID Site.  This HREF can be queried for using a Stormpath SDK or the REST API to get more information about the account</td>
+</tr>
+<tr>
+<td><code>aud</code>       </td>
+<td> The audience of the JWT.  This will match your API Key ID from Stormpath</td>
+</tr>
+<tr>
+<td><code>exp</code>       </td>
+<td> The expiration time for the JWT in seconds since epoch</td>
+</tr>
+<tr>
+<td><code>iat</code>       </td>
+<td> The created at time for the JWT in seconds since epoch</td>
+</tr>
+<tr>
+<td><code>jti</code>       </td>
+<td> A one-time-use-token for the JWT.  The Stormpath SDKs automatically validate the <code>jti</code>. If you require additional security around the validation of the token, you can store the <code>jti</code> in your application to validate it only has one time use</td>
+</tr>
+<tr>
+<td><code>state</code>     </td>
+<td> The state of the application that you need to pass through the ID Site back to your application through the callback, once the user makes an action on the ID Site.  It is up to the developer to serialize/deserialize this value</td>
+</tr>
+<tr>
+<td><code>status</code>    </td>
+<td> The status of the JWT.  This will let you know the status of the request from ID Site.  Valid values are <code>AUTHENTICATED</code>, <code>LOGOUT</code>, <code>REGISTERED</code></td>
+</tr>
+</tbody>
+</table>
+
+
+<h3><a id="logging-out-of-id-site-with-rest"></a>Logging out of ID Site with REST</h3>
+
+<p>ID Site will keep a configurable session for authenticated users.  When a user is sent from your application to ID Site, if ID Site can confirm that the session is still valid for the user, they will be automatically redirected to the <code>callbackUri</code>.  This <code>callbackUri</code> can be the originating application or any application supported by a Stormpath SDK.</p>
+
+<p>To log the user out and remove the session that ID Site creates, you must create a <a href="#getting-a-user-to-id-site">JWT similar to how you get the user to ID Site</a>, but instead of redirecting to the <code>/sso</code> endpoint, you redirect the user to <code>/sso/logout</code>.</p>
+
+<p>So, once the JWT is generated by your server, you must respond with or send the browser to:</p>
+
+<pre><code>HTTP/1.1 302 Found
+Location: https://api.stormpath.com/sso/logout?jwtRequest=%GENERATED_JWT%
+</code></pre>
+
+<p>Once the user is logged out of ID Site, they are automatically redirected to the <code>callbackUri</code> which was specified in the JWT.  Your application will know that the user logged out because the <code>jwtResponse</code> will contain a status claim of <code>LOGOUT</code>.</p>
+
+<h2><a id="wrapping-up"></a>Wrapping up</h2>
+
+<p>In this guide, we discussed how to set up a Stormpath ID Site as well as how your application can leverage your ID Site to provide common application workflows around user login and registration. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email <a href="&#109;&#x61;&#105;&#x6c;&#x74;&#111;&#x3a;&#115;&#117;&#x70;&#112;&#x6f;&#x72;&#x74;&#64;&#x73;&#x74;&#x6f;&#114;&#109;&#112;&#x61;&#x74;&#x68;&#x2e;&#x63;&#111;&#x6d;&#x2e;">&#x73;&#x75;&#x70;&#x70;&#x6f;&#114;&#116;&#64;&#x73;&#x74;&#111;&#114;&#x6d;&#x70;&#x61;&#116;&#x68;&#46;&#x63;&#111;&#x6d;&#x2e;</a></p>
+
+              <div id="spread-word">
+<hr>
+
+<h2> Help Us Spread the Word </h2>
+
+<p>Did you find this valuable?  If you've enjoyed playing with Stormpath or are excited about what we've built, please help us spread the world with a quick tweet or by just telling a friend.  Thank you!</p>
+
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout Stormpath, it helps you set up complete user management in your application in minutes."
+addthis:url="https://stormpath.com" >
+  <a class="addthis_button_twitter"></a>
+  <a class="addthis_button_reddit"></a>
+  <a class="addthis_button_hackernews"></a>
+  <a class="addthis_button_google_plusone_share"></a>
+  <a class="addthis_button_linkedin"></a>
+  <a class="addthis_button_facebook"></a>
+  <a class="addthis_button_email"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+<!-- AddThis Button END -->
+<p>
+</div>
+
+            </div>
+            <div class="col-md-12">
+              <div id="bottom-wrapper">
+               <div class="region">
+
+	<div class="credits">
+	  <div class="container">
+	    <ul class="list-unstyled list-inline">
+	      <li>Copyright &copy; 2016 Stormpath, Inc.</li>
+	      <li class="divider-vertical"></li>
+	      <li>All rights reserved</li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/privacy_policy">Privacy policy</a></li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/terms_of_service">Terms of service</a></li>
+	    </ul>
+	  </div>
+	</div>
+	
+</div><!-- /.region -->
+
+              </div>
+            </div>
+          </div>
+
+
+
+<aside class="sidebars">
+  
+    <section class="region region-sidebar-first column sidebar">
+      
+<div id="block-stormpath-docs-languages" class="block block-stormpath-docs first odd">
+ <form class="stormpath-docs-select-language" action="/docs/java/product-guide" method="post" id="stormpath-docs-language-form" accept-charset="UTF-8"><div><div class="form-item form-type-select form-item-language">
+  <label for="edit-language">Language: </label>
+ <select id="edit-language" name="language" class="form-select">
+  
+  
+ 	
+    <option value="rest">REST API</option>
+ 	
+    <option value="java">Java</option>
+ 	
+    <option value="nodejs">Node.js</option>
+ 	
+    <option value="python">Python</option>
+ 	
+    <option value="ruby">Ruby</option>
+ 	
+    <option value="guides" selected>Guides</option>
+ 	
+    <option value="console">Admin Console</option>
+ 	
+ </select>
+</div>
+<input type="hidden" name="form_id" value="stormpath_docs_language_form">
+</div></form>
+</div>
+
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['android'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['csharp'] = [];
+		
+	
+		sp_docs_menu['dotnet'] = [];
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('10010');
+		
+			sp_docs_menu['errors'].push('10011');
+		
+			sp_docs_menu['errors'].push('10012');
+		
+			sp_docs_menu['errors'].push('10013');
+		
+			sp_docs_menu['errors'].push('10014');
+		
+			sp_docs_menu['errors'].push('10015');
+		
+			sp_docs_menu['errors'].push('10016');
+		
+			sp_docs_menu['errors'].push('10017');
+		
+			sp_docs_menu['errors'].push('10100');
+		
+			sp_docs_menu['errors'].push('10101');
+		
+			sp_docs_menu['errors'].push('10102');
+		
+			sp_docs_menu['errors'].push('11001');
+		
+			sp_docs_menu['errors'].push('11002');
+		
+			sp_docs_menu['errors'].push('11003');
+		
+			sp_docs_menu['errors'].push('11004');
+		
+			sp_docs_menu['errors'].push('11005');
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['ios'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['vbnet'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+</script>
+
+
+<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
+  
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/guides/multi-tenant">Multi-Tenant SaaS Applications with Stormpath</a>
+			
+			
+			</li>
+		
+			<li class="leaf active-trail">
+			
+				<a href="/guides/using-id-site">Using ID Site</a>
+			
+			
+				<ul class="menu"><li class="leaf"><a href="#what-is-an-id-site" data-level="0" class="fragment">What is an ID Site?</a><ul class="menu"></ul></li><li class="leaf"><a href="#why-should-i-use-stormpath-id-site" data-level="0" class="fragment">Why should I use Stormpath ID Site?</a><ul class="menu"></ul></li><li class="leaf"><a href="#how-does-id-site-work" data-level="0" class="fragment">How does ID Site Work?</a><ul class="menu"></ul></li><li class="leaf"><a href="#setting-up-your-id-site" data-level="0" class="fragment">Setting up your ID Site</a><ul class="menu"><li class="leaf"><a href="#setting-your-own-custom-domain-name-and-ssl-certificate" data-level="1" class="fragment">Setting your own Custom Domain Name and SSL certificate</a><ul class="menu"></ul></li><li class="leaf"><a href="#customizing-id-site-look-feel-and-behavior" data-level="1" class="fragment">Customizing ID Site look, feel, and behavior</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#setting-up-your-application-to-use-id-site" data-level="0" class="fragment">Setting up your Application to use ID Site</a><ul class="menu"><li class="leaf"><a href="#sending-a-user-to-the-id-site-to-authenticate--sign-up" data-level="1" class="fragment">Sending a User to the ID Site to Authenticate / Sign up</a><ul class="menu"></ul></li><li class="leaf"><a href="#consuming-responses-from-the-id-site-to-your-application" data-level="1" class="fragment">Consuming Responses from the ID Site to your Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#single-sign-on-for-multiple-applications" data-level="1" class="fragment">Single Sign On for Multiple Applications</a><ul class="menu"></ul></li><li class="leaf"><a href="#logging-out-of-id-site" data-level="1" class="fragment">Logging out of ID Site</a><ul class="menu"></ul></li><li class="leaf"><a href="#using-id-site-for-multitenancy" data-level="1" class="fragment">Using ID Site for Multitenancy</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#customizing-the-default-id-site" data-level="0" class="fragment">Customizing the Default ID Site</a><ul class="menu"><li class="leaf"><a href="#getting-set-up" data-level="1" class="fragment">Getting Set Up</a><ul class="menu"></ul></li><li class="leaf"><a href="#customizing-an-id-site" data-level="1" class="fragment">Customizing an ID Site</a><ul class="menu"></ul></li><li class="leaf"><a href="#customizing-html" data-level="1" class="fragment">Customizing HTML</a><ul class="menu"></ul></li><li class="leaf"><a href="#customizing-css" data-level="1" class="fragment">Customizing CSS</a><ul class="menu"></ul></li><li class="leaf"><a href="#customizing-javascript" data-level="1" class="fragment">Customizing JavaScript</a><ul class="menu"></ul></li><li class="leaf"><a href="#updating-your-id-site" data-level="1" class="fragment">Updating your ID Site</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#building-an-id-site-with-stormpathjs" data-level="0" class="fragment">Building an ID Site with stormpath.js</a><ul class="menu"></ul></li><li class="leaf"><a href="#using-id-site-without-a-stormpath-sdk" data-level="0" class="fragment">Using ID Site without a Stormpath SDK</a><ul class="menu"><li class="leaf"><a href="#getting-a-user-to-id-site" data-level="1" class="fragment">Getting a User to ID Site</a><ul class="menu"></ul></li><li class="leaf"><a href="#handling-the-callback-to-your-application-from-id-site" data-level="1" class="fragment">Handling the Callback to your Application from ID Site</a><ul class="menu"></ul></li><li class="leaf"><a href="#logging-out-of-id-site-with-rest" data-level="1" class="fragment">Logging out of ID Site with REST</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#wrapping-up" data-level="0" class="fragment">Wrapping up</a><ul class="menu"></ul></li></ul>
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/social-integrations">Integrating Stormpath with Facebook and Google</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/ad-ldap">Integrating Stormpath with Active Directory and LDAP</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/dev-test-prod-environments">Setting up Development and Production Environments</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/api-key-management">Using Stormpath for API Authentication</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/token-management">Using Stormpath for OAuth 2.0 and Access/Refresh Token Management</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+        
+  	
+                
+                       <div class="menu-divider"></div> 
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/how-do-i">How Do I..?</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/errors">Stormpath Error Codes</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+</div>
+
+    </section>
+  
+
+  
+</aside>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script src="/javascripts/highlight.min.js"></script>
+
+<script>
+$(function() {
+   hljs.initHighlightingOnLoad();
+
+   /* javascript for codetab to stop the page from shifting when changing tabs (tab sync) */
+   var currentEventTab;
+   var initialObjectTopOffset;
+   var initialPageYOffset;
+
+   $('.tabs').tabs({
+		activate: function(event ,ui){
+
+			//if the dom event, grab the hotness 
+			if(event.cancelable){
+				currentEventTab = event.target;
+				initialObjectTopOffset = $(currentEventTab).offset().top;
+				initialPageYOffset = window.pageYOffset;
+			}
+			//change ze tab
+			$('.tabs').tabs('option', 'active', ui.newTab.index());
+
+			//grab the new offsets
+			var afterChangeOffset = $(currentEventTab).offset().top;
+			var afterPageYOffset = window.pageYOffset;
+
+			//do ze scroll
+			$('body').scrollTop(initialPageYOffset - (initialObjectTopOffset - afterChangeOffset));
+		}
+	});
+});
+</script>
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<!-- Google Code for Remarketing tag -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1002663385;
+var google_conversion_label = "wSRZCLfkjQQQ2duN3gM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1002663385/?value=0&amp;label=wSRZCLfkjQQQ2duN3gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<!-- AdRoll Code -->
+<script type="text/javascript">
+adroll_adv_id = "RVWGHIV3GJCLHIUDNFIMNY";
+adroll_pix_id = "L2WE5KAWDRDBVP46PZZBQJ";
+(function () {
+var oldonload = window.onload;
+window.onload = function(){
+__adroll_loaded=true;
+var scr = document.createElement("script");
+var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+scr.setAttribute('async', 'true');
+scr.type = "text/javascript";
+scr.src = host + "/j/roundtrip.js";
+((document.getElementsByTagName('head') || [null])[0] ||
+document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+if(oldonload){oldonload()}};
+}());
+</script>
+
+<!-- HubSpot Analytics Code -->
+<script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+</script>
+<!-- End HubSpot Analytics Code -->
+
+<!-- CrazyEgg -->
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0017/1602.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+
+<!-- Perfect Audience -->
+<script type="text/javascript">
+(function() {
+window._pa = window._pa || {};
+// _pa.orderId = "";
+// _pa.revenue = "";
+var pa = document.createElement('script'); pa.type = 'text/javascript'; pa.async = true;
+pa.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + "//tag.perfectaudience.com/serve/51fc2c6f1b440adfcc000099.js";
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pa, s);
+})();
+</script>
+
+
+</body>
+</html>
