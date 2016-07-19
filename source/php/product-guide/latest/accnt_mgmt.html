@@ -36,7 +36,25 @@
               href="about.html"/>
     <link rel="top" title="Stormpath PHP Documentation  documentation" href="index.html"/>
         <link rel="next" title="4. Authenticating Accounts with Stormpath" href="auth_n.html"/>
-        <link rel="prev" title="2. Quickstart" href="quickstart.html"/> 
+        <link rel="prev" title="2. Quickstart" href="quickstart.html"/>
+<!-- Facebook Pixel Code -->
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+  fbq('init', '986262161469311');
+  fbq('track', "PageView");
+</script>
+<noscript>
+  <img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  />
+</noscript>
+<!-- End Facebook Pixel Code -->
+
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -157,6 +175,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#find-all-accounts-in-a-directory-that-were-created-on-a-particular-day">Find All Accounts in a Directory That Were Created on a Particular Day</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#searching-for-accounts-with-custom-data">3.3.2. Searching for Accounts with Custom Data</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#how-to-manage-an-account-s-password">3.4. How to Manage an Account&#8217;s Password</a><ul>
@@ -193,6 +212,16 @@
 <li class="toctree-l4"><a class="reference internal" href="#using-email-macros">Using Email Macros</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#customizing-your-smtp-server">3.6.3. Customizing Your SMTP Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-new-custom-server">Adding a new Custom Server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deleting-a-custom-server">Deleting a Custom Server</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#restricting-user-email-domains">3.6.4 Restricting User Email Domains</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#domain-entries">Domain Entries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#working-with-the-lists">Working with the Lists</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -208,6 +237,12 @@
             
           
 
+  
+
+  
+    <li class="toctree-l1">
+      <a class="reference internal" href="/php/apidocs/">PHP API Reference</a>
+    </li>
   
 
 
@@ -267,7 +302,7 @@
 <div class="section" id="directories">
 <span id="directory-mgmt"></span><h3>3.1.1. Directories<a class="headerlink" href="#directories" title="Permalink to this headline">¶</a></h3>
 <p>The <strong>Directory</strong> resource is a top-level container for Account and Group resources. Directories and Groups are both referred to as &#8220;Account Stores&#8221;. A Directory also manages security policies (like password strength) for the Accounts it contains. Directories can be used to cleanly manage segmented user Account populations. For example, you might use one Directory for company employees and another Directory for customers, each with its own security policies.</p>
-<p>For more detailed information about the Directory object, please see the <a class="reference external" href="https://docs.stormpath.com/php/apidocs/Stormpath/Resource/Directory.html">PHP API Documentation</a> section in the Reference chapter.</p>
+<p>For more detailed information about the Directory object, please see the <a class="reference external" href="https://docs.stormpath.com/php/apidocs/Stormpath/Resource/Directory.html">PHP API Documentation</a>.</p>
 <div class="section" id="types-of-directories">
 <h4>Types of Directories<a class="headerlink" href="#types-of-directories" title="Permalink to this headline">¶</a></h4>
 <p>Stormpath supports two types of Directories:</p>
@@ -370,7 +405,7 @@
 <li>Social Directories, such as Facebook and GitHub</li>
 <li>SAML-enabled Identity Provider Directories, such as Salesforce and OneLogin</li>
 </ul>
-<p>For all Mirror Directories, since the relationship with the outside directory is read-only, the remote directory is still the &#8220;system of record&#8221;.</p>
+<p>For all Mirror Directories, since the relationship with the outside directory is read-only, the remote directory is still the &#8220;system of record&#8221;. This means that you cannot do things like create your own Groups, only read the Groups (if any) synchronized from the external directory.</p>
 <p id="supporting-multiple-dirs"><strong>Supporting Multiple Mirror Directories</strong></p>
 <p>It is possible to use different kinds of Directories simultaneously, to allow users to log-in with multiple external systems at the same time. For example, if you wanted to enable logging-in with Facebook, LinkedIn, and Salesforce, this would require a separate Mirror Directory for each one.</p>
 <p>If multiple Directories are desired, you recommend that you create a separate &#8220;master&#8221; Directory that allows for a unified user identity. This master Directory would link all the Accounts in Mirror Directories with a master Account in a master Directory. This offers a few benefits:</p>
@@ -526,7 +561,7 @@
 <div class="section" id="how-to-store-accounts-in-stormpath">
 <span id="account-creation"></span><h2>3.2. How to Store Accounts in Stormpath<a class="headerlink" href="#how-to-store-accounts-in-stormpath" title="Permalink to this headline">¶</a></h2>
 <p>The Account resource is a unique identity within your application. It is usually used to model an end-user, although it can also be used by a service, process, or any other entity that needs to log-in to Stormpath.</p>
-<p>For more detailed information about the Account resource, see the <a class="reference external" href="https://docs.stormpath.com/php/apidocs/Stormpath/Resource/Account.html">PHP API Documentation</a> section of the Reference chapter.</p>
+<p>For more detailed information about the Account resource, see the <a class="reference external" href="https://docs.stormpath.com/php/apidocs/Stormpath/Resource/Account.html">PHP API Documentation</a>.</p>
 <div class="section" id="new-account-creation">
 <h3>3.2.1. New Account Creation<a class="headerlink" href="#new-account-creation" title="Permalink to this headline">¶</a></h3>
 <p>The basic steps for creating a new Account are covered in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> chapter. In that example, you show how to add an Account to an Application. Below, you will also show how to add an Account to a specific Directory, or Group.</p>
@@ -746,8 +781,16 @@ This works as follows:</p>
 </div>
 <div class="section" id="how-to-store-additional-user-information-as-custom-data">
 <span id="add-user-customdata"></span><h3>3.2.3. How to Store Additional User Information as Custom Data<a class="headerlink" href="#how-to-store-additional-user-information-as-custom-data" title="Permalink to this headline">¶</a></h3>
-<p>While Stormpath’s default Account attributes are useful to many applications, you might want to add your own custom data to a Stormpath Account. If you want, you can store all of your custom account information in Stormpath so you don’t have to maintain another separate database to store your specific account data.</p>
-<p>One example of this could be if you wanted to add information to our &#8220;Jean-Luc Picard&#8221; Account that didn&#8217;t fit into any of the existing Account attributes.</p>
+<p>While Stormpath’s default Account attributes are useful to many applications, you might want to add your own Custom Data to a Stormpath Account. If you want, you can store all of your custom account information in Stormpath so you don’t have to maintain another separate database to store your specific account data.</p>
+<p>Custom Data can store:</p>
+<ul class="simple">
+<li>String values</li>
+<li>Boolean values</li>
+<li>Number values</li>
+<li>Arrays</li>
+<li>JSON Objects (with nesting)</li>
+</ul>
+<p>One simple use case for Custom Data could be if you wanted to add information to our &#8220;Jean-Luc Picard&#8221; Account that didn&#8217;t fit into any of the existing Account attributes.</p>
 <p>For example, you could add information about this user&#8217;s current location, like the ship this Captain is currently assigned to.</p>
 <p>The Jean-Luc Picard Account you created earlier has a CustomData property that allows you to write to the resource’s Custom Data:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$account</span> <span class="o">=</span> <span class="nv">$client</span>
@@ -778,7 +821,7 @@ This works as follows:</p>
 </div>
 </div>
 <div class="section" id="how-to-search-accounts">
-<h2>3.3. How to Search Accounts<a class="headerlink" href="#how-to-search-accounts" title="Permalink to this headline">¶</a></h2>
+<span id="howto-search-accounts"></span><h2>3.3. How to Search Accounts<a class="headerlink" href="#how-to-search-accounts" title="Permalink to this headline">¶</a></h2>
 <p>You can search Stormpath Accounts, just like all Resource collections, using Filter, Attribute, and Datetime search.</p>
 <p>The Account resource&#8217;s <strong>searchable attributes</strong> are:</p>
 <blockquote>
@@ -881,9 +924,19 @@ This works as follows:</p>
 </div>
 </div>
 </div>
+<div class="section" id="searching-for-accounts-with-custom-data">
+<span id="howto-search-account-customdata"></span><h3>3.3.2. Searching for Accounts with Custom Data<a class="headerlink" href="#searching-for-accounts-with-custom-data" title="Permalink to this headline">¶</a></h3>
+<p>It is also possible to retrieve a collection of Accounts by searching the data stored in their Custom Data.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This feature is currently in beta, any questions comments or suggestions, reach out to us at <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a></p>
+</div>
+<p>If, for example, we wanted all Accounts in the Directory that had started between 2012-01-01 and 2015-12-31, and we wanted to paginate the results by limiting the returned number of Accounts to 5 and an offset of 0, we would send the following query:</p>
+</div>
 </div>
 <div class="section" id="how-to-manage-an-account-s-password">
 <span id="managing-account-pwd"></span><h2>3.4. How to Manage an Account&#8217;s Password<a class="headerlink" href="#how-to-manage-an-account-s-password" title="Permalink to this headline">¶</a></h2>
+<p>One of the major categories of user management tasks that Stormpath handles and simplifies for you is managing user passwords. All of these different use cases are discussed in the section below.</p>
 <div class="section" id="manage-password-policies">
 <h3>3.4.1. Manage Password Policies<a class="headerlink" href="#manage-password-policies" title="Permalink to this headline">¶</a></h3>
 <div class="admonition warning">
@@ -1153,7 +1206,7 @@ This link takes you to a secure page where you can change your password.
 <blockquote class="last">
 <div>In the meantime, please use the Stormpath Admin Console UI, or consult the REST API documentation below.</div></blockquote>
 </div>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/passwordPolicies/2SKhstu8Plaekcai8lghrp/strength</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/passwordPolicies/2SKhstu8PlaekcaEXampLE/strength</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 
 {
@@ -1326,7 +1379,10 @@ For more information on Password Policy for password Strength see :ref:`here &lt
 <p>This feature is not yet available in the PHP SDK. For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/150">ticket #150</a> on Github.</p>
 <p class="last">In the meantime, please use the Stormpath Admin Console UI, or the REST API documentation below.</p>
 </div>
-<p>First, let&#8217;s look at the default template that comes with the Stormpath Administrator&#8217;s Directory:</p>
+<p><strong>Verification</strong>, <strong>Verification Success</strong>, and <strong>Welcome</strong> Email Templates can all be found under the Directory&#8217;s <strong>Account Creation Policies</strong>.</p>
+<p><strong>Password Reset</strong>, and <strong>Reset Success</strong> Email Templates can be found under the Directory&#8217;s <strong>Password Policies</strong>.</p>
+<p>To modify any of these emails via REST, it is just a matter of updating the appropriate <code class="docutils literal"><span class="pre">/emailTemplates/$TEMPLATE_ID</span></code> resource with a POST.</p>
+<p>As an example, let&#8217;s look at a default Verification Email template that comes with the Stormpath Administrator Directory&#8217;s Account Creation Policies:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/emailTemplates/2jwPxFsnjqxYrojexample&quot;</span><span class="p">,</span>
   <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Default Verification Email Template&quot;</span><span class="p">,</span>
@@ -1343,13 +1399,24 @@ For more information on Password Policy for password Strength see :ref:`here &lt
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>If you wanted to change the <code class="docutils literal"><span class="pre">fromEmailAddress</span></code> attribute, you would just update this attribute:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/emailTemplates/2jwPxFsnjqxYrojexample</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+
+{
+    &quot;fromEmailAddress&quot;:&quot;jakub@stormpath.com&quot;
+}
+</pre></div>
+</div>
+<p>You would then receive a <code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with the updated template.</p>
+<p>For more information about Stormpath&#8217;s email templates, keep reading!</p>
 <p><strong>Message Format</strong></p>
 <p>The <code class="docutils literal"><span class="pre">mimeType</span></code> designates whether the email is sent as plain text (<code class="docutils literal"><span class="pre">text/plain</span></code>), HTML (<code class="docutils literal"><span class="pre">text/html</span></code>), or both (<code class="docutils literal"><span class="pre">multipart/alternative</span></code>). This in turns tells Stormpath whether to use the <code class="docutils literal"><span class="pre">textBody</span></code> or <code class="docutils literal"><span class="pre">htmlBody</span></code> text in the email, or to let the email client decide.</p>
 <p><strong>textBody and htmlBody</strong></p>
-<p>These define the actual content of the email. The only difference is that <code class="docutils literal"><span class="pre">htmlBody</span></code> is allowed to contain HTML markup while <code class="docutils literal"><span class="pre">textBody</span></code> only accepts plaintext. Both are also able to use <a class="reference external" href="http://web.cerritos.edu/jwilson/SitePages/java_language_resources/Java_Escape_Sequences.htm">Java Escape Sequences</a>. Both <code class="docutils literal"><span class="pre">htmlBody</span></code> and <code class="docutils literal"><span class="pre">textBody</span></code> can have customized output generated using template macros.</p>
+<p>These define the actual content of the email. The only difference is that <code class="docutils literal"><span class="pre">htmlBody</span></code> is allowed to contain HTML markup while <code class="docutils literal"><span class="pre">textBody</span></code> only accepts plaintext. Both are also able to use <a class="reference external" href="http://web.cerritos.edu/jwilson/SitePages/java_language_resources/Java_Escape_Sequences.htm">Java Escape Sequences</a>. Both <code class="docutils literal"><span class="pre">htmlBody</span></code> and <code class="docutils literal"><span class="pre">textBody</span></code> can have customized output generated using template macros. For more on those, see the very next section.</p>
 <div class="section" id="using-email-macros">
 <span id="id8"></span><h4>Using Email Macros<a class="headerlink" href="#using-email-macros" title="Permalink to this headline">¶</a></h4>
-<p>You can use macros in your email templates. Macros are placeholder text that are converted into actual values at the time the email is generated. You could use a macro to insert your user&#8217;s first name into the email, as well as the name of your Application. This would look like this:</p>
+<p>Macros are placeholder text that are converted into actual values at the time the email is generated. You could use a macro to insert your user&#8217;s first name into the email, as well as the name of your Application. This would look like this:</p>
 <div class="highlight-java"><div class="highlight"><pre><span></span><span class="s">&quot;Hi ${account.givenName}, welcome to $!{application.name}!&quot;</span>
 </pre></div>
 </div>
@@ -1378,6 +1445,206 @@ For more information on Password Policy for password Strength see :ref:`here &lt
 <p>To avoid this, you include the <code class="docutils literal"><span class="pre">!</span></code> which puts the macro into &#8220;quiet reference&#8221; mode. This means that if the value is not found, the output will be:</p>
 <p><code class="docutils literal"><span class="pre">Is</span> <span class="pre">your</span> <span class="pre">favorite</span> <span class="pre">color</span> <span class="pre">?</span></code></p>
 <p>Since customData can contain any arbitrary key-value pairs, Stormpath recommends that any email macro references to customData keys use the <code class="docutils literal"><span class="pre">!</span></code> quiet reference. Applications should also use the quiet reference because there are possible cases where the templating engine might not have access to an Application resource.</p>
+</div>
+</div>
+</div>
+<div class="section" id="customizing-your-smtp-server">
+<span id="add-custom-smtp"></span><h3>3.6.3. Customizing Your SMTP Server<a class="headerlink" href="#customizing-your-smtp-server" title="Permalink to this headline">¶</a></h3>
+<p>Normally, the emails that Stormpath sends as a part of processes like Account creation and password reset come from Stormpath&#8217;s SMTP server. However, it is possible to configure Stormpath to send emails using an SMTP server of your choosing.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This feature is not yet available in the PHP SDK. In the meantime, please consult the REST API documentation below.</p>
+</div>
+<p>Your Tenant is allowed to specify one server, and that server&#8217;s information is stored in an SMTP server resource accessible either directly:</p>
+<p><code class="docutils literal"><span class="pre">v1/smtpServers/$SMTP_SERVER_ID</span></code></p>
+<p>Or off of your Tenant:</p>
+<p><code class="docutils literal"><span class="pre">v1/tenants/$TENANT_ID/smtpServers</span></code></p>
+<p>In the event that sending an email using the custom SMTP server fails repeatedly, Stormpath will fall back to its own server. In this situation, Stormpath will also send you an email alerting you to the error.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If Stormpath uses its own SMTP server to send email, this may cause a conflict with your <a class="reference external" href="http://www.openspf.org/Introduction">SPF records</a> which might result in those emails being marked as spam by email clients.</p>
+</div>
+<div class="section" id="adding-a-new-custom-server">
+<h4>Adding a new Custom Server<a class="headerlink" href="#adding-a-new-custom-server" title="Permalink to this headline">¶</a></h4>
+<p>Adding a custom SMTP server via the REST API is done in the same way as creating any other Stormpath resource.</p>
+<p>In addition to the location and port of the server, you must also pass valid credentials. Before creating the resource, Stormpath will confirm that the information given is valid and that a connection can be established. If the <code class="docutils literal"><span class="pre">host</span></code>, <code class="docutils literal"><span class="pre">port</span></code>, <code class="docutils literal"><span class="pre">username</span></code> or <code class="docutils literal"><span class="pre">password</span></code> are incorrect, you will receive back <a class="reference internal" href="errors.html#errors-130xx"><span class="std std-ref">an error</span></a>. If a custom server already exists for your Stormpath Tenant, then you will also receive <a class="reference internal" href="errors.html#errors-130xx"><span class="std std-ref">an error</span></a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This feature is not yet available in the PHP SDK. In the meantime, please consult the REST API documentation below.</p>
+</div>
+<p>For the full description of what is inside an SMTP Server resource, please see <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#ref-custom-smtp">the Reference chapter</a>. A successful custom server POST would look like this:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/smtpServers</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;My SMTP Server&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;My Awesome SMTP Server&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;username&quot;</span><span class="p">:</span><span class="s2">&quot;ausername&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="s2">&quot;Apassw0rd&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;securityProtocol&quot;</span><span class="p">:</span><span class="s2">&quot;tls&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;host&quot;</span><span class="p">:</span><span class="s2">&quot;email.host.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;port&quot;</span><span class="p">:</span><span class="mi">25</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>With the following response:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">201</span> <span class="ne">Created</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-06-23T22:04:47.163Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;My Awesome SMTP Server&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;email.host.com&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/smtpServers/3svYfnFPh3q2Hbfexample&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-06-23T22:04:47.163Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;My SMTP Server&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;port&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nt">&quot;securityProtocol&quot;</span><span class="p">:</span> <span class="s2">&quot;TLS&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;tenant&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;api.stormpath.com/v1/tenants/1gBTncWsp2ObQGgexample&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;ausername&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="deleting-a-custom-server">
+<h4>Deleting a Custom Server<a class="headerlink" href="#deleting-a-custom-server" title="Permalink to this headline">¶</a></h4>
+<p>If you would like to stop using the custom server, you can disable it by setting its <code class="docutils literal"><span class="pre">status</span></code> to <code class="docutils literal"><span class="pre">DISABLED</span></code>. A more permanent solution is to delete the SMTP Server resource entirely. This is also required if you would like to use a different server, since your Tenant can only have one of these resources at any given time.</p>
+<p>To delete an SMTP Server, send the following:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">DELETE</span> <span class="nn">/v1/smtpServers/3svYfnFPh3q2Hbfexample</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+</pre></div>
+</div>
+<p>Upon successful deletion you will get back a <code class="docutils literal"><span class="pre">204</span> <span class="pre">No</span> <span class="pre">Content</span></code> message.</p>
+</div>
+</div>
+<div class="section" id="restricting-user-email-domains">
+<span id="email-domain-restriction"></span><h3>3.6.4 Restricting User Email Domains<a class="headerlink" href="#restricting-user-email-domains" title="Permalink to this headline">¶</a></h3>
+<p>As a developer, you are able to restrict which emails can be used by Accounts within a particular Directory. You control this by adding domains to either a Domain Whitelist or Blacklist, both of which are attached to your Directory&#8217;s Account Creation Policies. This means that if an email is used as part of user registration, or a user later tries to update their Account with a new email, that email will be checked against that Whitelist and/or Blacklist.</p>
+<p>If your Whitelist contains only <code class="docutils literal"><span class="pre">stormpath.com</span></code> then only email addresses from that domain will be allowed for your user Accounts. If a user tries to register a new Account without using a Stormpath address, then the Account creation will error. If they try to update their Account with a new address that isn&#8217;t a Stormpath address, the update will also fail.</p>
+<div class="section" id="domain-entries">
+<h4>Domain Entries<a class="headerlink" href="#domain-entries" title="Permalink to this headline">¶</a></h4>
+<p>Examples of domain entries include:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">*site.com</span></code></li>
+<li><code class="docutils literal"><span class="pre">*.site.com</span></code></li>
+<li><code class="docutils literal"><span class="pre">site.*.com</span></code></li>
+<li><code class="docutils literal"><span class="pre">site.*</span></code></li>
+<li><code class="docutils literal"><span class="pre">*.com</span></code></li>
+</ul>
+<p>You can enter in a <code class="docutils literal"><span class="pre">*</span></code> wildcard at any point in the email domain, and this will either allow or disallow (depending on which list you add it to) all emails fitting that pattern.</p>
+<p>For example, the entry <code class="docutils literal"><span class="pre">*site.com</span></code> would match:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">site</span><span class="o">.</span><span class="n">com</span>
+<span class="n">zsite</span><span class="o">.</span><span class="n">com</span>
+<span class="nb">id</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>The slightly different entry <code class="docutils literal"><span class="pre">*.site.com</span></code> would match:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">id</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+<p>But would not match:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">site</span><span class="o">.</span><span class="n">com</span>
+<span class="n">zsite</span><span class="o">.</span><span class="n">com</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="working-with-the-lists">
+<h4>Working with the Lists<a class="headerlink" href="#working-with-the-lists" title="Permalink to this headline">¶</a></h4>
+<p>Working with the Whitelist and Blacklist is exactly the same.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This feature is not yet available in the PHP SDK. In the meantime, please consult the REST API documentation below.</p>
+</div>
+<p>In both cases, you send an array in this format:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="s2">&quot;*domain.com&quot;</span><span class="p">,</span>
+<span class="s2">&quot;*.another.ca&quot;</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Keep in mind the following when you work with the Whitelist and Blacklist:</p>
+<ul class="simple">
+<li>If you would like to specify domains that are to be allowed, you add entries to the <code class="docutils literal"><span class="pre">emailDomainWhitelist</span></code> array.</li>
+<li>For domains that are to be disallowed, you add entries to the <code class="docutils literal"><span class="pre">emailDomainBlacklist</span></code> array.</li>
+<li>Both arrays are empty by default.</li>
+<li>An empty <code class="docutils literal"><span class="pre">emailDomainWhitelist</span></code> means that all email domains are allowed.</li>
+<li>An empty <code class="docutils literal"><span class="pre">emailDomainBlacklist</span></code> means that no email domains are disallowed.</li>
+<li>To add or remove entries, you must overwrite the entire list. See examples below.</li>
+<li>The Blacklist takes precedence over the Whitelist. That means that if <code class="docutils literal"><span class="pre">site.com</span></code> is found in both lists, the Blacklist will take priority, and users will not be able to use any emails from the <code class="docutils literal"><span class="pre">site.com</span></code> domain.</li>
+</ul>
+<div class="section" id="adding-a-domain">
+<h5>Adding a Domain<a class="headerlink" href="#adding-a-domain" title="Permalink to this headline">¶</a></h5>
+<p>If you wanted to allow only users using emails from <code class="docutils literal"><span class="pre">site.com</span></code> and <code class="docutils literal"><span class="pre">stormpath.com</span></code> to register for this Directory, you could add the following entries to the Whitelist:</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This feature is not yet available in the PHP SDK. In the meantime, please consult the REST API documentation below.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accountCreationPolicies/2SKhstu8PlaekcaEXampLE</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;emailDomainWhitelist&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;*stormpath.com&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;*site.com&quot;</span>
+      <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>And you would get back the Account Creation Policies resource:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://staging-api-b.stormpath.com/v1/accountCreationPolicies/2SKhstu8PlaekcaEXampLE&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;verificationEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;verificationSuccessEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;welcomeEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;emailDomainWhitelist&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;*stormpath.com&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;*site.com&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;emailDomainBlacklist&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now, if an Account is passed to Stormpath with an email domain that does not match the entries on this Whitelist, you will get back <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/errors.html#error-7206">an error</a>.</p>
+<p>If you were instead working with a Blacklist, and you had added <code class="docutils literal"><span class="pre">*stormpath.com</span></code> and <code class="docutils literal"><span class="pre">*site.com</span></code> to there, then if an Account were passed to Stormpath that contained an email from either of those domains, you would also get back <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/errors.html#error-7205">an error</a>.</p>
+</div>
+<div class="section" id="removing-a-domain">
+<h5>Removing a Domain<a class="headerlink" href="#removing-a-domain" title="Permalink to this headline">¶</a></h5>
+<p>If you changed our mind and wanted to only allow users to register with <code class="docutils literal"><span class="pre">stormpath.com</span></code> emails, then you would just overwrite the existing Whitelist:</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This feature is not yet available in the PHP SDK. In the meantime, please consult the REST API documentation below.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accountCreationPolicies/2SKhstu8PlaekcaEXampLE</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;emailDomainWhitelist&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="s2">&quot;*stormpath.com&quot;</span>
+      <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>And then you&#8217;d get back the Account Policies, with the updated Whitelist:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://staging-api-b.stormpath.com/v1/accountCreationPolicies/2SKhstu8PlaekcaEXampLE&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;verificationEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;verificationSuccessEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;welcomeEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;emailDomainWhitelist&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;*stormpath.com&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;emailDomainBlacklist&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Working with the Blacklist is exactly the same, except you add entries to the <code class="docutils literal"><span class="pre">emailDomainBlacklist</span></code> array instead.</p>
 </div>
 </div>
 </div>
