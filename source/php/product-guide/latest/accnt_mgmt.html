@@ -204,8 +204,8 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#customizing-stormpath-emails-via-rest">3.6. Customizing Stormpath Emails via REST</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#what-emails-does-stormpath-send">3.6.1. What Emails Does Stormpath Send?</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id4">Account Creation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id5">Password Reset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Account Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Password Reset</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#customizing-stormpath-email-templates">3.6.2. Customizing Stormpath Email Templates</a><ul>
@@ -390,8 +390,8 @@
 </pre></div>
 </div>
 <p>At this point, our current resources (<strong>not including the default ones</strong> created in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a>) can be visualized like this:</p>
-<div class="figure align-center" id="id9">
-<a class="reference internal image-reference" href="_images/am_erd_01.png"><img alt="&lt;ERD with Directory&gt;" src="_images/am_erd_01.png" style="width: 581.0px; height: 449.0px;" /></a>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="_images/am_erd_01.png"><img alt="&lt;ERD with Directory&gt;" src="_images/am_erd_01.png" style="width: 560.0px; height: 423.0px;" /></a>
 <p class="caption"><span class="caption-text"><em>Our Stormpath Tenant, with an Application resource and our newly created &#8220;Captains&#8221; Directory</em></span></p>
 </div>
 <p>Any new Groups or Accounts that you create will have to be created inside a Directory. Before you move on to that though, it&#8217;s helpful to know a little about the other kinds of Directories available to you in Stormpath.</p>
@@ -552,7 +552,7 @@
 </div>
 <p>You can now see how this Group would look in our Tenant:</p>
 <div class="figure align-center">
-<a class="reference internal image-reference" href="_images/am_erd_02.png"><img alt="&lt;ERD with Directory and Group&gt;" src="_images/am_erd_02.png" style="width: 581.0px; height: 449.0px;" /></a>
+<a class="reference internal image-reference" href="_images/am_erd_02.png"><img alt="&lt;ERD with Directory and Group&gt;" src="_images/am_erd_02.png" style="width: 553.0px; height: 418.0px;" /></a>
 </div>
 <p>There is our Application, Directory, and our newly-created Group, and they are all found inside the Stormpath Tenant.</p>
 </div>
@@ -644,7 +644,7 @@
 </div>
 <p>Going back to our resource diagram:</p>
 <div class="figure align-center">
-<a class="reference internal image-reference" href="_images/am_erd_03.png"><img alt="ERD with groupMembership" src="_images/am_erd_03.png" style="width: 581.0px; height: 449.0px;" /></a>
+<a class="reference internal image-reference" href="_images/am_erd_03.png"><img alt="ERD with groupMembership" src="_images/am_erd_03.png" style="width: 551.0px; height: 418.0px;" /></a>
 </div>
 <p>The new Account is now in the &#8220;Captains&#8221; Directory.</p>
 </div>
@@ -927,11 +927,21 @@ This works as follows:</p>
 <div class="section" id="searching-for-accounts-with-custom-data">
 <span id="howto-search-account-customdata"></span><h3>3.3.2. Searching for Accounts with Custom Data<a class="headerlink" href="#searching-for-accounts-with-custom-data" title="Permalink to this headline">¶</a></h3>
 <p>It is also possible to retrieve a collection of Accounts by searching the data stored in their Custom Data.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This feature is not yet available in the PHP SDK. In the meantime, please consult the REST API documentation below.</p>
+</div>
+<p>For example, if some or all of your Accounts in a particular Directory have a Custom Data key called <code class="docutils literal"><span class="pre">startDate</span></code> that contains the date that user started using your application, you could search for the Accounts that started within a particular date range:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/accounts?customData.startDate=[2012,2015]&amp;limit=5&amp;offset=0</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p>This query will match Accounts with a <code class="docutils literal"><span class="pre">startDate</span></code> value between <code class="docutils literal"><span class="pre">2012-01-01</span></code> and <code class="docutils literal"><span class="pre">2015-12-31</span></code>. Additionally, only the top five Accounts will be returned from the result set, with an <code class="docutils literal"><span class="pre">offset</span></code> of <code class="docutils literal"><span class="pre">0</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This feature is currently in beta, any questions comments or suggestions, reach out to us at <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a></p>
+<p class="last">This feature is currently in beta. If you have any questions, comments, or suggestions, reach out to us at <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a>.</p>
 </div>
-<p>If, for example, we wanted all Accounts in the Directory that had started between 2012-01-01 and 2015-12-31, and we wanted to paginate the results by limiting the returned number of Accounts to 5 and an offset of 0, we would send the following query:</p>
 </div>
 </div>
 <div class="section" id="how-to-manage-an-account-s-password">
@@ -939,43 +949,26 @@ This works as follows:</p>
 <p>One of the major categories of user management tasks that Stormpath handles and simplifies for you is managing user passwords. All of these different use cases are discussed in the section below.</p>
 <div class="section" id="manage-password-policies">
 <h3>3.4.1. Manage Password Policies<a class="headerlink" href="#manage-password-policies" title="Permalink to this headline">¶</a></h3>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This feature is not yet available in PHP.  Please use the Stormpath Admin Console UI or by the REST calls provided below to enable or disable the password reset email. For updates, you can follow this <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/106">ticket on Github</a>.</p>
-</div>
 <p>In Stormpath, password policies are defined on a Directory level. Specifically, they are controlled in a <strong>Password Policy</strong> resource associated with the Directory. Modifying this resource also modifies the behavior of all Accounts that are included in this Directory. For more information about this resource, see the <a class="reference internal" href="reference.html#ref-password-policy"><span class="std std-ref">Password Policy section in the Reference chapter</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This section assumes a basic familiarity with Stormpath Workflows. For more information about Workflows, please see <a class="reference external" href="http://docs.stormpath.com/console/product-guide/#directory-workflows">the Directory Workflows section of the Admin Console Guide</a>.</p>
 </div>
 <p>Changing the Password Strength resource for a Directory modifies the requirement for new Accounts and password changes on existing Accounts in that Directory.</p>
-<p>To update Password Strength, make this call:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">v1/passwordPolicies/$DIRECTORY_ID/strength</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+<p>To retrieve the password policy, use the <code class="docutils literal"><span class="pre">getPasswordPolicy()</span></code> and <code class="docutils literal"><span class="pre">getStrength()</span></code> methods. The Password Strength Policy resource can be modified and saved back to the server to update the policy.</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$passwordPolicy</span> <span class="o">=</span> <span class="nv">$directory</span><span class="o">-&gt;</span><span class="na">getPasswordPolicy</span><span class="p">();</span>
 
-<span class="p">{</span>
-  <span class="nt">&quot;minLength&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-  <span class="nt">&quot;maxLength&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
-  <span class="nt">&quot;minSymbol&quot;</span><span class="p">:</span> <span class="mi">1</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Which results in the following response:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
-<span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/passwordPolicies/$DIRECTORY_ID/strength</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+<span class="nv">$strength</span> <span class="o">=</span> <span class="nv">$passwordPolicy</span><span class="o">-&gt;</span><span class="na">getStrength</span><span class="p">();</span>
 
-<span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/passwordPolicies/$DIRECTORY_ID/strength&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;maxLength&quot;</span><span class="p">:</span> <span class="mi">24</span><span class="p">,</span>
-  <span class="nt">&quot;minDiacritic&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="nt">&quot;minLength&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-  <span class="nt">&quot;minLowerCase&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-  <span class="nt">&quot;minNumeric&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-  <span class="nt">&quot;minSymbol&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-  <span class="nt">&quot;minUpperCase&quot;</span><span class="p">:</span> <span class="mi">1</span>
-<span class="p">}</span>
+<span class="nv">$res</span> <span class="o">=</span> <span class="nv">$strength</span><span class="o">-&gt;</span><span class="na">getMinLength</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">getMaxLength</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">getMinLowerCase</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">getMinUpperCase</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">getMinNumeric</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">getMinSymbol</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">getMinDiacritic</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">getPreventReuse</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
@@ -1154,10 +1147,6 @@ This link takes you to a secure page where you can change your password.
 </div>
 <div class="section" id="manage-password-reset-emails">
 <h4>Manage Password Reset Emails<a class="headerlink" href="#manage-password-reset-emails" title="Permalink to this headline">¶</a></h4>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This feature is not yet available in PHP.  Please use the Stormpath Admin Console UI or by using the REST calls provided below to enable or disable the password reset email. For updates, you can follow the <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/106">ticket on Github</a>.</p>
-</div>
 <p>The Password Reset Email is configurable for a Directory.</p>
 <p>There is a set of properties on the Password Policy resource that define its behavior. These properties are:</p>
 <ul class="simple">
@@ -1167,23 +1156,30 @@ This link takes you to a secure page where you can change your password.
 <li><code class="docutils literal"><span class="pre">resetSuccessEmailTemplates</span></code> which defines the content of the reset success email.</li>
 </ul>
 <p>To control whether any email is sent or not is simply a matter of setting the appropriate value to either <code class="docutils literal"><span class="pre">ENABLED</span></code> or <code class="docutils literal"><span class="pre">DISABLED</span></code>. For example, if you would like a Password Reset email to be sent, perform the following:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/passwordPolicies/$DIRECTORY_ID</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$passwordPolicy</span> <span class="o">=</span> <span class="nv">$directory</span><span class="o">-&gt;</span><span class="na">getPasswordPolicy</span><span class="p">();</span>
 
-<span class="p">{</span>
-    <span class="nt">&quot;resetEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span>
-<span class="p">}</span>
+<span class="nv">$passwordPolicy</span><span class="o">-&gt;</span><span class="na">setResetEmailStatus</span><span class="p">(</span><span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">ENABLED</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="password-reset-email-templates">
-<span id="id3"></span><h4>Password Reset Email Templates<a class="headerlink" href="#password-reset-email-templates" title="Permalink to this headline">¶</a></h4>
+<span id="id2"></span><h4>Password Reset Email Templates<a class="headerlink" href="#password-reset-email-templates" title="Permalink to this headline">¶</a></h4>
 <p>The contents of the password reset and the password reset success emails are both defined in an Email Templates collection.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p>This feature is not yet available in the PHP SDK. For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/150">ticket #150</a> on Github.</p>
-<p class="last">In the meantime, please use the Stormpath Admin Console UI, or consult the REST API documentation below.</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$resetEmailTemplate</span> <span class="o">=</span> <span class="nv">$directory</span><span class="o">-&gt;</span><span class="na">getPasswordPolicy</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getResetEmailTemplates</span><span class="p">();</span>
+
+<span class="nv">$resetEmailTemplate</span>
+    <span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;Password Reset Email Template&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setDescription</span><span class="p">(</span><span class="s1">&#39;Password Reset Email Template that is associated with the directory.&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setFromName</span><span class="p">(</span><span class="s1">&#39;John Doe&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setFromEmailAddress</span><span class="p">(</span><span class="s1">&#39;support@stormpath.com&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setSubject</span><span class="p">(</span><span class="s1">&#39;Reset Your Password&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setTextBody</span><span class="p">(</span><span class="s1">&#39;Forgot your password? We&#39;</span><span class="nx">ve</span> <span class="nx">received</span> <span class="nx">a</span> <span class="nx">request</span> <span class="nx">to</span> <span class="nb">reset</span> <span class="nx">the</span> <span class="nx">password</span> <span class="k">for</span> <span class="k">this</span> <span class="nx">email</span> <span class="nx">address</span><span class="o">.</span> <span class="nx">To</span> <span class="nb">reset</span> <span class="nx">your</span> <span class="nx">password</span> <span class="nx">please</span> <span class="nx">click</span> <span class="nx">on</span> <span class="k">this</span> <span class="nb">link</span> <span class="k">or</span> <span class="nx">cut</span> <span class="k">and</span> <span class="nx">paste</span> <span class="k">this</span> <span class="nx">URL</span> <span class="nx">into</span> <span class="nx">your</span> <span class="nx">browser</span> <span class="p">(</span><span class="nb">link</span> <span class="nx">expires</span> <span class="nx">in</span> <span class="err">$</span><span class="p">{</span><span class="nx">expirationWindow</span><span class="p">}</span> <span class="nx">hours</span><span class="p">)</span><span class="o">:</span> <span class="err">$</span><span class="p">{</span><span class="nx">url</span><span class="p">}</span> <span class="k">This</span> <span class="nb">link</span> <span class="nx">takes</span> <span class="nx">you</span> <span class="nx">to</span> <span class="nx">a</span> <span class="nx">secure</span> <span class="nx">page</span> <span class="nx">where</span> <span class="nx">you</span> <span class="nx">can</span> <span class="nx">change</span> <span class="nx">your</span> <span class="nx">password</span><span class="o">.</span> <span class="k">If</span> <span class="nx">you</span> <span class="nx">don</span><span class="s1">&#39;t want to reset your password, please ignore this message. Your password will not be reset. --------------------- For general inquiries or to request support with your account, please email support@stormpath.com&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setHtmlBody</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Forgot your password?&lt;/p&gt;&lt;br/&gt;&lt;br/&gt;&lt;p&gt;We&#39;</span><span class="nx">ve</span> <span class="nx">received</span> <span class="nx">a</span> <span class="nx">request</span> <span class="nx">to</span> <span class="nb">reset</span> <span class="nx">the</span> <span class="nx">password</span> <span class="k">for</span> <span class="k">this</span> <span class="nx">email</span> <span class="nx">address</span><span class="o">.&lt;/</span><span class="nx">p</span><span class="o">&gt;&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">To</span> <span class="nb">reset</span> <span class="nx">your</span> <span class="nx">password</span> <span class="nx">please</span> <span class="nx">click</span> <span class="nx">on</span> <span class="k">this</span> <span class="nb">link</span> <span class="p">(</span><span class="nb">link</span> <span class="nx">expires</span> <span class="err">$</span><span class="p">{</span><span class="nx">expirationWindow</span><span class="p">}</span> <span class="nx">hours</span><span class="p">)</span><span class="o">:&lt;</span><span class="nx">br</span><span class="o">/&gt;&lt;</span><span class="nx">a</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">url</span><span class="si">}</span><span class="s2">&quot;</span><span class="o">&gt;</span><span class="nx">Link</span><span class="o">&lt;/</span><span class="nx">a</span><span class="o">&gt;&lt;/</span><span class="nx">p</span><span class="o">&gt;&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="k">This</span> <span class="nb">link</span> <span class="nx">takes</span> <span class="nx">you</span> <span class="nx">to</span> <span class="nx">a</span> <span class="nx">secure</span> <span class="nx">page</span> <span class="nx">where</span> <span class="nx">you</span> <span class="nx">can</span> <span class="nx">change</span> <span class="nx">your</span> <span class="nx">password</span><span class="o">.</span> <span class="k">If</span> <span class="nx">you</span> <span class="nx">don</span><span class="s1">&#39;t want to reset your password, please ignore this message. Your password will not be reset.&lt;/p&gt;&lt;p&gt;----------------------&lt;br/&gt;For general inquiries or to request support with your account, please email support@stormpath.com&lt;/p&gt;&#39;</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setMimeType</span><span class="p">(</span><span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">MIME_HTML</span><span class="p">)</span>
+    <span class="o">-&gt;</span><span class="na">setDefaultModel</span><span class="p">([</span><span class="s1">&#39;linkBaseUrl&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;http://localhost:8888/passwordReset.php&#39;</span><span class="p">])</span>
+    <span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+</pre></div>
 </div>
 <p>To modify the emails that get sent during the password reset workflow, all you have to do is send an HTTP POST with the desired property in the payload body. For more information about Email Templates, see the <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#ref-emailtemplates">Email Templates section</a> of the Reference chapter.</p>
 </div>
@@ -1200,23 +1196,10 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="how-to-restrict-password-reuse">
 <span id="password-reuse"></span><h3>3.4.5. How to Restrict Password Reuse<a class="headerlink" href="#how-to-restrict-password-reuse" title="Permalink to this headline">¶</a></h3>
 <p>Stormpath can store historical password information in order to allow for restrictions on password reuse. This is controlled on the Directory Password Policy&#8217;s Strength object, which has an attribute called <code class="docutils literal"><span class="pre">preventReuse</span></code>. By default this feature is disabled and set to <code class="docutils literal"><span class="pre">0</span></code>. In order to enable this feature, you have to modify the Directory Password Policy&#8217;s Strength resource, sending any value up to <code class="docutils literal"><span class="pre">25</span></code>:</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p>This feature is not yet available in the PHP SDK. For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/151">ticket #151</a> on Github.</p>
-<blockquote class="last">
-<div>In the meantime, please use the Stormpath Admin Console UI, or consult the REST API documentation below.</div></blockquote>
-</div>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/passwordPolicies/2SKhstu8PlaekcaEXampLE/strength</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$passwordPolicy</span> <span class="o">=</span> <span class="nv">$directory</span><span class="o">-&gt;</span><span class="na">getPasswordPolicy</span><span class="p">();</span>
 
-{
-    &quot;preventReuse&quot;: &quot;10&quot;
-}
+<span class="nv">$passwordPolicy</span><span class="o">-&gt;</span><span class="na">setPasswordReuse</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
 </pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">For more information on Password Policy for password Strength see <a class="reference internal" href="reference.html#ref-password-strength"><span class="std std-ref">here</span></a>.</p>
 </div>
 <p>This would now allow a user to set their password to any string that matched their previous 10 passwords.</p>
 </div>
@@ -1351,8 +1334,8 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="what-emails-does-stormpath-send">
 <h3>3.6.1. What Emails Does Stormpath Send?<a class="headerlink" href="#what-emails-does-stormpath-send" title="Permalink to this headline">¶</a></h3>
 <p>Stormpath can be configured to send emails to users as part of a Directory&#8217;s Account Creation and Password Reset policies.</p>
-<div class="section" id="id4">
-<h4>Account Creation<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id3">
+<h4>Account Creation<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <p>Found in: <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#account-creation-policy">Account Creation Policy</a></p>
 <ul class="simple">
 <li><em>Verification Email</em>: The initial email that is sent out after Account creation that verifies the email address that was used for registration with a link containing the verification token.</li>
@@ -1361,8 +1344,8 @@ This link takes you to a secure page where you can change your password.
 </ul>
 <p>For more information about this, see <a class="reference internal" href="#verify-account-email"><span class="std std-ref">3.5. How to Verify an Account&#8217;s Email</span></a>.</p>
 </div>
-<div class="section" id="id5">
-<h4>Password Reset<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id4">
+<h4>Password Reset<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
 <p>Found in: <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#password-policy">Password Policy</a></p>
 <ul class="simple">
 <li><em>Reset Email</em>: The email that is sent out after a user asks to reset their password. It contains a URL with a password reset token.</li>
@@ -1374,48 +1357,41 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="customizing-stormpath-email-templates">
 <span id="customizing-email-templates"></span><h3>3.6.2. Customizing Stormpath Email Templates<a class="headerlink" href="#customizing-stormpath-email-templates" title="Permalink to this headline">¶</a></h3>
 <p>The emails that Stormpath sends to users be customized by modifying the <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#email-templates">Email Templates</a> resource. This can be done either via the &#8220;Directory Workflows&#8221; section of the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a>, or via the REST API.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p>This feature is not yet available in the PHP SDK. For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-php/issues/150">ticket #150</a> on Github.</p>
-<p class="last">In the meantime, please use the Stormpath Admin Console UI, or the REST API documentation below.</p>
-</div>
 <p><strong>Verification</strong>, <strong>Verification Success</strong>, and <strong>Welcome</strong> Email Templates can all be found under the Directory&#8217;s <strong>Account Creation Policies</strong>.</p>
 <p><strong>Password Reset</strong>, and <strong>Reset Success</strong> Email Templates can be found under the Directory&#8217;s <strong>Password Policies</strong>.</p>
-<p>To modify any of these emails via REST, it is just a matter of updating the appropriate <code class="docutils literal"><span class="pre">/emailTemplates/$TEMPLATE_ID</span></code> resource with a POST.</p>
 <p>As an example, let&#8217;s look at a default Verification Email template that comes with the Stormpath Administrator Directory&#8217;s Account Creation Policies:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/emailTemplates/2jwPxFsnjqxYrojexample&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Default Verification Email Template&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;This is the verification email template that is associated with the directory.&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;fromName&quot;</span><span class="p">:</span><span class="s2">&quot;Jakub Swiatczak&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;fromEmailAddress&quot;</span><span class="p">:</span><span class="s2">&quot;change-me@stormpath.com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;subject&quot;</span><span class="p">:</span><span class="s2">&quot;Verify your account&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;textBody&quot;</span><span class="p">:</span><span class="s2">&quot;Hi,\nYou have been registered for an application that uses Stormpath.\n\n${url}\n\nOnce you verify, you will be able to login.\n\n---------------------\nFor general inquiries or to request support with your account, please email change-me@stormpath.com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;htmlBody&quot;</span><span class="p">:</span><span class="s2">&quot;&lt;p&gt;Hi,&lt;/p&gt;\n&lt;p&gt;You have been registered for an application that uses Stormpath.&lt;/p&gt;&lt;a href=\&quot;${url}\&quot;&gt;Click here to verify your account&lt;/a&gt;&lt;p&gt;Once you verify, you will be able to login.&lt;/p&gt;&lt;p&gt;--------------------- &lt;br /&gt;For general inquiries or to request support with your account, please email change-me@stormpath.com&lt;/p&gt;&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;mimeType&quot;</span><span class="p">:</span><span class="s2">&quot;text/plain&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;defaultModel&quot;</span><span class="p">:{</span>
-    <span class="nt">&quot;linkBaseUrl&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/emailVerificationTokens&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>If you wanted to change the <code class="docutils literal"><span class="pre">fromEmailAddress</span></code> attribute, you would just update this attribute:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/emailTemplates/2jwPxFsnjqxYrojexample</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$verificationEmailTemplates</span> <span class="o">=</span> <span class="nv">$directory</span><span class="o">-&gt;</span><span class="na">getAccountCreationPolicy</span><span class="p">()</span>
+                                    <span class="o">-&gt;</span><span class="na">getVerificationEmailTemplates</span><span class="p">();</span>
 
-{
-    &quot;fromEmailAddress&quot;:&quot;jakub@stormpath.com&quot;
-}
+<span class="k">foreach</span><span class="p">(</span><span class="nv">$verificaitonEmailTemplates</span> <span class="k">as</span> <span class="nv">$template</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$template</span>
+        <span class="o">-&gt;</span><span class="na">setName</span><span class="p">(</span><span class="s1">&#39;Default Verification Email Template&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">setDescription</span><span class="p">(</span><span class="s1">&#39;This is the verification email template that is associated with the directory.&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">setFromName</span><span class="p">(</span><span class="s1">&#39;Jakub Swiatczak&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">setFromEmailAddress</span><span class="p">(</span><span class="s1">&#39;change-me@stormpath.com&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">setSubject</span><span class="p">(</span><span class="s1">&#39;Verify your account&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">setTextBody</span><span class="p">(</span><span class="s1">&#39;Hi,\nYou have been registered for an application that uses Stormpath.\n\n${url}\n\nOnce you verify, you will be able to login.\n\n---------------------\nFor general inquiries or to request support with your account, please email change-me@stormpath.com&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">setHtmlBody</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Hi,&lt;/p&gt;\n&lt;p&gt;You have been registered for an application that uses Stormpath.&lt;/p&gt;&lt;a href=\&quot;${url}\&quot;&gt;Click here to verify your account&lt;/a&gt;&lt;p&gt;Once you verify, you will be able to login.&lt;/p&gt;&lt;p&gt;--------------------- &lt;br /&gt;For general inquiries or to request support with your account, please email change-me@stormpath.com&lt;/p&gt;&#39;</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">setMimeType</span><span class="p">(</span><span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">MIME_PLAIN_TEXT</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">setDefaultModel</span><span class="p">([</span><span class="s1">&#39;linkBaseUrl&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;https://api.stormpath.com/emailVerificationTokens&#39;</span><span class="p">])</span>
+        <span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="nx">You</span> <span class="nx">would</span> <span class="nx">then</span> <span class="nx">receive</span> <span class="nx">a</span> <span class="sb">``</span><span class="mi">200</span> <span class="nx">OK</span><span class="sb">``</span> <span class="nx">along</span> <span class="nx">with</span> <span class="nx">the</span> <span class="nx">updated</span> <span class="nx">template</span><span class="o">.</span>
+
+<span class="k">For</span> <span class="nx">more</span> <span class="nx">information</span> <span class="nx">about</span> <span class="nx">Stormpath</span><span class="err">&#39;</span><span class="nx">s</span> <span class="nx">email</span> <span class="nx">templates</span><span class="p">,</span> <span class="nx">keep</span> <span class="nx">reading</span><span class="o">!</span>
+
+<span class="o">**</span><span class="nx">Message</span> <span class="nx">Format</span><span class="o">**</span>
+
+<span class="nx">The</span> <span class="sb">``</span><span class="nx">mimeType</span><span class="sb">``</span> <span class="nx">designates</span> <span class="nx">whether</span> <span class="nx">the</span> <span class="nx">email</span> <span class="nx">is</span> <span class="nx">sent</span> <span class="k">as</span> <span class="nx">plain</span> <span class="nx">text</span> <span class="p">(</span><span class="sb">``</span><span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">MIME_PLAIN_TEXT</span><span class="sb">``</span><span class="p">),</span> <span class="nx">HTML</span> <span class="p">(</span><span class="sb">``</span><span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">MIME_HTML</span><span class="sb">``</span><span class="p">)</span><span class="o">.</span> <span class="k">This</span> <span class="nx">in</span> <span class="nx">turns</span> <span class="nx">tells</span> <span class="nx">Stormpath</span> <span class="nx">whether</span> <span class="nx">to</span> <span class="k">use</span> <span class="nx">the</span> <span class="sb">``</span><span class="nx">textBody</span><span class="sb">``</span> <span class="k">or</span> <span class="sb">``</span><span class="nx">htmlBody</span><span class="sb">``</span> <span class="nx">text</span> <span class="nx">in</span> <span class="nx">the</span> <span class="nx">email</span><span class="p">,</span> <span class="k">or</span> <span class="nx">to</span> <span class="nx">let</span> <span class="nx">the</span> <span class="nx">email</span> <span class="nx">client</span> <span class="nx">decide</span><span class="o">.</span>
+
+<span class="o">**</span><span class="nx">textBody</span> <span class="k">and</span> <span class="nx">htmlBody</span><span class="o">**</span>
+
+<span class="nx">These</span> <span class="nb">define</span> <span class="nx">the</span> <span class="nx">actual</span> <span class="nx">content</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">email</span><span class="o">.</span> <span class="nx">The</span> <span class="nx">only</span> <span class="nx">difference</span> <span class="nx">is</span> <span class="nx">that</span> <span class="sb">``</span><span class="nx">htmlBody</span><span class="sb">``</span> <span class="nx">is</span> <span class="nx">allowed</span> <span class="nx">to</span> <span class="nx">contain</span> <span class="nx">HTML</span> <span class="nx">markup</span> <span class="k">while</span> <span class="sb">``</span><span class="nx">textBody</span><span class="sb">``</span> <span class="nx">only</span> <span class="nx">accepts</span> <span class="nx">plaintext</span><span class="o">.</span> <span class="nx">Both</span> <span class="nx">are</span> <span class="nx">also</span> <span class="nx">able</span> <span class="nx">to</span> <span class="k">use</span> <span class="sb">`Java Escape Sequences &lt;http://web.cerritos.edu/jwilson/SitePages/java_language_resources/Java_Escape_Sequences.htm&gt;`</span><span class="nx">__</span><span class="o">.</span> <span class="nx">Both</span> <span class="sb">``</span><span class="nx">htmlBody</span><span class="sb">``</span> <span class="k">and</span> <span class="sb">``</span><span class="nx">textBody</span><span class="sb">``</span> <span class="nx">can</span> <span class="nx">have</span> <span class="nx">customized</span> <span class="nx">output</span> <span class="nx">generated</span> <span class="nx">using</span> <span class="nx">template</span> <span class="nx">macros</span><span class="o">.</span> <span class="k">For</span> <span class="nx">more</span> <span class="nx">on</span> <span class="nx">those</span><span class="p">,</span> <span class="nx">see</span> <span class="nx">the</span> <span class="nx">very</span> <span class="nb">next</span> <span class="nx">section</span><span class="o">.</span>
 </pre></div>
 </div>
-<p>You would then receive a <code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with the updated template.</p>
-<p>For more information about Stormpath&#8217;s email templates, keep reading!</p>
-<p><strong>Message Format</strong></p>
-<p>The <code class="docutils literal"><span class="pre">mimeType</span></code> designates whether the email is sent as plain text (<code class="docutils literal"><span class="pre">text/plain</span></code>), HTML (<code class="docutils literal"><span class="pre">text/html</span></code>), or both (<code class="docutils literal"><span class="pre">multipart/alternative</span></code>). This in turns tells Stormpath whether to use the <code class="docutils literal"><span class="pre">textBody</span></code> or <code class="docutils literal"><span class="pre">htmlBody</span></code> text in the email, or to let the email client decide.</p>
-<p><strong>textBody and htmlBody</strong></p>
-<p>These define the actual content of the email. The only difference is that <code class="docutils literal"><span class="pre">htmlBody</span></code> is allowed to contain HTML markup while <code class="docutils literal"><span class="pre">textBody</span></code> only accepts plaintext. Both are also able to use <a class="reference external" href="http://web.cerritos.edu/jwilson/SitePages/java_language_resources/Java_Escape_Sequences.htm">Java Escape Sequences</a>. Both <code class="docutils literal"><span class="pre">htmlBody</span></code> and <code class="docutils literal"><span class="pre">textBody</span></code> can have customized output generated using template macros. For more on those, see the very next section.</p>
 <div class="section" id="using-email-macros">
-<span id="id8"></span><h4>Using Email Macros<a class="headerlink" href="#using-email-macros" title="Permalink to this headline">¶</a></h4>
+<span id="id6"></span><h4>Using Email Macros<a class="headerlink" href="#using-email-macros" title="Permalink to this headline">¶</a></h4>
 <p>Macros are placeholder text that are converted into actual values at the time the email is generated. You could use a macro to insert your user&#8217;s first name into the email, as well as the name of your Application. This would look like this:</p>
 <div class="highlight-java"><div class="highlight"><pre><span></span><span class="s">&quot;Hi ${account.givenName}, welcome to $!{application.name}!&quot;</span>
 </pre></div>
@@ -1554,15 +1530,8 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="working-with-the-lists">
 <h4>Working with the Lists<a class="headerlink" href="#working-with-the-lists" title="Permalink to this headline">¶</a></h4>
 <p>Working with the Whitelist and Blacklist is exactly the same.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This feature is not yet available in the PHP SDK. In the meantime, please consult the REST API documentation below.</p>
-</div>
-<p>In both cases, you send an array in this format:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">[</span>
-<span class="s2">&quot;*domain.com&quot;</span><span class="p">,</span>
-<span class="s2">&quot;*.another.ca&quot;</span>
-<span class="p">]</span>
+<p>To replace the current list, pass an array to the method.</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$accountCreationPolicy</span><span class="o">-&gt;</span><span class="na">setEmailDomainWhitelist</span><span class="p">([</span><span class="s1">&#39;abc.com&#39;</span><span class="p">,</span> <span class="s1">&#39;xyz.com&#39;</span><span class="p">])</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
 </pre></div>
 </div>
 <p>Keep in mind the following when you work with the Whitelist and Blacklist:</p>
@@ -1578,35 +1547,7 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="adding-a-domain">
 <h5>Adding a Domain<a class="headerlink" href="#adding-a-domain" title="Permalink to this headline">¶</a></h5>
 <p>If you wanted to allow only users using emails from <code class="docutils literal"><span class="pre">site.com</span></code> and <code class="docutils literal"><span class="pre">stormpath.com</span></code> to register for this Directory, you could add the following entries to the Whitelist:</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This feature is not yet available in the PHP SDK. In the meantime, please consult the REST API documentation below.</p>
-</div>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accountCreationPolicies/2SKhstu8PlaekcaEXampLE</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
-
-<span class="p">{</span>
-  <span class="nt">&quot;emailDomainWhitelist&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="s2">&quot;*stormpath.com&quot;</span><span class="p">,</span>
-      <span class="s2">&quot;*site.com&quot;</span>
-      <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>And you would get back the Account Creation Policies resource:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://staging-api-b.stormpath.com/v1/accountCreationPolicies/2SKhstu8PlaekcaEXampLE&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;verificationEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;verificationSuccessEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;welcomeEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;emailDomainWhitelist&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;*stormpath.com&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;*site.com&quot;</span>
-  <span class="p">],</span>
-  <span class="nt">&quot;emailDomainBlacklist&quot;</span><span class="p">:</span> <span class="p">[],</span>
-  <span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span>
-<span class="p">}</span>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$accountCreationPolicy</span><span class="o">-&gt;</span><span class="na">addEmailDomainWhitelist</span><span class="p">(</span><span class="s1">&#39;stormpath.com&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
 </pre></div>
 </div>
 <p>Now, if an Account is passed to Stormpath with an email domain that does not match the entries on this Whitelist, you will get back <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/errors.html#error-7206">an error</a>.</p>
@@ -1615,9 +1556,8 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="removing-a-domain">
 <h5>Removing a Domain<a class="headerlink" href="#removing-a-domain" title="Permalink to this headline">¶</a></h5>
 <p>If you changed our mind and wanted to only allow users to register with <code class="docutils literal"><span class="pre">stormpath.com</span></code> emails, then you would just overwrite the existing Whitelist:</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This feature is not yet available in the PHP SDK. In the meantime, please consult the REST API documentation below.</p>
+<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$accountCreationPolicy</span><span class="o">-&gt;</span><span class="na">removeEmailDomainWhitelist</span><span class="p">(</span><span class="s1">&#39;stormpath.com&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
+</pre></div>
 </div>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accountCreationPolicies/2SKhstu8PlaekcaEXampLE</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
@@ -1627,20 +1567,6 @@ This link takes you to a secure page where you can change your password.
   <span class="nt">&quot;emailDomainWhitelist&quot;</span><span class="p">:</span> <span class="p">[</span>
       <span class="s2">&quot;*stormpath.com&quot;</span>
       <span class="p">]</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>And then you&#8217;d get back the Account Policies, with the updated Whitelist:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://staging-api-b.stormpath.com/v1/accountCreationPolicies/2SKhstu8PlaekcaEXampLE&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;verificationEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;verificationSuccessEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;welcomeEmailStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;emailDomainWhitelist&quot;</span><span class="p">:</span> <span class="p">[</span>
-    <span class="s2">&quot;*stormpath.com&quot;</span>
-  <span class="p">],</span>
-  <span class="nt">&quot;emailDomainBlacklist&quot;</span><span class="p">:</span> <span class="p">[],</span>
-  <span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
