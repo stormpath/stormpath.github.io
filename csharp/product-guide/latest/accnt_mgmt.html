@@ -204,8 +204,8 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#customizing-stormpath-emails-via-rest">3.6. Customizing Stormpath Emails via REST</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#what-emails-does-stormpath-send">3.6.1. What Emails Does Stormpath Send?</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#id4">Account Creation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#id5">Password Reset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Account Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">Password Reset</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#customizing-stormpath-email-templates">3.6.2. Customizing Stormpath Email Templates</a><ul>
@@ -335,8 +335,8 @@
 <p class="last">See the <a class="reference external" href="http://docs.stormpath.com/dotnet/api/html/T_Stormpath_SDK_Directory_IDirectory.htm">.NET API documentation</a> for a full list of available properties and methods on the <code class="docutils literal"><span class="pre">IDirectory</span></code> type (or any other Stormpath SDK type).</p>
 </div>
 <p>At this point, our current resources (<strong>not including the default ones</strong> created in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a>) can be visualized like this:</p>
-<div class="figure align-center" id="id9">
-<a class="reference internal image-reference" href="_images/am_erd_01.png"><img alt="&lt;ERD with Directory&gt;" src="_images/am_erd_01.png" style="width: 581.0px; height: 449.0px;" /></a>
+<div class="figure align-center" id="id7">
+<a class="reference internal image-reference" href="_images/am_erd_01.png"><img alt="&lt;ERD with Directory&gt;" src="_images/am_erd_01.png" style="width: 560.0px; height: 423.0px;" /></a>
 <p class="caption"><span class="caption-text"><em>Our Stormpath Tenant, with an Application resource and our newly created &#8220;Captains&#8221; Directory</em></span></p>
 </div>
 <p>Any new Groups or Accounts that you create will have to be created inside a Directory. Before you move on to that though, it&#8217;s helpful to know a little about the other kinds of Directories available to you in Stormpath.</p>
@@ -478,7 +478,7 @@
 </div>
 <p>You can now see how this Group would look in our Tenant:</p>
 <div class="figure align-center">
-<a class="reference internal image-reference" href="_images/am_erd_02.png"><img alt="&lt;ERD with Directory and Group&gt;" src="_images/am_erd_02.png" style="width: 581.0px; height: 449.0px;" /></a>
+<a class="reference internal image-reference" href="_images/am_erd_02.png"><img alt="&lt;ERD with Directory and Group&gt;" src="_images/am_erd_02.png" style="width: 553.0px; height: 418.0px;" /></a>
 </div>
 <p>There is our Application, Directory, and our newly-created Group, and they are all found inside the Stormpath Tenant.</p>
 </div>
@@ -513,7 +513,7 @@
 </div>
 <p>Going back to our resource diagram:</p>
 <div class="figure align-center">
-<a class="reference internal image-reference" href="_images/am_erd_03.png"><img alt="ERD with groupMembership" src="_images/am_erd_03.png" style="width: 581.0px; height: 449.0px;" /></a>
+<a class="reference internal image-reference" href="_images/am_erd_03.png"><img alt="ERD with groupMembership" src="_images/am_erd_03.png" style="width: 551.0px; height: 418.0px;" /></a>
 </div>
 <p>The new Account is now in the &#8220;Captains&#8221; Directory.</p>
 </div>
@@ -730,11 +730,28 @@ This works as follows:</p>
 <div class="section" id="searching-for-accounts-with-custom-data">
 <span id="howto-search-account-customdata"></span><h3>3.3.2. Searching for Accounts with Custom Data<a class="headerlink" href="#searching-for-accounts-with-custom-data" title="Permalink to this headline">¶</a></h3>
 <p>It is also possible to retrieve a collection of Accounts by searching the data stored in their Custom Data.</p>
+<p>In a LINQ-to-Stormpath query, you can assert a Custom Data key and value using the <code class="docutils literal"><span class="pre">CustomData</span></code> property on the <code class="docutils literal"><span class="pre">IAccount</span></code> object.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Since the <code class="docutils literal"><span class="pre">CustomData</span></code> property represents values as <code class="docutils literal"><span class="pre">object</span></code>, you&#8217;ll need to cast to the proper type inside the LINQ expression. This cast isn&#8217;t actually performed, but it tells .NET how to compile the LINQ expression.</p>
+</div>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">windowStart</span> <span class="p">=</span> <span class="k">new</span> <span class="n">DateTimeOffset</span><span class="p">(</span><span class="m">2012</span><span class="p">,</span> <span class="m">01</span><span class="p">,</span> <span class="m">01</span><span class="p">,</span> <span class="m">00</span><span class="p">,</span> <span class="m">00</span><span class="p">,</span> <span class="m">00</span><span class="p">,</span> <span class="n">TimeSpan</span><span class="p">.</span><span class="n">Zero</span><span class="p">);</span>
+<span class="kt">var</span> <span class="n">windowEnd</span> <span class="p">=</span> <span class="k">new</span> <span class="n">DateTimeOffset</span><span class="p">(</span><span class="m">2015</span><span class="p">,</span> <span class="m">12</span><span class="p">,</span> <span class="m">31</span><span class="p">,</span> <span class="m">23</span><span class="p">,</span> <span class="m">59</span><span class="p">,</span> <span class="m">59</span><span class="p">,</span> <span class="n">TimeSpan</span><span class="p">.</span><span class="n">Zero</span><span class="p">);</span>
+
+<span class="kt">var</span> <span class="n">accountsStartedBetween2012and2015</span> <span class="p">=</span> <span class="k">await</span> <span class="n">myDirectory</span>
+    <span class="p">.</span><span class="n">GetAccounts</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">a</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="n">DateTimeOffset</span><span class="p">)</span><span class="n">a</span><span class="p">.</span><span class="n">CustomData</span><span class="p">[</span><span class="s">&quot;startDate&quot;</span><span class="p">]</span> <span class="p">&gt;=</span> <span class="n">windowStart</span>
+             <span class="p">&amp;&amp;</span> <span class="p">(</span><span class="n">DateTimeOffset</span><span class="p">)</span><span class="n">a</span><span class="p">.</span><span class="n">CustomData</span><span class="p">[</span><span class="s">&quot;startDate&quot;</span><span class="p">]</span> <span class="p">&lt;=</span> <span class="n">windowEnd</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">Take</span><span class="p">(</span><span class="m">5</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">ToListAsync</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>For example, if some or all of your Accounts in a particular Directory have a Custom Data key called <code class="docutils literal"><span class="pre">startDate</span></code> that contains the date that user started using your application, you could search for the Accounts that started within a particular date range:</p>
+<p>This query will match Accounts with a <code class="docutils literal"><span class="pre">startDate</span></code> value between <code class="docutils literal"><span class="pre">2012-01-01</span></code> and <code class="docutils literal"><span class="pre">2015-12-31</span></code>. Additionally, only the top five Accounts will be returned from the result set, with an <code class="docutils literal"><span class="pre">offset</span></code> of <code class="docutils literal"><span class="pre">0</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This feature is currently in beta, any questions comments or suggestions, reach out to us at <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a></p>
+<p class="last">This feature is currently in beta. If you have any questions, comments, or suggestions, reach out to us at <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a>.</p>
 </div>
-<p>If, for example, we wanted all Accounts in the Directory that had started between 2012-01-01 and 2015-12-31, and we wanted to paginate the results by limiting the returned number of Accounts to 5 and an offset of 0, we would send the following query:</p>
 </div>
 </div>
 <div class="section" id="how-to-manage-an-account-s-password">
@@ -861,7 +878,7 @@ This link takes you to a secure page where you can change your password.
 </div>
 </div>
 <div class="section" id="password-reset-email-templates">
-<span id="id3"></span><h4>Password Reset Email Templates<a class="headerlink" href="#password-reset-email-templates" title="Permalink to this headline">¶</a></h4>
+<span id="id2"></span><h4>Password Reset Email Templates<a class="headerlink" href="#password-reset-email-templates" title="Permalink to this headline">¶</a></h4>
 <p>The contents of the password reset and the password reset success emails are both defined in an Email Templates collection.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
@@ -965,8 +982,8 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="what-emails-does-stormpath-send">
 <h3>3.6.1. What Emails Does Stormpath Send?<a class="headerlink" href="#what-emails-does-stormpath-send" title="Permalink to this headline">¶</a></h3>
 <p>Stormpath can be configured to send emails to users as part of a Directory&#8217;s Account Creation and Password Reset policies.</p>
-<div class="section" id="id4">
-<h4>Account Creation<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id3">
+<h4>Account Creation<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <p>Found in: <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#account-creation-policy">Account Creation Policy</a></p>
 <ul class="simple">
 <li><em>Verification Email</em>: The initial email that is sent out after Account creation that verifies the email address that was used for registration with a link containing the verification token.</li>
@@ -975,8 +992,8 @@ This link takes you to a secure page where you can change your password.
 </ul>
 <p>For more information about this, see <a class="reference internal" href="#verify-account-email"><span class="std std-ref">3.5. How to Verify an Account&#8217;s Email</span></a>.</p>
 </div>
-<div class="section" id="id5">
-<h4>Password Reset<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="id4">
+<h4>Password Reset<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
 <p>Found in: <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#password-policy">Password Policy</a></p>
 <ul class="simple">
 <li><em>Reset Email</em>: The email that is sent out after a user asks to reset their password. It contains a URL with a password reset token.</li>
@@ -1029,7 +1046,7 @@ This link takes you to a secure page where you can change your password.
 <p><strong>textBody and htmlBody</strong></p>
 <p>These define the actual content of the email. The only difference is that <code class="docutils literal"><span class="pre">htmlBody</span></code> is allowed to contain HTML markup while <code class="docutils literal"><span class="pre">textBody</span></code> only accepts plaintext. Both are also able to use <a class="reference external" href="http://web.cerritos.edu/jwilson/SitePages/java_language_resources/Java_Escape_Sequences.htm">Java Escape Sequences</a>. Both <code class="docutils literal"><span class="pre">htmlBody</span></code> and <code class="docutils literal"><span class="pre">textBody</span></code> can have customized output generated using template macros. For more on those, see the very next section.</p>
 <div class="section" id="using-email-macros">
-<span id="id8"></span><h4>Using Email Macros<a class="headerlink" href="#using-email-macros" title="Permalink to this headline">¶</a></h4>
+<span id="id6"></span><h4>Using Email Macros<a class="headerlink" href="#using-email-macros" title="Permalink to this headline">¶</a></h4>
 <p>Macros are placeholder text that are converted into actual values at the time the email is generated. You could use a macro to insert your user&#8217;s first name into the email, as well as the name of your Application. This would look like this:</p>
 <div class="highlight-java"><div class="highlight"><pre><span></span><span class="s">&quot;Hi ${account.givenName}, welcome to $!{application.name}!&quot;</span>
 </pre></div>

@@ -340,6 +340,23 @@
 </pre></div>
 </div>
 <p>You are using the Base64 encoded <code class="docutils literal"><span class="pre">value</span></code> from above, and specifying that the Account can be found in the &#8220;Captains&#8221; Directory from <a class="reference internal" href="accnt_mgmt.html#about-cloud-dir"><span class="std std-ref">earlier</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>It is also possible to specify an Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> instead of an Account Store&#8217;s <code class="docutils literal"><span class="pre">href</span></code>:</p>
+<div class="last highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4PbdleXaMPLE/loginAttempts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;basic&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;YWxhbkBzbWl0aGVlZS5jb206UGFzcexample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span><span class="s2">&quot;anOrgNameKey&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 <p>On success you would get back the <code class="docutils literal"><span class="pre">href</span></code> for the &#8220;Han Solo&#8221; Account:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span> <span class="m">200</span> <span class="ne">OK</span>
 <span class="na">Location</span><span class="o">:</span> <span class="l">https://api.stormpath.com/v1/accounts/72EaYgOaq8lwTFHILydAid</span>
@@ -526,13 +543,14 @@
 <div class="section" id="why-oauth-2-0">
 <h4><a class="toc-backref" href="#id57">Why OAuth 2.0?</a><a class="headerlink" href="#why-oauth-2-0" title="Permalink to this headline">¶</a></h4>
 <p>OAuth 2.0 is an authorization framework and provides a protocol to interact with a service that can delegate authentication or provide authorization. Its primary advantage as a standard is its wide adoption rate across many mobile and web applications today. If you have ever logged-in to a website using Facebook or Google, you have used one of OAuth 2.0&#8217;s many authorization flows. You can read more about the different OAuth 2.0 authorization flows or grant types in depth on <a class="reference external" href="https://stormpath.com/blog/what-the-heck-is-oauth/">Stormpath’s blog</a>.</p>
-<p>Even though OAuth 2.0 has many authorization modes or &#8220;grant types&#8221;, Stormpath currently supports three of them:</p>
+<p>Even though OAuth 2.0 has many authorization modes or &#8220;grant types&#8221;, Stormpath currently supports the following:</p>
 <ul class="simple">
-<li><strong>Password Grant Type</strong>: Provides the ability to get an Access Token based on a login and password.</li>
-<li><strong>Refresh Grant Type</strong>: Provides the ability to generate another Access Token based on a special Refresh Token.</li>
-<li><strong>Client Credentials Grant Type</strong>: Provides the ability to exchange an API Key for the Access Token. This is supported through the API Key Management feature.</li>
+<li><strong>Password Grant Type:</strong> Provides the ability to get an Access Token based on a login and password.</li>
+<li><strong>Client Credentials Grant Type</strong>: Provides the ability to exchange an API Key for an Access Token.</li>
+<li><strong>Social Grant Type:</strong> Allows you to exchange a user&#8217;s social Access Token or Authorization Code</li>
+<li><strong>Refresh Grant Type:</strong> Provides the ability to generate another Access Token based on a special Refresh Token.</li>
 </ul>
-<p>To understand how to use Token-based Authentication, you need to talk about the different types of tokens that are available.</p>
+<p>To understand how to use Token-based Authentication, you need to talk about the different types of tokens that are available. To see how to generate an OAuth token, see <a class="reference internal" href="#generate-oauth-token"><span class="std std-ref">below</span></a>.</p>
 </div>
 <div class="section" id="what-tokens-are-available-for-token-based-authentication">
 <h4><a class="toc-backref" href="#id58">What Tokens Are Available for Token-Based Authentication?</a><a class="headerlink" href="#what-tokens-are-available-for-token-based-authentication" title="Permalink to this headline">¶</a></h4>
@@ -593,13 +611,41 @@
 </div>
 <div class="section" id="generating-an-oauth-2-0-access-token">
 <span id="generate-oauth-token"></span><h4><a class="toc-backref" href="#id61">Generating an OAuth 2.0 Access Token</a><a class="headerlink" href="#generating-an-oauth-2-0-access-token" title="Permalink to this headline">¶</a></h4>
-<p>Stormpath can generate Access Tokens using the above-mentioned OAuth 2.0 <strong>Password Grant</strong> flow.</p>
+<p>Stormpath can generate a brand new Access Token using the above-mentioned OAuth 2.0 grant types. This means that you can generate a new Access Token with:</p>
+<ul class="simple">
+<li><strong>Client Credentials Grant Type:</strong> a client&#8217;s credentials (e.g. Client ID and Secret)</li>
+<li><strong>Password Grant Type:</strong> a user&#8217;s credentials (e.g. username and password)</li>
+<li><strong>Social Grant Type:</strong> a user&#8217;s social login Access Token or Authorization Code</li>
+<li><strong>Refresh Grant Type:</strong> For information about using the an OAuth Refresh token <a class="reference internal" href="#refresh-oauth-token"><span class="std std-ref">see below</span></a></li>
+</ul>
 <p>Stormpath exposes an endpoint for each Application resource to support the OAuth 2.0 protocol:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
-</pre></div>
+<p><code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span></code></p>
+<p>This endpoint is used to generate an OAuth token for any valid Account or API Key associated with the specified Application. For Account&#8217;s, it uses the same validation as the <code class="docutils literal"><span class="pre">/loginAttempt</span></code> endpoint, as described in <a class="reference internal" href="#how-login-works"><span class="std std-ref">4.1.2. How Login Attempts Work in Stormpath</span></a>.</p>
+<p>The first three kinds of OAuth Grant Types differ only in what credentials are passed to Stormpath in order to generate the token. For more information on those, keep reading. For more information about the Refresh Grant Type, see <a class="reference internal" href="#refresh-oauth-token"><span class="std std-ref">below</span></a>.</p>
+<div class="section" id="client-credentials">
+<h5>Client Credentials<a class="headerlink" href="#client-credentials" title="Permalink to this headline">¶</a></h5>
+<p>For the <strong>Client Credentials Grant Type</strong>, you pass the <strong>Client ID</strong> and <strong>Secret</strong>:</p>
+<p><code class="docutils literal"><span class="pre">grant_type=client_credentials&amp;client_id=2ZFMV4WVVexample&amp;client_secret=XEPJolhnMYexample</span></code></p>
 </div>
-<p>This endpoint is used to generate an OAuth token for any valid Account associated with the specified Application. It uses the same validation as the <code class="docutils literal"><span class="pre">/loginAttempt</span></code> endpoint, as described in <a class="reference internal" href="#how-login-works"><span class="std std-ref">4.1.2. How Login Attempts Work in Stormpath</span></a>.</p>
-<p>Your application will act as a proxy to the Stormpath API. For example:</p>
+<div class="section" id="social">
+<h5>Social<a class="headerlink" href="#social" title="Permalink to this headline">¶</a></h5>
+<p>For the <strong>Social Grant Type</strong> you must pass:</p>
+<ul class="simple">
+<li>The <strong>Provider ID</strong> which matches the Provider ID of the <a class="reference internal" href="#social-authn"><span class="std std-ref">Social Directory</span></a> (e.g. <cite>facebook</cite> or <cite>github</cite>)</li>
+<li>And either the Authorization <strong>Code</strong> or</li>
+<li>The <strong>Access Token</strong> for that Social Provider</li>
+</ul>
+<p>All together, this would look like this:</p>
+<p><code class="docutils literal"><span class="pre">grant_type=stormpath_social&amp;providerId=facebook&amp;accessToken=EAA68kW...</span></code></p>
+</div>
+<div class="section" id="password">
+<h5>Password<a class="headerlink" href="#password" title="Permalink to this headline">¶</a></h5>
+<p>Finally, for the <strong>Password Grant Type</strong>, you pass the user&#8217;s <strong>username</strong> and <strong>password</strong>:</p>
+<p><code class="docutils literal"><span class="pre">grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1</span></code></p>
+</div>
+<div class="section" id="token-generation-example">
+<h5>Token Generation Example<a class="headerlink" href="#token-generation-example" title="Permalink to this headline">¶</a></h5>
+<p>In this example we will demonstrate the Password Grant Type:</p>
 <ul class="simple">
 <li>The user inputs their credentials into a form and submits them.</li>
 <li>Your application in turn takes the credentials and formulates the OAuth 2.0 Access Token request to Stormpath.</li>
@@ -608,6 +654,7 @@
 <p>So you would send the following request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpGTVY0V1ZWQ1Z...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
 
 grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
@@ -615,8 +662,10 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Just like with logging-in a user, it is possible to generate a token against a particular Application&#8217;s Account Store resource. To do so, specify the Account Store&#8217;s <code class="docutils literal"><span class="pre">href</span></code> as a parameter in the body:</p>
+<p>Just like with logging-in a user, it is possible to generate a token against a particular Application&#8217;s Account Store or Organization. To do so, specify the Account Store&#8217;s <code class="docutils literal"><span class="pre">href</span></code> or Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> as a parameter in the body:</p>
 <div class="last highlight-default"><div class="highlight"><pre><span></span><span class="n">grant_type</span><span class="o">=</span><span class="n">password</span><span class="o">&amp;</span><span class="n">username</span><span class="o">=</span><span class="n">tom</span><span class="nd">@stormpath</span><span class="o">.</span><span class="n">com</span><span class="o">&amp;</span><span class="n">password</span><span class="o">=</span><span class="n">Secret1</span><span class="o">&amp;</span><span class="n">accountStore</span><span class="o">=</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="o">.</span><span class="n">stormpath</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">v1</span><span class="o">/</span><span class="n">directories</span><span class="o">/</span><span class="mi">2</span><span class="n">SKhstu8Plaekcai8lghrp</span>
+
+<span class="n">grant_type</span><span class="o">=</span><span class="n">password</span><span class="o">&amp;</span><span class="n">username</span><span class="o">=</span><span class="n">tom</span><span class="nd">@stormpath</span><span class="o">.</span><span class="n">com</span><span class="o">&amp;</span><span class="n">password</span><span class="o">=</span><span class="n">Secret1</span><span class="o">&amp;</span><span class="n">organizationNameKey</span><span class="o">=</span><span class="n">companyA</span>
 </pre></div>
 </div>
 </div>
@@ -653,7 +702,7 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 </tr>
 <tr class="row-odd"><td>refresh_token</td>
 <td>String (JSON Web Token)</td>
-<td>The refresh token that can be used to get refreshed Access Tokens.</td>
+<td>The refresh token that can be used to get refreshed Access Tokens. (Only available via the Password Grant Type)</td>
 </tr>
 <tr class="row-even"><td>token_type</td>
 <td>String</td>
@@ -669,6 +718,7 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div class="section" id="validating-an-access-token">
 <h4><a class="toc-backref" href="#id62">Validating an Access Token</a><a class="headerlink" href="#validating-an-access-token" title="Permalink to this headline">¶</a></h4>
@@ -762,7 +812,7 @@ grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1
 </div>
 </div>
 <div class="section" id="refreshing-access-tokens">
-<h4><a class="toc-backref" href="#id63">Refreshing Access Tokens</a><a class="headerlink" href="#refreshing-access-tokens" title="Permalink to this headline">¶</a></h4>
+<span id="refresh-oauth-token"></span><h4><a class="toc-backref" href="#id63">Refreshing Access Tokens</a><a class="headerlink" href="#refreshing-access-tokens" title="Permalink to this headline">¶</a></h4>
 <p>In the event that the Access Token expires, the user can generate a new one using the Refresh Token without re-entering their credentials.</p>
 <p>To use this Refresh Token, you make an HTTP POST to your Applications <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint with it and you will get a new token back.</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
