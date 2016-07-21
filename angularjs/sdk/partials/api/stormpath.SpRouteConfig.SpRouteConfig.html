@@ -1,0 +1,75 @@
+<a href="https://github.com/stormpath/stormpath-sdk-angularjs/edit/master/./src/module.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/c96d740/./src/module.js#L163" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">SpRouteConfig</code>
+<div><span class="hint">object in module <code ng:non-bindable="">stormpath</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="stormpath-sprouteconfig-page stormpath-sprouteconfig-sprouteconfig-page"><p>The Stormpath Route Config is an object that you can define on a route.
+Use this configuration to define access control for your routes, as
+defined by the ngRoute module.</p>
+<p>You will need to be using the ngRoute module, and you need
+to enable the integration by calling
+<a href="#/api/stormpath.$stormpath#methods_ngrouter">$stormpath.ngRouter()</a> in your
+application&#39;s config block.</p>
+<p>If you&#39;re using UI Router instead of Angular&#39;s built-in <code>$routeProvider</code>, please
+use <a href="#/api/stormpath.$stormpath#methods_uirouter">$stormpath.uiRouter()</a> instead.</p>
+</div></div>
+<div class="member property"><h2 id="properties">Properties</h2>
+<ul class="properties"><li><h3 id="properties_authenticate">authenticate</h3>
+<div class="authenticate"><div class="stormpath-sprouteconfig-page stormpath-sprouteconfig-sprouteconfig-page"><p>If <code>true</code>, the user must be authenticated in order to view this route.
+If the user is not authenticated, they will
+be redirected to the <code>login</code> route.  After they login, they will be redirected to
+the route that was originally requested.</p>
+</div></div>
+</li>
+<li><h3 id="properties_authorize">authorize</h3>
+<div class="authorize"><div class="stormpath-sprouteconfig-page stormpath-sprouteconfig-sprouteconfig-page"><p>An object that defines access control rules.  Currently, it supports a group-based
+check.  See the example below.</p>
+</div></div>
+</li>
+<li><h3 id="properties_waitforuser">waitForUser</h3>
+<div class="waitforuser"><div class="stormpath-sprouteconfig-page stormpath-sprouteconfig-sprouteconfig-page"><p>If <code>true</code>, delay the route transition until we know
+if the user is authenticated or not.  This is useful for situations where
+you want everyone to see this route, but the route may look different
+depending on the user&#39;s authentication route.</p>
+</div></div>
+</li>
+</ul>
+</div>
+<h2 id="example">Example</h2>
+<div class="example"><div class="stormpath-sprouteconfig-page stormpath-sprouteconfig-sprouteconfig-page"><pre class="prettyprint linenums">
+
+angular.module('myApp')
+  .config(function ($routeProvider) {
+    // Wait until we know if the user is logged in before showing the homepage
+    $routeProvider
+      .when('/main', {
+        controller: 'MainCtrl',
+        sp: {
+          waitForUser: true
+        }
+      });
+
+    // Require a user to be authenticated in order to see this route
+    $routeProvider
+      .when('/secrets', {
+        controller: 'SecretsCtrl',
+        sp: {
+          authenticate: true
+        }
+      });
+
+    // Require a user to be in the admins group in order to see this route
+    $routeProvider
+      .when('/secrets', {
+        controller: 'AdminCtrl',
+        sp: {
+          authorize: {
+            group: 'admins'
+          }
+        }
+      });
+});
+</pre>
+</div></div>
+</div>
