@@ -1,0 +1,312 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Cross-Origin Requests &mdash; ASP.NET Library Guide  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="ASP.NET Library Guide  documentation" href="index.html"/>
+        <link rel="next" title="Authentication" href="authentication.html"/>
+        <link rel="prev" title="Request Objects" href="request_objects.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> ASP.NET Library Guide
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="request_objects.html">Request Objects</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Cross-Origin Requests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuring-the-pipeline">Configuring the Pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">View Templates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="oauth2.html">OAuth 2.0 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="me_api.html">Current User API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="social_login.html">Social Login</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a></li>
+<li class="toctree-l1"><a class="reference internal" href="password_reset.html">Password Reset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="email_verification.html">Email Verification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Troubleshooting</a></li>
+</ul>
+
+            
+          
+
+  <hr/>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/csharp/product-guide/latest">C# SDK Documentation &rarr;</a>
+  </li>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/vbnet/product-guide/latest">VB SDK Documentation &rarr;</a>
+  </li>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/dotnet/api/">SDK API Reference &rarr;</a>
+  </li>
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">ASP.NET Library Guide</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Cross-Origin Requests</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/cors.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cross-origin-requests">
+<span id="cors"></span><h1>Cross-Origin Requests<a class="headerlink" href="#cross-origin-requests" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">Cross-Origin Resource Sharing</a> (CORS) support on both the client and server is neccessary when your client and server are on different domains. For example, a single-page application running on <code class="docutils literal"><span class="pre">mydomain.com</span></code> but communicating to an API on <code class="docutils literal"><span class="pre">api.mydomain.com</span></code> will require CORS to be configured.</p>
+<p>The Stormpath ASP.NET library works with existing CORS solutions for ASP.NET, provided that the middleware pipeline is configured properly.</p>
+<div class="section" id="configuring-the-pipeline">
+<h2>Configuring the Pipeline<a class="headerlink" href="#configuring-the-pipeline" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order to enable CORS support for the responses sent by the Stormpath middleware, the CORS middleware must be added to the pipeline <strong>before</strong> the Stormpath middleware.</p>
+</div>
+<p>The <code class="docutils literal"><span class="pre">Microsoft.Owin.Cors</span></code> package provides a simple middleware component that can be added to your application pipeline in <code class="docutils literal"><span class="pre">Startup.cs</span></code>:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">Configuration</span><span class="p">(</span><span class="n">IAppBuilder</span> <span class="n">app</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">corsPolicy</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CorsPolicy</span>
+    <span class="p">{</span>
+        <span class="n">AllowAnyMethod</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+        <span class="n">AllowAnyHeader</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+        <span class="n">AllowAnyOrigin</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
+        <span class="n">SupportsCredentials</span> <span class="p">=</span> <span class="k">true</span>
+    <span class="p">};</span>
+
+    <span class="n">corsPolicy</span><span class="p">.</span><span class="n">Origins</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;http://localhost:56789&quot;</span><span class="p">);</span> <span class="c1">// Your API domain</span>
+
+    <span class="kt">var</span> <span class="n">corsOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CorsOptions</span>
+    <span class="p">{</span>
+        <span class="n">PolicyProvider</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CorsPolicyProvider</span>
+        <span class="p">{</span>
+            <span class="n">PolicyResolver</span> <span class="p">=</span> <span class="n">context</span> <span class="p">=&gt;</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="n">corsPolicy</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="n">app</span><span class="p">.</span><span class="n">UseCors</span><span class="p">(</span><span class="n">corsOptions</span><span class="p">);</span>
+
+    <span class="n">app</span><span class="p">.</span><span class="n">UseStormpath</span><span class="p">();</span>
+
+    <span class="c1">// Other middleware here...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If you have trouble with this configuration, make sure CORS is not being handled separately by MVC or Web API, or by IIS. The <code class="docutils literal"><span class="pre">handlers</span></code> section of <code class="docutils literal"><span class="pre">system.webServer</span></code> in <code class="docutils literal"><span class="pre">web.config</span></code> should include this item:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;remove</span> <span class="na">name=</span><span class="s">&quot;OPTIONSVerbHandler&quot;</span> <span class="nt">/&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="authentication.html" class="btn btn-neutral float-right" title="Authentication" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="request_objects.html" class="btn btn-neutral" title="Request Objects" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath, Inc..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/scrollspy.js"></script>
+      <script type="text/javascript" src="_static/gumshoe.min.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+   
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-29159574-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+  </script>
+  <script type="text/javascript">
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+    function _kms(u){
+        setTimeout(function(){
+            var d = document, f = d.getElementsByTagName('script')[0],
+                    s = d.createElement('script');
+            s.type = 'text/javascript'; s.async = true; s.src = u;
+            f.parentNode.insertBefore(s, f);
+        }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+  </script>
+  <script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+
+</body>
+</html>
