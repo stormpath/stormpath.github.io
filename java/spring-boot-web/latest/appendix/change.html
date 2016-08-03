@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>/templates/stormpath/change.html &mdash; Spring Boot Stormpath Web Starter 1.0.RC9.1 documentation</title>
+  <title>/templates/stormpath/change.html &mdash; Spring Boot Stormpath Web Starter 1.0.0 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="../about.html"/>
-    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.RC9.1 documentation" href="../index.html"/>
+    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.0 documentation" href="../index.html"/>
         <link rel="up" title="Appendix" href="../appendix.html"/>
         <link rel="next" title="/templates/stormpath/forgot.html" href="forgot.html"/>
         <link rel="prev" title="/assets/css/stormpath.css" href="stormpath-css.html"/> 
@@ -227,169 +227,6 @@
             
   <div class="section" id="templates-stormpath-change-html">
 <span id="change-html"></span><h1>/templates/stormpath/change.html<a class="headerlink" href="#templates-stormpath-change-html" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-html"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81</pre></div></td><td class="code"><div class="highlight"><pre><span class="c">&lt;!--</span>
-<span class="c">  ~ Copyright 2015 Stormpath, Inc.</span>
-<span class="c">  ~</span>
-<span class="c">  ~ Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
-<span class="c">  ~ you may not use this file except in compliance with the License.</span>
-<span class="c">  ~ You may obtain a copy of the License at</span>
-<span class="c">  ~</span>
-<span class="c">  ~     http://www.apache.org/licenses/LICENSE-2.0</span>
-<span class="c">  ~</span>
-<span class="c">  ~ Unless required by applicable law or agreed to in writing, software</span>
-<span class="c">  ~ distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
-<span class="c">  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<span class="c">  ~ See the License for the specific language governing permissions and</span>
-<span class="c">  ~ limitations under the License.</span>
-<span class="c">  --&gt;</span>
-<span class="nt">&lt;html</span> <span class="na">xmlns:th=</span><span class="s">&quot;http://www.thymeleaf.org&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;head&gt;</span>
-    <span class="nt">&lt;title</span> <span class="na">th:text=</span><span class="s">&quot;#{stormpath.web.change.title}&quot;</span><span class="nt">&gt;</span>|Change Your Password|<span class="nt">&lt;/title&gt;</span>
-    <span class="c">&lt;!--/*/ &lt;th:block th:include=&quot;${headViewName} :: ${headFragmentSelector}&quot;/&gt; /*/--&gt;</span>
-<span class="nt">&lt;/head&gt;</span>
-<span class="nt">&lt;body</span> <span class="na">class=</span><span class="s">&quot;login&quot;</span><span class="nt">&gt;</span>
-
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container custom-container&quot;</span><span class="nt">&gt;</span>
-
-        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;va-wrapper&quot;</span><span class="nt">&gt;</span>
-
-            <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;view login-view container&quot;</span><span class="nt">&gt;</span>
-
-                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;box row&quot;</span><span class="nt">&gt;</span>
-
-                    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;email-password-area col-xs-12 large col-sm-12&quot;</span><span class="nt">&gt;</span>
-
-                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>
-                            <span class="nt">&lt;span</span> <span class="na">th:text=</span><span class="s">&quot;#{stormpath.web.change.form.title}&quot;</span><span class="nt">&gt;</span>|Change Your Password|<span class="nt">&lt;/span&gt;</span>
-                            <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">&quot;#{stormpath.web.change.form.instructions}&quot;</span><span class="nt">&gt;</span>|Enter your new account password below.
-                                Once confirmed, you&#39;ll be logged into your account and your new password will be active.|<span class="nt">&lt;/p&gt;</span>
-                        <span class="nt">&lt;/div&gt;</span>
-
-                        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;alert alert-dismissable alert-danger bad-login&quot;</span> <span class="na">th:if=</span><span class="s">&quot;${errors != null and not #lists.isEmpty(errors)}&quot;</span><span class="nt">&gt;</span>
-                            <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span> <span class="na">class=</span><span class="s">&quot;close&quot;</span> <span class="na">data-dismiss=</span><span class="s">&quot;alert&quot;</span><span class="nt">&gt;</span><span class="ni">&amp;times;</span><span class="nt">&lt;/button&gt;</span>
-                            <span class="c">&lt;!--/*/ &lt;th-block data-th-each=&quot;error : ${errors}&quot;&gt; /*/--&gt;</span>
-                            <span class="nt">&lt;p</span> <span class="na">th:text=</span><span class="s">&quot;${error}&quot;</span><span class="nt">&gt;</span>|Error message here.|<span class="nt">&lt;/p&gt;</span>
-                            <span class="c">&lt;!--/*/ &lt;/th-block&gt; /*/--&gt;</span>
-                        <span class="nt">&lt;/div&gt;</span>
-
-                        <span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span> <span class="na">th:action=</span><span class="s">&quot;@{${form.action}}&quot;</span> <span class="na">role=</span><span class="s">&quot;form&quot;</span> <span class="na">class=</span><span class="s">&quot;login-form form-horizontal&quot;</span><span class="nt">&gt;</span>
-
-                            <span class="nt">&lt;input</span> <span class="na">name=</span><span class="s">&quot;next&quot;</span> <span class="na">type=</span><span class="s">&quot;hidden&quot;</span> <span class="na">th:value=</span><span class="s">&quot;${form.next}&quot;</span> <span class="na">th:if=</span><span class="s">&quot;${not #strings.isEmpty(form.next)}&quot;</span><span class="nt">/&gt;</span>
-
-                            <span class="nt">&lt;input</span> <span class="na">th:each=</span><span class="s">&quot;field : ${form.hiddenFields}&quot;</span> <span class="na">th:name=</span><span class="s">&quot;${field.name}&quot;</span> <span class="na">th:type=</span><span class="s">&quot;${field.type}&quot;</span> <span class="na">th:value=</span><span class="s">&quot;${field.value}&quot;</span><span class="nt">/&gt;</span>
-
-                            <span class="nt">&lt;div</span> <span class="na">th:each=</span><span class="s">&quot;field : ${form.visibleFields}&quot;</span> <span class="na">form-group=</span><span class="s">&quot;true&quot;</span> <span class="na">th:class=</span><span class="s">&quot;&#39;form-group group-&#39; + ${field.name}&quot;</span><span class="nt">&gt;</span>
-
-                                <span class="nt">&lt;label</span> <span class="na">class=</span><span class="s">&quot;col-sm-4&quot;</span> <span class="na">th:text=</span><span class="s">&quot;#{${field.label}}&quot;</span><span class="nt">&gt;</span>|Field label|<span class="nt">&lt;/label&gt;</span>
-                                <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-sm-8&quot;</span><span class="nt">&gt;</span>
-                                    <span class="nt">&lt;input</span> <span class="na">th:name=</span><span class="s">&quot;${field.name}&quot;</span> <span class="na">th:value=</span><span class="s">&quot;${field.value}&quot;</span> <span class="na">th:type=</span><span class="s">&quot;${field.type}&quot;</span>
-                                           <span class="na">th:placeholder=</span><span class="s">&quot;#{${field.placeholder}}&quot;</span>
-                                           <span class="na">th:autofocus=</span><span class="s">&quot;${field.autofocus}&quot;</span>
-                                           <span class="na">th:required=</span><span class="s">&quot;${field.required}&quot;</span> <span class="na">class=</span><span class="s">&quot;form-control&quot;</span><span class="nt">/&gt;</span>
-                                <span class="nt">&lt;/div&gt;</span>
-                            <span class="nt">&lt;/div&gt;</span>
-
-                            <span class="nt">&lt;div&gt;</span>
-                                <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">class=</span><span class="s">&quot;login btn btn-login btn-sp-green&quot;</span>
-                                        <span class="na">th:text=</span><span class="s">&quot;#{stormpath.web.change.form.button.value}&quot;</span><span class="nt">&gt;</span>|Submit|<span class="nt">&lt;/button&gt;</span>
-                            <span class="nt">&lt;/div&gt;</span>
-                        <span class="nt">&lt;/form&gt;</span>
-
-                    <span class="nt">&lt;/div&gt;</span>
-
-                <span class="nt">&lt;/div&gt;</span>
-
-                <span class="nt">&lt;a</span> <span class="na">th:href=</span><span class="s">&quot;@{${loginUri}}&quot;</span> <span class="na">class=</span><span class="s">&quot;to-login&quot;</span> <span class="na">th:text=</span><span class="s">&quot;#{stormpath.web.change.form.loginLink.text}&quot;</span><span class="nt">&gt;</span>|Back to Login|<span class="nt">&lt;/a&gt;</span>
-
-            <span class="nt">&lt;/div&gt;</span>
-
-        <span class="nt">&lt;/div&gt;</span>
-
-    <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
-</pre></div>
-</td></tr></table></div>
 </div>
 
 
@@ -430,7 +267,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.RC9.1',
+            VERSION:'1.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
