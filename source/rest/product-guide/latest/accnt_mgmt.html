@@ -1035,7 +1035,7 @@ This works as follows:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>It is also possible to specify the Account Store in your Password Reset POST:</p>
+<p>It is also possible to specify the Organization, Directory, or Group in your Password Reset POST:</p>
 <div class="last highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4Pbdlexample/passwordResetTokens</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
@@ -1225,16 +1225,32 @@ This link takes you to a secure page where you can change your password.
 <span id="resending-verification-email"></span><h3>3.5.5. Resending the Verification Email<a class="headerlink" href="#resending-the-verification-email" title="Permalink to this headline">¶</a></h3>
 <p>If a user accidentally deletes their verification email, or it was undeliverable for some reason, it is possible to resend the email.</p>
 <p>To resend the email, use the <a class="reference internal" href="reference.html#ref-application"><span class="std std-ref">Application resource&#8217;s</span></a> <code class="docutils literal"><span class="pre">/verificationEmails</span></code> endpoint.</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID/verificationEmails</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4Pbdlexample/verificationEmails</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
-  <span class="nt">&quot;login&quot;</span><span class="p">:</span> <span class="s2">&quot;email@address.com&quot;</span>
+  <span class="nt">&quot;login&quot;</span><span class="p">:</span> <span class="s2">&quot;email@address.com&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>If this calls succeeds, an <code class="docutils literal"><span class="pre">HTTP</span> <span class="pre">202</span> <span class="pre">ACCEPTED</span></code> will return.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>It is also possible to specify the Organization, Directory, or Group in your Verification Email resend request:</p>
+<div class="last highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4Pbdlexample/verificationEmails</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;login&quot;</span><span class="p">:</span><span class="s2">&quot;email@address.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/2SKhstu8PlaekcaEXampLE&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="customizing-stormpath-emails-via-rest">
