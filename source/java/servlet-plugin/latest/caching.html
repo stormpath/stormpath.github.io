@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Caching &mdash; Stormpath Java Servlet Plugin 1.0.0.RC-SNAPSHOT documentation</title>
+  <title>Caching &mdash; Stormpath Java Servlet Plugin 1.0.1 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Stormpath Java Servlet Plugin 1.0.0.RC-SNAPSHOT documentation" href="index.html"/>
+    <link rel="top" title="Stormpath Java Servlet Plugin 1.0.1 documentation" href="index.html"/>
         <link rel="next" title="Custom Views" href="views.html"/>
         <link rel="prev" title="Events" href="events.html"/> 
 
@@ -215,31 +215,31 @@
 <div class="section" id="default-ttl">
 <span id="id2"></span><h3>Default TTL<a class="headerlink" href="#default-ttl" title="Permalink to this headline">¶</a></h3>
 <p>TTL, or &#8216;Time to Live&#8217; is how long a cache entry is allowed to remain in the cache, regardless of how often it is accessed.  After this amount of time, the cache entry will considered invalid and will removed (&#8216;evicted&#8217;) from the cache.</p>
-<p>You can specify the default TTL value for all cache regions by setting the <code class="docutils literal"><span class="pre">stormpath.cache.ttl</span></code> value in milliseconds:</p>
-<div class="highlight-properties"><div class="highlight"><pre><span class="c"># 3,600,000 milliseconds = 1 hour</span>
-<span class="na">stormpath.cache.ttl</span> <span class="o">=</span> <span class="s">3600000</span>
+<p>You can specify the default TTL value for all cache regions by setting the <code class="docutils literal"><span class="pre">stormpath.client.cacheManager.defaultTtl</span></code> value in milliseconds:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="c"># 3,600,000 milliseconds = 1 hour</span>
+<span class="na">stormpath.client.cacheManager.defaultTtl</span> <span class="o">=</span> <span class="s">3600000</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="default-tti">
 <h3>Default TTI<a class="headerlink" href="#default-tti" title="Permalink to this headline">¶</a></h3>
 <p>TTI, or &#8216;Time to Idle&#8217; is how long a cache entry is allowed to remain idle (unreferenced, not used) in the cache before it can be removed (&#8216;evicted&#8217;) from the cache.</p>
-<p>You can specify the default TTI value for all cache regions by setting the <code class="docutils literal"><span class="pre">stormpath.cache.tti</span></code> value in milliseconds:</p>
-<div class="highlight-properties"><div class="highlight"><pre><span class="c"># 3,600,000 milliseconds = 1 hour</span>
-<span class="na">stormpath.cache.tti</span> <span class="o">=</span> <span class="s">3600000</span>
+<p>You can specify the default TTI value for all cache regions by setting the <code class="docutils literal"><span class="pre">stormpath.client.cacheManager.defaultTti</span></code> value in milliseconds:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="c"># 3,600,000 milliseconds = 1 hour</span>
+<span class="na">stormpath.client.cacheManager.defaultTti</span> <span class="o">=</span> <span class="s">3600000</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="cache-regions">
 <h3>Cache Regions<a class="headerlink" href="#cache-regions" title="Permalink to this headline">¶</a></h3>
 <p>Cache Regions are automatically created as they are requested and use the default ttl and tti - you do not need to configure them explicitly.</p>
-<p>However, if you want to specify a cache region&#8217;s TTL or TTI, you can do so using a configuration property convention; prefix the region name <code class="docutils literal"><span class="pre">stormpath.cache.</span></code> and suffix the name with <code class="docutils literal"><span class="pre">.ttl</span></code> or <code class="docutils literal"><span class="pre">tti</span></code> for TTL or TTI respectively.</p>
+<p>However, if you want to specify a cache region&#8217;s TTL or TTI, you can do so using a configuration property convention; prefix the region name <code class="docutils literal"><span class="pre">stormpath.client.cacheManager.caches</span></code> and suffix the name with <code class="docutils literal"><span class="pre">.ttl</span></code> or <code class="docutils literal"><span class="pre">tti</span></code> for TTL or TTI respectively.</p>
 <p>For example, let&#8217;s assume we have a cache region named <code class="docutils literal"><span class="pre">My</span> <span class="pre">Test</span> <span class="pre">Cache</span> <span class="pre">Region</span></code> and wanted a 5 minute time-to-idle and a 30 minute time-to-live.  We&#8217;d define two configuration properties as follows:</p>
-<div class="highlight-properties"><div class="highlight"><pre><span class="c"># 300,000 millis = 5 minutes:</span>
-<span class="na">stormpath.cache.My Test Cache Region.tti</span> <span class="o">=</span> <span class="s">300000</span>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="c"># 300,000 millis = 5 minutes:</span>
+<span class="na">stormpath.client.cacheManager.caches.My Test Cache Region.tti</span> <span class="o">=</span> <span class="s">300000</span>
 
 <span class="c"># 1,800,000 millis = 30 minutes:</span>
-<span class="na">stormpath.cache.My Test Cache Region.ttl</span> <span class="o">=</span> <span class="s">1800000</span>
+<span class="na">stormpath.client.cacheManager.caches.My Test Cache Region.ttl</span> <span class="o">=</span> <span class="s">1800000</span>
 </pre></div>
 </div>
 <p>If a cache region does not have configured <code class="docutils literal"><span class="pre">.tti</span></code> or <code class="docutils literal"><span class="pre">.ttl</span></code> values, the <a class="reference internal" href="#default-ttl"><span class="std std-ref">default ttl and tti values</span></a> are assumed.</p>
@@ -253,9 +253,9 @@
 <li>etc...</li>
 </ul>
 <p>If you want to configure caching rules for a particular client resource type, when adding the necessary property prefix and suffix, you might have the following config lines (for example):</p>
-<div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.cache.com.stormpath.sdk.account.Account.tti</span> <span class="o">=</span> <span class="s">3600000</span>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.client.cacheManager.caches.com.stormpath.sdk.account.Account.tti</span> <span class="o">=</span> <span class="s">3600000</span>
 
-<span class="na">stormpath.cache.com.stormpath.sdk.group.Group.ttl</span> <span class="o">=</span> <span class="s">4800000</span>
+<span class="na">stormpath.client.cacheManager.caches.com.stormpath.sdk.group.Group.ttl</span> <span class="o">=</span> <span class="s">4800000</span>
 </pre></div>
 </div>
 </div>
@@ -266,8 +266,8 @@
 <p>However, if your web application .war is deployed on multiple JVMs - for example, you load balance requests across multiple identical web application nodes - you may experience data cache inconsistency problems if the default cache remains enabled: separate private cache instances are often not desirable because each web app instance could see its own &#8216;version&#8217; of the cached data.</p>
 <p>For example, if a user sends a request that is directed to web app instance A and then a subsequent request is directed to web app instance B, and the two instances do not agree on the same cached data, this could cause data integrity problems in many applications. This can be solved by using a shared or distributed cache to ensure cache consistency, also known as <a class="reference external" href="http://en.wikipedia.org/wiki/Cache_coherence">cache coherence</a>.</p>
 <p>If you need cache coherency, you will want to specify a <code class="docutils literal"><span class="pre">com.stormpath.sdk.cache.CacheManager</span></code> implementation that can communicate with a shared or distributed cache system, like Hazelcast, Redis, etc.</p>
-<p>You can do this by specifying the <code class="docutils literal"><span class="pre">stormpath.cache.manager</span></code> configuration property, for example:</p>
-<div class="highlight-properties"><div class="highlight"><pre><span class="na">stormpath.cache.manager</span> <span class="o">=</span> <span class="s">your.fully.qualified.implementation.of.CacheManager</span>
+<p>You can do this by specifying the <code class="docutils literal"><span class="pre">stormpath.client.cacheManager</span></code> configuration property, for example:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.client.cacheManager</span> <span class="o">=</span> <span class="s">your.fully.qualified.implementation.of.CacheManager</span>
 </pre></div>
 </div>
 </div>
@@ -311,7 +311,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.0.RC-SNAPSHOT',
+            VERSION:'1.0.1',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

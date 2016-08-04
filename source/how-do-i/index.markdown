@@ -25,7 +25,7 @@ lang: rest
 
 For information about creating an account, refer to the appropriate product guide:
 
-* [REST Product Guide](/rest/product-guide/#account-create)
+* [REST Product Guide](/rest/product-guide/latest/accnt_mgmt.html#add-a-new-account-to-a-directory)
 * [Java Product Guide](/java/product-guide/#account-create)
 * [PHP Product Guide](/php/product-guide/#account-create)
 * [Ruby Product Guide](/ruby/product-guide/#account-create)
@@ -65,8 +65,8 @@ For information about updating a cloud directory or agent configuration, refer t
 
 
 ##<a id="AddLS"></a>Add an Application Account Store Mapping
-Adding an account store mapping to an application provisions a directory or group to that application.  By doing so, all account store accounts can log into the application.  Sometimes this is called associating a directory with an application or associating a group with an application.  
-	
+Adding an account store mapping to an application provisions a directory or group to that application.  By doing so, all account store accounts can log into the application.  Sometimes this is called associating a directory with an application or associating a group with an application.
+
 For information about adding login sources, refer to the appropriate product guide:
 
 * [REST Product Guide](/rest/product-guide#create-an-account-store-mapping)

@@ -179,7 +179,7 @@ Stormpath can generate Access Tokens using OAuth 2.0 password grant flow.  Storm
 
     https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
 
-This endpoint supports POST operations to generate a token for a valid username and password for the application.  This endpoint has the same validation as the `loginAttempt` endpoint.  Meaning that Stormpath will check to make sure that the username and password are valid, that the account is in an [`Account Store`](/rest/product-guide/#account-store-mappings) for the application, and that the account is in an `ENABLED` state.
+This endpoint supports POST operations to generate a token for a valid username and password for the application.  This endpoint has the same validation as the `loginAttempt` endpoint.  Meaning that Stormpath will check to make sure that the username and password are valid, that the account is in an [`Account Store`](/rest/product-guide/latest/auth_n.html#how-login-attempts-work-in-stormpath) for the application, and that the account is in an `ENABLED` state.
 
 Your application will act as a proxy to the Stormpath API.  For example:
 
@@ -234,7 +234,7 @@ oauth_grant_authentication_result = authenticator.authenticate('username@test.co
 {% endcodetab %}
 
 {% docs note %}
-It is possible to target token generation against a particular [`Application`'s `Account Store`](/rest/product-guide/#account-store-mappings).  To do so, specify the `Account Store`'s href as a parameter:
+It is possible to target token generation against a particular [`Application`'s `Account Store`](/rest/product-guide/latest/reference.html#account-store-mapping).  To do so, specify the `Account Store`'s href as a parameter:
 
     grant_type=password&username=tom@stormpath.com&password=Secret1&accountStore=https://api.stormpath.com/v1/directories/1bcd23ec1d0a8wa6
 {% enddocs %}
@@ -412,7 +412,7 @@ Response:
     }
 
 {% docs note %}
-If you need to get the `Account` and/or `Application` information with the `Access Token`, you can use [expansion](http://docs.stormpath.com/rest/product-guide/#link-expansion).  For example:
+If you need to get the `Account` and/or `Application` information with the `Access Token`, you can use [expansion](/rest/product-guide/latest/reference.html#links).  For example:
 
     https://api.stormpath.com/v1/accessTokens/jr1zCsicMWpA661fe6715ed477ZiTtPFtPFMD0D?expand=account,application
 {% enddocs %}
@@ -553,7 +553,7 @@ Using `Access Token`s and `Refresh Token`s can control the access to your applic
 
 When [validating the tokens with Stormpath](#using-stormpath-to-validate-the-token), Stormpath will validate that the token has not been revoked before returning successfully.  Revoking tokens in Stormpath is as simple as deleting the token resource.
 
-To get the token resource href to delete the access tokens / refresh tokens for an account, you can get the [collection](http://docs.stormpath.com/rest/product-guide/#collection-resources) from the account's `accessTokens` and `refreshTokens` collection:
+To get the token resource href to delete the access tokens / refresh tokens for an account, you can get the [collection](/rest/product-guide/latest/reference.html#collection-resource) from the account's `accessTokens` and `refreshTokens` collection:
 
     {
         "accessTokens": {

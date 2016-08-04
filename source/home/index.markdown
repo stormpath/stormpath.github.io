@@ -50,8 +50,8 @@ alias: [/index.html]
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="/android/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-android.jpg"></a>
           </div>
-          <div class="hidden">
-            <a href="https://github.com/stormpath/stormpath-nginx-module"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-nginx.jpg"></a>
+          <div class="col-xs-6 col-sm-4 col-md-3">
+            <a href="https://github.com/stormpath/stormpath-nginx"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-nginx.jpg"></a>
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@ alias: [/index.html]
             <a href="/rest/product-guide/latest/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-product.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/errors/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-error.jpg"></a>
+            <a href="/rest/product-guide/latest/errors.html"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-error.jpg"></a>
           </div>
         </div>
       </div>
@@ -90,7 +90,7 @@ alias: [/index.html]
               <li><i class="fa-li fa fa-user"></i><a href="/guides/using-id-site/">ID Site Guide</a></li>
               <li><i class="fa-li fa fa-facebook"></i><a href="/guides/social-integrations/">Social Integration Guide</a></li>
               <li><i class="fa-li fa fa-folder-open"></i><a href="/guides/api-key-management/">API Authentication Guide</a></li>
-              <li><i class="fa-li fa fa-sitemap"></i><a href="/guides/ad-ldap/">Active Directory / LDAP Guide</a></li>
+              <li><i class="fa-li fa fa-sitemap"></i><a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory / LDAP Guide</a></li>
               <li><i class="fa-li fa fa-wrench"></i><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
             </ul>
           </div>
@@ -104,7 +104,7 @@ alias: [/index.html]
           </div>
           <div class="col-sm-6 hidden-xs">
             <ul class="fa-ul">
-              <li><i class="fa-li fa fa-sitemap"></i><a href="/guides/ad-ldap/">Active Directory / LDAP Guide</a></li>
+              <li><i class="fa-li fa fa-sitemap"></i><a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory / LDAP Guide</a></li>
               <li><i class="fa-li fa fa-wrench"></i><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
               <li><i class="fa-li fa fa-user"></i><a href="/guides/token-management/">Token Authentication Guide</a></li>
             </ul>
