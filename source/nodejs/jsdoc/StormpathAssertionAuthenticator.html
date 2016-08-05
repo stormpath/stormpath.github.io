@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Stormpath Node SDK Class: CustomData</title>
+	<title>Stormpath Node SDK Class: StormpathAssertionAuthenticator</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -70,13 +70,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: CustomData</h1>
+	<h1 class="page-title">Class: StormpathAssertionAuthenticator</h1>
 <section>
 
 <header>
     
         <h2>
-        CustomData
+        StormpathAssertionAuthenticator
         </h2>
         
     
@@ -89,7 +89,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="CustomData"><span class="type-signature"></span>new CustomData(customDataResource)</h4>
+    <h4 class="name" id="StormpathAssertionAuthenticator"><span class="type-signature"></span>new StormpathAssertionAuthenticator(application)</h4>
     
     
 </dt>
@@ -97,19 +97,13 @@
 
     
     <div class="description">
-        <p>Encapsulates a CustomData resource. For full documentation of this resource,
-please see
-<a href="https://docs.stormpath.com/rest/product-guide/latest/reference.html?#custom-data">REST API Reference: Custom Data</a>.</p>
-<p>This class should not be manually constructed. It should be obtained from one
-of these methods:</p>
-<ul>
-<li><a href="Account.html#getCustomData">Account.getCustomData()</a></li>
-<li><a href="Application.html#getCustomData">Application.getCustomData()</a></li>
-<li><a href="Directory.html#getCustomData">Directory.getCustomData()</a></li>
-<li><a href="Group.html#getCustomData">Group.getCustomData()</a></li>
-<li><a href="Organization.html#getCustomData">Organization.getCustomData()</a></li>
-<li><a href="Tenant.html#getCustomData">Tenant.getCustomData()</a></li>
-</ul>
+        <p>Creates an authenticator that can be used to verify a Stormpath Token that was
+provided when the user returned from ID Site, or a SAML callback.  This method
+only verifies the token and provides you with any errors.  After using this
+authenticator you will likely want to use the <a href="OAuthStormpathTokenAuthenticator.html">OAuthStormpathTokenAuthenticator</a>
+to generate an Access + Refresh token pair for the user.</p>
+<p>Note: this authenticator is bound to the API Key Pair of the client that
+fetched the application resource that you pass to the constructor.</p>
     </div>
     
 
@@ -144,13 +138,13 @@ of these methods:</p>
 
         <tr>
             
-                <td class="name"><code>customDataResource</code></td>
+                <td class="name"><code>application</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type"><a href="Application.html">Application</a></span>
 
 
 
@@ -161,7 +155,7 @@ of these methods:</p>
 
             
 
-            <td class="description last"><p>The JSON representation of this resource.</p></td>
+            <td class="description last"><p>The Stormpath Application to authenticate against.</p></td>
         </tr>
 
     
@@ -203,7 +197,7 @@ of these methods:</p>
 	
 	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
 	<dd class="tag-source">
-		resource/CustomData.js
+		authc/StormpathAssertionAuthenticator.js
 	</dd>
 	
 
@@ -230,13 +224,10 @@ of these methods:</p>
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">account.getCustomData(function(err, customData){
-  customData.favoriteColor = &#x27;blue&#x27;;
-  customData.save(function(err){
-    if(!err) {
-      console.log(&#x27;Favorite color was saved&#x27;);
-    }
-  });
+    <pre class="sunlight-highlight-javascript">var appHref = &#x27;https://api.stormpath.com/v1/applications/3WIeKpaEjPHfLmy6GIvbwv&#x27;;
+
+client.getApplication(appHref, function(err, application) {
+  var authenticator = new stormpath.StormpathAssertionAuthenticator(application);
 });</pre>
 
 
@@ -265,7 +256,7 @@ of these methods:</p>
             
 <hr>
 <dt>
-    <h4 class="name" id="save"><span class="type-signature"></span>save(callback)</h4>
+    <h4 class="name" id="authenticate"><span class="type-signature"></span>authenticate(tokenRequest, callback)</h4>
     
     
 </dt>
@@ -273,7 +264,7 @@ of these methods:</p>
 
     
     <div class="description">
-        <p>Save changes to this custom data resource.</p>
+        <p>Exchange the Stormpath Token for an Access and Refresh token.</p>
     </div>
     
 
@@ -308,6 +299,80 @@ of these methods:</p>
 
         <tr>
             
+                <td class="name"><code>tokenRequest</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>An object to encapsulate the request.</p>
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+<div class="params-table-wrapper">
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>stormpath_token</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The Stormpath Token, from the ID Site or SAML callback.  This is a compacted JWT string.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+<div>
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>callback</code></td>
             
 
@@ -325,8 +390,7 @@ of these methods:</p>
 
             
 
-            <td class="description last"><p>The function to call when the save operation is complete. Will be called
-with the parameters (err, updatedCustomDataResource).</p></td>
+            <td class="description last"><p>Callback function, will be called with (err, <a href="AssertionAuthenticationResult.html">AssertionAuthenticationResult</a>).</p></td>
         </tr>
 
     
@@ -368,7 +432,7 @@ with the parameters (err, updatedCustomDataResource).</p></td>
 	
 	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
 	<dd class="tag-source">
-		resource/CustomData.js
+		authc/StormpathAssertionAuthenticator.js
 	</dd>
 	
 
@@ -391,6 +455,23 @@ with the parameters (err, updatedCustomDataResource).</p></td>
     
 
     
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">var stormpathToken = &#x27;eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzRHZNZ2JOVFEwZkhuS3BHd1VHUlB4IiwiaWF0IjoxNDcwMjU4MDc0LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8yNGs3SG5ET3o0dFE5QVJzbVZ6YUNJIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8xdWxlM3dKbkxZVUw3VVE2OGFBdlJaOWwiLCJleHAiOjE0NzAyNjk0MTJ9.i4OWcqczU-us71zT2XIiL69s2srJ7YPH5mAzrw8rNE8&#x27;;
+
+authenticator.authenticate(stormpathToken, function(err, assertionAuthenticationResult) {
+  assertionAuthenticationResult.getAccount(function(err, account){
+    if (err) {
+      // an error occured on ID Site or during the SAML authentication flow
+      console.error(err);
+      return;
+    }
+    console.log(account.email + &#x27; has authenticated&#x27;);
+  });
+});</pre>
+
 
     
 </dd>
@@ -443,7 +524,7 @@ with the parameters (err, updatedCustomDataResource).</p></td>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-08-04T15:12:24-07:00
+		on 2016-08-04T15:12:25-07:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
