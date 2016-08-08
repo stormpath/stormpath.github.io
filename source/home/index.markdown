@@ -42,7 +42,7 @@ alias: [/index.html]
             <a href="/dotnet/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-dotnet.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="https://github.com/stormpath/stormpath-sdk-react"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-react.jpg"></a>
+            <a href="/react/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-react.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="/ios/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-ios.jpg"></a>
