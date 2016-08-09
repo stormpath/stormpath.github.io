@@ -2014,10 +2014,12 @@ is created, you should issue a 302 redirect to this URL. The <code>/sso</code>
 endpoint will consume the request, and then redirect the user to your ID
 Site application. This entire process happens over HTTPS and all the JWTs
 are signed with secret keys for security.</p>
-<p>When the user returns from ID Site, you will handle the response with
-<a href="Application.html#handleIdSiteCallback">Application.handleIdSiteCallback()</a>.</p>
-<p>For more information, please see
-<a href="http://docs.stormpath.com/guides/using-id-site/">Using Stormpath's ID Site to Host your User Management UI</a>.</p>
+<p>After the user authenticates on your ID Site, they will be redirected back to
+the specified <code>callbackUri</code>.  You will need to parse that response with
+<a href="Application.html#handleIdSiteCallback">Application.handleIdSiteCallback()</a>
+to retrieve the account of the user that has authenticated.</p>
+<p>For more information on our ID Site feature, please see
+<a href="https://docs.stormpath.com/rest/product-guide/latest/idsite.html">Using ID Site</a>.</p>
     </div>
     
 
@@ -2118,11 +2120,11 @@ are signed with secret keys for security.</p>
                 </td>
             
 
-            <td class="description last"><p><strong>REQUIRED</strong>. The fully-qualified location where the user should be sent
-after they authenticate on the ID Site application, e.g.
-<code>https://www.example.com/dashboard</code>. For security reasons, this URL must be
-registered as an authorized callback URI in your ID Site configuration. This
-can be managed via the REAT API or the Stormpath Admin Console.</p></td>
+            <td class="description last"><p><strong>REQUIRED</strong>. The full URL where the user should be sent after they authenticate
+on your ID Site, e.g. <code>https://www.example.com/dashboard</code>. For security reasons,
+this URL must be registered as an authorized callback URI in your ID Site configuration. This
+can be managed via the REST API or the Stormpath Admin Console.  This response
+should be parsed with <a href="Application.html#handleIdSiteCallback">Application.handleIdSiteCallback()</a>.</p></td>
         </tr>
 
     
@@ -2153,7 +2155,7 @@ can be managed via the REAT API or the Stormpath Admin Console.</p></td>
             
 
             <td class="description last"><p>If <code>true</code>, the user will be logged out of their session and immediately
-redirected to the sepcified <code>callbackUri</code>.</p></td>
+redirected to the specified <code>callbackUri</code>.</p></td>
         </tr>
 
     
@@ -2184,9 +2186,12 @@ redirected to the sepcified <code>callbackUri</code>.</p></td>
             
 
             <td class="description last"><p><em>Multi-tenancy option.</em></p>
-<p>The organization name key to auto-fill in the
-Organization field on ID Site. This value will be fixed and the user cannot change it.
-Use this if you already know which Organization the user will be logging into.</p>
+<p>The organization name key to auto-fill in the Organization field on ID Site.
+This value will be fixed and the user cannot change it. Use this if you already
+know which Organization the user will be logging into.  If you don't know
+which Organization the user should log in to, and you want the user to specify
+it, you should set <code>showOrganizationField</code> to <code>true</code>, and they will be shown
+a field where they can specify the Organization.</p>
 <p>If there is no organization with that name key, or the organization is not
 mapped to the current Stormpath Application, an error will be returned to the
 callback URI.</p></td>
@@ -2202,7 +2207,7 @@ callback URI.</p></td>
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Boolean</span>
 
 
 
@@ -2221,9 +2226,13 @@ callback URI.</p></td>
 
             <td class="description last"><p><em>Multi-tenancy option.</em></p>
 <p>If <code>true</code>, show the organization field on ID Site, so that the user must
-provide the name key of the organization that they wish to log into.</p>
+provide the name key of the organization that they wish to log into.  If the
+Application does not have any Organizations mapped to it, this option has no
+effect.</p>
+<p>If <code>true</code>, and <code>organizationNameKey</code> is defined, then the <code>organizationNameKey</code>
+will be placed in the field, but the field will not be editable.</p>
 <p>If <code>false</code>, and <code>organizationNameKey</code> is defined, then the Organization field
-will be hidden but the authentcation attempt will still be targeted at the
+will be hidden but the authentication attempt will still be targeted at the
 specified organization.</p></td>
         </tr>
 
@@ -2269,7 +2278,7 @@ JWT that is provided to your callback URI.</p></td>
             <td class="type">
             
                 
-<span class="param-type">String</span>
+<span class="param-type">Boolean</span>
 
 
 
@@ -2284,8 +2293,9 @@ JWT that is provided to your callback URI.</p></td>
                 </td>
             
 
-            <td class="description last"><p>Use the provided <code>organizationNameKey</code> as the domain prefix for the ID Site
-URL. For example, if <code>organizationNameKey</code> is org-a and your ID Site URL
+            <td class="description last"><p><em>Multi-tenancy option.</em></p>
+<p>Use the provided <code>organizationNameKey</code> as the domain prefix for the ID Site
+URL. For example, if <code>organizationNameKey</code> is <code>org-a</code> and your ID Site URL
 is <code>https://id.example.com</code> then the user will be redirected to
 <code>https://org-a.id.example.com</code>.</p></td>
         </tr>
@@ -2383,6 +2393,42 @@ is <code>https://id.example.com</code> then the user will be redirected to
 
 
         
+
+    
+        <h5>Examples</h5>
+        
+        <p class="code-caption">Manually redirect the user to ID Site, if using Express, but not using <a href="http://docs.stormpath.com/nodejs/express/latest/">Express-Stormpath</a></p>
+    
+    <pre class="sunlight-highlight-javascript">var application; // An existing reference to an Application resource
+
+app.get(&#x27;/login&#x27;, function (req, res) {
+  var url = application.createIdSiteUrl({
+    callbackUri: &#x27;http://localhost:3000/idSiteCallback&#x27;
+  });
+  res.redirect(url);
+});
+
+app.get(&#x27;/idSiteCallback&#x27;, function (req, res) {
+  application.handleIdSiteCallback(req.url, function (err, idSiteAuthenticationResult) {
+    if (err) {
+      console.error(err);
+      res.end(500);
+    } else {
+      res.json(idSiteAuthenticationResult.account);
+    }
+  });
+});</pre>
+
+        <p class="code-caption"> Configuring automatic redirection to ID Site, if using <a href="http://docs.stormpath.com/nodejs/express/latest/">Express-Stormpath</a></p>
+    
+    <pre class="sunlight-highlight-javascript">app.use(stormpath.init(app, {
+  web: {
+    idSite: {
+      enabled: true
+    }
+  }
+}));</pre>
+
 
     
 </dd>
@@ -4854,7 +4900,7 @@ object of the account that was authenticated.</p>
             
 
             <td class="description last"><p>The URL that the user has arrived on your site with.
-For example, <code>http://example.com/idSiteCallback?jwtResponse=xxx</code>.</p></td>
+For example, <code>http://example.com/idSiteCallback?jwtResponse=&lt;token&gt;</code>.</p></td>
         </tr>
 
     
@@ -4943,6 +4989,23 @@ For example, <code>http://example.com/idSiteCallback?jwtResponse=xxx</code>.</p>
     
 
     
+
+    
+        <h5>Example</h5>
+        
+        <p class="code-caption">Manually handling an ID Site Callback, if using Express.</p>
+    
+    <pre class="sunlight-highlight-javascript">app.get(&#x27;/idSiteCallback&#x27;, function (req, res) {
+  application.handleIdSiteCallback(req.url, function (err, idSiteAuthenticationResult) {
+    if (err) {
+      console.error(err);
+      res.end(500);
+    } else {
+      res.json(idSiteAuthenticationResult.account);
+    }
+  });
+});</pre>
+
 
     
 </dd>
@@ -6680,7 +6743,7 @@ application.verifyPasswordResetToken(passwordResetToken, function(err) {
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a>
 	
-		on 2016-08-04T17:49:02-07:00
+		on 2016-08-09T14:22:38-07:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
