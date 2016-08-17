@@ -123,10 +123,10 @@
       <div class="">
         <a href="/vbnet/product-guide/latest/accnt_mgmt.html">Visual Basic</a>
       </div>
-      <!--
       <div class="">
         <a href="/java/product-guide/latest/accnt_mgmt.html">Java</a>
       </div>
+      <!--
       <div class="">
         <a href="/nodejs/product-guide/latest/accnt_mgmt.html">Node.js</a>
       </div>
@@ -534,7 +534,7 @@
 <p>For more detailed information about the Account resource, see the <a class="reference internal" href="reference.html#ref-account"><span class="std std-ref">Account</span></a> section of the Reference chapter.</p>
 <div class="section" id="new-account-creation">
 <h3>3.2.1. New Account Creation<a class="headerlink" href="#new-account-creation" title="Permalink to this headline">¶</a></h3>
-<p>The basic steps for creating a new Account are covered in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> chapter. In that example, you show how to add an Account to an Application. Below, you will also show how to add an Account to a specific Directory, or Group.</p>
+<p>The basic steps for creating a new Account are covered in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> chapter. In that example, we show you how to add an Account to an Application. Below, we will also show you how to add an Account to a specific Directory, or Group.</p>
 <div class="section" id="add-a-new-account-to-a-directory">
 <span id="add-new-account"></span><h4>Add a New Account to a Directory<a class="headerlink" href="#add-a-new-account-to-a-directory" title="Permalink to this headline">¶</a></h4>
 <p>Because Accounts are &#8220;owned&#8221; by Directories, you create new Accounts by adding them to a Directory. You can add an Account to a Directory directly, or you can add it indirectly by registering an Account with an Application, like in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a>, or an Organization, like in <a class="reference internal" href="multitenancy.html#add-accnt-to-org"><span class="std std-ref">the Multi-tenancy Chapter</span></a>. This is only the case for Cloud Directories. Accounts cannot be directly added to <a class="reference internal" href="#about-mirror-dir"><span class="std std-ref">Mirror</span></a> Directories since those pull all of their Account information from external sources like Facebook or Active Directory.</p>
@@ -647,7 +647,7 @@
 </pre></div>
 </div>
 <p>This will then add the Account to the Directory that is set as that Application or Organization&#8217;s <strong>Default Account Store</strong>. What this means is that Stormpath will go through the Application/Organization&#8217;s list of Account Store Mappings (found in the <code class="docutils literal"><span class="pre">/accountStoreMappings</span></code> collection) and find the Account Store Mapping where <code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code> is set to <code class="docutils literal"><span class="pre">true</span></code>. The Account will then be added to that Account Store.</p>
-<p>All of this is also true for adding Groups, except in that case you would use the <code class="docutils literal"><span class="pre">/groups</span></code> endpoint and Stormpath would add the Group to the Account Store Mapping that had <code class="docutils literal"><span class="pre">&quot;isDefaultGroupStore</span></code> set to <code class="docutils literal"><span class="pre">true</span></code>.</p>
+<p>All of this is also true for adding Groups, except in that case you would use the <code class="docutils literal"><span class="pre">/groups</span></code> endpoint and Stormpath would add the Group to the Account Store Mapping that had <code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code> set to <code class="docutils literal"><span class="pre">true</span></code>.</p>
 </div>
 </div>
 <div class="section" id="importing-accounts">
@@ -1153,7 +1153,7 @@ This link takes you to a secure page where you can change your password.
 <p class="first admonition-title">Note</p>
 <p class="last">For more information on Password Policy for password Strength see <a class="reference internal" href="reference.html#ref-password-strength"><span class="std std-ref">here</span></a>.</p>
 </div>
-<p>This would now allow a user to set their password to any string that matched their previous 10 passwords.</p>
+<p>This would prevent a user from choosing a password that is the same as any of their previous 10 passwords.</p>
 </div>
 </div>
 <div class="section" id="how-to-verify-an-account-s-email">
@@ -1448,7 +1448,7 @@ This link takes you to a secure page where you can change your password.
 </div>
 <div class="section" id="working-with-the-lists">
 <h4>Working with the Lists<a class="headerlink" href="#working-with-the-lists" title="Permalink to this headline">¶</a></h4>
-<p>Working with the Whitelist and Blacklist is exactly the same.</p>
+<p>Working with the Whitelist and Blacklist is done through the Account Creation Policy of a Directory.</p>
 <p>In both cases, you send an array in this format:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">[</span>
   <span class="s2">&quot;*domain.com&quot;</span><span class="p">,</span>
@@ -1501,7 +1501,7 @@ This link takes you to a secure page where you can change your password.
 </div>
 <div class="section" id="removing-a-domain">
 <h5>Removing a Domain<a class="headerlink" href="#removing-a-domain" title="Permalink to this headline">¶</a></h5>
-<p>If you changed our mind and wanted to only allow users to register with <code class="docutils literal"><span class="pre">stormpath.com</span></code> emails, then you would just overwrite the existing Whitelist:</p>
+<p>If you changed our mind and wanted to only allow users to register with <code class="docutils literal"><span class="pre">stormpath.com</span></code> emails, then you would just update and overwrite the existing Whitelist:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accountCreationPolicies/2SKhstu8PlaekcaEXampLE</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>

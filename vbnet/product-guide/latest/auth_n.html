@@ -123,10 +123,10 @@
       <div class="current">
         <a href="/vbnet/product-guide/latest/auth_n.html">Visual Basic</a>
       </div>
-      <!--
       <div class="">
         <a href="/java/product-guide/latest/auth_n.html">Java</a>
       </div>
+      <!--
       <div class="">
         <a href="/nodejs/product-guide/latest/auth_n.html">Node.js</a>
       </div>
@@ -379,7 +379,7 @@
 <p>You can map multiple Account Stores to an Application, but only one is required to enable login for an Application. Mapping multiple Account Stores to an Application, as well as configuring their priority, allows you precise control over the Account populations that may log in to your Application.</p>
 <div class="section" id="how-login-works-with-master-directories">
 <span id="mirror-login"></span><h5>How Login Works with Master Directories<a class="headerlink" href="#how-login-works-with-master-directories" title="Permalink to this headline">¶</a></h5>
-<p>If you require a number of Mirror Directories, then you recommend that you have a master Directory alongside them. Any login attempts should be directed to the Mirror Directory. If the attempt succeeds, your application should then perform a <a class="reference internal" href="reference.html#about-search"><span class="std std-ref">search</span></a> of the master Directory to see if there is an Account already there that links to this Account in the Mirror Directory.</p>
+<p>If you require a number of Mirror Directories, then it is recommended that you have a master Directory alongside them. Any login attempts should be directed to the Mirror Directory. If the attempt succeeds, your application should then perform a <a class="reference internal" href="reference.html#about-search"><span class="std std-ref">search</span></a> of the master Directory to see if there is an Account already there that links to this Account in the Mirror Directory.</p>
 <p>If such an Account is already in the master Directory, no action is taken. If such an Account is not found, your application should create a new one in the master Directory, and populate it with the information pulled from the Account in the Mirror Directory. The customData resource for that master Account should then be used to store a link to the Account in the Mirror Directory, for example:</p>
 <div class="highlight-vbnet"><div class="highlight"><pre><span></span><span class="k">Dim</span> <span class="n">customData</span> <span class="o">=</span> <span class="n">Await</span> <span class="n">account</span><span class="p">.</span><span class="n">GetCustomDataAsync</span><span class="p">()</span>
 
@@ -1092,6 +1092,10 @@
 <p class="first admonition-title">Warning</p>
 <p>The ability to create an LDAP directory is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or see below for the REST API instructions.</p>
 <p class="last">For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/167">ticket #167</a> on Github.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The ability to create an LDAP directory is not yet available in the Java SDK. Please use the Stormpath Admin Console, or see below for the REST API instructions.</p>
 </div>
 <p>HTTP POST a new Directory resource to the <code class="docutils literal"><span class="pre">/directories</span></code> endpoint. This Directory will contain a <a class="reference internal" href="reference.html#ref-provider"><span class="std std-ref">Provider</span></a> resource with <code class="docutils literal"><span class="pre">providerId</span></code> set to <code class="docutils literal"><span class="pre">ldap</span></code> or <code class="docutils literal"><span class="pre">ad</span></code>. This Provider resource will in turn contain an <a class="reference internal" href="reference.html#ref-ldap-agent"><span class="std std-ref">LDAP Agent</span></a> object, which in turn also contains a few nested configuration resources.</p>
 <div class="admonition note">
@@ -2226,23 +2230,6 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This will return XML by default, but you can also specify <code class="docutils literal"><span class="pre">application/json</span></code> if you&#8217;d like to receive JSON instead.</p>
-</div>
-<p><strong>Example XML</strong></p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;</span>
-<span class="nt">&lt;md:EntityDescriptor</span> <span class="na">xmlns:md=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:metadata&quot;</span> <span class="na">entityID=</span><span class="s">&quot;urn:stormpath:directory:5rHYCSu9IjzKz5pkyId5eR:provider:sp&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;md:SPSSODescriptor</span> <span class="na">protocolSupportEnumeration=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:protocol&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;md:KeyDescriptor</span> <span class="na">use=</span><span class="s">&quot;signing&quot;</span><span class="nt">&gt;</span>
-            <span class="nt">&lt;ds:KeyInfo</span> <span class="na">xmlns:ds=</span><span class="s">&quot;http://www.w3.org/2000/09/xmldsig#&quot;</span><span class="nt">&gt;</span>
-                <span class="nt">&lt;ds:X509Data&gt;</span>
-                    <span class="nt">&lt;ds:X509Certificate&gt;</span>MIIC2DCCAcCgAwIBAgIRAMExAMPLE<span class="nt">&lt;/ds:X509Certificate&gt;</span>
-                <span class="nt">&lt;/ds:X509Data&gt;</span>
-            <span class="nt">&lt;/ds:KeyInfo&gt;</span>
-        <span class="nt">&lt;/md:KeyDescriptor&gt;</span>
-        <span class="nt">&lt;md:NameIDFormat&gt;</span>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress<span class="nt">&lt;/md:NameIDFormat&gt;</span>
-        <span class="nt">&lt;md:AssertionConsumerService</span> <span class="na">Binding=</span><span class="s">&quot;urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST&quot;</span> <span class="na">Location=</span><span class="s">&quot;http://api.stormpath.com/v1/directories/5rHYCSu9IjzKz5pEXample/saml/sso/post&quot;</span> <span class="na">index=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
-    <span class="nt">&lt;/md:SPSSODescriptor&gt;</span>
-<span class="nt">&lt;/md:EntityDescriptor&gt;</span>
-</pre></div>
 </div>
 <p>From this metadata, you will need two values:</p>
 <ul class="simple">
