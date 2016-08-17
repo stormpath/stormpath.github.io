@@ -123,10 +123,10 @@
       <div class="">
         <a href="/vbnet/product-guide/latest/accnt_mgmt.html">Visual Basic</a>
       </div>
-      <!--
       <div class="">
         <a href="/java/product-guide/latest/accnt_mgmt.html">Java</a>
       </div>
+      <!--
       <div class="">
         <a href="/nodejs/product-guide/latest/accnt_mgmt.html">Node.js</a>
       </div>
@@ -559,7 +559,7 @@
 <p>For more detailed information about the Account resource, see the <a class="reference external" href="https://docs.stormpath.com/php/apidocs/Stormpath/Resource/Account.html">PHP API Documentation</a>.</p>
 <div class="section" id="new-account-creation">
 <h3>3.2.1. New Account Creation<a class="headerlink" href="#new-account-creation" title="Permalink to this headline">¶</a></h3>
-<p>The basic steps for creating a new Account are covered in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> chapter. In that example, you show how to add an Account to an Application. Below, you will also show how to add an Account to a specific Directory, or Group.</p>
+<p>The basic steps for creating a new Account are covered in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a> chapter. In that example, we show you how to add an Account to an Application. Below, we will also show you how to add an Account to a specific Directory, or Group.</p>
 <div class="section" id="add-a-new-account-to-a-directory">
 <span id="add-new-account"></span><h4>Add a New Account to a Directory<a class="headerlink" href="#add-a-new-account-to-a-directory" title="Permalink to this headline">¶</a></h4>
 <p>Because Accounts are &#8220;owned&#8221; by Directories, you create new Accounts by adding them to a Directory. You can add an Account to a Directory directly, or you can add it indirectly by registering an Account with an Application, like in the <a class="reference internal" href="quickstart.html#quickstart"><span class="std std-ref">Quickstart</span></a>, or an Organization, like in <a class="reference internal" href="multitenancy.html#add-accnt-to-org"><span class="std std-ref">the Multi-tenancy Chapter</span></a>. This is only the case for Cloud Directories. Accounts cannot be directly added to <a class="reference internal" href="#about-mirror-dir"><span class="std std-ref">Mirror</span></a> Directories since those pull all of their Account information from external sources like Facebook or Active Directory.</p>
@@ -681,7 +681,7 @@
 </pre></div>
 </div>
 <p>This will then add the Account to the Directory that is set as that Application or Organization&#8217;s <strong>Default Account Store</strong>. What this means is that Stormpath will go through the Application/Organization&#8217;s list of Account Store Mappings (found in the <code class="docutils literal"><span class="pre">/accountStoreMappings</span></code> collection) and find the Account Store Mapping where <code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code> is set to <code class="docutils literal"><span class="pre">true</span></code>. The Account will then be added to that Account Store.</p>
-<p>All of this is also true for adding Groups, except in that case you would use the <code class="docutils literal"><span class="pre">/groups</span></code> endpoint and Stormpath would add the Group to the Account Store Mapping that had <code class="docutils literal"><span class="pre">&quot;isDefaultGroupStore</span></code> set to <code class="docutils literal"><span class="pre">true</span></code>.</p>
+<p>All of this is also true for adding Groups, except in that case you would use the <code class="docutils literal"><span class="pre">/groups</span></code> endpoint and Stormpath would add the Group to the Account Store Mapping that had <code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code> set to <code class="docutils literal"><span class="pre">true</span></code>.</p>
 </div>
 </div>
 <div class="section" id="importing-accounts">
@@ -1196,7 +1196,7 @@ This link takes you to a secure page where you can change your password.
 <span class="nv">$passwordPolicy</span><span class="o">-&gt;</span><span class="na">setPasswordReuse</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
 </pre></div>
 </div>
-<p>This would now allow a user to set their password to any string that matched their previous 10 passwords.</p>
+<p>This would prevent a user from choosing a password that is the same as any of their previous 10 passwords.</p>
 </div>
 </div>
 <div class="section" id="how-to-verify-an-account-s-email">
@@ -1373,23 +1373,12 @@ This link takes you to a secure page where you can change your password.
         <span class="o">-&gt;</span><span class="na">setDefaultModel</span><span class="p">([</span><span class="s1">&#39;linkBaseUrl&#39;</span><span class="o">=&gt;</span><span class="s1">&#39;https://api.stormpath.com/emailVerificationTokens&#39;</span><span class="p">])</span>
         <span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
 <span class="p">}</span>
-
-<span class="nx">You</span> <span class="nx">would</span> <span class="nx">then</span> <span class="nx">receive</span> <span class="nx">a</span> <span class="sb">``</span><span class="mi">200</span> <span class="nx">OK</span><span class="sb">``</span> <span class="nx">along</span> <span class="nx">with</span> <span class="nx">the</span> <span class="nx">updated</span> <span class="nx">template</span><span class="o">.</span>
-
-<span class="k">For</span> <span class="nx">more</span> <span class="nx">information</span> <span class="nx">about</span> <span class="nx">Stormpath</span><span class="err">&#39;</span><span class="nx">s</span> <span class="nx">email</span> <span class="nx">templates</span><span class="p">,</span> <span class="nx">keep</span> <span class="nx">reading</span><span class="o">!</span>
-
-<span class="o">**</span><span class="nx">Message</span> <span class="nx">Format</span><span class="o">**</span>
-
-<span class="nx">The</span> <span class="sb">``</span><span class="nx">mimeType</span><span class="sb">``</span> <span class="nx">designates</span> <span class="nx">whether</span> <span class="nx">the</span> <span class="nx">email</span> <span class="nx">is</span> <span class="nx">sent</span> <span class="k">as</span> <span class="nx">plain</span> <span class="nx">text</span> <span class="p">(</span><span class="sb">``</span><span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">MIME_PLAIN_TEXT</span><span class="sb">``</span><span class="p">),</span> <span class="nx">HTML</span> <span class="p">(</span><span class="sb">``</span><span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">MIME_HTML</span><span class="sb">``</span><span class="p">)</span><span class="o">.</span> <span class="k">This</span> <span class="nx">in</span> <span class="nx">turns</span> <span class="nx">tells</span> <span class="nx">Stormpath</span> <span class="nx">whether</span> <span class="nx">to</span> <span class="k">use</span> <span class="nx">the</span> <span class="sb">``</span><span class="nx">textBody</span><span class="sb">``</span> <span class="k">or</span> <span class="sb">``</span><span class="nx">htmlBody</span><span class="sb">``</span> <span class="nx">text</span> <span class="nx">in</span> <span class="nx">the</span> <span class="nx">email</span><span class="p">,</span> <span class="k">or</span> <span class="nx">to</span> <span class="nx">let</span> <span class="nx">the</span> <span class="nx">email</span> <span class="nx">client</span> <span class="nx">decide</span><span class="o">.</span>
-
-<span class="o">**</span><span class="nx">textBody</span> <span class="k">and</span> <span class="nx">htmlBody</span><span class="o">**</span>
-
-<span class="nx">These</span> <span class="nb">define</span> <span class="nx">the</span> <span class="nx">actual</span> <span class="nx">content</span> <span class="nx">of</span> <span class="nx">the</span> <span class="nx">email</span><span class="o">.</span> <span class="nx">The</span> <span class="nx">only</span> <span class="nx">difference</span> <span class="nx">is</span> <span class="nx">that</span> <span class="sb">``</span><span class="nx">htmlBody</span><span class="sb">``</span> <span class="nx">is</span> <span class="nx">allowed</span> <span class="nx">to</span> <span class="nx">contain</span> <span class="nx">HTML</span> <span class="nx">markup</span> <span class="k">while</span> <span class="sb">``</span><span class="nx">textBody</span><span class="sb">``</span> <span class="nx">only</span> <span class="nx">accepts</span> <span class="nx">plaintext</span><span class="o">.</span> <span class="nx">Both</span> <span class="nx">are</span> <span class="nx">also</span> <span class="nx">able</span> <span class="nx">to</span> <span class="k">use</span> <span class="sb">`Java Escape Sequences &lt;http://web.cerritos.edu/jwilson/SitePages/java_language_resources/Java_Escape_Sequences.htm&gt;`</span><span class="nx">__</span><span class="o">.</span> <span class="nx">Both</span> <span class="sb">``</span><span class="nx">htmlBody</span><span class="sb">``</span> <span class="k">and</span> <span class="sb">``</span><span class="nx">textBody</span><span class="sb">``</span> <span class="nx">can</span> <span class="nx">have</span> <span class="nx">customized</span> <span class="nx">output</span> <span class="nx">generated</span> <span class="nx">using</span> <span class="nx">template</span> <span class="nx">macros</span><span class="o">.</span> <span class="k">For</span> <span class="nx">more</span> <span class="nx">on</span> <span class="nx">those</span><span class="p">,</span> <span class="nx">see</span> <span class="nx">the</span> <span class="nx">very</span> <span class="nb">next</span> <span class="nx">section</span><span class="o">.</span>
 </pre></div>
 </div>
+<p>You would then receive a <code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with the updated template.</p>
 <p>For more information about Stormpath&#8217;s email templates, keep reading!</p>
 <p><strong>Message Format</strong></p>
-<p>The <code class="docutils literal"><span class="pre">mimeType</span></code> designates whether the email is sent as plain text (<code class="docutils literal"><span class="pre">text/plain</span></code>), HTML (<code class="docutils literal"><span class="pre">text/html</span></code>), or both (<code class="docutils literal"><span class="pre">multipart/alternative</span></code>). This in turns tells Stormpath whether to use the <code class="docutils literal"><span class="pre">textBody</span></code> or <code class="docutils literal"><span class="pre">htmlBody</span></code> text in the email, or to let the email client decide.</p>
+<p>The <code class="docutils literal"><span class="pre">mimeType</span></code> designates whether the email is sent as plain text (<code class="docutils literal"><span class="pre">\Stormpath\Stormpath::MIME_PLAIN_TEXT</span></code>), HTML (<code class="docutils literal"><span class="pre">\Stormpath\Stormpath::MIME_HTML</span></code>). This in turns tells Stormpath whether to use the <code class="docutils literal"><span class="pre">textBody</span></code> or <code class="docutils literal"><span class="pre">htmlBody</span></code> text in the email, or to let the email client decide.</p>
 <p><strong>textBody and htmlBody</strong></p>
 <p>These define the actual content of the email. The only difference is that <code class="docutils literal"><span class="pre">htmlBody</span></code> is allowed to contain HTML markup while <code class="docutils literal"><span class="pre">textBody</span></code> only accepts plaintext. Both are also able to use <a class="reference external" href="http://web.cerritos.edu/jwilson/SitePages/java_language_resources/Java_Escape_Sequences.htm">Java Escape Sequences</a>. Both <code class="docutils literal"><span class="pre">htmlBody</span></code> and <code class="docutils literal"><span class="pre">textBody</span></code> can have customized output generated using template macros. For more on those, see the very next section.</p>
 <div class="section" id="using-email-macros">
@@ -1531,7 +1520,7 @@ This link takes you to a secure page where you can change your password.
 </div>
 <div class="section" id="working-with-the-lists">
 <h4>Working with the Lists<a class="headerlink" href="#working-with-the-lists" title="Permalink to this headline">¶</a></h4>
-<p>Working with the Whitelist and Blacklist is exactly the same.</p>
+<p>Working with the Whitelist and Blacklist is done through the Account Creation Policy of a Directory.</p>
 <p>To replace the current list, pass an array to the method.</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$accountCreationPolicy</span><span class="o">-&gt;</span><span class="na">setEmailDomainWhitelist</span><span class="p">([</span><span class="s1">&#39;abc.com&#39;</span><span class="p">,</span> <span class="s1">&#39;xyz.com&#39;</span><span class="p">])</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
 </pre></div>
@@ -1557,7 +1546,7 @@ This link takes you to a secure page where you can change your password.
 </div>
 <div class="section" id="removing-a-domain">
 <h5>Removing a Domain<a class="headerlink" href="#removing-a-domain" title="Permalink to this headline">¶</a></h5>
-<p>If you changed our mind and wanted to only allow users to register with <code class="docutils literal"><span class="pre">stormpath.com</span></code> emails, then you would just overwrite the existing Whitelist:</p>
+<p>If you changed our mind and wanted to only allow users to register with <code class="docutils literal"><span class="pre">stormpath.com</span></code> emails, then you would just update and overwrite the existing Whitelist:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$accountCreationPolicy</span><span class="o">-&gt;</span><span class="na">removeEmailDomainWhitelist</span><span class="p">(</span><span class="s1">&#39;stormpath.com&#39;</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
 </pre></div>
 </div>
