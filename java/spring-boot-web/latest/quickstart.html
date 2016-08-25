@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Quickstart &mdash; Spring Boot Stormpath Web Starter 1.0.2 documentation</title>
+  <title>Quickstart &mdash; Spring Boot Stormpath Web Starter 1.0.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.2 documentation" href="index.html"/>
+    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.3 documentation" href="index.html"/>
         <link rel="next" title="Tutorial" href="tutorial.html"/>
         <link rel="prev" title="About" href="about.html"/> 
 
@@ -111,6 +111,19 @@
 <li class="toctree-l2"><a class="reference internal" href="login.html#i18n">i18n</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#events">Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#authentication-state">Authentication State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#spring-security">Spring Security</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social.html">Social Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social.html#facebook-login">Facebook Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#google-login">Google Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#linkedin-login">LinkedIn Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#json-api">JSON API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authorization.html">Authorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#roles">Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#permissions">Permissions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="forgot-password.html">Forgot Password</a><ul>
@@ -155,6 +168,7 @@
 <li class="toctree-l2"><a class="reference internal" href="events.html#requesteventlistener">RequestEventListener</a></li>
 <li class="toctree-l2"><a class="reference internal" href="events.html#id2">Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="events.html#listener-best-practices">Listener Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#spring-security">Spring Security</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
@@ -180,8 +194,8 @@
 <li class="toctree-l2"><a class="reference internal" href="appendix/default-stormpath-properties.html">Default Stormpath Properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appendix/i18n-properties.html">i18n.properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appendix/stormpath-css.html">/assets/css/stormpath.css</a></li>
-<li class="toctree-l2"><a class="reference internal" href="appendix/change.html">/templates/stormpath/change.html</a></li>
-<li class="toctree-l2"><a class="reference internal" href="appendix/forgot.html">/templates/stormpath/forgot.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/change-password.html">/templates/stormpath/change-password.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/forgot-password.html">/templates/stormpath/forgot-password.html</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appendix/head.html">/templates/stormpath/head.html</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appendix/login.html">/templates/stormpath/login.html</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appendix/register.html">/templates/stormpath/register.html</a></li>
@@ -270,19 +284,19 @@ $ chmod u-w ~/.stormpath/apiKey.properties
 <span id="dependency-jar"></span><h2><a class="toc-backref" href="#id2">Add the Stormpath Default Spring Boot Starter</a><a class="headerlink" href="#add-the-stormpath-default-spring-boot-starter" title="Permalink to this headline">¶</a></h2>
 <p>This step allows you to enable Stormpath in a Spring Boot web app with <em>very minimal</em> configuration.
 It includes Stormpath Spring Security, Stormpath Spring WebMVC and Stormpath Thymeleaf templates. How amazing is that? Here&#8217;s how.</p>
-<p>Using your favorite dependency resolution build tool like Maven or Gradle, add the stormpath-default-spring-boot-starter-1.0.2.jar to your project dependencies. For example:</p>
+<p>Using your favorite dependency resolution build tool like Maven or Gradle, add the stormpath-default-spring-boot-starter-1.0.3.jar to your project dependencies. For example:</p>
 <p><strong>Maven</strong>:</p>
 <pre class="literal-block">
 &lt;dependency&gt;
     &lt;groupId&gt;com.stormpath.spring&lt;/groupId&gt;
     &lt;artifactId&gt;stormpath-default-spring-boot-starter&lt;/artifactId&gt;
-    &lt;version&gt;1.0.2&lt;/version&gt;
+    &lt;version&gt;1.0.3&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
 <p><strong>Gradle</strong>:</p>
 <pre class="literal-block">
 dependencies {
-    compile 'com.stormpath.spring:stormpath-default-spring-boot-starter:1.0.2'
+    compile 'com.stormpath.spring:stormpath-default-spring-boot-starter:1.0.3'
 }
 </pre>
 <div class="section" id="spring-security">
@@ -343,7 +357,7 @@ together, you will need a Spring Security configuration class and apply the <cod
 </div>
 <p>By default, the <code class="docutils literal"><span class="pre">StormpathFilter</span></code> is ordered as <code class="docutils literal"><span class="pre">Ordered.HIGHEST_PRECEDENCE</span></code>, but if you have multiple filters with that same order value, you might have to change the order of the other filters as well.</p>
 </li>
-<li><p class="first">you&#8217;re using the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> as a <code class="docutils literal"><span class="pre">parent</span></code> and you are getting errors related to Spring Security. The <code class="docutils literal"><span class="pre">stormpath-default-spring-boot-starter</span></code> relies on Spring Security 4.0.x. The current release of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> is 1.3.0 and it also relies on Spring Security 4.0.x. Prior versions of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> rely on Spring Security 3.2.x. Our first recommendation is to use the latest version of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code>. However, if you must use earlier versions, there is a simple solution to this, which is to override the Spring Security version in your <code class="docutils literal"><span class="pre">pom.xml</span></code></p>
+<li><p class="first">you&#8217;re using the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> as a <code class="docutils literal"><span class="pre">parent</span></code> and you are getting errors related to Spring Security. The <code class="docutils literal"><span class="pre">stormpath-default-spring-boot-starter</span></code> relies on Spring Security 4.1.x. The current release of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> is 1.4.0 and it also relies on Spring Security 4.1.x. Prior versions of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code> rely on Spring Security 3.2.x. Our first recommendation is to use the latest version of the <code class="docutils literal"><span class="pre">spring-boot-starter-parent</span></code>. However, if you must use earlier versions, there is a simple solution to this, which is to override the Spring Security version in your <code class="docutils literal"><span class="pre">pom.xml</span></code></p>
 <div class="highlight-xml"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="nt">&lt;project</span> <span class="na">xmlns=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span> <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span><span class="nt">&gt;</span>
     <span class="nt">&lt;modelVersion&gt;</span>4.0.0<span class="nt">&lt;/modelVersion&gt;</span>
@@ -351,14 +365,14 @@ together, you will need a Spring Security configuration class and apply the <cod
     <span class="nt">&lt;parent&gt;</span>
         <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
         <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-parent<span class="nt">&lt;/artifactId&gt;</span>
-        <span class="nt">&lt;version&gt;</span>1.3.3.RELEASE<span class="nt">&lt;/version&gt;</span>
+        <span class="nt">&lt;version&gt;</span>1.4.0.RELEASE<span class="nt">&lt;/version&gt;</span>
         <span class="nt">&lt;relativePath/&gt;</span> <span class="c">&lt;!-- lookup parent from repository --&gt;</span>
     <span class="nt">&lt;/parent&gt;</span>
 
     <span class="nt">&lt;properties&gt;</span>
         <span class="nt">&lt;project.build.sourceEncoding&gt;</span>UTF-8<span class="nt">&lt;/project.build.sourceEncoding&gt;</span>
         <span class="nt">&lt;java.version&gt;</span>1.8<span class="nt">&lt;/java.version&gt;</span>
-<span class="hll">        <span class="nt">&lt;spring-security.version&gt;</span>4.0.3.RELEASE<span class="nt">&lt;/spring-security.version&gt;</span>
+<span class="hll">        <span class="nt">&lt;spring-security.version&gt;</span>4.1.2.RELEASE<span class="nt">&lt;/spring-security.version&gt;</span>
 </span>    <span class="nt">&lt;/properties&gt;</span>
 
     <span class="nt">&lt;dependencies&gt;</span>
@@ -415,7 +429,7 @@ together, you will need a Spring Security configuration class and apply the <cod
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, Stormpath, Inc..
+        &copy; Copyright 2016, Stormpath, Inc..
     </p>
   </div>
 
@@ -435,7 +449,7 @@ together, you will need a Spring Security configuration class and apply the <cod
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.2',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

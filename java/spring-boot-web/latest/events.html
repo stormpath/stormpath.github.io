@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Events &mdash; Spring Boot Stormpath Web Starter 1.0.2 documentation</title>
+  <title>Events &mdash; Spring Boot Stormpath Web Starter 1.0.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.2 documentation" href="index.html"/>
+    <link rel="top" title="Spring Boot Stormpath Web Starter 1.0.3 documentation" href="index.html"/>
         <link rel="next" title="Caching" href="caching.html"/>
         <link rel="prev" title="Internationalization (i18n)" href="i18n.html"/> 
 
@@ -111,6 +111,19 @@
 <li class="toctree-l2"><a class="reference internal" href="login.html#i18n">i18n</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#events">Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#authentication-state">Authentication State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#spring-security">Spring Security</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social.html">Social Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social.html#facebook-login">Facebook Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#google-login">Google Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#linkedin-login">LinkedIn Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#json-api">JSON API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authorization.html">Authorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#roles">Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#permissions">Permissions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="forgot-password.html">Forgot Password</a><ul>
@@ -155,6 +168,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#requesteventlistener">RequestEventListener</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#listener-best-practices">Listener Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spring-security">Spring Security</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
@@ -180,8 +194,8 @@
 <li class="toctree-l2"><a class="reference internal" href="appendix/default-stormpath-properties.html">Default Stormpath Properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appendix/i18n-properties.html">i18n.properties</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appendix/stormpath-css.html">/assets/css/stormpath.css</a></li>
-<li class="toctree-l2"><a class="reference internal" href="appendix/change.html">/templates/stormpath/change.html</a></li>
-<li class="toctree-l2"><a class="reference internal" href="appendix/forgot.html">/templates/stormpath/forgot.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/change-password.html">/templates/stormpath/change-password.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/forgot-password.html">/templates/stormpath/forgot-password.html</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appendix/head.html">/templates/stormpath/head.html</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appendix/login.html">/templates/stormpath/login.html</a></li>
 <li class="toctree-l2"><a class="reference internal" href="appendix/register.html">/templates/stormpath/register.html</a></li>
@@ -282,6 +296,15 @@ complete, the account will be logged out.</td>
 <p>Events are sent and consumed <em>synchronously</em> during the HTTP request that triggers them.</p>
 <p>To ensure requests are responded to quickly, ensure your event listener methods return quickly or dispatch work asynchronously to another thread or <code class="docutils literal"><span class="pre">ExecutorService</span></code> (for example).</p>
 </div>
+<div class="section" id="spring-security">
+<h2>Spring Security<a class="headerlink" href="#spring-security" title="Permalink to this headline">¶</a></h2>
+<p>If you are using our <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-java/tree/master/extensions/spring/stormpath-spring-security-webmvc">Spring Security integration</a> then the standard Spring Security events will be triggered as usual.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Authentication event publishing is delegated to the configured <code class="docutils literal"><span class="pre">AuthenticationEventPublisher</span></code> which defaults to a null implementation which doesn&#8217;t publish events, so you must inject a publisher bean if you want to receive Spring Security events.</p>
+</div>
+<p>In the case of a successful authentication an <a class="reference external" href="http://docs.spring.io/autorepo/docs/spring-security/4.1.2.RELEASE/apidocs/org/springframework/security/authentication/event/AuthenticationSuccessEvent.html">AuthenticationSuccessEvent</a> will be triggered. Otherwise, one of many different events denoting the actual authentication failure cause will be triggered.</p>
+</div>
 </div>
 
 
@@ -302,7 +325,7 @@ complete, the account will be logged out.</td>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, Stormpath, Inc..
+        &copy; Copyright 2016, Stormpath, Inc..
     </p>
   </div>
 
@@ -322,7 +345,7 @@ complete, the account will be logged out.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.2',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
