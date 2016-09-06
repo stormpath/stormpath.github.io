@@ -55,12 +55,6 @@
 </noscript>
 <!-- End Facebook Pixel Code -->
 
-<!-- Algolia Search Header Code -->
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
-
-<!-- End Algolia Search Header Code -->
-
 
 
   
@@ -138,6 +132,7 @@
 
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
+  
             
             
                 <ul class="current">
@@ -248,6 +243,12 @@
 
             
           
+
+  
+
+  
+
+
         </div>
       </div>
     </nav>
@@ -327,6 +328,7 @@
 <p>The following request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 
 <span class="p">{</span>
@@ -379,7 +381,7 @@
 <p>For all Mirror Directories, since the relationship with the outside directory is read-only, the remote directory is still the &#8220;system of record&#8221;. This means that you cannot do things like create your own Groups, only read the Groups (if any) synchronized from the external directory.</p>
 <p id="supporting-multiple-dirs"><strong>Supporting Multiple Mirror Directories</strong></p>
 <p>It is possible to use different kinds of Directories simultaneously, to allow users to log-in with multiple external systems at the same time. For example, if you wanted to enable logging-in with Facebook, LinkedIn, and Salesforce, this would require a separate Mirror Directory for each one.</p>
-<p>If multiple Directories are desired, you recommend that you create a separate &#8220;master&#8221; Directory that allows for a unified user identity. This master Directory would link all the Accounts in Mirror Directories with a master Account in a master Directory. This offers a few benefits:</p>
+<p>If multiple Directories are desired, we recommend that you create a separate &#8220;master&#8221; Directory that allows for a unified user identity. This master Directory would link all the Accounts in Mirror Directories with a master Account in a master Directory. This offers a few benefits:</p>
 <ol class="arabic simple">
 <li>You can maintain one Directory that has all your user Accounts, retaining globally unique canonical identities across your application</li>
 <li>You are able to leverage your own Groups in the master Directory. Remember, most data in a Mirror Directory is read-only, meaning you cannot create your own Groups in it, only read the Groups (if any) synchronized from the external directory.</li>
@@ -406,7 +408,7 @@
 <div class="section" id="modeling-ldap-directories">
 <span id="modeling-ldap-dirs"></span><h6>Modeling LDAP Directories<a class="headerlink" href="#modeling-ldap-directories" title="Permalink to this headline">¶</a></h6>
 <p>As Mirror Directories, LDAP Directories must have the same structure as the external LDAP directories that they are synchronizing with.</p>
-<p>The Stormpath Agent is regularly updating its LDAP Directory and sometimes adding new user Accounts and/or Groups. Because this data can be quite fluid, you recommend initiating all provisioning, linking, and synchronization on a successful login attempt of the Account in the LDAP Directory. This means that the master Directory would start off empty, and would then gradually become populated every time a user logged in.</p>
+<p>The Stormpath Agent is regularly updating its LDAP Directory and sometimes adding new user Accounts and/or Groups. Because this data can be quite fluid, we recommend initiating all provisioning, linking, and synchronization on a successful login attempt of the Account in the LDAP Directory. This means that the master Directory would start off empty, and would then gradually become populated every time a user logged in.</p>
 <p>For more information on how to this works, please see <a class="reference internal" href="auth_n.html#ldap-dir-authn"><span class="std std-ref">4.4. Authenticating Against an LDAP Directory</span></a>.</p>
 </div>
 <div class="section" id="how-to-make-an-ldap-directory">
@@ -454,12 +456,14 @@
 <p>A geographical region can, for example, be represented as <code class="docutils literal"><span class="pre">&quot;North</span> <span class="pre">America/US/US</span> <span class="pre">East&quot;</span></code> in the Group&#8217;s <code class="docutils literal"><span class="pre">description</span></code> field, allowing for queries to be made using simple pattern-matching queries. So to find all Groups in the US, you&#8217;d make the following request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/directories/$DIRECTORY_ID/groups?description=*/US*</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 </pre></div>
 </div>
 <p>Or, to find all Groups in the US East region only, you would send this request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/directories/$DIRECTORY_ID/groups?description=*/US%20East*</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 </pre></div>
 </div>
@@ -479,6 +483,7 @@
 <p>The following request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/groups</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -550,6 +555,7 @@
 <p>Let&#8217;s say you want to add a new Account for user &#8220;Jean-Luc Picard&#8221; to the &#8220;Captains&#8221; Directory, which has the <code class="docutils literal"><span class="pre">directoryId</span></code> value <code class="docutils literal"><span class="pre">2SKhstu8PlaekcaEXampLE</span></code>. The following API request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -607,6 +613,7 @@
 <p>You make the following request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/groupMemberships</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -753,6 +760,7 @@
 <p>To do this, you specify the <code class="docutils literal"><span class="pre">accountId</span></code> and the <code class="docutils literal"><span class="pre">/customdata</span></code> endpoint.</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accounts/3apenYvL0Z9v9spExAMpLe/customData</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -806,6 +814,7 @@
 <p><strong>Query</strong></p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/applications/1gk4Dxzi6o4Pbdlexample/accounts?q=luc</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 </pre></div>
 </div>
@@ -847,6 +856,7 @@
 <p><strong>Query</strong></p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/directories/accounts?status=DISABLED</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 </pre></div>
 </div>
@@ -887,6 +897,7 @@
 <p><strong>Query</strong></p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/accounts?modifiedAt=2015-12-01</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 </pre></div>
 </div>
@@ -936,6 +947,7 @@
 <p>For example, if some or all of your Accounts in a particular Directory have a Custom Data key called <code class="docutils literal"><span class="pre">startDate</span></code> that contains the date that user started using your application, you could search for the Accounts that started within a particular date range:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/accounts?customData.startDate=[2012,2015]&amp;limit=5&amp;offset=0</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 </pre></div>
 </div>
@@ -961,6 +973,7 @@
 <p>To update Password Strength, make this call:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">v1/passwordPolicies/$DIRECTORY_ID/strength</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -998,6 +1011,7 @@
 <p>To update the password, you send the updated password to the Account resource:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accounts/3apenYvL0Z9v9spexAmple</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 
 <span class="p">{</span>
@@ -1027,6 +1041,7 @@
 <p>To trigger the password reset workflow, you send an HTTP POST to the Application&#8217;s <code class="docutils literal"><span class="pre">/passwordResetTokens</span></code> endpoint:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4Pbdlexample/passwordResetTokens</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 
 <span class="p">{</span>
@@ -1039,6 +1054,7 @@
 <p>It is also possible to specify the Organization, Directory, or Group in your Password Reset POST:</p>
 <div class="last highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4Pbdlexample/passwordResetTokens</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 
 <span class="p">{</span>
@@ -1084,6 +1100,7 @@ This link takes you to a secure page where you can change your password.
 <p>This can be accomplished by sending a GET to the Application&#8217;s <code class="docutils literal"><span class="pre">/passwordResetTokens/$TOKEN_VALUE</span></code> endpoint:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/applications/1gk4Dxzi6o4Pbdlexample/passwordResetTokens/eyJraWQiOiIxZ0JUbmNXc[...]</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 </pre></div>
 </div>
@@ -1093,6 +1110,7 @@ This link takes you to a secure page where you can change your password.
 <p>Once you have the password, you can update the Account resource with a POST to the <code class="docutils literal"><span class="pre">passwordResetTokens</span></code> endpoint. This is the same endpoint that you used to validate the token above.</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4Pbdlexample/passwordResetTokens/eyJraWQiOiIxZ0JUbmNXc[...]</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -1115,6 +1133,7 @@ This link takes you to a secure page where you can change your password.
 <p>To control whether any email is sent or not is simply a matter of setting the appropriate value to either <code class="docutils literal"><span class="pre">ENABLED</span></code> or <code class="docutils literal"><span class="pre">DISABLED</span></code>. For example, if you would like a Password Reset email to be sent, perform the following:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/passwordPolicies/$DIRECTORY_ID</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -1135,6 +1154,13 @@ This link takes you to a secure page where you can change your password.
 <p>If you wanted to find all Accounts that hadn&#8217;t modified their password yet in 2016 you would use <a class="reference internal" href="reference.html#search-datetime"><span class="std std-ref">Datetime search</span></a>:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/directories/2SKhstu8PlaekcaEXampLE/accounts?passwordModifiedAt=[,2016)</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json.. only:: csharp</span>
+</pre></div>
+</div>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">passwordsModifiedIn2015</span> <span class="p">=</span> <span class="k">await</span> <span class="n">myDirectory</span><span class="p">.</span><span class="n">GetAccounts</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">acct</span> <span class="p">=&gt;</span> <span class="n">acct</span><span class="p">.</span><span class="n">PasswordModifiedAt</span> <span class="p">&lt;</span> <span class="k">new</span> <span class="n">DateTimeOffset</span><span class="p">(</span><span class="m">2016</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">TimeSpan</span><span class="p">.</span><span class="n">Zero</span><span class="p">))</span>
+    <span class="p">.</span><span class="n">ToListAsync</span><span class="p">();</span>
 </pre></div>
 </div>
 <p>This would then return all Accounts in the specified Directory that had their passwords modified at any time between the beginning of time and the end of 2015.</p>
@@ -1144,10 +1170,12 @@ This link takes you to a secure page where you can change your password.
 <p>Stormpath can store historical password information in order to allow for restrictions on password reuse. This is controlled on the Directory Password Policy&#8217;s Strength object, which has an attribute called <code class="docutils literal"><span class="pre">preventReuse</span></code>. By default this feature is disabled and set to <code class="docutils literal"><span class="pre">0</span></code>. In order to enable this feature, you have to modify the Directory Password Policy&#8217;s Strength resource, sending any value up to <code class="docutils literal"><span class="pre">25</span></code>:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/passwordPolicies/2SKhstu8PlaekcaEXampLE/strength</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 
-{
-    &quot;preventReuse&quot;: &quot;10&quot;
-}
+<span class="p">{</span>
+    <span class="nt">&quot;preventReuse&quot;</span><span class="p">:</span> <span class="s2">&quot;10&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -1309,10 +1337,10 @@ This link takes you to a secure page where you can change your password.
 </div>
 <div class="section" id="verifying-the-email-address-consuming-the-token">
 <h3>3.6.4. Verifying the Email Address (Consuming The Token)<a class="headerlink" href="#verifying-the-email-address-consuming-the-token" title="Permalink to this headline">¶</a></h3>
-<p>The email that is sent upon Account creation contains a link to the base URL that you&#8217;ve configured, along with the <code class="docutils literal"><span class="pre">sptoken</span></code> query string parameter:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>http://www.yourapplicationurl.com/path/to/validator/?sptoken=$VERIFICATION_TOKEN
-</pre></div>
-</div>
+<p>The email that is sent upon Account creation contains a link to the base URL that you&#8217;ve configured, along with the <code class="docutils literal"><span class="pre">sptoken</span></code> query string parameter. By default, it looks like this:</p>
+<blockquote>
+<div><a class="reference external" href="https://api.stormpath.com/emailVerificationTokens?sptoken=$VERIFICATION_TOKEN">https://api.stormpath.com/emailVerificationTokens?sptoken=$VERIFICATION_TOKEN</a></div></blockquote>
+<p>If you were to click this URL now, it would simply open up a page telling us that the Account had been verified. However, we can use this URL in order to verify the Account and also retrieve the Account information.</p>
 <p>The token you capture from the query string is used to form the full <code class="docutils literal"><span class="pre">href</span></code> for a special email verification endpoint used to verify the Account:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span>/v1/accounts/emailVerificationsToken/$VERIFICATION_TOKEN
 </pre></div>
@@ -1320,6 +1348,7 @@ This link takes you to a secure page where you can change your password.
 <p>To verify the Account, you use the token from the query string to form the above URL and POST a body-less request against the fully-qualified end point:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accounts/emailVerificationTokens/6YJv9XBH1dZGP5A8rq7Zyl</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 </pre></div>
 </div>
@@ -1345,6 +1374,7 @@ This link takes you to a secure page where you can change your password.
 <p>To resend the email, use the <a class="reference internal" href="reference.html#ref-application"><span class="std std-ref">Application resource&#8217;s</span></a> <code class="docutils literal"><span class="pre">/verificationEmails</span></code> endpoint.</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4Pbdlexample/verificationEmails</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -1422,6 +1452,7 @@ This link takes you to a secure page where you can change your password.
 <p>If you wanted to change the <code class="docutils literal"><span class="pre">fromEmailAddress</span></code> attribute, you would just update this attribute:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/emailTemplates/2jwPxFsnjqxYrojexample</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 
 <span class="p">{</span>
@@ -1488,6 +1519,7 @@ This link takes you to a secure page where you can change your password.
 <p>For the full description of what is inside an SMTP Server resource, please see <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#ref-custom-smtp">the Reference chapter</a>. A successful custom server POST would look like this:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/smtpServers</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 
 <span class="p">{</span>
@@ -1589,6 +1621,7 @@ This link takes you to a secure page where you can change your password.
 <p>If you wanted to allow only users using emails from <code class="docutils literal"><span class="pre">site.com</span></code> and <code class="docutils literal"><span class="pre">stormpath.com</span></code> to register for this Directory, you could add the following entries to the Whitelist:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accountCreationPolicies/2SKhstu8PlaekcaEXampLE</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 
 <span class="p">{</span>
@@ -1622,6 +1655,7 @@ This link takes you to a secure page where you can change your password.
 <p>If you changed our mind and wanted to only allow users to register with <code class="docutils literal"><span class="pre">stormpath.com</span></code> emails, then you would just update and overwrite the existing Whitelist:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accountCreationPolicies/2SKhstu8PlaekcaEXampLE</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 
 <span class="p">{</span>
@@ -1721,7 +1755,22 @@ This link takes you to a secure page where you can change your password.
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-   
+  
+
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<script>
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NQZZFW');
+</script>
+<!-- End Google Tag Manager -->
+
+
 
 </body>
 </html>
