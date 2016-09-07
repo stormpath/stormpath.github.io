@@ -55,12 +55,6 @@
 </noscript>
 <!-- End Facebook Pixel Code -->
 
-<!-- Algolia Search Header Code -->
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
-
-<!-- End Algolia Search Header Code -->
-
 
 
   
@@ -138,6 +132,7 @@
 
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
+  
             
             
                 <ul class="current">
@@ -273,6 +268,16 @@
 
             
           
+
+  
+    <li class="toctree-l1">
+      <a class="reference internal" href="/dotnet/api/">.NET API Reference</a>
+    </li>
+  
+
+  
+
+
         </div>
       </div>
     </nav>
@@ -947,7 +952,7 @@
 <span class="k">Dim</span> <span class="n">result</span> <span class="o">=</span> <span class="n">Await</span> <span class="n">app</span><span class="p">.</span><span class="n">GetAccountAsync</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Stormpath will use the Access Token provided to retrieve information about your Facebook Account, then return a Stormpath Account.</p>
+<p>Stormpath will use the Access Token provided to retrieve information about your Facebook Account, then return a Stormpath Account. If you would like to get back an OAuth token instead, please see the <a class="reference internal" href="#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token above</span></a>.</p>
 <p>The <code class="docutils literal"><span class="pre">IProviderAccountResult</span></code> response includes an <code class="docutils literal"><span class="pre">IsNewAccount</span></code> property which indicates whether the Account already existed in your Stormpath Directory or not. You can retrieve the Account details through the <code class="docutils literal"><span class="pre">Account</span></code> property.</p>
 </div>
 </div>
@@ -1001,7 +1006,7 @@
 <span class="k">Dim</span> <span class="n">result</span> <span class="o">=</span> <span class="n">Await</span> <span class="n">app</span><span class="p">.</span><span class="n">GetAccountAsync</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Stormpath will use the Access Token provided to retrieve information about your GitHub Account, then return a Stormpath Account.</p>
+<p>Stormpath will use the Access Token provided to retrieve information about your GitHub Account, then return a Stormpath Account. If you would like to get back an OAuth token instead, please see the <a class="reference internal" href="#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token above</span></a>.</p>
 <p>The <code class="docutils literal"><span class="pre">IProviderAccountResult</span></code> response includes an <code class="docutils literal"><span class="pre">IsNewAccount</span></code> property which indicates whether the Account already existed in your Stormpath Directory or not. You can retrieve the Account details through the <code class="docutils literal"><span class="pre">Account</span></code> property.</p>
 </div>
 </div>
@@ -1060,7 +1065,7 @@
 <span class="k">Dim</span> <span class="n">result</span> <span class="o">=</span> <span class="n">Await</span> <span class="n">app</span><span class="p">.</span><span class="n">GetAccountAsync</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Stormpath will use the <code class="docutils literal"><span class="pre">code</span></code> or <code class="docutils literal"><span class="pre">accessToken</span></code> provided to retrieve information about your LinkedIn Account, then return a Stormpath Account.</p>
+<p>Stormpath will use the <code class="docutils literal"><span class="pre">code</span></code> or <code class="docutils literal"><span class="pre">accessToken</span></code> provided to retrieve information about your LinkedIn Account, then return a Stormpath Account. If you would like to get back an OAuth token instead, please see the <a class="reference internal" href="#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token above</span></a>.</p>
 <p>The <code class="docutils literal"><span class="pre">IProviderAccountResult</span></code> response includes an <code class="docutils literal"><span class="pre">IsNewAccount</span></code> property which indicates whether the Account already existed in your Stormpath Directory or not. You can retrieve the Account details through the <code class="docutils literal"><span class="pre">Account</span></code> property.</p>
 </div>
 </div>
@@ -1078,7 +1083,11 @@
 </li>
 </ul>
 </div>
-<p>This section assumes that you are already familiar both with <a class="reference internal" href="#how-login-works"><span class="std std-ref">4.1.2. How Login Attempts Work in Stormpath</span></a> and the concept of Stormpath <a class="reference internal" href="accnt_mgmt.html#about-ldap-dir"><span class="std std-ref">LDAP Directories</span></a>.</p>
+<p>This section assumes that you are already familiar both with <a class="reference internal" href="#how-login-works"><span class="std std-ref">4.1.2. How Login Attempts Work in Stormpath</span></a> and the concept of Stormpath <a class="reference internal" href="accnt_mgmt.html#about-ldap-dir"><span class="std std-ref">LDAP Directories</span></a>. The instructions in this section apply to all LDAP user directories, including Active Directory, with two exceptions:</p>
+<ul class="simple">
+<li>If you are using an LDAP user directory in conjunction with <strong>Active Directory Federation Services</strong>, you will want to read the <a class="reference internal" href="#adfs"><span class="std std-ref">Active Directory Federation Services</span></a> section below.</li>
+<li>If you are using Azure Active Directory, then you will want to read the <a class="reference internal" href="#azure"><span class="std std-ref">Azure Active Directory</span></a> section.</li>
+</ul>
 <div class="section" id="mirror-directories-and-ldap">
 <h3><a class="toc-backref" href="#id70">Mirror Directories and LDAP</a><a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
 <p>To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory. If this fulfills your requirements, then the story ends here. However, if you need to support other kinds of login (and therefore other kinds of Directories) it is recommended that you maintain a &#8220;master&#8221; Directory alongside your Mirror Directory. For more about this, see <a class="reference internal" href="#mirror-login"><span class="std std-ref">How Login Works with Master Directories</span></a> above.</p>
@@ -1113,6 +1122,7 @@
 <p>The full Directory object, with all of the required resources, will look like this:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -1198,7 +1208,7 @@ $ startup.sh
 <p>The log-in process will now proceed as it would for <a class="reference internal" href="#how-login-works"><span class="std std-ref">any other kind of Directory</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">In the case of Active Directory, the login process does not proceed as normal, and instead involves something called &#8220;delegated authentication&#8221;. The user accounts pulled-in from an Active Directory do not include the passwords. Consequently, the LDAP Agent does double duty in the case of Active Directory: it synchronizes accounts, and it also handles authentication attempts and relays back the outcome to Stormpath.</p>
+<p class="last">In the case of Active Directory, the login process does not proceed as normal, and instead involves something called &#8220;delegated authentication&#8221;. The user accounts pulled-in from an Active Directory do not include the passwords. Consequently, the LDAP Agent does double duty in the case of Active Directory: it synchronizes accounts, and also handles authentication attempts and relays the outcome back to Stormpath.</p>
 </div>
 </div>
 </div>
@@ -2023,7 +2033,7 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <ol class="arabic simple">
 <li>In the main AD FS window, with &#8220;api.stormpath.com&#8221; selected under &#8220;Relying Party Trusts&#8221;, click <strong>Properties</strong> on the right-hand side. This will open a &#8220;Properties&#8221; window and the &#8220;Monitoring&#8221; tab.</li>
 <li>In the &#8220;Monitoring&#8221; tab, uncheck &#8220;Automatically update relying party&#8221; and click <strong>Apply</strong>.</li>
-<li>Switch to the &#8220;Identifiers&#8221; tab, and copy your Stormpath Directory&#8217;s HREF into the &#8220;Relying party identifier&#8221; text box, then click <strong>Add</strong>. Next click <strong>OK</strong>.</li>
+<li>Switch to the &#8220;Identifiers&#8221; tab, and copy your Stormpath Directory&#8217;s href into the &#8220;Relying party identifier&#8221; text box, then click <strong>Add</strong>. Next click <strong>OK</strong>.</li>
 <li>Finally, go to Windows and open a Powershell window. In Powershell, enter the following command: &#8220;Set-AdfsRelyingPartyTrust -TargetName api.stormpath.com -SigningCertificateRevocationCheck None&#8221;.</li>
 </ol>
 </div>
@@ -2163,6 +2173,7 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </div>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -2194,7 +2205,8 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </div>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/directories/$DIRECTORY_ID/provider</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/xml</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 </pre></div>
 </div>
 <p>This will return the Provider:</p>
@@ -2224,6 +2236,7 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </div>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/samlServiceProviderMetadatas/$METADATA_ID</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/xml</span>
 </pre></div>
 </div>
@@ -2260,6 +2273,7 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </div>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -2292,6 +2306,7 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </div>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 </pre></div>
 </div>
 <p>This request will return a response containing a JWT like this:</p>
@@ -2315,6 +2330,7 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </div>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/samlServiceProviders/6voAya1BvrNeFOAeXamPle/defaultRelayStates</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 
 {
     &quot;callbackUri&quot;: &quot;https://org1.myapp.com&quot;,
@@ -2390,6 +2406,7 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 </div>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/attributeStatementMappingRules/$MAPPING_RULES_ID&quot;,</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json;charset=UTF-8</span>
 
 <span class="p">{</span>
@@ -2709,7 +2726,7 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <p>The simplest way to authenticate a call is to Base64 encode the API Key and Secret and then pass this encoded string in the authorization header:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/groups/1ORBsz2iCNpV8yJKqFWhDc/accountMemberships</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpGTVY0V1ZWQ1ZHMzVYQVRJSTlUOTZKNzpYRVBKb2xobk1ZRUR3MmJTQ2ZSbkQrbnlxSyt...</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -2827,7 +2844,22 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-   
+  
+
+<!-- Google Tag Manager -->
+<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<script>
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NQZZFW');
+</script>
+<!-- End Google Tag Manager -->
+
+
 
 </body>
 </html>
