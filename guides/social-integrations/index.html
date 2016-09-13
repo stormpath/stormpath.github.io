@@ -1,0 +1,1647 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Integrating Stormpath with Facebook and Google - Stormpath</title>
+  <meta name="author" content="Stormpath, Inc.">
+
+  
+  <meta name="description" content="Stormpath makes it easy to login users with Facebook, Google, Linkedin, or GitHub in one API call">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
+  
+  <link rel="canonical" href="http://stormpath.github.io/guides/social-integrations">
+  <link href="/favicon.ico" rel="icon">
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+<style>
+@import url("/stylesheets/normalize.css?mrrrji");
+@import url("/stylesheets/wireframes.css?mrrrji");
+@import url("/stylesheets/html-elements.css?mrrrji");
+@import url("/stylesheets/tabs.css?mrrrji");
+@import url("/stylesheets/tinybox2.css?mrrrji");
+@import url("/stylesheets/flexnav.css?mrrrji");
+@import url("/stylesheets/pages.css?mrrrji");
+@import url("/stylesheets/docs.css?mrrrji");
+@import url("/stylesheets/blocks.css?mrrrji");
+@import url("/stylesheets/navigation.css?mrrrji");
+@import url("/stylesheets/views-styles.css?mrrrji");
+@import url("/stylesheets/nodes.css?mrrrji");
+@import url("/stylesheets/comments.css?mrrrji");
+@import url("/stylesheets/forms.css?mrrrji");
+@import url("/stylesheets/fields.css?mrrrji");
+@import url("/stylesheets/layouts/responsive-sidebars.css?mrrrji");
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/atom.xml" rel="alternate" title="Stormpath" type="application/atom+xml">
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Covered+By+Your+Grace|Open+Sans:300italic,400italic,600italic,700italic,800italic,300,400,600,700,800" media="all" />
+
+<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/cupertino/jquery-ui.css" />
+<link rel="stylesheet" href="/stylesheets/mono-blue.min.css" />
+
+<!--[if lt IE 9]>
+<script src="/javascripts/html5-respond.js"></script>
+<![endif]-->
+
+<link rel="publisher" href="https://plus.google.com/117307959654441669381" />
+<!-- twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="goStormpath">
+<meta name="twitter:title" content="Integrating Stormpath with Facebook and Google - Stormpath">
+<meta name="twitter:description" content="Stormpath makes it easy to login users with Facebook, Google, Linkedin, or GitHub in one API call">
+<meta name="twitter:image:src" content="https://docs.stormpath.com/images/icons/twitter-stormpath-icon.jpg">
+<!-- opengraph -->
+<meta property="og:title" content="Integrating Stormpath with Facebook and Google - Stormpath" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://stormpath.github.io/guides/social-integrations" />
+<meta property="og:image" content="https://docs.stormpath.com/images/icons/og-stormpath-icon.jpg" />
+<meta property="og:description" content="Stormpath makes it easy to login users with Facebook, Google, Linkedin, or GitHub in one API call" />
+<meta property="og:site_name" content="Stormpath" />
+<meta property="fb:admins" content="3230401" />
+
+
+<!-- kissmetrics -->
+<script type="text/javascript">
+  var _kmq = _kmq || [];
+  var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+  function _kms(u){
+    setTimeout(function(){
+      var d = document, f = d.getElementsByTagName('script')[0],
+      s = d.createElement('script');
+      s.type = 'text/javascript'; s.async = true; s.src = u;
+      f.parentNode.insertBefore(s, f);
+    }, 1);
+  }
+  _kms('//i.kissmetrics.com/i.js');
+  _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+</script>
+
+<!-- Optimizely -->
+<script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-29159574-1', 'auto');
+  // Optimizely Universal Analytics Integration
+  //https://help.optimizely.com/hc/en-us/articles/200039995-Integrating-Optimizely-with-Google-Analytics
+  window.optimizely = window.optimizely || [];
+  window.optimizely.push("activateUniversalAnalytics");
+    ga('send', 'pageview');
+
+</script>
+
+
+  
+
+</head>
+
+<body  class="not-front  node-type-documentation  ">
+<!-- Qualaroo for stormpath.com -->
+<script type="text/javascript">var _kiq = _kiq || [];</script>
+<script type="text/javascript" src="//s3.amazonaws.com/ki.js/47725/9JM.js" async="true"></script>
+
+<!-- Start of stormpath Zendesk Widget script -->
+<script>/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(c){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var o=this.createElement("script");n&&(this.domain=n),o.id="js-iframe-async",o.src=e,this.t=+new Date,this.zendeskHost=t,this.zEQueue=a,this.body.appendChild(o)},o.write('<body onload="document._l();">'),o.close()}("https://assets.zendesk.com/embeddable_framework/main.js","stormpath.zendesk.com");
+/*]]>*/</script>
+<!-- End of stormpath Zendesk Widget script -->
+
+
+<script src="/javascripts/stormpath_docs.js"></script>
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['android'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['csharp'] = [];
+		
+	
+		sp_docs_menu['dotnet'] = [];
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('10010');
+		
+			sp_docs_menu['errors'].push('10011');
+		
+			sp_docs_menu['errors'].push('10012');
+		
+			sp_docs_menu['errors'].push('10013');
+		
+			sp_docs_menu['errors'].push('10014');
+		
+			sp_docs_menu['errors'].push('10015');
+		
+			sp_docs_menu['errors'].push('10016');
+		
+			sp_docs_menu['errors'].push('10017');
+		
+			sp_docs_menu['errors'].push('10100');
+		
+			sp_docs_menu['errors'].push('10101');
+		
+			sp_docs_menu['errors'].push('10102');
+		
+			sp_docs_menu['errors'].push('11001');
+		
+			sp_docs_menu['errors'].push('11002');
+		
+			sp_docs_menu['errors'].push('11003');
+		
+			sp_docs_menu['errors'].push('11004');
+		
+			sp_docs_menu['errors'].push('11005');
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['ios'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+		sp_docs_menu['vbnet'] = [];
+		
+	
+</script>
+
+<div id="page">
+    <div class="fixed-header" id="wrap">
+      
+
+<nav class="navbar navbar-storm" role="navigation">
+  <div class="navbar-container">
+
+    <div class="navbar-header">
+      <a class="navbar-brand" href="https://stormpath.com/">
+        <img src="/images/template/logo_nav.png"/>
+      </a>
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse collapse" id="main-nav">
+      <a type="button" class="btn navbar-btn button-primary-bordered button-signup navbar-right" href="https://api.stormpath.com/register" onClick="ga('send', 'event', { eventCategory: 'sign up', eventAction: 'sign up button click', eventLabel: 'www', eventValue: 1});">Sign Up Now</a>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="http://docs.stormpath.com/">Docs</a></li>
+        <li><a href="https://stormpath.com/product/">Product</a></li>
+        <li><a href="https://stormpath.com/pricing/">Pricing</a></li>
+        <li><a href="https://stormpath.com/customers/">Customers</a></li>
+        <li><a href="https://boards.greenhouse.io/stormpath/">Jobs</a></li>
+        <li><a href="https://api.stormpath.com/login/">Login</a></li>
+      </ul>
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</nav>
+
+
+
+
+      
+      
+    </div>
+
+<!--
+  <div id="header-wrapper">
+  	<header id="header" role="banner" class="container">
+      
+    </header>
+  </div>-->
+  <div id="main-wrapper">
+    <div id="main">
+      <div id="main-inner">
+        <div id="main-inner-inner">
+          <div id="content" class="column" role="main">
+            <div class="col-md-11">
+              <a id="main-content"></a>
+              
+                <h1 class="title" id="page-title">Integrating Stormpath with Facebook and Google</h1>
+              
+              <div class="sharing">
+
+  <!-- AddThis Button BEGIN -->
+  <div class="addthis_toolbox addthis_default_style addthis_16x16_style">
+    <a class="addthis_button_twitter"></a>
+    <a class="addthis_button_reddit"></a>
+    <a class="addthis_button_hackernews"></a>
+    <a class="addthis_button_google_plusone_share"></a>
+    <a class="addthis_button_linkedin"></a>
+    <a class="addthis_button_facebook"></a>
+    <a class="addthis_button_email"></a>
+  </div>
+  <script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+  <!-- AddThis Button END -->
+
+</div>
+            	<p>In this guide, we discuss how to set up Stormpath to communicate to Google and Facebook to retrieve user profiles from the social networks and convert them into Stormpath accounts.</p>
+
+<div class='docs-note'><p>Prerequisite:  Complete one of the <a href="https://docs.stormpath.com/home/">Quickstart Guides</a>.  This will get you familiar with Stormpath and will set up an <code>Application</code> to use with this guide.</p>
+</div>
+
+
+<h2><a id="what-is-stormpath"></a>What is Stormpath?</h2>
+
+<p>Stormpath is a user management API that makes it easy for developers to launch applications with secure, scalable user infrastructure. It automates:</p>
+
+<ul>
+<li>User Account registration and login</li>
+<li>Authentication and authorization</li>
+<li>Flexible, secure user profile data</li>
+<li>Group and role management, including pre-built Role-Based Access Control (RBAC)</li>
+<li>Best-practice password security and data storage</li>
+</ul>
+
+
+<p>You access Stormpath via a <a href="http://stormpath.com/blog/designing-rest-json-apis">beautiful</a> REST+JSON API or our <a href="https://docs.stormpath.com">language-specific SDKs</a>.</p>
+
+<h2><a id="why-should-i-use-stormpath-to-integrate-login-with-facebook-and-google"></a>Why Should I Use Stormpath to Integrate Login with Facebook and Google?</h2>
+
+<p>Stormpath makes it easy to connect to Google and Facebook in one simple API call. It&rsquo;s a simple and secure way to retrieve user profiles and convert them into Stormpath accounts, no matter the service you&rsquo;re using.</p>
+
+<p>From an end-user perspective, it allows them to log into your application by collecting information from these social networks.</p>
+
+<p>As soon as you have an OAuth token from Google or Facebook, you can pass it to Stormpath.  Stormpath will handle validating the token, importing the user profile into a <code>Directory</code>, syncing user profile, and can enable you to handle use cases such as:</p>
+
+<ul>
+<li>Storing an optional password for an imported Facebook / Google account to support email / password authentication</li>
+<li>Robust and schema-less user profiles</li>
+<li>Using the same API, you can read / write information regardless of what social provider they authenticated with.</li>
+</ul>
+
+
+<h2><a id="how-to-integrate-stormpath-with-facebook"></a>How to Integrate Stormpath with Facebook?</h2>
+
+<p>After you familiarize yourself with Stormpath with one of the <a href="https://stormpath.com/tutorial/">Quickstart</a> Guides, integrating Stormpath with Facebook and Google requires the following steps:</p>
+
+<ul>
+<li>Creating a Social Directory for Facebook</li>
+<li>Mapping the Directory as an Account Store to an Application</li>
+<li>Accessing an Account with Facebook Tokens</li>
+</ul>
+
+
+<h3><a id="creating-a-social-directory-for-facebook"></a>Creating a Social Directory for Facebook</h3>
+
+<p>A <code>Directory</code> is a top-level storage containers of <code>Accounts</code> in Stormpath. A <code>Directory</code> also manages security policies (like password strength) for the <code>Accounts</code> it contains.  Facebook Directories are a special type of <code>Directory</code> that holds Accounts for Facebook.</p>
+
+<div class='docs-note'><p>Before you can create a Directory for Facebook, it is important that you gather information regarding your application from Facebook.  This information includes Client ID / Client Secret and can be acquired from the developer consoles for <a href="https://developers.facebook.com/">Facebook</a>.</p>
+</div>
+
+
+<p>Creating a directory for Facebook require that you provide information from Facebook as a <code>Provider</code> <a href="/rest/product-guide/latest/auth_n.html#facebook">resource</a>.  This information can be use to create the directories from the <a href="https://api.stormpath.com/login">Admin Console</a> or the following code:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-facebook-create-directory-java">java</a></li><li><a href="#tabs-facebook-create-directory-python">python</a></li><li><a href="#tabs-facebook-create-directory-node">node</a></li><li><a href="#tabs-facebook-create-directory-curl">curl</a></li></ul><div id="tabs-facebook-create-directory-java"><pre lang="java"><code>
+Directory directory = client.instantiate(Directory.class);
+directory.setName("my-facebook-directory");
+directory.setDescription("A Facebook directory");
+
+CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
+            forProvider(Providers.FACEBOOK.builder()
+                    .setClientId("857385m8vk0fn2r7jmjo")
+                    .setClientSecret("ehs7bA7OWQSQ4")
+                    .build()
+            ).build();
+
+Tenant tenant = client.getCurrentTenant();
+directory = tenant.createDirectory(request);
+</code> </pre> </div><div id="tabs-facebook-create-directory-python"><pre lang="python"><code>
+from stormpath.resources import Provider
+
+directory = client.directories.create({
+    'name': 'my-facebook-directory',
+    'description': 'Facebook Directory',
+    'provider': {
+        'client_id': '501417',
+        'client_secret': '4913953281ec6bb109',
+        'redirect_uri': 'https://myapplication.com/authenticate',
+        'provider_id': Provider.FACEBOOK}})
+</code> </pre> </div><div id="tabs-facebook-create-directory-node"><pre lang="node"><code>
+client.createDirectory({
+  name : 'my-facebook-directory',
+  description : 'A Facebook directory',
+  provider: {
+    providerId: 'facebook',
+    clientId: '857385m8vk0fn2r7jmjo',
+    clientSecret: 'ehs7bA7OWQSQ4'
+  }
+}, function(err, directory){
+  console.log(directory);
+});
+</code> </pre> </div><div id="tabs-facebook-create-directory-curl"><pre lang="curl"><code>
+curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d '{
+            "name" : "my-facebook-directory",
+            "description" : "A Facebook directory",
+            "provider": {
+              "providerId": "facebook",
+              "clientId":"YOUR_FACEBOOK_CLIENT_ID",
+              "clientSecret":"YOUR_FACEBOOK_CLIENT_SECRET"
+            }
+          }' \
+ "https://api.stormpath.com/v1/directories"
+</code> </pre> </div></div>
+
+
+<h3><a id="mapping-the-directory-as-an-account-store-to-an-application"></a>Mapping the Directory as an Account Store to an Application</h3>
+
+<p>Once a Facebook <code>Directory</code> has been created, it must be mapped to an application as an <code>Account Store</code>.  When an Account Store (which can be a <code>Directory</code> or <code>Group</code>) is mapped to an <code>Application</code>, the accounts in the account store are considered the application’s users and they can login to the application.</p>
+
+<p>Creating an Account Store Mapping can be done through the REST API, SDKs or Admin Console.</p>
+
+<h4>Admin Console</h4>
+
+<p>To manage Account Stores in the Console:</p>
+
+<ol>
+<li>Log in to the Stormpath Admin Console</li>
+<li>Click the <em>Applications</em> tab</li>
+<li>Click the Application&rsquo;s name to which you want to add an Account Store</li>
+<li>Click the <em>Account Stores</em> button in the tab bar</li>
+<li>Select the Facebook Directory that was created</li>
+<li>Click <em>Add Account Store</em></li>
+</ol>
+
+
+<h4>SDKs and REST API</h4>
+
+<div class="tabs"><ul><li><a href="#tabs-facebook-map-application-java">java</a></li><li><a href="#tabs-facebook-map-application-python">python</a></li><li><a href="#tabs-facebook-map-application-node">node</a></li><li><a href="#tabs-facebook-map-application-curl">curl</a></li></ul><div id="tabs-facebook-map-application-java"><pre lang="java"><code>
+ApplicationAccountStoreMapping applicationAccountStoreMapping = client.instantiate(ApplicationAccountStoreMapping.class)
+        .setAccountStore(YOUR_FACEBOOK_DIRECTORY)
+        .setApplication(application);
+
+application.createAccountStoreMapping(accountStoreMapping);
+</code> </pre> </div><div id="tabs-facebook-map-application-python"><pre lang="python"><code>
+account_store_mapping = client.account_store_mappings.create({
+    'application': YOUR_APPLICATION,
+    'account_store': YOUR_FACEBOOK_DIRECTORY
+})
+</code> </pre> </div><div id="tabs-facebook-map-application-node"><pre lang="node"><code>
+application.createAccountStoreMapping({
+    accountStore: YOUR_FACEBOOK_DIRECTORY
+}, function(err, accountStoreMapping){
+  console.log(accountStoreMapping);
+});
+</code> </pre> </div><div id="tabs-facebook-map-application-curl"><pre lang="curl"><code>
+curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
+     -H "Content-Type: application/json;charset=UTF-8" \
+     -d '{
+           "application": {
+             "href": "YOUR_APPLICATION_HREF"
+           },
+           "accountStore": {
+             "href": "YOUR_FACEBOOK_DIRECTORY_HREF"
+           }
+         }' \
+     'https://api.stormpath.com/v1/accountStoreMappings'
+</code> </pre> </div></div>
+
+
+<h3><a id="accessing-an-account-with-facebook-tokens"></a>Accessing an Account with Facebook Tokens</h3>
+
+<p>Once a Facebook Directory is mapped to an application, it is now possible to get an <code>Account</code> from Stormpath based on Facebook User Access Tokens.</p>
+
+<p>You need to gather an User Access Token from Facebook before submitting it to Stormpath.  This is possible either by using a <a href="https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens">Facebook SDK Library</a>, or <a href="https://developers.facebook.com/tools/explorer">Facebook&rsquo;s Graph Explorer</a> for testing.</p>
+
+<p>Below is sample code using Facebook&rsquo;s Javascript library to get the access token.</p>
+
+<pre><code>window.checkFacebookStatus = function () {
+    FB.getLoginStatus(function (response) {
+        //  {
+        //     status: 'connected',
+        //     authResponse: {
+        //        accessToken: '...',
+        //        expiresIn:'...',
+        //        signedRequest:'...',
+        //        userID:'...'
+        //     }
+        //  }
+
+        if (response.status === 'connected') {
+            alert('Access Token: ' + response.authResponse.accessToken);
+        } else {
+            alert('Log in first...');
+        }
+
+    });
+};
+</code></pre>
+
+<p>There are also other means of getting the access token from cookies on the server using 3rd party libraries in different languages.</p>
+
+<div class='docs-note'><p>It is required that your Facebook application requests for the <code>email</code> permission from Facebook. If the access token does not grant <code>email</code> permissions, you will not be able to get an <code>Account</code> with an access token.</p>
+</div>
+
+
+<p>Once the <code>User Access Token</code> is gathered, you can ask the <code>Application</code> object to get or create the <code>Account</code> by passing <code>providerData</code>.  The <code>providerData</code> object specifies the type of provider and the access token.</p>
+
+<p>The following is how you use <code>providerData</code> to get an <code>Account</code> for a given <code>User Access Token</code>:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-facebook-auth-java">java</a></li><li><a href="#tabs-facebook-auth-python">python</a></li><li><a href="#tabs-facebook-auth-node">node</a></li><li><a href="#tabs-facebook-auth-curl">curl</a></li></ul><div id="tabs-facebook-auth-java"><pre lang="java"><code>
+ProviderAccountRequest request = Providers.FACEBOOK.account()
+            .setAccessToken("CABTmZxAZBxBADbr1l7ZCwHpjivBt9T0GZBqjQdTmgyO0OkUq37HYaBi4F23f49f5")
+            .build();
+
+ProviderAccountResult result = application.getAccount(request);
+Account account = result.getAccount();
+</code> </pre> </div><div id="tabs-facebook-auth-python"><pre lang="python"><code>
+application.get_provider_account(provider=Provider.FACEBOOK, access_token="%ACCESS_TOKEN_FROM_FACEBOOK%")
+</code> </pre> </div><div id="tabs-facebook-auth-node"><pre lang="node"><code>
+application.getAccount({
+  providerData: {
+    providerId: 'facebook',
+    accessToken: ACCESS_TOKEN_FROM_FACEBOOK
+  }
+}, function(err, result){
+  console.log(result.created);
+  console.log(result.account);
+});
+</code> </pre> </div><div id="tabs-facebook-auth-curl"><pre lang="curl"><code>
+curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d '{
+            "providerData": {
+              "providerId": "facebook",
+              "accessToken": "USER_ACCESS_TOKEN_FROM_FACEBOOK"
+            }
+          }' \
+ "https://api.stormpath.com/v1/applications/YOUR_APP_ID/accounts"
+</code> </pre> </div></div>
+
+
+
+
+<div class='docs-note'><p>The <code>Authentication Result</code> or HTTP Status code (using REST) when accessing an account based on a Facebook User Access Token will denote if the account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200)</p>
+</div>
+
+
+
+
+<div class='docs-note'><p>To access the <code>providerData</code> to get the Access Token for the Account in one request, you can use <a href="/rest/product-guide/latest/reference.html#links">link expansion</a> to expand the <code>providerData</code>.</p>
+</div>
+
+
+<p>Once an <code>Account</code> is retrieved, Stormpath maps common fields for the Facebook User to the  Account.  The access token for any additional calls in the <code>providerData</code> resource and can be retrieved by:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-facebook-get-provider-data-java">java</a></li><li><a href="#tabs-facebook-get-provider-data-python">python</a></li><li><a href="#tabs-facebook-get-provider-data-node">node</a></li><li><a href="#tabs-facebook-get-provider-data-curl">curl</a></li></ul><div id="tabs-facebook-get-provider-data-java"><pre lang="java"><code>
+FacebookProviderData providerData = (FacebookProviderData) account.getProviderData();
+</code> </pre> </div><div id="tabs-facebook-get-provider-data-python"><pre lang="python"><code>
+print acc.provider_data
+print acc.provider_data.access_token
+</code> </pre> </div><div id="tabs-facebook-get-provider-data-node"><pre lang="node"><code>
+application.getAccount(providerData, {expand: 'providerData' }, function(err, account){
+  console.log(account.providerData);
+});
+</code> </pre> </div><div id="tabs-facebook-get-provider-data-curl"><pre lang="curl"><code>
+GET https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData
+</code> </pre> </div></div>
+
+
+<p>The returned <code>providerData</code> will include the following properties:</p>
+
+<pre><code>  "accessToken": "y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4",
+  "createdAt": "2014-04-01T17:00:09.154Z",
+  "href": "https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData",
+  "modifiedAt": "2014-04-01T17:00:09.189Z",
+  "providerId": "facebook"
+</code></pre>
+
+<h2><a id="how-to-integrate-stormpath-with-google"></a>How to Integrate Stormpath with Google?</h2>
+
+<p>After you familiarize yourself with Stormpath with one of the <a href="docs.stormpath.com">Quickstart</a> Guides, integrating Stormpath with Google requires the following steps:</p>
+
+<ul>
+<li>Creating a Social Directory for Google</li>
+<li>Mapping the Directory as an Account Store to an Application</li>
+<li>Accessing an Account with Google Tokens</li>
+</ul>
+
+
+<h3><a id="creating-a-social-directory-for-google"></a>Creating a Social Directory for Google</h3>
+
+<p>A <code>Directory</code> is a top-level storage containers of <code>Accounts</code> in Stormpath. A <code>Directory</code> also manages security policies (like password strength) for the <code>Accounts</code> it contains.  Google Directories are a special type of <code>Directory</code> that holds Accounts for Google.</p>
+
+<div class='docs-note'><p>Before you can create a Directory for Google, it is important that you gather information regarding your application from Google.  This information includes Client ID, Client Secret, Redirect URL and can be acquired from the developer consoles for <a href="https://console.developers.google.com/">Google</a>.</p>
+</div>
+
+
+<p>Creating a directory for Google require that you provide information from Google as a <code>Provider</code> <a href="/rest/product-guide/latest/auth_n.html#google">resource</a>.  This information can be use to create the directories from the <a href="https://api.stormpath.com/login">Admin Console</a> or the following code:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-create-google-directory-java">java</a></li><li><a href="#tabs-create-google-directory-python">python</a></li><li><a href="#tabs-create-google-directory-node">node</a></li><li><a href="#tabs-create-google-directory-curl">curl</a></li></ul><div id="tabs-create-google-directory-java"><pre lang="java"><code>
+Directory directory = client.instantiate(Directory.class);
+directory.setName("my-google-directory");
+directory.setDescription("A Google directory");
+
+CreateDirectoryRequest request = Directories.newCreateRequestFor(directory).
+            forProvider(Providers.GOOGLE.builder()
+                    .setClientId("857385-m8vk0fn2r7jmjo.apps.googleusercontent.com")
+                    .setClientSecret("ehs7_-bA7OWQSQ4")
+                    .setRedirectUri("https://myapplication.com/authenticate")
+                    .build()
+            ).build();
+
+Tenant tenant = client.getCurrentTenant();
+directory = tenant.createDirectory(request);
+</code> </pre> </div><div id="tabs-create-google-directory-python"><pre lang="python"><code>
+from stormpath.resources import Provider
+directory = client.directories.create({
+    'name': 'my-google-directory',
+    'description': 'A Google directory',
+    'provider': {
+        'client_id': '857385-m8vk0fn2r7jmjo.apps.googleusercontent.com',
+        'client_secret': 'ehs7_-bA7OWQSQ4',
+        'redirect_uri': 'https://myapplication.com/authenticate',
+        'provider_id': Provider.GOOGLE}})
+</code> </pre> </div><div id="tabs-create-google-directory-node"><pre lang="node"><code>
+client.createDirectory({
+  name : 'my-google-directory',
+  description : 'A Google directory',
+  provider: {
+    providerId: 'google',
+    clientId: '857385-m8vk0fn2r7jmjo.apps.googleusercontent.com',
+    clientSecret: 'ehs7_-bA7OWQSQ4',
+    redirectUri: 'https://myapplication.com/authenticate'
+  }
+}, function(err, directory){
+  console.log(directory);
+});
+</code> </pre> </div><div id="tabs-create-google-directory-curl"><pre lang="curl"><code>
+curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d '{
+            "name" : "my-google-directory",
+            "description" : "A Google directory",
+            "provider": {
+              "providerId": "google",
+              "clientId":"YOUR_GOOGLE_CLIENT_ID",
+              "clientSecret":"YOUR_GOOGLE_CLIENT_SECRET",
+              "redirectUri":"YOUR_GOOGLE_REDIRECT_URI"
+            }
+          }' \
+ "https://api.stormpath.com/v1/directories"
+</code> </pre> </div></div>
+
+
+
+
+<div class='docs-note'><p>If you are using <a href="https://developers.google.com/+/web/signin/server-side-flow">Google+ Sign-In for server-side apps</a>, Google recommends that you leave the Authorized redirect URI field blank in the Google Developer Console.  In Stormpath, when creating the Google Directory, you must set the redirect URI to <code>postmessage</code>.</p>
+</div>
+
+
+<h3><a id="mapping-the-directory-as-an-account-store-to-an-application"></a>Mapping the Directory as an Account Store to an Application</h3>
+
+<p>Once a Google <code>Directory</code> has been created, it must be mapped to an application as an <code>Account Store</code>.  When an Account Store (which can be a <code>Directory</code> or <code>Group</code>) is mapped to an <code>Application</code>, the accounts in the account store are considered the application’s users and they can login to the application.</p>
+
+<p>Creating an Account Store Mapping can be done through the REST API, SDKs or Admin Console.</p>
+
+<h4>Admin Console</h4>
+
+<p>To manage Account Stores in the Console:</p>
+
+<ol>
+<li>Log in to the Stormpath Admin Console</li>
+<li>Click the <em>Applications</em> tab</li>
+<li>Click the Application&rsquo;s name to which you want to add an Account Store</li>
+<li>Click the <em>Account Stores</em> button in the tabbar</li>
+<li>Select the Google Directory that was created</li>
+<li>Click <em>Add Account Store</em></li>
+</ol>
+
+
+<h4>SDKs and REST API</h4>
+
+<div class="tabs"><ul><li><a href="#tabs-google-map-application-java">java</a></li><li><a href="#tabs-google-map-application-python">python</a></li><li><a href="#tabs-google-map-application-node">node</a></li><li><a href="#tabs-google-map-application-curl">curl</a></li></ul><div id="tabs-google-map-application-java"><pre lang="java"><code>
+ApplicationAccountStoreMapping applicationAccountStoreMapping = client.instantiate(ApplicationAccountStoreMapping.class)
+        .setAccountStore(YOUR_GOOGLE_DIRECTORY)
+        .setApplication(application);
+
+application.createAccountStoreMapping(accountStoreMapping);
+</code> </pre> </div><div id="tabs-google-map-application-python"><pre lang="python"><code>
+account_store_mapping = client.account_store_mappings.create({
+    'application': YOUR_APPLICATION,
+    'account_store': YOUR_GOOGLE_DIRECTORY
+})
+</code> </pre> </div><div id="tabs-google-map-application-node"><pre lang="node"><code>
+application.createAccountStoreMapping({
+    accountStore: YOUR_GOOGLE_DIRECTORY
+}, function(err, accountStoreMapping){
+  console.log(accountStoreMapping);
+});
+</code> </pre> </div><div id="tabs-google-map-application-curl"><pre lang="curl"><code>
+curl -X POST -u $API_KEY_ID:$API_KEY_SECRET \
+     -H "Content-Type: application/json;charset=UTF-8" \
+     -d '{
+           "application": {
+             "href": "YOUR_APPLICATION_HREF"
+           },
+           "accountStore": {
+             "href": "YOUR_GOOGLE_DIRECTORY_HREF"
+           }
+         }' \
+     'https://api.stormpath.com/v1/accountStoreMappings'
+</code> </pre> </div></div>
+
+
+<h3><a id="accessing-an-account-with-google-tokens"></a>Accessing an Account with Google Tokens</h3>
+
+<p>To access or create an account in an already created Google Directory, it is required to gather a Google Authorization Code or Access Token on behalf of the user.  This requires leveraging Google&rsquo;s <a href="https://developers.google.com/accounts/docs/OAuth2Login">OAuth 2.0 protocol</a> and the user&rsquo;s consent for your application&rsquo;s permissions.</p>
+
+<p>Generically, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the Authorization Code.  This is documented in detail <a href="https://developers.google.com/accounts/docs/OAuth2Login#authenticatingtheuser">here</a>.</p>
+
+<p>Once the Authorization Code is gathered, you can ask the <code>Application</code> object to get or create the <code>Account</code> by passing <code>providerData</code>.  The <code>providerData</code> object specifies the type of provider and the authorization code.</p>
+
+<pre><code>  "providerId": "google",
+  "code": "%ACCESS_CODE_FROM_GOOGLE%"
+</code></pre>
+
+<div class='docs-note'><p>It is required that your Google application requests for the <code>email</code> scope from Google. If the authorization code or access token does not grant <code>email</code> scope, you will not be able to get an <code>Account</code> with an access token.</p>
+</div>
+
+
+<p>The following is how you use <code>providerData</code> to get an <code>Account</code> for a given authorization code:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-google-auth-java">java</a></li><li><a href="#tabs-google-auth-python">python</a></li><li><a href="#tabs-google-auth-node">node</a></li><li><a href="#tabs-google-auth-curl">curl</a></li></ul><div id="tabs-google-auth-java"><pre lang="java"><code>
+ProviderAccountRequest request = Providers.GOOGLE.account()
+            .setCode("4/a3p_fn0sMDQlyFVTYwfl5GAj0Obd.oiruVLbQZSwU3oEBd8DOtNApQzTCiwI")
+            .build();
+
+ProviderAccountResult result = application.getAccount(request);
+Account account = result.getAccount();
+</code> </pre> </div><div id="tabs-google-auth-python"><pre lang="python"><code>
+account = application.get_provider_account(provider=Provider.GOOGLE, code=YOUR_GOOGLE_AUTH_CODE)
+print acc.email
+</code> </pre> </div><div id="tabs-google-auth-node"><pre lang="node"><code>
+application.getAccount({
+  providerData: {
+    providerId: 'google',
+    code: YOUR_GOOGLE_AUTH_CODE
+  }
+}, callback);
+</code> </pre> </div><div id="tabs-google-auth-curl"><pre lang="curl"><code>
+curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+     -H "Accept: application/json" \
+     -H "Content-Type: application/json" \
+     -d '{
+            "providerData": {
+              "providerId": "google",
+              "code": "YOUR_GOOGLE_AUTH_CODE"
+            }
+          }' \
+ "https://api.stormpath.com/v1/applications/YOUR_APP_ID/accounts"
+</code> </pre> </div></div>
+
+
+
+
+<div class='docs-note'><p>The <code>Authentication Result</code> or HTTP Status code (using REST) when accessing an account based on a Google Authorization Code will denote if the account was created (HTTP 201) or if it already existed in Stormpath (HTTP 200)</p>
+</div>
+
+
+
+
+<div class='docs-note'><p>To <a href="#link-expansion">expand</a> the <code>providerData</code> to get the Access Token for the Account in one HTTP request, add <code>expand=providerData</code> to the URL query parameters.</p>
+</div>
+
+
+<p>If you have already exchanged an <code>Authorization Code</code> for an <code>Access Token</code>, this can be passed to Stormpath in a similar fashion:</p>
+
+<pre><code>  "providerId": "google",
+  "accessToken": "%ACCESS_TOKEN_FROM_GOOGLE%"
+</code></pre>
+
+<p>Once an <code>Account</code> is retrieved, Stormpath maps common fields for the Google User to the  Account.  The access token and the refresh token for any additional calls in the <code>providerData</code> resource and can be retrieved by:</p>
+
+<div class="tabs"><ul><li><a href="#tabs-google-get-provider-data-java">java</a></li><li><a href="#tabs-google-get-provider-data-python">python</a></li><li><a href="#tabs-google-get-provider-data-node">node</a></li><li><a href="#tabs-google-get-provider-data-curl">curl</a></li></ul><div id="tabs-google-get-provider-data-java"><pre lang="java"><code>
+GoogleProviderData providerData = (GoogleProviderData) account.getProviderData();
+</code> </pre> </div><div id="tabs-google-get-provider-data-python"><pre lang="python"><code>
+print acc.provider_data
+print acc.provider_data.access_token
+</code> </pre> </div><div id="tabs-google-get-provider-data-node"><pre lang="node"><code>
+application.getAccount(providerData, {expand: 'providerData' }, function(err, account){
+  console.log(account.providerData);
+});
+</code> </pre> </div><div id="tabs-google-get-provider-data-curl"><pre lang="curl"><code>
+GET https://api.stormpath.com/v1/accounts/m0fw8GvxpM7n3pw6tyw9/providerData
+</code> </pre> </div></div>
+
+
+<p>The returned <code>providerData</code> will include:</p>
+
+<pre><code>  "accessToken": "y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4",
+  "createdAt": "2014-04-01T17:00:09.154Z",
+  "href": "https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData",
+  "modifiedAt": "2014-04-01T17:00:09.189Z",
+  "providerId": "google",
+  "refreshToken": "1/qQTS638g3ArE4U02FoiXL1yIh-OiPmhc"
+</code></pre>
+
+<div class='docs-note'><p>The <code>refreshToken</code> will only be present if your application asked for offline access.  Review Google&#8217;s documentation for more information regarding OAuth offline access.</p>
+</div>
+
+
+<h2><a id="wrapping-up"></a>Wrapping up</h2>
+
+<p>In this guide, we discussed how to set up a Stormpath to enable your users to log in with Facebook and Google. If you have any questions, bug reports, or enhancement requests please email <a href="&#x6d;&#x61;&#x69;&#x6c;&#116;&#111;&#x3a;&#115;&#117;&#112;&#x70;&#111;&#x72;&#116;&#x40;&#x73;&#116;&#111;&#114;&#x6d;&#112;&#x61;&#116;&#104;&#x2e;&#99;&#111;&#x6d;&#x2e;">&#x73;&#x75;&#112;&#x70;&#111;&#x72;&#x74;&#x40;&#x73;&#116;&#x6f;&#x72;&#x6d;&#x70;&#97;&#x74;&#x68;&#x2e;&#x63;&#x6f;&#109;&#46;</a></p>
+
+              <div id="spread-word">
+<hr>
+
+<h2> Help Us Spread the Word </h2>
+
+<p>Did you find this valuable?  If you've enjoyed playing with Stormpath or are excited about what we've built, please help us spread the world with a quick tweet or by just telling a friend.  Thank you!</p>
+
+<!-- AddThis Button BEGIN -->
+<div class="addthis_toolbox addthis_default_style addthis_32x32_style" addthis:title="Checkout Stormpath, it helps you set up complete user management in your application in minutes."
+addthis:url="https://stormpath.com" >
+  <a class="addthis_button_twitter"></a>
+  <a class="addthis_button_reddit"></a>
+  <a class="addthis_button_hackernews"></a>
+  <a class="addthis_button_google_plusone_share"></a>
+  <a class="addthis_button_linkedin"></a>
+  <a class="addthis_button_facebook"></a>
+  <a class="addthis_button_email"></a>
+</div>
+<script type="text/javascript">var addthis_config = {"data_track_addressbar":false};</script>
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-4f5ed709512978e9"></script>
+<!-- AddThis Button END -->
+<p>
+</div>
+
+            </div>
+            <div class="col-md-12">
+              <div id="bottom-wrapper">
+               <div class="region">
+
+	<div class="credits">
+	  <div class="container">
+	    <ul class="list-unstyled list-inline">
+	      <li>Copyright &copy; 2016 Stormpath, Inc.</li>
+	      <li class="divider-vertical"></li>
+	      <li>All rights reserved</li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/privacy_policy">Privacy policy</a></li>
+	      <li class="divider-vertical"></li>
+	      <li><a href="/terms_of_service">Terms of service</a></li>
+	    </ul>
+	  </div>
+	</div>
+	
+</div><!-- /.region -->
+
+              </div>
+            </div>
+          </div>
+
+
+
+<aside class="sidebars">
+  
+    <section class="region region-sidebar-first column sidebar">
+      
+<div id="block-stormpath-docs-languages" class="block block-stormpath-docs first odd">
+ <form class="stormpath-docs-select-language" action="/docs/java/product-guide" method="post" id="stormpath-docs-language-form" accept-charset="UTF-8"><div><div class="form-item form-type-select form-item-language">
+  <label for="edit-language">Language: </label>
+ <select id="edit-language" name="language" class="form-select">
+  
+  
+ 	
+    <option value="rest">REST API</option>
+ 	
+    <option value="java">Java</option>
+ 	
+    <option value="nodejs">Node.js</option>
+ 	
+    <option value="python">Python</option>
+ 	
+    <option value="ruby">Ruby</option>
+ 	
+    <option value="guides" selected>Guides</option>
+ 	
+    <option value="console">Admin Console</option>
+ 	
+ </select>
+</div>
+<input type="hidden" name="form_id" value="stormpath_docs_language_form">
+</div></form>
+</div>
+
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	
+		sp_docs_menu['_includes'] = [];
+		
+	
+		sp_docs_menu['_layouts'] = [];
+		
+	
+		sp_docs_menu['android'] = [];
+		
+	
+		sp_docs_menu['angularjs'] = [];
+		
+	
+		sp_docs_menu['assets'] = [];
+		
+	
+		sp_docs_menu['console'] = [];
+		
+			sp_docs_menu['console'].push('product-guide');
+		
+			sp_docs_menu['console'].push('quickstart');
+		
+	
+		sp_docs_menu['csharp'] = [];
+		
+	
+		sp_docs_menu['dotnet'] = [];
+		
+	
+		sp_docs_menu['errors'] = [];
+		
+			sp_docs_menu['errors'].push('10010');
+		
+			sp_docs_menu['errors'].push('10011');
+		
+			sp_docs_menu['errors'].push('10012');
+		
+			sp_docs_menu['errors'].push('10013');
+		
+			sp_docs_menu['errors'].push('10014');
+		
+			sp_docs_menu['errors'].push('10015');
+		
+			sp_docs_menu['errors'].push('10016');
+		
+			sp_docs_menu['errors'].push('10017');
+		
+			sp_docs_menu['errors'].push('10100');
+		
+			sp_docs_menu['errors'].push('10101');
+		
+			sp_docs_menu['errors'].push('10102');
+		
+			sp_docs_menu['errors'].push('11001');
+		
+			sp_docs_menu['errors'].push('11002');
+		
+			sp_docs_menu['errors'].push('11003');
+		
+			sp_docs_menu['errors'].push('11004');
+		
+			sp_docs_menu['errors'].push('11005');
+		
+			sp_docs_menu['errors'].push('1101');
+		
+			sp_docs_menu['errors'].push('1902');
+		
+			sp_docs_menu['errors'].push('2000');
+		
+			sp_docs_menu['errors'].push('2001');
+		
+			sp_docs_menu['errors'].push('2002');
+		
+			sp_docs_menu['errors'].push('2003');
+		
+			sp_docs_menu['errors'].push('2004');
+		
+			sp_docs_menu['errors'].push('2005');
+		
+			sp_docs_menu['errors'].push('2006');
+		
+			sp_docs_menu['errors'].push('2007');
+		
+			sp_docs_menu['errors'].push('2008');
+		
+			sp_docs_menu['errors'].push('2009');
+		
+			sp_docs_menu['errors'].push('2010');
+		
+			sp_docs_menu['errors'].push('2011');
+		
+			sp_docs_menu['errors'].push('2012');
+		
+			sp_docs_menu['errors'].push('2013');
+		
+			sp_docs_menu['errors'].push('2014');
+		
+			sp_docs_menu['errors'].push('2015');
+		
+			sp_docs_menu['errors'].push('2016');
+		
+			sp_docs_menu['errors'].push('2017');
+		
+			sp_docs_menu['errors'].push('2018');
+		
+			sp_docs_menu['errors'].push('2100');
+		
+			sp_docs_menu['errors'].push('2101');
+		
+			sp_docs_menu['errors'].push('2102');
+		
+			sp_docs_menu['errors'].push('2103');
+		
+			sp_docs_menu['errors'].push('2104');
+		
+			sp_docs_menu['errors'].push('2105');
+		
+			sp_docs_menu['errors'].push('2106');
+		
+			sp_docs_menu['errors'].push('2107');
+		
+			sp_docs_menu['errors'].push('3000');
+		
+			sp_docs_menu['errors'].push('3001');
+		
+			sp_docs_menu['errors'].push('3002');
+		
+			sp_docs_menu['errors'].push('3003');
+		
+			sp_docs_menu['errors'].push('3004');
+		
+			sp_docs_menu['errors'].push('4001');
+		
+			sp_docs_menu['errors'].push('4002');
+		
+			sp_docs_menu['errors'].push('5010');
+		
+			sp_docs_menu['errors'].push('5100');
+		
+			sp_docs_menu['errors'].push('5101');
+		
+			sp_docs_menu['errors'].push('5102');
+		
+			sp_docs_menu['errors'].push('5103');
+		
+			sp_docs_menu['errors'].push('5104');
+		
+			sp_docs_menu['errors'].push('5106');
+		
+			sp_docs_menu['errors'].push('5108');
+		
+			sp_docs_menu['errors'].push('5110');
+		
+			sp_docs_menu['errors'].push('5112');
+		
+			sp_docs_menu['errors'].push('5114');
+		
+			sp_docs_menu['errors'].push('6100');
+		
+			sp_docs_menu['errors'].push('6101');
+		
+			sp_docs_menu['errors'].push('6201');
+		
+			sp_docs_menu['errors'].push('6202');
+		
+			sp_docs_menu['errors'].push('7100');
+		
+			sp_docs_menu['errors'].push('7101');
+		
+			sp_docs_menu['errors'].push('7102');
+		
+			sp_docs_menu['errors'].push('7103');
+		
+			sp_docs_menu['errors'].push('7104');
+		
+			sp_docs_menu['errors'].push('7200');
+		
+			sp_docs_menu['errors'].push('7201');
+		
+			sp_docs_menu['errors'].push('7202');
+		
+			sp_docs_menu['errors'].push('9000');
+		
+			sp_docs_menu['errors'].push('9001');
+		
+			sp_docs_menu['errors'].push('9002');
+		
+			sp_docs_menu['errors'].push('9003');
+		
+			sp_docs_menu['errors'].push('9004');
+		
+			sp_docs_menu['errors'].push('9005');
+		
+			sp_docs_menu['errors'].push('9006');
+		
+	
+		sp_docs_menu['express'] = [];
+		
+			sp_docs_menu['express'].push('quickstart');
+		
+	
+		sp_docs_menu['flask'] = [];
+		
+			sp_docs_menu['flask'].push('quickstart');
+		
+	
+		sp_docs_menu['guides'] = [];
+		
+			sp_docs_menu['guides'].push('ad-ldap');
+		
+			sp_docs_menu['guides'].push('api-key-management');
+		
+			sp_docs_menu['guides'].push('dev-test-prod-environments');
+		
+			sp_docs_menu['guides'].push('multi-tenant');
+		
+			sp_docs_menu['guides'].push('social-integrations');
+		
+			sp_docs_menu['guides'].push('token-management');
+		
+			sp_docs_menu['guides'].push('using-id-site');
+		
+	
+		sp_docs_menu['home'] = [];
+		
+	
+		sp_docs_menu['how-do-i'] = [];
+		
+	
+		sp_docs_menu['images'] = [];
+		
+	
+		sp_docs_menu['integrations'] = [];
+		
+	
+		sp_docs_menu['ios'] = [];
+		
+	
+		sp_docs_menu['java'] = [];
+		
+			sp_docs_menu['java'].push('product-guide');
+		
+			sp_docs_menu['java'].push('quickstart');
+		
+	
+		sp_docs_menu['javascripts'] = [];
+		
+	
+		sp_docs_menu['nodejs'] = [];
+		
+			sp_docs_menu['nodejs'].push('quickstart');
+		
+	
+		sp_docs_menu['php'] = [];
+		
+			sp_docs_menu['php'].push('product-guide');
+		
+			sp_docs_menu['php'].push('quickstart');
+		
+	
+		sp_docs_menu['python'] = [];
+		
+			sp_docs_menu['python'].push('product-guide');
+		
+			sp_docs_menu['python'].push('quickstart');
+		
+	
+		sp_docs_menu['rest'] = [];
+		
+			sp_docs_menu['rest'].push('api');
+		
+			sp_docs_menu['rest'].push('product-guide');
+		
+			sp_docs_menu['rest'].push('quickstart');
+		
+	
+		sp_docs_menu['ruby'] = [];
+		
+			sp_docs_menu['ruby'].push('product-guide');
+		
+			sp_docs_menu['ruby'].push('quickstart');
+		
+	
+		sp_docs_menu['sample-apps'] = [];
+		
+	
+		sp_docs_menu['stylesheets'] = [];
+		
+	
+		sp_docs_menu['vbnet'] = [];
+		
+	
+</script>
+
+
+<div id="block-stormpath-docs-docs-menu" class="block block-stormpath-docs last even">
+  
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+  
+        
+  	
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/guides/multi-tenant">Multi-Tenant SaaS Applications with Stormpath</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/using-id-site">Using ID Site</a>
+			
+			
+			</li>
+		
+			<li class="leaf active-trail">
+			
+				<a href="/guides/social-integrations">Integrating Stormpath with Facebook and Google</a>
+			
+			
+				<ul class="menu"><li class="leaf"><a href="#what-is-stormpath" data-level="0" class="fragment">What is Stormpath?</a><ul class="menu"></ul></li><li class="leaf"><a href="#why-should-i-use-stormpath-to-integrate-login-with-facebook-and-google" data-level="0" class="fragment">Why Should I Use Stormpath to Integrate Login with Facebook and Google?</a><ul class="menu"></ul></li><li class="leaf"><a href="#how-to-integrate-stormpath-with-facebook" data-level="0" class="fragment">How to Integrate Stormpath with Facebook?</a><ul class="menu"><li class="leaf"><a href="#creating-a-social-directory-for-facebook" data-level="1" class="fragment">Creating a Social Directory for Facebook</a><ul class="menu"></ul></li><li class="leaf"><a href="#mapping-the-directory-as-an-account-store-to-an-application" data-level="1" class="fragment">Mapping the Directory as an Account Store to an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-an-account-with-facebook-tokens" data-level="1" class="fragment">Accessing an Account with Facebook Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#how-to-integrate-stormpath-with-google" data-level="0" class="fragment">How to Integrate Stormpath with Google?</a><ul class="menu"><li class="leaf"><a href="#creating-a-social-directory-for-google" data-level="1" class="fragment">Creating a Social Directory for Google</a><ul class="menu"></ul></li><li class="leaf"><a href="#mapping-the-directory-as-an-account-store-to-an-application" data-level="1" class="fragment">Mapping the Directory as an Account Store to an Application</a><ul class="menu"></ul></li><li class="leaf"><a href="#accessing-an-account-with-google-tokens" data-level="1" class="fragment">Accessing an Account with Google Tokens</a><ul class="menu"></ul></li></ul></li><li class="leaf"><a href="#wrapping-up" data-level="0" class="fragment">Wrapping up</a><ul class="menu"></ul></li></ul>
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/ad-ldap">Integrating Stormpath with Active Directory and LDAP</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/dev-test-prod-environments">Setting up Development and Production Environments</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/api-key-management">Using Stormpath for API Authentication</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/guides/token-management">Using Stormpath for OAuth 2.0 and Access/Refresh Token Management</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+        
+  	
+                
+                       <div class="menu-divider"></div> 
+                
+                
+		<ul class="menu">
+		
+			<li class="leaf">
+			
+				<a href="/how-do-i">How Do I..?</a>
+			
+			
+			</li>
+		
+			<li class="leaf">
+			
+				<a href="/errors">Stormpath Error Codes</a>
+			
+			
+			</li>
+		
+		</ul>
+  	
+  
+</div>
+
+    </section>
+  
+
+  
+</aside>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  
+<script src="/javascripts/highlight.min.js"></script>
+
+<script>
+$(function() {
+   hljs.initHighlightingOnLoad();
+
+   /* javascript for codetab to stop the page from shifting when changing tabs (tab sync) */
+   var currentEventTab;
+   var initialObjectTopOffset;
+   var initialPageYOffset;
+
+   $('.tabs').tabs({
+		activate: function(event ,ui){
+
+			//if the dom event, grab the hotness 
+			if(event.cancelable){
+				currentEventTab = event.target;
+				initialObjectTopOffset = $(currentEventTab).offset().top;
+				initialPageYOffset = window.pageYOffset;
+			}
+			//change ze tab
+			$('.tabs').tabs('option', 'active', ui.newTab.index());
+
+			//grab the new offsets
+			var afterChangeOffset = $(currentEventTab).offset().top;
+			var afterPageYOffset = window.pageYOffset;
+
+			//do ze scroll
+			$('body').scrollTop(initialPageYOffset - (initialObjectTopOffset - afterChangeOffset));
+		}
+	});
+});
+</script>
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+<!-- Google Code for Remarketing tag -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1002663385;
+var google_conversion_label = "wSRZCLfkjQQQ2duN3gM";
+var google_custom_params = window.google_tag_params;
+var google_remarketing_only = true;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/1002663385/?value=0&amp;label=wSRZCLfkjQQQ2duN3gM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<!-- AdRoll Code -->
+<script type="text/javascript">
+adroll_adv_id = "RVWGHIV3GJCLHIUDNFIMNY";
+adroll_pix_id = "L2WE5KAWDRDBVP46PZZBQJ";
+(function () {
+var oldonload = window.onload;
+window.onload = function(){
+__adroll_loaded=true;
+var scr = document.createElement("script");
+var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+scr.setAttribute('async', 'true');
+scr.type = "text/javascript";
+scr.src = host + "/j/roundtrip.js";
+((document.getElementsByTagName('head') || [null])[0] ||
+document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+if(oldonload){oldonload()}};
+}());
+</script>
+
+<!-- HubSpot Analytics Code -->
+<script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+</script>
+<!-- End HubSpot Analytics Code -->
+
+<!-- CrazyEgg -->
+<script type="text/javascript">
+setTimeout(function(){var a=document.createElement("script");
+var b=document.getElementsByTagName("script")[0];
+a.src=document.location.protocol+"//dnn506yrbagrg.cloudfront.net/pages/scripts/0017/1602.js?"+Math.floor(new Date().getTime()/3600000);
+a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+</script>
+
+<!-- Perfect Audience -->
+<script type="text/javascript">
+(function() {
+window._pa = window._pa || {};
+// _pa.orderId = "";
+// _pa.revenue = "";
+var pa = document.createElement('script'); pa.type = 'text/javascript'; pa.async = true;
+pa.src = ('https:' == document.location.protocol ? 'https:' : 'http:') + "//tag.perfectaudience.com/serve/51fc2c6f1b440adfcc000099.js";
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(pa, s);
+})();
+</script>
+
+
+</body>
+</html>
