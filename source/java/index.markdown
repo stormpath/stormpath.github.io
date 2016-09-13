@@ -66,13 +66,13 @@ content_top: [docs_top.html]
             <div class="language-header lang6"></div>
             <br>
             <br>
-            <p class="body-copy">for Non-web application that are not using Spring.</p>
+            <p class="body-copy">For Non-web application that are not using Spring.</p>
             <div class="row">
               <div class="col-xs-12">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="/java/quickstart/">Quickstart</a></li>
-                  <li><i class="fa-li fa fa-book"></i><a href="/java/product-guide/latest/index.html">Documentation</a></li>
-                  <li><i class="fa-li fa fa-book"></i><a href="/java/apidocs/">API Documentation</a></li>
+                  <li><i class="fa-li fa fa-car"></i><a href="/java/product-guide/latest/quickstart.html">Quickstart</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/java/product-guide/latest/index.html">Product Guide</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/java/apidocs/">API Reference</a></li>
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-java">Project on GitHub</a></li>
                 </ul>
               </div>

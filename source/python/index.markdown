@@ -68,10 +68,10 @@ content_top: [docs_top.html]
             <div class="row">
               <div class="col-xs-12">
                 <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="/python/quickstart/">Quickstart</a></li>
-                  <li><i class="fa-li fa fa-book"></i><a href="/python/product-guide/latest/">Documentation</a></li>
+                  <li><i class="fa-li fa fa-car"></i><a href="/python/product-guide/latest/quickstart.html">Quickstart</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/python/product-guide/latest/">Product Guide</a></li>
                   {% comment %}<li><i class="fa-li fa fa-code"></i><a href="#">Example Application</a></li>{% endcomment %}
-                  <li><i class="fa-li fa fa-book"></i><a href="/python/apidocs/latest/">API Documentation</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/python/apidocs/latest/">API Reference</a></li>
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-python">Project on GitHub</a></li>
                 </ul>
               </div>
