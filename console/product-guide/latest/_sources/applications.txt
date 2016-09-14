@@ -204,8 +204,4 @@ Clicking the "OAuth Policy" link in the left-side navigation panel will bring yo
 The Application's SAML Policy
 --------------------------------------
 
-The Application's "SAML Policy" page contains the "SAML SSO Initiation Endpoint" that is used as part of the Service-Provider-initiated SAML flow. For more information about this, please see the...
-
-.. todo::
-
-  Where can they find out more about this? Presumably somewhere in this guide.
+The Application's "SAML Policy" page contains the "SAML SSO Initiation Endpoint" that is used as part of the Service-Provider-initiated SAML flow. For more information about this, please see the `REST Product Guide's Authentication chapter <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#the-service-provider-initiated-flow>`_.

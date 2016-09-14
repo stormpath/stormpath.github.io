@@ -227,4 +227,11 @@ These values are now available on this Group for your application to use as part
 Next Steps
 =========================
 
-What can you do now?
+You've just scratched the surface of what you can do with Stormpath.
+
+Want to learn more? Here are a few other helpful resources you can jump into.
+
+- Try out Stormpath in your favorite programming language with one of our language-specific `quickstarts <https://docs.stormpath.com/home/>`_. Simply choose the integration of your choice, and then click on Quickstart.
+- Learn to easily partition user data in the `Multi-Tenancy Chapter <https://docs.stormpath.com/rest/product-guide/latest/multitenancy.html#multitenancy>`__.
+- Easily support Google and Facebook Login by learning how `Social Authentication Works <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#social-authn>`__.
+- Or simply jump into the next section and learn about :ref:`the Home Page <home>`.
