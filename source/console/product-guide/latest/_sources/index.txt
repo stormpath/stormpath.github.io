@@ -16,10 +16,3 @@ Welcome to the Stormpath Admin Console Guide
    idsite
    Appendix: SAML (Service Provider Initiated) <appendix-saml>
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-

@@ -54,7 +54,7 @@ The **Navigation Pane** sits above any of the pages that you visit in the Admin 
 Support
 -------
 
-Where ever you are in the Admin Console, you will see a box that says "Questions" on the bottom right of your screen. Clicking on this will bring up a window that will allow you to submit a question to our Support team. Don't hesitate to click this if you have any questions!
+Where ever you are in the Admin Console, you will see a box that says "Questions" on the bottom right of your screen. Clicking on this will bring up a window that will allow you to submit a question to our Support team. Don't hesitate to click this!
 
 .. _home-about:
 

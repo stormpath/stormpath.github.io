@@ -127,8 +127,6 @@ Step 2: Map the Google Directory to your Application
 
 In order to enable login via Google, you must also map this Directory to one or more of your Application resources. For instructions on how to do this, please see :ref:`applications-accountstores`.
 
-Depending on what SDK or Integration you are using, further steps may also be necessary.
-
 .. note::
 
   Depending on what SDK or Integration you are using, further steps may also be necessary to fully enable Login with Google.

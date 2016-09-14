@@ -270,10 +270,6 @@ OneLogin
 
 OneLogin is compatible with both the Service Provider and Identity Provider -initiated flows. The steps are identical except where indicated.
 
-.. todo::
-
-  Which one?
-
 .. contents::
     :local:
     :depth: 1
