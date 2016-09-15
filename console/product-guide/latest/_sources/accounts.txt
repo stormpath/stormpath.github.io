@@ -143,7 +143,7 @@ Delete Accounts
 .. warning::
 
   Deleting an Account permanently and completely erases it and any of its related data from Stormpath.
-  We recommend that you disable Accounts instead of deleting them if you anticipate that you might use the Account again or if you want to retain its data for historical reference.
+  we recommend that you disable Accounts instead of deleting them if you anticipate that you might use the Account again or if you want to retain its data for historical reference.
 
 Deleting an Account is done from the `Accounts page <https://api.stormpath.com/ui2/index.html#/accounts>`__. In the "Action" column, click on **Delete**. This will bring up a confirmation dialog. Once you have read the dialog, select the "I Understand" checkbox and then click on **Delete Account**.
 

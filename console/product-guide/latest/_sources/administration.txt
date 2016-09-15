@@ -10,8 +10,8 @@ Wherever you are in the Stormpath Admin Console, you will always see the Admin M
 - :ref:`Billing page <admin-billing>`
 - :ref:`API Keys page <admin-api-keys>`
 - :ref:`Tenant Admins page <admin-adding-admins>`
-- Stormpath's Support page
-- Stormpath's Documentation page
+- Stormpath's Support page (https://support.stormpath.com/)
+- Stormpath's Documentation page (https://docs.stormpath.com/)
 
 .. _admin-subscriptions:
 

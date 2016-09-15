@@ -4,7 +4,7 @@ Getting Started
 
 This chapter will show you how to get started with some basic tasks in the Stormpath Admin Console. It assumes only that you have already signed-up for Stormpath and are able to login.
 
-Before we start, the following resources are created inside  Stormpath as soon as you register:
+Before you start, the following resources are created inside  Stormpath as soon as you register:
 
 **Two Application resources**
 
@@ -29,7 +29,7 @@ All of these resources exist within a private data space called your Tenant:
     <img src="https://docs.stormpath.com/rest/product-guide/latest/_images/default_resources.png" alt="Default Stormpath Resources">
   </p>
 
-Now that we know what exists already, you can familiarize yourself with how the Stormpath Admin Console works by creating a few additional resources yourself.
+Now that you know what exists already, you can familiarize yourself with how the Stormpath Admin Console works by creating a few additional resources yourself.
 
 Create An Application
 =====================
@@ -50,7 +50,7 @@ The `main Applications page <https://api.stormpath.com/ui2/index.html#/>`__ show
   :scale: 100%
   :alt: Create Application Button
 
-This will bring up the "Create Application" dialog. Here you can enter whatever information you want, the only mandatory field is the "Name". Be sure to keep the "Create new Directory" box checked. This means that when we create our Application, we will also create a new Directory to store all of its user Accounts.
+This will bring up the "Create Application" dialog. Here you can enter whatever information you want, the only mandatory field is the "Name". Be sure to keep the "Create new Directory" box checked. This means that when you create your Application, you will also create a new Directory to store all of its user Accounts.
 
 .. figure:: images/gettingstarted/getting_started_create_app_box.png
   :align: center
@@ -66,30 +66,30 @@ You will now be back on the main Applications page, and you will see the new App
   :scale: 100%
   :alt: Applications list view
 
-We also indicated that we wanted to create a Directory alongside this Application. There are two ways we can get to this Directory:
+You also indicated that you wanted to create a Directory alongside this Application. There are two ways you can get to this Directory:
 
-1. We can click on the "Directories" tab, where we will see it in the list of Directories.
+1. Click on the "Directories" tab, where you will see it in the list of Directories.
 
 .. figure:: images/gettingstarted/getting_started_new_dir_list.png
   :align: center
   :scale: 100%
   :alt: Directories list view
 
-2. We can click on our newly-created Application, and then click on the **Account Stores** link on the left.
+2. Click on your newly-created Application, and then click on the **Account Stores** link on the left.
 
 .. figure:: images/gettingstarted/getting_started_app_as.png
   :align: center
   :scale: 100%
   :alt: Application Account Stores
 
-Here you will see a list of all of the Directories associated with this Application. Any Directory in this list is mapped to this Application, and its users can log in to the Application. If we click on its name, we will be taken to the page for that Directory.
+Here you will see a list of all of the Directories associated with this Application. Any Directory in this list is mapped to this Application, and its users can log in to the Application. If you click on its name, you will be taken to the page for that Directory.
 
 .. figure:: images/gettingstarted/getting_started_new_dir.png
   :align: center
   :scale: 100%
   :alt: Directory main page
 
-Now that we have an Application and a Directory, we can create a Group.
+Now that you have an Application and a Directory, you can create a Group.
 
 Create an Account
 =================
@@ -112,7 +112,7 @@ On this page, click **Create Account**.
   :scale: 100%
   :alt: Create Account button
 
-This will bring up the "Create Account" dialog. For "Account Location" select the Directory we made in the previous step. For "First Name" and "Last Name" you can enter whatever you wish, but the email should be one that you control, since an email will be sent to that address inviting them to your Directory.
+This will bring up the "Create Account" dialog. For "Account Location" select the Directory you made in the previous step. For "First Name" and "Last Name" you can enter whatever you wish, but the email should be one that you control, since an email will be sent to that address inviting them to your Directory.
 
 .. figure:: images/gettingstarted/getting_started_create_accnt_box.png
   :align: center
@@ -121,9 +121,9 @@ This will bring up the "Create Account" dialog. For "Account Location" select th
 
 Once you click **Create** you will be brought to that Account's main page.
 
-Now that we have an Application, a Directory, and an Account, we can create a Group for that Account to be associated with.
+Now that you have an Application, a Directory, and an Account, you can create a Group for that Account to be associated with.
 
-Add Some Groups
+Add a Group
 ===============
 
 Groups have many uses in Stormpath, but the easiest analogy might be to think of them as labels that are applied to Accounts. These labels can indicate many different things.
@@ -150,7 +150,7 @@ The `main Groups page <https://api.stormpath.com/ui2/index.html#/>`__ shows you 
 
 This will bring up the "Create Group" dialog. First you must indicate which Directory you would like to create this Group inside. Choose the Directory that you created in the last step.
 
-For the name you can enter anything you like, but for our example we will be creating a role Group for regular, non-administrator users. When you are done entering in your information, click **Create**.
+For the name you can enter anything you like, but for this example you will be creating a role Group for regular, non-administrator users. When you are done entering in your information, click **Create**.
 
 .. figure:: images/gettingstarted/getting_started_create_group_box.png
   :align: center
@@ -176,7 +176,7 @@ On this page, click on **Add Existing Account**.
   :scale: 100%
   :alt: Add Existing Account button
 
-This will bring up the "Add Existing Accounts" dialog. Here select the Account we created in the previous step and then click **Add Accounts**.
+This will bring up the "Add Existing Accounts" dialog. Here select the Account you created in the previous step and then click **Add Accounts**.
 
 .. figure:: images/gettingstarted/getting_started_add_accnt_box.png
   :align: center
@@ -199,7 +199,7 @@ The permissions are as follows:
   "access_settings": false
   "page_crud": "disabled"
 
-To add these to our Group, you go back to the Group's main page by clicking on **Details**.
+To add these to your Group, you go back to the Group's main page by clicking on **Details**.
 
 .. figure:: images/gettingstarted/getting_started_group_details.png
   :align: center

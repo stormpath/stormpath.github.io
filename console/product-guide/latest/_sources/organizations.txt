@@ -99,7 +99,7 @@ Delete Organizations
 .. warning::
 
   Deleting an Organization permanently and completely erases it and any of its related data from Stormpath.
-  We recommend that you disable Organizations instead of deleting them if you anticipate that you might use the Organization again or if you want to retain its data for historical reference.
+  we recommend that you disable Organizations instead of deleting them if you anticipate that you might use the Organization again or if you want to retain its data for historical reference.
 
 Deleting an Organization is done from the `Organizations page <https://api.stormpath.com/ui2/index.html#/organizations>`__. In the "Action" column, click on **Delete**. This will bring up a confirmation dialog. Once you have read the dialog, select the "I Understand" checkbox and then click on **Delete Organization**.
 
