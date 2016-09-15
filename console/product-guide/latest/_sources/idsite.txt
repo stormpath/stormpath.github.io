@@ -4,6 +4,8 @@
 ID Site
 *******
 
+Stormpath ID Site is a set of hosted and pre-built user interface screens that take care of common identity functions for your applications. For a full description of what ID Site is and how it works, please see the `ID Site chapter of the REST Product Guide <https://docs.stormpath.com/rest/product-guide/latest/idsite.html>`__.
+
 ID Site Set Up
 ===================
 
@@ -302,7 +304,7 @@ Step 4: Setup DNS to point to Cloudfront
 
 You need to create a CNAME entry with your DNS provider. The source should be the domain you want to use for your ID Site, like: ``idsite.example.com``. The destination should be the assigned domain from Cloudfront, like: ``<random string>.cloudfront.net``
 
-You should now be able to browse to the CNAME you setup. If you make an HTTPS connection to this domain name at this stage, you will see a certificate error in your browser. This is because the SSL certificate bound to ``cloudfront.net`` does not match your domain name. We will resolve this in the next step.
+You should now be able to browse to the CNAME you setup. If you make an HTTPS connection to this domain name at this stage, you will see a certificate error in your browser. This is because the SSL certificate bound to ``cloudfront.net`` does not match your domain name. you will resolve this in the next step.
 
 .. figure:: images/idsite/privacy_error.png
   :align: center
@@ -314,7 +316,7 @@ You should now be able to browse to the CNAME you setup. If you make an HTTPS co
 Step 5: Install SSL Cert with Let's Encrypt
 -------------------------------------------
 
-There are any number of commercial SSL certificate providers with varying costs. For the purposes of this example, we are going to use the `Let's Encrypt <https://letsencrypt.org/>`_ service. There are two primary benefits:
+There are any number of commercial SSL certificate providers with varying costs. For the purposes of this example, you are going to use the `Let's Encrypt <https://letsencrypt.org/>`_ service. There are two primary benefits:
 
 1. Completely free SSL certificates and
 2. There's a plugin for the Let's Encrypt client that will automatically install the SSL certificate into your Cloudfront distribution.
@@ -357,7 +359,7 @@ You can verify that your SSL backed ID Site is properly configured by going to t
 
 ``https://www.ssllabs.com/ssltest/analyze.html?d=<your DNS CNAME>``
 
-To close out this section, we need to update the Cloudfront settings so that HTTP connections redirect to HTTPS.
+To close out this section, you need to update the Cloudfront settings so that HTTP connections redirect to HTTPS.
 
 #. Click on the the Cloudfront ID for your distribution to get into its settings.
 #. Click the ``Behaviors`` tab.
@@ -413,7 +415,7 @@ Let's test making a change to the ID Site content and see it in action.
     AWS_ACCESS_KEY_ID=<your AWS access key> AWS_SECRET_ACCESS_KEY=<your AWS secret> \
     aws s3 sync dist/ s3://<your bucket name>
 
-Now, we can see our change in action. You'll need to fire up an example application that uses ID Site.
+Now, you can see your change in action. You'll need to fire up an example application that uses ID Site.
 
 The screenshot below shows the ``/login`` endpoint response from ID Site:
 
@@ -422,4 +424,4 @@ The screenshot below shows the ``/login`` endpoint response from ID Site:
   :scale: 100%
   :alt: Custom login response
 
-As you can see, ID Site is using the custom domain we set up and is showing the customized content.
+As you can see, ID Site is using the custom domain you set up and is showing the customized content.

@@ -12,7 +12,7 @@ In the Service Provider (SP) -initiated flow, the user starts at your applicatio
 
 In the Identity Provider (IdP) Initiated flow, the user starts at the Identity Provider. After logging-in to the IdP, the user selects the Stormpath-enabled web application from within the IdP’s site, and is redirected to the application in an authenticated state.
 
-For more, see the `REST Product Guide <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#the-stormpath-saml-flow>`.
+For more, see the `REST Product Guide <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#the-stormpath-saml-flow>`__.
 
 **Configuring Service Provider vs Identity Provider Initiated**
 
@@ -48,7 +48,7 @@ We also provide authentication against an **Active Directory** via :ref:`ADFS SA
 Salesforce
 ^^^^^^^^^^
 
-Currently, Stormpath's Salesforce integration is only compatible with the Service Provider-initiated flow.
+Stormpath's Salesforce integration is only compatible with the Service Provider-initiated flow.
 
 .. contents::
     :local:
@@ -506,7 +506,7 @@ Every Okta application will need its own Stormpath Directory. The users for that
 
 #. Enter in the information on the "General Settings" page and then click **Next**.
 
-#. For now we will enter dummy data here, and then return later to input the actual values. For both the "Single sign on URL" and "Audience URI", enter in the dummy value ``http://example.com/``
+#. For now you will enter dummy data here, and then return later to input the actual values. For both the "Single sign on URL" and "Audience URI", enter in the dummy value ``http://example.com/``
 
 #. For the "Name ID format" select "EmailAddress".
 
@@ -716,7 +716,7 @@ You will now need to gather the following pieces of information:
 - SSO Login URL
 - SSO Logout URL
 
-Click on **Download** beside SAML Metadata, this will download ``saml2-metadata-idp.xml``, which you need to open in a text editor of your choice. We will now retrieve the above information from this XML file.
+Click on **Download** beside SAML Metadata, this will download ``saml2-metadata-idp.xml``, which you need to open in a text editor of your choice. you will now retrieve the above information from this XML file.
 
 2.1 IdP Signing Certificate
 +++++++++++++++++++++++++++
@@ -787,7 +787,7 @@ We will now input these values into the Identity Provider.
 Step 3: Configure Your Service Provider in Ping
 """""""""""""""""""""""""""""""""""""""""""""""""""
 
-Back on your Ping Application's page (where we previously downloaded the SAML Metadata), you will now enter in your Directory information:
+Back on your Ping Application's page (where you previously downloaded the SAML Metadata), you will now enter in your Directory information:
 
 #. The "Assertion Consumer Service (ACS)" is the Stormpath "Assertion Consumer Service URL" from the previous step.
 
@@ -819,7 +819,7 @@ You have now completed the initial steps of configuring login via SAML for Ping 
 Step 5: Configure Your Attribute Mappings
 """""""""""""""""""""""""""""""""""""""""
 
-When a new Account logs in via SAML, Ping sends along a number of SAML attributes. These attributes are mapped to Stormpath `Account attributes <https://docs.stormpath.com/rest/product-guide/latest/reference.html#account>`__ (such as ``givenName`` or ``email``) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step we will configure how these Ping SAML Attributes are mapped to Stormpath attributes.
+When a new Account logs in via SAML, Ping sends along a number of SAML attributes. These attributes are mapped to Stormpath `Account attributes <https://docs.stormpath.com/rest/product-guide/latest/reference.html#account>`__ (such as ``givenName`` or ``email``) and these values are either stored, if the Account is new, or updated, if the Account exists but the values are different. In this step you will configure how these Ping SAML Attributes are mapped to Stormpath attributes.
 
 4.1. Find the Existing SAML Attributes
 +++++++++++++++++++++++++++++++++++++++++++++
@@ -899,7 +899,7 @@ Step 1: Download Your Signing Certificate
 Step 2: Create your ADFS Directory in Stormpath
 """""""""""""""""""""""""""""""""""""""""""""""""
 
-First we must create a Directory in Stormpath that will mirror our ADFS users.
+ First you must create a Directory in Stormpath that will mirror your ADFS users.
 
 #. Log in to the Stormpath Admin Console: https://api.stormpath.com
 
@@ -923,12 +923,12 @@ First we must create a Directory in Stormpath that will mirror our ADFS users.
 
 #. Find and click on your Directory to enter its information page.
 
-#. On this page, in the "SAML Configuration" section, click on the **Identity Provider** tab. We will be returning here in the next step.
+#. On this page, in the "SAML Configuration" section, click on the **Identity Provider** tab. you will be returning here in the next step.
 
 Step 3: Configure Your Relying Party Trust in ADFS
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
-Now we will enter the information from the Stormpath Directory that we just created into ADFS.
+Now you will enter the information from the Stormpath Directory that you just created into ADFS.
 
 3.1. Add a Relying Party Trust
 ++++++++++++++++++++++++++++++++
@@ -939,7 +939,7 @@ Now we will enter the information from the Stormpath Directory that we just crea
 
 #. Click **Start** and make sure that "Import data about the relying party published online" is selected.
 
-#. Back in the Stormpath Admin Console, in your Directory's "Identity Provider" information, you will see a "Service Provider Metadata Link". Copy this URL into the AD FS Management "Federation metadata address" text box and click **Next**. Keep your Admin Console tab open, we will be returning to it later.
+#. Back in the Stormpath Admin Console, in your Directory's "Identity Provider" information, you will see a "Service Provider Metadata Link". Copy this URL into the AD FS Management "Federation metadata address" text box and click **Next**. Keep your Admin Console tab open, you will be returning to it later.
 
 #. Enter in whatever "Display name" that you wish, as well as any description.
 
@@ -1039,14 +1039,14 @@ Step 1: Add Your Application in Azure
 
 4. Name your application and click the right **arrow**.
 
-5. Add two temporary URLs. They can be any valid URL, since we will be changing them later. Then click the **checkmark**.
+5. Add two temporary URLs. They can be any valid URL, since you will be changing them later. Then click the **checkmark**.
 
 6. You will now arrive at your application/s main page.
 
 Step 2: Create your Azure Directory in Stormpath
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-Next we must create a Directory in Stormpath that will mirror our ADFS users. Keep your Azure window open, since you will be copying information back and forth between Azure and Stormpath.
+Next you must create a Directory in Stormpath that will mirror your ADFS users. Keep your Azure window open, since you will be copying information back and forth between Azure and Stormpath.
 
 2.1 Add the SSO Login/Logout URLs
 +++++++++++++++++++++++++++++++++
@@ -1086,14 +1086,14 @@ Next we must create a Directory in Stormpath that will mirror our ADFS users. Ke
 
 #. Find and click on your Directory to enter its information page.
 
-#. On this page, in the "SAML Configuration" section, click on the **Identity Provider** tab. We will be returning here in the next step.
+#. On this page, in the "SAML Configuration" section, click on the **Identity Provider** tab. you will be returning here in the next step.
 
 Step 3: Configure SSO in Azure
 """""""""""""""""""""""""""""""
 
 #. Back in Azure, click on **Configure** under your application's name.
 
-#. Find the "Single Sign-on" section. We will be copying various fields from your Stormpath Directory page into these fields.
+#. Find the "Single Sign-on" section. you will be copying various fields from your Stormpath Directory page into these fields.
 
 #. Set "App ID URI" as your Stormpath Directory's HREF.
 
