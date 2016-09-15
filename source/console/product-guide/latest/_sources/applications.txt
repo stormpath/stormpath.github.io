@@ -97,7 +97,7 @@ Deleting Applications
 .. warning::
 
   Deleting an Application permanently and completely erases it and any of its related data from Stormpath.
-  We recommend that you disable Applications instead of deleting them if you anticipate that you might use the Application again or if you want to retain its data for historical reference.
+  we recommend that you disable Applications instead of deleting them if you anticipate that you might use the Application again or if you want to retain its data for historical reference.
 
 Deleting an Application is done from the `Applications page <https://api.stormpath.com/ui2/index.html#/applications>`__. In the "Action" column, click on **Delete**. This will bring up a confirmation dialog. Once you have read the dialog, select the "I Understand" checkbox and then click on **Delete Application**.
 

@@ -366,7 +366,7 @@ Delete Directories
 .. warning::
 
   Deleting an Directory permanently and completely erases it and any of its related data (including all Accounts) from Stormpath.
-  We recommend that you disable Directories instead of deleting them if you anticipate that you might use the Directory again or if you want to retain its data for historical reference.
+  we recommend that you disable Directories instead of deleting them if you anticipate that you might use the Directory again or if you want to retain its data for historical reference.
 
 Deleting an Directory is done from the `Directories page <https://api.stormpath.com/ui2/index.html#/directorys>`__. In the "Action" column, click on **Delete**. This will bring up a confirmation dialog. Once you have read the dialog, select the "I Understand" checkbox and then click on **Delete Directory**.
 

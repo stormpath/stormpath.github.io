@@ -96,7 +96,7 @@ Delete Groups
 
   Deleting a Group erases the Group and all its membership relationships. User Accounts that are members of the Group will not be deleted.
 
-  We recommend that you disable a Group rather than delete it, if you believe you might need to retain the user data or application connections.
+  we recommend that you disable a Group rather than delete it, if you believe you might need to retain the user data or application connections.
 
 Deleting a Group is done from the `Groups page <https://api.stormpath.com/ui2/index.html#/groups>`__. In the "Action" column, click on **Delete**. This will bring up a confirmation dialog. Once you have read the dialog, select the "I Understand" checkbox and then click on **Delete Group**.
 

@@ -14,5 +14,5 @@ Welcome to the Stormpath Admin Console Guide
    accounts
    agents
    idsite
-   Appendix: SAML (Service Provider Initiated) <appendix-saml>
+   Appendix: SAML <appendix-saml>
 
