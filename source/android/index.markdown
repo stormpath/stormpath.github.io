@@ -31,7 +31,7 @@ content_top: [docs_top.html]
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-offset-2">
           <div class="language-header lang1">Stormpath Android SDK</div>
-          <pre><code>compile 'com.stormpath.sdk:stormpath-sdk-android:1.1.2'</code></pre>
+          <pre><code>compile 'com.stormpath.sdk:stormpath-sdk-android:1.1.3'</code></pre>
           <p class="body-copy">Android SDK</p>
             <div class="row">
               <div class="col-sm-12 visible-sm">
