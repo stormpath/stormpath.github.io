@@ -1,7 +1,10 @@
 language: python
 python: 3.5
 install: pip install awscli
-script: aws s3 sync --exclude '.git/*' --exclude '.travis.yml' --exclude '.gitignore' --exclude '.htaccess' --exclude 'CNAME' --delete . s3://docs.stormpath.com > /dev/null 2>&1
+script:
+- aws s3 sync --exclude '.git/*' --exclude '.travis.yml' --exclude '.gitignore' --exclude '.htaccess' --exclude 'CNAME' --delete . s3://docs.stormpath.com > /dev/null 2>&1
+- aws configure set preview.cloudfront true
+- aws cloudfront create-invalidation --distribution-id E3HQWE1MC4SI62 --paths '/*'
 env:
   global:
   - secure: JNKTv7zlDieWFHKiH1QSRTFUb8a0gQryL/e7MNMWSFcq17yRCgh6MHJhrlc4aqASdXmMXpHXK+7ervC/tZVEX3u794olj1UE9qDXnmS41Di+ukO6u/beRQMsz7dvhq02ALThnwX8h7kNt+SapgmUn4v6HYt58HnQrXShPaxZN44=
