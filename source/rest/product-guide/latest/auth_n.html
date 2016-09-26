@@ -245,6 +245,20 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#using-multi-factor-authentication">4.6. Using Multi-Factor Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#enrolling-an-additional-factor">4.6.1. Enrolling an Additional Factor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#adding-an-sms-factor">Adding an SMS Factor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-a-google-authenticator-factor">Adding a Google Authenticator Factor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#challenging-a-factor">4.6.2. Challenging a Factor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#challenging-after-factor-creation">Challenging After Factor Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#challenging-during-factor-creation">Challenging During Factor Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#challenging-a-factor-after-login">Challenging a Factor After Login</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="auth_z.html">5. Authorization With Stormpath</a></li>
@@ -555,6 +569,7 @@
 <li><strong>Client Credentials Grant Type</strong>: Provides the ability to exchange an API Key for an Access Token.</li>
 <li><strong>Social Grant Type:</strong> Allows you to exchange a user&#8217;s social Access Token or Authorization Code</li>
 <li><strong>Refresh Grant Type:</strong> Provides the ability to generate another Access Token based on a special Refresh Token.</li>
+<li><strong>Stormpath Factor Challenge Grant Type:</strong> Provides the ability to generate an Access Token with a Multi-Factor Authentication challenge code</li>
 </ul>
 <p>To understand how to use Token-based Authentication, you need to talk about the different types of tokens that are available. To see how to generate an OAuth token, see <a class="reference internal" href="#generate-oauth-token"><span class="std std-ref">below</span></a>.</p>
 </div>
@@ -621,14 +636,15 @@
 <p>Stormpath can generate a brand new Access Token using the above-mentioned OAuth 2.0 grant types. This means that you can generate a new Access Token with:</p>
 <ul class="simple">
 <li><strong>Client Credentials Grant Type:</strong> a client&#8217;s credentials (e.g. Client ID and Secret)</li>
-<li><strong>Password Grant Type:</strong> a user&#8217;s credentials (e.g. username and password)</li>
 <li><strong>Social Grant Type:</strong> a user&#8217;s social login Access Token or Authorization Code</li>
+<li><strong>Password Grant Type:</strong> a user&#8217;s credentials (e.g. username and password)</li>
+<li><strong>Stormpath Factor Challenge Type:</strong> a Stormpath Challenge <code class="docutils literal"><span class="pre">href</span></code> and <code class="docutils literal"><span class="pre">code</span></code></li>
 <li><strong>Refresh Grant Type:</strong> For information about using the an OAuth Refresh token <a class="reference internal" href="#refresh-oauth-token"><span class="std std-ref">see below</span></a></li>
 </ul>
 <p>Stormpath exposes an endpoint for each Application resource to support the OAuth 2.0 protocol:</p>
 <p><code class="docutils literal"><span class="pre">https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token</span></code></p>
 <p>This endpoint is used to generate an OAuth token for any valid Account or API Key associated with the specified Application. For Account&#8217;s, it uses the same validation as the <code class="docutils literal"><span class="pre">/loginAttempt</span></code> endpoint, as described in <a class="reference internal" href="#how-login-works"><span class="std std-ref">4.1.2. How Login Attempts Work in Stormpath</span></a>.</p>
-<p>The first three kinds of OAuth Grant Types differ only in what credentials are passed to Stormpath in order to generate the token. For more information on those, keep reading. For more information about the Refresh Grant Type, see <a class="reference internal" href="#refresh-oauth-token"><span class="std std-ref">below</span></a>.</p>
+<p>The first three kinds of OAuth Grant Types differ only in what credentials are passed to Stormpath in order to generate the token. The Stormpath Factor Challenge Type requires a Challenge <code class="docutils literal"><span class="pre">href</span></code> and <code class="docutils literal"><span class="pre">code</span></code> that you get as part of the <a class="reference internal" href="#mfa"><span class="std std-ref">Multi-Factor Authentication process</span></a>. For more information on those, keep reading. For more information about the Refresh Grant Type, see <a class="reference internal" href="#refresh-oauth-token"><span class="std std-ref">below</span></a>.</p>
 <div class="section" id="client-credentials">
 <h5>Client Credentials<a class="headerlink" href="#client-credentials" title="Permalink to this headline">¶</a></h5>
 <p>For the <strong>Client Credentials Grant Type</strong>, you pass the <strong>Client ID</strong> and <strong>Secret</strong>:</p>
@@ -649,6 +665,16 @@
 <h5>Password<a class="headerlink" href="#password" title="Permalink to this headline">¶</a></h5>
 <p>Finally, for the <strong>Password Grant Type</strong>, you pass the user&#8217;s <strong>username</strong> and <strong>password</strong>:</p>
 <p><code class="docutils literal"><span class="pre">grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1</span></code></p>
+</div>
+<div class="section" id="stormpath-factor-challenge">
+<h5>Stormpath Factor Challenge<a class="headerlink" href="#stormpath-factor-challenge" title="Permalink to this headline">¶</a></h5>
+<p>For this grant type, you will need:</p>
+<ul class="simple">
+<li>The <strong>URL of a Stormpath Challenge Resource</strong>. Currently, this can only be a Challenge related to an SMS Factor.</li>
+<li>And the challenge code that the user received on their phone.</li>
+</ul>
+<p><code class="docutils literal"><span class="pre">grant_type=stormpath_factor_challenge&amp;challenge=https://api.stormpath.com/v1/challenges/$CHALLENGE_ID&amp;code=123456</span></code></p>
+<p>For more information about these resources and how to obtain them, please see <a class="reference internal" href="#mfa"><span class="std std-ref">4.6. Using Multi-Factor Authentication</span></a>.</p>
 </div>
 <div class="section" id="token-generation-example">
 <h5>Token Generation Example<a class="headerlink" href="#token-generation-example" title="Permalink to this headline">¶</a></h5>
@@ -1992,6 +2018,408 @@ $ startup.sh
 </div>
 <p>For more information about what is contained in this token, please see <a class="reference internal" href="#saml-response-jwt"><span class="std std-ref">above</span></a>.</p>
 <p>At this point your user is authenticated and able to use your app.</p>
+</div>
+</div>
+</div>
+<div class="section" id="using-multi-factor-authentication">
+<span id="mfa"></span><h2>4.6. Using Multi-Factor Authentication<a class="headerlink" href="#using-multi-factor-authentication" title="Permalink to this headline">¶</a></h2>
+<p>At a minimum, an Account in Stormpath requires at least one authentication factor, which is the password. However, if you would like to include additional security then Stormpath supports the creation of additional authentication factors on an Account. Currently, the additional factors are:</p>
+<ul class="simple">
+<li>SMS message to a phone</li>
+<li>Google Authenticator</li>
+</ul>
+<p>The multi-factor authentication process works as follows with text messages:</p>
+<ol class="arabic simple">
+<li>An additional <strong>Factor</strong> of type <code class="docutils literal"><span class="pre">SMS</span></code> is added to an Account.</li>
+<li>A <strong>Challenge</strong> is created which includes a message.</li>
+<li>The message is sent to the phone number found in the Factor with a one-time numerical <strong>code</strong>.</li>
+<li>If that <strong>code</strong> is then passed back to the appropriate Challenge within a sufficient time window, you will get back either a <code class="docutils literal"><span class="pre">SUCCESS</span></code> or <code class="docutils literal"><span class="pre">FAILED</span></code> response.</li>
+</ol>
+<p>With Google Authenticator, the flow is only slightly different:</p>
+<ol class="arabic simple">
+<li>An additional <strong>Factor</strong> of type <code class="docutils literal"><span class="pre">google-authenticator</span></code> is added to an Account.</li>
+<li>The new <strong>Factor</strong> has a <strong>secret</strong> and a Base64-encoded <strong>QR code</strong>, both of which can be used to add it to the Google Authenticator app.</li>
+<li>At any time, you can send the <strong>code</strong> from the Authenticator app to Stormpath&#8217;s <code class="docutils literal"><span class="pre">/challenges</span></code> endpoint, at which point you will get back either a <code class="docutils literal"><span class="pre">SUCCESS</span></code> or <code class="docutils literal"><span class="pre">FAILED</span></code> response.</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Multi-Factor Authentication is only available with paid Stormpath plans. For more information please see <a class="reference external" href="https://stormpath.com/pricing">Stormpath&#8217;s Pricing Page</a>.</p>
+</div>
+<div class="section" id="enrolling-an-additional-factor">
+<span id="mfa-adding-factor"></span><h3>4.6.1. Enrolling an Additional Factor<a class="headerlink" href="#enrolling-an-additional-factor" title="Permalink to this headline">¶</a></h3>
+<p>Enrolling an additional authentication factor always happens separate from Account creation, so the process is the same regardless of whether you are creating a factor for an existing Account or one that was just created. For this example, we will create a new Account in Stormpath, then add an additional Factor resource to it.</p>
+<p>First, you create the Account:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4PbdleXaMPLE/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">no-cache</span>
+
+<span class="p">{</span>
+    <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Joe&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Factorman&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;factorman&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;joe.factorman@stormpath.com&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;password&quot;</span><span class="p">:</span><span class="s2">&quot;Changeme1&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="adding-an-sms-factor">
+<span id="mfa-adding-factor-sms"></span><h4>Adding an SMS Factor<a class="headerlink" href="#adding-an-sms-factor" title="Permalink to this headline">¶</a></h4>
+<p>To add an additional SMS Factor to this Account, you send a POST to that Account&#8217;s <code class="docutils literal"><span class="pre">/factors</span></code> endpoint:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accounts/5IvkjoqcYNe3TYMExample/factors</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;SMS&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;phone&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;2675555555&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You will then get back the response:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;SMS&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:34:00.881Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:34:00.881Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;verificationStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;UNVERIFIED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;challenges&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample/challenges&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;phone&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/phones/29b9PeqVcGYAelhExample&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;mostRecentChallenge&quot;</span><span class="p">:</span> <span class="kc">null</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For now the <code class="docutils literal"><span class="pre">verificationStatus</span></code> is <code class="docutils literal"><span class="pre">UNVERIFIED</span></code> and the link to the <code class="docutils literal"><span class="pre">mostRecentChallenge</span></code> is <code class="docutils literal"><span class="pre">null</span></code>. If you were to send a challenge this Factor, the <code class="docutils literal"><span class="pre">mostRecentChallenge</span></code> link would be populated. If that challenge was successful, the <code class="docutils literal"><span class="pre">verificationStatus</span></code> would change to <code class="docutils literal"><span class="pre">VERIFIED</span></code>.</p>
+<p>For more information about the Factor resource, see <a class="reference internal" href="reference.html#ref-factor"><span class="std std-ref">the Reference chapter</span></a>.</p>
+</div>
+<div class="section" id="adding-a-google-authenticator-factor">
+<span id="mfa-adding-factor-google"></span><h4>Adding a Google Authenticator Factor<a class="headerlink" href="#adding-a-google-authenticator-factor" title="Permalink to this headline">¶</a></h4>
+<p>To add an additional Google Authenticator Factor to this Account, you send a POST to that Account&#8217;s <code class="docutils literal"><span class="pre">/factors</span></code> endpoint:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accounts/5IvkjoqcYNe3TYMYExample/factors</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;google-authenticator&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;accountName&quot;</span><span class="p">:</span> <span class="s2">&quot;jakub@stormpath.com&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You will then get back the response:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/46EZpOuefEEooFlexample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;google-authenticator&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:42:57.636Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:42:57.636Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;accountName&quot;</span><span class="p">:</span> <span class="s2">&quot;jakub@stormpath.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;issuer&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;secret&quot;</span><span class="p">:</span> <span class="s2">&quot;OP7JZ[...]LAV&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;keyUri&quot;</span><span class="p">:</span> <span class="s2">&quot;otpauth://totp/jakub%40stormpath.com?secret=OP7JZ[...]LAV&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;base64QRImage&quot;</span><span class="p">:</span> <span class="s2">&quot;iVBOR[...]SuQmCC&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;verificationStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;UNVERIFIED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYExample&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;mostRecentChallenge&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;challenges&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/46EZpOuefEEooFlexample/challenges&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For more information about the Factor resource, see <a class="reference internal" href="reference.html#ref-factor"><span class="std std-ref">the Reference chapter</span></a>.</p>
+<p>The user now needs to get this information into their Google Authenticator (or <a class="reference external" href="https://www.authy.com/tutorials/how-use-authy-google-authenticator/">similar</a>) application. The easiest way to do that is to use their app to scan a QR code. Stormpath makes this easy by giving you the QR Code in the <code class="docutils literal"><span class="pre">base64QRImage</span></code> field of the Google Authenticator Factor.</p>
+<p>You can now take this string and turn it into a QR Code image in any number of ways:</p>
+<ul class="simple">
+<li>You could use the use a QR Code Library, such as <a class="reference external" href="https://davidshimjs.github.io/qrcodejs/">QRCode.js</a></li>
+<li>Or you could generate the image yourself, using an <code class="docutils literal"><span class="pre">&lt;img&gt;</span></code> tag or CSS. For examples of both, see <a class="reference external" href="https://css-tricks.com/examples/DataURIs/">here</a>.</li>
+</ul>
+<p>Once the image is generated, the user will scan it into their Authenticator app. If you ask them for a code, they will go into the app and find the code for your application. For information about what happens with this code, see <a class="reference internal" href="#mfa-challenge-after-google"><span class="std std-ref">below</span></a>.</p>
+</div>
+</div>
+<div class="section" id="challenging-a-factor">
+<span id="mfa-challenge"></span><h3>4.6.2. Challenging a Factor<a class="headerlink" href="#challenging-a-factor" title="Permalink to this headline">¶</a></h3>
+<p>At this point in the example you have a brand new Account with two additional Factors.</p>
+<p>If you were to send a GET to the Account&#8217;s <code class="docutils literal"><span class="pre">/factors</span></code> endpoint, you will see them:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYiX98vc/factors&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;SMS&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:34:00.881Z&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:34:00.881Z&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;verificationStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;UNVERIFIED&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;challenges&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample/challenges&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;phone&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/phones/29b9PeqVcGYAelhExample&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;mostRecentChallenge&quot;</span><span class="p">:</span> <span class="kc">null</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/46EZpOuefEEooFlexample&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;google-authenticator&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:42:57.636Z&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:42:57.636Z&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;accountName&quot;</span><span class="p">:</span> <span class="s2">&quot;jakub@stormpath.com&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;issuer&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="nt">&quot;secret&quot;</span><span class="p">:</span> <span class="s2">&quot;OP7JZ[...]LAV&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;keyUri&quot;</span><span class="p">:</span> <span class="s2">&quot;otpauth://totp/jakub%40stormpath.com?secret=OP7JZ[...]LAV&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;base64QRImage&quot;</span><span class="p">:</span> <span class="s2">&quot;iVBOR[...]SuQmCC&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;verificationStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;UNVERIFIED&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYExample&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;mostRecentChallenge&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="nt">&quot;challenges&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/46EZpOuefEEooFlexample/challenges&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You will now challenge each of these factors.</p>
+<div class="section" id="challenging-after-factor-creation">
+<span id="mfa-challenge-after"></span><h4>Challenging After Factor Creation<a class="headerlink" href="#challenging-after-factor-creation" title="Permalink to this headline">¶</a></h4>
+<p>This example covers challenging Factors that have already been created. To see an example of how to challenge a Factor at the same time as you are creating it, please see <a class="reference internal" href="#mfa-challenge-after"><span class="std std-ref">below</span></a>.</p>
+<div class="section" id="challenging-an-sms-factor">
+<span id="mfa-challenge-after-sms"></span><h5>Challenging an SMS Factor<a class="headerlink" href="#challenging-an-sms-factor" title="Permalink to this headline">¶</a></h5>
+<p>To challenge an SMS Factor, you send a <code class="docutils literal"><span class="pre">POST</span></code> to it, with or without specifying a message.</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/factors/3WPF5Djir0Wg5FtPoJCPbo/challenges</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">no-cache</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="s2">&quot;For the sake of example, your code is ${code}.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If you do not specify a message, then Stormpath will just send the default message: <code class="docutils literal"><span class="pre">&quot;Your</span> <span class="pre">verification</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">${code}&quot;</span></code>.</p>
+<p>In response to this POST you would get back a Challenge:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/challenges/70xfDsguePApNdnExample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:35:44.799Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:35:44.800Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;CREATED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;For the sake of example, your code is ${code}.&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;factor&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/3WPF5Djir0Wg5FtPoJCPbo&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For more information about this Challenge resource, see <a class="reference internal" href="reference.html#ref-challenge"><span class="std std-ref">the Reference chapter</span></a>.</p>
+<p>The resulting SMS would look like this:</p>
+<div class="figure align-center">
+<a class="reference internal image-reference" href="_images/challenge_message.png"><img alt="SMS Challenge Message" src="_images/challenge_message.png" style="width: 371.0px; height: 267.5px;" /></a>
+</div>
+<p>This code will remain valid for 300 seconds (5 minutes).</p>
+<p>Next, you must collect this code from the user.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The code has to be sent to the correct Challenge <code class="docutils literal"><span class="pre">href</span></code>. If your application is stateless, you could include the Challenge <code class="docutils literal"><span class="pre">href</span></code> in a hidden field on your form. If your application has a session, then you will want to attach the Challenge <code class="docutils literal"><span class="pre">href</span></code> to that session.</p>
+</div>
+<p>Once you have the code, you send it to the same Challenge you created above:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/challenges/70xfDsguePApNdnExample</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="s2">&quot;633559&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>And then you would get back the response:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:35:44.799Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:39:06.822Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/challenges/70xfDsguePApNdnExample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;For the sake of example, your code is ${code}.&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;factor&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/3WPF5Djir0Wg5FtPoJCPbo&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYiX98vc&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;SUCCESS&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If you had sent the wrong code, the <code class="docutils literal"><span class="pre">status</span></code> would instead be <code class="docutils literal"><span class="pre">FAILED</span></code>. For a full list of Challenge statuses, please see <a class="reference internal" href="reference.html#challenge-status-values"><span class="std std-ref">the Reference chapter</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You could also pass the Challenge <code class="docutils literal"><span class="pre">href</span></code> and the <code class="docutils literal"><span class="pre">code</span></code> to Stormpath and get back an OAuth 2.0 Access Token. For more information about this see <a class="reference internal" href="#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>.</p>
+</div>
+</div>
+<div class="section" id="challenging-a-google-authenticator-factor">
+<span id="mfa-challenge-after-google"></span><h5>Challenging a Google Authenticator Factor<a class="headerlink" href="#challenging-a-google-authenticator-factor" title="Permalink to this headline">¶</a></h5>
+<p>When you created the Google Authenticator Factor, you also generated a QR Code image for your user to scan into their app. Challenging this factor now only requires you to prompt to enter in the code from their Authenticator app.</p>
+<p>Unlike the SMS challenge process, the Google Authenticator challenge process does not require you to create a Challenge resource. Instead, the Challenge is created and verified in one step. For more information about the Challenge resource, see <a class="reference internal" href="reference.html#ref-challenge"><span class="std std-ref">the Reference chapter</span></a>.</p>
+<p>Once you have collected the code from the user, send a POST to the Account&#8217;s <code class="docutils literal"><span class="pre">/challenges</span></code> endpoint with a code generated by your Google Authenticator app:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/factors/4KOeu7ypRQI8Bpk2org7tk/challenges</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="s2">&quot;786393&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the code is correct, Stormpath will now simultaneously create the Challenge resource and set its status to <code class="docutils literal"><span class="pre">SUCCESS</span></code>, then return it back to you:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/challenges/EGDIpcgffklwo6HywNzTw&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:50:59.241Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:50:59.241Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYExample&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;factor&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/4KOeu7ypRQI8Bpk2org7tk&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="challenging-during-factor-creation">
+<span id="mfa-challenge-during"></span><h4>Challenging During Factor Creation<a class="headerlink" href="#challenging-during-factor-creation" title="Permalink to this headline">¶</a></h4>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For this example, we will use an SMS challenge. Challenging a Google Authenticator Factor during creation is not feasible because the user has to add the factor to their application before they can get a code.</p>
+</div>
+<p>To send a challenge at the same time as you create the phone Factor, you need to POST to the Account&#8217;s <code class="docutils literal"><span class="pre">/factors</span></code> endpoint with the additional <code class="docutils literal"><span class="pre">?challenge=true</span></code> parameter included. Then you must also add the <code class="docutils literal"><span class="pre">challenge</span></code> into the body of the JSON.</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accounts/5IvkjoqcYNe3TYMExample/factors?challenge=true</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;sms&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;phone&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;number&quot;</span><span class="p">:</span> <span class="s2">&quot;2675555555&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;challenge&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Welcome to the Example! Your authorization code is ${code}&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You are telling Stormpath to send an SMS to the phone number <code class="docutils literal"><span class="pre">267-555-5555</span></code> along with the message <code class="docutils literal"><span class="pre">&quot;Welcome</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">Example!</span> <span class="pre">Your</span> <span class="pre">authorization</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">${code}&quot;</span></code>. The placeholder <code class="docutils literal"><span class="pre">${code}</span></code> will be replaced with a one-time password generated using the HOTP algorithm.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you wanted Stormpath to send the default message, then you could just not include the <code class="docutils literal"><span class="pre">challenge</span></code> object or its <code class="docutils literal"><span class="pre">message</span></code> at all.</p>
+</div>
+</div>
+<div class="section" id="challenging-a-factor-after-login">
+<h4>Challenging a Factor After Login<a class="headerlink" href="#challenging-a-factor-after-login" title="Permalink to this headline">¶</a></h4>
+<p>The first step will be getting the user authenticated.</p>
+<p>In the case of REST, this means a <code class="docutils literal"><span class="pre">POST</span></code> to your Application resource&#8217;s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint. In this case it will be very helpful to also include <code class="docutils literal"><span class="pre">expand=account</span></code>.</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4PbdleXaMPLE/loginAttempts?expand=account</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+
+{
+  &quot;type&quot;: &quot;basic&quot;,
+  &quot;value&quot;: &quot;amFrdWIrbWZhdGVzdExamplebXBhdGguY29tOkNoYW5nZW1lMQ==&quot;
+}
+</pre></div>
+</div>
+<p>If authentication is successful, you will get back the Account:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;factorman&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;jakub+factorman@stormpath.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Joe&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Factorman&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;Joe Factorman&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;...&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;factors&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample/factors&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Next, you will need to retrieve the Account&#8217;s <code class="docutils literal"><span class="pre">factors</span></code> collection:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/accounts/5IvkjoqcYNe3TYMExample/factors</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p>Which will return:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYiX98vc/factors&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+  <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/3WPF5Djir0Wg5FtPoJCPbo&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;SMS&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:11:03.768Z&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:42:39.822Z&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;verificationStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;VERIFIED&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYiX98vc&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;challenges&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/3WPF5Djir0Wg5FtPoJCPbo/challenges&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;phone&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/phones/3WManCalQOcizNsHjeeiHk&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;mostRecentChallenge&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/challenges/6kgEJR5Cr3pNh131i7b6wm&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You would then send a POST to the <code class="docutils literal"><span class="pre">challenges</span></code> collection:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/factors/3WPF5Djir0Wg5FtPoJCPbo/challenges</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">no-cache</span>
+</pre></div>
+</div>
+<p>This would generate a new Challenge and send an SMS message to the number specified in the Factor&#8217;s Phone resource.</p>
 </div>
 </div>
 </div>
