@@ -1,0 +1,40 @@
+
+<script src="{{ root_url}}/javascripts/highlight.min.js"></script>
+
+<script>
+$(function() {
+   hljs.initHighlightingOnLoad();
+
+   /* javascript for codetab to stop the page from shifting when changing tabs (tab sync) */
+   var currentEventTab;
+   var initialObjectTopOffset;
+   var initialPageYOffset;
+
+   $('.tabs').tabs({
+		activate: function(event ,ui){
+
+			//if the dom event, grab the hotness 
+			if(event.cancelable){
+				currentEventTab = event.target;
+				initialObjectTopOffset = $(currentEventTab).offset().top;
+				initialPageYOffset = window.pageYOffset;
+			}
+			//change ze tab
+			$('.tabs').tabs('option', 'active', ui.newTab.index());
+
+			//grab the new offsets
+			var afterChangeOffset = $(currentEventTab).offset().top;
+			var afterPageYOffset = window.pageYOffset;
+
+			//do ze scroll
+			$('body').scrollTop(initialPageYOffset - (initialObjectTopOffset - afterChangeOffset));
+		}
+	});
+});
+</script>
+
+{% include disqus.html %}
+{% include facebook_like.html %}
+{% include google_plus_one.html %}
+{% include twitter_sharing.html %}
+{% include custom/after_footer.html %}

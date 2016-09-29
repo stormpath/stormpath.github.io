@@ -1,0 +1,86 @@
+---
+classes_array: [node-type-documentation]
+hide_footer: true
+left_sidebars: [asides/docs_nav.html, asides/docs_index.html]
+content_top: [docs_top.html]
+---
+{% capture root_url %}{{ site.root | strip_slash }}{% endcapture %}
+{% include head.html %}
+<body {% if page.body_id %} id="{{ page.body_id }}" {% endif %} class="not-front {% if page.classes_array %} {% for class in page.classes_array %}{{ class }}{% endfor %} {% endif %} {% unless page.has_docs_menu %} no-sidebars {% endunless %}">
+{% include page_top.html %}
+
+<script src="{{ root_url }}/javascripts/stormpath_docs.js"></script>
+<script type="text/javascript">
+	var sp_docs_menu = {};
+	{% for lang in site.docs %}
+		sp_docs_menu['{{lang[0]}}'] = [];
+		{% for page in lang[1] %}
+			sp_docs_menu['{{lang[0]}}'].push('{{page}}');
+		{% endfor %}
+	{% endfor %}
+</script>
+
+<div id="page">
+    <div class="fixed-header" id="wrap">
+      {% include custom/header.html %}
+
+      {% if page.lang == 'rest' %}
+      <div class="fixed-header" style="background-color: palegoldenrod; color: black; text-align: center; padding: 3px; margin-top: -10px;">Stormpath has new <a href="/rest/product-guide/latest/">REST documentation</a>. Feel free to send any feedback to support@stormpath.com</div>
+      {% endif %}
+      {% if page.lang == 'php' %}
+      <div class="fixed-header" style="background-color: palegoldenrod; color: black; text-align: center; padding: 3px; margin-top: -10px;">Stormpath's PHP documentation currently resides on <a href="https://github.com/stormpath/stormpath-sdk-php">Github</a>. Feel free to send any feedback to support@stormpath.com</div>
+      {% endif %}
+    </div>
+
+<!--
+  <div id="header-wrapper">
+  	<header id="header" role="banner" class="container">
+      {% include header.html %}
+    </header>
+  </div>-->
+  <div id="main-wrapper">
+    <div id="main">
+      <div id="main-inner">
+        <div id="main-inner-inner">
+          <div id="content" class="column" role="main">
+            <div class="col-md-11">
+              <a id="main-content"></a>
+              {% if page.title %}
+                <h1 class="title" id="page-title">{{ page.title }}</h1>
+              {% endif %}
+              {% include sharing.html %}
+            	{{ content | fix_docs_anchors | expand_urls: root_url }}
+              {% include spread-word.html %}
+            </div>
+            <div class="col-md-12">
+              <div id="bottom-wrapper">
+               {% include bottom.html %}
+              </div>
+            </div>
+          </div>
+
+
+{% if page.has_docs_menu %}
+<aside class="sidebars">
+  {% if page.left_sidebars %}
+    <section class="region region-sidebar-first column sidebar">
+      {% include_array left_sidebars %}
+    </section>
+  {% endif %}
+
+  {% if page.right_sidebars %}
+    <section class="region region-sidebar-second column sidebar">
+      {% include_array right_sidebars %}
+    </section>
+  {% endif %}
+</aside>
+{% endif %}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  {% include after_footer.html %}
+</body>
+</html>

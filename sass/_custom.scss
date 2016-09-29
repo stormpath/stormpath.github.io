@@ -1,0 +1,211 @@
+//
+// Custom sass mixins
+//
+// To use a mixin in this file, add this line to the top of your .scss file:
+//   @import "base";
+// Then to use a mixin for a particular rule, add this inside the ruleset's
+// curly brackets:
+//   @include mix-in-name;
+
+// element-invisible as defined by http://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+@mixin element-invisible {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  @if $legacy-support-for-ie6 or $legacy-support-for-ie7 {
+    clip: rect(1px 1px 1px 1px); // IE6 and IE7 use the wrong syntax.
+  }
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+// Turns off the element-invisible effect.
+@mixin element-invisible-off {
+  position: static !important;
+  clip: auto;
+  height: auto;
+  width: auto;
+  overflow: auto;
+}
+
+@mixin element-focusable {
+  @include element-invisible;
+
+  &:active,
+  &:focus {
+    @include element-invisible-off;
+  }
+}
+
+// The word "Unpublished" displayed underneath unpublished nodes and comments.
+@mixin unpublished-div {
+  height: 0;
+  overflow: visible;
+  color: #d8d8d8;
+  font-size: 75px;
+  line-height: 1;
+  font-family: Impact, "Arial Narrow", Helvetica, sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  word-wrap: break-word; // A very nice CSS3 property
+
+  @if $legacy-support-for-ie6 or $legacy-support-for-ie7 {
+    .lt-ie8 &>* {
+      position: relative; // Otherwise these elements will appear below the "Unpublished" text.
+    }
+  }
+}
+
+// Fonts.
+@mixin sp_font_cursive {
+  font-family: 'Covered By Your Grace II', 'Covered By Your Grace', 'Comic Sans MS', 'Comic Sans MS5', cursive;
+  letter-spacing: .07em;
+}
+
+@mixin sp_font_sans_serif {
+  font-family: 'Open Sans', Arial, sans-serif;
+}
+
+// Fix @extend deprecated warning when using sprites in media queries.
+// https://gist.github.com/brubrant/3166895
+// http://compass-style.org/reference/compass/helpers/sprites/
+@mixin get-sprite($map, $sprite, $repeat: no-repeat, $height: true, $width: true) {
+
+  //http://compass-style.org/reference/compass/helpers/sprites/#sprite-file
+  $sprite-image: sprite-file($map, $sprite);
+
+  // http://compass-style.org/reference/compass/helpers/sprites/#sprite-url
+  $sprite-map: sprite-url($map);
+
+  // http://compass-style.org/reference/compass/helpers/sprites/#sprite-position
+  $sprite-position: sprite-position($map, $sprite);
+
+  // Returns background
+  background: $sprite-map $sprite-position $repeat;
+
+  // http://compass-style.org/reference/compass/helpers/image-dimensions/
+  // Checks to see if the user wants height returned
+  @if $height == true {
+    // Gets the height of the sprite-image
+    $sprite-height: image-height($sprite-image);
+    // Returns the height
+    height: $sprite-height; }
+
+  // http://compass-style.org/reference/compass/helpers/image-dimensions/
+  // Checks to see if the user wants height returned
+  @if $width == true {
+    // Gets the width of the sprite-image
+    $sprite-width: image-width($sprite-image);
+    // Returns the width
+    width: $sprite-width; }
+}
+
+// Placeholder text.
+@mixin input-placeholder {
+  &.placeholder {
+    color: $light_grey;
+    font-style: italic;
+    font-weight: 100;
+  }
+  &:-moz-placeholder {
+    color: $light_grey;
+    font-style: italic;
+    font-weight: 100;
+  }
+  &::-webkit-input-placeholder {
+    color: $light_grey;
+    font-style: italic;
+    font-weight: 100;
+  }
+}
+
+// Add a border/shadow to an image.
+@mixin bordered-image {
+  padding: 3px;
+  background-color: $white;
+  border: solid 1px $img_border;
+  @include border-radius(2px);
+  @include box-shadow($lightest_grey 0 0 3px);
+}
+
+@mixin fancy-button($border-radius, $padding, $font-size, $first-color, $second-color, $text-color: #fff) {
+  @include box-sizing(border-box);
+  @include sassy-button-structure(
+    $border-radius: $border-radius,
+    $padding: $padding,
+    $font-size: $font-size
+  );
+  @include sassy-button-gradient(
+    $style: 'simple',
+    $base-color: $first-color,
+    $second-color: $second-color,
+    $text-color: $text-color
+  );
+  color: $text-color !important;
+  &:hover {
+    color: $text-color !important;
+  }
+}
+
+@mixin small-fancy-button($first-color, $second-color, $text-color: #fff, $padding: 1px 24px 3px) {
+  @include fancy-button(
+    $border-radius: 4px,
+    $padding: $padding,
+    $font-size: 116%,
+    $first-color: $first-color,
+    $second-color: $second-color,
+    $text-color: $text-color
+  );
+}
+
+@mixin sp-pattern($image-url, $opacity: 1) {
+  position: relative;
+    &:after {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include opacity($opacity);
+    background: $image-url left top repeat;
+  }
+}
+
+//--------------------------------
+// Photoshop Drop Shadow
+//--------------------------------
+@mixin photoshop-drop-shadow ($angle: 0, $distance: 0, $spread: 0, $size: 0, $color: #000, $inner: false) {
+  $angle: (180 - $angle) * pi() / 180; // convert to radians
+  $h-shadow: round(cos($angle) * $distance);
+  $v-shadow: round(sin($angle) * $distance);
+  $css-spread: $size * $spread/100;
+  $blur: ($size - $css-spread);
+  $inset: if($inner != false, 'inset', '');
+
+  @include box-shadow($h-shadow $v-shadow $blur $css-spread $color unquote($inset));
+}
+
+
+//--------------------------------
+// Photoshop Inner Shadow
+//--------------------------------
+@mixin photoshop-inner-shadow ($angle: 0, $distance: 0, $spread: 0, $size: 0, $color: #000) {
+  @include photoshop-drop-shadow ($angle, $distance, $spread, $size, $color, true);
+}
+
+//--------------------------------
+// Photoshop Text Shadow
+//--------------------------------
+@mixin photoshop-text-shadow ($angle: 0, $distance: 0, $spread: 0, $size: 0, $color: #000) {
+  // NOTE: $spread has no effect for text shadows
+  $angle: (180 - $angle) * pi() / 180;
+  $h-shadow: round(cos($angle) * $distance);
+  $v-shadow: round(sin($angle) * $distance);
+  $css-spread: $size * $spread/100;
+  $blur: ($size - $css-spread);
+
+  @include text-shadow($h-shadow $v-shadow $blur $color);
+}

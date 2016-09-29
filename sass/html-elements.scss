@@ -1,0 +1,554 @@
+// General HTML-element styling.
+@import "base";
+
+// Covered By Your Grace font face.
+@include font-face("Covered By Your Grace II", font-files('CoveredByYourGrace.ttf'));
+
+body {
+  color: $light_grey;
+  line-height: 1.5;
+  @include sp_font_sans_serif;
+  background-color: #fff;
+}
+
+a, a:link {
+  /*color: $blue;*/
+  text-decoration: none;
+
+  &.orange {
+    color: $orange;
+  }
+}
+a:focus, a:hover, a.visited {
+  color: $blue-highlight;
+
+  &.orange {
+    color: #2c9eee;
+  }
+}
+
+// Headers.
+h1 {
+  color: $dark_grey;
+  font-size: 260%;
+  font-weight: 400;
+  line-height: 125%;
+}
+
+h2 {
+  color: $dark_grey;
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 125%;
+  margin: 0.5em 0;
+
+  &.title {
+    color: $black;
+  }
+}
+
+h3 {
+  color: $black;
+  font-size: 127%;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 125%;
+  margin: .5em 0;
+}
+
+h4 {
+  color: $orange;
+  font-size: 163%;
+  font-weight: normal;
+  @include sp_font_cursive;
+  line-height: 125%;
+  margin: .5em 0;
+}
+
+h5 {
+  font-size: 100%;
+  margin: .5em 0;
+}
+
+h6 {
+  font-size: 90%;
+  margin: .5em 0;
+}
+
+p {
+  margin: 0 0 1.5em;
+}
+
+blockquote {
+  position: relative;
+  padding: 42px;
+  margin: 20px;
+  font-size: 142%;
+  line-height: 1.5;
+
+  &:before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 33px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  &:after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 33px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  cite,
+  footer {
+    text-align: right;
+    font-size: .8em;
+    margin-top: .75em;
+    font-style: italic;
+
+    a {
+      text-decoration: none;
+
+      &:focus, &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+dt {
+  font-weight: bold;
+}
+
+ul li {
+  list-style-image: image-url('disc-blue.png');
+  padding-left: 5px;
+}
+
+table {
+  width: 100%;
+}
+
+th, tr.header td {
+  background-color: $td_even;
+  color: $black;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+tr, tr.odd, tr.even {
+  border-bottom: none;
+}
+tr.even td,
+tr:nth-child(2n) td,
+// Support legacy table classes.
+tr.sub-header:nth-child(2n+1) td {
+  background-color: $td_even;
+}
+tr.odd td,
+tr:nth-child(2n+1) td,
+// Support legacy table classes.
+tr.sub-header:nth-child(2n) td {
+  background-color: $td_odd;
+}
+th, td {
+  padding: 0.5em 1em;
+  border-right: solid 4px $td_even;
+}
+
+.blue {
+  color: $blue;
+}
+
+.orange {
+  color: $orange;
+}
+
+.small-green-button {
+  @include fancy-button(
+    $border-radius: 4px,
+    $padding: .1em 1.5em,
+    $font-size: 1em,
+    $first-color: #91c721,
+    $second-color: #548b1c,
+    $text-color: #fff
+  );
+}
+
+.medium-green-button {
+  @include fancy-button(
+    $border-radius: 5px,
+    $padding: 10px 28px 12px,
+    $font-size: 19px,
+    $first-color: #91c721,
+    $second-color: #548b1c,
+    $text-color: #fff
+  );
+  font-weight: 500;
+}
+
+.large-green-button {
+  @include fancy-button(
+    $border-radius: 10px,
+    $padding: .4em 2em,
+    $font-size: 2em,
+    $first-color: #91c721,
+    $second-color: #548b1c,
+    $text-color: #fff
+  );
+  font-weight: 600;
+}
+
+.small-blue-button {
+  @include fancy-button(
+    $border-radius: 4px,
+    $padding: .1em 1.5em,
+    $font-size: 1em,
+    $first-color: #2289dd,
+    $second-color: #0c61a7,
+    $text-color: #fff
+  );
+}
+
+.medium-blue-button {
+  @include fancy-button(
+    $border-radius: 5px,
+    $padding: 10px 28px 12px,
+    $font-size: 19px,
+    $first-color: #2289dd,
+    $second-color: #0c61a7,
+    $text-color: #fff
+  );
+  font-weight: 500;
+}
+
+.large-blue-button {
+  @include fancy-button(
+    $border-radius: 10px,
+    $padding: .4em 2em,
+    $font-size: 2em,
+    $first-color: #2289dd,
+    $second-color: #0c61a7,
+    $text-color: #fff
+  );
+  font-weight: 600;
+}
+
+table.pricing {
+  border-collapse: separate;
+  border-spacing: 20px 0;
+  width: 100%;
+  margin: 0 -20px;
+  td, th {
+    border: 0;
+    height: 100%;
+    padding: 0.5em 1em;
+  }
+  tr, td, th {
+    height: 100%;
+  }
+  tr.sub-header:nth-child(2n + 1) td.col1 > span {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    &:after {
+      content: "";
+      display: inline-block;
+      height: 100%;
+      width: 20px;
+      padding: 7px 0;
+      background: #f4f4f4;
+      position: absolute;
+      top: -7px;
+      right: -34px;
+    }
+  }
+  thead,
+  tr.header {
+    th {
+      background: none;
+      font: {
+        size: 15px;
+        weight: 500;
+      }
+      color: #fff;
+      text-align: center;
+      text-transform: none;
+      &.col1 {
+        @include element-invisible();
+      }
+      &.col2,
+      &.col3,
+      &.col4,
+      &.col5,
+      &.col6,
+      &.col7,
+      &.col8 {
+        width: 116px;
+        padding: 0 10px;
+        &:last-child {
+          padding-right: 0;
+        }
+        text-align: center;
+        width: 114px;
+        height: auto;
+        padding: 10px;
+        background: #767776;
+        border: 1px solid rgba(59, 59, 59, 0.71);
+        @include border-radius(3px 3px 0 0);
+        @include box-shadow(0px 1px 0px 0px rgb(202, 203, 202) inset);
+      }
+    }
+  }
+  tbody {
+    tr, tr.odd, tr.even {
+      border-bottom: none;
+    }
+    tr.even td,
+    tr:nth-child(2n) td,
+    // Support legacy table classes.
+    tr.sub-header:nth-child(2n + 1) td {
+      background-color: #f4f4f4;
+    }
+    tr.odd td,
+    tr:nth-child(2n+1) td,
+    // Support legacy table classes.
+    tr.sub-header:nth-child(2n) td {
+      background-color: #fff;
+    }
+    tr.sub-header:nth-child(2n + 1) td {
+
+    }
+    tr.app-pricing td {
+      font: {
+        size: 15px;
+        weight: 600;
+      }
+      color: #666;
+      &.col1 {
+        font-weight: normal;
+      }
+      &.col1,
+      &.col2,
+      &.col3,
+      &.col4 {
+        line-height: 4;
+      }
+      &.col5 {
+        a {
+          @include small-fancy-button(#2289dd, #0c61a7, #fff);
+          font: {
+            size: 13px;
+            weight: 600;
+          }
+          color: #fff;
+          padding-left: 18px;
+          padding-right: 18px;
+          margin-top: 5px;
+        }
+      }
+    }
+    td {
+      font: {
+        size: 14px;
+        weight: normal;
+      }
+      color: #666;
+      text-align: center;
+      &.col1 {
+        text-align: left;
+      }
+      &.col2,
+      &.col3,
+      &.col4,
+      &.col5,
+      &.col6,
+      &.col7,
+      &.col8 {
+        width: 114px;
+        padding: 0 10px;
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #ababab;
+        border-width: 0 1px;
+        @include photoshop-drop-shadow(90, 1px, 0, 3px, rgba(0, 0, 0, 0.18));
+
+      }
+    }
+    tr:last-child td {
+      &.col2,
+      &.col3,
+      &.col4,
+      &.col5,
+      &.col6,
+      &.col7,
+      &.col8 {
+        border-width: 0 1px 1px;
+        @include border-radius( 0 0 3px 3px);
+        @include photoshop-drop-shadow(90, 1px, 0, 3px, rgba(0, 0, 0, 0.18));
+      }
+    }
+  }
+  .check span {
+    display: inline-block;
+    width: 20px;
+    height: 18px;
+  }
+}
+
+.stormpath-fancy-select {
+  font-size: 17px;
+  text-align: left;
+  overflow: hidden;
+  color: #414141;
+  @include text-shadow(0 1px 0 white);
+  position: relative;
+  display: inline-block;
+  padding: 0 40px 0 20px;
+  height: 42px;
+  line-height: 42px;
+  border: 1px solid #373737;
+  @include border-radius(5px 0 0 5px);
+  background: #bebebe;
+  @include background-image(linear-gradient(white, #bebebe));
+  cursor: pointer;
+  outline: none;
+  &:after {
+    content: "";
+    @include triangle(bottom, 16px, 10px, #565656);
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+  > span {
+    cursor: pointer;
+    display: block;
+    height: 42px;
+    &.selected,
+    &:hover {
+      font-size: 17px;
+      color: #0d92dc;
+    }
+    &.first:hover {
+      color: #414141;
+    }
+  }
+  &.focused {
+    overflow: visible;
+    height: 100% !important;
+    background: #fcfcfc;
+    border-color: #565656;
+    @include border-radius(5px 0 5px 5px);
+  }
+}
+
+.docs-note,
+.docs-warning,
+.docs-info,
+.docs-tip {
+  display: block;
+  padding: 10px 41px 5px 10px;
+  margin: 0 0 1em;
+  @include border-radius(4px);
+  border-style: solid;
+  border-width: 1px;
+  position: relative;
+  &:before {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 20px;
+    height: 100%;
+    padding-left: 40px;
+    font-weight: 600;
+  }
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.docs-note {
+  background-color: #fffdd6;
+  border-color: #ecd67f;
+  padding-left: 92px;
+  &:before {
+    content: "Note:";
+    color: #a77200;
+    background: image-url('icons/docs-note.png') 20px 5px no-repeat;
+    min-width: 42px;
+  }
+}
+
+.docs-warning {
+  background-color: #fceee8;
+  border-color: #efb39f;
+  padding-left: 118px;
+  &:before {
+    color: #dc5125;
+    content: "Warning:";
+    background: image-url('icons/docs-warn.png') 18px 4px no-repeat;
+    min-width: 64px;
+  }
+}
+
+.docs-info {
+  background-color: #eef7ff;
+  border-color: #9cc7ec;
+  padding-left: 92px;
+  &:before {
+    color: #008bc9;
+    content: "Info:";
+    background: image-url('icons/docs-info.png') 18px 3px no-repeat;
+    min-width: 42px;
+  }
+}
+
+.docs-tip {
+  background-color: #edfaf1;
+  border-color: #9cd6a6;
+  padding-left: 92px;
+  &:before {
+    content: "Tips:";
+    color: #009850;
+    background: image-url('icons/docs-tip.png') 20px 2px no-repeat;
+    min-width: 42px;
+  }
+}
+
+.element-invisible {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px);
+  clip: rect(1px, 1px, 1px, 1px);
+  overflow: hidden;
+  height: 1px;
+}
+
+a.anchor {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  float: left;
+  top: -80px;
+}
+
+h2 a {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  float: left;
+  top: -80px;
+}
+
+h3 a, h4 a, h5 a {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  float: left;
+  top: -80px;
+}
