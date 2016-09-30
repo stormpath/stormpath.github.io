@@ -15,16 +15,16 @@ alias: [/index.html]
         <p>It’s easy to get started with Stormpath using one of our language libraries or framework integrations. Check out one of the official SDKs or community repos below.  If your platform isn't listed, you can always use the core REST API with any platform.</p>
         <div class="row">
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/nodejs/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-node.jpg"></a>
+            <a href="/nodejs/"><img class="img" src="/images/landingpage/homepage/buttons-homepage-node.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/java/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-java.jpg"></a>
+            <a href="/java/"><img class="img" src="/images/landingpage/homepage/buttons-homepage-java.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="https://github.com/stormpath/stormpath-sdk-angularjs/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-angular.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/python/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-python.jpg"></a>
+            <a href="/python/"><img class="img" src="/images/landingpage/homepage/buttons-homepage-python.jpg "></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="/ruby/quickstart/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-ruby.jpg"></a>
