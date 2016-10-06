@@ -4,7 +4,6 @@ classes_array: [page-docs]
 description: Stormpath User Management official documentation. API docs in REST, Node.js, Java and Python plus feature guides.
 title: Documentation
 content_top: [docs_top.html]
-alias: [/home]
 ---
 
 <div class="homepage">
