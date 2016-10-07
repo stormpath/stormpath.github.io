@@ -1,4 +1,4 @@
 ---
 layout: redirect
-redirect_url: /
+redirect_url: /?cache=busted
 ---
