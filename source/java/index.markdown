@@ -35,7 +35,7 @@ content_top: [docs_top.html]
             <p class="body-copy">For Spring Boot web applications.</p>
             <div class="row">
               <div class="col-xs-12">
-                <ul class="pe-li"">
+                <ul class="pe-ul"">
                   <li><i class="pe-li pe-7s-angle-right"></i><a href="/java/spring-boot-web/quickstart.html">Quickstart</a></li>
                   <li><i class="fa-li fa fa-lock"></i><a href="/java/spring-boot-web/tutorial.html">Tutorial</a></li>
                   <li><i class="fa-li fa fa-book"></i><a href="/java/spring-boot-web/">Documentation</a></li>
