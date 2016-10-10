@@ -33,30 +33,36 @@ content_top: [docs_top.html]
             <div id="lang-contents" class="lang1">
              <h3 class="lang-contents-title">Flask</h3>
              </div>
-            <div class="use-case">
+            
+
+          <pre><code>$ pip install Flask-Stormpath</code></pre>
+          <div class="use-case">
 
            <p class="lang-copy bg-info">For Flask-based web applications.</p></div>
            </div>
-
-          <pre>$ pip install Flask-Stormpath</pre>
             <div class="row">
               <div class="col-xs-12 lang-list">
                 <ul class="lang-contents-list">
-                  <li><a href="https://flask-stormpath.readthedocs.org/en/latest/quickstart.html">Quickstart</a></li>
-                  <li><a href="https://flask-stormpath.readthedocs.org/en/latest/index.html">Documentation</a></li>
-                  <li><a href="https://github.com/stormpath/stormpath-flask-sample">Example Application</a></li>
-                  <li><a href="https://github.com/stormpath/stormpath-flask">Project on GitHub</a></li>
+                   <li class="lang-list-item"><a href="https://flask-stormpath.readthedocs.org/en/latest/quickstart.html">Quickstart</a></li>
+                   <li class="lang-list-item"><a href="https://flask-stormpath.readthedocs.org/en/latest/index.html">Documentation</a></li>
+                  <li class="lang-list-item"><a href="https://github.com/stormpath/stormpath-flask-sample">Example Application</a></li>
+                  <li class="lang-list-item"><a href="https://github.com/stormpath/stormpath-flask">Project on GitHub</a></li>
                 </ul>
               </div>
             </div>
         </div>
-        <div class="col-xs-12 col-sm-6">
-          <div class="language-header lang2"></div>
+        <div class="col-sm-6">
+          <div id="lang-contents" class="lang2"><h3 class="lang-contents-title">Django</h3>
+            </div>
+            <br>
+            </div>
+
           <pre><code>$ pip install django-stormpath</code></pre>
-          <p class="body-copy">For Django-based web applications.</p>
+          <div class="use-case">
+            <p class="lang-copy">For Django-based web applications.</p></div>
             <div class="row">
               <div class="col-xs-12">
-                <ul class="fa-ul">
+                <ul class="lang-contents-list">
                   {% comment %}<li><a href="#">Quickstart</a></li>{% endcomment %}
                   <li><a href="https://github.com/stormpath/stormpath-django">Documentation</a></li>
                   <li><a href="https://github.com/stormpath/stormpath-django-sample">Example Application</a></li>
@@ -67,18 +73,24 @@ content_top: [docs_top.html]
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12 col-sm-6">
-          <div class="language-header lang3"></div>
+        <div class="col-sm-6">
+<div id="lang-contents" class="lang3">
           <pre><code>$ pip install -U stormpath</code></pre>
-          <p class="body-copy">For any other type of Python application.</p>
+             <h3 class="lang-contents-title">Python SDK</h3>
+            </div>
+            <br>
+       <div class="use-case">
+
+          <p class="lang-copy">For any other type of Python application.</p>
+          </div>
             <div class="row">
               <div class="col-xs-12">
                 <ul class="lang-contents-list">
-                  <li><a href="/python/product-guide/latest/quickstart.html">Quickstart</a></li>
-                  <li><a href="/python/product-guide/latest/">Product Guide</a></li>
+                  <li class= "lang-list-item"><a href="/python/product-guide/latest/quickstart.html">Quickstart</a></li>
+                  <li class= "lang-list-item"><a href="/python/product-guide/latest/">Product Guide</a></li>
                   {% comment %}<li><a href="#">Example Application</a></li>{% endcomment %}
-                  <li><a href="/python/apidocs/latest/">API Reference</a></li>
-                  <li><a href="https://github.com/stormpath/stormpath-sdk-python">Project on GitHub</a></li>
+                  <li class= "lang-list-item"><a href="/python/apidocs/latest/">API Reference</a></li>
+                  <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-python">Project on GitHub</a></li>
                 </ul>
               </div>
             </div>
