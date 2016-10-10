@@ -31,8 +31,9 @@ content_top: [docs_top.html]
               <h3 class="lang-contents-title">Spring Boot Web</h3>
             </div>
             <br>
-            <br>
+            <div class="use-case">
             <p class="lang-copy">For Spring Boot web applications.</p>
+            </div>
             <div class="row">
               <div class="col-xs-12 lang-list">
                 <ul class="lang-contents-list"">
@@ -50,8 +51,9 @@ content_top: [docs_top.html]
               <h3 class="lang-contents-title">Java Servlet</h3>
             </div>
             <br>
-            <br>
+            <div class="use-case">
             <p class="lang-copy">For traditional web applications that do not use Spring.</p>
+            </div>
             <div class="row">
               <div class="col-xs-12">
                 <ul class="fa-ul">
@@ -72,10 +74,13 @@ content_top: [docs_top.html]
             </div>
             <br>
             <br>
+            <div class="use-case">
+
             <p class="lang-copy">For Apache Shiro based web applications.</p>
+            </div>
             <div class="row">
               <div class="col-xs-12">
-                <ul class="fa-ul">
+                <ul class="pe-li">
                   <li><a href="/java/shiro-servlet-plugin/quickstart.html">Quickstart</a></li>
                   <li><a href="/java/shiro-servlet-plugin/tutorial.html">Tutorial</a></li>
                   <li><a href="/java/shiro-servlet-plugin/">Documentation</a></li>
@@ -92,8 +97,9 @@ content_top: [docs_top.html]
 
             </div>
             <br>
-            <br>
-            <p class="body-copy">For Non-web application that are not using Spring.</p>
+            <div class="use-case">
+              <p class="lang-copy">For Non-web application that are not using Spring.</p>
+            </div>
             <div class="row">
               <div class="col-xs-12">
                 <ul class="pe-li">
