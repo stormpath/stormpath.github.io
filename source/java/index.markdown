@@ -27,15 +27,15 @@ content_top: [docs_top.html]
       <div class="col-xs-12 col-sm-12">
         <div class="row">
           <div class="col-xs-6">
-            <div class="lang1 lang-table-of-contents">
-              <h3 class="lang-table-of-contents-title">Spring Boot Web</h3>
+            <div id="lang-contents" class="lang1">
+              <h3 class="lang-contents-title">Spring Boot Web</h3>
             </div>
             <br>
             <br>
-            <p class="body-copy">For Spring Boot web applications.</p>
+            <p class="lang-copy">For Spring Boot web applications.</p>
             <div class="row">
-              <div class="col-xs-12">
-                <ul class="pe-ul"">
+              <div class="col-xs-12 lang-list">
+                <ul class="lang-contents-list"">
                   <li><i class="pe-li pe-7s-angle-right"></i><a href="/java/spring-boot-web/quickstart.html">Quickstart</a></li>
                   <li><i class="fa-li fa fa-lock"></i><a href="/java/spring-boot-web/tutorial.html">Tutorial</a></li>
                   <li><i class="fa-li fa fa-book"></i><a href="/java/spring-boot-web/">Documentation</a></li>
@@ -46,10 +46,12 @@ content_top: [docs_top.html]
             </div>
           </div>
           <div class="col-xs-6">
-            <div class="language-header lang5"></div>
+            <div id="lang-contents" class="lang5">
+              <h3 class="lang-contents-title">Java Servlet</h3>
+            </div>
             <br>
             <br>
-            <p class="body-copy">For traditional web applications that do not use Spring.</p>
+            <p class="lang-copy">For traditional web applications that do not use Spring.</p>
             <div class="row">
               <div class="col-xs-12">
                 <ul class="fa-ul">
