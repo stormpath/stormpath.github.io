@@ -35,8 +35,8 @@ content_top: [docs_top.html]
             <p class="body-copy">For Spring Boot web applications.</p>
             <div class="row">
               <div class="col-xs-12">
-                <ul class="lang-table-of-contents-list"">
-                  <li><i class="fa-li fa fa-car"></i><a href="/java/spring-boot-web/quickstart.html">Quickstart</a></li>
+                <ul class="pe-li"">
+                  <li><i class="pe-li pe-7s-angle-right"></i><a href="/java/spring-boot-web/quickstart.html">Quickstart</a></li>
                   <li><i class="fa-li fa fa-lock"></i><a href="/java/spring-boot-web/tutorial.html">Tutorial</a></li>
                   <li><i class="fa-li fa fa-book"></i><a href="/java/spring-boot-web/">Documentation</a></li>
                   <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/examples/spring-boot-default">Example Application</a></li>
@@ -88,8 +88,8 @@ content_top: [docs_top.html]
             <p class="body-copy">For Non-web application that are not using Spring.</p>
             <div class="row">
               <div class="col-xs-12">
-                <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="/java/product-guide/latest/quickstart.html">Quickstart</a></li>
+                <ul class="pe-li">
+                  <li><i class="pe-li pe-7s-angle-right"></i><a href="/java/product-guide/latest/quickstart.html">Quickstart</a></li>
                   <li><i class="fa-li fa fa-book"></i><a href="/java/product-guide/latest/index.html">Product Guide</a></li>
                   <li><i class="fa-li fa fa-book"></i><a href="/java/apidocs/">API Reference</a></li>
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-java">Project on GitHub</a></li>
