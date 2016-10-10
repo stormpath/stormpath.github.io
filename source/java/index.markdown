@@ -29,19 +29,21 @@ content_top: [docs_top.html]
           <div class="col-xs-6">
             <div id="lang-contents" class="lang1">
               <h3 class="lang-contents-title">Spring Boot Web</h3>
+              <hr>
             </div>
             <br>
+            <
             <div class="use-case">
             <p class="lang-copy">For Spring Boot web applications.</p>
             </div>
             <div class="row">
               <div class="col-xs-12 lang-list">
-                <ul class="lang-contents-list"">
-                  <li><a href="/java/spring-boot-web/quickstart.html">Quickstart</a></li>
-                  <li><a href="/java/spring-boot-web/tutorial.html">Tutorial</a></li>
-                  <li><a href="/java/spring-boot-web/">Documentation</a></li>
-                  <li><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/examples/spring-boot-default">Example Application</a></li>
-                  <li><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/extensions/spring/boot">Project on GitHub</a></li>
+                <ul class="lang-contents-list">
+                  <li class="lang-list-item"><a href="/java/spring-boot-web/quickstart.html">Quickstart</a></li>
+                  <li class= "lang-list-item"><a href="/java/spring-boot-web/tutorial.html">Tutorial</a></li>
+                  <li class= "lang-list-item"><a href="/java/spring-boot-web/">Documentation</a></li>
+                  <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/examples/spring-boot-default">Example Application</a></li>
+                  <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/extensions/spring/boot">Project on GitHub</a></li>
                 </ul>
               </div>
             </div>
@@ -56,12 +58,12 @@ content_top: [docs_top.html]
             </div>
             <div class="row">
               <div class="col-xs-12">
-                <ul class="fa-ul">
-                  <li><a href="/java/servlet-plugin/quickstart.html">Quickstart</a></li>
-                  <li><a href="/java/servlet-plugin/">Documentation</a></li>
-                  <li><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/examples/servlet">Example Application</a></li>
-                  <li><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/extensions/servlet">Project on GitHub</a></li>
-                  <li><a href="https://stormpath.com/blog/java-webapp-instant-user-management/">Tutorial</a></li>
+                <ul class="lang-contents-list">
+                  <li class="lang-list-item"><a href="/java/servlet-plugin/quickstart.html">Quickstart</a></li>
+                  <li class= "lang-list-item"><a href="/java/servlet-plugin/">Documentation</a></li>
+                  <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/examples/servlet">Example Application</a></li>
+                  <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/extensions/servlet">Project on GitHub</a></li>
+                  <li class= "lang-list-item"><a href="https://stormpath.com/blog/java-webapp-instant-user-management/">Tutorial</a></li>
                 </ul>
               </div>
             </div>
@@ -80,12 +82,12 @@ content_top: [docs_top.html]
             </div>
             <div class="row">
               <div class="col-xs-12">
-                <ul class="pe-li">
-                  <li><a href="/java/shiro-servlet-plugin/quickstart.html">Quickstart</a></li>
-                  <li><a href="/java/shiro-servlet-plugin/tutorial.html">Tutorial</a></li>
-                  <li><a href="/java/shiro-servlet-plugin/">Documentation</a></li>
-                  <li><a href="https://github.com/stormpath/stormpath-shiro/tree/master/examples/servlet">Example Applications</a></li>
-                  <li><a href="https://github.com/stormpath/stormpath-shiro/tree/master/extensions/servlet-plugin">Project on GitHub</a></li>
+                <ul class="lang-contents-list">
+                  <li class= "lang-list-item"><a href="/java/shiro-servlet-plugin/quickstart.html">Quickstart</a></li>
+                  <li class= "lang-list-item"><a href="/java/shiro-servlet-plugin/tutorial.html">Tutorial</a></li>
+                  <li class= "lang-list-item"><a href="/java/shiro-servlet-plugin/">Documentation</a></li>
+                  <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-shiro/tree/master/examples/servlet">Example Applications</a></li>
+                  <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-shiro/tree/master/extensions/servlet-plugin">Project on GitHub</a></li>
                 </ul>
               </div>
             </div>
@@ -102,11 +104,11 @@ content_top: [docs_top.html]
             </div>
             <div class="row">
               <div class="col-xs-12">
-                <ul class="pe-li">
-                  <li><a href="/java/product-guide/latest/quickstart.html">Quickstart</a></li>
-                  <li><a href="/java/product-guide/latest/index.html">Product Guide</a></li>
-                  <li><a href="/java/apidocs/">API Reference</a></li>
-                  <li><a href="https://github.com/stormpath/stormpath-sdk-java">Project on GitHub</a></li>
+                <ul class="lang-contents-list">
+                  <li class= "lang-list-item"><a href="/java/product-guide/latest/quickstart.html">Quickstart</a></li>
+                  <li class= "lang-list-item"><a href="/java/product-guide/latest/index.html">Product Guide</a></li>
+                  <li class= "lang-list-item"><a href="/java/apidocs/">API Reference</a></li>
+                  <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-java">Project on GitHub</a></li>
                 </ul>
               </div>
             </div>
@@ -122,7 +124,7 @@ content_top: [docs_top.html]
           <h1>Dive Into Our REST API Documentation</h1>
           <div class="row">
             <div class="col-xs-12 col-sm-3 col-sm-offset-3">
-              <a class="btn btn-default" href="/rest/product-guide" role="button">REST API PRODUCT GUIDE</a>
+              <a class="btn info" href="/rest/product-guide" role="button">REST API PRODUCT GUIDE</a>
             </div>
             <div class="col-xs-12 col-sm-3">
               <a class="btn btn-default" href="/rest/quickstart" role="button">REST API QUICKSTART</a>
