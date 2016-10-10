@@ -30,16 +30,22 @@ content_top: [docs_top.html]
     <div class="col-xs-12 col-sm-12">
       <div class="row">
         <div class="col-xs-12 col-sm-6">
-          <div class="language-header lang1"></div>
-          <pre><code>$ pip install Flask-Stormpath</code></pre>
-          <p class="body-copy">For Flask-based web applications.</p>
+            <div id="lang-contents" class="lang1">
+             <h3 class="lang-contents-title">Flask</h3>
+             </div>
+            <div class="use-case">
+
+           <p class="lang-copy bg-info">For Flask-based web applications.</p></div>
+           </div>
+
+          <pre>$ pip install Flask-Stormpath</pre>
             <div class="row">
-              <div class="col-xs-12">
-                <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="https://flask-stormpath.readthedocs.org/en/latest/quickstart.html">Quickstart</a></li>
-                  <li><i class="fa-li fa fa-book"></i><a href="https://flask-stormpath.readthedocs.org/en/latest/index.html">Documentation</a></li>
-                  <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-flask-sample">Example Application</a></li>
-                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-flask">Project on GitHub</a></li>
+              <div class="col-xs-12 lang-list">
+                <ul class="lang-contents-list">
+                  <li><a href="https://flask-stormpath.readthedocs.org/en/latest/quickstart.html">Quickstart</a></li>
+                  <li><a href="https://flask-stormpath.readthedocs.org/en/latest/index.html">Documentation</a></li>
+                  <li><a href="https://github.com/stormpath/stormpath-flask-sample">Example Application</a></li>
+                  <li><a href="https://github.com/stormpath/stormpath-flask">Project on GitHub</a></li>
                 </ul>
               </div>
             </div>
@@ -51,10 +57,10 @@ content_top: [docs_top.html]
             <div class="row">
               <div class="col-xs-12">
                 <ul class="fa-ul">
-                  {% comment %}<li><i class="fa-li fa fa-car"></i><a href="#">Quickstart</a></li>{% endcomment %}
-                  <li><i class="fa-li fa fa-book"></i><a href="https://github.com/stormpath/stormpath-django">Documentation</a></li>
-                  <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-django-sample">Example Application</a></li>
-                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-django">Project on GitHub</a></li>
+                  {% comment %}<li><a href="#">Quickstart</a></li>{% endcomment %}
+                  <li><a href="https://github.com/stormpath/stormpath-django">Documentation</a></li>
+                  <li><a href="https://github.com/stormpath/stormpath-django-sample">Example Application</a></li>
+                  <li><a href="https://github.com/stormpath/stormpath-django">Project on GitHub</a></li>
                 </ul>
               </div>
             </div>
@@ -67,12 +73,12 @@ content_top: [docs_top.html]
           <p class="body-copy">For any other type of Python application.</p>
             <div class="row">
               <div class="col-xs-12">
-                <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="/python/product-guide/latest/quickstart.html">Quickstart</a></li>
-                  <li><i class="fa-li fa fa-book"></i><a href="/python/product-guide/latest/">Product Guide</a></li>
-                  {% comment %}<li><i class="fa-li fa fa-code"></i><a href="#">Example Application</a></li>{% endcomment %}
-                  <li><i class="fa-li fa fa-book"></i><a href="/python/apidocs/latest/">API Reference</a></li>
-                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-python">Project on GitHub</a></li>
+                <ul class="lang-contents-list">
+                  <li><a href="/python/product-guide/latest/quickstart.html">Quickstart</a></li>
+                  <li><a href="/python/product-guide/latest/">Product Guide</a></li>
+                  {% comment %}<li><a href="#">Example Application</a></li>{% endcomment %}
+                  <li><a href="/python/apidocs/latest/">API Reference</a></li>
+                  <li><a href="https://github.com/stormpath/stormpath-sdk-python">Project on GitHub</a></li>
                 </ul>
               </div>
             </div>

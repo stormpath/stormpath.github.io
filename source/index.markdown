@@ -8,7 +8,7 @@ content_top: [docs_top.html]
 
 <div class="homepage">
   <div class="container">
-    <div class="row">
+    <div class="row mainpage">
       <div class="col-xs-12 col-sm-12 col-md-12">
         <h1>Integrations</h1>
         <p>It’s easy to get started with Stormpath using one of our language libraries or framework integrations. Check out one of the official SDKs or community repos below.  If your platform isn't listed, you can always use the core REST API with any platform.</p>
