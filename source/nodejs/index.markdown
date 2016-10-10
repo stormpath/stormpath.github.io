@@ -31,7 +31,7 @@ content_top: [docs_top.html]
       <div class="row">
         <div class="col-xs-12 col-sm-6">
                     <div id="lang-contents" class="lang1">
-  <h3 class="lang-contents-title">Spring Boot Web</h3>
+  <h3 class="lang-contents-title">Express</h3>
               <hr>
             </div>
             <br>
@@ -45,7 +45,7 @@ content_top: [docs_top.html]
               <div class="col-xs-12 lang-list visible-sm">
                 <ul class="lang-contents-list">
                   <li class="lang-list-item"></i><a href="/nodejs/express/latest/setup.html">Quickstart</a></li>
-                 <li class="lang-list-item"></i><a href="/nodejs/express/index.html">Documentation</a></li>
+                 <li class="lang-list-item"><a href="/nodejs/express/index.html">Documentation</a></li>
                   <li class="lang-list-item"><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/">Example Application</a></li>
                   {% comment %}
                   <li class="lang-list-item"><a href="#">API Reference</a></li>{% endcomment %}
@@ -55,23 +55,29 @@ content_top: [docs_top.html]
                 </ul>
               </div>
               <div class="col-md-6 hidden-sm">
-                <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-car"></i><a href="/nodejs/express/latest/setup.html">Quickstart</a></li>
-                  <li><i class="fa-li fa fa-book"></i><a href="/nodejs/express/index.html">Documentation</a></li>
-                  <li><i class="fa-li fa fa-code"></i><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/">Example Application</a></li>
-                  {% comment %}<li><i class="fa-li fa fa-file-text"></i><a href="#">API Reference</a></li>{% endcomment %}
+                <ul class="lang-contents-list">
+                   <li class="lang-list-item"><a href="/nodejs/express/latest/setup.html">Quickstart</a></li>
+                   <li class="lang-list-item"><a href="/nodejs/express/index.html">Documentation</a></li>
+                   <li class="lang-list-item"></i><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/">Example Application</a></li>
+                  {% comment %} 
+                  <li class="lang-list-item"><a href="#">API Reference</a></li>{% endcomment %}
                 </ul>
               </div>
               <div class="col-md-6 hidden-sm">
-                <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/express-stormpath">Project on GitHub</a></li>
-                  <li><i class="fa-li fa fa-pencil"></i><a href="https://stormpath.com/blog/build-nodejs-express-stormpath-app/">Webapp Tutorial</a></li>
-                  <li><i class="fa-li fa fa-pencil"></i><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
+                <ul class="lang-contents-list">
+                  <li class="lang-list-item"><a href="https://github.com/stormpath/express-stormpath">Project on GitHub</a></li>
+                  <li class="lang-list-item"><a href="https://stormpath.com/blog/build-nodejs-express-stormpath-app/">Webapp Tutorial</a></li>
+                  <li class="lang-list-item"><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
                 </ul>
               </div>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6">
+         <div id="lang-contents" class="lang2">
+  <h3 class="lang-contents-title">Passportb</h3>
+              <hr>
+            </div>
+            <br>
           <div class="language-header lang2"></div>
           <pre><code>$ npm install passport-stormpath</code></pre>
           <p class="body-copy">The Stormpath Passport Strategy reduces the custom encryption and storage code you need to handle authentication and user storage in Passport, by using Stormpath as a user store.</p>
