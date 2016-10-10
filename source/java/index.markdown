@@ -27,13 +27,15 @@ content_top: [docs_top.html]
       <div class="col-xs-12 col-sm-12">
         <div class="row">
           <div class="col-xs-6">
-            <div class="language-header lang1"></div>
+            <div class="lang1 lang-table-of-contents">
+              <h3 class="lang-table-of-contents-title">Spring Boot Web</h3>
+            </div>
             <br>
             <br>
             <p class="body-copy">For Spring Boot web applications.</p>
             <div class="row">
               <div class="col-xs-12">
-                <ul class="fa-ul">
+                <ul class="lang-table-of-contents-list"">
                   <li><i class="fa-li fa fa-car"></i><a href="/java/spring-boot-web/quickstart.html">Quickstart</a></li>
                   <li><i class="fa-li fa fa-lock"></i><a href="/java/spring-boot-web/tutorial.html">Tutorial</a></li>
                   <li><i class="fa-li fa fa-book"></i><a href="/java/spring-boot-web/">Documentation</a></li>
@@ -117,5 +119,3 @@ content_top: [docs_top.html]
     </div>
   </div>
 </div>
-<!-- block__no_wrapper -->
-<!-- region__no_wrapper -->
