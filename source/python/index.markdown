@@ -31,14 +31,19 @@ content_top: [docs_top.html]
       <div class="row">
         <div class="col-xs-12 col-sm-6">
             <div id="lang-contents" class="lang1">
+            <div class="row">
              <h3 class="lang-contents-title">Flask</h3>
              </div>
+             </div>
             
+            <div class="row">
 
           <pre><code>$ pip install Flask-Stormpath</code></pre>
+          </div>
           <div class="use-case">
+            <div class="row">
 
-           <p class="lang-copy bg-info">For Flask-based web applications.</p></div>
+           <p class="lang-copy bg-info">For Flask-based web applications.</p></div></div>
            </div>
             <div class="row">
               <div class="col-xs-12 lang-list">
@@ -52,14 +57,19 @@ content_top: [docs_top.html]
             </div>
         </div>
         <div class="col-sm-6">
+        <div class="row">
           <div id="lang-contents" class="lang2"><h3 class="lang-contents-title">Django</h3>
-            </div>
-            <br>
-            </div>
+          </div>
+           <pre><code>$ pip install django-stormpath</code></pre>
+                 </div>
+        <div class="row">
 
-          <pre><code>$ pip install django-stormpath</code></pre>
+         
+          </div>
           <div class="use-case">
+          <div class="row">
             <p class="lang-copy">For Django-based web applications.</p></div>
+            </div>
             <div class="row">
               <div class="col-xs-12">
                 <ul class="lang-contents-list">
@@ -68,20 +78,26 @@ content_top: [docs_top.html]
                   <li><a href="https://github.com/stormpath/stormpath-django-sample">Example Application</a></li>
                   <li><a href="https://github.com/stormpath/stormpath-django">Project on GitHub</a></li>
                 </ul>
+            </div>
+            <br>
+      
               </div>
             </div>
         </div>
       </div>
-      <div class="row">
         <div class="col-sm-6">
+              <div class="row">
+
 <div id="lang-contents" class="lang3">
           <pre><code>$ pip install -U stormpath</code></pre>
              <h3 class="lang-contents-title">Python SDK</h3>
             </div>
             <br>
        <div class="use-case">
+      <div class="row">
 
           <p class="lang-copy">For any other type of Python application.</p>
+          </div>
           </div>
             <div class="row">
               <div class="col-xs-12">

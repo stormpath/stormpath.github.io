@@ -29,16 +29,18 @@ content_top: [docs_top.html]
           <div class="col-xs-6">
             <div id="lang-contents" class="lang1">
               <h3 class="lang-contents-title">Spring Boot Web</h3>
-              <hr>
+                <pre><p>This block denotes sample text...</p></pre>
+
             </div>
-            <br>
-            <
+            
             <div class="use-case">
+
             <p class="lang-copy">For Spring Boot web applications.</p>
             </div>
             <div class="row">
-              <div class="col-xs-12 lang-list">
+<div class="col-xs-12 lang-li
                 <ul class="lang-contents-list">
+
                   <li class="lang-list-item"><a href="/java/spring-boot-web/quickstart.html">Quickstart</a></li>
                   <li class= "lang-list-item"><a href="/java/spring-boot-web/tutorial.html">Tutorial</a></li>
                   <li class= "lang-list-item"><a href="/java/spring-boot-web/">Documentation</a></li>
@@ -101,6 +103,7 @@ content_top: [docs_top.html]
             <br>
             <div class="use-case">
               <p class="lang-copy">For Non-web application that are not using Spring.</p>
+
             </div>
             <div class="row">
               <div class="col-xs-12">
