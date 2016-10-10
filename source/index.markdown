@@ -14,16 +14,16 @@ content_top: [docs_top.html]
         <p>It’s easy to get started with Stormpath using one of our language libraries or framework integrations. Check out one of the official SDKs or community repos below.  If your platform isn't listed, you can always use the core REST API with any platform.</p>
         <div class="row">
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/nodejs/"><img class="img" src="/images/landingpage/homepage/buttons-homepage-node.jpg"></a>
+            <a href="/nodejs/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-node.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/java/"><img class="img" src="/images/landingpage/homepage/buttons-homepage-java.jpg"></a>
+            <a href="/java/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-java.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="https://github.com/stormpath/stormpath-sdk-angularjs/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-angular.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/python/"><img class="img" src="/images/landingpage/homepage/buttons-homepage-python.jpg "></a>
+            <a href="/python/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-python.jpg "></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="/ruby/quickstart/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-ruby.jpg"></a>
@@ -84,28 +84,27 @@ content_top: [docs_top.html]
         <p>Implement sophisticated user management with detailed best-practice guides and code samples on a variety of Stormpath topics.</p>
         <div class="row">
           <div class="col-xs-12 visible-xs">
-            <ul class="fa-ul">
-              <li><i class="fa-li fa fa-users"></i><a href="/rest/product-guide/latest/multitenancy.html">Multi-Tenant SaaS Guide</a></li>
-              <li><i class="fa-li fa fa-user"></i><a href="/guides/using-id-site/">ID Site Guide</a></li>
-              <li><i class="fa-li fa fa-facebook"></i><a href="/guides/social-integrations/">Social Integration Guide</a></li>
-              <li><i class="fa-li fa fa-folder-open"></i><a href="/guides/api-key-management/">API Authentication Guide</a></li>
-              <li><i class="fa-li fa fa-sitemap"></i><a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory / LDAP Guide</a></li>
-              <li><i class="fa-li fa fa-wrench"></i><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
+                <ul class="lang-contents-list">
+              <li class= "lang-list-item"><a href="/rest/product-guide/latest/multitenancy.html">Multi-Tenant SaaS Guide</a></li>
+              <li class= "lang-list-item"><a href="/guides/using-id-site/">ID Site Guide</a></li><li class= "lang-list-item"><li><li class= "lang-list-item"><a href="/guides/social-integrations/">Social Integration Guide</a></li>
+              <li class= "lang-list-item"><a href="/guides/api-key-management/">API Authentication Guide</a></li>
+              <li class= "lang-list-item"><a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory / LDAP Guide</a></li>
+              <li class= "lang-list-item"><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
             </ul>
           </div>
           <div class="col-sm-4 hidden-xs">
-            <ul class="fa-ul">
-              <li><i class="fa-li fa fa-users"></i><a href="/rest/product-guide/latest/multitenancy.html">Multi-Tenant SaaS Guide</a></li>
-              <li><i class="fa-li fa fa-user"></i><a href="/guides/using-id-site/">ID Site Guide</a></li>
-              <li><i class="fa-li fa fa-facebook"></i><a href="/guides/social-integrations/">Social Integration Guide</a></li>
-              <li><i class="fa-li fa fa-folder-open"></i><a href="/guides/api-key-management/">API Authentication Guide</a></li>
+                <ul class="lang-contents-list">
+              <li class= "lang-list-item"><a href="/rest/product-guide/latest/multitenancy.html">Multi-Tenant SaaS Guide</a></li>
+              <li class= "lang-list-item"><a href="/guides/using-id-site/">ID Site Guide</a></li>
+              <li class= "lang-list-item"><a href="/guides/social-integrations/">Social Integration Guide</a></li>
+              <li class= "lang-list-item"><a href="/guides/api-key-management/">API Authentication Guide</a></li>
             </ul>
           </div>
           <div class="col-sm-6 hidden-xs">
-            <ul class="fa-ul">
-              <li><i class="fa-li fa fa-sitemap"></i><a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory / LDAP Guide</a></li>
-              <li><i class="fa-li fa fa-wrench"></i><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
-              <li><i class="fa-li fa fa-user"></i><a href="/guides/token-management/">Token Authentication Guide</a></li>
+                <ul class="lang-contents-list">
+              <li class= "lang-list-item"><a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory / LDAP Guide</a></li>
+              <li class= "lang-list-item"><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
+              <li class= "lang-list-item"><a href="/guides/token-management/">Token Authentication Guide</a></li>
             </ul>
           </div>
         </div>
