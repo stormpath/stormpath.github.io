@@ -74,7 +74,7 @@ content_top: [docs_top.html]
         </div>
         <div class="col-xs-12 col-sm-6">
          <div id="lang-contents" class="lang2">
-  <h3 class="lang-contents-title">Passportb</h3>
+  <h3 class="lang-contents-title">Passport</h3>
               <hr>
             </div>
             <br>
@@ -109,6 +109,11 @@ content_top: [docs_top.html]
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-6">
+        <div id="lang-contents" class="lang4">
+  <h3 class="lang-contents-title">Restify</h3>
+              <hr>
+            </div>
+            <br>
           <div class="language-header lang4"></div>
           <pre><code>$ npm install restify-stormpath</code></pre>
           <p class="body-copy">For applications using the Restify framework we provide a set of filters that allow you to create user accounts and use API authentication.</p>
@@ -138,6 +143,11 @@ content_top: [docs_top.html]
             </div>
         </div>
         <div class="col-xs-12 col-sm-6">
+        <div id="lang-contents" class="lang2">
+  <h3 class="lang-contents-title">Node SDK</h3>
+              <hr>
+            </div>
+            <br>
           <div class="language-header lang5"></div>
           <pre><code>$ npm install stormpath</code></pre>
           <p class="body-copy">For an existing server or framework-less project, this module is a fully-featured node.js client for our REST API.</p>
