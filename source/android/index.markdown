@@ -10,8 +10,8 @@ content_top: [docs_top.html]
 <div class="masthead android-masthead">
   <div class="container">
     <div class="row">
-      <div class="col-xs-12" style="font-size: 1.7em">
-        Android&#8482;
+      <div class="col-xs-12">
+        <img class="img-responsive logo" src="/images/landingpage/android/logo-android.png">
       </div>
     </div>
   </div>
@@ -27,36 +27,53 @@ content_top: [docs_top.html]
 
 <div class="container">
   <div class="row">
-    <div class="col-xs-12 col-sm-12">
-      <div class="row">
-        <div class="col-xs-12 col-sm-8 col-sm-offset-2">
-          <div class="language-header lang1">Stormpath Android SDK</div>
-          <pre><code>compile 'com.stormpath.sdk:stormpath-sdk-android:1.1.3'</code></pre>
-          <p class="body-copy">Android SDK</p>
+    <div class="col-xs-12 col-sm-12 lander">
+    <div class="col-xs-6">
+      <div id="lang-contents" class="lang1">
+          <h3 class="lang-contents-title">Android SDK</h3>
+          </div>
+                    <pre>compile 'com.stormpath.sdk:stormpath-sdk-android:1.1.3'</pre>
+
+          <div class="use-case">
+         
+          <p class="lang-copy">Android SDK for both Android and Java apps.</p>
+          </div>
             <div class="row">
-              <div class="col-sm-12 visible-sm">
-                <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-book"></i><a href="/android/javadocs-sdk/index.html">Documentation</a></li>
-                  <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-android-notes-example">Example Application</a></li>
-                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-android">Project on GitHub</a></li>
+               <div class="col-xs-12 lang-li">
+        <ul class="lang-contents-list">
+                  <li class="lang-list-item"><a href="/android/javadocs-sdk/index.html">Documentation</a></li>
+                  <li class="lang-list-item"><a href="https://github.com/stormpath/stormpath-android-notes-example">Example Application</a></li>
+                  <li class="lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-android">Project on GitHub</a></li>
+                  <li class="lang-list-item"><a href="/android/javadocs-sdk/index.html">Documentation</a></li>
+                  <li class="lang-list-item"><a href="https://github.com/stormpath/stormpath-android-notes-example">Example Application</a></li>
+                  <li class="lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-android">Project on GitHub</a></li>
+                 </ul>
               </div>
-              <div class="col-md-6 hidden-sm">
-                <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-book"></i><a href="/android/javadocs-sdk/index.html">Documentation</a></li>
-                  <li><i class="fa-li fa fa-code"></i><a href="https://github.com/stormpath/stormpath-android-notes-example">Example Application</a></li>
+              </div>
+</div>
+       <div class="col-sm-6">
+            <div id="lang-contents" class="lang5">
+              <h3 class="lang-contents-title">Product Guides</h3>
+            </div>
+            <br>
+            <div class="use-case">
+            <p class="lang-copy">For traditional web applications that do not use Spring.</p>
+            </div>
+            <div class="row">
+              <div class="col-xs-12">
+                <ul class="lang-contents-list">
+                  <li class="lang-list-item"><a href="https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html">Account Management</a></li>
+                  <li class= "lang-list-item"><a href="https://docs.stormpath.com/rest/product-guide/latest/auth_n.html">Authenticating Accounts with Stormpath</a></li>
+                  <li class= "lang-list-item"><a href="https://docs.stormpath.com/rest/product-guide/latest/auth_z.html">Authorization With Stormpath</a></li>
+                  <li class= "lang-list-item"><a href="https://docs.stormpath.com/rest/product-guide/latest/multitenancy.html">6. Multi-Tenancy with Stormpath</a></li>
+                  <li class= "lang-list-item"><a href="https://docs.stormpath.com/rest/product-guide/latest/about.html">About Stormpath</a></li>
                 </ul>
               </div>
-              <div class="col-md-6 hidden-sm">
-                <ul class="fa-ul">
-                  <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-android">Project on GitHub</a></li>
-                </ul>
+              </div>
               </div>
             </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+            </div>
+          </div>
 
 <div class="container" style="font-size: 10px;">
   <div class="col-md-12">
@@ -81,7 +98,6 @@ content_top: [docs_top.html]
     </div>
   </div>
 </div>
-
 </div>
 <!-- block__no_wrapper -->
 <!-- region__no_wrapper -->
