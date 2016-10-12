@@ -38,7 +38,7 @@ content_top: [docs_top.html]
             <p class="lang-copy">For Spring Boot web applications.</p>
             </div>
             <div class="row">
-<div class="col-xs-12 lang-li
+<div class="col-xs-12 lang-li">
                 <ul class="lang-contents-list">
 
                   <li class="lang-list-item"><a href="/java/spring-boot-web/quickstart.html">Quickstart</a></li>
@@ -59,8 +59,8 @@ content_top: [docs_top.html]
             <p class="lang-copy">For traditional web applications that do not use Spring.</p>
             </div>
             <div class="row">
-              <div class="col-xs-12">
-                <ul class="lang-contents-list">
+<div class="col-xs-12 lang-li">                
+<ul class="lang-contents-list">
                   <li class="lang-list-item"><a href="/java/servlet-plugin/quickstart.html">Quickstart</a></li>
                   <li class= "lang-list-item"><a href="/java/servlet-plugin/">Documentation</a></li>
                   <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/examples/servlet">Example Application</a></li>
