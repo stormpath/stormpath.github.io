@@ -39,7 +39,7 @@ content_top: [docs_top.html]
           <li class= "lang-list-item"><a href="//nodejs/express/index.html">Documentation</a></li>
           <li class= "lang-list-item"><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/">Example Application</a></li>
           <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/extensions/spring/boot">Project on GitHub</a></li>
-          <li><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
+         <li class= "lang-list-item"><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
         </ul>
       </div>
     </div>
@@ -59,12 +59,11 @@ content_top: [docs_top.html]
           <li class= "lang-list-item"><a href="//nodejs/express/index.html">Documentation</a></li>
           <li class= "lang-list-item"><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/">Example Application</a></li>
           <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/extensions/spring/boot">Project on GitHub</a></li>
-          <li><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
+          <li class= "lang-list-item"><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
         </ul>
       </div>
     </div>
   </div>
-</div>
 </div>
 <div class="row">
 <div class="col-xs-12 col-sm-12">
@@ -83,7 +82,7 @@ content_top: [docs_top.html]
         <li class= "lang-list-item"><a href="//nodejs/express/index.html">Documentation</a></li>
         <li class= "lang-list-item"><a href="https://stormpath.com/blog/making-expressjs-authentication-fun-again/">Example Application</a></li>
         <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-java/tree/master/extensions/spring/boot">Project on GitHub</a></li>
-        <li><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
+        <li class= "lang-list-item"><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
       </ul>
       </div>
   </div>
