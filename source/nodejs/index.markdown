@@ -5,7 +5,11 @@ description: User management & authentication for Node.js, Express.js, Passport 
 title: Node JS Support
 content_top: [docs_top.html]
 ---
+
+ 
+ 
 <div class="landingpage nodejs">
+
   <div class="masthead nodejs-masthead">
     <div class="container">
       <div class="row">
@@ -17,12 +21,19 @@ content_top: [docs_top.html]
   </div>
   <div class="container">
     <div class="row">
+    
       <div class="col-xs-12 intro-text">
         <p>Stormpath adds Authentication and User Management to any Node.js environment with developer libraries, example applications, tutorials and open-source projects to get you started.</p>
       </div>
     </div>
   </div>
+  
+ 
+  
+  
   <div class="col-xs-12 col-sm-12 lander">
+
+  
     <div class="col-xs-6">
       <div id="lang-contents" class="lang1">
         <h3 class="lang-contents-title">Express</h3>
@@ -32,6 +43,8 @@ content_top: [docs_top.html]
     <div class="use-case">
       <p class="lang-copy">For web applications or REST APIs that use Express</p>
     </div>
+ 
+
     <div class="row">
       <div class="col-xs-12 lang-li">
         <ul class="lang-contents-list">
@@ -42,16 +55,20 @@ content_top: [docs_top.html]
          <li class= "lang-list-item"><a href="/nodejs/express/latest/authentication.html#api-authentication-basic-auth">API Authentication Tutorial</a></li>
         </ul>
       </div>
+      </div>
     </div>
-  </div>
+    
+    
   <div class="col-sm-6">
     <div id="lang-contents" class="lang5">
       <h3 class="lang-contents-title">Passport</h3>
-    <pre>&lt;$ npm install passport-stormpath&gt;</pre>
+    <pre>$ npm install passport-stormpath</pre>
     
     <div class="use-case">
       <p class="lang-copy">reduces the custom encryption and storage code</p>
     </div>
+
+    
     <div class="row">
       <div class="col-xs-12 lang-li">
         <ul class="lang-contents-list">
@@ -64,17 +81,28 @@ content_top: [docs_top.html]
       </div>
     </div>
   </div>
-</div>
+  </div>
+
+  
+  </div>
+
+
+  
 <div class="row">
 <div class="col-xs-12 col-sm-12">
+    
+
   <div class="col-xs-6">
     <div id="lang-contents" class="lang7">
       <h3 class="lang-contents-title">Restify</h3>
-    <pre>&lt;$ npm install restify-stormpath&gt;</pre>
-  </div>
+      </div>
+    
+    <pre>&$ npm install restify-stormpath</pre>
+  
   <div class="use-case">
     <p class="lang-copy">For applications using the Restify framework</p>
   </div>
+
   <div class="row">
     <div class="col-xs-12">
       <ul class= "lang-contents-list">
@@ -86,16 +114,23 @@ content_top: [docs_top.html]
       </ul>
       </div>
   </div>
+
   </div>
+
+
+
 <div class="col-sm-6">
 <div id="lang-contents" class="lang6">
   <h3 class="lang-contents-title">Npm</h3>
+  </div>
 <pre>&lt;$ npm install stormpath&gt;</pre>
 
 <br>
 <div class="use-case">
 <p class="lang-copy">fully-featured node.js client for our REST API</p>
 </div>
+
+
 <div class="row">
 <div class="col-xs-12">
   <ul class="lang-contents-list">
@@ -104,10 +139,11 @@ content_top: [docs_top.html]
     <li class= "lang-list-item"><a href="/java/apidocs/">API Reference</a></li>
     <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-java">Project on GitHub</a></li>
   </ul>
-</div>
-</div>
-</div>
-</div>
+    </div>
+    </div>
+
+  </div>
+
 </div>
 </div>
 
@@ -130,5 +166,6 @@ content_top: [docs_top.html]
 </div>
 </div>
 </div>
+
 <!-- block__no_wrapper -->
 <!-- region__no_wrapper -->
