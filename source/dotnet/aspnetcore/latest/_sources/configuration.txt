@@ -304,10 +304,10 @@ For example, in YAML:
 
 .. code-block:: yaml
 
- ---
-   stormpath:
-     web:
-       serverUri: http://localhost:5000
+  ---
+  stormpath:
+    web:
+     serverUri: http://localhost:5000
 
 Alternatively, you can set this property in code when you configure the Stormpath middleware:
 
