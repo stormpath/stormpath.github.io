@@ -29,11 +29,12 @@ content_top: [docs_top.html]
       <div id="lang-contents" class="lang1">
           <h3 class="lang-contents-title">iOS SDK</h3>
           </div>
-          <div class="use-case">
-                <p class="lang-copy">iOS SDK for both Swift and Objective-C apps.</p>
-                <pre>
+          <pre>
             pod 'Stormpath'
             </pre>
+          <div class="use-case">
+                <p class="lang-copy">iOS SDK for both Swift and Objective-C apps.</p>
+                
           </div>
             
             <div class="row">
