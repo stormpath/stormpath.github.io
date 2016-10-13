@@ -1,0 +1,54 @@
+<h1><code ng:non-bindable="">sp-registration-form</code>
+<div><span class="hint">directive in module <code ng:non-bindable="">stormpath</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="stormpath-spregistrationform-page stormpath-spregistrationform-sp-registration-form-page"><p>This directive will render a pre-built user registration form with the following
+fields:</p>
+<ul>
+<li>First Name</li>
+<li>Last Name</li>
+<li>Email</li>
+<li>Password</li>
+</ul>
+<p>If you are using the email verification workflow: this form will tell the user
+that they need to check their email to complete their registration.</p>
+<p>If you are NOT using the email verification workflow: you can, optionally,
+automatically login the user and redirect them to a UI state in your application.
+See the options below.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY sp-registration-form
+     auto-login="{boolean}"
+     post-login-state="{string}"
+     template-url="{string}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>autoLogin</td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="stormpath-spregistrationform-page stormpath-spregistrationform-sp-registration-form-page"><p>Default <code>false</code>, automatically authenticate the user
+after creation.  This makes a call to
+<a href="#/api/stormpath.authService.$auth#methods_authenticate">$auth.authenticate</a> which will
+trigger the event <a href="#/api/stormpath.authService.$auth#events_$authenticated">$authenticated</a>.
+This is not
+possible if the email verification workflow is enabled on the directory that
+the account is created in.</p>
+</div></td></tr><tr><td>postLoginState</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="stormpath-spregistrationform-page stormpath-spregistrationform-sp-registration-form-page"><p>If using the <code>autoLogin</code> option, you can
+specify the name of a UI state that the user should be redirected to after
+they successfully register</p>
+</div></td></tr><tr><td>template-url</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="stormpath-spregistrationform-page stormpath-spregistrationform-sp-registration-form-page"><p>An alternate template URL, if you want
+to use your own template for the form.</p>
+</div></td></tr></tbody></table></div>
+<h2 id="example">Example</h2>
+<div class="example"><div class="stormpath-spregistrationform-page stormpath-spregistrationform-sp-registration-form-page"><pre class="prettyprint linenums">
+&lt;!-- If you want to use the default template --&gt;
+&lt;div class="container"&gt;
+  &lt;div sp-registration-form post-login-state="main"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- If you want to use your own template --&gt;
+&lt;div class="container"&gt;
+  &lt;div sp-registration-form template-url="/path/to/my-custom-template.html"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+</div></div>
+</div>
