@@ -164,6 +164,7 @@
 <li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-manage-an-account-s-required-attributes">3.5. How to Manage an Account&#8217;s Required Attributes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-verify-an-account-s-email">3.6. How to Verify an Account&#8217;s Email</a></li>
 <li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#customizing-stormpath-emails">3.7. Customizing Stormpath Emails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#account-linking">3.8. Account Linking</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">4. Authenticating Accounts with Stormpath</a><ul>
@@ -408,23 +409,6 @@
 </div>
 <p>As you can see, Stormpath tries to find the Account in the &#8220;Customers&#8221; Directory first because it has a higher priority than the &#8220;Employees&#8221; directory. If not found, the &#8220;Employees&#8221; Directory is tried next as it has a lower priority.</p>
 <p>You can map multiple Account Stores to an Application, but only one is required to enable login for an Application. Mapping multiple Account Stores to an Application, as well as configuring their priority, allows you precise control over the Account populations that may log in to your Application.</p>
-<div class="section" id="how-login-works-with-master-directories">
-<span id="mirror-login"></span><h5>How Login Works with Master Directories<a class="headerlink" href="#how-login-works-with-master-directories" title="Permalink to this headline">¶</a></h5>
-<p>If you require a number of Mirror Directories, then it is recommended that you have a master Directory alongside them. Any login attempts should be directed to the Mirror Directory. If the attempt succeeds, your application should then perform a <a class="reference internal" href="reference.html#about-search"><span class="std std-ref">search</span></a> of the master Directory to see if there is an Account already there that links to this Account in the Mirror Directory.</p>
-<p>If such an Account is already in the master Directory, no action is taken. If such an Account is not found, your application should create a new one in the master Directory, and populate it with the information pulled from the Account in the Mirror Directory. The customData resource for that master Account should then be used to store a link to the Account in the Mirror Directory, for example:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$customData</span> <span class="o">=</span> <span class="nv">$account</span><span class="o">-&gt;</span><span class="na">customData</span><span class="p">;</span>
-<span class="nv">$customData</span><span class="o">-&gt;</span><span class="na">accountLink</span> <span class="o">=</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/3fLduLKlEx&#39;</span><span class="p">;</span>
-
-<span class="nv">$customData</span><span class="o">-&gt;</span><span class="na">save</span><span class="p">();</span>
-</pre></div>
-</div>
-<p>If the user then chooses at some point to, for example, &#8220;Sign in with Facebook&#8221;, then a similar process will occur, but this time with a link created to the user Account in the Facebook Directory.</p>
-<p>This mirror-master approach has two major benefits:</p>
-<ol class="arabic simple">
-<li>It allows for a user to have one unified identity in your Application, regardless of how many external identities they choose to log in with.</li>
-<li>This identity can also be the central point that all authorization permissions (whether they be implicit or explicit) are then applied to.</li>
-</ol>
-</div>
 </div>
 </div>
 <div class="section" id="manage-who-can-log-into-your-application">
@@ -625,6 +609,11 @@
 <li><strong>Refresh Grant Type:</strong> For information about using the an OAuth Refresh token <a class="reference internal" href="#refresh-oauth-token"><span class="std std-ref">see below</span></a></li>
 </ul>
 <p>The first three kinds of OAuth Grant Types differ only in what credentials are passed to Stormpath in order to generate the token. The Stormpath Factor Challenge Type requires a Challenge <code class="docutils literal"><span class="pre">href</span></code> and <code class="docutils literal"><span class="pre">code</span></code> that you get as part of the <a class="reference internal" href="#mfa"><span class="std std-ref">Multi-Factor Authentication process</span></a>. For more information on those, keep reading. For more information about the Refresh Grant Type, see <a class="reference internal" href="#refresh-oauth-token"><span class="std std-ref">below</span></a>.</p>
+<p><strong>Targeting a Specific Account Store</strong></p>
+<p>It is possible to target token generation against a particular Directory, Group, or Organization. You do this either by passing the Account Store&#8217;s <code class="docutils literal"><span class="pre">href</span></code>, or the Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code>.</p>
+<p><code class="docutils literal"><span class="pre">grant_type=password&amp;username=tom&#64;stormpath.com&amp;password=Secret1&amp;accountStore=https://api.stormpath.com/v1/directories/1bcd23ec1d0a8wa6</span></code></p>
+<p><code class="docutils literal"><span class="pre">grant_type=password&amp;username=tom&#64;stormpath.com&amp;password=Secret1&amp;nameKey=anOrganization</span></code></p>
+<p>This allows you to bypass the usual default Account Store and login priority and instead send the token generation to a particular Account Store.</p>
 <div class="section" id="client-credentials">
 <h5>Client Credentials<a class="headerlink" href="#client-credentials" title="Permalink to this headline">¶</a></h5>
 <p>For the <strong>Client Credentials Grant Type</strong>, you pass the <strong>Client ID</strong> and <strong>Secret</strong>:</p>
@@ -1224,7 +1213,7 @@
 </div>
 <div class="section" id="mirror-directories-and-ldap">
 <h3><a class="toc-backref" href="#id40">Mirror Directories and LDAP</a><a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
-<p>To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory. If this fulfills your requirements, then the story ends here. However, if you need to support other kinds of login (and therefore other kinds of Directories) it is recommended that you maintain a &#8220;master&#8221; Directory alongside your Mirror Directory. For more about this, see <a class="reference internal" href="#mirror-login"><span class="std std-ref">How Login Works with Master Directories</span></a> above.</p>
+<p>To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory. If this fulfills your requirements, then the story ends here. However, if you need to support other kinds of login (and therefore other kinds of Directories) it is recommended that you maintain a &#8220;master&#8221; Directory alongside your Mirror Directory. For more about this, see <a class="reference internal" href="accnt_mgmt.html#account-linking"><span class="std std-ref">3.8. Account Linking</span></a>.</p>
 </div>
 <div class="section" id="setting-up-login-with-ldap">
 <h3><a class="toc-backref" href="#id41">Setting Up Login With LDAP</a><a class="headerlink" href="#setting-up-login-with-ldap" title="Permalink to this headline">¶</a></h3>
@@ -2031,7 +2020,7 @@ $ startup.sh
 </div>
 <div class="section" id="adding-a-google-authenticator-factor">
 <span id="mfa-adding-factor-google"></span><h4>Adding a Google Authenticator Factor<a class="headerlink" href="#adding-a-google-authenticator-factor" title="Permalink to this headline">¶</a></h4>
-<p>To add an additional Google Authenticator Factor to this Account, you send a POST to that Account&#8217;s <code class="docutils literal"><span class="pre">/factors</span></code> endpoint:</p>
+<p>To add an additional Google Authenticator Factor to this Account, you must send the following request:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accounts/5IvkjoqcYNe3TYMYExample/factors</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
@@ -2068,7 +2057,7 @@ $ startup.sh
 </div>
 <p>For more information about the Factor resource, see <a class="reference internal" href="reference.html#ref-factor"><span class="std std-ref">the Reference chapter</span></a>.</p>
 <p>The user now needs to get this information into their Google Authenticator (or <a class="reference external" href="https://www.authy.com/tutorials/how-use-authy-google-authenticator/">similar</a>) application. The easiest way to do that is to use their app to scan a QR code. Stormpath makes this easy by giving you the QR Code in the <code class="docutils literal"><span class="pre">base64QRImage</span></code> field of the Google Authenticator Factor.</p>
-<p>You can now take this string and turn it into a QR Code image in any number of ways:</p>
+<p>You can now take this string and turn it into a QR Code image:</p>
 <ul class="simple">
 <li>You could use the use a QR Code Library, such as <a class="reference external" href="https://davidshimjs.github.io/qrcodejs/">QRCode.js</a></li>
 <li>Or you could generate the image yourself, using an <code class="docutils literal"><span class="pre">&lt;img&gt;</span></code> tag or CSS. For examples of both, see <a class="reference external" href="https://css-tricks.com/examples/DataURIs/">here</a>.</li>
@@ -2134,7 +2123,7 @@ $ startup.sh
 <p>This example covers challenging Factors that have already been created. To see an example of how to challenge a Factor at the same time as you are creating it, please see <a class="reference internal" href="#mfa-challenge-after"><span class="std std-ref">below</span></a>.</p>
 <div class="section" id="challenging-an-sms-factor">
 <span id="mfa-challenge-after-sms"></span><h5>Challenging an SMS Factor<a class="headerlink" href="#challenging-an-sms-factor" title="Permalink to this headline">¶</a></h5>
-<p>To challenge an SMS Factor, you send a <code class="docutils literal"><span class="pre">POST</span></code> to it, with or without specifying a message.</p>
+<p>To challenge an SMS Factor, you send a request like this, with or without specifying a message.</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/factors/3WPF5Djir0Wg5FtPoJCPbo/challenges</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
@@ -2147,7 +2136,7 @@ $ startup.sh
 </pre></div>
 </div>
 <p>If you do not specify a message, then Stormpath will just send the default message: <code class="docutils literal"><span class="pre">&quot;Your</span> <span class="pre">verification</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">${code}&quot;</span></code>.</p>
-<p>In response to this POST you would get back a Challenge:</p>
+<p>In response to this request you would get back a Challenge:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/challenges/70xfDsguePApNdnExample&quot;</span><span class="p">,</span>
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:35:44.799Z&quot;</span><span class="p">,</span>
@@ -2201,7 +2190,8 @@ $ startup.sh
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>If you had sent the wrong code, the <code class="docutils literal"><span class="pre">status</span></code> would instead be <code class="docutils literal"><span class="pre">FAILED</span></code>. For a full list of Challenge statuses, please see <a class="reference internal" href="reference.html#challenge-status-values"><span class="std std-ref">the Reference chapter</span></a>.</p>
+<p>If you had sent the wrong code, the <code class="docutils literal"><span class="pre">status</span></code> would instead be <code class="docutils literal"><span class="pre">FAILED</span></code>.</p>
+<p>For a full list of Challenge statuses, please see <a class="reference internal" href="reference.html#challenge-status-values"><span class="std std-ref">the Reference chapter</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">You could also pass the Challenge <code class="docutils literal"><span class="pre">href</span></code> and the <code class="docutils literal"><span class="pre">code</span></code> to Stormpath and get back an OAuth 2.0 Access Token. For more information about this see <a class="reference internal" href="#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>.</p>
@@ -2211,7 +2201,7 @@ $ startup.sh
 <span id="mfa-challenge-after-google"></span><h5>Challenging a Google Authenticator Factor<a class="headerlink" href="#challenging-a-google-authenticator-factor" title="Permalink to this headline">¶</a></h5>
 <p>When you created the Google Authenticator Factor, you also generated a QR Code image for your user to scan into their app. Challenging this factor now only requires you to prompt to enter in the code from their Authenticator app.</p>
 <p>Unlike the SMS challenge process, the Google Authenticator challenge process does not require you to create a Challenge resource. Instead, the Challenge is created and verified in one step. For more information about the Challenge resource, see <a class="reference internal" href="reference.html#ref-challenge"><span class="std std-ref">the Reference chapter</span></a>.</p>
-<p>Once you have collected the code from the user, send a POST to the Account&#8217;s <code class="docutils literal"><span class="pre">/challenges</span></code> endpoint with a code generated by your Google Authenticator app:</p>
+<p>Once you have collected the code from the user, send the code generated by your Google Authenticator app:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/factors/4KOeu7ypRQI8Bpk2org7tk/challenges</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
@@ -2337,14 +2327,7 @@ $ startup.sh
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>You would then send a POST to the <code class="docutils literal"><span class="pre">challenges</span></code> collection:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/factors/3WPF5Djir0Wg5FtPoJCPbo/challenges</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
-<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">no-cache</span>
-</pre></div>
-</div>
-<p>This would generate a new Challenge and send an SMS message to the number specified in the Factor&#8217;s Phone resource.</p>
+<p>You would then send a POST to the <code class="docutils literal"><span class="pre">challenges</span></code> collection which would generate a new Challenge and send an SMS message to the number specified in the Factor&#8217;s Phone resource.</p>
 </div>
 </div>
 </div>
