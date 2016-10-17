@@ -10,7 +10,7 @@ content_top: [docs_top.html]
     <div class="container">
       <div class="row">
         <div class="col-xs-12">
-          <img class="img-responsive logo" src="/images/landingpage/net/logo-net.png">
+          <img class="img-responsive img-center logo" src="/images/landingpage/net/logo-net.png">
         </div>
       </div>
     </div>
