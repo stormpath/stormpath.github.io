@@ -5,7 +5,11 @@ description: User management & authentication for Python, Flask, & Django apps. 
 title: Python Support
 content_top: [docs_top.html]
 ---
+
+
+
 <div class="landingpage python">
+
   <div class="masthead python-masthead">
     <div class="container">
       <div class="row">
@@ -17,105 +21,95 @@ content_top: [docs_top.html]
   </div>
   <div class="container">
     <div class="row">
+
       <div class="col-xs-12 intro-text">
         <p>Stormpath has great support for a variety of Python environments.  Please select the environment that’s best for you.</p>
       </div>
     </div>
   </div>
-  <div class="col-xs-12 col-sm-12 lander">
-    <div class="col-xs-6">
-      <div id="lang-contents" class="lang1">
-        <h3 class="lang-contents-title">Flask</h3>
-      <pre>$ pip install Flask-Stormpath</pre>
-    </div>
-    
-    <div class="use-case">
-      <p class="lang-copy">For Flask-based web applications.</p>
-    </div>
-    <div class="row">
-      <div class="col-xs-12 lang-li">
-        <ul class="lang-contents-list">
-          <li class="lang-list-item"><a href="https://flask-stormpath.readthedocs.org/en/latest/quickstart.html">Quickstart</a></li>
-          <li class="lang-list-item"><a href="https://flask-stormpath.readthedocs.org/en/latest/index.html">Documentation</a></li>
-          <li class="lang-list-item"><a href="https://github.com/stormpath/stormpath-flask-sample">Example Application</a></li>
-          <li class="lang-list-item"><a href="https://github.com/stormpath/stormpath-flask">Project on GitHub</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="row">
-      <div id="lang-contents" class="lang5"><h3 class="lang-contents-title">Django</h3>
-        
-      <pre>$ pip install django-stormpath</pre>
-      
-      <div class="use-case">
-        <div class="row">
-          <p class="lang-copy">For Django-based web applications.</p></div>
-        </div>
-        <div class="row">
-          <div class="col-xs-12 lang-li">
-            <ul class="lang-contents-list">
-              <li><a href="#">Quickstart</a></li>
-              <li><a href="https://github.com/stormpath/stormpath-django">Documentation</a></li>
-              <li><a href="https://github.com/stormpath/stormpath-django-sample">Example Application</a></li>
-              <li><a href="https://github.com/stormpath/stormpath-django">Project on GitHub</a></li>
-            </ul>
-          </div>
-          
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-  <div class="row">
-    <div class="col-xs-12 col-sm-12">
-      <div class="col-xs-6">
-        <div id="lang-contents" class="lang7">
-          <h3 class="lang-contents-title">Python SDK</h3>
-          
-        <pre>$ pip install -U stormpath</pre>
-      </div>
-      <div class="use-case">
-        <p class="lang-copy">For any other type of Python application.</p>
-      </div>
-      
-      <div class="row">
-        <div class="col-xs-12">
-          <ul class="lang-contents-list">
-            <li class= "lang-list-item"><a href="/python/product-guide/latest/quickstart.html">Quickstart</a></li>
-            <li class= "lang-list-item"><a href="/python/product-guide/latest/">Product Guide</a></li>
-            {% comment %}<li><a href="#">Example Application</a></li>{% endcomment %}
-            <li class= "lang-list-item"><a href="/python/apidocs/latest/">API Reference</a></li>
-            <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-python">Project on GitHub</a></li>
-          </ul>
-</div>
-</div>
-</div>
 
-      <div class="col-sm-6">
-        <div id="lang-contents" class="lang6">
-          <h3 class="lang-contents-title">Stormpath Resources</h3>
-          
-      </div>
-      <div class="use-case">
-        <p class="lang-copy">For any other type of Python application.</p>
-      </div>
-      
-      <div class="row">
-        <div class="col-xs-12">
-          <ul class="lang-contents-list">
-            <li class= "lang-list-item"><a href="/python/product-guide/latest/quickstart.html">Quickstart</a></li>
-            <li class= "lang-list-item"><a href="/python/product-guide/latest/">Product Guide</a></li>
-            {% comment %}<li><a href="#">Example Application</a></li>{% endcomment %}
-            <li class= "lang-list-item"><a href="/python/apidocs/latest/">API Reference</a></li>
-            <li class= "lang-list-item"><a href="https://github.com/stormpath/stormpath-sdk-python">Project on GitHub</a></li>
-          </ul>
-</div>
-</div>
-</div>
-</div>
-</div>
+    <div class="row">
+        
+                <div class="col-sm-6 col-sm-push-6">
+                    <div class="panel panel-default lang">
+                        <div class="panel-heading lang" style="background-color:#1d2834;color:#ffffff;">
+                            <h3 class="panel-title"><i class="icon ion-social-python"></i> Django </h3></div>
+                        <div class="panel-body">
+                            <h6 class="text-left" style="margin-top:0px;">For Django-Based Web Applications. </h6>
+                            <div class="well well-sm code" style="background-color:#222222;border:1px solid #1f2021;padding:5px;padding-left:10px;min-height:10px;margin-bottom:15px;"><span class="text-success" style="color:#00b27a;font-size:small;">$ pip install django-stormpath </span></div>
+
+                            <div class="col-sm-12">
+                                <ul>
+                                    <li><a href="https://github.com/stormpath/stormpath-django" style="font-size:smaller;">Quickstart </a> </li>
+                                    <li><a href="https://github.com/stormpath/stormpath-django-sample" style="font-size:smaller;">Documentation </a></li>
+                                    <li><a href="https://github.com/stormpath/stormpath-django-sample" style="font-size:smaller;">Example App</a></li>
+                                    <li><a href="https://github.com/stormpath/stormpath-django" style="font-size:smaller;">Project on Github</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="col-sm-6 col-sm-pull-6">
+                    <div class="panel panel-default lang">
+                        <div class="panel-heading lang" style="background-color:#1d2834;color:#ffffff;">
+                            <h3 class="panel-title"><i class="icon ion-social-python"></i> Flask </h3></div>
+                        <div class="panel-body">
+                            <h6 class="text-left" style="margin-top:0px;">For Flask-Based Web Applications. </h6>
+                            <div class="well well-sm" style="background-color:#222222;border:1px solid #1f2021;padding:5px;padding-left:10px;min-height:10px;margin-bottom:15px;"><span class="text-success" style="color:#00b27a;font-size:small;">$ pip install Flask-Stormpath </span></div>
+                            <div class="col-sm-12">
+                                <ul>
+                                    <li><a href="https://flask-stormpath.readthedocs.org/en/latest/quickstart.html" style="font-size:small;">Quickstart </a> </li>
+                                    <li><a href="https://flask-stormpath.readthedocs.org/en/latest/index.html" style="font-size:small;">Documentation </a></li>
+                                    <li><a href="ttps://github.com/stormpath/stormpath-flask-sample" style="font-size:small;">Example Application </a></li>
+                                    <li><a href="https://github.com/stormpath/stormpath-flask" style="font-size:small;">Project on GitHub </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+ <div class="row">
+    <div class="col-sm-6 col-sm-push-6" style="min-height:100%;">
+        <div class="panel panel-default guide" id="p-guide">
+            <div class="panel-heading guide" style="background-color:#465765;color:#ffffff;">
+                <h3 class="text-primary panel-title"> Stormpath Product Guides</h3></div>
+            <div class="panel-body guides" style="background-color:#ffffff;border:1px solid #ebeff1;">
+                <div class="well guides">
+                    <h6 class="text-center" style="margin-top:5px;">Language Agnostic Guides to Get You up and Running Quickly</h6></div>
+                <div class="col-sm-12 guide" style="background-color:#bce8f1;padding:10px;">
+                    <ul>
+                        <li><a href="rest/product-guide/latest/accountmanagement.html" style="font-size:smaller;">Account Management </a> </li>
+                        <li><a href="rest/product-guide/latest/authentication.html" style="font-size:smaller;">Authenticating Accounts with Stormpath </a></li>
+                        <li><a href="rest/product-guide/latest/authorization.html" style="font-size:smaller;">Authorization With Stormpath </a></li>
+                        <li><a href="rest/product-guide/latest/multitenancy.html" style="font-size:smaller;line-height:initial;"> Multi-Tenancy with Stormpath </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    <div class="col-md-offset-0 col-sm-6 col-sm-pull-6">
+        <div class="panel panel-default lang">
+            <div class="panel-heading lang" style="background-color:#1d2834;color:#ffffff;">
+                <h3 class="panel-title"><i class="icon ion-social-python"></i> Python SDK </h3></div>
+            <div class="panel-body panel-lang">
+                <h6 class="text-left" style="margin-top:0px;">For Any Other Type Of Python Application. </h6>
+                <div class="well well-sm" style="background-color:#222222;border:1px solid #1f2021;padding:5px;padding-left:10px;min-height:10px;margin-bottom:15px;"><span class="text-success" style="color:#00b27a;font-size:small;">$ pip install -U stormpath </span></div>
+                <div class="col-sm-12 panel">
+                    <ul>
+                        <li><a href="/python/product-guide/latest/quickstart.html" style="font-size:smaller;">Quickstart </a> </li>
+                        <li><a href="python/product-guide/latest/" style="font-size:smaller;">Product Guide</a></li>
+                        <li><a href="python/apidocs/latest/" style="font-size:smaller;">API Reference</a></li>
+                        <li><a href="https://github.com/stormpath/stormpath-sdk-python" style="font-size:smaller;">Project on GitHub </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
 
 
 <div class="footer-banner">
@@ -130,12 +124,13 @@ content_top: [docs_top.html]
   <div class="col-xs-12 col-sm-3">
     <a class="btn btn-default" href="/rest/quickstart" role="button">REST API QUICKSTART</a>
   </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
 </div>
-</div>
-</div>
-</div>
-</div>
-</div>
+
 
   
 <!-- block__no_wrapper -->
