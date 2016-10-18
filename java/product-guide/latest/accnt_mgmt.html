@@ -948,22 +948,80 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="how-to-manage-an-account-s-required-attributes">
 <span id="account-schema"></span><h2>3.5. How to Manage an Account&#8217;s Required Attributes<a class="headerlink" href="#how-to-manage-an-account-s-required-attributes" title="Permalink to this headline">¶</a></h2>
 <p>Every Directory has its own Account Schema. This Schema allows you to control which Account attributes (referred to as <code class="docutils literal"><span class="pre">fields</span></code> within the Account Schema) must be passed as part of new Account creation.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This feature is not yet available in the Java SDK. In the meantime, please consult the REST API documentation below.</p>
+</div>
 <div class="section" id="retrieving-your-directory-s-account-schema">
 <h3>3.5.1. Retrieving your Directory&#8217;s Account Schema<a class="headerlink" href="#retrieving-your-directory-s-account-schema" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">Schema</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="na">getAccountSchema</span>
+<p>You will find a link to the <code class="docutils literal"><span class="pre">accountSchema</span></code> resource in your Directory:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/iusmp6mK91ZZ5example&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Account Schema Test&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A Directory to test Account Schema restrictions&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;...&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;accountSchema&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnExample&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can send a <code class="docutils literal"><span class="pre">GET</span></code> to that URL, with an <code class="docutils literal"><span class="pre">expand</span></code> parameter for the <code class="docutils literal"><span class="pre">fields</span></code> collection:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/schemas/ivVhIkQVLGSLnExample?expand=fields</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+</pre></div>
+</div>
+<p>And get back the Account Schema:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample/fields&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/fields/ivVhM4VPvZQycQexample&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;givenName&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample&quot;</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/fields/ivVhPOaKVsPbRWrExample&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T20:03:25.497Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;surname&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample&quot;</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;directory&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/iusmp6mK91ZZ5example&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>The two Account attributes (or <code class="docutils literal"><span class="pre">fields</span></code>) that can be toggled here are <code class="docutils literal"><span class="pre">givenName</span></code> and <code class="docutils literal"><span class="pre">surname</span></code>. By default both of these have <code class="docutils literal"><span class="pre">required</span></code> set to <code class="docutils literal"><span class="pre">false</span></code> for any Directories created after August 13, 2016.</p>
 <p>This means that (providing your Directory was created after <code class="docutils literal"><span class="pre">2016-08-13</span></code>) you can create a new Account by passing only two attributes, <code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code>:</p>
-<div class="highlight-java"><div class="highlight"><pre><span></span><span class="c1">//Create the account object</span>
-<span class="n">Account</span> <span class="n">account</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">instantiate</span><span class="o">(</span><span class="n">Account</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories/iusmp6mK91ZZ5example/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic Mlp...</span>
 
-<span class="c1">//Set the  account properties that are required according to the schema</span>
-<span class="n">account</span><span class="o">.</span><span class="na">setEmail</span><span class="o">(</span><span class="s">&quot;tk421@stormpath.com&quot;</span><span class="o">);</span>
-<span class="n">account</span><span class="o">.</span><span class="na">setPassword</span><span class="o">(</span><span class="s">&quot;Changeme1&quot;</span><span class="o">);</span>
-
-<span class="c1">//Create the account using the existing Application object</span>
-<span class="n">account</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="na">createAccount</span><span class="o">(</span><span class="n">account</span><span class="o">);</span>
+{
+  &quot;email&quot;:&quot;test123@email.com&quot;,
+  &quot;password&quot;:&quot;APassword1234&quot;
+}
 </pre></div>
 </div>
 </div>
@@ -971,17 +1029,41 @@ This link takes you to a secure page where you can change your password.
 <h3>3.5.2. Modifying your Directory&#8217;s Account Schema<a class="headerlink" href="#modifying-your-directory-s-account-schema" title="Permalink to this headline">¶</a></h3>
 <p>Any attributes that are in the <code class="docutils literal"><span class="pre">fields</span></code> collection can have <code class="docutils literal"><span class="pre">required</span></code> toggled to either <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>.</p>
 <p>If you wanted to set <code class="docutils literal"><span class="pre">surname</span></code> as required, you would send the following <code class="docutils literal"><span class="pre">POST</span></code>:</p>
-<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">Schema</span> <span class="n">schema</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="na">getAccountSchema</span><span class="o">();</span>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/fields/ivVhPOaKVsPbRWrExample</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic Mlp...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">no-cache</span>
 
-<span class="k">for</span> <span class="o">(</span><span class="n">Field</span> <span class="n">field</span> <span class="o">:</span> <span class="n">fields</span><span class="o">)</span> <span class="o">{</span>
-  <span class="k">if</span> <span class="o">(</span><span class="s">&quot;surname&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">field</span><span class="o">.</span><span class="na">getName</span><span class="o">()))</span> <span class="o">{</span>
-    <span class="n">field</span><span class="o">.</span><span class="na">setRequired</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-    <span class="n">field</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
-  <span class="o">}</span>
-<span class="o">}</span>
+<span class="p">{</span>
+  <span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>If you now tried to create another Account by passing only an <code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code>, you would get back a <code class="docutils literal"><span class="pre">ResourceException</span></code> with <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/errors.html#error-2000">Error 2000</a>:</p>
+<p>And get back the following <code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code>:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/fields/ivVhPOaKVsPbRWrExample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T20:03:25.497Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;surname&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nt">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If you now tried to create another Account by passing only an <code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code>, you would get back a <code class="docutils literal"><span class="pre">400</span> <span class="pre">Bad</span> <span class="pre">Request</span></code> with <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/errors.html#error-2000">Error 2000</a>:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+  <span class="nt">&quot;code&quot;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span>
+  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Account surname is required; it cannot be null, empty, or blank.&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;developerMessage&quot;</span><span class="p">:</span> <span class="s2">&quot;Account surname is required; it cannot be null, empty, or blank.&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;moreInfo&quot;</span><span class="p">:</span> <span class="s2">&quot;https://docs.stormpath.com/rest/product-guide/latest/errors.html#error-2000&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;requestId&quot;</span><span class="p">:</span> <span class="s2">&quot;49bd7a31-6650-11e6-9e22-22000befd8bd&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="how-to-verify-an-account-s-email">
