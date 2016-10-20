@@ -129,6 +129,8 @@ content_top: [docs_top.html]
             <div class="row">
             <div class="col-sm-12">
                 <ul class="fa-ul">
+                  <li><i class="fa-li fa fa-car"></i><a href="/nodejs/product-guide/latest/quickstart.html">Quickstart</a></li>
+                  <li><i class="fa-li fa fa-book"></i><a href="/nodejs/product-guide/latest/">Product Guide</a></li>
                   <li><i class="fa-li fa fa-github"></i><a href="https://github.com/stormpath/stormpath-sdk-node">Project on GitHub</a></li>
                   <li><i class="fa-li fa fa-file-text"></i><a href="/nodejs/jsdoc/">API Reference</a></li>
                 </ul>
