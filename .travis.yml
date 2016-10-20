@@ -1,0 +1,20 @@
+branches:
+  only:
+  - master
+  - source
+language: python
+python: 3.5
+install: gem install bundler
+script:
+- bundle install
+- bundle exec rake setup_github_pages[git@github.com:stormpath/stormpath.github.io.git]
+- cd _deploy
+- git pull --no-edit -s recursive -X theirs https://github.com/stormpath/stormpath.github.io.git > /dev/null 2>&1
+- cd ..
+- bundle exec rake generate
+- bundle exec rake deploy
+before_install:
+- openssl aes-256-cbc -K $encrypted_6f205acd883e_key -iv $encrypted_6f205acd883e_iv -in keypair.enc -out ~/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+- git config --global user.email "evangelists@stormpath.com"
+- git config --global user.name "stormpath.github.io Auto Doc Build"

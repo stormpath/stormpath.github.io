@@ -43,15 +43,15 @@ After an Account resource has been created, you can authenticate it given an inp
       "type": "basic",
       "value": "Zmlyc3Qyc2hvb3Q6Q2hhbmdlK21lMQ==",
       "accountStore": {
-         "href": "https://api.stormpath.com/v1/groups/2SKhstu8Plaekcaexample"
+         "href": "https://api.stormpath.com/v1/directories/2SKhstu8PlaekcaEXampLE"
        }
     }
 
-  You are using the Base64 encoded ``value`` from above, and specifying that the Account can be found in the "Captains" Directory from :ref:`earlier <about-cloud-dir>`.
+  You are using the Base64 encoded ``value`` from above, and (optionally) specifying that the Account can be found in the "Captains" Directory from :ref:`earlier <about-cloud-dir>`.
 
   .. note::
 
-    It is also possible to specify an Organization's ``nameKey`` instead of an Account Store's ``href``:
+    It is also possible to specify a Group or Organization's ``href`` or an Organization's ``nameKey`` instead of an Directory's. Passing a ``nameKey`` would look like this:
 
     .. code-block:: http
 
@@ -145,18 +145,22 @@ After an Account resource has been created, you can authenticate it given an inp
 
 .. only:: nodejs
 
-  So, if you had a user Account "Han Solo" in the "Captains" Directory, and you wanted to log him in, you would use the ``application.authenticateAccount(authRequest, callback)`` method as shown below.
+  So, if you had a user Account "Han Solo" in the "Captains" Directory, and you wanted to log him in, you would use the ``application.authenticateAccount(authRequest, callback)`` method as shown below:
 
   .. literalinclude:: code/nodejs/authentication/login_attempt_req.js
       :language: javascript
 
-  .. note::
+  This works as expected because the "Captains" directory is mapped to the application.
+  If there are multiple directories or organizations mapped to the application, they
+  will be searched in order (more on that :ref:`below <how-login-works>`).  You
+  can skip the searching and target a specific account store by ``href``:
 
-    When authenticating the account is always automatically expanded.
+  .. literalinclude:: code/nodejs/authentication/login_attempt_ash.js
+      :language: javascript
 
-  If authentication succeeded, you would receive back ... (todo)
+  Or by the ``nameKey`` of an Organization:
 
-  .. literalinclude:: code/nodejs/authentication/login_attempt_resp.js
+  .. literalinclude:: code/nodejs/authentication/login_attempt_onk.js
       :language: javascript
 
 .. only:: php
@@ -221,64 +225,6 @@ The following flow chart shows what happens when an Account attempts to log in t
 As you can see, Stormpath tries to find the Account in the "Customers" Directory first because it has a higher priority than the "Employees" directory. If not found, the "Employees" Directory is tried next as it has a lower priority.
 
 You can map multiple Account Stores to an Application, but only one is required to enable login for an Application. Mapping multiple Account Stores to an Application, as well as configuring their priority, allows you precise control over the Account populations that may log in to your Application.
-
-.. _mirror-login:
-
-How Login Works with Master Directories
-"""""""""""""""""""""""""""""""""""""""
-
-If you require a number of Mirror Directories, then it is recommended that you have a master Directory alongside them. Any login attempts should be directed to the Mirror Directory. If the attempt succeeds, your application should then perform a :ref:`search <about-search>` of the master Directory to see if there is an Account already there that links to this Account in the Mirror Directory.
-
-If such an Account is already in the master Directory, no action is taken. If such an Account is not found, your application should create a new one in the master Directory, and populate it with the information pulled from the Account in the Mirror Directory. The customData resource for that master Account should then be used to store a link to the Account in the Mirror Directory, for example:
-
-.. only:: rest
-
-  .. code-block:: json
-
-    {
-      "customData": {
-        "accountLink": "https://api.stormpath.com/v1/accounts/3fLduLKlEx"
-      }
-    }
-
-.. only:: csharp or vbnet
-
-  .. only:: csharp
-
-    .. literalinclude:: code/csharp/authentication/customdata_accountlink.cs
-        :language: csharp
-
-  .. only:: vbnet
-
-    .. literalinclude:: code/vbnet/authentication/customdata_accountlink.vb
-        :language: vbnet
-
-.. only:: java
-
-  .. literalinclude:: code/java/authentication/customdata_accountlink.java
-      :language: java
-
-.. only:: nodejs
-
-  .. literalinclude:: code/nodejs/authentication/customdata_accountlink.js
-      :language: javascript
-
-.. only:: php
-
-    .. literalinclude:: code/php/authentication/customdata_accountlink.php
-      :language: php
-
-.. only:: python
-
-  .. literalinclude:: code/python/authentication/customdata_accountlink.py
-      :language: python
-
-If the user then chooses at some point to, for example, "Sign in with Facebook", then a similar process will occur, but this time with a link created to the user Account in the Facebook Directory.
-
-This mirror-master approach has two major benefits:
-
-1. It allows for a user to have one unified identity in your Application, regardless of how many external identities they choose to log in with.
-2. This identity can also be the central point that all authorization permissions (whether they be implicit or explicit) are then applied to.
 
 .. _managing-login:
 
@@ -350,7 +296,8 @@ The reason why your user "Han Solo" was able to log in to your application is be
 
 .. only:: nodejs
 
-  You can find all the Account Store Mappings for an Application by using the ``getAccountStoreMappings()`` collection:
+  You can find all the Account Store Mappings for an Application by using the ``getAccountStoreMappings()`` method
+  of an Application instance:
 
   .. literalinclude:: code/nodejs/authentication/get_asm_req.js
       :language: javascript
@@ -384,7 +331,7 @@ The reason why your user "Han Solo" was able to log in to your application is be
 
 .. only:: nodejs
 
-  This will return the Account Store Mapping:
+  This will print the list of Account Store Mappings in your console:
 
   .. literalinclude:: code/nodejs/authentication/get_asm_resp.js
       :language: javascript
@@ -571,7 +518,15 @@ Setting an Account Store Mapping as the default Account or Group store would aut
 
 .. only:: nodejs
 
+  You can use the ``setDefaultAccountStore()`` method of an Application instance to take an existing Account Store instance, and set the flag on it:
+
   .. literalinclude:: code/nodejs/authentication/change_default_stores.js
+      :language: javascript
+
+  If you know the ``href`` of the account store, but don't already have an instance
+  of it, you can also pass an object literal with the ``href`` value:
+
+  .. literalinclude:: code/nodejs/authentication/change_default_stores_literal.js
       :language: javascript
 
 .. only:: php
@@ -604,7 +559,7 @@ In this section, you will discuss how to use Stormpath to generate and manage OA
 
 Since HTTP is considered a stateless protocol, if your application authenticates a user for one HTTP request, a problem arises when the next request is sent and your application doesn't know who the user is. This is why many applications today pass some information to tie the request to a user. Traditionally, this requires **Server-based authentication**, where state is stored on the server and only a session identifier is stored on the client.
 
-**Token-based authentication** is a alternate, stateless strategy. With token-based authentication, you secure an application based on a security token that is generated for the user on authentication and then stored on the client-side. Token-based Authentication is all about removing the need to store information on the server while giving extra security to keep the token secure on the client. This helps you as a developer build stateless and scalable applications.
+**Token-based authentication** is an alternate, stateless strategy. With token-based authentication, you secure an application based on a security token that is generated for the user on authentication and then stored on the client-side. Token-based Authentication is all about removing the need to store information on the server while giving extra security to keep the token secure on the client. This helps you as a developer build stateless and scalable applications.
 
 Stormpath's approach to token-based authentication has two elements: JSON Web Tokens (JWTs) for authentication, and OAuth 2.0 for authorization.
 
@@ -619,6 +574,7 @@ Even though OAuth 2.0 has many authorization modes or "grant types", Stormpath c
 - **Client Credentials Grant Type**: Provides the ability to exchange an API Key for an Access Token.
 - **Social Grant Type:** Allows you to exchange a user's social Access Token or Authorization Code
 - **Refresh Grant Type:** Provides the ability to generate another Access Token based on a special Refresh Token.
+- **Stormpath Factor Challenge Grant Type:** Provides the ability to generate an Access Token with a Multi-Factor Authentication challenge code
 
 To understand how to use Token-based Authentication, you need to talk about the different types of tokens that are available. To see how to generate an OAuth token, see :ref:`below <generate-oauth-token>`.
 
@@ -774,11 +730,6 @@ If you wanted to change the TTL for the Access Token to 30 minutes and the Refre
       "comment":" // This JSON has been truncated for readability"
     }
 
-.. only:: nodejs
-
-  .. literalinclude:: code/nodejs/authentication/update_oauth_ttl_resp.js
-      :language: javascript
-
 .. only:: php
 
   And you would get the following response:
@@ -806,8 +757,9 @@ Generating an OAuth 2.0 Access Token
 Stormpath can generate a brand new Access Token using the above-mentioned OAuth 2.0 grant types. This means that you can generate a new Access Token with:
 
 - **Client Credentials Grant Type:** a client's credentials (e.g. Client ID and Secret)
-- **Password Grant Type:** a user's credentials (e.g. username and password)
 - **Social Grant Type:** a user's social login Access Token or Authorization Code
+- **Password Grant Type:** a user's credentials (e.g. username and password)
+- **Stormpath Factor Challenge Type:** a Stormpath Challenge ``href`` and ``code``
 - **Refresh Grant Type:** For information about using the an OAuth Refresh token :ref:`see below <refresh-oauth-token>`
 
 .. only:: rest
@@ -818,7 +770,22 @@ Stormpath can generate a brand new Access Token using the above-mentioned OAuth 
 
   This endpoint is used to generate an OAuth token for any valid Account or API Key associated with the specified Application. For Account's, it uses the same validation as the ``/loginAttempt`` endpoint, as described in :ref:`how-login-works`.
 
-The first three kinds of OAuth Grant Types differ only in what credentials are passed to Stormpath in order to generate the token. For more information on those, keep reading. For more information about the Refresh Grant Type, see :ref:`below <refresh-oauth-token>`.
+The first three kinds of OAuth Grant Types differ only in what credentials are passed to Stormpath in order to generate the token. The Stormpath Factor Challenge Type requires a Challenge ``href`` and ``code`` that you get as part of the :ref:`Multi-Factor Authentication process <mfa>`. For more information on those, keep reading. For more information about the Refresh Grant Type, see :ref:`below <refresh-oauth-token>`.
+
+**Targeting a Specific Account Store**
+
+It is possible to target token generation against a particular Directory, Group, or Organization. You do this either by passing the Account Store's ``href``, or the Organization's ``nameKey``.
+
+``grant_type=password&username=tom@stormpath.com&password=Secret1&accountStore=https://api.stormpath.com/v1/directories/1bcd23ec1d0a8wa6``
+
+``grant_type=password&username=tom@stormpath.com&password=Secret1&nameKey=anOrganization``
+
+This allows you to bypass the usual default Account Store and login priority and instead send the token generation to a particular Account Store.
+
+
+.. todo::
+
+  Need examples for the other languages!
 
 Client Credentials
 """"""""""""""""""
@@ -847,6 +814,18 @@ Finally, for the **Password Grant Type**, you pass the user's **username** and *
 
 ``grant_type=password&username=tom%40stormpath.com&password=Secret1``
 
+Stormpath Factor Challenge
+""""""""""""""""""""""""""
+
+For this grant type, you will need:
+
+- The **URL of a Stormpath Challenge Resource**. Currently, this can only be a Challenge related to an SMS Factor.
+- And the challenge code that the user received on their phone.
+
+``grant_type=stormpath_factor_challenge&challenge=https://api.stormpath.com/v1/challenges/$CHALLENGE_ID&code=123456``
+
+For more information about these resources and how to obtain them, please see :ref:`mfa`.
+
 Token Generation Example
 """""""""""""""""""""""""
 
@@ -856,7 +835,9 @@ In this example we will demonstrate the Password Grant Type:
 - Your application in turn takes the credentials and formulates the OAuth 2.0 Access Token request to Stormpath.
 - When Stormpath returns with the Access Token Response, you can then return the Access Token and/or the Refresh Token to the client.
 
-So you would send the following request:
+.. only:: not nodejs
+
+  So you would send the following request:
 
 .. only:: rest
 
@@ -903,6 +884,15 @@ So you would send the following request:
     Just like with logging-in a user, it is possible to generate a token against a particular Application's Account Store resource. To do so, use the ``setAccountStore(AccountStore accountStore)`` method when you are building the request.
 
 .. only:: nodejs
+
+  The first step is to create a re-usable password grant authenticator. This authenticator is bound to an Application, so you must pass an Application instance to it:
+
+  .. literalinclude:: code/nodejs/authentication/create_password_grant_authenticator.js
+      :language: javascript
+
+  Once you have an authenticator, you can pass authentication attempts to it.
+
+  If the users credentials are correct, you will receive an authentication result, which contains the access token:
 
   .. literalinclude:: code/nodejs/authentication/generate_oauth_token_req.js
       :language: javascript
@@ -1009,13 +999,10 @@ So you would send the following request:
 
 .. only:: nodejs
 
-  Which would result in this response:
+  Which would print the access token in the terminal:
 
   .. literalinclude:: code/nodejs/authentication/generate_oauth_token_resp.js
       :language: javascript
-
-  .. todo::
-    (node.todo)
 
 .. only:: php
 
@@ -1219,13 +1206,15 @@ Using Stormpath to Validate Tokens
     2. Received back an **Access Token Response**, which contained - among other things - an **Access Token** in JWT format.
 
     The user now attempts to access a secured resource:
+    We need to create a new authenticator, but this time it will be a JWT authenticator that can authenticate tokens that have already been generated. This authenticator
+    is also bound to an application (the same one that you used to generate the token), and is created like this:
 
-    .. literalinclude:: code/nodejs/authentication/validate_oauth_token_sp_req.js
+    .. literalinclude:: code/nodejs/authentication/create_jwt_authenticator.js
       :language: javascript
 
-    If the access token can be validated, Stormpath will return this:
+    Now we can pass access tokens to this authenticator.  If they are valid we can use the authentication result to fetch the Account that has authenticated with the token:
 
-    .. literalinclude:: code/nodejs/authentication/validate_oauth_token_sp_resp.js
+    .. literalinclude:: code/nodejs/authentication/validate_oauth_token_sp_req.js
       :language: javascript
 
   .. only:: php
@@ -1299,6 +1288,8 @@ Validating the Token Locally
 
   .. only:: nodejs
 
+    To use local validation, enable local validation when creating a JWT authenticator:
+
     .. literalinclude:: code/nodejs/authentication/validate_oauth_token_local.js
         :language: javascript
 
@@ -1358,6 +1349,13 @@ In the event that the Access Token expires, the user can generate a new one usin
 
 .. only:: nodejs
 
+  Again, we will create an authenticator. This time we will create a refresh token authenticator:
+
+  .. literalinclude:: code/nodejs/authentication/create_refresh_token_authenticator.js
+    :language: javascript
+
+  And we will use the authenticator to get a new access token, by passing the refresh token to it:
+
   .. literalinclude:: code/nodejs/authentication/refresh_access_token_req.js
     :language: javascript
 
@@ -1401,7 +1399,7 @@ In the event that the Access Token expires, the user can generate a new one usin
 
 .. only:: nodejs
 
-  This would be the response:
+  The new access token will be printed in the terminal:
 
   .. literalinclude:: code/nodejs/authentication/refresh_access_token_resp.js
     :language: javascript
@@ -1546,14 +1544,31 @@ Revoking Access and Refresh Tokens
 
   .. only:: nodejs
 
-    To revoke the token, send the following request:
+    To revoke a token you need to delete it from the REST API, which means you need to obtain the ``href`` of the token.
+
+    Access and Refresh Tokens are like all other resources
+    in the Stormpath REST API, and they have an ``href`` value.  The format of the ``href`` will be one of:
+
+    .. code-block:: javascript
+
+      'https://api.stormpath.com/v1/accessTokens/:jti'
+      'https://api.stormpath.com/v1/refreshTokens/:jti'
+
+    Where the ``jti`` is in the claims body of the token (you must unpack the JWT to look inside the claims body).  If you already know the ``href`` of the token resource, you can quickly fetch it and then delete it:
+
+    .. literalinclude:: code/nodejs/authentication/delete-access-token.js
+      :language: javascript
+
+    The same can be done for refresh tokens, using ``client.getRefreshToken()`` instead.
+
+    If you want to delete all the access tokens for an Account, you would iterate over all the Account's access tokens and delete each one:
 
     .. literalinclude:: code/nodejs/authentication/delete_user_access_tokens_req.js
       :language: javascript
 
-    If successful, ``err`` will be ``null`` and the following will be written to console:
+    If you have the actual token, as a JWT string, you can determine the ``href`` by unpacking the token, and building the ``href`` from the ``jti`` claim that is in the token:
 
-    .. literalinclude:: code/nodejs/authentication/delete_user_access_tokens_resp.js
+    .. literalinclude:: code/nodejs/authentication/get-token-jti.js
       :language: javascript
 
   .. only:: php
@@ -2434,10 +2449,29 @@ This section assumes that you are already familiar both with :ref:`how-login-wor
 
 - If you are using Azure Active Directory, then you will want to read the :ref:`azure` section.
 
+The LDAP Authentication Flow
+----------------------------
+
+There are two different authentication flows for LDAP directories: one for Active Directory, and another for all other directories that use the LDAP protocol.
+
+**LDAP**
+
+.. figure:: images/auth_n/ldap_vanilla_seq.png
+  :align: center
+  :scale: 100%
+  :alt: Non-AD LDAP Auth Sequence
+
+**Active Directory Authentication**
+
+.. figure:: images/auth_n/ldap_ad_seq.png
+  :align: center
+  :scale: 100%
+  :alt: AD LDAP Auth Sequence
+
 Mirror Directories and LDAP
 ---------------------------
 
-To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory. If this fulfills your requirements, then the story ends here. However, if you need to support other kinds of login (and therefore other kinds of Directories) it is recommended that you maintain a "master" Directory alongside your Mirror Directory. For more about this, see :ref:`mirror-login` above.
+To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory. If this fulfills your requirements, then the story ends here. However, if you need to support other kinds of login (and therefore other kinds of Directories) it is recommended that you maintain a "master" Directory alongside your Mirror Directory. For more about this, see :ref:`account-linking`.
 
 Setting Up Login With LDAP
 --------------------------
@@ -2906,7 +2940,7 @@ In order to retrieve the required values, start by sending this request:
 
 .. only:: nodejs
 
-  This will return the Provider:
+  This will print the provider metadata in your terminal:
 
   .. literalinclude:: code/nodejs/authentication/get_directory_provider_resp.js
       :language: javascript
@@ -2918,7 +2952,9 @@ In order to retrieve the required values, start by sending this request:
   .. literalinclude:: code/php/authentication/get_directory_provider_resp.php
     :language: php
 
-Now you will need to retrieve your Directory Provider's Service Provider Metadata:
+.. only:: not nodejs
+
+  Now you will need to retrieve your Directory Provider's Service Provider Metadata:
 
 .. only:: csharp or vbnet
 
@@ -2944,11 +2980,6 @@ Now you will need to retrieve your Directory Provider's Service Provider Metadat
 
   .. literalinclude:: code/java/authentication/get_serviceprovider_metadata_req.java
       :language: java
-
-.. only:: nodejs
-
-  .. literalinclude:: code/nodejs/authentication/get_serviceprovider_metadata_req.js
-      :language: javascript
 
 .. only:: php
 
@@ -3027,7 +3058,7 @@ Now you will need to retrieve your Directory Provider's Service Provider Metadat
 
 From this metadata, you will need two values:
 
-- **Assertion Consumer Service URL**: This is the location the IdP will send its response to.
+- **Assertion Consumer Service Endpoint**: This is the location the IdP will send its response to.
 - **X509 Signing Certificate**: The certificate that is used to sign the requests sent to the IdP. If you retrieve XML, the certificate will be embedded. If you retrieve JSON, you'll have to follow a further ``/x509certificates`` link to retrieve it.
 
 You will also need two other values, which will always be the same:
@@ -3145,6 +3176,11 @@ You should create any URIs here that you would like included as authorized callb
   .. literalinclude:: code/nodejs/authentication/saml_policy_example.js
       :language: javascript
 
+  This will print the SAML policy resource in your terminal:
+
+  .. literalinclude:: code/nodejs/authentication/saml_policy_example_res.js
+      :language: javascript
+
 .. only:: php
 
   .. literalinclude:: code/php/authentication/saml_policy_example.php
@@ -3159,8 +3195,9 @@ You should create any URIs here that you would like included as authorized callb
 
 Step 5a: Generate defaultRelayState (IdP-initiated Authentication Only)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+.. only:: not nodejs
 
-To configure your IdP for IdP-initiated authentication, you will need to get a ``defaultRelayState`` JWT:
+  To configure your IdP for IdP-initiated authentication, you will need to get a ``defaultRelayState`` JWT:
 
 .. only:: php
 
@@ -3207,6 +3244,10 @@ To configure your IdP for IdP-initiated authentication, you will need to get a `
 
 .. only:: nodejs
 
+  To configure your IdP for IdP-initiated authentication, you will need to get a ``defaultRelayState`` from
+  our REST API.  This is done by making a POST request against the ``serviceProvider`` resource, as found in
+  the application's ``samlPolicy``.  We can make the request like this:
+
   .. literalinclude:: code/nodejs/authentication/get_default_relay_state_req.js
       :language: javascript
 
@@ -3242,7 +3283,7 @@ To configure your IdP for IdP-initiated authentication, you will need to get a `
 
 .. only:: nodejs
 
-  This request will return a response containing a JWT like this:
+  This will print the new `defaultRelayState` value in your terminal:
 
   .. literalinclude:: code/nodejs/authentication/get_default_relay_state_resp.js
       :language: javascript
@@ -3409,16 +3450,10 @@ The rules have three different components:
 
 .. only:: nodejs
 
-    The ability to modify attribute mappings is not yet available in the Node.js SDK. Please use the Stormpath Admin Console, or see the REST API instructions below.
+  Attribute mapping rules are simple objects, that can be defined like this:
 
   .. literalinclude:: code/nodejs/authentication/example_saml_rule.js
       :language: javascript
-
-  .. todo:
-
-    The rule expressed here is as follows:
-
-    (node.todo)
 
 .. only:: php
 
@@ -3459,7 +3494,9 @@ The rules have three different components:
 
     It is possible to specify only a ``name`` or ``nameFormat`` in your rule, instead of both.
 
-In order to create the mapping rules, you send the following request:
+.. only:: not nodejs
+
+  In order to create the mapping rules, you send the following request:
 
 .. only:: csharp or vbnet
 
@@ -3487,6 +3524,8 @@ In order to create the mapping rules, you send the following request:
       :language: java
 
 .. only:: nodejs
+
+  To add this mapping rule to the Directory, first fetch the ``provider`` while expanding ``attributeStatementMappingRules``, then push the new rule onto this collection, and save the provider:
 
   .. literalinclude:: code/nodejs/authentication/create_mapping_rule.js
       :language: javascript
@@ -3845,16 +3884,1406 @@ For more information about what is contained in this token, please see :ref:`abo
 
 At this point your user is authenticated and able to use your app.
 
+.. _mfa:
+
+4.6. Using Multi-Factor Authentication
+============================================
+
+.. only:: not (rest or java)
+
+ .. warning::
+
+  This feature is not yet available in the |language| SDK. In the meantime you can find the REST documentation below.
+
+At a minimum, an Account in Stormpath requires at least one authentication factor, which is the password. However, if you would like to include additional security then Stormpath supports the creation of additional authentication factors on an Account. Currently, the additional factors are:
+
+- SMS message to a phone
+- Google Authenticator
+
+The multi-factor authentication process works as follows with text messages:
+
+#. An additional **Factor** of type ``SMS`` is added to an Account.
+#. A **Challenge** is created which includes a message.
+#. The message is sent to the phone number found in the Factor with a one-time numerical **code**.
+#. If that **code** is then passed back to the appropriate Challenge within a sufficient time window, you will get back either a ``SUCCESS`` or ``FAILED`` response.
+
+With Google Authenticator, the flow is only slightly different:
+
+#. An additional **Factor** of type ``google-authenticator`` is added to an Account.
+#. The new **Factor** has a **secret** and a Base64-encoded **QR code**, both of which can be used to add it to the Google Authenticator app.
+#. At any time, you can send the **code** from the Authenticator app to Stormpath's ``/challenges`` endpoint, at which point you will get back either a ``SUCCESS`` or ``FAILED`` response.
+
+.. note::
+
+  Multi-Factor Authentication is only available with paid Stormpath plans. For more information please see `Stormpath's Pricing Page <https://stormpath.com/pricing>`__.
+
+.. _mfa-adding-factor:
+
+4.6.1. Enrolling an Additional Factor
+-------------------------------------
+
+Enrolling an additional authentication factor always happens separate from Account creation, so the process is the same regardless of whether you are creating a factor for an existing Account or one that was just created. For this example, we will create a new Account in Stormpath, then add an additional Factor resource to it.
+
+First, you create the Account:
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  .. code-block:: http
+
+    POST /v1/applications/1gk4Dxzi6o4PbdleXaMPLE/accounts HTTP/1.1
+    Host: api.stormpath.com
+    Authorization: Basic MlpG...
+    Content-Type: application/json
+    Cache-Control: no-cache
+
+    {
+        "givenName": "Joe",
+        "surname": "Factorman",
+        "username": "factorman",
+        "email": "joe.factorman@stormpath.com",
+        "password":"Changeme1"
+    }
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/mfa_create_account.java
+      :language: java
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_create_account.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_create_account.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_create_account.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_create_account.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_create_account.py
+          :language: python
+
+.. _mfa-adding-factor-sms:
+
+Adding an SMS Factor
+^^^^^^^^^^^^^^^^^^^^
+
+To add an additional SMS Factor to this Account, you send the following request:
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  .. code-block:: http
+
+    POST /v1/accounts/5IvkjoqcYNe3TYMExample/factors HTTP/1.1
+    Host: api.stormpath.com
+    Authorization: Basic MlpG...
+    Content-Type: application/json
+
+    {
+      "type":"SMS",
+      "phone": {
+        "number": "2675555555"
+      }
+    }
+
+.. only:: java
+
+    .. literalinclude:: code/java/authentication/mfa_add_sms_factor_req.java
+        :language: java
+
+  For now ``factor.getVerificationStatus()`` will return ``UNVERIFIED`` and ``factor.getMostRecentChallenge()`` will be ``null``. If you were to create a challenge for this Factor, ``factor.getMostRecentChallenge()`` would return the actual ``Challenge`` instance. If that challenge was successful, ``factor.getVerificationStatus()`` would change to ``VERIFIED``.
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_add_sms_factor_req.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_add_sms_factor_req.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_add_sms_factor_req.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_add_sms_factor_req.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_add_sms_factor_req.py
+          :language: python
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  You will then get back the response:
+
+  .. code-block:: json
+
+    {
+      "href": "https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample",
+      "type": "SMS",
+      "createdAt": "2016-09-22T21:34:00.881Z",
+      "modifiedAt": "2016-09-22T21:34:00.881Z",
+      "status": "ENABLED",
+      "verificationStatus": "UNVERIFIED",
+      "account": {
+          "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample"
+      },
+      "challenges": {
+          "href": "https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample/challenges"
+      },
+      "phone": {
+          "href": "https://api.stormpath.com/v1/phones/29b9PeqVcGYAelhExample"
+      },
+      "mostRecentChallenge": null
+    }
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_add_sms_factor_resp.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_add_sms_factor_resp.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_add_sms_factor_resp.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_add_sms_factor_resp.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_add_sms_factor_resp.py
+          :language: python
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  For now the ``verificationStatus`` is ``UNVERIFIED`` and the link to the ``mostRecentChallenge`` is ``null``. If you were to send a challenge this Factor, the ``mostRecentChallenge`` link would be populated. If that challenge was successful, the ``verificationStatus`` would change to ``VERIFIED``.
+
+  For more information about the Factor resource, see :ref:`the Reference chapter <ref-factor>`.
+
+.. _mfa-adding-factor-google:
+
+Adding a Google Authenticator Factor
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+To add an additional Google Authenticator Factor to this Account, you must send the following request:
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  .. code-block:: http
+
+    POST /v1/accounts/5IvkjoqcYNe3TYMYExample/factors HTTP/1.1
+    Host: api.stormpath.com
+    Content-Type: application/json
+    Authorization: Basic MlpG...
+
+    {
+      "type":"google-authenticator",
+      "accountName": "jakub@stormpath.com"
+    }
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/mfa_add_ga_factor_req.java
+    :language: java
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_add_ga_factor_req.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_add_ga_factor_req.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_add_ga_factor_req.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_add_ga_factor_req.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_add_ga_factor_req.py
+          :language: python
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  You will then get back the response:
+
+  .. code-block:: json
+
+    {
+      "href": "https://api.stormpath.com/v1/factors/46EZpOuefEEooFlexample",
+      "type": "google-authenticator",
+      "createdAt": "2016-09-22T21:42:57.636Z",
+      "modifiedAt": "2016-09-22T21:42:57.636Z",
+      "status": "ENABLED",
+      "accountName": "jakub@stormpath.com",
+      "issuer": null,
+      "secret": "OP7JZ[...]LAV",
+      "keyUri": "otpauth://totp/jakub%40stormpath.com?secret=OP7JZ[...]LAV",
+      "base64QRImage": "iVBOR[...]SuQmCC",
+      "verificationStatus": "UNVERIFIED",
+      "account": {
+          "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYExample"
+      },
+      "mostRecentChallenge": null,
+      "challenges": {
+          "href": "https://api.stormpath.com/v1/factors/46EZpOuefEEooFlexample/challenges"
+      }
+    }
+
+  For more information about the Factor resource, see :ref:`the Reference chapter <ref-factor>`.
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_add_ga_factor_resp.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_add_ga_factor_resp.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_add_ga_factor_resp.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_add_ga_factor_resp.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_add_ga_factor_resp.py
+          :language: python
+
+The user now needs to get this information into their Google Authenticator (or `similar <https://www.authy.com/tutorials/how-use-authy-google-authenticator/>`__) application. The easiest way to do that is to use their app to scan a QR code. Stormpath makes this easy by giving you the QR Code in the ``base64QRImage`` field of the Google Authenticator Factor.
+
+You can now take this string and turn it into a QR Code image:
+
+- You could use a QR Code Library, such as `QRCode.js <https://davidshimjs.github.io/qrcodejs/>`__
+- Or you could generate the image yourself, using an ``<img>`` tag or CSS. For examples of both, see `here <https://css-tricks.com/examples/DataURIs/>`__.
+
+.. todo::
+
+  Not sure if this text above applies for the SDKs?
+
+Once the image is generated, the user will scan it into their Authenticator app. If you ask them for a code, they will go into the app and find the code for your application. For information about what happens with this code, see :ref:`below <mfa-challenge-after-google>`.
+
+.. _mfa-challenge:
+
+4.6.2. Challenging a Factor
+---------------------------
+
+At this point in the example you have a brand new Account with two additional Factors.
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  If you were to send a GET to the Account's ``/factors`` endpoint, you will see them:
+
+  .. code-block:: json
+
+    {
+      "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYiX98vc/factors",
+      "offset": 0,
+      "limit": 25,
+      "size": 2,
+      "items": [
+        {
+          "href": "https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample",
+          "type": "SMS",
+          "createdAt": "2016-09-22T21:34:00.881Z",
+          "modifiedAt": "2016-09-22T21:34:00.881Z",
+          "status": "ENABLED",
+          "verificationStatus": "UNVERIFIED",
+          "account": {
+              "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample"
+          },
+          "challenges": {
+              "href": "https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample/challenges"
+          },
+          "phone": {
+              "href": "https://api.stormpath.com/v1/phones/29b9PeqVcGYAelhExample"
+          },
+          "mostRecentChallenge": null
+        },
+        {
+          "href": "https://api.stormpath.com/v1/factors/46EZpOuefEEooFlexample",
+          "type": "google-authenticator",
+          "createdAt": "2016-09-22T21:42:57.636Z",
+          "modifiedAt": "2016-09-22T21:42:57.636Z",
+          "status": "ENABLED",
+          "accountName": "jakub@stormpath.com",
+          "issuer": null,
+          "secret": "OP7JZ[...]LAV",
+          "keyUri": "otpauth://totp/jakub%40stormpath.com?secret=OP7JZ[...]LAV",
+          "base64QRImage": "iVBOR[...]SuQmCC",
+          "verificationStatus": "UNVERIFIED",
+          "account": {
+              "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYExample"
+          },
+          "mostRecentChallenge": null,
+          "challenges": {
+              "href": "https://api.stormpath.com/v1/factors/46EZpOuefEEooFlexample/challenges"
+          }
+        }
+      ]
+    }
+
+.. only:: java
+
+  If you were to retrieve the Account's ``factors`` you will get them:
+
+  .. literalinclude:: code/java/authentication/mfa_get_account_factors1_resp.java
+    :language: java
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_get_account_factors1_resp.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_get_account_factors1_resp.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_get_account_factors1_resp.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_get_account_factors1_resp.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_get_account_factors1_resp.py
+          :language: python
+
+You will now challenge each of these factors.
+
+.. _mfa-challenge-after:
+
+Challenging After Factor Creation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This example covers challenging Factors that have already been created. To see an example of how to challenge a Factor at the same time as you are creating it, please see :ref:`below <mfa-challenge-after>`.
+
+.. _mfa-challenge-after-sms:
+
+Challenging an SMS Factor
+"""""""""""""""""""""""""
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  To challenge an SMS Factor, you send a request like this, with or without specifying a message.
+
+  .. code-block:: http
+
+    POST /v1/factors/3WPF5Djir0Wg5FtPoJCPbo/challenges HTTP/1.1
+    Host: api.stormpath.com
+    Authorization: Basic MlpG...
+    Content-Type: application/json
+    Cache-Control: no-cache
+
+    {
+      "message":"For the sake of example, your code is ${code}."
+    }
+
+.. only:: java
+
+  To challenge an SMS Factor, call ``factor.createChallenge(challenge);`` with or without setting a message.
+
+  This operation will automatically cause the factor to be challenged, meaning that the user will receive a code as soon as this operation is executed.
+
+  .. literalinclude:: code/java/authentication/mfa_challenge_sms_factor_req.java
+    :language: java
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_challenge_sms_factor_req.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_challenge_sms_factor_req.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_challenge_sms_factor_req.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_challenge_sms_factor_req.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_challenge_sms_factor_req.py
+          :language: python
+
+If you do not specify a message, then Stormpath will just send the default message: ``"Your verification code is ${code}"``.
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  In response to this request you would get back a Challenge:
+
+  .. code-block:: json
+
+    {
+      "href": "https://api.stormpath.com/v1/challenges/70xfDsguePApNdnExample",
+      "createdAt": "2016-09-22T22:35:44.799Z",
+      "modifiedAt": "2016-09-22T22:35:44.800Z",
+      "status": "CREATED",
+      "message": "For the sake of example, your code is ${code}.",
+      "account": {
+          "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample"
+      },
+      "factor": {
+          "href": "https://api.stormpath.com/v1/factors/3WPF5Djir0Wg5FtPoJCPbo"
+      }
+    }
+
+  For more information about this Challenge resource, see :ref:`the Reference chapter <ref-challenge>`.
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_challenge_sms_factor_resp.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_challenge_sms_factor_resp.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_challenge_sms_factor_resp.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_challenge_sms_factor_resp.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_challenge_sms_factor_resp.py
+          :language: python
+
+The resulting SMS would look like this:
+
+.. figure:: /images/auth_n/challenge_message.png
+    :align: center
+    :scale: 50%
+    :alt: SMS Challenge Message
+
+This code will remain valid for 300 seconds (5 minutes).
+
+Next, you must collect this code from the user.
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  .. note::
+
+    The code has to be sent to the correct Challenge ``href``. If your application is stateless, you could include the Challenge ``href`` in a hidden field on your form. If your application has a session, then you will want to attach the Challenge ``href`` to that session.
+
+Once you have the code, you send it to the same Challenge you created above:
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  .. code-block:: http
+
+    POST /v1/challenges/70xfDsguePApNdnExample HTTP/1.1
+    Host: api.stormpath.com
+    Authorization: Basic MlpG...
+    Content-Type: application/json
+
+    {
+      "code":"633559"
+    }
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/mfa_challenge_sms_code.java
+    :language: java
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_challenge_sms_code.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_challenge_sms_code.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_challenge_sms_code.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_challenge_sms_code.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_challenge_sms_code.py
+          :language: python
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  And then you would get back the response:
+
+  .. code-block:: json
+
+    {
+      "createdAt": "2016-09-22T22:35:44.799Z",
+      "modifiedAt": "2016-09-22T22:39:06.822Z",
+      "href": "https://api.stormpath.com/v1/challenges/70xfDsguePApNdnExample",
+      "message": "For the sake of example, your code is ${code}.",
+      "factor": {
+          "href": "https://api.stormpath.com/v1/factors/3WPF5Djir0Wg5FtPoJCPbo"
+      },
+      "account": {
+          "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYiX98vc"
+      },
+      "status": "SUCCESS"
+    }
+
+  If you had sent the wrong code, the ``status`` would instead be ``FAILED``.
+
+  For a full list of Challenge statuses, please see :ref:`the Reference chapter <challenge-status-values>`.
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_challenge_sms_code_success.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_challenge_sms_code_success.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_challenge_sms_code_success.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_challenge_sms_code_success.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_challenge_sms_code_success.py
+          :language: python
+
+.. note::
+
+  You could also pass the Challenge ``href`` and the ``code`` to Stormpath and get back an OAuth 2.0 Access Token. For more information about this see :ref:`generate-oauth-token`.
+
+.. _mfa-challenge-after-google:
+
+Challenging a Google Authenticator Factor
+"""""""""""""""""""""""""""""""""""""""""
+
+When you created the Google Authenticator Factor, you also generated a QR Code image for your user to scan into their app. Challenging this factor now only requires you to prompt to enter in the code from their Authenticator app.
+
+Unlike the SMS challenge process, the Google Authenticator challenge process does not require you to create a Challenge resource. Instead, the Challenge is created and verified in one step. For more information about the Challenge resource, see :ref:`the Reference chapter <ref-challenge>`.
+
+Once you have collected the code from the user, send the code generated by your Google Authenticator app:
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  .. code-block:: http
+
+      POST /v1/factors/4KOeu7ypRQI8Bpk2org7tk/challenges HTTP/1.1
+      Host: api.stormpath.com
+      Authorization: Basic MlpG...
+      Content-Type: application/json
+
+      {
+        "code":"786393"
+      }
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/mfa_challenge_ga_factor_req.java
+    :language: java
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_challenge_ga_factor_req.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_challenge_ga_factor_req.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_challenge_ga_factor_req.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_challenge_ga_factor_req.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_challenge_ga_factor_req.py
+          :language: python
+
+If the code is correct, Stormpath will now simultaneously create the Challenge resource and set its status to ``SUCCESS``, then return it back to you:
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  .. code-block:: json
+
+    {
+      "href": "https://api.stormpath.com/v1/challenges/EGDIpcgffklwo6HywNzTw",
+      "createdAt": "2016-09-22T22:50:59.241Z",
+      "modifiedAt": "2016-09-22T22:50:59.241Z",
+      "status": "SUCCESS",
+      "account": {
+          "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYExample"
+      },
+      "factor": {
+          "href": "https://api.stormpath.com/v1/factors/4KOeu7ypRQI8Bpk2org7tk"
+      }
+    }
+
+.. only:: java
+
+  .. literalinclude:: code/java/authentication/mfa_challenge_ga_factor_resp.java
+    :language: java
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_challenge_ga_factor_resp.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_challenge_ga_factor_resp.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_challenge_ga_factor_resp.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_challenge_ga_factor_resp.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_challenge_ga_factor_resp.py
+          :language: python
+
+.. _mfa-challenge-during:
+
+Challenging During Factor Creation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. note::
+
+  For this example, we will use an SMS challenge. Challenging a Google Authenticator Factor during creation is not feasible because the user has to add the factor to their application before they can get a code.
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  To send a challenge at the same time as you create the SMS Factor, you need to POST to the Account's ``/factors`` endpoint with the additional ``?challenge=true`` parameter included. Then you must also add the ``challenge`` into the body of the JSON.
+
+  .. code-block:: http
+
+    POST /v1/accounts/5IvkjoqcYNe3TYMExample/factors?challenge=true HTTP/1.1
+    Host: api.stormpath.com
+    Authorization: Basic MlpG...
+    Content-Type: application/json
+
+    {
+      "type":"sms",
+      "phone": {
+        "number": "2675555555"
+      },
+      "challenge": {
+        "message": "Welcome to the Example! Your authorization code is ${code}"
+      }
+    }
+
+.. only:: java
+
+  To create a Challenge at the same time as you create the SMS Factor, you can use this builder:
+
+  .. literalinclude:: code/java/authentication/mfa_create_and_challenge_default.java
+      :language: java
+
+  This would create a Factor and a challenge with the default message.
+
+  If you wanted to specify a custom message instead, you would need :
+
+  .. literalinclude:: code/java/authentication/mfa_create_and_challenge_message.java
+    :language: java
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_create_and_challenge_req.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_create_and_challenge_req.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_create_and_challenge_req.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_create_and_challenge_req.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_create_and_challenge_req.py
+          :language: python
+
+You are telling Stormpath to send an SMS to the phone number ``267-555-5555`` along with the message ``"Welcome to the Example! Your authorization code is ${code}"``. The placeholder ``${code}`` will be replaced with a one-time password generated using the HOTP algorithm.
+
+.. only:: rest
+
+  .. note::
+
+    If you wanted Stormpath to send the default message, then you could just not include the ``challenge`` object or its ``message`` at all.
+
+Challenging a Factor After Login
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  The first step will be getting the user authenticated.
+
+  In the case of REST, this means a ``POST`` to your Application resource's ``/loginAttempts`` endpoint. In this case it will be very helpful to also include ``expand=account``.
+
+  .. code-block:: http
+
+    POST /v1/applications/1gk4Dxzi6o4PbdleXaMPLE/loginAttempts?expand=account HTTP/1.1
+    Host: api.stormpath.com
+    Authorization: Basic MlpG...
+
+    {
+      "type": "basic",
+      "value": "amFrdWIrbWZhdGVzdExamplebXBhdGguY29tOkNoYW5nZW1lMQ=="
+    }
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_auth_account_req.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_auth_account_req.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_auth_account_req.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_auth_account_req.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_auth_account_req.py
+          :language: python
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  If authentication is successful, you will get back the Account:
+
+  .. code-block:: json
+
+    {
+      "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample",
+      "username": "factorman",
+      "email": "jakub+factorman@stormpath.com",
+      "givenName": "Joe",
+      "middleName": null,
+      "surname": "Factorman",
+      "fullName": "Joe Factorman",
+      "status": "ENABLED",
+      "...": "...",
+      "factors": {
+          "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample/factors"
+      }
+    }
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_auth_account_resp.cs
+          :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_auth_account_resp.vb
+          :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_auth_account_resp.js
+        :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_auth_account_resp.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_auth_account_resp.py
+        :language: python
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  Next, you will need to retrieve the Account's ``factors`` collection:
+
+  .. code-block:: http
+
+      GET /v1/accounts/5IvkjoqcYNe3TYMExample/factors HTTP/1.1
+      Host: api.stormpath.com
+      Authorization: Basic MlpG...
+      Content-Type: application/json
+
+.. only:: java
+
+  You will need to retrieve the Account's ``factors`` collection:
+
+  .. literalinclude:: code/java/authentication/mfa_get_account_factors2_req.java
+    :language: java
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_get_account_factors2_req.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_get_account_factors2_req.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_get_account_factors2_req.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_get_account_factors2_req.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_get_account_factors2_req.py
+          :language: python
+
+  Which will return:
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  .. code-block:: json
+
+    {
+      "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYiX98vc/factors",
+      "offset": 0,
+      "limit": 25,
+      "size": 1,
+      "items": [
+        {
+          "href": "https://api.stormpath.com/v1/factors/3WPF5Djir0Wg5FtPoJCPbo",
+          "type": "SMS",
+          "createdAt": "2016-09-22T22:11:03.768Z",
+          "modifiedAt": "2016-09-22T22:42:39.822Z",
+          "status": "ENABLED",
+          "verificationStatus": "VERIFIED",
+          "account": {
+              "href": "https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYiX98vc"
+          },
+          "challenges": {
+              "href": "https://api.stormpath.com/v1/factors/3WPF5Djir0Wg5FtPoJCPbo/challenges"
+          },
+          "phone": {
+              "href": "https://api.stormpath.com/v1/phones/3WManCalQOcizNsHjeeiHk"
+          },
+          "mostRecentChallenge": {
+              "href": "https://api.stormpath.com/v1/challenges/6kgEJR5Cr3pNh131i7b6wm"
+          }
+        }
+      ]
+    }
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+      .. only:: csharp
+
+        .. literalinclude:: code/csharp/authentication/mfa_get_account_factors2_resp.cs
+            :language: csharp
+
+      .. only:: vbnet
+
+        .. literalinclude:: code/vbnet/authentication/mfa_get_account_factors2_resp.vb
+            :language: vbnet
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+      .. literalinclude:: code/nodejs/authentication/mfa_get_account_factors2_resp.js
+          :language: javascript
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+      .. literalinclude:: code/php/authentication/mfa_get_account_factors2_resp.php
+        :language: php
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
+      .. literalinclude:: code/python/authentication/mfa_get_account_factors2_resp.py
+          :language: python
+
+.. only:: rest or csharp or nodejs or php or python or vbnet
+
+  You would then send a POST to the ``challenges`` collection which would generate a new Challenge and send an SMS message to the number specified in the Factor's Phone resource.
+
+.. only:: java
+
+  You would then challenge the factor which would generate a new Challenge and send an SMS message to the number specified in the Factor's Phone resource.
+
+  .. literalinclude:: code/java/authentication/mfa_challenge_existing_factor.java
+    :language: java
+
+.. todo::
+
+  .. only:: csharp or vbnet
+
+    .. todo::
+
+      (dotnet.todo)
+
+  .. only:: nodejs
+
+    .. todo::
+
+      (node.todo)
+
+  .. only:: php
+
+    .. todo::
+
+      (php.todo)
+
+  .. only:: python
+
+    .. todo::
+
+      (python.todo)
+
 .. only:: not rest
 
-  4.6. How API Key Authentication Works in Stormpath
+  4.7. How API Key Authentication Works in Stormpath
   =====================================================
 
   In this section, we discuss how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API services. Stormpath provides not only the user management piece around API Keys, but also allows you to associate permissions and custom data with the Accounts for advanced use-cases.
 
   Stormpath offers a complete solution that securely and easily helps you manage developer accounts, create and manage API Keys, and generate OAuth 2.0 bearer tokens to support Access Token authentication.
 
-  4.6.1. How to use API Key and Secret Authentication
+  4.7.1. How to use API Key and Secret Authentication
   -----------------------------------------------------------------
 
   First, you will need an Account for a developer. For information about how to create an Account, see :ref:`the Account Management chapter <add-new-account>`.
@@ -3993,7 +5422,7 @@ At this point your user is authenticated and able to use your app.
 
   .. _api-basic-auth:
 
-  4.6.2. How to authenticate using HTTP Basic
+  4.7.2. How to Authenticate Using HTTP Basic
   -----------------------------------------------------------------
 
   Now that your developer has an API Key, there are two methods that they can use to authenticate their API calls: HTTP Basic and HTTP Bearer. In this section we'll cover Basic Authentication, then we'll discuss :ref:`how to exchange an API Key for an OAuth token <api-key-for-token>`, and finally how to authenticate an API call with that token using :ref:`HTTP Bearer Authentication <api-bearer-auth>`.
@@ -4050,7 +5479,7 @@ At this point your user is authenticated and able to use your app.
 
   .. _api-key-for-token:
 
-  4.6.3. How to exchange an API Key for an Access Token
+  4.7.3. How to Exchange an API Key for an Access Token
   -----------------------------------------------------------------
 
   Instead of passing base64 encoded API keys over the wire, you can exchange an API Key Id and Secret for an Access Token, and use the Access Token as a Bearer Token to authentication for a protected API or resource. Exchanging an API Key for a token is essentially a two step process:
@@ -4062,7 +5491,7 @@ At this point your user is authenticated and able to use your app.
 
   .. _api-bearer-auth:
 
-  4.6.4. How to authenticate using HTTP Bearer Access Tokens
+  4.7.4. How to Authenticate Using HTTP Bearer Access Tokens
   -----------------------------------------------------------------
 
   After you return an OAuth Access Token to a developer using your API service, they can start using the OAuth Access Token to validate authentication to your service.
