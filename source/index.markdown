@@ -61,7 +61,7 @@ content_top: [docs_top.html]
     <div class="row">
       <div class="col-xs-12">
         <h1>REST Documentation</h1>
-        <p>Connect to the Stormpath API in minutes with the REST quickstart or find comprehensive documentation in the REST Product Guide.</p>
+        <p>Connect to the Stormpath API in minutes with the REST quickstart or check out our comprehensive REST Product Guide.</p>
         <div class="row">
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="/rest/product-guide/latest/quickstart.html"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-rest-quick.jpg"></a>
@@ -80,32 +80,35 @@ content_top: [docs_top.html]
   <div class="container">
     <div class="row">
       <div class="col-xs-12">
-        <h1>Stormpath Guides</h1>
-        <p>Implement sophisticated user management with detailed best-practice guides and code samples on a variety of Stormpath topics.</p>
+        <h1>Stormpath Highlights</h1>
+        <p>Implement sophisticated user management with our detailed documentation and code samples.</p>
         <div class="row">
           <div class="col-xs-12 visible-xs">
             <ul class="fa-ul">
-              <li><i class="fa-li fa fa-users"></i><a href="/rest/product-guide/latest/multitenancy.html">Multi-Tenant SaaS Guide</a></li>
-              <li><i class="fa-li fa fa-user"></i><a href="/guides/using-id-site/">ID Site Guide</a></li>
-              <li><i class="fa-li fa fa-facebook"></i><a href="/guides/social-integrations/">Social Integration Guide</a></li>
-              <li><i class="fa-li fa fa-folder-open"></i><a href="/guides/api-key-management/">API Authentication Guide</a></li>
-              <li><i class="fa-li fa fa-sitemap"></i><a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory / LDAP Guide</a></li>
-              <li><i class="fa-li fa fa-wrench"></i><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
+              <li><i class="fa-li fa fa-users"></i><a href="/rest/product-guide/latest/multitenancy.html">Multi-Tenant SaaS</a></li>
+              <li><i class="fa-li fa fa-bookmark-o"></i><a href="/rest/product-guide/latest/idsite.html">ID Site (Hosted User Interfaces)</a></li>
+              <li><i class="fa-li fa fa-link"></i><a href="/rest/product-guide/latest/accnt_mgmt.html#account-linking">Account Linking</a></li>
+              <li><i class="fa-li fa fa-mobile"></i><a href="/rest/product-guide/latest/auth_n.html#using-multi-factor-authentication">Multi-Factor Authentication</a></li>
+              <li><i class="fa-li fa fa-facebook"></i><a href="/rest/product-guide/latest/auth_n.html#how-social-authentication-works">Social Authentication</a></li>
+              <li><i class="fa-li fa fa-cogs"></i><a href="/rest/product-guide/latest/auth_n.html#">API Authentication</a></li>
+              <li><i class="fa-li fa fa-cloud"></i><a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory/LDAP Authentication</a></li>
+              <li><i class="fa-li fa fa-sitemap"></i><a href="/console/product-guide/latest/appendix-saml.html">SAML Authentication</a></li>
             </ul>
           </div>
           <div class="col-sm-4 hidden-xs">
             <ul class="fa-ul">
-              <li><i class="fa-li fa fa-users"></i><a href="/rest/product-guide/latest/multitenancy.html">Multi-Tenant SaaS Guide</a></li>
-              <li><i class="fa-li fa fa-user"></i><a href="/guides/using-id-site/">ID Site Guide</a></li>
-              <li><i class="fa-li fa fa-facebook"></i><a href="/guides/social-integrations/">Social Integration Guide</a></li>
-              <li><i class="fa-li fa fa-folder-open"></i><a href="/guides/api-key-management/">API Authentication Guide</a></li>
+              <li><i class="fa-li fa fa-users"></i><a href="/rest/product-guide/latest/multitenancy.html">Multi-Tenant SaaS</a></li>
+              <li><i class="fa-li fa fa-bookmark-o"></i><a href="/rest/product-guide/latest/idsite.html">ID Site (Hosted User Interfaces)</a></li>
+              <li><i class="fa-li fa fa-link"></i><a href="/rest/product-guide/latest/accnt_mgmt.html#account-linking">Account Linking</a></li>
+              <li><i class="fa-li fa fa-mobile"></i><a href="/rest/product-guide/latest/auth_n.html#using-multi-factor-authentication">Multi-Factor Authentication</a></li>
             </ul>
           </div>
           <div class="col-sm-6 hidden-xs">
             <ul class="fa-ul">
-              <li><i class="fa-li fa fa-sitemap"></i><a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory / LDAP Guide</a></li>
-              <li><i class="fa-li fa fa-wrench"></i><a href="/guides/dev-test-prod-environments/">Development and Production Environments Guide</a></li>
-              <li><i class="fa-li fa fa-user"></i><a href="/guides/token-management/">Token Authentication Guide</a></li>
+              <li><i class="fa-li fa fa-facebook"></i><a href="/rest/product-guide/latest/auth_n.html#how-social-authentication-works">Social Authentication</a></li>
+              <li><i class="fa-li fa fa-cogs"></i><a href="/rest/product-guide/latest/auth_n.html#">API Authentication</a></li>
+              <li><i class="fa-li fa fa-cloud"></i><a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory/LDAP Authentication</a></li>
+              <li><i class="fa-li fa fa-sitemap"></i><a href="/console/product-guide/latest/appendix-saml.html">SAML Authentication</a></li>
             </ul>
           </div>
         </div>
