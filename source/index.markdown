@@ -80,7 +80,7 @@ content_top: [docs_top.html]
   <div class="container">
     <div class="row">
       <div class="col-xs-12">
-        <h1>Stormpath Highlights</h1>
+        <h1>Stormpath Guides</h1>
         <p>Implement sophisticated user management with our detailed documentation and code samples.</p>
         <div class="row">
           <div class="col-xs-12 visible-xs">
