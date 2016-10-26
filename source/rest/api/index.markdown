@@ -1,4 +1,11 @@
 ---
+layout: redirect
+redirect_url: /rest/product-guide/latest/
+---
+
+<!--
+
+---
 layout: doc
 title: REST API Reference
 lang: rest
@@ -48,7 +55,7 @@ HTTP basic password: apiKey.secret value
 <pre><code>curl --user YOUR_API_KEY_ID:YOUR_API_KEY_SECRET --header "Accept: application/json" https://api.stormpath.com/v1/tenants/current
 </code></pre>
 <p>or perhaps <a href="https://github.com/jkbr/httpie" title="httpie">httpie</a> (which assumes application/json by default):</p>
-<pre><code>http -a YOUR_API_KEY_ID:YOUR_API_KEY_SECRET https://api.stormpath.com/v1/tenants/current 
+<pre><code>http -a YOUR_API_KEY_ID:YOUR_API_KEY_SECRET https://api.stormpath.com/v1/tenants/current
 </code></pre>
 
 <a id="DigestAuthenticationHTTPS"></a>
@@ -1021,12 +1028,12 @@ Content-Type: application/json;charset=UTF-8
   "offset": 0,
   "limit": 25,
   "items": [
-    { 
+    {
       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb"
     },
     {
       "href" : "https://api.stormpath.com/v1/accounts/tHEcAkeiSAlIe9sdh8KjdJda"
-    }, 
+    },
     {
       "href" : "https://api.stormpath.com/v1/accounts/Gu8oshf7HdsspjHs3uhd7jGd"
     }
@@ -1073,7 +1080,7 @@ Content-Type: application/json
 {
   "type": "basic",
   "value": "QWxhZGRpbjpvcGVuIHNlc2FtZQ=="
-} 
+}
 </code></pre>
 <p>If the login attempt is successful, a <code>200 OK</code> response is returned with a <a href="#ReferenceLinks" title="Resource Reference Links">link</a> to the successfully authenticated account:</p>
 <p><strong>Example Login Attempt Success Response</strong></p>
@@ -1149,7 +1156,7 @@ Content-Type: application/json
 
 {
   "email": "john.smith@stormpath.com"
-} 
+}
 </code></pre>
 <p><strong>Example Response</strong></p>
 <pre><code>HTTP/1.1 200 OK
@@ -1301,7 +1308,7 @@ Content-Type: application/json;charset=UTF-8
 </ul>
 
 <a id="ReadDirectoryResource"></a>
-#### Read a Directory Resource 
+#### Read a Directory Resource
 
 <p>HTTP <code>GET</code> returns a representation of a directory resource that includes the resource properties.</p>
 <p><strong>Example Request</strong></p>
@@ -1329,7 +1336,7 @@ Content-Type: application/json;charset=UTF-8
 </code></pre>
 
 <a id="UpdateDirectoryResource"></a>
-#### Update a Directory Resource 
+#### Update a Directory Resource
 
 <p>Use HTTP <code>POST</code> when you want to change one or more specific properties of a directory resource. Unspecified properties will not be changed, but at least one property must be specified.</p>
 <p><strong>Optional Properties</strong></p>
@@ -1379,7 +1386,7 @@ Content-Type: application/json;charset=UTF-8
 </code></pre>
 
 <a id="CreateDirectoryResource"></a>
-#### Create a Directory Resource 
+#### Create a Directory Resource
 
 <p>Creates a new directory resource within the caller tenant.</p>
 <p><strong>Resource URI</strong></p>
@@ -1456,12 +1463,12 @@ Content-Type: application/json;charset=UTF-8
   "offset": 0,
   "limit": 25,
   "items": [
-    { 
+    {
       "href" : "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ"
     },
     {
       "href" : "https://api.stormpath.com/v1/groups/sUcKIttrebEcKhgU86Kl0u"
-    }, 
+    },
     {
       "href" : "https://api.stormpath.com/v1/groups/Yu8ihas7HOpjHs3uhd7jGd"
     },
@@ -1490,12 +1497,12 @@ Content-Type: application/json;charset=UTF-8
   "offset": 0,
   "limit": 25,
   "items": [
-    { 
+    {
       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb"
     },
     {
       "href" : "https://api.stormpath.com/v1/accounts/tHEcAkeiSAlIe9sdh8KjdJda"
-    }, 
+    },
     {
       "href" : "https://api.stormpath.com/v1/accounts/Gu8oshf7HdsspjHs3uhd7jGd"
     }
@@ -1605,7 +1612,7 @@ Content-Type: application/json;charset=UTF-8
 </ul>
 
 <a id="ReadAccountResource"></a>
-#### Read an Account Resource 
+#### Read an Account Resource
 
 <p>HTTP <code>GET</code> returns a representation of an account resources that includes the properties.</p>
 <p><strong>Example Request</strong></p>
@@ -1639,7 +1646,7 @@ Content-Type: application/json;charset=UTF-8
 </code></pre>
 
 <a id="UpdateAccountResource"></a>
-#### Update an Account Resource 
+#### Update an Account Resource
 
 <p>Use HTTP <code>POST</code> when you want to change one or more specific properties of an account resource. Unspecified properties will not be changed, but at least one property must be specified.</p>
 <p><strong>Optional Properties</strong></p>
@@ -1698,7 +1705,7 @@ Content-Type: application/json;charset=UTF-8
 </code></pre>
 <p><strong>Example Response</strong></p>
 <pre><code>HTTP/1.1 201 Created
- Location: https://api.stormpath.com/v1/groupMemberships/cJoiwjorTTmLDDBsf04Abi 
+ Location: https://api.stormpath.com/v1/groupMemberships/cJoiwjorTTmLDDBsf04Abi
  Content-Type: application/json;charset=UTF-8
 
  {
@@ -1758,7 +1765,7 @@ Content-Type: application/json;charset=UTF-8
 </code></pre>
 
 <a id="CreateAccountResource"></a>
-#### Create an Account 
+#### Create an Account
 
 <p>Creates a new account resource instance within a specified directory.</p>
 <p><strong>Resource URI</strong></p>
@@ -1791,7 +1798,7 @@ Content-Type: application/json
 </code></pre>
 <p><strong>Example Response</strong></p>
 <pre><code>HTTP/1.1 201 Created
-Location: https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA 
+Location: https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02AbA
 Content-Type: application/json;charset=UTF-8
 
 {
@@ -1839,12 +1846,12 @@ Content-Type: application/json;charset=UTF-8
   "offset": 0,
   "limit": 25,
   "items" : [
-    { 
+    {
       "href" : "https://api.stormpath.com/v1/groups/ZgoHUG0oSoVNeU0K4GZeVQ"
     },
     {
       "href" : "https://api.stormpath.com/v1/groups/sUcKIttrebEcKhgU86Kl0u"
-    }, 
+    },
     {
       "href" : "https://api.stormpath.com/v1/groups/Yu8ihas7HOpjHs3uhd7jGd"
     }
@@ -1969,7 +1976,7 @@ Content-Type: application/json;charset=UTF-8
 </ul>
 
 <a id="ReadGroupResource"></a>
-#### Read a Group Resource 
+#### Read a Group Resource
 
 <p>HTTP <code>GET</code> returns a representation of a group resource that includes the resource properties.</p>
 <p><strong>Example Request</strong></p>
@@ -1997,7 +2004,7 @@ Content-Type: application/json;charset=UTF-8
 </code></pre>
 
 <a id="UpdateGroupResource"></a>
-#### Update a Group Resource 
+#### Update a Group Resource
 
 <p>Use HTTP <code>POST</code> when you want to change one or more specific properties of a group resource. Unspecified properties are not changed, but at least one property must be specified.</p>
 <p><strong>Optional Properties</strong></p>
@@ -2047,7 +2054,7 @@ Content-Type: application/json;charset=UTF-8
 </code></pre>
 
 <a id="CreateGroupResource"></a>
-#### Create a Group Resource 
+#### Create a Group Resource
 
 <p>Creates a new group resource instance in a specified directory.</p>
 <p><strong>Resource URI</strong></p>
@@ -2122,12 +2129,12 @@ Content-Type: application/json;charset=UTF-8
   "offset": 0,
   "limit": 25,
   "items" : [
-    { 
+    {
       "href" : "https://api.stormpath.com/v1/accounts/cJoiwcorTTmkDDBsf02bAb"
     },
     {
       "href" : "https://api.stormpath.com/v1/accounts/tHEcAkeiSAlIe9sdh8KjdJda"
-    }, 
+    },
     {
       "href" : "https://api.stormpath.com/v1/accounts/Gu8oshf7HdsspjHs3uhd7jGd"
     }
@@ -2357,7 +2364,7 @@ Content-Type: application/json;charset=UTF-8
 <p>Create and delete are currently not supported.</p>
 
 <a id="ReadTenantResource"></a>
-#### Read a Tenant Resource 
+#### Read a Tenant Resource
 
 <p>Returns a representation of a tenant resource that includes the resource properties.</p>
 <p><strong>Example Request</strong></p>
@@ -2381,7 +2388,7 @@ Content-Type: application/json;charset=UTF-8
 </code></pre>
 
 <a id="ReadCurrentTenantResource"></a>
-#### Read the Current Tenant Resource 
+#### Read the Current Tenant Resource
 
 <p>Returns a <code>302 Found</code> redirect to the tenant instance resource corresponding to the currently executing API caller. In other words, this endpoint redirects the API caller to the REST resource URI for the tenant.</p>
 <p><strong>Example Request</strong></p>
@@ -2396,7 +2403,7 @@ Pragma: no-cache
 </code></pre>
 
 <a id="UpdateTenantResource"></a>
-#### Update a Tenant Resource 
+#### Update a Tenant Resource
 
 <p>Use HTTP <code>POST</code> when you want to change one or more specific properties of a tenant resource. Unspecified properties are not changed. At least one property must be specified.</p>
 <p><strong>Optional Properties</strong></p>
@@ -2457,12 +2464,12 @@ Content-Type: application/json;charset=UTF-8
   "offset": 0,
   "limit": 25,
   "items": [
-    { 
+    {
       "href" : "https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q"
     },  
     {
       "href" : "https://api.stormpath.com/v1/directories/lIKeabOss8w9fJf0fJfb34"
-    }, 
+    },
     {
       "href" : "https://api.stormpath.com/v1/directories/Hfjks7kj9sfKfh9fhsPifa"
     }
@@ -2491,15 +2498,17 @@ Content-Type: application/json
   "offset": 0,
   "limit": 10,
   "items": [
-    { 
+    {
       "href" : "https://api.stormpath.com/v1/applications/WpM9nyZ2TbaEzfbRvLk9KA"
     },
     {
       "href" : "https://api.stormpath.com/v1/applications/aLlyOUrBAse34js9hjiH9j"
-    }, 
+    },
     {
       "href" : "https://api.stormpath.com/v1/applications/Xhf0a9HLA02djsdP90dsQ2"
     }
   ]
 }
 </code></pre>
+
+-->

@@ -1,4 +1,11 @@
 ---
+layout: redirect
+redirect_url: /
+---
+
+<!--
+
+---
 layout: doc
 lang: rest
 description: Get started on Stormpath with complete, easy sample applications in Node.js, Java, Python and many more.
@@ -210,3 +217,5 @@ body_id: [sample-apps-page]
     </div>
   </div>
 </div>
+
+-->

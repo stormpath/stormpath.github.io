@@ -3433,7 +3433,7 @@ If the verification token is not found, a `404 Not Found` is returned with an [e
 <a class="anchor" name="accounts-authenticate"></a>
 ### Authenticate An Account
 
-After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts. 
+After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts.
 
 For more information on working with applications and authentication, refer to the [Log in (Authenticate) an Account](#application-account-authc) section of this guide.
 
@@ -3550,9 +3550,9 @@ The `CustomData` resource is always connected to a resource and you can always r
     $application = $client->
                  dataStore->
                  getResource($applicationHref, \Stormpath\Stormpath::APPLICATION);
-                 
+
     $applicationCustomData = $application->customData;
-  
+
 In addition to your custom name/value pairs, a CustomData resource will always contain 3 reserved read-only fields:
 
 * href: The fully qualified location of the custom data resource
@@ -3611,13 +3611,13 @@ In order to retrieve a resource's custom data directly you can get the `CustomDa
     $application = $client->
                      dataStore->
                      getResource($applicationHref, \Stormpath\Stormpath::APPLICATION);
-                     
+
     $applicationCustomData = $application->customData;
 
 After you have access to the whole custom data resource, you can then retrieve a specific property with the following.
 
     $property = $applicationCustomData->property;
- 
+
 <a class="anchor" name="update-custom-data"></a>
 ### Update Custom Data
 

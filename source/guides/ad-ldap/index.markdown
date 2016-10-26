@@ -1,4 +1,9 @@
 ---
+layout: redirect
+redirect_url: /rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory
+---
+
+<!-- ---
 layout: doc
 lang: guides
 description: Use Stormpath to give users in existing Active Directory/LDAP servers access to your new web applications.
@@ -12,7 +17,7 @@ AD/LDAP integration is only available to customers with a [Lite subscription pla
 
 In this guide we discuss how to set up Stormpath to manage and authenticate users that are synchronized from existing Active Directory (AD) and LDAP servers. Stormpath offers a firewall-friendly approach that's perfect for internal applications trying to sync to their own AD/LDAP servers and for SaaS applications trying to sync with their customers' AD/LDAP servers.
 
-## What is Stormpath? 
+## What is Stormpath?
 
 Stormpath is a user management API that makes it easy for developers to launch applications and APIs with secure, scalable user infrastructure. It automates:
 
@@ -45,7 +50,7 @@ In order to synchronize Stormpath with an Active Directory or LDAP server, you c
 
 A `Directory` in Stormpath is a top-level storage container of `Accounts` and `Groups`. Directories resemble real world repositories of user accounts that can be mapped to an `Application`.  Once a `Directory` is mapped to an `Application`, all of the directory's `Accounts` are able to log into the app.
 
-A `Mirror Directory` is a special `Directory` used for AD/LDAP synchronization. And each `Mirror Directory` is paired with a synchronization `Agent` that is installed alongside the AD/LDAP server. 
+A `Mirror Directory` is a special `Directory` used for AD/LDAP synchronization. And each `Mirror Directory` is paired with a synchronization `Agent` that is installed alongside the AD/LDAP server.
 
 
 To configure a `Mirror Directory` and its `Agent`, you first log in to the [Administrator Console](https://api.stormpath.com), and follow these steps:
@@ -55,7 +60,7 @@ To configure a `Mirror Directory` and its `Agent`, you first log in to the [Admi
 
 This will start the agent creation wizard for AD / LDAP.  When configuring the Agent, you will be able to input Agent configuration information related to the AD / LDAP server:
 
-1. Agent User DN 
+1. Agent User DN
 2. Agent User Password
 3. Directory connection parameters such as Host and Port
 4. Attribute Configuration
@@ -108,15 +113,15 @@ It's easy to do in code:
 ####Java
 
     AccountStore accountStore = client.getResource(directoryHref, Directory.class);
-    
+
     AuthenticationRequest authRequest = new
         UsernamePasswordRequest("tk421@stormpath.com", "Password1!", accountStore);
 
     AuthenticationResult result = application.authenticateAccount(authRequest);
 
-How you determine which `AccountStore` to target will depend on your use case.  For multi-tenant or SaaS applications, Stormpath recommends subdomains for each tenant 
+How you determine which `AccountStore` to target will depend on your use case.  For multi-tenant or SaaS applications, Stormpath recommends subdomains for each tenant
 
-        //Multi-tenant application allow you to log into multiple sub-domains 
+        //Multi-tenant application allow you to log into multiple sub-domains
 
         //Sub-domain #1
         http://customer-a.mysite.com/login
@@ -125,14 +130,13 @@ How you determine which `AccountStore` to target will depend on your use case.  
         http://customer-b.mysite.com/login
 
 The application during the login attempt will be able to route each login attempt to the correct `Account Store` based on the sub-domain.
--->
 
 ## Supplementing a Master User Directory with AD/LDAP directories
 For many applications there will likely be a master `Directory` for all users in order to keep the user base simple, enforce uniqueness of emails/usernames across all users, and maintain one canonical identity per user.  In fact, this is a recommended approach for most multi-tenant or SaaS applications.  Check out our [multi-tenancy guide](/guides/multi-tenant) for more info.
 
-However, when supporting Active Directory or LDAP integration, your application will now need to support multiple directories-- one `Mirror Directory` for each AD/LDAP integration. 
+However, when supporting Active Directory or LDAP integration, your application will now need to support multiple directories-- one `Mirror Directory` for each AD/LDAP integration.
 
-In this scenario, we recommend linking each `Account` in a AD/LDAP `Mirror Directory` with a master `Account` in the master user `Directory`.  This offers a few benefits: 
+In this scenario, we recommend linking each `Account` in a AD/LDAP `Mirror Directory` with a master `Account` in the master user `Directory`.  This offers a few benefits:
 
 1. You can maintain one `Directory` that has _all_ your user accounts, retaining globally unique canonical identities across your application
 
@@ -163,10 +167,10 @@ In some cases where a user could be in many directories at once, you may need li
     "customData": {
         "accountLinks": {
             "Link1": "https://api.stormpath.com/v1/accounts/3fLduLKlQu",
-            "Link2": "https://api.stormpath.com/v1/accounts/X3rjfa4Ljd", 
+            "Link2": "https://api.stormpath.com/v1/accounts/X3rjfa4Ljd",
             "Link3": "https://api.stormpath.com/v1/accounts/a05Ghpjd30"
         }
     }
 
 If the `Account` does already exist, then you can sync any data you like or just follow the `href` in the link to then work with the master `Account` for the rest of the user's session.
-
+-->

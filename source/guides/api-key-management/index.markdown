@@ -1,4 +1,11 @@
 ---
+layout: redirect
+redirect_url: /rest/product-guide/latest/auth_n.html#
+---
+
+<!--
+
+---
 layout: doc
 lang: guides
 description: Secure authentication to your API with API Keys and OAuth tokens managed by Stormpath
@@ -6,7 +13,6 @@ title: Using Stormpath for API Authentication
 alias: [/guides/securing-your-api]
 ---
 
-<!-- this should be an Octopress include -->
 {% docs info %}
 Currently supported Stormpath SDKs for this feature include: **Java**, **Node.js**, **Python**
 {% enddocs %}
@@ -289,7 +295,7 @@ Stormpath SDK has all the tools needed to enable your API to support OAuth 2.0 B
 
      +---------+                                  +---------------+
      |         |                                  |               |
-     |         |>--- 1. Client Authentication --->| API backed by |
+     |         |>--- 1. Client Authentication ---><!---| API backed by |
      | Client  |                                  | Stormpath SDK |
      |         |<--- 2. -- Access Token ---------<|               |
      |         |                                  |               |
@@ -629,8 +635,6 @@ In Java, when asking the `Application` to authenticate an API authentication req
 2. `AccessTokenResult` - HTTP Method is `POST`. Authorization header is present, with the `Basic` method and the base64 encoded API_KEY_ID:API_KEY_SECRET. As part of the query or body of the request, the 'grant_type' is specified as 'client_credentials'.  Content-type is set to `x-www-form-urlencoded`.
 3. `OauthAuthenticationResult` - Authorization header is present, with the `Bearer` method and the OAuth 2.0 Access Token retrieved from the Stormpath SDK in a previous request.
 
-<!-- add grant type to #2 -->
-
 As a result, Stormpath has the ability to use a [visitor pattern](http://en.wikipedia.org/wiki/Visitor_pattern) to handle the different types of `AuthenticationResult`.  This becomes important if your API needs to support multiple Authorization methods (Basic and Bearer), or if you handle multiple types of authentication in the same place.
 
 When asking an `Application` to authenticate a result, a successful request will return a `AuthenticationResult`.  In the code samples in this guide, we have casted the `AuthenticationResult` directly, but the `AuthenticationResult` has the ability to accept a visitor.  Stormpath provides an `AuthenticationResultVisitorAdapter` which will throw exceptions for any method not overridden.
@@ -660,5 +664,4 @@ When asking an `Application` to authenticate a result, a successful request will
 
 In this guide, we discussed how to set up Stormpath to manage and authenticate API Keys and Tokens for developers that are using your API Services. This feature is currently in beta. If you have any questions, bug reports, or enhancement requests please email support@stormpath.com.
 
-<!-- wrap it up -->
-<!-- include the support -->
+-->

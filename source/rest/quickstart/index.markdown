@@ -1,4 +1,11 @@
 ---
+layout: redirect
+redirect_url: /rest/product-guide/latest/quickstart.html
+---
+
+<!--
+
+---
 layout: doc
 lang: rest
 description: 7-minute Stormpath Tutorial for REST. Get connected to the Stormpath API in minutes.
@@ -76,7 +83,7 @@ easily authenticate with the Stormpath library.
 Before you can create user Accounts you'll need to retrieve your Stormpath
 Application.  An Application in Stormpath is the same thing as a project. If
 you're building a web app named "Lightsabers Galore", you'd want to name your
-Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath account will have an application already created for you to use.  We will use this application for the quickstart. 
+Stormpath Application "Lightsabers Galore" as well.  By default, your Stormpath account will have an application already created for you to use.  We will use this application for the quickstart.
 
 Before you can get your Application, you must get the location of your tenant from Stormpath, like so:
 
@@ -97,7 +104,7 @@ This will return the header for the call:
 
 Make note of the `Location` header.  This is the location of your tenant in Stormpath.
 
-From here, using the location of the tenant, you can get your Application by performing a search for the application by name: 
+From here, using the location of the tenant, you can get your Application by performing a search for the application by name:
 
     curl -u $API_KEY_ID:$API_KEY_SECRET \
         -H "Accept: application/json" \
@@ -306,7 +313,8 @@ You've just scratched the surface of what you can do with Stormpath.  Want to
 learn more?  Here are a few other helpful resources you can jump into.
 
 * Dig in deeper with the [Official REST API Product Guide](/rest/product-guide).
-* Try out Stormpath in your favorite programming language with our [7-Minute Tutorial](https://stormpath.com/tutorial). 
+* Try out Stormpath in your favorite programming language with our [7-Minute Tutorial](https://stormpath.com/tutorial).
 * Learn to easily partition user data with our [Guide to Building Multitenant SaaS Applications](/guides/multi-tenant/).
 * Easily support Google and Facebook Login with our new [Social Login & Integration Guide](/guides/social-integrations/).
 
+-->

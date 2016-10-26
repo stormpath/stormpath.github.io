@@ -1,4 +1,11 @@
 ---
+layout: redirect
+redirect_url: /python/product-guide/latest/
+---
+
+<!--
+
+---
 layout: doc
 lang: python
 description: Authenticate, manage and secure users with the Stormpath Python SDK. Complete API reference documentation.
@@ -251,7 +258,7 @@ It is also possible to provide partial `href`, which will be resolved using the 
     account_href = '/accounts/ACCOUNT_UID_HERE'
     account = client.accounts.get(account_href)
 
-This retrieves the account at https://enterprise.stormpath.io/v1/accounts/ACCOUNT_UID_HERE using an HTTP `GET` request. 
+This retrieves the account at https://enterprise.stormpath.io/v1/accounts/ACCOUNT_UID_HERE using an HTTP `GET` request.
 
 If you also want information about the `directory` owning that account, every account has a reference to the parent directory location in the JSON representation. For example:
 
@@ -738,8 +745,6 @@ For Tenants, you can:
 * [Access a tenant's applications](#tenant-applications)
 * [Access a tenant's directories](#tenant-directories)
 
-<!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
-
 "Create" and "Delete" Tenant operations are currently not supported via the REST API. If you require this functionality, please email <support@stormpath.com> and request it.
 
 <a class="anchor" name="tenant-retrieve"></a>
@@ -754,8 +759,6 @@ You can request the `current` Tenant resource, and the Python SDK will automatic
 **Example Request With A Client Instance**
 
     tenant = client.tenant
-
-<!-- TODO: re-enable after AM-1903 is complete:
 
 ### Update a Tenant {#tenant-update}
 
@@ -789,8 +792,6 @@ If you want to update one or more attribute of your `Tenant` resource, execute a
         "href": "https://api.stormpath.com/v1/tenants/cJoiwcorTTmkDDBsf02AbA/directories"
       }
     }
-
--->
 
 <a class="anchor" name="tenant-applications"></a>
 ### Tenant Applications
@@ -2071,7 +2072,7 @@ With Stormpath's Cloud directories, you can configure custom restrictions for th
 By default, passwords must be of mixed case, include at least one number, and be between 8 and 100 characters in length.
 
 {% docs note %}
-It is not currently possible to configure a Directory's account password policy via the REST API.  You must use the [Stormpath Admin Console](https://api.stormpath.com) (Directories --> &lt;choose your directory&gt; --> Details tab).
+It is not currently possible to configure a Directory's account password policy via the REST API.  You must use the [Stormpath Admin Console](https://api.stormpath.com)
 {% enddocs %}
 
 {% docs note %}
@@ -2221,11 +2222,11 @@ The `Account Creation Policy` can be retrieved by interacting with the directory
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `verification_email_status` | The status of the verification email workflow.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account to have them verify their email.  The email sent is configurable through `verification_email_templates` property | String | `ENABLED` or `DISABLED`
-`verification_email_templates` | A collection of email templates that can be used for sending the 'email verification' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | -- 
+`verification_email_templates` | A collection of email templates that can be used for sending the 'email verification' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | --
 `verification_success_email_status` | The status of the verification success email.  If this is set to `ENABLED`, Stormpath will send an email to a newly verified account to let them know that they have successfully verified their email.  The email sent is configurable through `verification_success_email_templates` property | String | `ENABLED` or `DISABLED`
-`verification_success_email_templates`| A collection of email templates that can be used for sending 'email verification success' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | -- 
+`verification_success_email_templates`| A collection of email templates that can be used for sending 'email verification success' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | --
 `welcome_email_status` | The status of the welcome email.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account (if `verification_email_status` is set to disabled) or a newly verified account (if `verification_email_status` is set to enabled).  The email sent is configurable through `welcome_email_templates` property | String | `ENABLED` or `DISABLED`
-`welcome_email_templates` | A collection of email templates that can be used for sending a welcome email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | -- 
+`welcome_email_templates` | A collection of email templates that can be used for sending a welcome email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new reset_email_templates with a POST. | CollectionResource | --
 `created_at` | A Datetime value that represents when this resource was created | Datetime | <span>--</span>
 `modified_at` | A Datetime value that represents when this resource's properties were last modified | Datetime | <span>--</span>
 
@@ -2259,7 +2260,7 @@ The `Account Creation Policy` has three separate statuses for the emails:
 By default, all of the `Account Creation Policy` email status are set to `DISABLED`.  To modify the policy, use the `save` method on the `AccountCreationPolicy` resource:
 
 **Example**
-    
+
     account_creation_policy.account_creation_policy = 'ENABLED'
     account_creation_policy.save()
 
@@ -2277,7 +2278,7 @@ Attribute | Description | Type | Valid Value
 `subject` | The subject that appears in the email's subject field | String | A string
 `html_body` | The body of the email in HTML format.  This body is only sent when the `mime_type` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the reset_email_template it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `text_body` | The body of the email is plain text format.  This body is only sent when the `mime_type` for the template is set to `text/plain` | String | A string.  For the reset_email_template it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
-`mime_type` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html` 
+`mime_type` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
 `default_model` | A dict that defines the model of the email template.  The default_model currently holds one item, which has the key linkBaseUrl.  The value of linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl value and the sptoken used in password reset workflows | dict | dict that includes one item with key linkBaseUrl and value that is a String
 `created_at` | A Datetime value that represents when this resource was created | Datetime | <span>--</span>
 `modified_at` | A Datetime value that represents when this resource's properties were last modified | Datetime | <span>--</span>
@@ -2289,14 +2290,14 @@ To update an email template, first you must get the email template object. This 
     verification_email_template = account_creation_policy.verification_email_templates[0]
 
 After getting the email template object, you can update by using the `save` method:
-         
+
 **Example**
 
     verification_email_template.from_name = "Application Support"
     verification_email_template.from_email = "support@application.com"
     verification_email_template.subject = "Welcome to application.com"
     verification_email_template.save()
-    
+
 ***
 
 ### Directory Password Policy
@@ -2356,7 +2357,7 @@ Attribute | Description | Type | Valid Value
 `html_body` | The body of the email in HTML format.  This body is only sent when the `mime_type` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the reset_email_templates it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `text_body` | The body of the email is plain text format.  This body is only sent when the `mime_type` for the template is set to `text/plain` | String | A string.  For the reset_email_templates it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `mime_type` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
-`default_model` | A dict that defines the model of the email template.  The default_model currently holds one item, which has the key linkBaseUrl.  The value of linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl value and the sptoken used in password reset workflows | dict | dict that includes one item with key linkBaseUrl and value that is a String 
+`default_model` | A dict that defines the model of the email template.  The default_model currently holds one item, which has the key linkBaseUrl.  The value of linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl value and the sptoken used in password reset workflows | dict | dict that includes one item with key linkBaseUrl and value that is a String
 
 To update an email template, first you must get the email template object.  This is done by working with the reset_email_templates and reset_success_email_templates collection.  These collections hold only one email template, but in the future may hold multiple templates.
 
@@ -3275,7 +3276,7 @@ Stormpath does not allow for account creation with ANY password hash, the passwo
     $stormpath2$ALGORITHM_NAME$ITERATION_COUNT$BASE64_SALT$BASE64_PASSWORD_HASH
 
 Property | Description | Valid Values
-:---- | :---- | :---- 
+:---- | :---- | :----
 `ALGORITHM_NAME` | The name of the hashing algorithm used to generate the `BASE64_PASSWORD_HASH`. | `MD5`, `SHA-1`, `SHA-256`, `SHA-384`, `SHA-512`
 `ITERATION_COUNT` | The number of iterations executed when generating the `BASE64_PASSWORD_HASH` | Integer greater than 0 (1 or more)
 `BASE64_SALT` | The salt byte array used to salt the first hash iteration, formatted as a Base64 string. | Base64 String, if your password hashes do you have salt, you can leave it blank ($stormpath2$ALGORITHM_NAME$ITERATION_COUNT$$BASE64_PASSWORD_HASH)
@@ -3292,7 +3293,7 @@ Once you have a `bcrypt` or `stormpath2` MCF password hash, you can create the a
         'email': 'capt@enterprise.com',
         'password': '$stormpath2$MD5$1$NzEyN2ZhYzdkZTAyMjJlMGQyMWYxMWRmZmY2YjA1MWI=$K18Ak0YikAFrqgglhIaY5g=='
     }, password_format='mcf')
-    
+
 <a class="anchor" name="account-retrieve"></a>
 ### Retrieve an Account
 
@@ -4145,7 +4146,7 @@ Stormpath SDK has all the tools needed to enable your API to support OAuth 2.0 B
 
      +---------+                                  +---------------+
      |         |                                  |               |
-     |         |>--- 1. Client Authentication --->| Authorization |
+     |         |>--- 1. Client Authentication     | Authorization |
      | Client  |                                  |     Server    |
      |         |<--- 2. -- Access Token ---------<|               |
      |         |                                  |               |
@@ -4188,9 +4189,9 @@ representation of the token. The response should then be look something like thi
 
 Notice that we used the same `authenticator.authenticate` method for Basic auth and for getting the Bearer token. This works because the SDK will
 check the body of the request while doing Basic auth and if it finds the correct `grant_type` it will authenticate the request and
-attach the `token` to the result in one go. Instead of `ApiRequestAuthenticator`, you can also use `OAuthRequestAuthenticator` or 
-`OAuthClientCredentialsRequestAuthenticator` for getting the Bearer token. `OAuthRequestAuthenticator` handles API key for access token exchanges 
-and authenticates OAuth2 access tokens. `OAuthClientCredentialsRequestAuthenticator` authenticates a request based on API key credentials, and if 
+attach the `token` to the result in one go. Instead of `ApiRequestAuthenticator`, you can also use `OAuthRequestAuthenticator` or
+`OAuthClientCredentialsRequestAuthenticator` for getting the Bearer token. `OAuthRequestAuthenticator` handles API key for access token exchanges
+and authenticates OAuth2 access tokens. `OAuthClientCredentialsRequestAuthenticator` authenticates a request based on API key credentials, and if
 valid returns an access token. These two authenticators cannot be used for Basic auth.
 
 The `scopes` parameter has a twofold meaning here, for token generation it represents all the scopes that the developer can request, ie.
@@ -4247,11 +4248,11 @@ just attached for convenience, ie. to check `result.token.scopes` and such.
 **Note** Token validity/ttl is in seconds and the default is 3600 (1 hour). If you wish to change this while generating tokens:
 use the optional `ttl` parameter with the  `authenticate` method.
 
-**Note** When doing Bearer auth you can use `OAuthRequestAuthenticator` or `OAuthBearerRequestAuthenticator` instead of `ApiRequestAuthenticator`. 
-`OAuthRequestAuthenticator` handles API key for access token exchanges and authenticates OAuth2 access tokens. `OAuthBearerRequestAuthenticator` authenticates 
-OAuth2 bearer token requests only. 
+**Note** When doing Bearer auth you can use `OAuthRequestAuthenticator` or `OAuthBearerRequestAuthenticator` instead of `ApiRequestAuthenticator`.
+`OAuthRequestAuthenticator` handles API key for access token exchanges and authenticates OAuth2 access tokens. `OAuthBearerRequestAuthenticator` authenticates
+OAuth2 bearer token requests only.
 
-*** 
+***
 
 
 <a class="anchor" name="administration"></a>
@@ -4289,3 +4290,5 @@ Attribute | Description
 {% docs note %}
 *You must know your tenant when logging in to the Admin Console website. There is a "Forgot Tenant" link on the login page if you do not know what your tenant is.
 {% enddocs %}
+
+-->

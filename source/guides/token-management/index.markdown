@@ -1,4 +1,10 @@
 ---
+layout: redirect
+redirect_url: /rest/product-guide/latest/auth_n.html#how-token-based-authentication-works
+---
+
+<!--
+---
 layout: doc
 lang: guides
 description: Stormpath guide
@@ -693,3 +699,5 @@ When the token is deleted from Stormpath, attempting to validate the the deleted
 ## Wrapping it up
 
 In this guide, we discussed how to set up and use Stormpath to generate and manage OAuth 2.0 Access Tokens and Refresh Tokens. If you have any questions, bug reports, or enhancement requests please email support@stormpath.com.
+
+-->

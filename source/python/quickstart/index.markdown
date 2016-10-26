@@ -1,4 +1,11 @@
 ---
+layout: redirect
+redirect_url: /python/product-guide/latest/quickstart.html
+---
+
+<!--
+
+---
 layout: doc
 lang: python
 description: 7-minute Stormpath Tutorial for Python. Get connected to the Stormpath API in minutes.
@@ -259,3 +266,4 @@ learn more?  Here are a few other helpful resources you can jump into.
 * Learn to easily partition user data with our [Guide to Building Multitenant SaaS Applications](/guides/multi-tenant/).
 * Easily support Social Login with [Google](/python/product-guide/#integrating-with-google) and [Facebook](/python/product-guide#integrating-with-facebook) integrations in Python.
 
+-->

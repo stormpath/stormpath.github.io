@@ -1,4 +1,11 @@
 ---
+layout: redirect
+redirect_url: /java/product-guide/latest/index.html
+---
+
+<!--
+
+---
 layout: doc
 lang: java
 title: Stormpath Java Product Guide
@@ -40,7 +47,7 @@ When building your applications in the past, how much time have you spent writin
 By offloading all of this effort to Stormpath, a service with deep security roots, you can quickly get back to writing your actual application and never worry about password attacks again.
 
 <a class="anchor" name="core"></a>
-### Core Concepts 
+### Core Concepts
 
 Stormpath has five core concepts, and everything else in the Stormpath REST API exists to support them:
 
@@ -61,7 +68,7 @@ You can assign one or more *Account Stores* to an Application.  Accounts within 
 
 **Account Stores**
 
-An *Account Store* is a generic term for either a `Directory` or a `Group`. Directories and Groups are both considered 'account stores' because they both contain, or 'store', Accounts. 
+An *Account Store* is a generic term for either a `Directory` or a `Group`. Directories and Groups are both considered 'account stores' because they both contain, or 'store', Accounts.
 
 * **Directories**
 
@@ -103,7 +110,7 @@ For more detailed documentation on the Stormpath API, visit the [REST API Produc
 
 The Stormpath Java SDK allows any JVM-based application to easily use the Stormpath user management service for all authentication and access control needs. The Java SDK can be found on [Github](https://github.com/stormpath/stormpath-sdk-java).
 
-When you make SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Java SDK therefore provides a clean object-oriented paradigm natural to JVM developers and alleviates the need to know how to make REST+JSON requests. 
+When you make SDK method calls, the calls are translated into HTTPS requests to the Stormpath REST+JSON API. The Stormpath Java SDK therefore provides a clean object-oriented paradigm natural to JVM developers and alleviates the need to know how to make REST+JSON requests.
 
 Any JVM-based programming language can use the Stormpath Java SDK. JVM languages include Java, Groovy, Scala, Clojure, Kotlin, Jython, and JRuby.
 
@@ -155,7 +162,7 @@ You could configure the Client by creating a client instance using the following
             .setIdPropertyName(foo)
             .setSecretPropertyName(bar)
             .build();
-    
+
     Client client = Clients.builder()
     		.setApiKey(apiKey)
             .build();               
@@ -198,7 +205,7 @@ Assign user accounts to Stormpath, through [account stores](#account-store-mappi
 <a class="anchor" name="authentication-scheme-configuration"></a>
 #### Authentication Scheme Configuration
 
-You can choose one of two authentication schemes to authenticate with Stormpath: 
+You can choose one of two authentication schemes to authenticate with Stormpath:
 
 1. **Stormpath SAuthc1 Authentication**:  This is the recommended approach, and the default setting.  This approach computes a cryptographic digest of the request and sends the digest value along with the request. If the transmitted digest matches what the Stormpath API server computes for the same request, the request is authenticated. The Stormpath SAuthc1 digest-based authentication scheme is more secure than standard HTTP digest authentication.
 2. **Basic Authentication**: This is _only_ recommended when your application runs in an environment outside of your control, and that environment manipulates your application's request headers when requests are made.  Google App Engine is one known such environment.  However, Basic Authentication is not as secure as Stormpath's `SAuthc` algorithm, so only use this if you are forced to do so by your application runtime environement.
@@ -261,7 +268,7 @@ The core component concepts of the SDK are as follows:<br />
 * **DataStore** is central to the Stormpath SDK. It is responsible for managing all Java `resource` objects that represent Stormpath REST data resources such as applications, directories, and accounts. The DataStore is also responsible for translating calls made on Java `resource` objects into REST requests to the Stormpath API server as necessary. It works between your application and the Stormpath API server.
 	* **RequestExecutor** is an internal infrastructure component used by the `DataStore` to execute HTTP requests (`GET`, `PUT`, `POST`, `DELETE`) as necessary. When the DataStore needs to send a Java `Resource` instance state to or query the server for resources, it delegates to the RequestExecutor to perform the actual HTTP requests. The Stormpath SDK default `RequestExecutor` implementation is `HttpClientRequestExecutor` which uses [Apache HTTPComponents](http://hc.apache.org/) to execute the raw requests and read the raw responses.
 	* **MapMarshaller** is an internal infrastructure component used by the `DataStore` to convert JSON strings into Java `Object` instances or the reverse. The map instances are used by the `ResourceFactory` to construct standard Java objects representing REST resources. The Stormpath SDK default `MapMarshaller` uses [Jackson](https://github.com/FasterXML/jackson).
-    * **Cache** is an internal infrastructure component used by the `DataStore` to access data and translate it into standard Java `resource` objects. The Cache fetches or saves `resource` data from or to its internal storage instead of the Stormpath server. The cache is configurable and can use different [caching mechanisms](#caching). This saves on Stormpath API server calls if the data is already available inside the cache. Each cached resource is represented as a `CacheEntry`. 
+    * **Cache** is an internal infrastructure component used by the `DataStore` to access data and translate it into standard Java `resource` objects. The Cache fetches or saves `resource` data from or to its internal storage instead of the Stormpath server. The cache is configurable and can use different [caching mechanisms](#caching). This saves on Stormpath API server calls if the data is already available inside the cache. Each cached resource is represented as a `CacheEntry`.
 	* **ResourceFactory** is an internal infrastructure component used by the `DataStore` to convert REST resource map data into standard Java `resource` objects. The ResourceFactory uses Objects from `MapMarshaller` to construct the Java resource instances.
 	* **Resources** are standard Java objects that have a 1-to-1 correlation with REST data resources in the Stormpath API server such as applications and directories. Applications directly use these `resource` objects for security needs, such as authenticating user accounts, creating groups and accounts, finding application accounts, assigning accounts to groups, and resetting passwords.
 
@@ -313,7 +320,7 @@ If the directory already exists in memory because the `DataStore` has previously
 <a class="anchor" name="caching"></a>
 ### Caching
 
-The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we access the resource again and the data inside the cache hasn't yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath. 
+The caching mechanism enables us to store the state of an already accessed resource in a cache store. If we access the resource again and the data inside the cache hasn't yet expired, we would get the resource directly from the cache store. By doing so, we can reduce network traffic and still have access to some of the resources even if there is a connectivity problem with Stormpath.
 
 By default, a simple production-grade in-memory `CacheManager` will be enabled when the Client instance is
 created. This `CacheManager` implementation has the following characteristics:
@@ -749,8 +756,6 @@ For Tenants, you can:
 * [Access a tenant's accounts](#tenant-accounts)
 * [Access a tenant's groups](#tenant-groups)
 
-<!-- TODO: We do not want users to update their Tenant information yet: * [Update (HTTP `POST`) a tenant resource](#UpdateTenantResource) -->
-
 "Create" and "Delete" Tenant operations are currently not supported via the REST API. If you require this functionality, please email <support@stormpath.com> and request it.
 
 <a class="anchor" name="tenant-retrieve"></a>
@@ -795,7 +800,7 @@ ApplicationList applications = tenant.getApplications(Applications.where(Applica
         for(Application application : applications) {
             System.out.println(application.getName());
         }
-        
+
 <a class="anchor" name="tenant-applications-search"></a>
 #### Search Tenant Applications
 
@@ -898,7 +903,7 @@ You can list your tenant's accounts by invoking the `getAccounts()` method in yo
 
 #### Search Tenant Accounts
 
-You may search for accounts by invoking the `getAccounts(AccountCriteria)` or `getAccounts(Map)` methods in your `Tenant` resource using [search query parameters](#search). Any matching accounts for your tenant will be returned as a [paginated](#pagination) list. 
+You may search for accounts by invoking the `getAccounts(AccountCriteria)` or `getAccounts(Map)` methods in your `Tenant` resource using [search query parameters](#search). Any matching accounts for your tenant will be returned as a [paginated](#pagination) list.
 
 In addition to the the [search query parameters](#search), you may also use [pagination](#pagination), [sorting](#sorting), and [link expansion](#link-expansion) query parameters to customize the paginated response.
 
@@ -911,9 +916,9 @@ In addition to the the [search query parameters](#search), you may also use [pag
 	                                .withGroups(10)
 	                                .offsetBy(20)
 	                                .limitTo(25));
-									
+
 **Example request using Map**
-	
+
 	Map<String, Object> params = new LinkedHashMap<String, Object>();
 	params.put("givenName", "*foo*");
 	params.put("surname", "*bar");
@@ -937,7 +942,7 @@ You can list your tenant's groups by invoking the `getGroups()` method in your `
 
 #### Search Tenant Groups
 
-You may search for groups by invoking the `getGroups(GroupCriteria)` or `getGroups(Map)` methods in your `Tenant` resource using [search query parameters](#search).  Any matching groups with your tenant will be returned as a [paginated](#pagination) list. 
+You may search for groups by invoking the `getGroups(GroupCriteria)` or `getGroups(Map)` methods in your `Tenant` resource using [search query parameters](#search).  Any matching groups with your tenant will be returned as a [paginated](#pagination) list.
 
 In addition to the [search query parameters](#search), you may also use [pagination](#pagination), [sorting](#sorting), and [link expansion](#link-expansion) query parameters to customize the paginated response.
 
@@ -950,9 +955,9 @@ In addition to the [search query parameters](#search), you may also use [paginat
 								.withAccounts(10)
 								.offsetBy(20)
 								.limitTo(25);
-									
+
 **Example request using Map**
-	
+
 	Map<String, Object> params = new LinkedHashMap<String, Object>();
 	params.put("name", "*foo*");
 	params.put("description", "*bar");
@@ -1083,7 +1088,7 @@ When sending the creation request, you can append the `createDirectory()` method
             .setName("My Application")
             .setDescription("My Application Description")
             .setStatus(ApplicationStatus.ENABLED);
-    
+
     tenant.createApplication(
     		Applications.newCreateRequestFor(application)
             	.createDirectory()
@@ -1318,7 +1323,7 @@ The execution of the registration workflow can be explicitly overwritten on a pe
         .setSurname("Picard")
         .setEmail("capt@enterprise.com")
         .setPassword("4P@$$w0rd!");
-	
+
 	application.createAccount(
 		Accounts.newCreateRequestFor(account)
 			.setRegistrationWorkflowEnabled(true)
@@ -1384,7 +1389,7 @@ When you submit an authentication request to Stormpath, instead of executing the
 At the time you create the request, it is likely that you may know the account store where the account resides, therefore you can target it directly. This will speed up the authentication attempt (especially if you have a very large number of account stores).
 
 **Example Request**
-	
+
 	AccountStore accountStore = anAccountStoreMapping.getAccountStore();
 	AuthenticationRequest authenticationRequest = UsernamePasswordRequest.builder()
                 .setUsernameOrEmail("usernameOrEmail")
@@ -1392,8 +1397,8 @@ At the time you create the request, it is likely that you may know the account s
                 .inAccountStore(accountStore)
                 .build();
     AuthenticationResult result = application.authenticateAccount(authenticationRequest);
-    
-#### Authentication Expansion 
+
+#### Authentication Expansion
 
 If you want the actual account object returned from a successful authentication attempt, then you can [expand the account in-line](#links-expansion) using `AuthenticationOptions`.  For example:
 
@@ -1476,7 +1481,7 @@ If the password reset token is invalid - it never existed or has expired - a `40
 
 ##### Resetting the Password for a Token
 
-After a successfully call with the query string token, you can return a page to the end user to collect the password to update for the account. Once you have the password, you can update it by a using the `Application`'s reset password method. 
+After a successfully call with the query string token, you can return a page to the end user to collect the password to update for the account. Once you have the password, you can update it by a using the `Application`'s reset password method.
 
     Account account = application.resetPassword("$TOKEN", "newPassword");
 
@@ -1928,7 +1933,7 @@ The response is a paginated list of `applicationAccountStoreMapping` resources. 
 <a class="anchor" name="directories"></a>
 ## Directories
 
-A Directory is a top-level storage containers of `Accounts` and `Groups`. A Directory also manages security policies (like password strength) for the Accounts it contains. 
+A Directory is a top-level storage containers of `Accounts` and `Groups`. A Directory also manages security policies (like password strength) for the Accounts it contains.
 
 Additionally:
 
@@ -1964,7 +1969,7 @@ Mirror directories are a big benefit to Stormpath customers who need LDAP or Act
 LDAP or Active Directory are still the 'system of record' or source of identity 'truth' for these accounts and groups.  The big benefit is that your Stormpath-enabled applications still use the same convenient REST+JSON API - they do not need to know anything about LDAP, Active Directory or legacy connection protocols!
 
 {% docs tip %}
-The Stormpath Agent is **firewall friendly**: you do not need to open any inbound holes in your company firewall.  The only requirement is that the Agent be able to make an _outbound_ HTTPS connection to https://api.stormpath.com 
+The Stormpath Agent is **firewall friendly**: you do not need to open any inbound holes in your company firewall.  The only requirement is that the Agent be able to make an _outbound_ HTTPS connection to https://api.stormpath.com
 {% enddocs %}
 
 Finally, note that accounts and groups in mirrored directories are automatically deleted when:
@@ -2062,7 +2067,7 @@ You can achieve the same result using the type-unsafe variant:
     for(Directory directory : tenant.getDirectories(queryParams)) {
     	System.out.println(directory.getHref());
     }
-    
+
 If you only know a small part, you can use the asterisk wildcard (e.g., `queryParams.put("name", "My*");`) to narrow down the selection.
 
 <a class="anchor" name="directory-create"></a>
@@ -2102,7 +2107,7 @@ When you invoke this method, at least the `name` attribute must be specified, an
         .setDescription("Captains from a variety of stories");
 
     tenant.createDirectory(directory);
-    
+
 <a class="anchor" name="directory-create-mirror"></a>
 #### Create a Mirrored (LDAP/AD) Directory
 
@@ -2352,11 +2357,11 @@ The `Account Creation Policy` can be retrieved by interacting with the directory
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `verificationEmailStatus` | The status of the verification email workflow.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account to have them verify their email.  The email sent is configurable through `verificationEmailTemplates` property | String | `ENABLED` or `DISABLED`
-`verificationEmailTemplates` | A collection of email templates that can be used for sending the 'email verification' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+`verificationEmailTemplates` | A collection of email templates that can be used for sending the 'email verification' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
 `verificationSuccessEmailStatus` | The status of the verification success email.  If this is set to `ENABLED`, Stormpath will send an email to a newly verified account to let them know that they have successfully verified their email.  The email sent is configurable through `verificationSuccessEmailTemplates` property | String | `ENABLED` or `DISABLED`
-`verificationSuccessEmailTemplates`| A collection of email templates that can be used for sending 'email verification success' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+`verificationSuccessEmailTemplates`| A collection of email templates that can be used for sending 'email verification success' email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
 `welcomeEmailStatus` | The status of the welcome email.  If this is set to `ENABLED`, Stormpath will send an email to a newly registered account (if `verificationEmailStatus` is set to disabled) or a newly verified account (if `verificationEmailStatus` is set to enabled).  The email sent is configurable through `welcomeEmailTemplates` property | String | `ENABLED` or `DISABLED`
-`welcomeEmailTemplates` | A collection of email templates that can be used for sending a welcome email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | -- 
+`welcomeEmailTemplates` | A collection of email templates that can be used for sending a welcome email.  A template stores all relevant properties needed for an email.  This is a collection but currently only allows one value.  It is not possible to create new resetEmailTemplates with a POST. | Link | --
 
 **Directory Account Creation Policy Resource**
 
@@ -2405,10 +2410,10 @@ Attribute | Description | Type | Valid Value
 `htmlBody` | The body of the email in HTML format.  This body is only sent when the `mimeType` for the template is set to `text/html`.  This body can take valid HTML snippets. | String | A string. For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `textBody` | The body of the email in plain text format.  This body is only sent when the `mimeType` for the template is set to `text/plain` | String | A string.  For the resetEmailTemplate it is required to include the macro for the ${url}, ${sptoken} or, ${sptokenNameValuePair}
 `mimeType` | A property that defines whether Stormpath will send an email with the mime type of `text/plain` or `text/html`. | String | `text/plain` or `text/html`
-`defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String 
+`defaultModel` | An object that defines the model of the email template.  The defaultModel currently holds one value, which is the linkBaseUrl.  The linkBaseUrl is used when using the macro ${url} in an email template.  This macro generates a url that includes the linkBaseUrl and the sptoken used in password reset workflows | Object | Object that includes one property linkBaseUrl that is a String
 
-To update an email template, first you must get the email template's resource. This is done by working with the verificationEmailTemplates, verificationSuccessEmailTemplates and welcomeEmailTemplates collections. 
-These collections hold only one email template, but in the future they may hold multiple templates. 
+To update an email template, first you must get the email template's resource. This is done by working with the verificationEmailTemplates, verificationSuccessEmailTemplates and welcomeEmailTemplates collections.
+These collections hold only one email template, but in the future they may hold multiple templates.
 
 **Example Request**
 
@@ -2455,7 +2460,7 @@ For password policies, you can modify:
 
 The Password Reset Email is configurable for a directory.  There is a set of properties that define its behavior.  This includes the `resetEmailStatus` and the `resetEmailTemplates` for the initial password reset email that sends an email to the account's email address with a link to reset the account's password and `resetSuccessEmailStatus` and the `resetSuccessEmailTemplates` for the resulting email that is sent when the password reset is successful through the email workflow.
 
-To enable or disable the ability to send a password reset email just set it to `Disabled`. 
+To enable or disable the ability to send a password reset email just set it to `Disabled`.
 
 **Example Request**
 
@@ -2607,7 +2612,7 @@ For example, if you want to find  a group with the name "My Group", you'll need 
     }
 
 If you know the name exactly, you can use an [attribute search](#search-attribute):
-	
+
 	Map<String, Object> queryParams = new HashMap<String, Object>();
     queryParams.put("name", "My Group");
     Iterator<Group> iterator = directory.getGroups(queryParams).iterator();
@@ -2733,7 +2738,7 @@ It returns a paginated list of links for groups accessible to an application.
     for( Group group : groups) {
     	System.out.println(group.getName());
     }
-        
+
 
 ##### Account Groups
 
@@ -3041,7 +3046,7 @@ Attribute | Description | Type | Valid Value
 `defaultGroupStoreMapping` | A link to the account store mapping that reflects the default group store where the organization will store newly created groups. (A POST to /v1/organizations/:organizationId/groups will result in storing the new group in the default group store). A null value disables the organization from directly creating new groups. | link | `null` or link
 `description` | A description of the organization to allow you to put additional information about the organizations | String | 0 <= N <= 4000 chars
 `groups` | A link to all groups that are accessible to the organization. This is an aggregate view of all groups in the organization’s assigned account stores. | Link | --
-`href` | The read-only organization's fully qualified URL. | String | -- 
+`href` | The read-only organization's fully qualified URL. | String | --
 `modifiedAt` | A read-only ISO-8601 Datetime value that represents when this resource’s properties were last modified | ISO-8601 Datetime | --
 `name` | The name of the organization. Must be unique across all organizations within your Stormpath [tenant](#tenants). | String | 1 <= N <= 255 characters. Unique within a tenant
 `nameKey` | A name key that represents the organization. Must be unique across all organizations within your Stormpath [tenant](#tenants) and must follow DNS label rules.  | String | 1 <= N <= 63 characters.  Must consist of only a-z, A-Z, 0-9, and `-`.  Must not start or end with a hyphen.  Unique constraint is case insensitive (STORMPATH
@@ -3176,7 +3181,7 @@ Organization organization = client.getResource(href, Organization.class);
 OrganizationAccountStoreMapping orgAccountStoreMapping = client.instantiate(OrganizationAccountStoreMapping)
     .setAccountStore(directory)
     .setOrganization(organization);
-            
+
 orgAccountStoreMapping = organization.createOrganizationAccountStoreMapping(orgAccountStoreMapping);
 
 ### Adding an Organization to an Application as an Account Store
@@ -3581,7 +3586,7 @@ If the verification token is not found, a `404 Not Found` is returned with an [e
 <a class="anchor" name="accounts-authenticate"></a>
 ### Authenticate An Account
 
-After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts. 
+After an account has been created, you can authenticate an account given an input of a username or email and a password from the end-user.  When authentication occurs, you are authenticating a user within a specific application against the application's account stores. That being said, the `application` resource is the starting point for authentication attempts.
 
 For more information on working with applications and authentication, refer to the [Log in (Authenticate) an Account](#application-account-authc) section of this guide.
 
@@ -3652,7 +3657,7 @@ The account resource provides the `isMemberOfGroup` operation. This operation re
 
 	String groupName = "Foo Group";
 	account.isMemberOfGroup(groupName);
-	
+
 
 <a class="anchor" name="working-with-account-groups"></a>
 #### Working With Account Groups
@@ -3778,7 +3783,7 @@ Another alternative using [link expansion](#link-expansion):
 	AccountList accounts = application.getAccounts(
                 Accounts.where(Accounts.email().eqIgnoreCase("some@email.com"))
                         .withCustomData()
-	);	
+	);
 
 **Example: Retrieve a Group with its Custom Data**
 
@@ -3866,7 +3871,7 @@ This request would remove the `favoriteColor` field entirely from the customData
 <a class="anchor" name="integration-google"></a>
 ## Integrating with Google
 
-Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codes (or access tokens) to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including Google.  Google uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their authorization codes (or access tokens) to return an `Account` for a given code.
 
 The steps to enable this functionality into your application include:
 
@@ -3885,7 +3890,7 @@ A provider resource can be obtained by accessing the directory's provider as fol
 Example Request
 
     GoogleProvider provider = client.getResource("https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", GoogleProvider.class);
-        
+
 or, by means of the directory Resource:
 
     GoogleProvider provider = (GoogleProvider) directory.getProvider();
@@ -3896,7 +3901,7 @@ Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `clientId` | The App ID for your Google application | String | --
 `clientSecret` | The App Secret for your Google application | String | --
-`redirectUri` | The redirection Uri for your Google application | String | -- 
+`redirectUri` | The redirection Uri for your Google application | String | --
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'google'
 
 In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
@@ -3928,7 +3933,7 @@ Creating a Google Directory is very similar to [creating a directory](#create-a-
                         .setRedirectUri("https://myapplication.com/authenticate")
                         .build()
                 ).build();
-    
+
     Tenant tenant = client.getCurrentTenant();
     directory = tenant.createDirectory(request);
 
@@ -3959,27 +3964,27 @@ In order to know if the account was created or if it already existed in the Stor
 Once an `Account` is retreived, Stormpath maps common fields for the Google User to the  Account.  The access token and the refresh token for any additional calls in the `GoogleProviderData` resource and can be retrieved by:
 
     GoogleProviderData providerData = (GoogleProviderData) account.getProviderData();
-    
+
 The returned `GoogleProviderData` includes:
 
     providerData.getAccessToken(); //-> y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4
-    providerData.getCreatedAt(); //-> 2014-04-01T17:00:09.154Z 
-    providerData.getHref(); //-> https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData 
-    providerData.getModifiedAt(); //-> 2014-04-01T17:00:09.189Z 
-    providerData.getProviderId(); //-> google 
+    providerData.getCreatedAt(); //-> 2014-04-01T17:00:09.154Z
+    providerData.getHref(); //-> https://api.stormpath.com/v1/accounts/ciYmtETytH0tbHRBas1D5/providerData
+    providerData.getModifiedAt(); //-> 2014-04-01T17:00:09.189Z
+    providerData.getProviderId(); //-> google
     providerData.getRefreshToken(); //-> 1/qQTS638g3ArE4U02FoiXL1yIh-OiPmhc
 
 {% docs note %}
 The `accessToken` can also be passed as a field for the `ProviderData` to access the account once it is retrieved:
-    
+
     ProviderAccountRequest request = Providers.GOOGLE.account()
                 .setAccessToken("y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4")
                 .build();
 
     ProviderAccountResult result = application.getAccount(request);
     Account account = result.getAccount();
-    
-    
+
+
 {% enddocs %}
 
 {% docs note %}
@@ -3991,7 +3996,7 @@ The `refreshToken` will only be present if your application asked for offline ac
 <a class="anchor" name="integration-facebook"></a>
 ## Integrating with Facebook
 
-Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including Facebook.  Facebook uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an `Account` for a given code.
 
 The steps to enable this functionality into your application include:
 
@@ -4010,7 +4015,7 @@ A provider resource can be obtained by accessing the directory's provider as fol
 Example Request
 
     FacebookProvider provider = client.getResource("https://api.stormpath.com/v1/directories/bckhcGMXQDujIXpbCDRb2Q/provider", FacebookProvider.class);
-        
+
 or, by means of the directory Resource:
 
     FacebookProvider provider = (FacebookProvider) directory.getProvider();
@@ -4020,7 +4025,7 @@ or, by means of the directory Resource:
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `clientId` | The App ID for your Facebook application | String | --
-`clientSecret` | The App Secret for your Facebook application | String | -- 
+`clientSecret` | The App Secret for your Facebook application | String | --
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'facebook'
 
 In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
@@ -4036,7 +4041,7 @@ Creating a Facebook Directory requires that you gather some information beforeha
 + Client ID
 + Client Secret
 
-Creating a Facebook Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information. 
+Creating a Facebook Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a Facebook Directory to be configured correctly, you must specify the correct `Provider` information.
 
 **Example Request**
 
@@ -4101,7 +4106,7 @@ The returned `FacebookProviderData` will include:
 <a class="anchor" name="integration-github"></a>
 ## Integrating with Github
 
-Stormpath supports accessing accounts from a number of different locations including Github.  Github uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including Github.  Github uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an `Account` for a given code.
 
 The steps to enable this functionality into your application include:
 
@@ -4120,7 +4125,7 @@ A provider resource can be obtained by accessing the directory's provider as fol
 Example Request
 
     GithubProvider provider = client.getResource("https://api.stormpath.com/v1/directories/eckhcGMrQDujpXpbCDRb3L/provider", GithubProvider.class);
-        
+
 or, by means of the directory Resource:
 
     GithubProvider provider = (GithubProvider) directory.getProvider();
@@ -4130,7 +4135,7 @@ or, by means of the directory Resource:
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `clientId` | The App ID for your Github application | String | --
-`clientSecret` | The App Secret for your Github application | String | -- 
+`clientSecret` | The App Secret for your Github application | String | --
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'github'
 
 In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
@@ -4146,7 +4151,7 @@ Creating a Github Directory requires that you gather some information beforehand
 + Client ID
 + Client Secret
 
-Creating a Github Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a Github Directory to be configured correctly, you must specify the correct `Provider` information. 
+Creating a Github Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a Github Directory to be configured correctly, you must specify the correct `Provider` information.
 
 **Example Request**
 
@@ -4207,7 +4212,7 @@ The returned `GithubProviderData` will include:
 <a class="anchor" name="integration-linkedin"></a>
 ## Integrating with LinkedIn
 
-Stormpath supports accessing accounts from a number of different locations including LinkedIn.  LinkedIn uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an `Account` for a given code. 
+Stormpath supports accessing accounts from a number of different locations including LinkedIn.  LinkedIn uses OAuth 2.0 protocol for authentication / authorization and Stormpath can leverage their access tokens to return an `Account` for a given code.
 
 The steps to enable this functionality into your application include:
 
@@ -4226,7 +4231,7 @@ A provider resource can be obtained by accessing the directory's provider as fol
 Example Request
 
     LinkedInProvider provider = client.getResource("https://api.stormpath.com/v1/directories/tckhcG5rQDurpXpbCtRb3n/provider", LinkedInProvider.class);
-        
+
 or, by means of the directory Resource:
 
     LinkedInProvider provider = (LinkedInProvider) directory.getProvider();
@@ -4236,7 +4241,7 @@ or, by means of the directory Resource:
 Attribute | Description | Type | Valid Value
 :----- | :----- | :---- | :----
 `clientId` | The App ID for your LinkedIn application | String | --
-`clientSecret` | The App Secret for your LinkedIn application | String | -- 
+`clientSecret` | The App Secret for your LinkedIn application | String | --
 `providerId` | The provider ID is the Stormpath ID for the Directory's account provider | String | 'linkedin'
 
 In addition to your application specific attributes, a `Provider` resource will always contain 3 reserved read-only fields:
@@ -4252,7 +4257,7 @@ Creating a LinkedIn Directory requires that you gather some information beforeha
 + Client ID
 + Client Secret
 
-Creating a LinkedIn Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a LinkedIn Directory to be configured correctly, you must specify the correct `Provider` information. 
+Creating a LinkedIn Directory is very similar to [creating a directory](#create-a-directory) within Stormpath.  For a LinkedIn Directory to be configured correctly, you must specify the correct `Provider` information.
 
 **Example Request**
 
@@ -4309,13 +4314,13 @@ The returned `LinkedInProviderData` will include:
 
 ***
 
-## Java Sample Code 
+## Java Sample Code
 
-### Spring MVC Sample App 
+### Spring MVC Sample App
 
 This <a href="https://github.com/stormpath/stormpath-spring-samples" title="pring MVC Sample">application</a> is a Spring MVC-based Twitter clone that helps demonstrate the core functionality of Stormpath. The sample application shows Stormpath-based login, user registration, email verification, password reset, group assignments, <a href="#RBAC" title="RBAC">RBAC</a> checks, and user profile updates.
 
-####Readme: 
+####Readme:
 
 **stormpath-spring-samples**: Stormpath example applications based on the Spring Framework.
 
@@ -4334,11 +4339,11 @@ Deploy the .war file to your web container/application server and launch/access 
 
 A detailed documentation on tooter and how to integrate with the Stormpath Java SDK can be found on the wiki <a href="https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter" title="tooter">https://github.com/stormpath/stormpath-spring-samples/wiki/Tooter</a>.
 
-### Apache Shiro Sample Web App 
+### Apache Shiro Sample Web App
 
 This is a <a href="https://github.com/stormpath/stormpath-shiro-web-sample" title="shiro web sample">simple web application</a> secured by the Apache Shiro security framework and Stormpath. The example is based of the standard Apache Shiro web sample application and it shows login and <a href="#RBAC" title="RBAC">RBAC</a> using an authorization cache.
 
-### Spring Security Sample Web App 
+### Spring Security Sample Web App
 
 This is a <a href="https://github.com/stormpath/stormpath-spring-security-example" title="spring security web sample">simple web application</a> secured by the Spring Security framework and Stormpath. It demostrates how to achieve Stormpath and Spring Security integration by means of the <a href="https://github.com/stormpath/stormpath-spring-security">stormpath-spring-security</a> plugin
 
@@ -4351,8 +4356,8 @@ For more information about administering Stormpath using the Admin Console, plea
 
 ***
 
-## Appendix 
-### How to get the Java SDK jar files if you are not using a Maven-compatible build tool 
+## Appendix
+### How to get the Java SDK jar files if you are not using a Maven-compatible build tool
 
 If you are not using a Maven-compatible build tool (such as Maven, Ant+Ivy, Gradle or SBT) to acquire your project dependencies, then you will need to manually download the Stormpath Java SDK jars and its runtime dependencies.
 
@@ -4422,3 +4427,5 @@ Attribute | Description
 {% enddocs %}
 
 ***
+
+-->

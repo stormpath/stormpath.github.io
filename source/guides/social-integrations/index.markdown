@@ -1,4 +1,11 @@
 ---
+layout: redirect
+redirect_url: /rest/product-guide/latest/auth_n.html#how-social-authentication-works
+---
+
+<!--
+
+---
 layout: doc
 lang: guides
 description: Stormpath makes it easy to login users with Facebook, Google, Linkedin, or GitHub in one API call
@@ -496,3 +503,5 @@ The `refreshToken` will only be present if your application asked for offline ac
 ##  Wrapping up
 
 In this guide, we discussed how to set up a Stormpath to enable your users to log in with Facebook and Google. If you have any questions, bug reports, or enhancement requests please email support@stormpath.com.
+
+-->

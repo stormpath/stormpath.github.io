@@ -1,4 +1,11 @@
 ---
+layout: redirect
+redirect_url: /rest/product-guide/latest/
+---
+
+<!--
+
+---
 layout: doc
 description: Quick guides to common user management tasks with Stormpath.
 title: How Do I...?
@@ -148,4 +155,4 @@ For information about managing workflow automations, refer to the appropriate pr
 
 * [Admin Console Product Guide](/console/product-guide#account-registration-and-verification)
 
-
+-->
