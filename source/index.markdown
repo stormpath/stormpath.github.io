@@ -26,7 +26,7 @@ content_top: [docs_top.html]
             <a href="/python/"><img class="img" src="/images/landingpage/homepage/buttons-homepage-python.jpg "></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
-            <a href="/ruby/product-guide/latest/index.html"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-ruby.jpg"></a>
+            <a href="/ruby/product-guide/latest/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-ruby.jpg"></a>
           </div>
           <div class="col-xs-6 col-sm-4 col-md-3">
             <a href="/php/"><img class="img-responsive" src="/images/landingpage/homepage/buttons-homepage-php.jpg"></a>
