@@ -127,6 +127,9 @@
       <div class="">
         <a href="/rest/product-guide/latest/auth_n.html">REST</a>
       </div>
+      <div class="">
+        <a href="/ruby/product-guide/latest/auth_n.html">Ruby</a>
+      </div>
       <div class="current">
         <a href="/vbnet/product-guide/latest/auth_n.html">Visual Basic</a>
       </div>
@@ -616,7 +619,7 @@
 <p>For example, if you have a route <code class="docutils literal"><span class="pre">https://yourapplication.com/secure-resource</span></code>, the client would request authorization to access the resource by passing the access token as follows:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/secure-resource</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">https://yourapplication.com</span>
-<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJraWQiOiIyWkZNVjRXVlZDVkczNVhBVElJOVQ5Nko3IiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIxdkhJMGpCWERybW12UHFBRmYyWHNWIiwiaWF0IjoxNDQxMTE4Nzk2LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8xZ2s0RHh6aTZvNFBiZGxCVmE2dGZSIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8zYXBlbll2TDBaOXY5c3BkenBGZmV5IiwiZXhwIjoxNDQxMTIwNTk2LCJydGkiOiIxdkhEZ2Z0THJ4Slp3dFExc2hFaTl2In0.xlCXL7UUVnMoBKj0p0bXM_cnraWo5Io-TvUt2WBOl3k</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Bearer eyJraWQiOiIyWkZNV[...]dkhEZ2Z0THJ4Slp3dFExc2hFaTl2In0.xlCXL7UUVnMoBKj0p0bXM_cnraWo5Io-TvUt2WBOl3k</span>
 </pre></div>
 </div>
 <p>Once your application receives the request, the first thing to do is to validate the token, either using Stormpath, or using local application-side logic. The benefit of using Stormpath to validate the token through the REST API (or an SDK that is using the REST API) is that Stormpath can validate the token against the state of your Application and Account resources. To illustrate the difference:</p>
@@ -1090,10 +1093,6 @@
 <p class="first admonition-title">Warning</p>
 <p>The ability to create an LDAP directory is not yet available in the .NET SDK. Please use the Stormpath Admin Console, or see below for the REST API instructions.</p>
 <p class="last">For updates, you can follow <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-dotnet/issues/167">ticket #167</a> on Github.</p>
-</div>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">The ability to create an LDAP directory is not yet available in the Java SDK. Please use the Stormpath Admin Console, or see below for the REST API instructions.</p>
 </div>
 <p>HTTP POST a new Directory resource to the <code class="docutils literal"><span class="pre">/directories</span></code> endpoint. This Directory will contain a <a class="reference internal" href="reference.html#ref-provider"><span class="std std-ref">Provider</span></a> resource with <code class="docutils literal"><span class="pre">providerId</span></code> set to <code class="docutils literal"><span class="pre">ldap</span></code> or <code class="docutils literal"><span class="pre">ad</span></code>. This Provider resource will in turn contain an <a class="reference internal" href="reference.html#ref-ldap-agent"><span class="std std-ref">LDAP Agent</span></a> object, which in turn also contains a few nested configuration resources.</p>
 <div class="admonition note">
@@ -2082,6 +2081,7 @@ $ startup.sh
 </div>
 <p>If you had sent the wrong code, the <code class="docutils literal"><span class="pre">status</span></code> would instead be <code class="docutils literal"><span class="pre">FAILED</span></code>.</p>
 <p>For a full list of Challenge statuses, please see <a class="reference internal" href="reference.html#challenge-status-values"><span class="std std-ref">the Reference chapter</span></a>.</p>
+<p>If you had sent the wrong code, the <code class="docutils literal"><span class="pre">status</span></code> would instead be <code class="docutils literal"><span class="pre">FAILED</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">You could also pass the Challenge <code class="docutils literal"><span class="pre">href</span></code> and the <code class="docutils literal"><span class="pre">code</span></code> to Stormpath and get back an OAuth 2.0 Access Token. For more information about this see <a class="reference internal" href="#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>.</p>
@@ -2182,6 +2182,7 @@ $ startup.sh
 <span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
 </pre></div>
 </div>
+<p>Which will return:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYiX98vc/factors&quot;</span><span class="p">,</span>
   <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
