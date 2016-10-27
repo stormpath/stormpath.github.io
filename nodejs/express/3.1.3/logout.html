@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Logout &mdash; Express Library Guide 3.1.3 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Express Library Guide 3.1.3 documentation" href="index.html"/>
+        <link rel="next" title="Password Reset" href="password_reset.html"/>
+        <link rel="prev" title="Social Login" href="social_login.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> Express Library Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-does-this-library-do">What does this library do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#who-should-use-stormpath">Who Should Use Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#create-a-stormpath-account">Create a Stormpath Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#create-an-api-key-pair">Create an API Key Pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#find-your-stormpath-application">Find Your Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#install-the-package">Install the Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#initialize-express-stormpath">Initialize Express-Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#example-applications">Example Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#inline-options">Inline Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#default-features">Default Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#disabling-features">Disabling Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#stormpath-client-options">Stormpath Client Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#stormpath-application">Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#single-page-applications">Single Page Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#logging">Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_data.html">User Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#req-user">req.user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#custom-data">Custom Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#automatic-expansion">Automatic Expansion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#collections">Collections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#current-user-json-api">Current User JSON API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#cookie-authentication">Cookie Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#issuing-api-keys">Issuing API Keys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#http-basic-authentication">HTTP Basic Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth2-client-credentials">OAuth2 Client Credentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth2-password-grant">OAuth2 Password Grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authorization.html">Authorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#group-based-access-control">Group-based Access Control</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#modifying-default-fields">Modifying Default Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#creating-custom-fields">Creating Custom Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#changing-field-order">Changing Field Order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#password-strength-rules">Password Strength Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#auto-login">Auto Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#pre-registration-handler">Pre Registration Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#post-registration-handler">Post Registration Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#json-registration-api">JSON Registration API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#form-customization">Form Customization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#json-login-api">JSON Login API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#pre-login-handler">Pre Login Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#post-login-handler">Post Login Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#using-id-site">Using ID Site</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social_login.html">Social Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#facebook-login">Facebook Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#google-login">Google Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#linkedin-login">LinkedIn Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#json-api">JSON API</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#post-logout-handler">Post Logout Handler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_reset.html">Password Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#enable-the-workflow">Enable the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#using-the-workflow">Using the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#customizing-the-ux">Customizing the UX</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#default-views">Default Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#custom-views">Custom Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#view-variables">View Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#request-variables">Request Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#response-variables">Response Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributors.html#developers">Developers</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-3-1-3">Version 3.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-3-1-2">Version 3.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-3-1-1">Version 3.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-3-1-0">Version 3.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-3-0-1">Version 3.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#major-release-3-0-0">Major Release 3.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-4-0">Version 2.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-7">Version 2.3.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-6">Version 2.3.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-5">Version 2.3.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-4">Version 2.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-3">Version 2.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-2">Version 2.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-1">Version 2.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-0">Version 2.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-0">Version 2.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-1-0">Version 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-14">Version 2.0.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-13">Version 2.0.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-12">Version 2.0.12</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-11">Version 2.0.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-10">Version 2.0.10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-9">Version 2.0.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-8">Version 2.0.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-7">Version 2.0.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-6">Version 2.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-5">Version 2.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-4">Version 2.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-3">Version 2.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-2">Version 2.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-1">Version 2.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-0">Version 2.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-6">Version 1.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-5">Version 1.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-4">Version 1.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-3">Version 1.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-2">Version 1.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-1">Version 1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-9">Version 0.6.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-8">Version 0.6.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-7">Version 0.6.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-6">Version 0.6.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-5">Version 0.6.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-4">Version 0.6.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-3">Version 0.6.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-2">Version 0.6.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-1">Version 0.6.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-6-0">Version 0.6.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-9">Version 0.5.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-8">Version 0.5.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-7">Version 0.5.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-6">Version 0.5.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-5">Version 0.5.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-4">Version 0.5.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-3">Version 0.5.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-2">Version 0.5.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-1">Version 0.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-5-0">Version 0.5.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-9">Version 0.4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-8">Version 0.4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-7">Version 0.4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-6">Version 0.4.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-5">Version 0.4.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-4">Version 0.4.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-3">Version 0.4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-2">Version 0.4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-1">Version 0.4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-4-0">Version 0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-4">Version 0.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-3">Version 0.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-2">Version 0.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-1">Version 0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-3-0">Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-9">Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-8">Version 0.2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-7">Version 0.2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-6">Version 0.2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-5">Version 0.2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-4">Version 0.2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-3">Version 0.2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-2">Version 0.2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-1">Version 0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-2-0">Version 0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-9">Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-8">Version 0.1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-7">Version 0.1.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-6">Version 0.1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-5">Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-4">Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-3">Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-2">Version 0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-0">Version 0.1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-3-1-2-version-3-1-3">Version 3.1.2 -&gt; Version 3.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-3-1-1-version-3-1-2">Version 3.1.1 -&gt; Version 3.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-3-1-0-version-3-1-1">Version 3.1.0 -&gt; Version 3.1.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-3-0-1-version-3-1-0">Version 3.0.1 -&gt; Version 3.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-3-0-0-version-3-0-1">Version 3.0.0 -&gt; Version 3.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-4-0-version-3-0-0">Version 2.4.0 -&gt; Version 3.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-3-7-version-2-4-0">Version 2.3.7 -&gt; Version 2.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-3-6-version-2-3-7">Version 2.3.6 -&gt; Version 2.3.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-3-5-version-2-3-6">Version 2.3.5 -&gt; Version 2.3.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-3-4-version-2-3-5">Version 2.3.4 -&gt; Version 2.3.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-3-3-version-2-3-4">Version 2.3.3 -&gt; Version 2.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-3-2-version-2-3-3">Version 2.3.2 -&gt; Version 2.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-3-1-version-2-3-2">Version 2.3.1 -&gt; Version 2.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-3-0-version-2-3-1">Version 2.3.0 -&gt; Version 2.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-2-0-version-2-3-0">Version 2.2.0 -&gt; Version 2.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-1-0-version-2-2-0">Version 2.1.0 -&gt; Version 2.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-14-version-2-1-0">Version 2.0.14 -&gt; Version 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-13-version-2-0-14">Version 2.0.13 -&gt; Version 2.0.14</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-12-version-2-0-13">Version 2.0.12 -&gt; Version 2.0.13</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-9-version-2-0-10">Version 2.0.9 -&gt; Version 2.0.10</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-8-version-2-0-9">Version 2.0.8 -&gt; Version 2.0.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-7-version-2-0-8">Version 2.0.7 -&gt; Version 2.0.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-6-version-2-0-7">Version 2.0.6 -&gt; Version 2.0.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-5-version-2-0-6">Version 2.0.5 -&gt; Version 2.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-4-version-2-0-5">Version 2.0.4 -&gt; Version 2.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-3-version-2-0-4">Version 2.0.3 -&gt; Version 2.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-2-version-2-0-3">Version 2.0.2 -&gt; Version 2.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-1-version-2-0-2">Version 2.0.1 -&gt; Version 2.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-2-0-0-version-2-0-1">Version 2.0.0 -&gt; Version 2.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-6-version-2-0-0">Version 1.0.6 -&gt; Version 2.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-5-version-1-0-6">Version 1.0.5 -&gt; Version 1.0.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-4-version-1-0-5">Version 1.0.4 -&gt; Version 1.0.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-3-version-1-0-4">Version 1.0.3 -&gt; Version 1.0.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-2-version-1-0-3">Version 1.0.2 -&gt; Version 1.0.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-1-version-1-0-2">Version 1.0.1 -&gt; Version 1.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-1-0-0-version-1-0-1">Version 1.0.0 -&gt; Version 1.0.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-9-version-1-0-0">Version 0.6.9 -&gt; Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-8-version-0-6-9">Version 0.6.8 -&gt; Version 0.6.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-7-version-0-6-8">Version 0.6.7 -&gt; Version 0.6.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-6-version-0-6-7">Version 0.6.6 -&gt; Version 0.6.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-5-version-0-6-6">Version 0.6.5 -&gt; Version 0.6.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-4-version-0-6-5">Version 0.6.4 -&gt; Version 0.6.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-3-version-0-6-4">Version 0.6.3 -&gt; Version 0.6.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-2-version-0-6-3">Version 0.6.2 -&gt; Version 0.6.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-1-version-0-6-2">Version 0.6.1 -&gt; Version 0.6.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-6-0-version-0-6-1">Version 0.6.0 -&gt; Version 0.6.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-9-version-0-6-0">Version 0.5.9 -&gt; Version 0.6.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-8-version-0-5-9">Version 0.5.8 -&gt; Version 0.5.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-7-version-0-5-8">Version 0.5.7 -&gt; Version 0.5.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-6-version-0-5-7">Version 0.5.6 -&gt; Version 0.5.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-5-version-0-5-6">Version 0.5.5 -&gt; Version 0.5.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-4-version-0-5-5">Version 0.5.4 -&gt; Version 0.5.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-3-version-0-5-4">Version 0.5.3 -&gt; Version 0.5.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-2-version-0-5-3">Version 0.5.2 -&gt; Version 0.5.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-1-version-0-5-2">Version 0.5.1 -&gt; Version 0.5.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-5-0-version-0-5-1">Version 0.5.0 -&gt; Version 0.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-9-version-0-5-0">Version 0.4.9 -&gt; Version 0.5.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-8-version-0-4-9">Version 0.4.8 -&gt; Version 0.4.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-7-version-0-4-8">Version 0.4.7 -&gt; Version 0.4.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-6-version-0-4-7">Version 0.4.6 -&gt; Version 0.4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-5-version-0-4-6">Version 0.4.5 -&gt; Version 0.4.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-4-version-0-4-5">Version 0.4.4 -&gt; Version 0.4.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-3-version-0-4-4">Version 0.4.3 -&gt; Version 0.4.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-2-version-0-4-3">Version 0.4.2 -&gt; Version 0.4.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-1-version-0-4-2">Version 0.4.1 -&gt; Version 0.4.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-4-0-version-0-4-1">Version 0.4.0 -&gt; Version 0.4.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-4-version-0-4-0">Version 0.3.4 -&gt; Version 0.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-3-version-0-3-4">Version 0.3.3 -&gt; Version 0.3.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-2-version-0-3-3">Version 0.3.2 -&gt; Version 0.3.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-1-version-0-3-2">Version 0.3.1 -&gt; Version 0.3.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-3-0-version-0-3-1">Version 0.3.0 -&gt; Version 0.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-9-version-0-3-0">Version 0.2.9 -&gt; Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-8-version-0-2-9">Version 0.2.8 -&gt; Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-7-version-0-2-8">Version 0.2.7 -&gt; Version 0.2.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-6-version-0-2-7">Version 0.2.6 -&gt; Version 0.2.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-5-version-0-2-6">Version 0.2.5 -&gt; Version 0.2.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-4-version-0-2-5">Version 0.2.4 -&gt; Version 0.2.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-3-version-0-2-4">Version 0.2.3 -&gt; Version 0.2.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-2-version-0-2-3">Version 0.2.2 -&gt; Version 0.2.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-1-version-0-2-2">Version 0.2.1 -&gt; Version 0.2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-0-version-0-2-1">Version 0.2.0 -&gt; Version 0.2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-9-version-0-2-0">Version 0.1.9 -&gt; Version 0.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-8-version-0-1-9">Version 0.1.8 -&gt; Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-7-version-0-1-8">Version 0.1.7 -&gt; Version 0.1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-6-version-0-1-7">Version 0.1.6 -&gt; Version 0.1.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-5-version-0-1-6">Version 0.1.5 -&gt; Version 0.1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-4-version-0-1-5">Version 0.1.4 -&gt; Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-3-version-0-1-4">Version 0.1.3 -&gt; Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-2-version-0-1-3">Version 0.1.2 -&gt; Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-0-version-0-1-2">Version 0.1.0 -&gt; Version 0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-0-0-version-0-1-0">Version 0.0.0 -&gt; Version 0.1.0</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Express Library Guide</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Logout</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/logout.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="logout">
+<span id="id1"></span><h1>Logout<a class="headerlink" href="#logout" title="Permalink to this headline">¶</a></h1>
+<p>If you are using browser-based sessions, you&#8217;ll need a way for the user to
+logout and destroy their session cookies.</p>
+<p>By default this library will automatically provide a POST route at <code class="docutils literal"><span class="pre">/logout</span></code>.
+Simply make a POST request to this URL and the session cookies will be
+destroyed.</p>
+<div class="section" id="configuration-options">
+<h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
+<p>If you wish to change the logout URI or the redirect url, you can provide the
+following configuration:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">web</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">logout</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">enabled</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">uri</span><span class="o">:</span> <span class="s1">&#39;/log-me-out&#39;</span><span class="p">,</span>
+    <span class="nx">nextUri</span><span class="o">:</span> <span class="s1">&#39;/goodbye&#39;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="post-logout-handler">
+<span id="id2"></span><h2>Post Logout Handler<a class="headerlink" href="#post-logout-handler" title="Permalink to this headline">¶</a></h2>
+<p>Want to run some custom code after a user has logged out of your site?
+By defining a <code class="docutils literal"><span class="pre">postLogoutHandler</span></code> you&#8217;re able to do just that!</p>
+<p>To use a <code class="docutils literal"><span class="pre">postLogoutHandler</span></code>, you need to define your handler function
+in the Stormpath config:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">postLogoutHandler</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">account</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;User&#39;</span><span class="p">,</span> <span class="nx">account</span><span class="p">.</span><span class="nx">email</span><span class="p">,</span> <span class="s1">&#39;just logged out!&#39;</span><span class="p">);</span>
+    <span class="nx">next</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>As you can see in the example above, the <code class="docutils literal"><span class="pre">postLogoutHandler</span></code> function
+takes four parameters:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">account</span></code>: The successfully logged out user account.</li>
+<li><code class="docutils literal"><span class="pre">req</span></code>: The Express request object.  This can be used to modify the incoming
+request directly.</li>
+<li><code class="docutils literal"><span class="pre">res</span></code>: The Express response object.  This can be used to modify the HTTP
+response directly.</li>
+<li><code class="docutils literal"><span class="pre">next</span></code>: The callback to call when you&#8217;re done doing whatever it is you want
+to do.  If you call this, execution will continue on normally.  If you don&#8217;t
+call this, you&#8217;re responsible for handling the response.</li>
+</ul>
+<p>In the example below, we&#8217;ll use the <code class="docutils literal"><span class="pre">postLogoutHandler</span></code> to redirect the
+user to a special page (<em>instead of the normal logout flow</em>):</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">postLogoutHandler</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">account</span><span class="p">,</span> <span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">res</span><span class="p">.</span><span class="nx">redirect</span><span class="p">(</span><span class="mi">302</span><span class="p">,</span> <span class="s1">&#39;/farewell&#39;</span><span class="p">).</span><span class="nx">end</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="password_reset.html" class="btn btn-neutral float-right" title="Password Reset">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="social_login.html" class="btn btn-neutral" title="Social Login"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Stormpath, Inc..
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'3.1.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+   
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-29159574-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+  </script>
+  <script type="text/javascript">
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+    function _kms(u){
+        setTimeout(function(){
+            var d = document, f = d.getElementsByTagName('script')[0],
+                    s = d.createElement('script');
+            s.type = 'text/javascript'; s.async = true; s.src = u;
+            f.parentNode.insertBefore(s, f);
+        }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+  </script>
+  <script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+
+</body>
+</html>
