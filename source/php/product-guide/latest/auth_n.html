@@ -1947,7 +1947,7 @@ $ startup.sh
 <p>With Google Authenticator, the flow is only slightly different:</p>
 <ol class="arabic simple">
 <li>An additional <strong>Factor</strong> of type <code class="docutils literal"><span class="pre">google-authenticator</span></code> is added to an Account.</li>
-<li>The new <strong>Factor</strong> has a <strong>secret</strong> and a Base64-encoded <strong>QR code</strong>, both of which can be used to add it to the Google Authenticator app.</li>
+<li>The new <strong>Factor</strong> has a <strong>secret</strong> and a Base64-encoded <strong>QR code</strong>, both of which can be used to add it to the Google Authenticator (or <a class="reference external" href="https://www.authy.com/tutorials/how-use-authy-google-authenticator/">similar</a>) app.</li>
 <li>At any time, you can send the <strong>code</strong> from the Authenticator app to Stormpath&#8217;s <code class="docutils literal"><span class="pre">/challenges</span></code> endpoint, at which point you will get back either a <code class="docutils literal"><span class="pre">SUCCESS</span></code> or <code class="docutils literal"><span class="pre">FAILED</span></code> response.</li>
 </ol>
 <div class="admonition note">
@@ -2024,8 +2024,13 @@ $ startup.sh
 <span class="p">{</span>
   <span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;google-authenticator&quot;</span><span class="p">,</span>
   <span class="nt">&quot;accountName&quot;</span><span class="p">:</span> <span class="s2">&quot;jakub@stormpath.com&quot;</span>
+  <span class="s2">&quot;issuer&quot;</span><span class="p">:</span> <span class="s2">&quot;Example App&quot;</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Although the <code class="docutils literal"><span class="pre">issuer</span></code> field is not required, it is recommended because it will make a name show up under the code in the Google Authenticator (or <a class="reference external" href="https://www.authy.com/tutorials/how-use-authy-google-authenticator/">similar</a>) app.</p>
 </div>
 <p>You will then get back the response:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -2058,6 +2063,10 @@ $ startup.sh
 <li>Or you could generate the image yourself, using an <code class="docutils literal"><span class="pre">&lt;img&gt;</span></code> tag or CSS. For examples of both, see <a class="reference external" href="https://css-tricks.com/examples/DataURIs/">here</a>.</li>
 </ul>
 <p>Once the image is generated, the user will scan it into their Authenticator app. If you ask them for a code, they will go into the app and find the code for your application. For information about what happens with this code, see <a class="reference internal" href="#mfa-challenge-after-google"><span class="std std-ref">below</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Many authenticator apps are compatible with Google Authenticator QR codes. Apps we like include <a class="reference external" href="https://www.authy.com/app/">Authy</a> and <a class="reference external" href="https://duo.com/solutions/features/two-factor-authentication-methods/duo-mobile">Duo Mobile</a>.</p>
+</div>
 </div>
 </div>
 <div class="section" id="challenging-a-factor">
