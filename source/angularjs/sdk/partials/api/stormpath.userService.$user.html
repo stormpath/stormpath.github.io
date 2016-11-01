@@ -1,4 +1,4 @@
-<a href="https://github.com/stormpath/stormpath-sdk-angularjs/edit/master/./src/stormpath.user.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/c96d740/./src/stormpath.user.js#L37" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">$user</code>
+<a href="https://github.com/stormpath/stormpath-sdk-angularjs/edit/master/./src/stormpath.user.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/5e33c79/./src/stormpath.user.js#L37" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">$user</code>
 <div><span class="hint">service in module <code ng:non-bindable="">stormpath.userService</code>
 </span>
 </div>
@@ -8,7 +8,7 @@
 on the user.</p>
 </div></div>
 <div class="member method"><h2 id="methods">Methods</h2>
-<ul class="methods"><li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/c96d740/./src/stormpath.user.js#L163" class="view-source icon-eye-open"> </a><h3 id="methods_create">create(accountData)</h3>
+<ul class="methods"><li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/5e33c79/./src/stormpath.user.js#L165" class="view-source icon-eye-open"> </a><h3 id="methods_create">create(accountData)</h3>
 <div class="create"><div class="create-page"><p>Attempts to create a new user by submitting the given <code>accountData</code> as
 JSON to <code>/register</code>.  The POST endpoint can be modified via the
 <a href="#/api/stormpath.STORMPATH_CONFIG:STORMPATH_CONFIG#properties_register_uri">REGISTER_URI</a>
@@ -55,7 +55,7 @@ $user.create(accountData)
 </div></div>
 </div>
 </li>
-<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/c96d740/./src/stormpath.user.js#L222" class="view-source icon-eye-open"> </a><h3 id="methods_get">get()</h3>
+<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/5e33c79/./src/stormpath.user.js#L233" class="view-source icon-eye-open"> </a><h3 id="methods_get">get(bypassCache)</h3>
 <div class="get"><div class="get-page"><p>Attempt to get the current user.  Returns a promise.  If the user
 is authenticated, the promise will be resolved with the user object.
 If the user is not authenticated, the promise will be rejected and
@@ -63,9 +63,15 @@ passed the error response from the $http service.</p>
 <p>If you cannot make use of the promise, you can also observe the
 <a href="#/api/$notLoggedin">$notLoggedin</a> or <a href="#/api/$currentUser">$currentUser</a>
 events.  They are emitted when this method has a success or failure.</p>
-<p>The user object is a Stormpath Account
-object, which is wrapped by a <a href="#/api/eh">User</a> type.</p>
-</div><h5 id="methods_get_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="get-page"><p>A promise representing the operation to get the current user data.</p>
+<p>The result of this operation will be cached on the <a href="#/api/stormpath.userService.$user#properties_currentuser">$user.currentUser</a>
+property.</p>
+<p>The user object is a Stormpath Account object, which is wrapped by a
+<a href="#/api/eh">User</a> type.  It is fetched from the <code>/me</code> endpoint on your
+server, which is provided by our framework integrations.</p>
+</div><h5 id="methods_get_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>bypassCache</td><td><a href="" class="label type-hint type-hint-boolean">Boolean</a></td><td><div class="get-page"><p>By default, the UserService will cache the user object after it is
+retrieved the first time.  Specify <code>true</code> if you need to bypass this
+cache, e.g. after updating the user&#39;s custom data.</p>
+</div> <p><em>(default: false)</em></p></td></tr></tbody></table><h5 id="methods_get_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="get-page"><p>A promise representing the operation to get the current user data.</p>
 </div></td></tr></table><h4 id="methods_get_example">Example</h4>
 <div class="example"><div class="get-page"><pre class="prettyprint linenums">
 var myApp = angular.module('myApp', ['stormpath']);
@@ -83,7 +89,7 @@ myApp.controller('MyAppCtrl', function ($scope, $user) {
 </div></div>
 </div>
 </li>
-<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/c96d740/./src/stormpath.user.js#L377" class="view-source icon-eye-open"> </a><h3 id="methods_passwordresetrequest">passwordResetRequest(data)</h3>
+<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/5e33c79/./src/stormpath.user.js#L383" class="view-source icon-eye-open"> </a><h3 id="methods_passwordresetrequest">passwordResetRequest(data)</h3>
 <div class="passwordresetrequest"><div class="passwordresetrequest-page"><p>Triggers a password reset email to the given username or email address.</p>
 </div><h5 id="methods_passwordresetrequest_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="passwordresetrequest-page"><p>An object literal for passing the email address.</p>
 <pre><code>{
@@ -94,7 +100,7 @@ reset token for the given email address.  Will resolve, even if the
 email address does not exist.  If rejected there was a network error.</p>
 </div></td></tr></table></div>
 </li>
-<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/c96d740/./src/stormpath.user.js#L279" class="view-source icon-eye-open"> </a><h3 id="methods_resendverificationemail">resendVerificationEmail(data)</h3>
+<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/5e33c79/./src/stormpath.user.js#L290" class="view-source icon-eye-open"> </a><h3 id="methods_resendverificationemail">resendVerificationEmail(data)</h3>
 <div class="resendverificationemail"><div class="resendverificationemail-page"><p>Re-sends the verification email to the account specified by the
 username or email address.</p>
 </div><h5 id="methods_resendverificationemail_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="resendverificationemail-page"><p>An object literal for passing the username or email.</p>
@@ -106,7 +112,7 @@ to the given email address.  Will resolve, even if the email address
 does not exist.  If rejected there was a network error.</p>
 </div></td></tr></table></div>
 </li>
-<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/c96d740/./src/stormpath.user.js#L417" class="view-source icon-eye-open"> </a><h3 id="methods_resetpassword">resetPassword(token, data)</h3>
+<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/5e33c79/./src/stormpath.user.js#L426" class="view-source icon-eye-open"> </a><h3 id="methods_resetpassword">resetPassword(token, data)</h3>
 <div class="resetpassword"><div class="resetpassword-page"><p>Resets a user&#39;s password, using a token that was emailed to the user.</p>
 </div><h5 id="methods_resetpassword_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>token</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="resetpassword-page"><p>The <code>sptoken</code> that was sent to the user via email.</p>
 </div></td></tr><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="resetpassword-page"><p>An object literal for passing the new password.  Must follow this
@@ -120,22 +126,17 @@ if rejected the token is invalid or the posted password does not meet
 the password strength rules of the directory.</p>
 </div></td></tr></table></div>
 </li>
-<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/c96d740/./src/stormpath.user.js#L315" class="view-source icon-eye-open"> </a><h3 id="methods_verify">verify(data)</h3>
+<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/5e33c79/./src/stormpath.user.js#L321" class="view-source icon-eye-open"> </a><h3 id="methods_verify">verify(sptoken)</h3>
 <div class="verify"><div class="verify-page"><p>Verifies a new account, using the <code>sptoken</code> that was sent to the user
 by email.</p>
-</div><h5 id="methods_verify_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>data</td><td><a href="" class="label type-hint type-hint-object">Object</a></td><td><div class="verify-page"><p>Data object</p>
-<p>An object literal for passing the email verification token.
-Must follow this format:</p>
-<pre><code>{
-  sptoken: &#39;&lt;token from email&gt;&#39;
-}
-</code></pre></div></td></tr></tbody></table><h5 id="methods_verify_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="verify-page"><p>An $http promise representing the operation to verify the given
+</div><h5 id="methods_verify_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>sptoken</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="verify-page"><p>The value of the <code>sptoken</code> that was sent by email to the user</p>
+</div></td></tr></tbody></table><h5 id="methods_verify_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-promise">promise</a></td><td><div class="verify-page"><p>An $http promise representing the operation to verify the given
 email verification token token.  If resolved the account has been
 verified and can be used for login.  If rejected the token is expired
 or has already been used.</p>
 </div></td></tr></table></div>
 </li>
-<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/c96d740/./src/stormpath.user.js#L347" class="view-source icon-eye-open"> </a><h3 id="methods_verifypasswordresettoken">verifyPasswordResetToken(sptoken)</h3>
+<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/5e33c79/./src/stormpath.user.js#L353" class="view-source icon-eye-open"> </a><h3 id="methods_verifypasswordresettoken">verifyPasswordResetToken(sptoken)</h3>
 <div class="verifypasswordresettoken"><div class="verifypasswordresettoken-page"><p>Verifies a password reset token that was sent to the user by email.
 If valid, the token can be used to reset the user&#39;s password.  If not
 valid it means that the token has expired or has already been used.</p>
@@ -151,11 +152,15 @@ the token cannot be used.</p>
 </div>
 <div class="member property"><h2 id="properties">Properties</h2>
 <ul class="properties"><li><h3 id="properties_currentuser">currentUser</h3>
-<div class="currentuser"><div class="currentuser-page"><p>Retains the account object of the currently logged in user.</p>
-<p>If the user state is unknown, this value is <code>null</code>.</p>
-<p>If the user state is known and the user is not logged in
-(<a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a> has
-been called, and rejected) then this value will be <code>false</code>.</p>
+<div class="currentuser"><div class="currentuser-page"><p>Retains the result of the last call to <a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a>.
+This property is set after every resolution of the <a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a> promise.</p>
+<p>If the user state is unknown (while <a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a>
+is waiting to be resolved), this value is <code>null</code>.</p>
+<p>If the call to <a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a> has resolved, one of the following will happen:</p>
+<ul>
+<li>If the user is not logged in, this value will be <code>false</code>.</li>
+<li>If the user is logged in, this value will be the account object of the user.</li>
+</ul>
 </div></div>
 </li>
 </ul>
