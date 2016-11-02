@@ -343,12 +343,24 @@
 <span class="p">)</span>
 </pre></div>
 </div>
+<p>If you want to configure your Memcached server with custom options like <code class="docutils literal"><span class="pre">ttl</span></code>, <code class="docutils literal"><span class="pre">prefix_key</span></code> or <code class="docutils literal"><span class="pre">credentials</span></code>, pass the <code class="docutils literal"><span class="pre">store_opts</span></code> hash with the attributes that Memcached provides:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="no">Stormpath</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+  <span class="ss">api_key_file_location</span><span class="p">:</span> <span class="n">api_key_file_location</span><span class="p">,</span>
+  <span class="ss">cache</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">store</span><span class="p">:</span> <span class="no">Stormpath</span><span class="o">::</span><span class="no">Cache</span><span class="o">::</span><span class="no">MemcachedStore</span><span class="p">,</span>
+    <span class="ss">store_opts</span><span class="p">:</span> <span class="p">{</span>
+      <span class="ss">host</span><span class="p">:</span> <span class="s1">&#39;localhost:11311&#39;</span><span class="p">,</span>
+      <span class="ss">prefix_key</span><span class="p">:</span> <span class="s1">&#39;mem&#39;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="redis">
 <h3>Redis<a class="headerlink" href="#redis" title="Permalink to this headline">¶</a></h3>
 <p>The Stormpath Ruby SDK provides a cache plugin that works with Redis.</p>
-<p>To use this plugin in your application, initialize the <code class="docutils literal"><span class="pre">client</span></code> instance and configure your store cache and regions store however you want.
-Currently, you can use the default cache store <code class="docutils literal"><span class="pre">MemoryStore</span></code>, <code class="docutils literal"><span class="pre">Redis</span></code> and <code class="docutils literal"><span class="pre">DisabledCacheStore</span></code></p>
+<p>To use this plugin in your application, initialize the <code class="docutils literal"><span class="pre">client</span></code> instance and configure your store cache and regions store however you want.</p>
 <div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="no">Stormpath</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
   <span class="ss">api_key_file_location</span><span class="p">:</span> <span class="n">api_key_file_location</span><span class="p">,</span>
   <span class="ss">cache</span><span class="p">:</span> <span class="p">{</span>
@@ -363,6 +375,20 @@ Currently, you can use the default cache store <code class="docutils literal"><s
         <span class="ss">tti_seconds</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
         <span class="ss">store</span><span class="p">:</span> <span class="no">Stormpath</span><span class="o">::</span><span class="no">Cache</span><span class="o">::</span><span class="no">MemoryStore</span>
       <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>If you need deeper caching configuration, pass the <code class="docutils literal"><span class="pre">store_opts</span></code> hash with attributes that Redis supports:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="no">Stormpath</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
+  <span class="ss">api_key_file_location</span><span class="p">:</span> <span class="n">api_key_file_location</span><span class="p">,</span>
+  <span class="ss">cache</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">store</span><span class="p">:</span> <span class="no">Stormpath</span><span class="o">::</span><span class="no">Cache</span><span class="o">::</span><span class="no">RedisStore</span><span class="p">,</span>
+    <span class="ss">store_opts</span><span class="p">:</span> <span class="p">{</span>
+      <span class="ss">host</span><span class="p">:</span> <span class="s1">&#39;10.0.1.1&#39;</span><span class="p">,</span>
+      <span class="ss">port</span><span class="p">:</span> <span class="mi">6380</span><span class="p">,</span>
+      <span class="ss">db</span><span class="p">:</span> <span class="mi">15</span>
     <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">)</span>
