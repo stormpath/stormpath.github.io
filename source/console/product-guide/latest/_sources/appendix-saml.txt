@@ -941,7 +941,7 @@ Now you will enter the information from the Stormpath Directory that you just cr
 
 #. Back in the Stormpath Admin Console, in your Directory's "Identity Provider" information, you will see a "Service Provider Metadata Link". Copy this URL into the AD FS Management "Federation metadata address" text box and click **Next**. Keep your Admin Console tab open, you will be returning to it later.
 
-#. Enter in whatever "Display name" that you wish, as well as any description.
+#. Enter in whatever "Display name" that you wish, as well as any description. For this example we will name this "api.stormpath.com".
 
 #. Make sure "I do not want to configure multi-factor authentication settings..." is selected and click **Next**.
 
@@ -1017,7 +1017,11 @@ By default, the only user information that is passed by ADFS is the User Princip
 
 #. Back in the Stormpath Admin Console, on your ADFS Directory page, find the "SAML Configuration" section, and go to the "Attribute Mappings" tab.
 
-#. Here you can specify which of the ADFS Claims you would like to map to which Stormpath Account attribute. For example, if you mapped the LDAP Attribute "Given-Name" to the ADFS Claim "firstName", then you would put the "Attribute Name" as "firstName" and the "Stormpath Field Name" as "surname".
+#. Here you can specify which of the ADFS Claims you would like to map to which Stormpath Account attribute. For example, if you mapped the LDAP Attribute ``Given-Name`` to the ADFS Claim ``firstName``, then you would put the "Attribute Name" as ``firstName`` and the "Stormpath Field Name" as ``surname``.
+
+.. note::
+
+  You can achieve this clicking on "Add Rule" and selecting "Send LDAP Attributes as Claims". Next, select "Active Directory" as your attribute store. In the mapping table, you can add your rules. Following the above example, if one of your AD/LDAP attributes is ``Given-Name``, you can map that to Stormpath's ``firstName`` attribute. When your users first log in with their Active Directory credentials and mirrored Accounts are created for them in Stormpath, you should see the ``firstName`` attribute matching their ``given-name`` in Active Directory.
 
 .. _create-azure:
 
