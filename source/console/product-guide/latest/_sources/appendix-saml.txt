@@ -1017,11 +1017,19 @@ By default, the only user information that is passed by ADFS is the User Princip
 
 #. Back in the Stormpath Admin Console, on your ADFS Directory page, find the "SAML Configuration" section, and go to the "Attribute Mappings" tab.
 
-#. Here you can specify which of the ADFS Claims you would like to map to which Stormpath Account attribute. For example, if you mapped the LDAP Attribute ``Given-Name`` to the ADFS Claim ``firstName``, then you would put the "Attribute Name" as ``firstName`` and the "Stormpath Field Name" as ``surname``.
+#. Here you can specify which of the ADFS Claims you would like to map to which Stormpath Account attribute. For example, if you mapped the LDAP Attribute ``Given-Name`` to the ADFS Claim ``firstName``, then you would put the "Attribute Name" as ``firstName`` and the "Stormpath Field Name" as ``givenName``.
 
 .. note::
 
-  You can achieve this clicking on "Add Rule" and selecting "Send LDAP Attributes as Claims". Next, select "Active Directory" as your attribute store. In the mapping table, you can add your rules. Following the above example, if one of your AD/LDAP attributes is ``Given-Name``, you can map that to Stormpath's ``firstName`` attribute. When your users first log in with their Active Directory credentials and mirrored Accounts are created for them in Stormpath, you should see the ``firstName`` attribute matching their ``given-name`` in Active Directory.
+  There are two mappings here: LDAP to ADFS, then ADFS to Stormpath.
+
+  .. code-block:: none
+
+    LDAP Attribute --> ADFS Claim --> Stormpath Account Attribute
+          |                 |                     |
+      Given-Name   --> firstName  -->        givenName
+
+  Since the ADFS Claim is what is being received by Stormpath, the Admin Console only needs to know the mapping between the ADFS Claim and the Account Attribute.
 
 .. _create-azure:
 

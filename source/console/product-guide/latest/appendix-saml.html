@@ -1109,11 +1109,17 @@ sh3WzqLNeYeoU5sGPWhlvNR7n2R1
 <h4>5.2. Create the Attribute Mapping<a class="headerlink" href="#create-the-attribute-mapping" title="Permalink to this headline">¶</a></h4>
 <ol class="arabic simple">
 <li>Back in the Stormpath Admin Console, on your ADFS Directory page, find the &#8220;SAML Configuration&#8221; section, and go to the &#8220;Attribute Mappings&#8221; tab.</li>
-<li>Here you can specify which of the ADFS Claims you would like to map to which Stormpath Account attribute. For example, if you mapped the LDAP Attribute <code class="docutils literal"><span class="pre">Given-Name</span></code> to the ADFS Claim <code class="docutils literal"><span class="pre">firstName</span></code>, then you would put the &#8220;Attribute Name&#8221; as <code class="docutils literal"><span class="pre">firstName</span></code> and the &#8220;Stormpath Field Name&#8221; as <code class="docutils literal"><span class="pre">surname</span></code>.</li>
+<li>Here you can specify which of the ADFS Claims you would like to map to which Stormpath Account attribute. For example, if you mapped the LDAP Attribute <code class="docutils literal"><span class="pre">Given-Name</span></code> to the ADFS Claim <code class="docutils literal"><span class="pre">firstName</span></code>, then you would put the &#8220;Attribute Name&#8221; as <code class="docutils literal"><span class="pre">firstName</span></code> and the &#8220;Stormpath Field Name&#8221; as <code class="docutils literal"><span class="pre">givenName</span></code>.</li>
 </ol>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">You can achieve this clicking on &#8220;Add Rule&#8221; and selecting &#8220;Send LDAP Attributes as Claims&#8221;. Next, select &#8220;Active Directory&#8221; as your attribute store. In the mapping table, you can add your rules. Following the above example, if one of your AD/LDAP attributes is <code class="docutils literal"><span class="pre">Given-Name</span></code>, you can map that to Stormpath&#8217;s <code class="docutils literal"><span class="pre">firstName</span></code> attribute. When your users first log in with their Active Directory credentials and mirrored Accounts are created for them in Stormpath, you should see the <code class="docutils literal"><span class="pre">firstName</span></code> attribute matching their <code class="docutils literal"><span class="pre">given-name</span></code> in Active Directory.</p>
+<p>There are two mappings here: LDAP to ADFS, then ADFS to Stormpath.</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>LDAP Attribute --&gt; ADFS Claim --&gt; Stormpath Account Attribute
+      |                 |                     |
+  Given-Name   --&gt; firstName  --&gt;        givenName
+</pre></div>
+</div>
+<p class="last">Since the ADFS Claim is what is being received by Stormpath, the Admin Console only needs to know the mapping between the ADFS Claim and the Account Attribute.</p>
 </div>
 </div>
 </div>
