@@ -1,0 +1,499 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>5. Authorization With Stormpath &mdash; Stormpath C# Documentation  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="about.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Stormpath C# Documentation  documentation" href="index.html"/>
+        <link rel="next" title="6. Multi-Tenancy with Stormpath" href="multitenancy.html"/>
+        <link rel="prev" title="4. Authenticating Accounts with Stormpath" href="auth_n.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+  
+  <script src="https://cdn.optimizely.com/js/225847041.js"></script>
+
+  
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '986262161469311');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  /></noscript>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NQZZFW');</script>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+  
+
+          
+            <a href="index.html" class="icon icon-home"> Stormpath C# Documentation
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+
+  <div class="langpicker-container">
+    <a href="#langpicker" class="langpicker-link">
+      <i class="fa fa-code"></i>
+      Switch Language
+    </a>
+    <div id="langpicker" style="display:none;">
+      <div class="current">
+        <a href="/csharp/product-guide/latest/auth_z.html">C#</a>
+      </div>
+      <div class="">
+        <a href="/java/product-guide/latest/auth_z.html">Java</a>
+      </div>
+      <div class="">
+        <a href="/nodejs/product-guide/latest/auth_z.html">Node.js</a>
+      </div>
+      <div class="">
+        <a href="/php/product-guide/latest/auth_z.html">PHP</a>
+      </div>
+      <div class="">
+        <a href="/python/product-guide/latest/auth_z.html">Python</a>
+      </div>
+      <div class="">
+        <a href="/rest/product-guide/latest/auth_z.html">REST</a>
+      </div>
+      <div class="">
+        <a href="/ruby/product-guide/latest/auth_z.html">Ruby</a>
+      </div>
+      <div class="">
+        <a href="/vbnet/product-guide/latest/auth_z.html">Visual Basic</a>
+      </div>
+    </div>
+  </div>
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">1. About Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-stormpath">1.1. What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#the-stormpath-data-model">1.2. The Stormpath Data Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">2. Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#sign-up-for-stormpath">2.1 Sign-up for Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-an-api-key-pair">2.2 Create an API Key Pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#installing-the-sdk">2.3 Installing the SDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#retrieve-your-application">2.4. Retrieve Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-a-user-account">2.5. Create a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#authenticate-a-user-account">2.6. Authenticate a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">2.7. Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accnt_mgmt.html">3. Account Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#modeling-your-user-base">3.1. Modeling Your User Base</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-store-accounts-in-stormpath">3.2. How to Store Accounts in Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-search-accounts">3.3. How to Search Accounts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-manage-an-account-s-password">3.4. How to Manage an Account&#8217;s Password</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-manage-an-account-s-required-attributes">3.5. How to Manage an Account&#8217;s Required Attributes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-verify-an-account-s-email">3.6. How to Verify an Account&#8217;s Email</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#customizing-stormpath-emails">3.7. Customizing Stormpath Emails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#account-linking">3.8. Account Linking</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auth_n.html">4. Authenticating Accounts with Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#how-password-authentication-works-in-stormpath">4.1. How Password Authentication Works in Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#how-token-based-authentication-works">4.2. How Token-Based Authentication Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#how-social-authentication-works">4.3. How Social Authentication Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#authenticating-against-an-ldap-directory">4.4. Authenticating Against an LDAP Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#authenticating-against-a-saml-directory">4.5. Authenticating Against a SAML Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#using-multi-factor-authentication">4.6. Using Multi-Factor Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#how-api-key-authentication-works-in-stormpath">4.7. How API Key Authentication Works in Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Authorization With Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-authorization">5.1. What is Authorization?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modeling-authorization-in-stormpath">5.2. Modeling Authorization in Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multitenancy.html">6. Multi-Tenancy with Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html#what-is-a-multi-tenant-application">6.1. What Is a Multi-Tenant Application?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html#modeling-tenants-in-stormpath">6.2. Modeling Tenants in Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html#authenticating-an-account-against-an-organization">6.3. Authenticating an Account against an Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multitenancy.html#routing-users-to-their-tenant">6.4 Routing Users to their Tenant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="idsite.html">7. Using ID Site</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#what-is-an-id-site">7.1. What is an ID Site?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#how-does-id-site-work">7.2. How does ID Site Work?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#idsite-set-up">7.3. ID Site Set Up</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#using-id-site-via-language">7.4. Using ID Site Via C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#using-id-site-for-multi-tenancy">7.5. Using ID Site for Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#idsite-sso">7.6. ID Site &amp; Single Sign-On</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#idsite-hosting">7.7. ID Site Hosting Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#required-api-credentials">1. Required API Credentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#setting-up-caching">2. Setting Up Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#using-a-different-environment">3. Using a Different Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#configuration-sources">4. Configuration Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#configuration-reference">5. Configuration Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Stormpath Error Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#x-communication">110X: Communication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-billing-payment">19XX: Billing / Payment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-general-validation">2XXX: General Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-custom-data">3XXX: Custom Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#x-tenant">400X: Tenant</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-organization">4XXX: Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-application">5XXX: Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-directory">6XXX: Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-account">7XXX: Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-agent">9XXX: Agent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-oauth-errors">100XX: OAuth Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-saml-errors">101XX: SAML Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-token-errors">110XX: Token Errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-id-site-jwt">120XX: ID Site JWT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-smtp-server">130XX: SMTP Server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-multi-factor-authentication">13XXX: Multi-Factor Authentication</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+  
+    <li class="toctree-l1">
+      <a class="reference internal" href="/dotnet/api/">.NET API Reference</a>
+    </li>
+  
+
+  
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Stormpath C# Documentation</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>5. Authorization With Stormpath</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <blockquote>
+<div></div></blockquote>
+<div class="section" id="authorization-with-stormpath">
+<span id="authz"></span><h1>5. Authorization With Stormpath<a class="headerlink" href="#authorization-with-stormpath" title="Permalink to this headline">¶</a></h1>
+<p>This section will provide you with a quick introduction to Authorization with Stormpath. It begins by answering the question &#8220;What is authorization?&#8221;, including the difference between simple authorization checks and permissions-based authorization. It then describes some approaches to modeling authorization in Stormpath. Those include: using the Group resource to model roles, expanding those roles to cover every tenant in your application, and finally how to create fine-grained permissions.</p>
+<div class="section" id="what-is-authorization">
+<h2>5.1. What is Authorization?<a class="headerlink" href="#what-is-authorization" title="Permalink to this headline">¶</a></h2>
+<p>Authorization is simply the way in which we determine the permissions someone has to do something. In contrast to authentication, which is how we determine who a person is, <strong>authorization</strong> is how we determine <strong>what a person can do</strong>.</p>
+<p>Once a user has entered in a valid login and password (authentication), there are the permission checks (authorization) that can be performed which dictate what access rights they have to your system resources. Going back to our airport scenario, once you have proven who you are with your passport, the airline also checks that you are permitted to board the plane by checking that you have a valid boarding pass.</p>
+<p>One distinction, though, is whether the permission is attached to the user, or to the resource that they are accessing. To go back to our airport scenario, we can imagine the airline has two options.</p>
+<div class="section" id="simple-authorization">
+<h3>5.1.1. Simple Authorization<a class="headerlink" href="#simple-authorization" title="Permalink to this headline">¶</a></h3>
+<p>First, the airline can have at the gate a master list of all passengers who are allowed to board the plane. This is equivalent to hard-coding permission checks into your application, and then tying them in some way to a user. This means that your authorization logic can be based on checks of a user&#8217;s particular identity (e.g. <code class="docutils literal"><span class="pre">if</span> <span class="pre">(user(&quot;jsmith&quot;)</span> <span class="pre">{...</span></code>) or their membership in a particular Group (e.g. <code class="docutils literal"><span class="pre">if</span> <span class="pre">(user.group(&quot;passengers&quot;)</span> <span class="pre">{...</span></code>).  This simple authorization is perfectly sufficient for many applications, but has some downsides. One downside is that it can result in authorization rules that are more difficult to change dynamically. Another downside is that any change in authorization rules can end-up requiring a lot of refactoring of code, test cases, etc. A more dynamic and powerful way of handling authorization is through the use of permissions.</p>
+</div>
+<div class="section" id="permissions-based-authorization">
+<h3>5.1.2. Permissions-based Authorization<a class="headerlink" href="#permissions-based-authorization" title="Permalink to this headline">¶</a></h3>
+<p>Permissions, at their most basic, are statements of functionality that define a resource and what actions are possible for that resource. Going back to our airport scenario, an alternative to the boarding master list is that the airline sets a requirement: every passenger who wants to board the plane must bring a boarding pass. This pass comes with permission to perform the &#8220;board&#8221; action onto a specific flight number. So now, instead of basing authorization around a particular user identifier, we could require a certain permission to perform an action on a resource (e.g. <code class="docutils literal"><span class="pre">if</span> <span class="pre">(user.isPermitted(&quot;flight:board:ac232&quot;))</span></code>). This approach has many advantages, including more flexibility with regards to your security model, and separating your application logic from your data model.</p>
+</div>
+</div>
+<div class="section" id="modeling-authorization-in-stormpath">
+<h2>5.2. Modeling Authorization in Stormpath<a class="headerlink" href="#modeling-authorization-in-stormpath" title="Permalink to this headline">¶</a></h2>
+<p>From the perspective of a REST API, Stormpath only serves as the repository for authorization data. Authorization enforcement must happen on the client-side, and one of the many <a class="reference external" href="https://docs.stormpath.com/home/">Stormpath Integrations</a> can help you with this. In this section we will discuss how to model the authorization data which is extremely important to your overall security model.</p>
+<div class="section" id="how-to-use-groups-to-model-authorization-roles">
+<span id="role-groups"></span><h3>5.2.1. How to Use Groups to Model Authorization Roles<a class="headerlink" href="#how-to-use-groups-to-model-authorization-roles" title="Permalink to this headline">¶</a></h3>
+<p>The Group resource is central to many of the more advanced forms of authorization available with Stormpath. Among other things, you can use Groups for things like <a class="reference internal" href="accnt_mgmt.html#hierarchy-groups"><span class="std std-ref">modelling hierarchies</span></a>, as well as creating user roles that span every organization that is using your application.</p>
+<p>As we have already said, you can think of Groups as labels applied to Accounts via the GroupMembership resource. They can be used to organize users, like having all Accounts belonging to users from Tatooine associated with a &#8220;Tatooine&#8221; user Group resource. However, much in the same way that a label can be used to define an officer&#8217;s rank (and thereby what he is authorized to do), Groups can also be used to model &#8220;roles&#8221; in Stormpath for the purposes of role-based access control. If we associate an Account with a certain role Group, then that Account will have all the authorizations defined for that Group. Moreover, if an Account is associated with multiple Groups then it will inherit authorization from all of them.</p>
+<p>Note that when we say &#8220;user Group&#8221; and &#8220;role Group&#8221; we are not discussing two different types of Group resources here, but just pointing out that the Group resource has multiple applications. So that &#8220;Tatooine&#8221; Group could be used to organize all Accounts for users residing on Tatooine, but it could also come with some sort of authorization permissions associated with it as well. A more common scenario would be having a Group called  &#8220;administrators&#8221;, and that could be used to organize everyone with the permissions required for an administrator in your application.</p>
+<p>Also roles do not require you to use permissions-based authorization. You can still include checks in your code along the lines of <code class="docutils literal"><span class="pre">if</span> <span class="pre">(user.group(&quot;authRole&quot;)</span> <span class="pre">{...</span></code>.</p>
+<p>Now that we have some understanding of authorization roles in Stormpath, we can discussion another powerful use of Stormpath&#8217;s flexible data model.</p>
+<div class="section" id="application-wide-roles">
+<span id="app-wide-roles"></span><h4>Application-Wide Roles<a class="headerlink" href="#application-wide-roles" title="Permalink to this headline">¶</a></h4>
+<p>In a multi-tenant SaaS application, it is easy to imagine a scenario where you might want to have user Accounts segregated based upon the tenant that they belong to, while at the same time defining authorization based on broader, application-wide roles. In Stormpath, we recommended that you model every tenant that uses your Application using the <strong>Organization</strong> resource. The Organization resource is a container for Directory and Group resources that makes it easier to model user bases with multiple tenants. For more information about this, please see the <a class="reference internal" href="multitenancy.html#multitenancy"><span class="std std-ref">multi-tenancy chapter</span></a>.</p>
+<p>Alongside these Organizations and their Account Stores, it is also possible to define application-wide Groups that allow for roles that span across Organizations, regardless of which tenant a user belongs to. We can illustrate this with an example.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This just one possible way of modeling a multi-tenant app with application-wide roles. Your approach may vary. If you need help with modeling your user base, feel free to contact us at <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a> and we will help as best as we can.</p>
+</div>
+<p>Specifically, we will use the Tenant-per-Group example from <a class="reference internal" href="multitenancy.html#multitenancy-strategies"><span class="std std-ref">the Multi-tenancy chapter</span></a>.</p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/ERD_TpG.png"><img alt="A multi-tenant implementation" src="_images/ERD_TpG.png" style="width: 1581.0px; height: 1183.0px;" /></a>
+<p class="caption"><span class="caption-text"><em>An example multi-tenant application</em></span></p>
+</div>
+<p>To recap: The &#8220;Lightning Banking&#8221; application must support multiple tenants for each of the bank&#8217;s subsidiaries (&#8220;Bank of A&#8221;, &#8220;Bank of B&#8221;, etc), each modeled as an Organization resource.</p>
+<p>Each of these Organization resources has a Group as its Account Store. This means that all of the users for that Tenant will be represented by Account resources that are mapped to that subsidiary&#8217;s Organization as well as its Group.</p>
+<p>Claire is a customer Bank of A, so her Account resource is associated with the &#8220;Bank of A&#8221; Organization and Group resources.</p>
+<p>Now our banking application has roles that we want applied across all of its tenants, such as &#8220;User&#8221; and &#8220;Application Administrator&#8221;. Modeling these can be accomplished by creating Groups for them, and then associating the appropriate Accounts with them. Voila, application-wide roles.</p>
+<p>So Claire is a customer at the Bank of A, and is associated with the &#8220;Bank of A&#8221; tenant Group. But she is also just a regular user, so she is also associated with the &#8220;User&#8221; role Group. We have a separate user Esther, who is a customer of Bank of B. She is associated with the Bank of B tenant Group, but because she has the same role as Claire, she is associated with the same role Group.</p>
+<p>The actual authorization checks that you do here are irrelevant, so you can still use what we have called &#8220;simple authorization&#8221; with these roles, or you can use permission-based authorization checks.</p>
+<p>More information about the APIs that allow you to create, retrieve and search an Application&#8217;s Groups can be found in the the <a class="reference internal" href="accnt_mgmt.html#group-mgmt"><span class="std std-ref">Account Management section</span></a>, while more information about multi-Tenancy can be found <a class="reference internal" href="multitenancy.html#multitenancy"><span class="std std-ref">in the multi-tenancy section</span></a>.</p>
+</div>
+</div>
+<div class="section" id="using-permissions">
+<h3>5.2.2. Using Permissions<a class="headerlink" href="#using-permissions" title="Permalink to this headline">¶</a></h3>
+<p>If you have decided that your application requires the more advanced authorization modeling possible with permissions, then the first question with every permission is whether it will be tied to an Account or a Group.</p>
+<p><strong>User-unique permissions:</strong> Any permissions that are are unique to a user should be tied to that user&#8217;s Account resource.</p>
+<p><strong>Role permissions:</strong> Permissions that will be shared among a number of users are better bundled together in roles, that is Groups, which many individual Accounts while be associated to.</p>
+<p>The next question is: what will your permissions look like?</p>
+<div class="section" id="how-to-model-fine-grained-permissions">
+<span id="custom-perms"></span><h4>How to Model Fine-Grained Permissions<a class="headerlink" href="#how-to-model-fine-grained-permissions" title="Permalink to this headline">¶</a></h4>
+<p>Stormpath also gives you an enormous amount of flexibility with what these permissions look like. A permission in Stormpath can be as simple as:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">customData</span> <span class="p">=</span> <span class="k">await</span> <span class="n">account</span><span class="p">.</span><span class="n">GetCustomDataAsync</span><span class="p">();</span>
+
+<span class="n">customData</span><span class="p">.</span><span class="n">Put</span><span class="p">(</span><span class="s">&quot;create_admin&quot;</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+
+<span class="k">await</span> <span class="n">customData</span><span class="p">.</span><span class="n">SaveAsync</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Or as complex as:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">customData</span> <span class="p">=</span> <span class="k">await</span> <span class="n">account</span><span class="p">.</span><span class="n">GetCustomDataAsync</span><span class="p">();</span>
+
+<span class="n">customData</span><span class="p">.</span><span class="n">Put</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;createadmin&quot;</span><span class="p">);</span>
+<span class="n">customData</span><span class="p">.</span><span class="n">Put</span><span class="p">(</span><span class="s">&quot;description&quot;</span><span class="p">,</span> <span class="s">&quot;This permission allows the account to create an admin&quot;</span><span class="p">);</span>
+<span class="n">customData</span><span class="p">.</span><span class="n">Put</span><span class="p">(</span><span class="s">&quot;action&quot;</span><span class="p">,</span> <span class="s">&quot;read&quot;</span><span class="p">);</span>
+<span class="n">customData</span><span class="p">.</span><span class="n">Put</span><span class="p">(</span><span class="s">&quot;resource&quot;</span><span class="p">,</span> <span class="s">&quot;/admin/create&quot;</span><span class="p">);</span>
+<span class="n">customData</span><span class="p">.</span><span class="n">Put</span><span class="p">(</span><span class="s">&quot;effect&quot;</span><span class="p">,</span> <span class="s">&quot;allow&quot;</span><span class="p">);</span>
+
+<span class="k">await</span> <span class="n">customData</span><span class="p">.</span><span class="n">SaveAsync</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>How is this flexibility possible? Custom Data.</p>
+<p>As mentioned earlier, Stormpath resources like Accounts and Groups are created along with a linked <a class="reference internal" href="reference.html#ref-customdata"><span class="std std-ref">customData</span></a> resource. This resource is very useful for implementing both Account permissions and role (AKA Group) permissions. Essentially, any user-level permissions are defined in a <code class="docutils literal"><span class="pre">customData</span></code> resource linked to a user Account, while any role-level permissions are defined in a <code class="docutils literal"><span class="pre">customData</span></code> resource linked to a role Group. This allows for Stormpath to model user-unique permissions as well as permissions inherited by virtue of a user having one (or more) roles.</p>
+<p>Permissions in Stormpath can be modeled as an array inside the <code class="docutils literal"><span class="pre">customData</span></code> resource. They can be as simple as a key-value pair, or more complex objects. A user Account could have their user-unique permissions defined in a <code class="docutils literal"><span class="pre">customData</span></code> resource linked to from their Account. At the same time, their Account would be linked to the application-wide &#8220;Admin&#8221; Group which would have its own linked <code class="docutils literal"><span class="pre">customData</span></code> resource that would contain definitions of the permissions of all the users with the Admin role in your application.</p>
+<p>For more information about adding customData to a user, please see the <a class="reference internal" href="accnt_mgmt.html#add-user-customdata"><span class="std std-ref">Account Management section</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See the <a class="reference external" href="http://docs.stormpath.com/dotnet/api/html/T_Stormpath_SDK_CustomData_ICustomData.htm">ICustomData documentation</a> in the .NET API reference for more information on interacting with Custom Data in .NET.</p>
+</div>
+</div>
+<div class="section" id="checking-user-and-role-permissions">
+<h4>Checking User and Role Permissions<a class="headerlink" href="#checking-user-and-role-permissions" title="Permalink to this headline">¶</a></h4>
+<p>Since authorization enforcement is typically handled by <a class="reference external" href="https://docs.stormpath.com/home/">one of Stormpath&#8217;s integrations</a>, the primary usefulness of the .NET SDK is in retrieving a user&#8217;s permissions and building custom authorization logic.</p>
+<p>These permissions can either be found in the custom_data tied a the user (i.e. the Account resource) or to their role (i.e. a Group resource associated to the Account).</p>
+<div class="section" id="checking-user-permissions">
+<h5>Checking User Permissions<a class="headerlink" href="#checking-user-permissions" title="Permalink to this headline">¶</a></h5>
+<p>To check a user&#8217;s unique permissions, you must retrieve their Account&#8217;s Custom Data. You can do this in one of two ways:</p>
+<ol class="arabic simple">
+<li>You can retrieve the Account along with the expanded Custom Data, by sending a request:</li>
+</ol>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">account</span> <span class="p">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">.</span><span class="n">GetAccountAsync</span><span class="p">(</span><span class="s">&quot;account_href&quot;</span><span class="p">,</span> <span class="n">req</span> <span class="p">=&gt;</span> <span class="n">req</span><span class="p">.</span><span class="n">Expand</span><span class="p">(</span><span class="n">acct</span> <span class="p">=&gt;</span> <span class="n">acct</span><span class="p">.</span><span class="n">GetCustomData</span><span class="p">()));</span>
+<span class="kt">var</span> <span class="n">customData</span> <span class="p">=</span> <span class="k">await</span> <span class="n">account</span><span class="p">.</span><span class="n">GetCustomDataAsync</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>If <a class="reference internal" href="configuration.html#set-up-caching"><span class="std std-ref">caching is enabled</span></a>, the expanded request will &#8220;prime&#8221; the cache with the Account&#8217;s Custom Data, so that the request to <code class="docutils literal"><span class="pre">GetCustomDataAsync</span></code> will bypass the network and hit the cache immediately.</p>
+<ol class="arabic simple" start="2">
+<li>Or you can retrieve only the Custom Data:</li>
+</ol>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">customData</span> <span class="p">=</span> <span class="k">await</span> <span class="n">account</span><span class="p">.</span><span class="n">GetCustomDataAsync</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="checking-role-permissions">
+<h5>Checking Role Permissions<a class="headerlink" href="#checking-role-permissions" title="Permalink to this headline">¶</a></h5>
+<p>This would work in much the same way as checking the permissions for a user&#8217;s Account. You would first need to retrieve the Account&#8217;s associated Groups:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">accountGroups</span> <span class="p">=</span> <span class="k">await</span> <span class="n">account</span>
+    <span class="p">.</span><span class="n">GetGroups</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">Expand</span><span class="p">(</span><span class="n">g</span> <span class="p">=&gt;</span> <span class="n">g</span><span class="p">.</span><span class="n">GetCustomData</span><span class="p">())</span>
+    <span class="p">.</span><span class="n">ToListAsync</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Then, you can retrieve the Custom Data from each Group:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">groupCustomData</span> <span class="p">=</span> <span class="k">await</span> <span class="n">accountGroups</span><span class="p">.</span><span class="n">First</span><span class="p">().</span><span class="n">GetCustomDataAsync</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="multitenancy.html" class="btn btn-neutral float-right" title="6. Multi-Tenancy with Stormpath" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="auth_n.html" class="btn btn-neutral" title="4. Authenticating Accounts with Stormpath" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/javascript_for_java.js"></script>
+      <script type="text/javascript" src="_static/langpicker.js"></script>
+      <script type="text/javascript" src="_static/scrollspy.js"></script>
+      <script type="text/javascript" src="_static/gumshoe.min.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
