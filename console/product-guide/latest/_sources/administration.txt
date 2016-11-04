@@ -93,3 +93,14 @@ To add a new Administrator Account, click on the "Add Administrator" button. Thi
 .. note::
 
   All Stormpath Tenant Administrators have the same privileges. This means that any Administrators that you add will have full access to the Stormpath Admin Console, and their Account will be able to do everything that your Account can, including adding more Tenant Administrators.
+
+.. _admin-changing-owner:
+
+Changing Tenant Ownership
+-------------------------
+
+If you would like to change the Account that is the owner Administrator, then you have to change the email address on the tenant owner's Account to the new owner's email address. You can do this in the Admin Console or programatically. One option is to delete an existing Administrator, change the current tenant owner's email to the deleted Administrator's email, and then issue a password reset for that account.
+
+.. note::
+
+  The new email address you choose can't already exist in your Stormpath Administrators Directory.
