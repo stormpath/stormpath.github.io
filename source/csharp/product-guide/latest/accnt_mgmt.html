@@ -643,6 +643,10 @@
 <li>JSON Objects (with nesting)</li>
 </ul>
 <p>One simple use case for Custom Data could be if you wanted to add information to our &#8220;Jean-Luc Picard&#8221; Account that didn&#8217;t fit into any of the existing Account attributes.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">As with all text in Stormpath, Custom Data must be stored using UTF-8 character encoding.</p>
+</div>
 <p>For example, you could add information about this user&#8217;s current location, like the ship this Captain is currently assigned to.</p>
 <p>The <code class="docutils literal"><span class="pre">picard</span></code> Account you created earlier has a <code class="docutils literal"><span class="pre">CustomData</span></code> property that allows you to write to the resource&#8217;s Custom Data:</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">picard</span><span class="p">.</span><span class="n">CustomData</span><span class="p">[</span><span class="s">&quot;currentAssignment&quot;</span><span class="p">]</span> <span class="p">=</span> <span class="s">&quot;USS Enterprise (NCC-1701-E)&quot;</span><span class="p">;</span>
@@ -893,6 +897,11 @@ This link takes you to a secure page where you can change your password.
 <span id="password-change-timestamp-search"></span><h3>3.4.4. How to Find When An Account&#8217;s Password Was Changed<a class="headerlink" href="#how-to-find-when-an-account-s-password-was-changed" title="Permalink to this headline">¶</a></h3>
 <p>You may want to find out when an Account&#8217;s password was last changed, or return a collection of Accounts that changed their passwords within a certain timespan. This information is contained in the searchable <code class="docutils literal"><span class="pre">passwordModifiedAt</span></code> attribute found in every Account resource.</p>
 <p>If you wanted to find all Accounts that hadn&#8217;t modified their password yet in 2016 you would use <a class="reference internal" href="reference.html#search-datetime"><span class="std std-ref">Datetime search</span></a>:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">passwordsModifiedIn2015</span> <span class="p">=</span> <span class="k">await</span> <span class="n">myDirectory</span><span class="p">.</span><span class="n">GetAccounts</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">acct</span> <span class="p">=&gt;</span> <span class="n">acct</span><span class="p">.</span><span class="n">PasswordModifiedAt</span> <span class="p">&lt;</span> <span class="k">new</span> <span class="n">DateTimeOffset</span><span class="p">(</span><span class="m">2016</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="n">TimeSpan</span><span class="p">.</span><span class="n">Zero</span><span class="p">))</span>
+    <span class="p">.</span><span class="n">ToListAsync</span><span class="p">();</span>
+</pre></div>
+</div>
 <p>This would then return all Accounts in the specified Directory that had their passwords modified at any time between the beginning of time and the end of 2015.</p>
 </div>
 <div class="section" id="how-to-restrict-password-reuse">
