@@ -93,6 +93,7 @@ content_top: [docs_top.html]
               <li><i class="fa-li fa fa-cogs"></i><a href="/rest/product-guide/latest/auth_n.html#">API Authentication</a></li>
               <li><i class="fa-li fa fa-cloud"></i><a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory/LDAP Authentication</a></li>
               <li><i class="fa-li fa fa-sitemap"></i><a href="/console/product-guide/latest/appendix-saml.html">SAML Authentication</a></li>
+              <li><i class="fa-li fa fa-cloud"></i><a href="console/product-guide/latest/">Admin Console Guide</a></li>
             </ul>
           </div>
           <div class="col-sm-4 hidden-xs">
@@ -101,6 +102,7 @@ content_top: [docs_top.html]
               <li><i class="fa-li fa fa-bookmark-o"></i><a href="/rest/product-guide/latest/idsite.html">ID Site (Hosted User Interfaces)</a></li>
               <li><i class="fa-li fa fa-link"></i><a href="/rest/product-guide/latest/accnt_mgmt.html#account-linking">Account Linking</a></li>
               <li><i class="fa-li fa fa-mobile"></i><a href="/rest/product-guide/latest/auth_n.html#using-multi-factor-authentication">Multi-Factor Authentication</a></li>
+              <li><i class="fa-li fa fa-cloud"></i><a href="console/product-guide/latest/">Admin Console Guide</a></li>
             </ul>
           </div>
           <div class="col-sm-6 hidden-xs">
