@@ -1,0 +1,627 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Request Context &mdash; Stormpath Zuul Spring Cloud Starter 1.1.3 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="about.html"/>
+    <link rel="top" title="Stormpath Zuul Spring Cloud Starter 1.1.3 documentation" href="index.html"/>
+        <link rel="next" title="Forwarded Request" href="forwarded-request.html"/>
+        <link rel="prev" title="HTTP Request Authentication" href="request-authentication.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+  
+  <script src="https://cdn.optimizely.com/js/225847041.js"></script>
+
+  
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '986262161469311');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  /></noscript>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NQZZFW');</script>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Stormpath Zuul Spring Cloud Starter
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-the-project">What is the Stormpath Zuul Spring Cloud Starter?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#who-should-use-stormpath">Who should use Stormpath?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#get-an-api-key">Get an API Key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-project">Add the Stormpath Zuul Spring Cloud Starter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#configure-zuul">Configure Zuul</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#try-it">Try it!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#zuul-config">Zuul Config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#no-stormpath-config">No Stormpath Config?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#property-overrides">Property Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#bean-overrides">Bean Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#stormpath-client">Stormpath Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#stormpath-application">Stormpath Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#events">Events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#security-notice">Security Notice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#uri">URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#view">View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#events">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#authentication-state">Authentication State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#spring-security">Spring Security</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social.html">Social Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social.html#facebook-login">Facebook Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#google-login">Google Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#linkedin-login">LinkedIn Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#json-api">JSON API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="forgot-password.html">Forgot Password</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#configure-the-workflow">Configure the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#try-it">Try it!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-uri">Forgot URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-next-uri">Forgot Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-view">Forgot View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-uri">Change Password URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-next-uri">Change Password Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-view">Change Password View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#i18n">i18n</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#uri">URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#events">Events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request-authentication.html">HTTP Request Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request-authentication.html#http-basic-authentication">HTTP Basic Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request-authentication.html#token-authentication">Token Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request-authentication.html#api-key-authentication">API Key Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Request Context</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#current-user-account">Current User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stormpath-application">Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stormpath-client">Stormpath Client</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="forwarded-request.html">Forwarded Request</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="forwarded-request.html#forwarded-account-header-name">Forwarded Account Header Name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forwarded-request.html#default-header-value">Default Header Value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forwarded-request.html#custom-header-value">Custom Header Value</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="i18n.html">Internationalization (i18n)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#languages">Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#request-locale">Request Locale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#view-templates">View Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#i18n-properties">i18n.properties</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="events.html#requesteventlistener">RequestEventListener</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#id2">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#listener-best-practices">Listener Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#spring-security">Spring Security</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#disable-caching">Disable Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#cache-configuration">Cache Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="idsite.html">ID Site</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#how-does-it-work">How Does It Work?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#enable-id-site">Enable ID Site</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#configure-your-application">Configure Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#try-it">Try It!</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Custom Views</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="views.html#thymeleaf-views">Thymeleaf Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#head-template">Head Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#css">CSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#change-a-default-view">Change a Default View</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix/default-stormpath-properties.html">Default Stormpath Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/i18n-properties.html">i18n.properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/stormpath-css.html">stormpath.css</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/change-password.html">/templates/stormpath/change-password.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/forgot-password.html">/templates/stormpath/forgot-password.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/head.html">/templates/stormpath/head.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/login.html">/templates/stormpath/login.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/register.html">/templates/stormpath/register.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/verify.html">/templates/stormpath/verify.html</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Stormpath Zuul Spring Cloud Starter</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Request Context</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <blockquote>
+<div></div></blockquote>
+<div class="section" id="request-context">
+<span id="request"></span><h1>Request Context<a class="headerlink" href="#request-context" title="Permalink to this headline">¶</a></h1>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">This page covers request objects that are available during a request within the gateway itself.  If you are
+looking for information about the request data forwarded to the origin server(s), please see the
+<a class="reference internal" href="forwarded-request.html#forwarded-request"><span class="std std-ref">Forwarded Request</span></a> page instead.</p>
+</div>
+<p>The Stormpath Zuul Spring Cloud Starter ensures important Stormpath objects are available to your gateway code during a request:</p>
+<ul class="simple">
+<li>The Stormpath SDK <code class="docutils literal"><span class="pre">Client</span></code> instance, in case you want to communicate with Stormpath for any behavior that the Stormpath Zuul Spring Cloud Starter does not automate.</li>
+<li>The Stormpath <code class="docutils literal"><span class="pre">Application</span></code> instance that corresponds to your web application.</li>
+<li>A Stormpath <code class="docutils literal"><span class="pre">Account</span></code> instance that represents the current authenticated user account making the request.</li>
+</ul>
+<p>The <code class="docutils literal"><span class="pre">Client</span></code> and <code class="docutils literal"><span class="pre">Application</span></code> will always be available.  The current user <code class="docutils literal"><span class="pre">Account</span></code> is only available if the user making the request is authenticated.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#current-user-account" id="id7">Current User Account</a><ul>
+<li><a class="reference internal" href="#account-resolver" id="id8">Account Resolver</a></li>
+<li><a class="reference internal" href="#request-attributes" id="id9">Request Attributes</a></li>
+<li><a class="reference internal" href="#http-servlet-request-api" id="id10">HTTP Servlet Request API</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stormpath-application" id="id11">Stormpath Application</a><ul>
+<li><a class="reference internal" href="#spring-autowiring" id="id12">Spring autowiring</a></li>
+<li><a class="reference internal" href="#application-resolver" id="id13">Application Resolver</a></li>
+<li><a class="reference internal" href="#id2" id="id14">Request Attributes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stormpath-client" id="id15">Stormpath Client</a><ul>
+<li><a class="reference internal" href="#id3" id="id16">Spring autowiring</a></li>
+<li><a class="reference internal" href="#client-resolver" id="id17">Client Resolver</a></li>
+<li><a class="reference internal" href="#id4" id="id18">Request Attributes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="current-user-account">
+<h2><a class="toc-backref" href="#id7">Current User Account</a><a class="headerlink" href="#current-user-account" title="Permalink to this headline">¶</a></h2>
+<p>After a user <a class="reference internal" href="registration.html#registration"><span class="std std-ref">registers</span></a> or <a class="reference internal" href="login.html#login"><span class="std std-ref">logs in</span></a>, you can get the user <code class="docutils literal"><span class="pre">Account</span></code> making the request using an <code class="docutils literal"><span class="pre">AccountResolver</span></code>, request attributes, or the <code class="docutils literal"><span class="pre">HttpServletRequest</span></code> API directly.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A request <code class="docutils literal"><span class="pre">Account</span></code> will only be available if a known user has previously authenticated and is making the request.  If the request is made by an unknown user (a &#8216;guest&#8217;) that has not yet authenticated, the request will not have an associated <code class="docutils literal"><span class="pre">Account</span></code>.</p>
+</div>
+<div class="contents local topic" id="id1">
+<ul class="simple">
+<li><a class="reference internal" href="#account-resolver" id="id19">Account Resolver</a></li>
+<li><a class="reference internal" href="#request-attributes" id="id20">Request Attributes</a></li>
+<li><a class="reference internal" href="#http-servlet-request-api" id="id21">HTTP Servlet Request API</a></li>
+</ul>
+</div>
+<div class="section" id="account-resolver">
+<h3><a class="toc-backref" href="#id19">Account Resolver</a><a class="headerlink" href="#account-resolver" title="Permalink to this headline">¶</a></h3>
+<p>A type-safe way to get an <code class="docutils literal"><span class="pre">Account</span></code> associated with the current request is to use the <code class="docutils literal"><span class="pre">AccountResolver</span></code>:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">com.stormpath.sdk.servlet.account.Account</span><span class="o">;</span>
+<span class="c1">//...</span>
+
+<span class="k">if</span> <span class="o">(</span><span class="n">AccountResolver</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">hasAccount</span><span class="o">(</span><span class="n">servletRequest</span><span class="o">))</span> <span class="o">{</span>
+
+    <span class="c1">//a known user has authenticated previously - get the user identity:</span>
+    <span class="n">Account</span> <span class="n">account</span> <span class="o">=</span> <span class="n">AccountResolver</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getRequiredAccount</span><span class="o">(</span><span class="n">servletRequest</span><span class="o">);</span>
+
+    <span class="c1">//do something with the account</span>
+
+<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+
+    <span class="c1">//the current user is unknown - either unauthenticated or a guest.</span>
+
+<span class="o">}</span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p>Notice that the <code class="docutils literal"><span class="pre">AccountResolver</span> <span class="pre">getRequiredAccount</span></code> method is only invoked if it is known that there is indeed an Account instance available.  If an account is not available when calling <code class="docutils literal"><span class="pre">getRequiredAccount</span></code> an exception will be thrown.</p>
+<p class="last">This <em>check-then-use</em> pattern helps eliminate NullPointerExceptions and conditional branching bugs when working with user identities - often desirable in sensitive logic.</p>
+</div>
+</div>
+<div class="section" id="request-attributes">
+<h3><a class="toc-backref" href="#id20">Request Attributes</a><a class="headerlink" href="#request-attributes" title="Permalink to this headline">¶</a></h3>
+<p>While request attribute lookups are not type-safe (<code class="docutils literal"><span class="pre">String</span></code> keys and <code class="docutils literal"><span class="pre">Object</span></code> return types), they can be convenient or preferred in some situations.</p>
+<div class="section" id="request-attribute-names">
+<h4>Request Attribute Names<a class="headerlink" href="#request-attribute-names" title="Permalink to this headline">¶</a></h4>
+<p>If an <code class="docutils literal"><span class="pre">Account</span></code> is associated with the current request, it will be available via the request attribute name equal to the <code class="docutils literal"><span class="pre">Account</span></code> interface&#8217;s fully qualified class name.  For example:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">Account</span> <span class="n">account</span> <span class="o">=</span> <span class="o">(</span><span class="n">Account</span><span class="o">)</span><span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="n">Account</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+<span class="c1">//account will be null if the request is not yet associated with a known user account.</span>
+</pre></div>
+</div>
+<p>It will also be available via the simpler unqualified name of <code class="docutils literal"><span class="pre">account</span></code>.  For example, the following line provides the same exact result as the one above:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">Account</span> <span class="n">account</span> <span class="o">=</span> <span class="o">(</span><span class="n">Account</span><span class="o">)</span><span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;account&quot;</span><span class="o">);</span>
+<span class="c1">//account will be null if the request is not associated with a known user account.</span>
+</pre></div>
+</div>
+<p>Why two attribute names for the same object?</p>
+<p>When writing view templates, it is often easier to reference a request attribute by a simple name rather than being required to import a Class or use the class&#8217;s fully qualified name.  For example, consider a the following <a class="reference external" href="http://docs.oracle.com/javaee/1.4/tutorial/doc/JSPIntro7.html">JSP Expression Language</a> example:</p>
+<div class="highlight-jsp"><div class="highlight"><pre><span></span>Hello, ${requestScope.account.givenName}! Nice to see you again!
+</pre></div>
+</div>
+<p>Without the simpler attribute name, you would have to do something like this:</p>
+<div class="highlight-jsp"><div class="highlight"><pre><span></span>Hello, ${requestScope[&#39;com.stormpath.sdk.account.Account&#39;].givenName}! Nice to see you again!
+</pre></div>
+</div>
+<p>which is less readable and not as convenient.</p>
+</div>
+</div>
+<div class="section" id="http-servlet-request-api">
+<h3><a class="toc-backref" href="#id21">HTTP Servlet Request API</a><a class="headerlink" href="#http-servlet-request-api" title="Permalink to this headline">¶</a></h3>
+<p>If you&#8217;d prefer to use the native <code class="docutils literal"><span class="pre">HttpServletRequest</span></code> API to obtain any associated account information, you can!  You can call either of the two following methods:</p>
+<ul class="simple">
+<li>HttpServletRequest <a class="reference external" href="http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletRequest.html#getRemoteUser()">getRemoteUser()</a></li>
+<li>HttpServletRequest <a class="reference external" href="http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletRequest.html#getUserPrincipal()">getUserPrincipal()</a></li>
+</ul>
+<p>Even better, you can customize exactly what is returned from either of these methods.</p>
+<div class="section" id="httpservletrequest-getremoteuser">
+<h4>HttpServletRequest getRemoteUser()<a class="headerlink" href="#httpservletrequest-getremoteuser" title="Permalink to this headline">¶</a></h4>
+<p>If there is an <code class="docutils literal"><span class="pre">Account</span></code> associated with the request, invoking <code class="docutils literal"><span class="pre">httpServletRequest.getRemoteUser()</span></code> will return the Account&#8217;s  <code class="docutils literal"><span class="pre">username</span></code> by default.  If there is no associated Account, <code class="docutils literal"><span class="pre">null</span></code> is returned.</p>
+<p>But you can specify what the return value should be via the <code class="docutils literal"><span class="pre">stormpath.web.request.remoteUser.strategy</span></code> configuration property:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.request.remoteUser.strategy</span> <span class="o">=</span> <span class="s">username</span>
+</pre></div>
+</div>
+<p>The property value may be one of the following strings: <code class="docutils literal"><span class="pre">username</span></code>, <code class="docutils literal"><span class="pre">email</span></code>, <code class="docutils literal"><span class="pre">givenName</span></code>, <code class="docutils literal"><span class="pre">href</span></code>, or <code class="docutils literal"><span class="pre">bypass</span></code>:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">username</span></code>: <code class="docutils literal"><span class="pre">getRemoteUser()</span></code> will return the Account&#8217;s username, <code class="docutils literal"><span class="pre">account.getUsername()</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">email</span></code>: returns <code class="docutils literal"><span class="pre">account.getEmail()</span></code></li>
+<li><code class="docutils literal"><span class="pre">givenName</span></code>: returns <code class="docutils literal"><span class="pre">account.getGivenName()</span></code></li>
+<li><code class="docutils literal"><span class="pre">href</span></code>: returns <code class="docutils literal"><span class="pre">account.getHref()</span></code></li>
+<li><code class="docutils literal"><span class="pre">bypass</span></code>: disables the behavior for this method and delegates to the Servlet Container implementation.</li>
+</ul>
+<p>Again, if there is no Account associated with the request, <code class="docutils literal"><span class="pre">getRemoteUser()</span></code> will return <code class="docutils literal"><span class="pre">null</span></code>.</p>
+</div>
+<div class="section" id="httpservletrequest-getuserprincipal">
+<h4>HttpServletRequest getUserPrincipal()<a class="headerlink" href="#httpservletrequest-getuserprincipal" title="Permalink to this headline">¶</a></h4>
+<p>If there is an <code class="docutils literal"><span class="pre">Account</span></code> associated with the request, invoking <code class="docutils literal"><span class="pre">httpServletRequest.getUserPrincipal()</span></code> will return a <code class="docutils literal"><span class="pre">java.security.Principal</span></code> instance that reflects the associated Account.  If there is no associated <code class="docutils literal"><span class="pre">Account</span></code>, <code class="docutils literal"><span class="pre">null</span></code> is returned.</p>
+<p>If there is an account, by default, an instance of <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.AccountPrincipal</span></code> is returned.  This allows you to get the Account object directly by invoking <code class="docutils literal"><span class="pre">accountPrincipal.getAccount()</span></code>.</p>
+<p>But you can specify what type of <code class="docutils literal"><span class="pre">Principal</span></code> implementation is returned via the <code class="docutils literal"><span class="pre">stormpath.web.request.userPrincipal.strategy</span></code> configuration property:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.request.userPrincipal.strategy</span> <span class="o">=</span> <span class="s">account</span>
+</pre></div>
+</div>
+<p>The property value may be one of the following strings: <code class="docutils literal"><span class="pre">account</span></code>, <code class="docutils literal"><span class="pre">email</span></code>, <code class="docutils literal"><span class="pre">username</span></code>, <code class="docutils literal"><span class="pre">givenName</span></code>, <code class="docutils literal"><span class="pre">href</span></code>, <code class="docutils literal"><span class="pre">bypass</span></code>:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">account</span></code>: <code class="docutils literal"><span class="pre">getUserPrincipal()</span></code> returns a <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.AccountPrincipal</span></code> that represents the entire <code class="docutils literal"><span class="pre">Account</span></code> object</li>
+<li><code class="docutils literal"><span class="pre">email</span></code>: returns a <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.EmailPrincipal</span></code> matching <code class="docutils literal"><span class="pre">account.getEmail()</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">username</span></code>: returns a <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.UsernamePrincipal</span></code> matching <code class="docutils literal"><span class="pre">account.getUsername()</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">givenname</span></code>: returns a <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.GivenNamePrincipal</span></code> matching <code class="docutils literal"><span class="pre">account.getGivenName()</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">href</span></code>: returns a <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.HrefPrincipal</span></code> matching <code class="docutils literal"><span class="pre">account.getHref()</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">bypass</span></code>: disables the behavior for this method and delegates to the Servlet Container implementation.</li>
+</ul>
+<p>Again, if there is no Account associated with the request, <code class="docutils literal"><span class="pre">getUserPrincipal()</span></code> will return <code class="docutils literal"><span class="pre">null</span></code>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="stormpath-application">
+<span id="request-application"></span><h2><a class="toc-backref" href="#id11">Stormpath Application</a><a class="headerlink" href="#stormpath-application" title="Permalink to this headline">¶</a></h2>
+<p>The Stormpath Zuul Spring Cloud Starter requires that your gateway correspond to a registered <code class="docutils literal"><span class="pre">Application</span></code> record within Stormpath.  You can access this <code class="docutils literal"><span class="pre">Application</span></code> for your own needs (for example, searching your application&#8217;s user accounts, creating groups, etc.) using Spring autowiring, an <code class="docutils literal"><span class="pre">ApplicationResolver</span></code> or request attributes.</p>
+<div class="section" id="spring-autowiring">
+<h3><a class="toc-backref" href="#id12">Spring autowiring</a><a class="headerlink" href="#spring-autowiring" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">Application</span></code> instance is created at gateway startup and is not request-specific, so the easiest thing to do is to obtain it by normal Spring autowiring:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="nd">@Autowired</span>
+<span class="kd">private</span> <span class="n">Application</span> <span class="n">application</span><span class="o">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="application-resolver">
+<h3><a class="toc-backref" href="#id13">Application Resolver</a><a class="headerlink" href="#application-resolver" title="Permalink to this headline">¶</a></h3>
+<p>A type-safe way to lookup the <code class="docutils literal"><span class="pre">Application</span></code> instance is to use the <code class="docutils literal"><span class="pre">ApplicationResolver</span></code>:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">com.stormpath.sdk.servlet.application.ApplicationResolver</span><span class="o">;</span>
+<span class="c1">//...</span>
+
+<span class="n">Application</span> <span class="n">myApp</span> <span class="o">=</span> <span class="n">ApplicationResolver</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getApplication</span><span class="o">(</span><span class="n">servletRequest</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id2">
+<h3><a class="toc-backref" href="#id14">Request Attributes</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>While request attribute lookups are not type-safe (<code class="docutils literal"><span class="pre">String</span></code> keys and <code class="docutils literal"><span class="pre">Object</span></code> return types), they can be convenient or preferred in some situations.</p>
+<div class="section" id="default-request-attribute-name">
+<h4>Default Request Attribute Name<a class="headerlink" href="#default-request-attribute-name" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">Application</span></code> will always be available under the request attribute key equal to the <code class="docutils literal"><span class="pre">Application</span></code> interface&#8217;s fully qualified class name.  For example:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">Application</span> <span class="n">myApp</span> <span class="o">=</span> <span class="o">(</span><span class="n">Application</span><span class="o">)</span> <span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="n">Application</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="custom-request-attribute-names">
+<h4>Custom Request Attribute Names<a class="headerlink" href="#custom-request-attribute-names" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">Application</span></code> is also available via simpler unqualified attribute names for convenience.  For example, the default convenience attribute name key is just <code class="docutils literal"><span class="pre">application</span></code>.  This allows the exact same Application lookup above to be done like this:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">Application</span> <span class="n">myApp</span> <span class="o">=</span> <span class="o">(</span><span class="n">Application</span><span class="o">)</span> <span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;application&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>If you want to change this name, or add other names, you can change the <code class="docutils literal"><span class="pre">stormpath.web.request.application.attributeNames</span></code> configuration property and set a comma-delimited list of names.  For example:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.request.application.attributeNames</span> <span class="o">=</span> <span class="s">app, application, stormpathApplication, stormpathApp</span>
+</pre></div>
+</div>
+<p>Why is this supported?</p>
+<p>When writing view templates, it is often easier to reference a request attribute by a simple name rather than being required to import a Class or use the class&#8217;s fully qualified name.  For example, consider a the following <a class="reference external" href="http://docs.oracle.com/javaee/1.4/tutorial/doc/JSPIntro7.html">JSP Expression Language</a> example:</p>
+<div class="highlight-jsp"><div class="highlight"><pre><span></span>My application name is: ${requestScope.application.name}.
+</pre></div>
+</div>
+<p>Without these simpler attribute names, you would have to do something like this:</p>
+<div class="highlight-jsp"><div class="highlight"><pre><span></span>My application name is: ${requestScope[&#39;com.stormpath.sdk.application.Application&#39;].name}.
+</pre></div>
+</div>
+<p>which is less readable and not very convenient.</p>
+</div>
+</div>
+</div>
+<div class="section" id="stormpath-client">
+<span id="request-sdk-client"></span><h2><a class="toc-backref" href="#id15">Stormpath Client</a><a class="headerlink" href="#stormpath-client" title="Permalink to this headline">¶</a></h2>
+<p>The Stormpath Zuul Spring Cloud Starter uses a Stormpath <code class="docutils literal"><span class="pre">Client</span></code> for all communication to Stormpath. You can access this <code class="docutils literal"><span class="pre">Client</span></code> for your own needs using Spring autowiring, the <code class="docutils literal"><span class="pre">ClientResolver</span></code> or request attributes.</p>
+<div class="section" id="id3">
+<h3><a class="toc-backref" href="#id16">Spring autowiring</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">Client</span></code> is created at gateway startup and is not request-specific, so the easiest thing to do is to obtain it by normal Spring autowiring:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="nd">@Autowired</span>
+<span class="kd">private</span> <span class="n">Client</span> <span class="n">client</span><span class="o">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="client-resolver">
+<h3><a class="toc-backref" href="#id17">Client Resolver</a><a class="headerlink" href="#client-resolver" title="Permalink to this headline">¶</a></h3>
+<p>If you want to look up the Client using only the HttpServletRequest, you can do so in a type-safe way using the <code class="docutils literal"><span class="pre">ClientResolver</span></code>:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">com.stormpath.sdk.servlet.client.ClientResolver</span><span class="o">;</span>
+<span class="c1">//...</span>
+
+<span class="n">Client</span> <span class="n">client</span> <span class="o">=</span> <span class="n">ClientResolver</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getClient</span><span class="o">(</span><span class="n">servletRequest</span><span class="o">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id18">Request Attributes</a><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>While request attribute lookups are not type-safe (<code class="docutils literal"><span class="pre">String</span></code> keys and <code class="docutils literal"><span class="pre">Object</span></code> return types), they can be convenient or preferred in some situations.</p>
+<div class="section" id="id5">
+<h4>Default Request Attribute Name<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">Client</span></code> will always be available under the request attribute key equal to the <code class="docutils literal"><span class="pre">Client</span></code> interface&#8217;s fully qualified class name.  For example:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">Client</span> <span class="n">client</span> <span class="o">=</span> <span class="o">(</span><span class="n">Client</span><span class="o">)</span> <span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="n">Client</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getName</span><span class="o">());</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h4>Custom Request Attribute Names<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">Client</span></code> is also available via simpler unqualified attribute names for convenience.  For example, the default convenience attribute name key is just <code class="docutils literal"><span class="pre">client</span></code>.  This allows the exact same Client lookup above to be done like this:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">Client</span> <span class="n">client</span> <span class="o">=</span> <span class="o">(</span><span class="n">Client</span><span class="o">)</span> <span class="n">servletRequest</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;client&quot;</span><span class="o">);</span>
+</pre></div>
+</div>
+<p>If you want to change this name, or add other names, you can change the <code class="docutils literal"><span class="pre">stormpath.web.request.client.attributeNames</span></code> configuration property and set a comma-delimited list of names.  For example:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.request.client.attributeNames</span> <span class="o">=</span> <span class="s">client, stormpathClient, awesomeStormpathClient</span>
+</pre></div>
+</div>
+<p>Why is this supported?</p>
+<p>When writing view templates, it is often easier to reference a request attribute by a simple name rather than being required to import a Class or use the class&#8217;s fully qualified name.  For example, consider a the following <a class="reference external" href="http://docs.oracle.com/javaee/1.4/tutorial/doc/JSPIntro7.html">JSP Expression Language</a> example:</p>
+<div class="highlight-jsp"><div class="highlight"><pre><span></span>My Stormpath tenant name is: ${requestScope.client.currentTenant.name}.
+</pre></div>
+</div>
+<p>Without these simpler attribute names, you would have to do something like this:</p>
+<div class="highlight-jsp"><div class="highlight"><pre><span></span>My Stormpath tenant name is: ${requestScope[&#39;com.stormpath.sdk.client.Client&#39;].currentTenant.name}.
+</pre></div>
+</div>
+<p>which is less readable and not very convenient.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="forwarded-request.html" class="btn btn-neutral float-right" title="Forwarded Request" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="request-authentication.html" class="btn btn-neutral" title="HTTP Request Authentication" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

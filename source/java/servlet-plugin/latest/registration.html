@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Registration &mdash; Stormpath Java Servlet Plugin 1.1.2 documentation</title>
+  <title>Registration &mdash; Stormpath Java Servlet Plugin 1.1.3 documentation</title>
   
 
   
@@ -34,7 +34,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Stormpath Java Servlet Plugin 1.1.2 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath Java Servlet Plugin 1.1.3 documentation" href="index.html"/>
         <link rel="next" title="Login" href="login.html"/>
         <link rel="prev" title="Configuration" href="config.html"/> 
 
@@ -113,7 +113,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#get-an-api-key">Get an API Key</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-stormpath-java-servlet-plugin">Add the Stormpath Java Servlet Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-project">Add the Stormpath Java Servlet Plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#try-it">Try it!</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
 </ul>
@@ -130,11 +130,9 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Registration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#uri">URI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#next-uri">Next URI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#form-fields">Form Fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#internationalization-i18n">Internationalization (i18n)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#events">Events</a></li>
 </ul>
 </li>
@@ -205,6 +203,7 @@
 <li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="caching.html#in-process-cache">In-Process Cache</a></li>
 <li class="toctree-l2"><a class="reference internal" href="caching.html#disable-caching">Disable Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#shared-cache">Shared Cache</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="idsite.html">ID Site</a><ul>
@@ -290,34 +289,39 @@
 <span id="id1"></span><h1>Registration<a class="headerlink" href="#registration" title="Permalink to this headline">¶</a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#overview" id="id7">Overview</a></li>
-<li><a class="reference internal" href="#uri" id="id8">URI</a></li>
-<li><a class="reference internal" href="#next-uri" id="id9">Next URI</a><ul>
-<li><a class="reference internal" href="#next-query-parameter" id="id10">Next Query Parameter</a></li>
+<li><a class="reference internal" href="#overview" id="id8">Overview</a></li>
+<li><a class="reference internal" href="#configuration" id="id9">Configuration</a><ul>
+<li><a class="reference internal" href="#enabled" id="id10">Enabled</a></li>
+<li><a class="reference internal" href="#uri" id="id11">URI</a></li>
+<li><a class="reference internal" href="#next-uri" id="id12">Next URI</a></li>
+<li><a class="reference internal" href="#autologin" id="id13">AutoLogin</a></li>
+<li><a class="reference internal" href="#form-fields" id="id14">Form Fields</a></li>
+<li><a class="reference internal" href="#password-strength" id="id15">Password Strength</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#form-fields" id="id11">Form Fields</a><ul>
-<li><a class="reference internal" href="#custom-data" id="id12">Custom Data</a></li>
-<li><a class="reference internal" href="#password-strength" id="id13">Password Strength</a></li>
+<li><a class="reference internal" href="#email-verification" id="id16">Email Verification</a><ul>
+<li><a class="reference internal" href="#try-it" id="id17">Try it!</a></li>
+<li><a class="reference internal" href="#verify-link-base-url" id="id18">Verify Link Base URL</a></li>
+<li><a class="reference internal" href="#verify-next-uri" id="id19">Verify Next URI</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#i18n" id="id14">i18n</a></li>
-<li><a class="reference internal" href="#email-verification" id="id15">Email Verification</a><ul>
-<li><a class="reference internal" href="#try-it" id="id16">Try it!</a></li>
-<li><a class="reference internal" href="#verify-link-base-url" id="id17">Verify Link Base URL</a></li>
-<li><a class="reference internal" href="#verify-next-uri" id="id18">Verify Next URI</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#events" id="id19">Events</a><ul>
-<li><a class="reference internal" href="#registered-account" id="id20">Registered Account</a></li>
-<li><a class="reference internal" href="#verified-account" id="id21">Verified Account</a></li>
+<li><a class="reference internal" href="#internationalization-i18n" id="id20">Internationalization (i18n)</a></li>
+<li><a class="reference internal" href="#events" id="id21">Events</a><ul>
+<li><a class="reference internal" href="#registered-account" id="id22">Registered Account</a></li>
+<li><a class="reference internal" href="#verified-account" id="id23">Verified Account</a></li>
 </ul>
 </li>
 </ul>
 </div>
+<p>The registration feature of this library allows you to use Stormpath to create new accounts in a Stormpath directory.
+You can create traditional password-based accounts, or gather account data from other providers such as
+Facebook and Google.</p>
+<p>By default, this library will serve an HTML registration page at <code class="docutils literal"><span class="pre">/register</span></code>. You can change this URI by setting
+<code class="docutils literal"><span class="pre">stormpath.web.register.uri</span></code> to a different context-relative path.  You can also disable this feature entirely
+by setting <code class="docutils literal"><span class="pre">stormpath.web.register.enabled</span> <span class="pre">=</span> <span class="pre">false</span></code>.</p>
 <div class="section" id="overview">
-<h2><a class="toc-backref" href="#id7">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>One of the very first things most web apps need is the ability to create a user account and login.  So how do we create user accounts?</p>
+<h2><a class="toc-backref" href="#id8">Overview</a><a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>One of the very first things most web apps need is the ability to create a user account.  So how do you do it?</p>
 <ol class="arabic simple">
 <li>Visit <code class="docutils literal"><span class="pre">http://localhost:8080/register</span></code> and you&#8217;ll see the registration view:</li>
 </ol>
@@ -326,11 +330,103 @@
 <li>Fill out the form and click submit and you&#8217;ll be redirected back to your application&#8217;s root path, for example, <code class="docutils literal"><span class="pre">http://localhost:8080/</span></code>.</li>
 </ol>
 <p>Pretty nice!  Not a single line of code required. :)</p>
-<p>And while we think the default look and feel of the pages automatically rendered by the plugin are pretty nice, you have full control over the CSS and HTML for these pages - we&#8217;ll cover customizing them later.</p>
+<p>And while the page is automatically rendered with a default look and feel, you have full control over the CSS and HTML
+for these pages - we&#8217;ll discuss customizing them later.</p>
+</div>
+<div class="section" id="configuration">
+<h2><a class="toc-backref" href="#id9">Configuration</a><a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="id2">
+<ul class="simple">
+<li><a class="reference internal" href="#enabled" id="id24">Enabled</a></li>
+<li><a class="reference internal" href="#uri" id="id25">URI</a></li>
+<li><a class="reference internal" href="#next-uri" id="id26">Next URI</a><ul>
+<li><a class="reference internal" href="#next-query-parameter" id="id27">Next Query Parameter</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#autologin" id="id28">AutoLogin</a></li>
+<li><a class="reference internal" href="#form-fields" id="id29">Form Fields</a><ul>
+<li><a class="reference internal" href="#form-field-definitions" id="id30">Form Field Definitions</a></li>
+<li><a class="reference internal" href="#standard-form-fields" id="id31">Standard Form Fields</a></li>
+<li><a class="reference internal" href="#custom-form-fields" id="id32">Custom Form Fields</a></li>
+<li><a class="reference internal" href="#optional-form-fields" id="id33">Optional Form Fields</a></li>
+<li><a class="reference internal" href="#disabling-form-fields" id="id34">Disabling Form Fields</a></li>
+<li><a class="reference internal" href="#form-field-order" id="id35">Form Field Order</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#password-strength" id="id36">Password Strength</a></li>
+</ul>
+</div>
+<p>The registration feature supports several options.  We&#8217;ll show an example here, and cover their meaning next.</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+      <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/register&quot;</span>
+      <span class="l l-Scalar l-Scalar-Plain">nextUri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/&quot;</span>
+      <span class="l l-Scalar l-Scalar-Plain">view</span><span class="p p-Indicator">:</span> <span class="s">&quot;register&quot;</span>
+      <span class="l l-Scalar l-Scalar-Plain">autoLogin</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+      <span class="l l-Scalar l-Scalar-Plain">form</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">givenName</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;First</span><span class="nv"> </span><span class="s">Name&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;First</span><span class="nv"> </span><span class="s">Name&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;text&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">surname</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Last</span><span class="nv"> </span><span class="s">Name&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Last</span><span class="nv"> </span><span class="s">Name&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;text&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">username</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Username&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Username&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;text&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">email</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Email&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Email&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;email&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Password&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Password&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;password&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">confirmPassword</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Confirm</span><span class="nv"> </span><span class="s">Password&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Confirm</span><span class="nv"> </span><span class="s">Password&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;password&quot;</span>
+        <span class="l l-Scalar l-Scalar-Plain">fieldOrder</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;username&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;givenName&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;middleName&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;surname&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;email&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;password&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;confirmPassword&quot;</span>
+</pre></div>
+</div>
+<div class="section" id="enabled">
+<h3><a class="toc-backref" href="#id24">Enabled</a><a class="headerlink" href="#enabled" title="Permalink to this headline">¶</a></h3>
+<p>Self-registration is enabled by default.  If you don&#8217;t want users to self-register (perhaps because you will create
+or import accounts for your users another way), you can disable registration by setting the
+<code class="docutils literal"><span class="pre">stormpath.web.register.enabled</span></code> property to <code class="docutils literal"><span class="pre">false</span></code>:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.register.enabled</span> <span class="o">=</span> <span class="s">false</span>
+</pre></div>
+</div>
+<p>This means the Stormpath Java Servlet Plugin will not process registration requests to <code class="docutils literal"><span class="pre">stormpath.web.register.uri</span></code> at all and allow any
+such requests (if they exist) to fall through to your code.</p>
 </div>
 <div class="section" id="uri">
-<h2><a class="toc-backref" href="#id8">URI</a><a class="headerlink" href="#uri" title="Permalink to this headline">¶</a></h2>
-<p>Users can self-register for your web application by visiting <code class="docutils literal"><span class="pre">/register</span></code></p>
+<h3><a class="toc-backref" href="#id25">URI</a><a class="headerlink" href="#uri" title="Permalink to this headline">¶</a></h3>
+<p>If self-registration is enabled, users can self-register by visiting <code class="docutils literal"><span class="pre">/register</span></code>.</p>
 <p>If you want to change this path, set the <code class="docutils literal"><span class="pre">stormpath.web.register.uri</span></code> configuration property:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="c"># The context-relative path to the register (&#39;new user&#39;) view:</span>
 <span class="na">stormpath.web.register.uri</span> <span class="o">=</span> <span class="s">/register</span>
@@ -338,102 +434,423 @@
 </div>
 </div>
 <div class="section" id="next-uri">
-<h2><a class="toc-backref" href="#id9">Next URI</a><a class="headerlink" href="#next-uri" title="Permalink to this headline">¶</a></h2>
-<p><strong>If</strong> <code class="docutils literal"><span class="pre">stormpath.web.register.autoLogin</span> <span class="pre">=</span> <span class="pre">false</span></code> <strong>, this is the default</strong></p>
-<p>If <a class="reference internal" href="#email-verification"><span class="std std-ref">email verification</span></a> is disabled, a successfully registered user will be automatically redirected to the application&#8217;s context root (home page) by default.  If you want to change this destination, set the <code class="docutils literal"><span class="pre">stormpath.web.register.nextUri</span></code> configuration property:</p>
+<h3><a class="toc-backref" href="#id26">Next URI</a><a class="headerlink" href="#next-uri" title="Permalink to this headline">¶</a></h3>
+<p>If <a class="reference internal" href="#register-autologin"><span class="std std-ref">autoLogin</span></a> is false (and it is false by default), and
+<a class="reference internal" href="#email-verification"><span class="std std-ref">email verification</span></a> is disabled, a successfully registered user will be
+automatically redirected to the application&#8217;s context root (home page) by default.</p>
+<p>If you want to change this destination, set the <code class="docutils literal"><span class="pre">stormpath.web.register.nextUri</span></code> configuration property:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.register.nextUri</span> <span class="o">=</span> <span class="s">/</span>
 </pre></div>
 </div>
-<p><strong>If</strong> <code class="docutils literal"><span class="pre">stormpath.web.register.autoLogin</span> <span class="pre">=</span> <span class="pre">true</span></code></p>
-<p>If <a class="reference internal" href="#email-verification"><span class="std std-ref">email verification</span></a> is disabled, a successfully registered user will be automatically logged in to the application and redirected to the page specified in the <code class="docutils literal"><span class="pre">stormpath.web.login.nextUri</span></code> configuration property:</p>
+<p>If <a class="reference internal" href="#register-autologin"><span class="std std-ref">autoLogin</span></a> is true and <a class="reference internal" href="#email-verification"><span class="std std-ref">email verification</span></a> is disabled, a
+successfully registered user will be automatically logged in to the application and redirected to the page
+specified in the <code class="docutils literal"><span class="pre">stormpath.web.login.nextUri</span></code> configuration property instead:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.login.nextUri</span> <span class="o">=</span> <span class="s">/</span>
 </pre></div>
 </div>
-<p>Again, this property is only referenced if email verification is disabled.  If email verification is enabled, a page will be rendered asking the user to check their email.</p>
+<p>Again, these properties are only referenced if email verification is disabled.  If email verification is enabled, a page
+will be rendered asking the user to check their email.</p>
 <div class="section" id="next-query-parameter">
-<h3><a class="toc-backref" href="#id10">Next Query Parameter</a><a class="headerlink" href="#next-query-parameter" title="Permalink to this headline">¶</a></h3>
-<p>If <a class="reference internal" href="#email-verification"><span class="std std-ref">email verification</span></a> is disabled and the user is directed to the registration view (by clicking a link or via a redirect), and the URI has a <code class="docutils literal"><span class="pre">next</span></code> query parameter, the <code class="docutils literal"><span class="pre">next</span></code> query parameter value will take precedence as the post-registration redirect location. For example:</p>
+<h4><a class="toc-backref" href="#id27">Next Query Parameter</a><a class="headerlink" href="#next-query-parameter" title="Permalink to this headline">¶</a></h4>
+<p>If <a class="reference internal" href="#email-verification"><span class="std std-ref">email verification</span></a> is disabled and the user is directed to the registration view (by
+clicking a link or via a redirect), and the URI has a <code class="docutils literal"><span class="pre">next</span></code> query parameter, the <code class="docutils literal"><span class="pre">next</span></code> query parameter value
+will take precedence as the post-registration redirect location. For example:</p>
 <p><code class="docutils literal"><span class="pre">https://myapp.com/register?next=/registerSuccess</span></code></p>
-<p>This will cause the user to be redirected <code class="docutils literal"><span class="pre">/registerSuccess</span></code> instead of the configured <code class="docutils literal"><span class="pre">stormpath.web.register.nextUri</span></code> path.</p>
-<p>Again, this functionality is only executed if email verification is disabled.  If email verification is enabled, a page will be rendered asking the user to check their email.</p>
+<p>This will cause the user to be redirected <code class="docutils literal"><span class="pre">/registerSuccess</span></code> instead of the configured
+<code class="docutils literal"><span class="pre">stormpath.web.register.nextUri</span></code> path.</p>
+<p>Again, this functionality is only executed if email verification is disabled.  If email verification is enabled, a
+page will be rendered asking the user to check their email.</p>
 </div>
+</div>
+<div class="section" id="autologin">
+<span id="register-autologin"></span><h3><a class="toc-backref" href="#id28">AutoLogin</a><a class="headerlink" href="#autologin" title="Permalink to this headline">¶</a></h3>
+<p>It is generally recommended for security reasons to use email verification and require users to login with their
+password after clicking an email verification link.</p>
+<p>However, if you do not want to use email verification, and instead want users to automatically be considered
+authenticated and logged in immediately after they register for a new user account, you can set autoLogin to true:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.register.autoLogin</span> <span class="o">=</span> <span class="s">false # set to true if not using email verification</span>
+</pre></div>
+</div>
+<p>Because this can weaken security, the default value is <code class="docutils literal"><span class="pre">false</span></code>.</p>
 </div>
 <div class="section" id="form-fields">
-<h2><a class="toc-backref" href="#id11">Form Fields</a><a class="headerlink" href="#form-fields" title="Permalink to this headline">¶</a></h2>
-<p>You can specify a which form fields will be displayed by editing the <code class="docutils literal"><span class="pre">stormpath.web.register.form.fields</span></code> configuration property.  For example, the default value for <code class="docutils literal"><span class="pre">givenName</span></code> is:</p>
-<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.register.form.fields.givenName.enabled</span> <span class="o">=</span> <span class="s">true</span>
-<span class="na">stormpath.web.register.form.fields.givenName.visible</span> <span class="o">=</span> <span class="s">true</span>
-<span class="na">stormpath.web.register.form.fields.givenName.label</span> <span class="o">=</span> <span class="s">stormpath.web.register.form.fields.givenName.label</span>
-<span class="na">stormpath.web.register.form.fields.givenName.placeholder</span> <span class="o">=</span> <span class="s">stormpath.web.register.form.fields.givenName.placeholder</span>
-<span class="na">stormpath.web.register.form.fields.givenName.required</span> <span class="o">=</span> <span class="s">true</span>
-<span class="na">stormpath.web.register.form.fields.givenName.type</span> <span class="o">=</span> <span class="s">text</span>
+<h3><a class="toc-backref" href="#id29">Form Fields</a><a class="headerlink" href="#form-fields" title="Permalink to this headline">¶</a></h3>
+<div class="contents local topic" id="id3">
+<ul class="simple">
+<li><a class="reference internal" href="#form-field-definitions" id="id37">Form Field Definitions</a></li>
+<li><a class="reference internal" href="#standard-form-fields" id="id38">Standard Form Fields</a></li>
+<li><a class="reference internal" href="#custom-form-fields" id="id39">Custom Form Fields</a></li>
+<li><a class="reference internal" href="#optional-form-fields" id="id40">Optional Form Fields</a></li>
+<li><a class="reference internal" href="#disabling-form-fields" id="id41">Disabling Form Fields</a></li>
+<li><a class="reference internal" href="#form-field-order" id="id42">Form Field Order</a></li>
+</ul>
+</div>
+<p>The registration form will render the following fields by default (all required):</p>
+<ul class="simple">
+<li>First Name (aka Stormpath account <code class="docutils literal"><span class="pre">givenName</span></code> field)</li>
+<li>Last Name (aka Stormpath account <code class="docutils literal"><span class="pre">surname</span></code> field)</li>
+<li>Email</li>
+<li>Password</li>
+</ul>
+<p>You can customize the form by simply changing the configuration. For example, while email and password will always be
+required, you could make first and last name optional. Or, you can ask the user for both an email address and a
+username. You can even specify your own custom fields, no code required!</p>
+<div class="section" id="form-field-definitions">
+<h4><a class="toc-backref" href="#id37">Form Field Definitions</a><a class="headerlink" href="#form-field-definitions" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">stormpath.web.register.form.fields</span></code> is a map of <code class="docutils literal"><span class="pre">Field</span> <span class="pre">Name</span></code> -to- <code class="docutils literal"><span class="pre">Field</span> <span class="pre">Definition</span></code> entries.</p>
+<div class="section" id="field-name">
+<h5>Field Name<a class="headerlink" href="#field-name" title="Permalink to this headline">¶</a></h5>
+<p>The name of the field in the field map must be a JSON string without spaces.  If it matches a predefined field name,
+the form field value will be automatically set as the associated value in the newly created Stormpath <code class="docutils literal"><span class="pre">Account</span></code>.</p>
+<p>If the name of the field does not match a predefined field name, the field is treated as a
+<a class="reference external" href="register-custom-form-fields">custom field</a> and saved in the account&#8217;s <code class="docutils literal"><span class="pre">Custom</span> <span class="pre">Data</span></code>.</p>
+</div>
+<div class="section" id="field-definition">
+<h5>Field Definition<a class="headerlink" href="#field-definition" title="Permalink to this headline">¶</a></h5>
+<p>A field definition has properties that control the behavior of a form field.  Here is an example a form
+field definition - in this case, a field that represents a user account&#8217;s <code class="docutils literal"><span class="pre">givenName</span></code>:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">form</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">givenName</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;stormpath.web.register.form.fields.givenName.label&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;stormpath.web.register.form.fields.givenName.placeholder&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;text&quot;</span>
 </pre></div>
 </div>
-<p>By default the supported directives are:</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">enabled</span></code>: the field is enabled for edit.</li>
-<li><code class="docutils literal"><span class="pre">visible</span></code>: the field is visible.</li>
-<li><code class="docutils literal"><span class="pre">label</span></code>: this is the label to display and its value is defined in i18n.properties with the key <code class="docutils literal"><span class="pre">stormpath.web.register.form.fields.givenName.label</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">placeholder</span></code>: this is the placeholder to display and its value is defined in i18n.properties with the key <code class="docutils literal"><span class="pre">stormpath.web.register.form.fields.givenName.placeholder</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">required</span></code>: makes the field required, If the field is blank, the error message is defined in i18n.properties as <code class="docutils literal"><span class="pre">stormpath.web.register.form.fields.email.required</span></code>. If the input is invalid the error message is in the i18n.properties with the key <code class="docutils literal"><span class="pre">stormpath.web.register.form.fields.email.invalid</span></code>.</li>
-<li><code class="docutils literal"><span class="pre">type</span></code>: The input type of the field.</li>
-</ul>
-<p>By default the supported fields are: (remember to set the directives for each one)</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">givenName</span></code>: person&#8217;s given name, also known as &#8216;first name&#8217; in Western countries.</li>
-<li><code class="docutils literal"><span class="pre">middleName</span></code>: any middle name(s).</li>
-<li><code class="docutils literal"><span class="pre">surname</span></code>: person&#8217;s family name, also known as &#8216;last name&#8217; in Western countries.</li>
-<li><code class="docutils literal"><span class="pre">username</span></code>: a username.  If unspecified, Stormpath defaults the username to the <code class="docutils literal"><span class="pre">email</span></code> value.</li>
-<li><code class="docutils literal"><span class="pre">email</span></code>: the user&#8217;s email address.  This field is always required.</li>
-<li><code class="docutils literal"><span class="pre">password</span></code>: the user&#8217;s password.</li>
-</ul>
-<p>You can customize this list of fields, those extra fields will be saved as custom data. The order field is defined in</p>
-<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.register.form.fieldOrder</span> <span class="o">=</span> <span class="s">username,givenName,middleName,surname,email,password,confirmPassword</span>
-</pre></div>
+<p>What do these field definition properties mean?</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="79%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field Property</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">enabled</span></code></td>
+<td>A boolean that indicates if the field will be included in the form.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">label</span></code></td>
+<td>The text value of the HTML &lt;label&gt; element shown to the left of the form field.  The value
+can be raw text or an i18n key.  If an i18n key, the resolved internationalized text will
+be displayed, not the 18n key itself.  Defaults to
+<code class="docutils literal"><span class="pre">stormpath.web.register.form.fields.givenName.label</span></code>, a key in <a class="reference internal" href="i18n.html#i18n"><span class="std std-ref">i18n.properties</span></a>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">placeholder</span></code></td>
+<td>The placeholder text value to display within the form field itself.  The value can be raw
+text or an i18n key.  If an i18n key, the resolved internationalized text will be
+displayed, not the i18n key itself.  Defaults to
+<code class="docutils literal"><span class="pre">stormpath.web.register.form.fields.givenName.placeholder</span></code>, a key in
+<a class="reference internal" href="i18n.html#i18n"><span class="std std-ref">i18n.properties</span></a>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">required</span></code></td>
+<td><p class="first">A boolean that indicates if the field must be entered by the user or not.  If <code class="docutils literal"><span class="pre">required</span></code>
+is <code class="docutils literal"><span class="pre">true</span></code> and the field is blank, the post data will be validated to ensure that the
+field is supplied, and an error will be returned if the field is empty.</p>
+<p class="last">The error message displayed is an internationalized message defined in
+<a class="reference internal" href="i18n.html#i18n"><span class="std std-ref">i18n.properties</span></a> as a property with the form of
+<code class="docutils literal"><span class="pre">stormpath.web.register.form.fields.[fieldName].required</span></code>. If the input is invalid, the
+error message is an internationalized message defined i18n.properties as a property with
+the form of
+<code class="docutils literal"><span class="pre">stormpath.web.register.form.fields.[fieldName].invalid</span></code>.</p>
+</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
+<td>The HTML input type of the field.  Most field types will be <code class="docutils literal"><span class="pre">text</span></code> or maybe <code class="docutils literal"><span class="pre">email</span></code>,
+but the <code class="docutils literal"><span class="pre">password</span></code> or <code class="docutils literal"><span class="pre">confirmPassword</span></code> fields should ideally be a type of <code class="docutils literal"><span class="pre">password</span></code>
+so the browser does not show (masks) password characters as the user types.</td>
+</tr>
+</tbody>
+</table>
 </div>
-<p>You can also customize additional directives as necessary, but note:</p>
-<p><strong>The</strong> <code class="docutils literal"><span class="pre">email</span></code> <strong>form field is always required.  If you customize your form fields, ensure that you always have at least an</strong> <code class="docutils literal"><span class="pre">email</span></code> <strong>and set it as</strong> <code class="docutils literal"><span class="pre">required</span></code> <strong>.</strong></p>
-<div class="section" id="custom-data">
-<h3><a class="toc-backref" href="#id12">Custom Data</a><a class="headerlink" href="#custom-data" title="Permalink to this headline">¶</a></h3>
-<p>The registration form provides the ability to have custom fields defined by the developer. The registration controller will
-automatically figure out which are those fields (i.e not part of the pre-defined properties supported by the Account) and
-they will be added as <a class="reference external" href="http://docs.stormpath.com/java/product-guide/#custom-data">Custom Data</a> in the account.</p>
-<p>For example, let&#8217;s suppose we want to add a custom field to capture a user&#8217;s birthday during registration. Then the
-following properties should be added to the <code class="docutils literal"><span class="pre">stormpath.properties</span></code> file:</p>
+</div>
+<div class="section" id="standard-form-fields">
+<h4><a class="toc-backref" href="#id38">Standard Form Fields</a><a class="headerlink" href="#standard-form-fields" title="Permalink to this headline">¶</a></h4>
+<p>Standard Form Fields already supported:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="82%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">givenName</span></code></td>
+<td>A person&#8217;s given name, also known as the &#8216;first name&#8217; in Western countries. This will be
+saved in the new Stormpath <code class="docutils literal"><span class="pre">Account</span></code> record&#8217;s <code class="docutils literal"><span class="pre">givenName</span></code> field.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">middleName</span></code></td>
+<td>Any middle name(s).  This will be saved in the new Stormpath <code class="docutils literal"><span class="pre">Account</span></code> record&#8217;s
+<code class="docutils literal"><span class="pre">middleName</span></code> field.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">surname</span></code></td>
+<td>A person&#8217;s family name, also known as &#8216;last name&#8217; in Western countries.  This will be saved
+in the new Stormpath <code class="docutils literal"><span class="pre">Account</span></code> record&#8217;s <code class="docutils literal"><span class="pre">surname</span></code> field.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">username</span></code></td>
+<td>The user&#8217;s desired username.  If unspecified, Stormpath defaults the username to the
+<code class="docutils literal"><span class="pre">email</span></code> value.  This will be saved in the new Stormpath <code class="docutils literal"><span class="pre">Account</span></code> record&#8217;s <code class="docutils literal"><span class="pre">username</span></code>
+field.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">email</span></code></td>
+<td>The user&#8217;s email address.  This field is always required.  This will be saved in the new
+Stormpath <code class="docutils literal"><span class="pre">Account</span></code> record&#8217;s <code class="docutils literal"><span class="pre">email</span></code> field.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">password</span></code></td>
+<td>The user&#8217;s password, always required.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">confirmPassword</span></code></td>
+<td><p class="first">An additional field that, if enabled, must have a value equal the <code class="docutils literal"><span class="pre">password</span></code> value upon
+form submission. This field is used to help ensure the user doesn&#8217;t accidentally type their
+password incorrectly, which may help in usability after registration.</p>
+<p class="last">If the submitted value
+does not equal the <code class="docutils literal"><span class="pre">password</span></code> value, an internationalized error will be shown to the user
+to ensure that they enter in the password correctly.  The <a class="reference internal" href="i18n.html#i18n"><span class="std std-ref">i18n.properties</span></a> key
+for this message is <code class="docutils literal"><span class="pre">stormpath.web.register.form.errors.passwordMismatch</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>If these fields are not sufficient for your needs, you can add custom form fields, covered next.  But please note:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code> fields are always required. If you modify the form fields, ensure that at least these
+two are present.</p>
+</div>
+</div>
+<div class="section" id="custom-form-fields">
+<span id="register-custom-form-fields"></span><h4><a class="toc-backref" href="#id39">Custom Form Fields</a><a class="headerlink" href="#custom-form-fields" title="Permalink to this headline">¶</a></h4>
+<p>The above Standard Form Fields are the ones that are supported by default and match directly to a Stormpath <code class="docutils literal"><span class="pre">Account</span></code>
+attribute.</p>
+<p>If you wanted to collect information that does not directly match a Stormpath account attribute, you can still add
+your own custom fields to the Form Field definition map.  Any values entered in these fields will be automatically
+added to the user account&#8217;s <code class="docutils literal"><span class="pre">CustomData</span></code> object when they register successfully.</p>
+<p>For example, let&#8217;s suppose we want to add a custom field to capture a user&#8217;s birthday during registration:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.register.form.fields.birthday.type</span> <span class="o">=</span> <span class="s">text</span>
-<span class="na">stormpath.web.register.form.fields.birthday.label</span> <span class="o">=</span> <span class="s">Birthday</span>
 <span class="na">stormpath.web.register.form.fields.birthday.enabled</span> <span class="o">=</span> <span class="s">true</span>
 <span class="na">stormpath.web.register.form.fields.birthday.visible</span> <span class="o">=</span> <span class="s">true</span>
 <span class="na">stormpath.web.register.form.fields.birthday.required</span> <span class="o">=</span> <span class="s">true</span>
+<span class="na">stormpath.web.register.form.fields.birthday.label</span> <span class="o">=</span> <span class="s">Birthday</span>
 <span class="na">stormpath.web.register.form.fields.birthday.placeholder</span> <span class="o">=</span> <span class="s">Birthday</span>
 </pre></div>
 </div>
-<p>When the registration form is rendered, this field will be added to the bottom of the form.</p>
+<p>When the registration form is rendered, this field will be added:</p>
 <blockquote>
 <div><img alt="_images/register-with-birthday.png" src="_images/register-with-birthday.png" />
 </div></blockquote>
-<p>When the form is submitted, the field&#8217;s name and value will be added to the account&#8217;s custom data.</p>
-<p>If you want to provide user&#8217;s with a good internationalization experience, then you should define the label property like this:</p>
+<p>When the form is submitted, the field&#8217;s name and value will be added automatically to the account&#8217;s custom data.</p>
+<p>If you want to provide users with a good internationalization experience, then you should define the label and
+placeholder properties like this:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.register.form.fields.birthday.label</span> <span class="o">=</span> <span class="s">stormpath.web.register.form.fields.birthday.label</span>
+<span class="na">stormpath.web.register.form.fields.birthday.placeholder</span> <span class="o">=</span> <span class="s">stormpath.web.register.form.fields.birthday.placeholder</span>
 </pre></div>
 </div>
 <p>And then, in your <code class="docutils literal"><span class="pre">i18n_en.properties</span></code> file you would add:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.register.form.fields.birthday.label</span> <span class="o">=</span> <span class="s">Birthday</span>
+<span class="na">stormpath.web.register.form.fields.birthday.placeholder</span> <span class="o">=</span> <span class="s">4/1/1980</span>
 </pre></div>
 </div>
 <p>While in your tentative <code class="docutils literal"><span class="pre">i18n_es.properties</span></code> file you would add:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.register.form.fields.birthday.label</span> <span class="o">=</span> <span class="s">Fecha de nacimiento</span>
+<span class="na">stormpath.web.register.form.fields.birthday.placeholder</span> <span class="o">=</span> <span class="s">1/4/1980</span>
 </pre></div>
 </div>
 </div>
+<div class="section" id="optional-form-fields">
+<h4><a class="toc-backref" href="#id40">Optional Form Fields</a><a class="headerlink" href="#optional-form-fields" title="Permalink to this headline">¶</a></h4>
+<p>If you want to make a form field visible, but optional, set the form field definition&#8217;s <code class="docutils literal"><span class="pre">required</span></code> property to
+<code class="docutils literal"><span class="pre">false</span></code>.  For example, if you wanted to make First Name (surname) and Last Name (givenName) optional:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
+      <span class="c1"># ... truncated for brevity ...</span>
+      <span class="l l-Scalar l-Scalar-Plain">form</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">givenName</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;First</span><span class="nv"> </span><span class="s">Name&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;First</span><span class="nv"> </span><span class="s">Name&quot;</span>
+<span class="hll">            <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</span>            <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;text&quot;</span>
+          <span class="l l-Scalar l-Scalar-Plain">surname</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+            <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Last</span><span class="nv"> </span><span class="s">Name&quot;</span>
+            <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Last</span><span class="nv"> </span><span class="s">Name&quot;</span>
+<span class="hll">            <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</span>            <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;text&quot;</span>
+          <span class="c1"># ... truncated for brevity ...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="disabling-form-fields">
+<h4><a class="toc-backref" href="#id41">Disabling Form Fields</a><a class="headerlink" href="#disabling-form-fields" title="Permalink to this headline">¶</a></h4>
+<p>If you want to disable a form field entirely, set the form field definition&#8217;s <code class="docutils literal"><span class="pre">enabled</span></code> property to
+<code class="docutils literal"><span class="pre">false</span></code>.  For example, if you wanted to remove First Name (surname) and Last Name (givenName) fields from the form
+entirely:</p>
+<p>If you want to remove fields entirely, you can set enabled to false:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span>    <span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
+          <span class="c1"># ... truncated for brevity ...</span>
+          <span class="l l-Scalar l-Scalar-Plain">form</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+              <span class="l l-Scalar l-Scalar-Plain">givenName</span><span class="p p-Indicator">:</span>
+<span class="hll">                <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</span>                <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;First</span><span class="nv"> </span><span class="s">Name&quot;</span>
+                <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;First</span><span class="nv"> </span><span class="s">Name&quot;</span>
+                <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+                <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;text&quot;</span>
+              <span class="l l-Scalar l-Scalar-Plain">surname</span><span class="p p-Indicator">:</span>
+<span class="hll">                <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</span>                <span class="l l-Scalar l-Scalar-Plain">label</span><span class="p p-Indicator">:</span> <span class="s">&quot;Last</span><span class="nv"> </span><span class="s">Name&quot;</span>
+                <span class="l l-Scalar l-Scalar-Plain">placeholder</span><span class="p p-Indicator">:</span> <span class="s">&quot;Last</span><span class="nv"> </span><span class="s">Name&quot;</span>
+                <span class="l l-Scalar l-Scalar-Plain">required</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+                <span class="l l-Scalar l-Scalar-Plain">type</span><span class="p p-Indicator">:</span> <span class="s">&quot;text&quot;</span>
+              <span class="c1"># ... truncated for brevity ...</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Because the Stormpath API currently requires Account records to have <code class="docutils literal"><span class="pre">givenName</span></code> and <code class="docutils literal"><span class="pre">surname</span></code> values, if you
+make these fields optional or disable them entirely in your registration form, the Stormpath Java Servlet Plugin will auto-fill these
+fields with a String value of <code class="docutils literal"><span class="pre">UNKNOWN</span></code>.</p>
+</div>
+</div>
+<div class="section" id="form-field-order">
+<h4><a class="toc-backref" href="#id42">Form Field Order</a><a class="headerlink" href="#form-field-order" title="Permalink to this headline">¶</a></h4>
+<p>You can control the order in which the fields are rendered by setting the <code class="docutils literal"><span class="pre">stormpath.web.register.form.fieldOrder</span></code>
+property.  The fields will be rendered with the first named field at the top, the 2nd named field under the first, and
+so on until the fields are fully rendered.</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.register.form.fieldOrder</span> <span class="o">=</span> <span class="s">username,givenName,middleName,surname,email,password,confirmPassword</span>
+</pre></div>
+</div>
+<p>Any fields not listed in the <code class="docutils literal"><span class="pre">fieldOrder</span></code> will be rendered under the listed fields in the order they are declared
+in the <code class="docutils literal"><span class="pre">fields</span></code> map.</p>
+</div>
+</div>
 <div class="section" id="password-strength">
-<span id="id2"></span><h3><a class="toc-backref" href="#id13">Password Strength</a><a class="headerlink" href="#password-strength" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3><a class="toc-backref" href="#id36">Password Strength</a><a class="headerlink" href="#password-strength" title="Permalink to this headline">¶</a></h3>
 <p>When you first fill out the registration form, you probably noticed that you couldn&#8217;t register a user account without specifying a sufficiently strong password.  This is because, by default, Stormpath enforces certain password strength rules.</p>
-<p>If you&#8217;d like to change these password strength rules, you can do so easily by visiting the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a>, navigating to your your application&#8217;s user account <code class="docutils literal"><span class="pre">Directory</span></code>, and then changing the &#8220;Password Strength Policy&#8221;.</p>
+<p>If you&#8217;d like to change these password strength rules, you can do so easily by visiting the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a>, navigating to your application&#8217;s associated user account <code class="docutils literal"><span class="pre">Directory</span></code>, and then changing the directory&#8217;s &#8220;Password Strength Policy&#8221;.</p>
 </div>
 </div>
-<div class="section" id="i18n">
-<h2><a class="toc-backref" href="#id14">i18n</a><a class="headerlink" href="#i18n" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="email-verification">
+<span id="id5"></span><h2><a class="toc-backref" href="#id16">Email Verification</a><a class="headerlink" href="#email-verification" title="Permalink to this headline">¶</a></h2>
+<p>Many applications require a newly registered user to verify that they do indeed &#8216;own&#8217; the email address specified during registration before the user is allowed to login.  This helps ensure that:</p>
+<ul class="simple">
+<li>Email addresses cannot be abused by people that do not own them</li>
+<li>The application has a way of communicating with the user if necessary</li>
+<li>The registration process was completed by a human being (and not a &#8216;bot&#8217; performing automatic registration, which could be used for malicious purposes).</li>
+</ul>
+<p>If you want to enable email verification for newly registered accounts, you have to explicitly turn on this feature in the Stormpath Administration console:</p>
+<ol class="arabic">
+<li><p class="first">Login to the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a>.</p>
+</li>
+<li><p class="first">Click on the <code class="docutils literal"><span class="pre">Directories</span></code> tab and click the name of the Directory that will store accounts for your application.  If you created an application and automatically created a directory, the Directory name will be the same as the application name + &#8216; Directory&#8217;.</p>
+<img alt="_images/console-directories-ann.png" src="_images/console-directories-ann.png" />
+</li>
+<li><p class="first">On the resulting Directory screen, click on the Directory&#8217;s <code class="docutils literal"><span class="pre">Workflows</span></code> menu item.</p>
+<img alt="_images/console-directory-ann.png" src="_images/console-directory-ann.png" />
+</li>
+<li><p class="first">On the Directory Workflows screen, the &#8216;Verification Email&#8217; workflow is shown first.  Ensure that you</p>
+<ol class="arabic simple">
+<li>Enable the workflow, and</li>
+<li>Change the &#8216;Link Base URL&#8217; text field to equal the fully qualified URL of your application&#8217;s <a class="reference internal" href="#verify-link-base-url"><span class="std std-ref">verify link base URL</span></a>.  The default context-relative path for this feature is <code class="docutils literal"><span class="pre">/verify</span></code>, implying a base URL (for example, during localhost testing) of <code class="docutils literal"><span class="pre">http://localhost:8080/verify</span></code>.</li>
+</ol>
+<img alt="_images/console-directory-workflows-ann.png" src="_images/console-directory-workflows-ann.png" />
+</li>
+<li><p class="first">Click the &#8216;Save Changes&#8217; button on the bottom right.</p>
+</li>
+</ol>
+<div class="section" id="try-it">
+<h3><a class="toc-backref" href="#id17">Try it!</a><a class="headerlink" href="#try-it" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Visit <code class="docutils literal"><span class="pre">http://localhost:8080/register</span></code> and you&#8217;ll see the registration view:</p>
+<img alt="_images/register.png" src="_images/register.png" />
+</li>
+<li><p class="first">Fill out the form and click submit, your account will be created with <code class="docutils literal"><span class="pre">UNVERIFIED</span></code> or <code class="docutils literal"><span class="pre">ENABLED</span></code> status depending on your <a class="reference external" href="http://docs.stormpath.com/console/product-guide/#directory-workflows">Directory Workflow</a>:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>Account status <code class="docutils literal"><span class="pre">UNVERIFIED</span></code>:</dt>
+<dd><p class="first">You will be redirected to the <a class="reference internal" href="login.html#login"><span class="std std-ref">login page</span></a> with <code class="docutils literal"><span class="pre">?status=unverified</span></code> and you will receive a verification email.</p>
+<ol class="last upperalpha">
+<li><p class="first">Open your email and, depending on your &#8220;Account Email Verification&#8221; email template, you should see an email that looks like the following:</p>
+<img alt="_images/register-verify-email.png" src="_images/register-verify-email.png" />
+</li>
+<li><p class="first">Click the link in the email and it will take you to a <code class="docutils literal"><span class="pre">/verify</span></code> path.  This will verify your email address and redirect you to the <a class="reference internal" href="#verify-next-uri"><span class="std std-ref">Verify Next URI</span></a></p>
+<blockquote>
+<div><img alt="_images/login-verified.png" src="_images/login-verified.png" />
+</div></blockquote>
+</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Account status <code class="docutils literal"><span class="pre">ENABLED</span></code>:</dt>
+<dd><p class="first last">If <code class="docutils literal"><span class="pre">autoLogin</span></code> is true the application will log you in and redirect to register &#8216;next&#8217; URI.
+If false you will be redirected to the <a class="reference internal" href="login.html#login"><span class="std std-ref">login page</span></a> with <code class="docutils literal"><span class="pre">?status=created</span></code>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div>
+<div class="section" id="verify-link-base-url">
+<span id="id6"></span><h3><a class="toc-backref" href="#id18">Verify Link Base URL</a><a class="headerlink" href="#verify-link-base-url" title="Permalink to this headline">¶</a></h3>
+<p>The Verify &#8216;Link Base URL&#8217; mentioned above is the fully qualified base URL used to generate a unique link the user will click when reading the email.  For example, during development, this is often something like <code class="docutils literal"><span class="pre">http://localhost:8080/verify</span></code> and in production, something like <code class="docutils literal"><span class="pre">https://myapp.com/verify</span></code>.</p>
+<p>When a user clicks the link in the email, the Stormpath Java Servlet Plugin will automatically process the resulting request.  By default, the context-relative path that will process these requests is <code class="docutils literal"><span class="pre">/verify</span></code> as the above link examples show.  This path is controlled via the <code class="docutils literal"><span class="pre">stormpath.web.verifyEmail.uri</span></code> configuration property:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.verifyEmail.uri</span> <span class="o">=</span> <span class="s">/verify</span>
+</pre></div>
+</div>
+<p>You can change the value to reflect a different path if you wish.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">The fully qualified Link Base URL configured in the Stormpath Admin Console must always reflect the path configured via <code class="docutils literal"><span class="pre">stormpath.web.verifyEmail.uri</span></code>.  If you change one, you must change the other.</p>
+</div>
+</div>
+<div class="section" id="verify-next-uri">
+<span id="id7"></span><h3><a class="toc-backref" href="#id19">Verify Next URI</a><a class="headerlink" href="#verify-next-uri" title="Permalink to this headline">¶</a></h3>
+<p>When the user clicks the email verification link and the request is processed by the the <code class="docutils literal"><span class="pre">stormpath.web.verifyEmail.uri</span></code> path, the user will be:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">If <code class="docutils literal"><span class="pre">autoLogin</span></code> is false (this is the default), redirected to a &#8216;next&#8217; URI.  By default, this URI is the <a class="reference internal" href="login.html#login"><span class="std std-ref">login page</span></a> as controlled by the <code class="docutils literal"><span class="pre">stormpath.web.verifyEmail.nextUri</span></code> configuration property:</p>
+<blockquote>
+<div><div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.verifyEmail.autoLogin</span> <span class="o">=</span> <span class="s">false</span>
+<span class="na">stormpath.web.verifyEmail.nextUri</span> <span class="o">=</span> <span class="s">/login?status=verified</span>
+</pre></div>
+</div>
+<p>As you can see, this URI has a <code class="docutils literal"><span class="pre">status=verified</span></code> query parameter.  The plugin&#8217;s default login view will recognize the query parameter and show the user a nice message explaining that their account has been verified and that they can log in:</p>
+<img alt="_images/login-verified.png" src="_images/login-verified.png" />
+</div></blockquote>
+</li>
+<li><p class="first">If <code class="docutils literal"><span class="pre">autoLogin</span></code> is true, the verification workflow will login the user and redirect to <code class="docutils literal"><span class="pre">login.nextUri</span></code></p>
+<blockquote>
+<div><div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.verifyEmail.autoLogin</span> <span class="o">=</span> <span class="s">true</span>
+<span class="na">stormpath.web.login.nextUri</span> <span class="o">=</span> <span class="s">/</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="internationalization-i18n">
+<h2><a class="toc-backref" href="#id20">Internationalization (i18n)</a><a class="headerlink" href="#internationalization-i18n" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="i18n.html#i18n"><span class="std std-ref">Internationalization (i18n)</span></a> message keys used in the default register view have names prefixed with <code class="docutils literal"><span class="pre">stormpath.web.register.</span></code>:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="c"># ==================================================</span>
 <span class="c"># Register Page</span>
@@ -477,120 +894,15 @@ following properties should be added to the <code class="docutils literal"><span
 </div>
 <p>For more information on customizing i18n messages and adding bundle files, please see <a class="reference internal" href="i18n.html#i18n"><span class="std std-ref">Internationalization (i18n)</span></a>.</p>
 </div>
-<div class="section" id="email-verification">
-<span id="id3"></span><h2><a class="toc-backref" href="#id15">Email Verification</a><a class="headerlink" href="#email-verification" title="Permalink to this headline">¶</a></h2>
-<p>Many applications require a newly registered user to verify that they do indeed &#8216;own&#8217; the email address specified during registration before the user is allowed to login.  This helps ensure that:</p>
-<ul class="simple">
-<li>Email addresses cannot be abused by people that do not own them</li>
-<li>The application has a way of communicating with the user if necessary</li>
-<li>The registration process was completed by a human being (and not a &#8216;bot&#8217; performing automatic registration, which could be used for malicious purposes).</li>
-</ul>
-<p>If you want to enable email verification for newly registered accounts, you have to explicitly turn on this feature in the Stormpath Administration console:</p>
-<ol class="arabic">
-<li><p class="first">Login to the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a>.</p>
-</li>
-<li><p class="first">Click on the <code class="docutils literal"><span class="pre">Directories</span></code> tab and click the name of the Directory that will store accounts for your application.  If you created an application and automatically created a directory, the Directory name will be the same as the application name + &#8216; Directory&#8217;.</p>
-<img alt="_images/console-directories-ann.png" src="_images/console-directories-ann.png" />
-</li>
-<li><p class="first">On the resulting Directory screen, click on the Directory&#8217;s <code class="docutils literal"><span class="pre">Workflows</span></code> menu item.</p>
-<img alt="_images/console-directory-ann.png" src="_images/console-directory-ann.png" />
-</li>
-<li><p class="first">On the Directory Workflows screen, the &#8216;Verification Email&#8217; workflow is shown first.  Ensure that you</p>
-<ol class="arabic simple">
-<li>Enable the workflow, and</li>
-<li>Change the &#8216;Link Base URL&#8217; text field to equal the fully qualified URL of your application&#8217;s <a class="reference internal" href="#verify-link-base-url"><span class="std std-ref">verify link base URL</span></a>.  The default context-relative path for this feature is <code class="docutils literal"><span class="pre">/verify</span></code>, implying a base URL (for example, during localhost testing) of <code class="docutils literal"><span class="pre">http://localhost:8080/verify</span></code>.</li>
-</ol>
-<img alt="_images/console-directory-workflows-ann.png" src="_images/console-directory-workflows-ann.png" />
-</li>
-<li><p class="first">Click the &#8216;Save Changes&#8217; button on the bottom right.</p>
-</li>
-</ol>
-<div class="section" id="try-it">
-<h3><a class="toc-backref" href="#id16">Try it!</a><a class="headerlink" href="#try-it" title="Permalink to this headline">¶</a></h3>
-<ol class="arabic">
-<li><p class="first">Visit <code class="docutils literal"><span class="pre">http://localhost:8080/register</span></code> and you&#8217;ll see the registration view:</p>
-<img alt="_images/register.png" src="_images/register.png" />
-</li>
-<li><p class="first">Fill out the form and click submit, your account will be created with <code class="docutils literal"><span class="pre">UNVERIFIED</span></code> or <code class="docutils literal"><span class="pre">ENABLED</span></code> status depending on your <a class="reference external" href="http://docs.stormpath.com/console/product-guide/#directory-workflows">Directory Workflow</a>:</p>
-<blockquote>
-<div><ul>
-<li><dl class="first docutils">
-<dt>Account status <code class="docutils literal"><span class="pre">UNVERIFIED</span></code>:</dt>
-<dd><p class="first">You will be redirected to the <a class="reference internal" href="login.html#login"><span class="std std-ref">login page</span></a> with <code class="docutils literal"><span class="pre">?status=unverified</span></code> and you will receive a verification email.</p>
-<ol class="last upperalpha">
-<li><p class="first">Open your email and, depending on your &#8220;Account Email Verification&#8221; email template, you should see an email that looks like the following:</p>
-<img alt="_images/register-verify-email.png" src="_images/register-verify-email.png" />
-</li>
-<li><p class="first">Click the link in the email and it will take you to a <code class="docutils literal"><span class="pre">/verify</span></code> path.  This will verify your email address and redirect you to the <a class="reference internal" href="#verify-next-uri"><span class="std std-ref">Verify Next URI</span></a></p>
-<blockquote>
-<div><img alt="_images/login-verified.png" src="_images/login-verified.png" />
-</div></blockquote>
-</li>
-</ol>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>Account status <code class="docutils literal"><span class="pre">ENABLED</span></code>:</dt>
-<dd><p class="first last">If <code class="docutils literal"><span class="pre">autoLogin</span></code> is true the application will log you in and redirect to register &#8216;next&#8217; URI.
-If false you will be redirected to the <a class="reference internal" href="login.html#login"><span class="std std-ref">login page</span></a> with <code class="docutils literal"><span class="pre">?status=created</span></code>.</p>
-</dd>
-</dl>
-</li>
-</ul>
-</div></blockquote>
-</li>
-</ol>
-</div>
-<div class="section" id="verify-link-base-url">
-<span id="id4"></span><h3><a class="toc-backref" href="#id17">Verify Link Base URL</a><a class="headerlink" href="#verify-link-base-url" title="Permalink to this headline">¶</a></h3>
-<p>The Verify &#8216;Link Base URL&#8217; mentioned above is the fully qualified base URL used to generate a unique link the user will click when reading the email.  For example, during development, this is often something like <code class="docutils literal"><span class="pre">http://localhost:8080/verify</span></code> and in production, something like <code class="docutils literal"><span class="pre">https://myapp.com/verify</span></code>.</p>
-<p>When a user clicks the link in the email, the Stormpath Java Servlet Plugin will automatically process the resulting request.  By default, the context-relative path that will process these requests is <code class="docutils literal"><span class="pre">/verify</span></code> as the above link examples show.  This path is controlled via the <code class="docutils literal"><span class="pre">stormpath.web.verifyEmail.uri</span></code> configuration property:</p>
-<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.verifyEmail.uri</span> <span class="o">=</span> <span class="s">/verify</span>
-</pre></div>
-</div>
-<p>You can change the value to reflect a different path if you wish.</p>
-<div class="admonition caution">
-<p class="first admonition-title">Caution</p>
-<p class="last">The fully qualified Link Base URL configured in the Stormpath Admin Console must always reflect the path configured via <code class="docutils literal"><span class="pre">stormpath.web.verifyEmail.uri</span></code>.  If you change one, you must change the other.</p>
-</div>
-</div>
-<div class="section" id="verify-next-uri">
-<span id="id5"></span><h3><a class="toc-backref" href="#id18">Verify Next URI</a><a class="headerlink" href="#verify-next-uri" title="Permalink to this headline">¶</a></h3>
-<p>When the user clicks the email verification link and the request is processed by the the <code class="docutils literal"><span class="pre">stormpath.web.verifyEmail.uri</span></code> path, the user will be:</p>
-<blockquote>
-<div><ul>
-<li><p class="first">If <code class="docutils literal"><span class="pre">autoLogin</span></code> is false (this is the default), redirected to a &#8216;next&#8217; URI.  By default, this URI is the <a class="reference internal" href="login.html#login"><span class="std std-ref">login page</span></a> as controlled by the <code class="docutils literal"><span class="pre">stormpath.web.verifyEmail.nextUri</span></code> configuration property:</p>
-<blockquote>
-<div><div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.verifyEmail.autoLogin</span> <span class="o">=</span> <span class="s">false</span>
-<span class="na">stormpath.web.verifyEmail.nextUri</span> <span class="o">=</span> <span class="s">/login?status=verified</span>
-</pre></div>
-</div>
-<p>As you can see, this URI has a <code class="docutils literal"><span class="pre">status=verified</span></code> query parameter.  The plugin&#8217;s default login view will recognize the query parameter and show the user a nice message explaining that their account has been verified and that they can log in:</p>
-<img alt="_images/login-verified.png" src="_images/login-verified.png" />
-</div></blockquote>
-</li>
-<li><p class="first">If <code class="docutils literal"><span class="pre">autoLogin</span></code> is true, the verification workflow will login the user and redirect to <code class="docutils literal"><span class="pre">login.nextUri</span></code></p>
-<blockquote>
-<div><div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.verifyEmail.autoLogin</span> <span class="o">=</span> <span class="s">true</span>
-<span class="na">stormpath.web.login.nextUri</span> <span class="o">=</span> <span class="s">/</span>
-</pre></div>
-</div>
-</div></blockquote>
-</li>
-</ul>
-</div></blockquote>
-</div>
-</div>
 <div class="section" id="events">
-<h2><a class="toc-backref" href="#id19">Events</a><a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id21">Events</a><a class="headerlink" href="#events" title="Permalink to this headline">¶</a></h2>
 <p>If you implement a <a class="reference internal" href="events.html#events"><span class="std std-ref">Request Event Listener</span></a>, you can listen registration-related events and execute custom logic if desired.</p>
 <div class="section" id="registered-account">
-<h3><a class="toc-backref" href="#id20">Registered Account</a><a class="headerlink" href="#registered-account" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id22">Registered Account</a><a class="headerlink" href="#registered-account" title="Permalink to this headline">¶</a></h3>
 <p>A <code class="docutils literal"><span class="pre">RegisteredAccountRequestEvent</span></code> will be published when processing an HTTP request that results in a newly registered <code class="docutils literal"><span class="pre">Account</span></code>.  If the newly registered account requires email verification before it can login, <code class="docutils literal"><span class="pre">event.getAccount().getStatus()</span> <span class="pre">==</span> <span class="pre">AccountStatus.UNDEFINED</span></code> will be <code class="docutils literal"><span class="pre">true</span></code>.</p>
 </div>
 <div class="section" id="verified-account">
-<h3><a class="toc-backref" href="#id21">Verified Account</a><a class="headerlink" href="#verified-account" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id23">Verified Account</a><a class="headerlink" href="#verified-account" title="Permalink to this headline">¶</a></h3>
 <p>A <code class="docutils literal"><span class="pre">VerifiedAccountRequestEvent</span></code> will be published when processing an HTTP request that verifies an account&#8217;s email address.  The event&#8217;s associated account is considered verified and may login to the application.</p>
 <p>Naturally, <strong>this event is only published if</strong> <a class="reference internal" href="#email-verification"><span class="std std-ref">email verification</span></a> <strong>is enabled.</strong></p>
 </div>
@@ -638,7 +950,7 @@ If false you will be redirected to the <a class="reference internal" href="login
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.2',
+            VERSION:'1.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

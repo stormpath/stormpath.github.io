@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Access Control &mdash; Stormpath Java Servlet Plugin 1.1.2 documentation</title>
+  <title>Access Control &mdash; Stormpath Java Servlet Plugin 1.1.3 documentation</title>
   
 
   
@@ -34,7 +34,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Stormpath Java Servlet Plugin 1.1.2 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath Java Servlet Plugin 1.1.3 documentation" href="index.html"/>
         <link rel="next" title="Internationalization (i18n)" href="i18n.html"/>
         <link rel="prev" title="Request Context" href="request.html"/> 
 
@@ -113,7 +113,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#get-an-api-key">Get an API Key</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-stormpath-java-servlet-plugin">Add the Stormpath Java Servlet Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-project">Add the Stormpath Java Servlet Plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#try-it">Try it!</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
 </ul>
@@ -130,11 +130,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#uri">URI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#next-uri">Next URI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#form-fields">Form Fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration">Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#internationalization-i18n">Internationalization (i18n)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#events">Events</a></li>
 </ul>
 </li>
@@ -205,6 +203,7 @@
 <li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="caching.html#in-process-cache">In-Process Cache</a></li>
 <li class="toctree-l2"><a class="reference internal" href="caching.html#disable-caching">Disable Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#shared-cache">Shared Cache</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="idsite.html">ID Site</a><ul>
@@ -292,9 +291,9 @@
 <p>The rules are implemented via simple Servlet <a class="reference internal" href="config.html#filters"><span class="std std-ref">filters</span></a> and <a class="reference internal" href="config.html#uris"><span class="std std-ref">configurable filter chains</span></a>, but in a simpler, easier to read, much more flexible, and more succinct definition format than you might be used to with <code class="docutils literal"><span class="pre">web.xml</span></code> configuration.</p>
 <p>It works as follows:</p>
 <ul>
-<li><p class="first">You can define any number of servlet filter implementation that represents a single control rule, for example, the current requestor must be a known user, or the they must be authenticated, or they must belong to a particular group, etc.  The plugin comes with a number of useful ones ready to go out of the box.</p>
+<li><p class="first">You can define any number of servlet filter implementation that represents a single control rule, for example, the current requestor must be a known user, or they must be authenticated, or they must belong to a particular group, etc.  The plugin comes with a number of useful ones ready to go out of the box.</p>
 </li>
-<li><p class="first">For any URI path that a user might access, you can specify one or more of these control rules (filters).  If all of the control filter conditions pass - that is, each specified filter determines that the current request is allowed - the filters allow the request to continue to the final destination, presumably a Servlet or an MVC controller in your favorite web framework.</p>
+<li><p class="first">For any URI path that a user might access, you can specify one or more of these control rules (filters).  If all of the control filter conditions pass - that is, each specified filter determines that the current request is allowed - the filters allow the request to continue to the final destination, presumably a Servlet or an MVC controller in your web framework.</p>
 <p>If the access control condition is not satisfied, any filter is allowed to do what it needs: for example, redirect the user to a different location or send back a particular 4XX status code.  This provides a very flexible mechanism to build up rule chains as necessary based on your application requirements.</p>
 </li>
 </ul>
@@ -400,7 +399,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.2',
+            VERSION:'1.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

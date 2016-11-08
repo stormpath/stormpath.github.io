@@ -202,38 +202,21 @@ It is *not safe* to request a new token over standard HTTP connections and is ex
 
 A convenience allowance for localhost development is enabled however: the HTTPS requirement assertion does not apply if the client and server are both on localhost to allow for convenience while developing and testing.
 
-.. only:: servlet
 
-   This is enabled via the following configuration property:
+This is enabled via the ``stormpathSecureResolver`` bean, an instance of ``Resolver<Boolean>`` that returns true for all scenarios except for localhost development.
 
-   .. code-block:: properties
+If you want to provide your own implementation that reflects other scenarios, you can override the ``stormpathSecureResolver`` bean:
 
-      stormpath.web.oauth2.authorizer.secure.resolver = com.stormpath.sdk.servlet.config.SecureResolverFactory
+.. code-block:: java
 
-   The ``com.stormpath.sdk.servlet.config.SecureResolverFactory`` returns a ``Resolver<Boolean>`` instance that will return true or false based on the inbound request.
+   @Bean
+   public Resolver<Boolean> stormpathSecureResolver() {
+       return MySecureResolver(); //implement me
+   }
 
-   The default implementation returns a ``com.stormpath.sdk.servlet.util.SecureRequiredExceptForLocalhostResolver`` instance, which, as the name implies, requires HTTPS for all requests except those that are sent from and to localhost.
+.. caution::
 
-   .. caution::
-
-      If you change this configuration value to specify your own ``com.stormpath.sdk.servlet.http.Resolver<Boolean>`` implementation, please be aware that the OAuth 2 specification *requires* HTTPS.  If your implementation returns ``false`` at any time when you deploy your application to production, your web application *will* be vulnerable to identity hijacking attacks.
-
-.. only:: springboot
-
-   This is enabled via the ``stormpathSecureResolver`` bean, an instance of ``Resolver<Boolean>`` that returns true for all scenarios except for localhost development.
-
-   If you want to provide your own implementation that reflects other scenarios, you can override the ``stormpathSecureResolver`` bean:
-
-   .. code-block:: java
-
-       @Bean
-       public Resolver<Boolean> stormpathSecureResolver() {
-           return MySecureResolver(); //implement me
-       }
-
-   .. caution::
-
-      If you change this bean to return your own ``com.stormpath.sdk.servlet.http.Resolver<Boolean>`` implementation, please be aware that the OAuth 2 specification *requires* HTTPS.  If your implementation returns ``false`` at any time when you deploy your application to production, your web application *will* be vulnerable to identity hijacking attacks.
+   If you change this bean to return your own ``com.stormpath.sdk.servlet.http.Resolver<Boolean>`` implementation, please be aware that the OAuth 2 specification *requires* HTTPS.  If your implementation returns ``false`` at any time when you deploy your application to production, your web application *will* be vulnerable to identity hijacking attacks.
 
 
 API Key Authentication
