@@ -1,0 +1,544 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Forwarded Request &mdash; Stormpath Zuul Spring Cloud Starter 1.1.3 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="about.html"/>
+    <link rel="top" title="Stormpath Zuul Spring Cloud Starter 1.1.3 documentation" href="index.html"/>
+        <link rel="next" title="Internationalization (i18n)" href="i18n.html"/>
+        <link rel="prev" title="Request Context" href="request.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+  
+  <script src="https://cdn.optimizely.com/js/225847041.js"></script>
+
+  
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '986262161469311');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  /></noscript>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NQZZFW');</script>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Stormpath Zuul Spring Cloud Starter
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-the-project">What is the Stormpath Zuul Spring Cloud Starter?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#who-should-use-stormpath">Who should use Stormpath?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#get-an-api-key">Get an API Key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-project">Add the Stormpath Zuul Spring Cloud Starter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#configure-zuul">Configure Zuul</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#try-it">Try it!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#zuul-config">Zuul Config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#no-stormpath-config">No Stormpath Config?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#property-overrides">Property Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#bean-overrides">Bean Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#stormpath-client">Stormpath Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#stormpath-application">Stormpath Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#events">Events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#security-notice">Security Notice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#uri">URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#view">View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#events">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#authentication-state">Authentication State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#spring-security">Spring Security</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social.html">Social Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social.html#facebook-login">Facebook Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#google-login">Google Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#linkedin-login">LinkedIn Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#json-api">JSON API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="forgot-password.html">Forgot Password</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#configure-the-workflow">Configure the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#try-it">Try it!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-uri">Forgot URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-next-uri">Forgot Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-view">Forgot View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-uri">Change Password URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-next-uri">Change Password Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-view">Change Password View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#i18n">i18n</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#uri">URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#events">Events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request-authentication.html">HTTP Request Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request-authentication.html#http-basic-authentication">HTTP Basic Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request-authentication.html#token-authentication">Token Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request-authentication.html#api-key-authentication">API Key Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request.html">Request Context</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request.html#current-user-account">Current User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request.html#stormpath-application">Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request.html#stormpath-client">Stormpath Client</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Forwarded Request</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#forwarded-account-header-name">Forwarded Account Header Name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#default-header-value">Default Header Value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-header-value">Custom Header Value</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="i18n.html">Internationalization (i18n)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#languages">Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#request-locale">Request Locale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#view-templates">View Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#i18n-properties">i18n.properties</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="events.html#requesteventlistener">RequestEventListener</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#id2">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#listener-best-practices">Listener Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#spring-security">Spring Security</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#disable-caching">Disable Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#cache-configuration">Cache Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="idsite.html">ID Site</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#how-does-it-work">How Does It Work?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#enable-id-site">Enable ID Site</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#configure-your-application">Configure Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#try-it">Try It!</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Custom Views</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="views.html#thymeleaf-views">Thymeleaf Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#head-template">Head Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#css">CSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#change-a-default-view">Change a Default View</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix/default-stormpath-properties.html">Default Stormpath Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/i18n-properties.html">i18n.properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/stormpath-css.html">stormpath.css</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/change-password.html">/templates/stormpath/change-password.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/forgot-password.html">/templates/stormpath/forgot-password.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/head.html">/templates/stormpath/head.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/login.html">/templates/stormpath/login.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/register.html">/templates/stormpath/register.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/verify.html">/templates/stormpath/verify.html</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Stormpath Zuul Spring Cloud Starter</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Forwarded Request</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <blockquote>
+<div></div></blockquote>
+<div class="section" id="forwarded-request">
+<span id="id1"></span><h1>Forwarded Request<a class="headerlink" href="#forwarded-request" title="Permalink to this headline">¶</a></h1>
+<p>If a user has authenticated, either by using a <a class="reference internal" href="login.html#login"><span class="std std-ref">login form</span></a> or via <a class="reference internal" href="request-authentication.html#request-authentication"><span class="std std-ref">Request Authentication</span></a>,
+the user account&#8217;s data will be forwarded to any backend origin servers behind the gateway in a request header.</p>
+<p>The origin server(s) may inspect this request header to discover information about the account.  This information can
+be used to customize views, send emails, update user-specific data, or practically anything else you can think of that
+might be user specific.</p>
+<p>This page covers how to customize everything related to this header and its contents if desired.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#forwarded-account-header-name" id="id2">Forwarded Account Header Name</a></li>
+<li><a class="reference internal" href="#default-header-value" id="id3">Default Header Value</a><ul>
+<li><a class="reference internal" href="#choosing-account-fields" id="id4">Choosing Account Fields</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#custom-header-value" id="id5">Custom Header Value</a></li>
+</ul>
+</div>
+<div class="section" id="forwarded-account-header-name">
+<h2><a class="toc-backref" href="#id2">Forwarded Account Header Name</a><a class="headerlink" href="#forwarded-account-header-name" title="Permalink to this headline">¶</a></h2>
+<p>If a user <code class="docutils literal"><span class="pre">Account</span></code> is associated with a request that will be forwarded to an origin server, the account will be
+converted to a String and added to the forwarded request as a request header.  The default header name is
+<code class="docutils literal"><span class="pre">X-Forwarded-Account</span></code>.</p>
+<p>If you want to specify a different header name, set the <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.name</span></code> configuration property:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;X-Forwarded-Account&quot;</span>
+</pre></div>
+</div>
+<p>If you change this name, ensure the origin server(s) behind your gateway know to look for the new header name as well.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If there is no account associated with the request, the header will not be present in the forwarded request at all.</p>
+</div>
+</div>
+<div class="section" id="default-header-value">
+<h2><a class="toc-backref" href="#id3">Default Header Value</a><a class="headerlink" href="#default-header-value" title="Permalink to this headline">¶</a></h2>
+<p>The value set in the forwarded account header must be a String.</p>
+<p>By default, the <code class="docutils literal"><span class="pre">Account</span></code> will be converted into a JSON string and that string will be the header value.  The default
+JSON value includes all of the following:</p>
+<ul class="simple">
+<li>all scalar Account properties (all non-array and non-Object properties like strings, integers, booleans, etc)</li>
+<li>all of the Account&#8217;s <code class="docutils literal"><span class="pre">CustomData</span></code> as a nested <code class="docutils literal"><span class="pre">customData</span></code> JSON object.</li>
+<li>all of the Account&#8217;s groups in a nested <code class="docutils literal"><span class="pre">groups</span></code> array.  Each element in the array is a <code class="docutils literal"><span class="pre">Group</span></code> JSON object.</li>
+<li>For each <code class="docutils literal"><span class="pre">Group</span></code> in the <code class="docutils literal"><span class="pre">groups</span></code> array, the group&#8217;s <code class="docutils literal"><span class="pre">CustomData</span></code> as nested <code class="docutils literal"><span class="pre">customData</span></code> a JSON object.</li>
+</ul>
+<p>This means that origin servers behind the gateway can simply parse the JSON result and acccess the JSON structure as
+desired.  Origin servers <strong>do not</strong> need a Stormpath SDK - as long as they can parse JSON, they can access
+the forwarded user account information!</p>
+<p>Here is an example of a raw header value for a <cite>jsmith</cite> user account that is a member of one &#8216;admin&#8217; group:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="o">{</span><span class="s">&quot;href&quot;</span><span class="o">:</span><span class="s">&quot;https://api.stormpath.com/v1/accounts/1FSlmxExAmPlEiq65h4A5L&quot;</span><span class="o">,</span><span class="s">&quot;username&quot;</span><span class="o">:</span><span class="s">&quot;jsmith&quot;</span><span class="o">,</span><span class="s">&quot;email&quot;</span><span class="o">:</span><span class="s">&quot;john.smith@example.com&quot;</span><span class="o">,</span><span class="s">&quot;givenName&quot;</span><span class="o">:</span><span class="s">&quot;John&quot;</span><span class="o">,</span><span class="s">&quot;middleName&quot;</span><span class="o">:</span><span class="kc">null</span><span class="o">,</span><span class="s">&quot;surname&quot;</span><span class="o">:</span><span class="s">&quot;Smith&quot;</span><span class="o">,</span><span class="s">&quot;fullName&quot;</span><span class="o">:</span><span class="s">&quot;John Smith&quot;</span><span class="o">,</span><span class="s">&quot;status&quot;</span><span class="o">:</span><span class="s">&quot;ENABLED&quot;</span><span class="o">,</span><span class="s">&quot;createdAt&quot;</span><span class="o">:</span><span class="s">&quot;2016-09-29T17:35:48.976Z&quot;</span><span class="o">,</span><span class="s">&quot;modifiedAt&quot;</span><span class="o">:</span><span class="s">&quot;2016-10-26T21:02:43.694Z&quot;</span><span class="o">,</span><span class="s">&quot;emailVerificationToken&quot;</span><span class="o">:</span><span class="kc">null</span><span class="o">,</span><span class="s">&quot;customData&quot;</span><span class="o">:{</span><span class="s">&quot;href&quot;</span><span class="o">:</span><span class="s">&quot;https://api.stormpath.com/v1/accounts/1FSlmxExAmPlEiq65h4A5L/customData&quot;</span><span class="o">,</span><span class="s">&quot;createdAt&quot;</span><span class="o">:</span><span class="s">&quot;2016-09-29T17:35:48.976Z&quot;</span><span class="o">,</span><span class="s">&quot;modifiedAt&quot;</span><span class="o">:</span><span class="s">&quot;2016-10-26T21:02:43.694Z&quot;</span><span class="o">},</span><span class="s">&quot;groups&quot;</span><span class="o">:[{</span><span class="s">&quot;href&quot;</span><span class="o">:</span><span class="s">&quot;https://api.stormpath.com/v1/groups/l21iFIPqBbgVyHExAmPLe&quot;</span><span class="o">,</span><span class="s">&quot;name&quot;</span><span class="o">:</span><span class="s">&quot;admin&quot;</span><span class="o">,</span><span class="s">&quot;description&quot;</span><span class="o">:</span><span class="kc">null</span><span class="o">,</span><span class="s">&quot;status&quot;</span><span class="o">:</span><span class="s">&quot;ENABLED&quot;</span><span class="o">,</span><span class="s">&quot;createdAt&quot;</span><span class="o">:</span><span class="s">&quot;2016-09-29T17:42:31.414Z&quot;</span><span class="o">,</span><span class="s">&quot;modifiedAt&quot;</span><span class="o">:</span><span class="s">&quot;2016-09-29T17:43:03.887Z&quot;</span><span class="o">,</span><span class="s">&quot;customData&quot;</span><span class="o">:{</span><span class="s">&quot;href&quot;</span><span class="o">:</span><span class="s">&quot;https://api.stormpath.com/v1/groups/l21iFIPqBbgVyHExAmPLe/customData&quot;</span><span class="o">,</span><span class="s">&quot;createdAt&quot;</span><span class="o">:</span><span class="s">&quot;2016-09-29T17:42:31.414Z&quot;</span><span class="o">,</span><span class="s">&quot;modifiedAt&quot;</span><span class="o">:</span><span class="s">&quot;2016-09-29T17:43:03.887Z&quot;</span><span class="o">}}]}</span>
+</pre></div>
+</div>
+<p>As you can see, there is no extraneous whitespace in order to reduce the overall header value size.  If you were to
+pretty-print the header value, it would look like this:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/1FSlmxExAmPlEiq65h4A5L&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;jsmith&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;john.smith@example.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;John&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Smith&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;John Smith&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-29T17:35:48.976Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-10-26T21:02:43.694Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;emailVerificationToken&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/1FSlmxExAmPlEiq65h4A5L/customData&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-29T17:35:48.976Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-10-26T21:02:43.694Z&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/l21iFIPqBbgVyHExAmPLe&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;admin&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-29T17:42:31.414Z&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-29T17:43:03.887Z&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/l21iFIPqBbgVyHExAmPLe/customData&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-29T17:42:31.414Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-29T17:43:03.887Z&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Again, the header value in an actual request is not pretty-printed to save header space.</p>
+<p>This string representation should be ok in many cases, but if you have a lot of groups or custom data per account,
+be careful:</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p>If an <code class="docutils literal"><span class="pre">Account</span></code> has a lot of custom data or is assigned to many groups, or the groups themselves may have a lot of
+custom data, the <code class="docutils literal"><span class="pre">X-Forwarded-Account</span></code> header could be very large.</p>
+<p>Many web servers reject requests where any header is over 4 KB (or sometimes 8 KB) in size, and many web servers
+reject requests if the entire request is over 16 KB in size.</p>
+<p class="last">If your accounts or groups have a lot of data and/or you see your origin web servers rejecting requests, you will
+need to customize the header value to meet your size needs instead of using the above default format.</p>
+</div>
+<div class="section" id="choosing-account-fields">
+<h3><a class="toc-backref" href="#id4">Choosing Account Fields</a><a class="headerlink" href="#choosing-account-fields" title="Permalink to this headline">¶</a></h3>
+<p>If the above default format does not meet your needs, you can configure which account and group properties are included
+or excluded in the resulting JSON String.</p>
+<div class="section" id="included-account-fields">
+<h4>Included Account Fields<a class="headerlink" href="#included-account-fields" title="Permalink to this headline">¶</a></h4>
+<p>By default, all scalar fields (strings, booleans, integers, etc) are included.  If you want to include non-scalars, i.e.
+objects or collections, you can specify which ones to include in the JSON representation by setting the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.includedProperties</span></code> property as a list of string names.  The default value includes
+<code class="docutils literal"><span class="pre">groups</span></code> and <code class="docutils literal"><span class="pre">customData</span></code> field names:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">includedProperties</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;groups&quot;</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;customData&quot;</span>
+</pre></div>
+</div>
+<p>Add or remove non-scalar field names as desired.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Included properties override excluded properties.  If you have the same property listed in both
+<code class="docutils literal"><span class="pre">includedProperties</span></code> and <code class="docutils literal"><span class="pre">excludedProperties</span></code>, the property will be included.</p>
+</div>
+</div>
+<div class="section" id="excluded-account-fields">
+<h4>Excluded Account Fields<a class="headerlink" href="#excluded-account-fields" title="Permalink to this headline">¶</a></h4>
+<p>By default all scalar fields are included and all non-scalar (Object or Collection) fields except <code class="docutils literal"><span class="pre">groups</span></code> and
+<code class="docutils literal"><span class="pre">customData</span></code> are excluded from the JSON representation.</p>
+<p>If you wanted to exclude any property (scalar or not), you can set the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.includedProperties</span></code> property as a list of property names:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">excludedProperties</span><span class="p p-Indicator">:</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;onePropertyHere&quot;</span> <span class="c1"># whatever you prefer.</span>
+          <span class="p p-Indicator">-</span> <span class="s">&quot;anotherHere&quot;</span>
+</pre></div>
+</div>
+<p>Any property name found here will not be included in the JSON representation</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Included properties override excluded properties.  If you have the same property listed in both
+<code class="docutils literal"><span class="pre">includedProperties</span></code> and <code class="docutils literal"><span class="pre">excludedProperties</span></code>, the property will be included.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="custom-header-value">
+<h2><a class="toc-backref" href="#id5">Custom Header Value</a><a class="headerlink" href="#custom-header-value" title="Permalink to this headline">¶</a></h2>
+<p>If none of the above options are sufficient for you, and you want to represent an entirely different string as the
+header value (and maybe not even JSON!), you can specify your own Account-to-String conversion function in your
+gateway&#8217;s Spring config as a Spring Bean override.</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Account</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="nf">stormpathForwardedAccountStringFunction</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">MyAccountToStringFunction</span><span class="o">();</span> <span class="c1">//implement me</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>This bean/method must be named <code class="docutils literal"><span class="pre">stormpathForwardedAccountStringFunction</span></code>.  The object returned must implement the
+<code class="docutils literal"><span class="pre">com.stormpath.sdk.lang.Function&lt;Account,String&gt;</span></code> interface.</p>
+<p>When the gateway determines that there is an account to forward to an origin server, your custom function will be
+called with an <code class="docutils literal"><span class="pre">Account</span></code> instance and it will return a <code class="docutils literal"><span class="pre">String</span></code> result.  This resulting string will be the
+header value sent to your origin server(s).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the resulting string is <code class="docutils literal"><span class="pre">null</span></code> or empty, the header will not be present in the forwarded request at all.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="i18n.html" class="btn btn-neutral float-right" title="Internationalization (i18n)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="request.html" class="btn btn-neutral" title="Request Context" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.1.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

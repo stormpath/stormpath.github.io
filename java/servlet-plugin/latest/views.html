@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Custom Views &mdash; Stormpath Java Servlet Plugin 1.1.2 documentation</title>
+  <title>Custom Views &mdash; Stormpath Java Servlet Plugin 1.1.3 documentation</title>
   
 
   
@@ -34,7 +34,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Stormpath Java Servlet Plugin 1.1.2 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath Java Servlet Plugin 1.1.3 documentation" href="index.html"/>
         <link rel="next" title="Appendix" href="appendix.html"/>
         <link rel="prev" title="ID Site" href="idsite.html"/> 
 
@@ -113,7 +113,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#get-an-api-key">Get an API Key</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-stormpath-java-servlet-plugin">Add the Stormpath Java Servlet Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-project">Add the Stormpath Java Servlet Plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#try-it">Try it!</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
 </ul>
@@ -130,11 +130,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#uri">URI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#next-uri">Next URI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#form-fields">Form Fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration">Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#internationalization-i18n">Internationalization (i18n)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#events">Events</a></li>
 </ul>
 </li>
@@ -205,6 +203,7 @@
 <li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="caching.html#in-process-cache">In-Process Cache</a></li>
 <li class="toctree-l2"><a class="reference internal" href="caching.html#disable-caching">Disable Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#shared-cache">Shared Cache</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="idsite.html">ID Site</a><ul>
@@ -342,7 +341,6 @@
 </div>
 <div class="section" id="internationalization-i18n">
 <h2>Internationalization (i18n)<a class="headerlink" href="#internationalization-i18n" title="Permalink to this headline">¶</a></h2>
-</div>
 <p>All of the Stormpath Java Servlet Plugin default views are internationalized to support language translation based on the end-user&#8217;s locale.</p>
 <p>In addition to the page template tag library, a regular tag library is included in the plugin and may be used to automatically render i18n messages based on the the <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.i18n</span></code> message resource bundle.  You can use the taglib in a jsp by referencing <code class="docutils literal"><span class="pre">&lt;%&#64;</span> <span class="pre">taglib</span> <span class="pre">prefix=&quot;sp&quot;</span> <span class="pre">uri=&quot;http://stormpath.com/jsp/tags&quot;</span> <span class="pre">%&gt;</span></code> at the top of your JSP file.</p>
 <p>For example:</p>
@@ -364,6 +362,7 @@
 </div>
 <p>The <code class="docutils literal"><span class="pre">&lt;sp:message&gt;</span></code> tag works just like the standard template library&#8217;s <code class="docutils literal"><span class="pre">&lt;fmt:message&gt;</span></code> tag, but <code class="docutils literal"><span class="pre">&lt;sp:message&gt;</span></code> will automatically use the <code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.i18n</span></code> message bundle in addition to allowing for a flexible locale resolution strategy in your <code class="docutils literal"><span class="pre">stormpath.properties</span></code> configuration.</p>
 <p>If you wish to see all of the predefined message keys available, as well as more information about i18n message value resolution, please see the <a class="reference internal" href="i18n.html#i18n"><span class="std std-ref">Internationalization (i18n)</span></a> page.</p>
+</div>
 <div class="section" id="change-a-default-view">
 <span id="default-view-files-jsp"></span><h2>Change a Default View<a class="headerlink" href="#change-a-default-view" title="Permalink to this headline">¶</a></h2>
 <p>If you want to change the structure of any of the included default JSP views, you must redefine them (copy and paste them) in your own project in the following <em>exact</em> .war file locations:</p>
@@ -409,7 +408,7 @@
 <p>If you re-define any of these files at the exact same respective path in your .war project, that file will be used to render the view instead of the plugin file.</p>
 </div>
 <div class="section" id="view-template">
-<span id="id2"></span><h2>View Template<a class="headerlink" href="#view-template" title="Permalink to this headline">¶</a></h2>
+<span id="id1"></span><h2>View Template<a class="headerlink" href="#view-template" title="Permalink to this headline">¶</a></h2>
 <p>Unfortunately the convenient override mechanism where you simply just replace a plugin default file with your own does not work with JSP tag-based templates.  This means that if you want to use your own page template for the plugin&#8217;s views, you will need to replace <em>all</em> of the plugin&#8217;s default view files.  But the good news is that there are only 6 view files, and they can mostly be copied-and-pasted, so it shouldn&#8217;t take too long (5 to 10 minutes?).</p>
 <p>If you do wish to use your own page template, here is how:</p>
 <ol class="arabic" id="custom-template-tld">
@@ -518,7 +517,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.2',
+            VERSION:'1.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

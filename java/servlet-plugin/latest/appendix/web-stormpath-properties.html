@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>web.stormpath.properties &mdash; Stormpath Java Servlet Plugin 1.1.2 documentation</title>
+  <title>web.stormpath.properties &mdash; Stormpath Java Servlet Plugin 1.1.3 documentation</title>
   
 
   
@@ -34,7 +34,7 @@
   
         <link rel="author" title="About these documents"
               href="../about.html"/>
-    <link rel="top" title="Stormpath Java Servlet Plugin 1.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="Stormpath Java Servlet Plugin 1.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Appendix" href="../appendix.html"/>
         <link rel="next" title="i18n.properties" href="i18n-properties.html"/>
         <link rel="prev" title="Appendix" href="../appendix.html"/> 
@@ -114,7 +114,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#get-an-api-key">Get an API Key</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#add-the-stormpath-java-servlet-plugin">Add the Stormpath Java Servlet Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#add-the-project">Add the Stormpath Java Servlet Plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#try-it">Try it!</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../quickstart.html#next-steps">Next Steps</a></li>
 </ul>
@@ -131,11 +131,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../registration.html">Registration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../registration.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../registration.html#uri">URI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../registration.html#next-uri">Next URI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../registration.html#form-fields">Form Fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../registration.html#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../registration.html#configuration">Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../registration.html#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../registration.html#internationalization-i18n">Internationalization (i18n)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../registration.html#events">Events</a></li>
 </ul>
 </li>
@@ -206,6 +204,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../caching.html">Caching</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../caching.html#in-process-cache">In-Process Cache</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../caching.html#disable-caching">Disable Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../caching.html#shared-cache">Shared Cache</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../idsite.html">ID Site</a><ul>
@@ -291,7 +290,7 @@
 <div></div></blockquote>
 <div class="section" id="web-stormpath-properties">
 <span id="id1"></span><h1>web.stormpath.properties<a class="headerlink" href="#web-stormpath-properties" title="Permalink to this headline">¶</a></h1>
-<p>In stormpath-sdk-servlet-1.1.2.jar: <code class="docutils literal"><span class="pre">/com/stormpath/sdk/servlet/config/web.stormpath.properties</span></code></p>
+<p>In stormpath-sdk-servlet-1.1.3.jar: <code class="docutils literal"><span class="pre">/com/stormpath/sdk/servlet/config/web.stormpath.properties</span></code></p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="c">#</span>
 <span class="c"># Copyright 2016 Stormpath, Inc.</span>
 <span class="c">#</span>
@@ -569,7 +568,7 @@
 <span class="c"># When a Resolver returns an Account instance, all remaining Resolvers are ignored.  Resolvers are invoked in the order</span>
 <span class="c"># that they are specified in the following comma-delimited list.  Be sure to specify resolver names in the</span>
 <span class="c"># order that you prefer request locations to be checked:</span>
-<span class="na">stormpath.web.account.resolvers</span> <span class="o">=</span> <span class="s">header, cookie, session</span>
+<span class="na">stormpath.web.account.resolvers</span> <span class="o">=</span> <span class="s">header, cookie</span>
 
 <span class="c"># Authorization Header Account Resolver: inspects the HTTP &#39;Authorization&#39; header using all</span>
 <span class="c"># available HTTP Authentication Schemes. Available schemes are defined by the following property name/value convention:</span>
@@ -582,10 +581,6 @@
 <span class="c"># Cookie Account Resolver: looks for a secure digitally signed cookie that contains the account&#39;s information.  The</span>
 <span class="c"># cookie itself is created and set by the stormpath.web.authc.saver.cookie implementation.</span>
 <span class="na">stormpath.web.account.resolvers.cookie</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.filter.account.config.CookieAccountResolverFactory</span>
-
-<span class="c"># Session Account Resolver: looks in an available HTTP session for the account.  This implementation does not create</span>
-<span class="c"># sessions - it will only look in the request&#39;s session if the session already exists.</span>
-<span class="na">stormpath.web.account.resolvers.session</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.filter.account.SessionAccountResolver</span>
 
 <span class="na">stormpath.web.localhost.resolver</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.util.IsLocalhostResolver</span>
 <span class="na">stormpath.web.xforwardedproto.resolver</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.config.SecureForwardedProtoAwareResolver</span>
@@ -615,14 +610,11 @@
 <span class="c"># The storage locations that should be used to save account state after successful authentication.</span>
 <span class="c"># The value must be the name of a name stormpath.web.authc.savers.NAME_HERE definition</span>
 <span class="c">#</span>
-<span class="c"># The value is a comma-delimited list of one or more of cookie, session, or disabled:</span>
+<span class="c"># The value is a comma-delimited list of one or more of &#39;cookie&#39; and &#39;disabled&#39; values:</span>
 <span class="c">#</span>
 <span class="c"># cookie:   Store the account state in a cookie.  The cookie&#39;s settings are controlled by the</span>
 <span class="c">#           stormpath.web.account.cookie.* properties below.  The same cookie is read later when the</span>
 <span class="c">#           stormpath.web.account.resolvers property contains a &#39;cookie&#39; value (without the quotes).</span>
-<span class="c">#</span>
-<span class="c"># session:  Store the account state in the servlet HTTP session.  This option will create a new HTTP session if one</span>
-<span class="c">#           does not yet exist.</span>
 <span class="c">#</span>
 <span class="c"># disabled: Do not store the account state during a request.  This is a good option if your server-side app</span>
 <span class="c">#           authenticates every request (for example, a REST API).</span>
@@ -631,7 +623,6 @@
 <span class="na">stormpath.web.authc.savers.cookie</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.filter.account.config.CookieAuthenticationResultSaverFactory</span>
 <span class="na">stormpath.web.authc.unauthenticatedHandler</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.filter.config.UnauthenticatedHandlerFactory</span>
 <span class="na">stormpath.web.authc.usernamePasswordRequestFactory</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.filter.config.UsernamePasswordRequestFactoryFactory</span>
-<span class="na">stormpath.web.authc.savers.session</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.filter.account.config.SessionAuthenticationResultSaverFactory</span>
 
 <span class="na">stormpath.web.http.authc</span> <span class="o">=</span> <span class="s">com.stormpath.sdk.servlet.http.authc.config.HttpAuthenticatorFactory</span>
 <span class="c"># If you set the following value to false and the request must be authenticated, you *must* specify the</span>
@@ -709,7 +700,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.1.2',
+            VERSION:'1.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Configuration &mdash; Stormpath Java Servlet Plugin 1.1.2 documentation</title>
+  <title>Configuration &mdash; Stormpath Java Servlet Plugin 1.1.3 documentation</title>
   
 
   
@@ -34,7 +34,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Stormpath Java Servlet Plugin 1.1.2 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath Java Servlet Plugin 1.1.3 documentation" href="index.html"/>
         <link rel="next" title="Registration" href="registration.html"/>
         <link rel="prev" title="Tutorial" href="tutorial.html"/> 
 
@@ -113,7 +113,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#get-an-api-key">Get an API Key</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-stormpath-java-servlet-plugin">Add the Stormpath Java Servlet Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-project">Add the Stormpath Java Servlet Plugin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#try-it">Try it!</a></li>
 <li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
 </ul>
@@ -130,11 +130,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#uri">URI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#next-uri">Next URI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#form-fields">Form Fields</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration">Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#internationalization-i18n">Internationalization (i18n)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#events">Events</a></li>
 </ul>
 </li>
@@ -205,6 +203,7 @@
 <li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="caching.html#in-process-cache">In-Process Cache</a></li>
 <li class="toctree-l2"><a class="reference internal" href="caching.html#disable-caching">Disable Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#shared-cache">Shared Cache</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="idsite.html">ID Site</a><ul>
@@ -290,49 +289,61 @@
 <span id="config"></span><h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#no-config" id="id8">No Config?</a></li>
-<li><a class="reference internal" href="#stormpath-client" id="id9">Stormpath Client</a><ul>
-<li><a class="reference internal" href="#api-key" id="id10">API Key</a></li>
-<li><a class="reference internal" href="#http-proxy" id="id11">HTTP Proxy</a></li>
-<li><a class="reference internal" href="#authentication-scheme" id="id12">Authentication Scheme</a></li>
-<li><a class="reference internal" href="#usage" id="id13">Usage</a></li>
+<li><a class="reference internal" href="#no-config" id="id7">No Config?</a></li>
+<li><a class="reference internal" href="#web-xml" id="id8">web.xml</a></li>
+<li><a class="reference internal" href="#stormpath-properties" id="id9">stormpath.properties</a><ul>
+<li><a class="reference internal" href="#property-locations" id="id10">Property Locations</a></li>
+<li><a class="reference internal" href="#security-considerations-passwords-and-secret-values" id="id11">Security Considerations: Passwords and secret values</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#stormpath-application" id="id14">Stormpath Application</a><ul>
-<li><a class="reference internal" href="#id3" id="id15">Usage</a></li>
+<li><a class="reference internal" href="#stormpath-client" id="id12">Stormpath Client</a><ul>
+<li><a class="reference internal" href="#api-key" id="id13">API Key</a></li>
+<li><a class="reference internal" href="#http-proxy" id="id14">HTTP Proxy</a></li>
+<li><a class="reference internal" href="#authentication-scheme" id="id15">Authentication Scheme</a></li>
+<li><a class="reference internal" href="#usage" id="id16">Usage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stormpath-application" id="id17">Stormpath Application</a><ul>
+<li><a class="reference internal" href="#id2" id="id18">Usage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#filters" id="id19">Filters</a><ul>
+<li><a class="reference internal" href="#default-filters" id="id20">Default Filters</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#uris" id="id21">URIs</a><ul>
+<li><a class="reference internal" href="#uri-evaluation-priority" id="id22">URI Evaluation Priority</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section" id="no-config">
-<h2><a class="toc-backref" href="#id8">No Config?</a><a class="headerlink" href="#no-config" title="Permalink to this headline">¶</a></h2>
-<p>Refreshingly, the Stormpath Java Servlet Plugin doesn&#8217;t require any configuration at all as long as the following conditions apply:</p>
+<h2><a class="toc-backref" href="#id7">No Config?</a><a class="headerlink" href="#no-config" title="Permalink to this headline">¶</a></h2>
+<p>Refreshingly, the Stormpath Java Servlet Plugin doesn&#8217;t require any configuration at all if the following conditions apply:</p>
 <ol class="arabic simple">
-<li>You added the stormpath-servlet-plugin .jar and its transitive dependencies to your web application&#8217;s <code class="docutils literal"><span class="pre">/WEB-INF/lib</span></code> directory.  This happens automatically if you use a Maven-compatible build tool like Maven or Gradle to <a class="reference internal" href="quickstart.html#servlet-plugin-jar"><span class="std std-ref">specify the stormpath-servlet-plugin dependency</span></a> in your project build configuration.</li>
-<li>Your web application can read the <code class="docutils literal"><span class="pre">$HOME/.stormpath/apiKey.properties</span></code> file <a class="reference internal" href="quickstart.html#get-api-key"><span class="std std-ref">mentioned in the Quickstart</span></a>.</li>
-<li>You have only one Application registered with Stormpath.</li>
+<li>You added the <code class="docutils literal"><span class="pre">stormpath-servlet-plugin-1.1.3.jar</span></code> and its transitive dependencies to your application&#8217;s classpath.  This happens automatically if you use a Maven-compatible build tool like Maven or Gradle to <a class="reference internal" href="quickstart.html#dependency-jar"><span class="std std-ref">specify the Stormpath dependency</span></a> in your project build configuration.</li>
+<li>Your application can read the <code class="docutils literal"><span class="pre">$HOME/.stormpath/apiKey.properties</span></code> file <a class="reference internal" href="quickstart.html#get-api-key"><span class="std std-ref">mentioned in the Quickstart</span></a>.</li>
+<li>You have only one <code class="docutils literal"><span class="pre">Application</span></code> record registered within Stormpath.</li>
 </ol>
 <p>If all of these conditions cannot be met, then you will have to specify some minimal configuration (but not much!) as described below.</p>
 </div>
 <div class="section" id="web-xml">
-<h2>web.xml<a class="headerlink" href="#web-xml" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id8">web.xml</a><a class="headerlink" href="#web-xml" title="Permalink to this headline">¶</a></h2>
 <p>Most plugin users do not need to modify the web application <code class="docutils literal"><span class="pre">/WEB-INF/web.xml</span></code> file to enable the plugin - just adding the plugin .jar to your web application&#8217;s <code class="docutils literal"><span class="pre">lib</span></code> directory is usually sufficient.</p>
 <p>However, some applications might experience a filter chain conflict that causes problems.</p>
 <p>At application startup, the Stormpath Java Servlet Plugin automatically enables a <code class="docutils literal"><span class="pre">StormpathFilter</span></code> to handle various request flows.  If your web application uses frameworks that make heavy use of servlet filters, like Spring MVC or Apache Shiro, these existing filters might cause an ordering conflict with the <code class="docutils literal"><span class="pre">StormpathFilter</span></code>.</p>
-<p>If you are experiencing problems after adding the stormpath-servlet-plugin .jar to your web app&#8217;s classpath, you&#8217;ll need to explicitly specify where the <code class="docutils literal"><span class="pre">StormpathFilter</span></code> should reside in your application&#8217;s filter chain.  Luckily the fix is really easy:</p>
+<p>If you are experiencing problems after adding <code class="docutils literal"><span class="pre">stormpath-servlet-plugin-1.1.3.jar</span></code> to your web app&#8217;s classpath, you&#8217;ll need to explicitly specify where the <code class="docutils literal"><span class="pre">StormpathFilter</span></code> should reside in your application&#8217;s filter chain.  Luckily the fix is really easy:</p>
 <p>Simply specify the following XML chunk in <code class="docutils literal"><span class="pre">/WEB-INF/web.xml</span></code> relative to other filter mappings that are already enabled in your application:</p>
-<blockquote>
-<div><div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;filter-mapping&gt;</span>
+<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;filter-mapping&gt;</span>
     <span class="nt">&lt;filter-name&gt;</span>StormpathFilter<span class="nt">&lt;/filter-name&gt;</span>
     <span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
 <span class="nt">&lt;/filter-mapping&gt;</span>
 </pre></div>
 </div>
-</div></blockquote>
 <p>It is often easiest to specifying this at or near the top of your other filter mappings.  The <code class="docutils literal"><span class="pre">StormpathFilter</span></code> will ignore all filtered requests that do not match recognized URL rules, allowing other frameworks to filter requests as necessary.</p>
 </div>
 <div class="section" id="stormpath-properties">
-<h2>stormpath.properties<a class="headerlink" href="#stormpath-properties" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id9">stormpath.properties</a><a class="headerlink" href="#stormpath-properties" title="Permalink to this headline">¶</a></h2>
 <p>If you need to customize behavior, the Stormpath Java Servlet Plugin uses a very simple <code class="docutils literal"><span class="pre">.properties</span></code> based configuration format and supports a convenient override mechanism using various property definition locations.</p>
 <p>All stormpath configuration properties are prefixed with <code class="docutils literal"><span class="pre">stormpath.</span></code> and take the following form (for example)</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.some.property.name</span> <span class="o">=</span> <span class="s">aValue</span>
@@ -341,30 +352,30 @@
 </div>
 <p>etc.</p>
 <div class="section" id="property-locations">
-<span id="stormpath-properties-locations"></span><h3>Property Locations<a class="headerlink" href="#property-locations" title="Permalink to this headline">¶</a></h3>
+<span id="stormpath-properties-locations"></span><h3><a class="toc-backref" href="#id10">Property Locations</a><a class="headerlink" href="#property-locations" title="Permalink to this headline">¶</a></h3>
 <p>You can define stormpath property values in a number of locations.  This allows you to define a core set of properties in a primary configuration file and override values as necessary using other locations.</p>
 <p>Configuration property values are read from the following locations, <em>in order</em>.  Values discovered in locations later (further down in the list) will automatically override values found in previous locations:</p>
 <div class="contents local topic" id="id1">
 <ul class="simple">
-<li><a class="reference internal" href="#plugin-web-stormpath-properties" id="id16">1. Plugin web.stormpath.properties</a></li>
-<li><a class="reference internal" href="#classpath-stormpath-properties" id="id17">2. classpath:stormpath.properties</a></li>
-<li><a class="reference internal" href="#web-inf-stormpath-properties" id="id18">3. /WEB-INF/stormpath.properties</a></li>
-<li><a class="reference internal" href="#servlet-context-parameters" id="id19">4. Servlet Context Parameters</a></li>
-<li><a class="reference internal" href="#environment-variables" id="id20">5. Environment Variables</a></li>
-<li><a class="reference internal" href="#jvm-system-properties" id="id21">6. JVM System Properties</a></li>
+<li><a class="reference internal" href="#plugin-web-stormpath-properties" id="id23">1. Plugin web.stormpath.properties</a></li>
+<li><a class="reference internal" href="#classpath-stormpath-properties" id="id24">2. classpath:stormpath.properties</a></li>
+<li><a class="reference internal" href="#web-inf-stormpath-properties" id="id25">3. /WEB-INF/stormpath.properties</a></li>
+<li><a class="reference internal" href="#servlet-context-parameters" id="id26">4. Servlet Context Parameters</a></li>
+<li><a class="reference internal" href="#environment-variables" id="id27">5. Environment Variables</a></li>
+<li><a class="reference internal" href="#jvm-system-properties" id="id28">6. JVM System Properties</a></li>
 </ul>
 </div>
-<p>If you&#8217;re just starting out, we recommend that your configuration be specified in <code class="docutils literal"><span class="pre">/WEB-INF/stormpath.properties</span></code> and you use Environment Variables to specify password or secret values (e.g. for production environments).</p>
+<p>If you&#8217;re just starting out, we recommend that your configuration be specified in <code class="docutils literal"><span class="pre">/WEB-INF/stormpath.properties</span></code> and you use environment variables to specify password or secret values (e.g. for production environments).</p>
 <p>Defining properties in these locations is covered more in detail next.</p>
 <div class="section" id="plugin-web-stormpath-properties">
-<h4><a class="toc-backref" href="#id16">1. Plugin web.stormpath.properties</a><a class="headerlink" href="#plugin-web-stormpath-properties" title="Permalink to this headline">¶</a></h4>
-<p>This file resides in the stormpath-servlet-plugin-1.1.2.jar at:</p>
+<h4><a class="toc-backref" href="#id23">1. Plugin web.stormpath.properties</a><a class="headerlink" href="#plugin-web-stormpath-properties" title="Permalink to this headline">¶</a></h4>
+<p>This file resides in the stormpath-servlet-plugin-1.1.3.jar at:</p>
 <blockquote>
 <div><code class="docutils literal"><span class="pre">/com/stormpath/sdk/servlet/config/web.stormpath.properties</span></code></div></blockquote>
 <p>It includes all of the plugin&#8217;s default configuration and is not modifiable.  The default values within can be overridden by specifying properties in locations read later during the startup process.</p>
 </div>
 <div class="section" id="classpath-stormpath-properties">
-<h4><a class="toc-backref" href="#id17">2. classpath:stormpath.properties</a><a class="headerlink" href="#classpath-stormpath-properties" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id24">2. classpath:stormpath.properties</a><a class="headerlink" href="#classpath-stormpath-properties" title="Permalink to this headline">¶</a></h4>
 <p>If a <code class="docutils literal"><span class="pre">stormpath.properties</span></code> file exists at the root of your web application&#8217;s classpath (typically in <code class="docutils literal"><span class="pre">/WEB-INF/classes</span></code> or at the root of one of your .jar files in <code class="docutils literal"><span class="pre">/WEB-INF/lib</span></code>), <code class="docutils literal"><span class="pre">stormpath.*</span></code> properties will be read from that file and override any identically-named properties discovered previously.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -372,7 +383,7 @@
 </div>
 </div>
 <div class="section" id="web-inf-stormpath-properties">
-<h4><a class="toc-backref" href="#id18">3. /WEB-INF/stormpath.properties</a><a class="headerlink" href="#web-inf-stormpath-properties" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id25">3. /WEB-INF/stormpath.properties</a><a class="headerlink" href="#web-inf-stormpath-properties" title="Permalink to this headline">¶</a></h4>
 <p>If a file <code class="docutils literal"><span class="pre">/WEB-INF/stormpath.properties</span></code> exists in your web application, properties will be read from this file and override any identically-named properties discovered in previous locations.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
@@ -380,7 +391,7 @@
 </div>
 </div>
 <div class="section" id="servlet-context-parameters">
-<h4><a class="toc-backref" href="#id19">4. Servlet Context Parameters</a><a class="headerlink" href="#servlet-context-parameters" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id26">4. Servlet Context Parameters</a><a class="headerlink" href="#servlet-context-parameters" title="Permalink to this headline">¶</a></h4>
 <p>If you define <code class="docutils literal"><span class="pre">stormpath.*</span></code> servlet context parameters in your web application&#8217;s <code class="docutils literal"><span class="pre">/WEB-INF/web.xml</span></code> file, they will override any identically-named properties discovered in previous locations.  For example:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;context-param&gt;</span>
     <span class="nt">&lt;param-name&gt;</span>stormpath.properties<span class="nt">&lt;/param-name&gt;</span>
@@ -393,7 +404,7 @@
 </div>
 </div>
 <div class="section" id="environment-variables">
-<h4><a class="toc-backref" href="#id20">5. Environment Variables</a><a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id27">5. Environment Variables</a><a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h4>
 <p>You may use Environment Variables to specify or override your application&#8217;s <code class="docutils literal"><span class="pre">stormpath.*</span></code> properties using an all uppercase + underscore convention.</p>
 <p>For example, let&#8217;s assume there is a property named <code class="docutils literal"><span class="pre">stormpath.foo.bar</span></code> that you would might specify in a file:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.foo.bar</span> <span class="o">=</span> <span class="s">myValue</span>
@@ -407,24 +418,24 @@
 </div>
 </div>
 <div class="section" id="jvm-system-properties">
-<h4><a class="toc-backref" href="#id21">6. JVM System Properties</a><a class="headerlink" href="#jvm-system-properties" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id28">6. JVM System Properties</a><a class="headerlink" href="#jvm-system-properties" title="Permalink to this headline">¶</a></h4>
 <p>If you define <code class="docutils literal"><span class="pre">stormpath.*</span></code> system properties (using <code class="docutils literal"><span class="pre">-D</span></code> flags when starting the java process), they will override any identically-named properties discovered in previous locations.  For example:</p>
 <p><code class="docutils literal"><span class="pre">-Dstormpath.foo.bar=myValue</span></code></p>
 </div>
 </div>
 <div class="section" id="security-considerations-passwords-and-secret-values">
-<span id="stormpath-properties-security-considerations"></span><h3>Security Considerations: Passwords and secret values<a class="headerlink" href="#security-considerations-passwords-and-secret-values" title="Permalink to this headline">¶</a></h3>
+<span id="property-security-considerations"></span><h3><a class="toc-backref" href="#id11">Security Considerations: Passwords and secret values</a><a class="headerlink" href="#security-considerations-passwords-and-secret-values" title="Permalink to this headline">¶</a></h3>
 <p>It is <strong>strongly</strong> recommended that you do not specify the <code class="docutils literal"><span class="pre">stormpath.client.apiKey.secret</span></code> property - or any other password or secret property - in shared files such as <code class="docutils literal"><span class="pre">classpath:stormpath.properties</span></code>, <code class="docutils literal"><span class="pre">/WEB-INF/stormpath.properties</span></code>, or <code class="docutils literal"><span class="pre">web.xml</span></code>. These files are usually committed to version control (like git) and shared with other developers.</p>
 <p>Because Stormpath API Keys are always assigned to an individual person, they should never be shared with or visible to anyone else, not even other co-workers or even Stormpath employees.  Anyone that has your API Key id and secret can alter the data in your Stormpath tenant.</p>
 <p>Also, it should also be noted that, while JVM System Properties are not usually visible to other developers, using System Properties for secrets and passwords can also be seen as a security risk: system property values are visible to anyone performing a process listing on a production machine (e.g. <code class="docutils literal"><span class="pre">ps</span> <span class="pre">aux</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">java</span></code>).</p>
-<p>If you cannot rely on accessing the default <code class="docutils literal"><span class="pre">$HOME/.stormpath/apiKey.properties</span></code> file, Environment Variables or a different private local file (with restricted read permissions) is usually a safer alternative when defining passwords or secret values than shared files or JVM System Properties.</p>
+<p>If you cannot rely on accessing the default <code class="docutils literal"><span class="pre">$HOME/.stormpath/apiKey.properties</span></code> file, environment variables or a different private local file (with restricted read permissions) is usually a safer alternative when defining passwords or secret values than shared files or JVM System Properties.</p>
 </div>
 </div>
 <div class="section" id="stormpath-client">
-<h2><a class="toc-backref" href="#id9">Stormpath Client</a><a class="headerlink" href="#stormpath-client" title="Permalink to this headline">¶</a></h2>
+<h2><a class="toc-backref" href="#id12">Stormpath Client</a><a class="headerlink" href="#stormpath-client" title="Permalink to this headline">¶</a></h2>
 <p>The Stormpath Java Servlet Plugin depends on a Stormpath <code class="docutils literal"><span class="pre">Client</span></code> instance to communicate with Stormpath for most functionality.  You may configure the client via <code class="docutils literal"><span class="pre">stormpath.*</span></code> properties as necessary.</p>
 <div class="section" id="api-key">
-<h3><a class="toc-backref" href="#id10">API Key</a><a class="headerlink" href="#api-key" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id13">API Key</a><a class="headerlink" href="#api-key" title="Permalink to this headline">¶</a></h3>
 <p>The API Key used by the SDK Client will be acquired from the following locations.  Locations inspected later override previously discovered values.</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">$HOME/.stormpath/apiKey.properties</span></code> file</li>
@@ -433,11 +444,11 @@
 </ul>
 <div class="admonition caution">
 <p class="first admonition-title">Caution</p>
-<p class="last">While <code class="docutils literal"><span class="pre">stormpath.client.apiKey.secret</span></code> can be configured as a property in a file, please be aware of the <a class="reference internal" href="#stormpath-properties-locations"><span class="std std-ref">security considerations</span></a> of files shared with other people.</p>
+<p class="last">While <code class="docutils literal"><span class="pre">stormpath.client.apiKey.secret</span></code> can be configured as a property in a file, please be aware of the <a class="reference internal" href="#property-security-considerations"><span class="std std-ref">security considerations</span></a> of files shared with other people.</p>
 </div>
 </div>
 <div class="section" id="http-proxy">
-<h3><a class="toc-backref" href="#id11">HTTP Proxy</a><a class="headerlink" href="#http-proxy" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id14">HTTP Proxy</a><a class="headerlink" href="#http-proxy" title="Permalink to this headline">¶</a></h3>
 <p>If your application requires communication to Stormpath go through an HTTP Proxy, you can set the following configuration properties as needed:</p>
 <ul class="simple">
 <li><code class="docutils literal"><span class="pre">stormpath.client.proxy.host</span></code>: Proxy server hostname or IP address, e.g. <code class="docutils literal"><span class="pre">proxy.mycompany.com</span></code> or <code class="docutils literal"><span class="pre">10.0.2.88</span></code>.</li>
@@ -452,17 +463,17 @@
 </div></blockquote>
 </div>
 <div class="section" id="authentication-scheme">
-<h3><a class="toc-backref" href="#id12">Authentication Scheme</a><a class="headerlink" href="#authentication-scheme" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id15">Authentication Scheme</a><a class="headerlink" href="#authentication-scheme" title="Permalink to this headline">¶</a></h3>
 <p>The Stormpath SDK Client communicates with Stormpath using a very secure <a class="reference external" href="http://en.wikipedia.org/wiki/Cryptographic_hash_function">cryptographic digest</a>-based authentication scheme.</p>
-<p>If you deploy your app on Google App Engine however, you might experience some problems.  You can change the scheme to use <code class="docutils literal"><span class="pre">basic</span></code> authentication by setting the following configuration property and value:</p>
+<p>If you deploy your application on Google App Engine however, you might experience some problems.  You can change the scheme to use <code class="docutils literal"><span class="pre">basic</span></code> authentication by setting the following configuration property and value:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.client.authenticationScheme</span> <span class="o">=</span> <span class="s">basic</span>
 </pre></div>
 </div>
 <p>If your application is not deployed on Google App Engine, we recommend that you <em>do not</em> set this property.</p>
 </div>
 <div class="section" id="usage">
-<h3><a class="toc-backref" href="#id13">Usage</a><a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
-<p>After application startup, you may access the <code class="docutils literal"><span class="pre">Client</span></code> instance if desired using the <code class="docutils literal"><span class="pre">ClientResolver</span></code> and referencing the web application&#8217;s <code class="docutils literal"><span class="pre">ServletContext</span></code>:</p>
+<h3><a class="toc-backref" href="#id16">Usage</a><a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<p>After application startup, you may access the Stormpath <code class="docutils literal"><span class="pre">Client</span></code> instance if desired using the <code class="docutils literal"><span class="pre">ClientResolver</span></code> and referencing the web application&#8217;s <code class="docutils literal"><span class="pre">ServletContext</span></code>:</p>
 <div class="highlight-java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">com.stormpath.sdk.servlet.client.ClientResolver</span><span class="o">;</span>
 <span class="c1">//...</span>
 
@@ -473,8 +484,8 @@
 </div>
 </div>
 <div class="section" id="stormpath-application">
-<h2><a class="toc-backref" href="#id14">Stormpath Application</a><a class="headerlink" href="#stormpath-application" title="Permalink to this headline">¶</a></h2>
-<p>The Stormpath Java Servlet Plugin requires that your web application correspond to a registered <code class="docutils literal"><span class="pre">Application</span></code> record within Stormpath.</p>
+<h2><a class="toc-backref" href="#id17">Stormpath Application</a><a class="headerlink" href="#stormpath-application" title="Permalink to this headline">¶</a></h2>
+<p>The Stormpath Java Servlet Plugin requires that your application correspond to a registered <code class="docutils literal"><span class="pre">Application</span></code> record within Stormpath.</p>
 <p>If you only have one registered application with Stormpath, Stormpath Java Servlet Plugin will automatically query Stormpath at startup, find the <code class="docutils literal"><span class="pre">Application</span></code> and use it, and no configuration is necessary.</p>
 <p>However, if you have more than one application registered with Stormpath, you must configure the <code class="docutils literal"><span class="pre">href</span></code> of the specific application to access by setting the following configuration property:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.application.href</span> <span class="o">=</span> <span class="s">your_application_href_here</span>
@@ -489,8 +500,8 @@
 <img alt="_images/console-application-href.png" src="_images/console-application-href.png" />
 </li>
 </ol>
-<div class="section" id="id3">
-<h3><a class="toc-backref" href="#id15">Usage</a><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id2">
+<h3><a class="toc-backref" href="#id18">Usage</a><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <p>After application startup, you may access the <code class="docutils literal"><span class="pre">Application</span></code> instance if desired (for example, searching your application&#8217;s user accounts, creating groups, etc) using the <code class="docutils literal"><span class="pre">ApplicationResolver</span></code> and referencing the web application&#8217;s <code class="docutils literal"><span class="pre">ServletContext</span></code>:</p>
 <div class="highlight-java"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">com.stormpath.sdk.servlet.application.ApplicationResolver</span><span class="o">;</span>
 <span class="c1">//...</span>
@@ -502,7 +513,7 @@
 </div>
 </div>
 <div class="section" id="filters">
-<span id="id4"></span><h2>Filters<a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h2>
+<span id="id3"></span><h2><a class="toc-backref" href="#id19">Filters</a><a class="headerlink" href="#filters" title="Permalink to this headline">¶</a></h2>
 <p>The Stormpath Java Servlet Plugin works largely by intercepting requests to certain URI paths in your application and then executing one or more servlet filters based on the URI being accessed.</p>
 <p>All of the Servlet Filters needed by the plugin are already configured, but if you wanted to, you could define your own Servlet Filters (or even override the plugin&#8217;s defaults) as configuration properties via the following convention:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.filters.FILTER_NAME</span> <span class="o">=</span> <span class="s">FULLY_QUALFIED_CLASS_NAME</span>
@@ -520,7 +531,7 @@
 </div>
 <p>You control which filters are executed, and the order they are executed, by declaring URI patterns, covered below.</p>
 <div class="section" id="default-filters">
-<span id="id5"></span><h3>Default Filters<a class="headerlink" href="#default-filters" title="Permalink to this headline">¶</a></h3>
+<span id="id4"></span><h3><a class="toc-backref" href="#id20">Default Filters</a><a class="headerlink" href="#default-filters" title="Permalink to this headline">¶</a></h3>
 <p>The plugin contains some useful filter implementations pre-configured and ready to use in your URI pattern chains:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -555,7 +566,7 @@ one or more account-specific authorization expressions.</td>
 </div>
 </div>
 <div class="section" id="uris">
-<span id="id6"></span><h2>URIs<a class="headerlink" href="#uris" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2><a class="toc-backref" href="#id21">URIs</a><a class="headerlink" href="#uris" title="Permalink to this headline">¶</a></h2>
 <p>You can control which filters are executed for any application URI path by defining your own paths in <code class="docutils literal"><span class="pre">stormpath.properties</span></code> locations via the following convention:</p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">stormpath.web.uris.URI_PATTERN</span> <span class="o">=</span> <span class="s">FILTER_CHAIN_DEFINITION</span>
 </pre></div>
@@ -574,7 +585,7 @@ one or more account-specific authorization expressions.</td>
 <p class="last">Because URI patterns are relative to your web application&#8217;s <a class="reference external" href="http://docs.oracle.com/javaee/7/api/javax/servlet/http/HttpServletRequest.html#getContextPath()">context path</a>, you can deploy your application to <code class="docutils literal"><span class="pre">http://localhost:8080/myapp</span></code> and then later deploy it to <code class="docutils literal"><span class="pre">https://myapp.com</span></code> without changing your URI configuration.</p>
 </div>
 <div class="section" id="uri-evaluation-priority">
-<span id="id7"></span><h3>URI Evaluation Priority<a class="headerlink" href="#uri-evaluation-priority" title="Permalink to this headline">¶</a></h3>
+<span id="id6"></span><h3><a class="toc-backref" href="#id22">URI Evaluation Priority</a><a class="headerlink" href="#uri-evaluation-priority" title="Permalink to this headline">¶</a></h3>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>Order Matters!</p>
@@ -632,7 +643,7 @@ one or more account-specific authorization expressions.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.2',
+            VERSION:'1.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
