@@ -1,0 +1,1218 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>6. Multi-Tenancy with Stormpath &mdash; Stormpath Node.js Documentation  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="about.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Stormpath Node.js Documentation  documentation" href="index.html"/>
+        <link rel="next" title="7. Using ID Site" href="idsite.html"/>
+        <link rel="prev" title="5. Authorization With Stormpath" href="auth_z.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+  
+  <script src="https://cdn.optimizely.com/js/225847041.js"></script>
+
+  
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '986262161469311');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  /></noscript>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NQZZFW');</script>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+  
+
+          
+            <a href="index.html" class="icon icon-home"> Stormpath Node.js Documentation
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+
+  <div class="langpicker-container">
+    <a href="#langpicker" class="langpicker-link">
+      <i class="fa fa-code"></i>
+      Switch Language
+    </a>
+    <div id="langpicker" style="display:none;">
+      <div class="">
+        <a href="/csharp/product-guide/latest/multitenancy.html">C#</a>
+      </div>
+      <div class="">
+        <a href="/java/product-guide/latest/multitenancy.html">Java</a>
+      </div>
+      <div class="current">
+        <a href="/nodejs/product-guide/latest/multitenancy.html">Node.js</a>
+      </div>
+      <div class="">
+        <a href="/php/product-guide/latest/multitenancy.html">PHP</a>
+      </div>
+      <div class="">
+        <a href="/python/product-guide/latest/multitenancy.html">Python</a>
+      </div>
+      <div class="">
+        <a href="/rest/product-guide/latest/multitenancy.html">REST</a>
+      </div>
+      <div class="">
+        <a href="/ruby/product-guide/latest/multitenancy.html">Ruby</a>
+      </div>
+      <div class="">
+        <a href="/vbnet/product-guide/latest/multitenancy.html">Visual Basic</a>
+      </div>
+    </div>
+  </div>
+
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">1. About Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-stormpath">1.1. What is Stormpath?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="about.html#what-you-can-do-with-stormpath">1.1.1. What you can do with Stormpath</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about.html#who-should-use-stormpath">1.1.2. Who should use Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#the-stormpath-data-model">1.2. The Stormpath Data Model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">2. Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#sign-up-for-stormpath">2.1 Sign-up for Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-an-api-key-pair">2.2 Create an API Key Pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#installing-the-sdk">2.3 Installing the SDK</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#retrieve-your-application">2.4. Retrieve Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-a-user-account">2.5. Create a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#authenticate-a-user-account">2.6. Authenticate a User Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">2.7. Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="accnt_mgmt.html">3. Account Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#modeling-your-user-base">3.1. Modeling Your User Base</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#directories">3.1.1. Directories</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#types-of-directories">Types of Directories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#cloud-directories">Cloud Directories</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#mirror-directories">Mirror Directories</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#groups">3.1.2. Groups</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#modeling-user-hierarchies-using-groups">Modeling User Hierarchies Using Groups</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#how-to-create-a-group">How to Create a Group</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-store-accounts-in-stormpath">3.2. How to Store Accounts in Stormpath</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#new-account-creation">3.2.1. New Account Creation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#add-a-new-account-to-a-directory">Add a New Account to a Directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#add-an-existing-account-to-a-group">Add an Existing Account to a Group</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#adding-a-new-account-or-group-to-an-application-or-organization">Adding a new Account or Group to an Application or Organization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#importing-accounts">3.2.2. Importing Accounts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#importing-accounts-with-plaintext-passwords">Importing Accounts with Plaintext Passwords</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#importing-accounts-with-supported-password-hashes">Importing Accounts with Supported Password Hashes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#importing-accounts-with-unsupported-password-hashes">Importing Accounts with Unsupported Password Hashes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#how-to-store-additional-user-information-as-custom-data">3.2.3. How to Store Additional User Information as Custom Data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-search-accounts">3.3. How to Search Accounts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#example-account-searches">3.3.1. Example Account Searches</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#search-an-application-s-accounts-for-a-particular-word">Search an Application&#8217;s Accounts for a Particular Word</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#find-all-the-disabled-accounts-in-a-directory">Find All the Disabled Accounts in a Directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#find-all-accounts-in-a-directory-that-were-modified-on-a-particular-day">Find All Accounts in a Directory That Were Modified on a Particular Day</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#searching-for-accounts-with-custom-data">3.3.2. Searching for Accounts with Custom Data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-manage-an-account-s-password">3.4. How to Manage an Account&#8217;s Password</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#manage-password-policies">3.4.1. Manage Password Policies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#change-an-account-s-password">3.4.2. Change an Account&#8217;s Password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#password-reset">3.4.3. Password Reset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#how-to-reset-a-password">How to Reset a Password</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#manage-password-reset-emails">Manage Password Reset Emails</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#password-reset-email-templates">Password Reset Email Templates</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#how-to-find-when-an-account-s-password-was-changed">3.4.4. How to Find When An Account&#8217;s Password Was Changed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#how-to-restrict-password-reuse">3.4.5. How to Restrict Password Reuse</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-manage-an-account-s-required-attributes">3.5. How to Manage an Account&#8217;s Required Attributes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#retrieving-your-directory-s-account-schema">3.5.1. Retrieving your Directory&#8217;s Account Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#modifying-your-directory-s-account-schema">3.5.2. Modifying your Directory&#8217;s Account Schema</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#how-to-verify-an-account-s-email">3.6. How to Verify an Account&#8217;s Email</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#the-email-verification-workflow">3.6.1. The Email Verification Workflow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#the-account-verification-base-url">The Account Verification Base URL</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#configuring-the-verification-workflow">3.6.2. Configuring the Verification Workflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#triggering-the-verification-email-creating-a-token">3.6.3. Triggering the Verification Email (Creating A Token)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#verifying-the-email-address-consuming-the-token">3.6.4. Verifying the Email Address (Consuming The Token)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#resending-the-verification-email">3.6.5. Resending the Verification Email</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#customizing-stormpath-emails">3.7. Customizing Stormpath Emails</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#what-emails-does-stormpath-send">3.7.1. What Emails Does Stormpath Send?</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#id6">Account Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#id7">Password Reset</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#customizing-stormpath-email-templates">3.7.2. Customizing Stormpath Email Templates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#using-email-macros">Using Email Macros</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#customizing-your-smtp-server">3.7.3. Customizing Your SMTP Server</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#adding-a-new-custom-server">Adding a new Custom Server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#deleting-a-custom-server">Deleting a Custom Server</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#restricting-user-email-domains">3.7.4 Restricting User Email Domains</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#domain-entries">Domain Entries</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#working-with-the-lists">Working with the Lists</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="accnt_mgmt.html#account-linking">3.8. Account Linking</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#how-login-works-with-linked-accounts">How Login Works with Linked Accounts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#application-vs-organization-account-linking-policies">Application vs Organization Account Linking Policies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#example-login-behaviors">Example Login Behaviors</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#how-to-link-accounts-manually">How to Link Accounts Manually</a></li>
+<li class="toctree-l3"><a class="reference internal" href="accnt_mgmt.html#how-to-link-accounts-automatically">How to Link Accounts Automatically</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#what-s-in-the-account-linking-policy">What&#8217;s in the Account Linking Policy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#account-matching-and-account-verification">Account Matching and Account Verification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#example-scenario-1">Example Scenario 1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="accnt_mgmt.html#example-scenario-2">Example Scenario 2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auth_n.html">4. Authenticating Accounts with Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#how-password-authentication-works-in-stormpath">4.1. How Password Authentication Works in Stormpath</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#authenticating-an-account">4.1.1. Authenticating An Account</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#how-login-attempts-work-in-stormpath">4.1.2. How Login Attempts Work in Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#manage-who-can-log-into-your-application">4.1.3. Manage Who Can Log Into Your Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#mapping-a-new-account-store">Mapping a new Account Store</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#updating-an-existing-account-store">Updating an Existing Account Store</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#how-token-based-authentication-works">4.2. How Token-Based Authentication Works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#introduction-to-token-based-authentication">4.2.1. Introduction to Token-Based Authentication</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#why-oauth-2-0">Why OAuth 2.0?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#what-tokens-are-available-for-token-based-authentication">What Tokens Are Available for Token-Based Authentication?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#using-stormpath-for-token-based-authentication">4.2.2. Using Stormpath for Token-Based Authentication</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#configuring-token-based-authentication">Configuring Token-Based Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#generating-an-oauth-2-0-access-token">Generating an OAuth 2.0 Access Token</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#validating-an-access-token">Validating an Access Token</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#refreshing-access-tokens">Refreshing Access Tokens</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#revoking-access-and-refresh-tokens">Revoking Access and Refresh Tokens</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#how-social-authentication-works">4.3. How Social Authentication Works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#google">4.3.1. Google</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-1-create-a-social-directory-for-google">Step 1: Create a Social Directory for Google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-2-map-the-google-directory-as-an-account-store-for-your-application">Step 2: Map the Google Directory as an Account Store for Your Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-3-access-an-account-with-google-tokens">Step 3: Access an Account with Google Tokens</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#facebook">4.3.2. Facebook</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-1-create-a-social-directory-for-facebook">Step 1: Create a Social Directory for Facebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-2-map-the-facebook-directory-as-an-account-store-for-your-application">Step 2: Map the Facebook Directory as an Account Store for Your Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-3-access-an-account-with-facebook-tokens">Step 3: Access an Account with Facebook Tokens</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#github">4.3.3. Github</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-1-create-a-social-directory-for-github">Step 1: Create a Social Directory for GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-2-map-the-github-directory-as-an-account-store-for-your-application">Step 2: Map the GitHub Directory as an Account Store for Your Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-3-access-an-account-with-github-tokens">Step 3: Access an Account with GitHub Tokens</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#linkedin">4.3.4 LinkedIn</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-1-create-a-social-directory-for-linkedin">Step 1: Create a Social Directory for LinkedIn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-2-map-the-linkedin-directory-as-an-account-store-for-your-application">Step 2: Map the LinkedIn Directory as an Account Store for Your Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-3-access-an-account-with-linkedin-tokens">Step 3: Access an Account with LinkedIn Tokens</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#authenticating-against-an-ldap-directory">4.4. Authenticating Against an LDAP Directory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#the-ldap-authentication-flow">The LDAP Authentication Flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#mirror-directories-and-ldap">Mirror Directories and LDAP</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#setting-up-login-with-ldap">Setting Up Login With LDAP</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-1-create-an-ldap-directory">Step 1: Create an LDAP Directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-2-install-your-ldap-agent">Step 2: Install your LDAP Agent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-3-map-the-ldap-directory-as-an-account-store-for-your-application">Step 3: Map the LDAP Directory as an Account Store for Your Application</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#authenticating-against-a-saml-directory">4.5. Authenticating Against a SAML Directory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#stormpath-as-a-service-provider">4.5.1. Stormpath as a Service Provider</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#identity-provider-initiated-saml-authentication">Identity Provider Initiated SAML Authentication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#service-provider-initiated-saml-authentication">Service Provider Initiated SAML Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#configuring-saml">4.5.2. Configuring SAML</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#salesforce">Salesforce</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#onelogin">OneLogin</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#okta">Okta</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#ping">Ping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#active-directory-federation-services">Active Directory Federation Services</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#azure-active-directory">Azure Active Directory</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#configuring-saml-via-rest">4.5.3. Configuring SAML via REST</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-1-gather-idp-data">Step 1: Gather IDP Data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-2-configure-your-saml-directory">Step 2: Configure Your SAML Directory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-3-retrieve-your-service-provider-metadata">Step 3: Retrieve Your Service Provider Metadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-4-configure-your-service-provider-in-your-identity-provider">Step 4: Configure Your Service Provider in Your Identity Provider</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-5-configure-your-application">Step 5: Configure Your Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-6-add-the-saml-directory-as-an-account-store">Step 6: Add the SAML Directory as an Account Store</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-7-configure-saml-attribute-mapping-optional">Step 7: Configure SAML Attribute Mapping (Optional)</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#the-stormpath-saml-flow">4.5.4. The Stormpath SAML Flow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#the-identity-provider-initiated-flow">The Identity Provider Initiated Flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-1-identity-provider-login">Step 1: Identity Provider Login</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-2-redirect-to-assertion-consumer-service-url">Step 2: Redirect to Assertion Consumer Service URL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-3-stormpath-response-with-jwt">Step 3: Stormpath Response with JWT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#the-service-provider-initiated-flow">The Service Provider Initiated Flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-1-generate-a-jwt">Step 1: Generate a JWT</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-2-initiate-the-flow">Step 2: Initiate the flow</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-3-redirection">Step 3: Redirection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-4-identity-provider-login">Step 4: Identity Provider Login</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-5-redirect-to-assertion-consumer-service-url">Step 5: Redirect to Assertion Consumer Service URL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#step-6-stormpath-response-with-jwt">Step 6: Stormpath Response with JWT</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#using-multi-factor-authentication">4.6. Using Multi-Factor Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#enrolling-an-additional-factor">4.6.1. Enrolling an Additional Factor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#adding-an-sms-factor">Adding an SMS Factor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#adding-a-google-authenticator-factor">Adding a Google Authenticator Factor</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#challenging-a-factor">4.6.2. Challenging a Factor</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#challenging-after-factor-creation">Challenging After Factor Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#challenging-during-factor-creation">Challenging During Factor Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#challenging-a-factor-after-login">Challenging a Factor After Login</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#how-api-key-authentication-works-in-stormpath">4.7. How API Key Authentication Works in Stormpath</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#how-to-use-api-key-and-secret-authentication">4.7.1. How to use API Key and Secret Authentication</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#create-an-api-key-for-an-account">Create an API Key for an Account</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#managing-api-keys">Managing API Keys</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#how-to-authenticate-using-http-basic">4.7.2. How to Authenticate Using HTTP Basic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#how-to-exchange-an-api-key-for-an-access-token">4.7.3. How to Exchange an API Key for an Access Token</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth_n.html#how-to-authenticate-using-http-bearer-access-tokens">4.7.4. How to Authenticate Using HTTP Bearer Access Tokens</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auth_z.html">5. Authorization With Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auth_z.html#what-is-authorization">5.1. What is Authorization?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="auth_z.html#simple-authorization">5.1.1. Simple Authorization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auth_z.html#permissions-based-authorization">5.1.2. Permissions-based Authorization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="auth_z.html#modeling-authorization-in-stormpath">5.2. Modeling Authorization in Stormpath</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="auth_z.html#how-to-use-groups-to-model-authorization-roles">5.2.1. How to Use Groups to Model Authorization Roles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_z.html#application-wide-roles">Application-Wide Roles</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="auth_z.html#using-permissions">5.2.2. Using Permissions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="auth_z.html#how-to-model-fine-grained-permissions">How to Model Fine-Grained Permissions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_z.html#checking-user-and-role-permissions">Checking User and Role Permissions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Multi-Tenancy with Stormpath</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-a-multi-tenant-application">6.1. What Is a Multi-Tenant Application?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modeling-tenants-in-stormpath">6.2. Modeling Tenants in Stormpath</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multi-tenancy-and-the-stormpath-data-model">6.2.1 Multi-Tenancy and the Stormpath Data Model</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#why-use-organizations">Why use Organizations?</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#account-store-strategies-for-multi-tenancy">6.2.1. Account Store Strategies for Multi-Tenancy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#strategy-1-directory-per-organization">Strategy 1: Directory per Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#strategy-2-group-per-organization">Strategy 2: Group per Organization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#working-with-organizations">6.2.2. Working with Organizations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#how-to-create-an-organization">How to Create an Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-an-account-store-to-an-organization">Adding an Account Store to an Organization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#registering-an-organization-as-an-account-store-for-an-application">Registering an Organization as an Account Store for an Application</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-an-account-to-an-organization">Adding an Account to an Organization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#authenticating-an-account-against-an-organization">6.3. Authenticating an Account against an Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#routing-users-to-their-tenant">6.4 Routing Users to their Tenant</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#sub-domain">6.4.1. Sub-Domain</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#separate-domain-space">Separate Domain Space</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#combine-with-login-form-field">Combine With Login Form Field</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#login-form-field">6.4.2. Login Form Field</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="idsite.html">7. Using ID Site</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#what-is-an-id-site">7.1. What is an ID Site?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="idsite.html#why-should-i-use-stormpath-id-site">Why should I use Stormpath ID Site?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="idsite.html#browser-support">Browser Support</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#how-does-id-site-work">7.2. How does ID Site Work?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#idsite-set-up">7.3. ID Site Set Up</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="idsite.html#setting-up-your-id-site">7.3.1. Setting Up Your ID Site</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="idsite.html#setting-your-own-custom-domain-name-and-ssl-certificate">Setting Your Own Custom Domain Name and SSL Certificate</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="idsite.html#setting-up-your-application-to-use-id-site">Setting up your Application to use ID Site</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#using-id-site-via-language">7.4. Using ID Site Via Node.js</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="idsite.html#step-1-getting-a-user-to-id-site">Step 1: Getting a User to ID Site</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="idsite.html#step-2-handling-the-callback-to-your-application-from-id-site">Step 2: Handling the Callback to your Application from ID Site</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="idsite.html#exchanging-the-id-site-jwt-for-an-oauth-token">Exchanging the ID Site JWT for an OAuth Token</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="idsite.html#step-3-optional-logging-out-of-id-site">Step 3: (Optional) Logging Out of ID Site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="idsite.html#resetting-your-password-with-id-site">Resetting Your Password with ID Site</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#using-id-site-for-multi-tenancy">7.5. Using ID Site for Multi-tenancy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#idsite-sso">7.6. ID Site &amp; Single Sign-On</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#idsite-hosting">7.7. ID Site Hosting Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#required-api-credentials">1. Required API Credentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#setting-up-caching">2. Setting Up Caching</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#memcached">Memcached</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#redis">Redis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#other-caches">Other Caches</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#using-a-different-environment">3. Using a Different Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#configuration-sources">4. Configuration Sources</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#environment-variables">4.1. Environment Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#yaml-json-markup-file">4.2. YAML/JSON Markup File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#api-credentials-file">4.3. API Credentials File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#inline-code-configuration">4.4. Inline Code Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#configuration-reference">5. Configuration Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#api-credentials">API Credentials</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html#id4">Environment Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html#yaml-file">YAML File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html#json-file">JSON File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html#inline-code">Inline Code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#base-url">Base URL</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html#id6">Environment Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html#id7">YAML File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html#id8">JSON File</a></li>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html#id9">Inline Code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#cache-manager">Cache Manager</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#connection-timeout">Connection Timeout</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html#id17">Inline Code</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#authentication-scheme">Authentication Scheme</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#http-proxy">HTTP Proxy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="configuration.html#id25">Inline Code</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="errors.html">Stormpath Error Codes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#x-communication">110X: Communication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-1100">Error 1100</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-1101">Error 1101</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-billing-payment">19XX: Billing / Payment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-1900">Error 1900</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-1902">Error 1902</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-1903">Error 1903</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-1904">Error 1904</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-1905">Error 1905</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-1906">Error 1906</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-1910">Error 1910</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-general-validation">2XXX: General Validation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2000">Error 2000</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2001">Error 2001</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2002">Error 2002</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2003">Error 2003</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2004">Error 2004</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2005">Error 2005</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2006">Error 2006</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2007">Error 2007</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2008">Error 2008</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2009">Error 2009</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2010">Error 2010</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2011">Error 2011</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2012">Error 2012</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2013">Error 2013</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2014">Error 2014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2015">Error 2015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2016">Error 2016</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2017">Error 2017</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2020">Error 2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2021">Error 2021</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2022">Error 2022</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2100">Error 2100</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2101">Error 2101</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2102">Error 2102</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2103">Error 2103</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2104">Error 2104</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2105">Error 2105</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2106">Error 2106</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2107">Error 2107</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-2108">Error 2108</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-custom-data">3XXX: Custom Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-3000">Error 3000</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-3001">Error 3001</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-3002">Error 3002</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-3003">Error 3003</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-3004">Error 3004</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#x-tenant">400X: Tenant</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4001">Error 4001</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4002">Error 4002</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-organization">4XXX: Organization</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4520">Error 4520</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4600">Error 4600</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4601">Error 4601</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4602">Error 4602</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4603">Error 4603</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4604">Error 4604</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4605">Error 4605</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4606">Error 4606</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4608">Error 4608</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4610">Error 4610</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4612">Error 4612</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#id1">4614</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-4700">Error 4700</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-application">5XXX: Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5010">Error 5010</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5100">Error 5100</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5101">Error 5101</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5102">Error 5102</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5103">Error 5103</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5104">Error 5104</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5105">Error 5105</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5106">Error 5106</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5108">Error 5108</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5110">Error 5110</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5112">Error 5112</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5114">Error 5114</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5116">Error 5116</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5117">Error 5117</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5118">Error 5118</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5119">Error 5119</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5120">Error 5120</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5121">Error 5121</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5122">Error 5122</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-5200">Error 5200</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-directory">6XXX: Directory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-6100">Error 6100</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-6101">Error 6101</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-6201">Error 6201</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-6202">Error 6202</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-6203">Error 6203</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-account">7XXX: Account</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7100">Error 7100</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7101">Error 7101</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7102">Error 7102</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7103">Error 7103</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7104">Error 7104</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7105">Error 7105</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7106">Error 7106</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7107">Error 7107</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7200">Error 7200</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7201">Error 7201</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7202">Error 7202</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7205">Error 7205</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7206">Error 7206</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7301">Error 7301</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7500">Error 7500</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7501">Error 7501</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7502">Error 7502</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7503">Error 7503</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7504">Error 7504</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-7505">Error 7505</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-agent">9XXX: Agent</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-9000">Error 9000</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-9001">Error 9001</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-9002">Error 9002</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-9003">Error 9003</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-9004">Error 9004</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-9005">Error 9005</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-9006">Error 9006</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-oauth-errors">100XX: OAuth Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-10010">Error 10010</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-10011">Error 10011</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-10012">Error 10012</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-10013">Error 10013</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-10014">Error 10014</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-10015">Error 10015</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-10016">Error 10016</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-10017">Error 10017</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-saml-errors">101XX: SAML Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-10100">Error 10100</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-10101">Error 10101</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-10102">Error 10102</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-token-errors">110XX: Token Errors</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-11001">Error 11001</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-11002">Error 11002</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-11003">Error 11003</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-11004">Error 11004</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-11005">Error 11005</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-id-site-jwt">120XX: ID Site JWT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-12001">Error 12001</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-12002">Error 12002</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xx-smtp-server">130XX: SMTP Server</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13000">Error 13000</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13001">Error 13001</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13002">Error 13002</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13003">Error 13003</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="errors.html#xxx-multi-factor-authentication">13XXX: Multi-Factor Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13100">Error 13100</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13101">Error 13101</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13102">Error 13102</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13103">Error 13103</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13104">Error 13104</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13105">Error 13105</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13106">Error 13106</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13107">Error 13107</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13108">Error 13108</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13109">Error 13109</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13110">Error 13110</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13111">Error 13111</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13112">Error 13112</a></li>
+<li class="toctree-l3"><a class="reference internal" href="errors.html#error-13113">Error 13113</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+  
+
+  
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Stormpath Node.js Documentation</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>6. Multi-Tenancy with Stormpath</li>
+    <li class="wy-breadcrumbs-aside">
+      
+          
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="multi-tenancy-with-stormpath">
+<span id="multitenancy"></span><h1>6. Multi-Tenancy with Stormpath<a class="headerlink" href="#multi-tenancy-with-stormpath" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-a-multi-tenant-application">
+<h2>6.1. What Is a Multi-Tenant Application?<a class="headerlink" href="#what-is-a-multi-tenant-application" title="Permalink to this headline">¶</a></h2>
+<p>Is your application a multi-tenant application? If you already know, then feel free to <a class="reference internal" href="#multitenancy-modeling"><span class="std std-ref">skip this section</span></a>. If you are unsure, there are two questions that might clarify the issue for you. The first pertains to your application architecture, and the second to your application&#8217;s relationship to its users.</p>
+<p><strong>Will your application&#8217;s customers share the same infrastructure?</strong></p>
+<p>The best way to understand this first aspect of multi-tenancy is by thinking of a condo: lots of residents making use of a shared building infrastructure while maintaining their own private and secure living areas. Similar to this, a <strong>multi-tenant application</strong> is a single application infrastructure that services multiple organization tenants simultaneously.</p>
+<p>For example, if you are creating your own cloud-based team chat application, you will have multiple organizations connecting to the same servers and databases, and using the same basic application code. The infrastructure, both hardware and software, will be shared among all of your customers.</p>
+<p>However, there are plenty of cloud-based services that are not multi-tenant! So now we need to ask another question.</p>
+<p><strong>If your application offered subscriptions, would those be paid by individuals or organizations?</strong></p>
+<p>Perhaps your application will be totally free to use, but don&#8217;t worry, payment here is simply a way of understand the relationship your users have to your application.</p>
+<p>Consider the difference between two internet chat applications: WhatsApp and Slack. When WhatsApp briefly offered a paid subscription, it was paid on a per-account basis. With Slack, an individual user can&#8217;t pay for a subscription, that has to happen on the Team level. So what&#8217;s the difference here?</p>
+<p>WhatsApp is not a multi-tenant application, because every user&#8217;s relationship to the application only exists in that simple connection: A user has a WhatsApp account. WhatsApp is a &#8220;multi-user&#8221; application, but it is not a &#8220;multi-tenant&#8221; application.</p>
+<p>Tenants are organizations of people who use your application in some shared way. So Slack calls their tenants &#8220;Teams&#8221;, and when you log in to Slack you are also logging in to a Team. This also means that a user cannot create an account with Slack, they must create an account with a Slack Team. So, with WhatsApp, a user has a WhatsApp account. With Slack, a user belongs to a Slack Team, and then has an Account within that Team.</p>
+<p>If your application is offering (1) shared software and hardware infrastructure to (2) client organizations, then you have a multi-tenant application! Now, for privacy and security purposes, it&#8217;s very important that your application maintain data segmentation between its multiple tenants. At Stormpath, this segmentation is baked-in to everything that we offer.</p>
+</div>
+<div class="section" id="modeling-tenants-in-stormpath">
+<span id="multitenancy-modeling"></span><h2>6.2. Modeling Tenants in Stormpath<a class="headerlink" href="#modeling-tenants-in-stormpath" title="Permalink to this headline">¶</a></h2>
+<p>Now that we have an understanding of what a multi-tenant application is we can move on to the next important step, which is understanding how your multi-tenant userbase can be modeled using Stormpath&#8217;s Data model.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Stormpath&#8217;s data model is designed to be as flexible (and therefore powerful) as it can be. If at any point you have a question, do not hesitate to <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">get in touch</a>.</p>
+</div>
+<div class="section" id="multi-tenancy-and-the-stormpath-data-model">
+<h3>6.2.1 Multi-Tenancy and the Stormpath Data Model<a class="headerlink" href="#multi-tenancy-and-the-stormpath-data-model" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s start with a quick overview of the Stormpath resources involved in a multi-tenant data model, starting with the one resource that is purpose-built for multi-tenancy:</p>
+<p><strong>Organizations</strong></p>
+<p>Organizations are the most important modeling resource for multi-tenancy, as each Stormpath Organization maps to one of your application&#8217;s tenants. They serve as the first point of contact between your Application resource and the rest of your user base, so any login attempts to Stormpath will first be directed to an Organization. The Organization will then in turn use either Directories or Groups to store its user Accounts.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p><strong>Remember:</strong> Stormpath itself is a multi-tenant application, so your Stormpath Tenant resource represents your space within Stormpath.</p>
+<p class="last">Your application&#8217;s tenants are represented by Organization resources. Do not confuse the two! The Stormpath Tenant has almost no relevance to this multi-tenancy discussion, which is about your application&#8217;s tenants.</p>
+</div>
+<p>For more about user log-in, see <a class="reference internal" href="#multitenancy-auth-to-org"><span class="std std-ref">6.3. Authenticating an Account against an Organization</span></a> below.</p>
+<p>For more information about the Organization resource, see:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#multitenancy-why-orgs"><span class="std std-ref">Why use Organizations?</span></a></li>
+<li><a class="reference internal" href="#multitenancy-organizations"><span class="std std-ref">Working With Organizations</span></a></li>
+</ul>
+<p><strong>Directories</strong></p>
+<p>Directories are the the top-level Account Store for both Accounts and Groups. All of your Accounts will have to exist inside a Directory. Here is a very simple example of how an Application, Organization and Directory can relate to one another:</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/simple_ERD_TpD.png"><img alt="Directory with Organization and Application" src="_images/simple_ERD_TpD.png" style="width: 191.07px; height: 326.37px;" /></a>
+<p class="caption"><span class="caption-text"><em>Application + Organization + Directory</em></span></p>
+</div>
+<p>A few more relevant points about the Directory resource:</p>
+<ul class="simple">
+<li>All Accounts within a Directory must have a unique email address</li>
+<li>All Groups within a Directory must have a unique name</li>
+<li>Password and Account Creation Policies are defined on a per-Directory basis</li>
+<li>Emails are configured on a per-Directory basis</li>
+</ul>
+<p>Whether you choose to have one Directory for each Organization, or multiple Organizations within one Directory depends on your requirements. More on that distinction can be found <a class="reference internal" href="#multitenancy-strategies"><span class="std std-ref">below</span></a>.</p>
+<p><strong>Groups</strong></p>
+<p>Groups must always belong to a Directory, but they are otherwise very flexible. Specifically, they have two functions worth mentioning in this context.</p>
+<ul class="simple">
+<li>First of all, Groups can be the primary Account Store for your Organization: So you could have one Directory for your application, and then one Group for each tenant Organization. More on this <a class="reference internal" href="#multitenancy-strategies"><span class="std std-ref">below</span></a>.</li>
+<li>Secondly, Groups can also be used to model user roles, like an &#8220;admin&#8221; user role. Below you can find a simple diagram with a Group being used both to model a tenant and a role:</li>
+</ul>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/simple_ERD_TpG.png"><img alt="Group with Directory, Organization, and Application" src="_images/simple_ERD_TpG.png" style="width: 259.05px; height: 435.6px;" /></a>
+<p class="caption"><span class="caption-text"><em>Application + Organization + Directory</em></span></p>
+</div>
+<div class="section" id="why-use-organizations">
+<span id="multitenancy-why-orgs"></span><h4>Why use Organizations?<a class="headerlink" href="#why-use-organizations" title="Permalink to this headline">¶</a></h4>
+<p>At this point, it might seem like all your tenants need are Account Stores for their users, so Organizations might seem like an additional and unnecessary layer of complexity. So what is the point of using Organizations?</p>
+<p>The Organization resource allows your application&#8217;s tenants to have as many, or as few, Directories and Groups as they want, while also maintaining strict data segregation. So if a tenant requires a Cloud Directory, a Google Social Directory, and an LDAP Directory, all of these can sit under the umbrella of a single Organization resource that represents their data space in your app.</p>
+<p>Although Organizations do not themselves own Accounts in the same way as Directories and Groups, they can be mapped to Applications as Account Stores for the purposes of user log in. This means that they can be used as, among other things, a single-point of access control to an Application. For example, if you wanted to enable login for a new tenant in your multi-tenant application, all you would have to do is map all of the relevant Directories and/or Groups to your Organization, and then map that Organization to your Application as an Account Store. If at some future point you want to disable that tenant, all you have to do is remove the Account Store Mapping between that Organization and your Application, and the tenant&#8217;s users would no longer be able to log in.</p>
+</div>
+</div>
+<div class="section" id="account-store-strategies-for-multi-tenancy">
+<span id="multitenancy-strategies"></span><h3>6.2.1. Account Store Strategies for Multi-Tenancy<a class="headerlink" href="#account-store-strategies-for-multi-tenancy" title="Permalink to this headline">¶</a></h3>
+<p>Your primary consideration when modeling users in Stormpath always begins with the Directory that will contain the user Accounts. With multi-tenancy, you always have one Organization resource for every one of your tenants. The additional consideration is whether each of those Organizations has its own Directory, or whether all Organizations share a single Directory.</p>
+<p>To help you decide which strategy is best, answer the following questions:</p>
+<ul class="simple">
+<li><strong>Can a user only sign-up for one tenant with a particular email address?</strong> (As opposed to being able to use the same email address to access multiple tenants)</li>
+<li><strong>Will your tenants all have different password strength requirements?</strong></li>
+</ul>
+<p>If the answer to either of these questions is &#8220;Yes&#8221;, then you will want to map each Organization to its own Directory. We will call this the <a class="reference internal" href="#multitenancy-dpo"><span class="std std-ref">&#8220;Directory per Organization&#8221; strategy</span></a>.</p>
+<p>If the answer to either of them is &#8220;No&#8221;, then you will want to have only one Directory, and map each Organization to its own Group. We will call this the <a class="reference internal" href="#multitenancy-gpo"><span class="std std-ref">&#8220;Group per Organization&#8221; strategy</span></a>.</p>
+<p>The reasoning here is very simple: because Stormpath stores certain things on the Directory resource, if you want each of your tenants to be able to customize things that are stored on the Directory level, then each one will need their own Directory!</p>
+<div class="section" id="strategy-1-directory-per-organization">
+<span id="multitenancy-dpo"></span><h4>Strategy 1: Directory per Organization<a class="headerlink" href="#strategy-1-directory-per-organization" title="Permalink to this headline">¶</a></h4>
+<p>This first strategy has, as the name implies, one Directory for every tenant Organization. A few questions to think about this for this strategy:</p>
+<p><strong>If a user has signed up for an Account with one of your tenants, are they able to use that same email to create an Account in another tenant?</strong></p>
+<p>All Accounts within a Directory must have a unique <code class="docutils literal"><span class="pre">email</span></code>, but no such restriction exists between Directories. So if you want to allow people to use the same email to create separate Accounts for each of your tenants, this is the right strategy.</p>
+<p><strong>Should each tenant have the ability to define their own password strength policy?</strong></p>
+<p>Password Policy is defined off of the Directory, so if each tenant has their own Directory, they also can configure their own Password Policy.</p>
+<p><strong>Should each tenant have the ability to send different emails as part of the user Account creation process?</strong></p>
+<p>The automated emails that Stormpath sends as part of user registration are also defined on the Directory.</p>
+<p><strong>Do you not require application-wide Groups that are available for all tenants?</strong></p>
+<p>Groups exist within Directories, so having Groups associated with multiple tenants is only possible when those tenants as represented as Groups, not Directories.</p>
+<div class="section" id="directory-per-organization-example">
+<h5>Directory per Organization Example<a class="headerlink" href="#directory-per-organization-example" title="Permalink to this headline">¶</a></h5>
+<p>Here is an example implementation that uses Directories to model tenants. It is important to note that this is just an example. Stormpath has a very flexible data model with intentionally versatile resources. If you&#8217;d like to discuss your particular implementation needs please <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">get in touch</a>!</p>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="_images/ERD_TpD.png"><img alt="Tenant per Directory" src="_images/ERD_TpD.png" style="width: 1248.3px; height: 996.3px;" /></a>
+<p class="caption"><span class="caption-text"><em>Directory per Organization ERD.</em></span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Everything discussed occurs inside the private data space that we refer to as your Stormpath Tenant, which is represented by the Tenant resource but does not play any part in multi-tenancy.</p>
+</div>
+<p>The scenario demonstrates a multi-tenant userbase with two tenants, each of which is represented by their own Organization resource. Each tenant Organization in turn uses a Directory as its Account Store. There are a few points to highlight in this diagram:</p>
+<ul class="simple">
+<li>The ability to log into the &#8220;Lighting Banking&#8221; application is controlled by the Account Store Mappings that exist between the Application resource and the Organization resources. To enable or disable a tenant (and its userbase) from logging-in, all you would have to do is enable or disable this Account Store Mapping.</li>
+<li>If Claire wanted to create another Account with Bank of B using the same email address, she would be allowed to, since email uniqueness is enforced only inside a Directory.</li>
+<li>Any role Groups must be created separately, on a per-Directory basis. If you decided to create a new role, a new Group resource representing that role would have to be added to each of your tenant Directories if you wanted the Accounts in that Directory to be able to be assigned that role.</li>
+<li>In order to allow Application Administrators to log in to the app, you&#8217;d have to create a new Directory just for them, which is separately mapped to the Application as an Account Store. Since this Directory does not represent a tenant, no Organization resource is created.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="strategy-2-group-per-organization">
+<span id="multitenancy-gpo"></span><h4>Strategy 2: Group per Organization<a class="headerlink" href="#strategy-2-group-per-organization" title="Permalink to this headline">¶</a></h4>
+<p>The other multi-tenancy option is to have a single Directory under which each of your application&#8217;s tenants has their own Group. A few questions to think about this for this strategy:</p>
+<p><strong>Do you want to guarantee email and username uniqueness across all tenants?</strong></p>
+<p>With this strategy, all of your user Accounts are contained within the same Directory, so no two Accounts can have the same email address. This means you can create unified cross-tenant user identities, which allows for things like single-sign-on and account sharing between tenants on your application.</p>
+<p><strong>Do all tenants share password and email policies?</strong></p>
+<p>These policies are configured on the Directory. Since all of your tenants will be represented by Groups inside one Directory, they will all share one password policy, and one email policy.</p>
+<p><strong>Do you want to ensure that tenant names are unique?</strong></p>
+<p>Since the Group <code class="docutils literal"><span class="pre">name</span></code> must be unique within a Directory, you can guarantee that your tenants names will not be duplicates.</p>
+<p><strong>You want to have application-wide roles that span across tenants.</strong></p>
+<div class="section" id="tenants-as-groups-example">
+<h5>Tenants as Groups Example<a class="headerlink" href="#tenants-as-groups-example" title="Permalink to this headline">¶</a></h5>
+<p>Below we have an example of an implementation that uses Groups to model tenants. This shows just one possible scenario, and if you&#8217;d like to discuss your particular implementation needs please <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">get in touch</a>!</p>
+<div class="figure align-center" id="id5">
+<a class="reference internal image-reference" href="_images/ERD_TpG.png"><img alt="Tenant per Group" src="_images/ERD_TpG.png" style="width: 1422.9px; height: 1064.7px;" /></a>
+<p class="caption"><span class="caption-text"><em>Tenants as Groups ERD</em></span></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Once again, everything here is happening inside your private Stormpath Tenant, not to be confused with your application&#8217;s tenants!</p>
+</div>
+<p>Just as with the Tenants-as-Directories strategy, every Tenant is modeled by its own dedicated Organization, but in this case each Organization uses the same Directory as its Account Store. The different tenant&#8217;s user Accounts are instead organized using Groups. This all means that:</p>
+<ul class="simple">
+<li>You can still control access to the Application by enabling or disabling the Account Store Mappings between the Organizations and the Application resource.</li>
+<li>If Claire tried to create another Account with Bank of B using the same email address she&#8217;d used with Bank of A, she would be unable to, since emails must be unique within a Directory.</li>
+<li>If there were a role Group that you wanted to be shared among the tenants, it is as simple as creating one instance of it and then associating Accounts with it.</li>
+<li>Application Administrators just need their own Role Group, which is then mapped as an Account Store with the Application.</li>
+<li>Claire and Esther do not have access to your application&#8217;s Admin Console, because that is only allowed for members of the &#8220;App Admins&#8221; role Group. If, however, Claire were hired as an Application Administrator, then she could be easily added to the &#8220;App Admins&#8221; Group and inherit all of its permissions.</li>
+</ul>
+</div>
+<div class="section" id="naming-your-tenant-groups">
+<h5>Naming Your Tenant Groups<a class="headerlink" href="#naming-your-tenant-groups" title="Permalink to this headline">¶</a></h5>
+<p>As this is the most common strategy used by our customers, we have found some minor naming conventions that are very powerful and we consider to be best-practice.</p>
+<p>First of all, the name of your tenant Organization will have a unique <code class="docutils literal"><span class="pre">nameKey</span></code>, for example <code class="docutils literal"><span class="pre">bank-of-a</span></code>. This <code class="docutils literal"><span class="pre">nameKey</span></code> this can be used for organizing tenant Groups and sub-Groups.</p>
+<p>For example, if your Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">bank-of-a</span></code>, you could name the Group <code class="docutils literal"><span class="pre">bank-of-a.tenant</span></code>. If you want to create sub-Groups for roles like <code class="docutils literal"><span class="pre">users</span></code> and <code class="docutils literal"><span class="pre">admins</span></code>, we recommend that you prepend the <code class="docutils literal"><span class="pre">nameKey</span></code> to their <code class="docutils literal"><span class="pre">name</span></code> Attribute, along with a descriptive name of what kind of Group it is:</p>
+<p><code class="docutils literal"><span class="pre">bank-of-a.role.users</span></code></p>
+<p><code class="docutils literal"><span class="pre">bank-of-a.role.admin</span></code></p>
+<p>This has two benefits:</p>
+<ol class="arabic simple">
+<li>It makes it easy to find all the role Groups for that particular tenant, since you can search for the nameKey:</li>
+</ol>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">directory</span><span class="p">.</span><span class="nx">getGroups</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="o">:</span> <span class="s1">&#39;bank-of-a.role.*&#39;</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">groupsCollection</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">groupsCollection</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">group</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Found group: &#39;</span> <span class="o">+</span> <span class="nx">group</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+    <span class="nx">next</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Or, if you wanted to retrieve the tenant Group and all of its sub-Groups, make the query a little less restrictive by removing the &#8220;role&#8221;:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">directory</span><span class="p">.</span><span class="nx">getGroups</span><span class="p">({</span><span class="s1">&#39;name&#39;</span><span class="o">:</span> <span class="s1">&#39;bank-of-a.*&#39;</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">groupsCollection</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// ..</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li>It ensures that no tenant sub-Groups have name collisions between tenants.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="working-with-organizations">
+<span id="multitenancy-organizations"></span><h3>6.2.2. Working with Organizations<a class="headerlink" href="#working-with-organizations" title="Permalink to this headline">¶</a></h3>
+<p>You will recall that Organizations are umbrella entities that model your tenants in Stormpath, and allow you to better structure and control multi-tenant applications.</p>
+<div class="section" id="how-to-create-an-organization">
+<span id="create-org"></span><h4>How to Create an Organization<a class="headerlink" href="#how-to-create-an-organization" title="Permalink to this headline">¶</a></h4>
+<p>You can create an Organization in Stormpath by sending the following request:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">newOrganization</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Metal Works, Inc.&#39;</span><span class="p">,</span>
+  <span class="nx">nameKey</span><span class="o">:</span> <span class="s1">&#39;metal-works&#39;</span>
+<span class="p">};</span>
+
+<span class="nx">client</span><span class="p">.</span><span class="nx">createOrganization</span><span class="p">(</span><span class="nx">newOrganization</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">organization</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">organization</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Which would return the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">Organization</span> <span class="p">{</span>
+  <span class="nx">href</span><span class="o">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizations/5qzIudaqx3FnVZ3VuehtP7&#39;</span><span class="p">,</span>
+  <span class="nx">createdAt</span><span class="o">:</span> <span class="s1">&#39;2016-09-16T23:31:54.228Z&#39;</span><span class="p">,</span>
+  <span class="nx">modifiedAt</span><span class="o">:</span> <span class="s1">&#39;2016-09-16T23:31:54.228Z&#39;</span><span class="p">,</span>
+  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Metal Works, Inc.&#39;</span><span class="p">,</span>
+  <span class="nx">nameKey</span><span class="o">:</span> <span class="s1">&#39;metal-works&#39;</span><span class="p">,</span>
+  <span class="nx">status</span><span class="o">:</span> <span class="s1">&#39;ENABLED&#39;</span><span class="p">,</span>
+  <span class="nx">description</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nx">customData</span><span class="o">:</span>
+   <span class="nx">CustomData</span> <span class="p">{</span>
+     <span class="nx">href</span><span class="o">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizations/5qzIudaqx3FnVZ3VuehtP7/customData&#39;</span> <span class="p">},</span>
+  <span class="nx">defaultAccountStoreMapping</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nx">defaultGroupStoreMapping</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nx">accountStoreMappings</span><span class="o">:</span> <span class="p">{</span> <span class="nx">href</span><span class="o">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizations/5qzIudaqx3FnVZ3VuehtP7/accountStoreMappings&#39;</span> <span class="p">},</span>
+  <span class="nx">accountLinkingPolicy</span><span class="o">:</span> <span class="p">{</span> <span class="nx">href</span><span class="o">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/accountLinkingPolicies/5qzEaYdd8qd6Dd5RwYyQNV&#39;</span> <span class="p">},</span>
+  <span class="nx">groups</span><span class="o">:</span> <span class="p">{</span> <span class="nx">href</span><span class="o">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizations/5qzIudaqx3FnVZ3VuehtP7/groups&#39;</span> <span class="p">},</span>
+  <span class="nx">accounts</span><span class="o">:</span> <span class="p">{</span> <span class="nx">href</span><span class="o">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/organizations/5qzIudaqx3FnVZ3VuehtP7/accounts&#39;</span> <span class="p">},</span>
+  <span class="nx">tenant</span><span class="o">:</span> <span class="p">{</span> <span class="nx">href</span><span class="o">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/tenants/eU0gloBbz42wGUtGXEjED&#39;</span> <span class="p">}</span> <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-an-account-store-to-an-organization">
+<h4>Adding an Account Store to an Organization<a class="headerlink" href="#adding-an-account-store-to-an-organization" title="Permalink to this headline">¶</a></h4>
+<p>An Organization can be mapped to an Application so that users in the Organization can log-in to that application. Before you do this, you must first associate some users with the Organization so that there is someone to log in! To do this, you have to map some Account Stores to your Organization.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="c1">// The HREF of the directory that you want to map to this organization</span>
+<span class="kd">var</span> <span class="nx">directoryHref</span> <span class="o">=</span> <span class="s1">&#39;https://api.stormpath.com/v1/directories/$DIRECTORY_ID&#39;</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">accountStoreMapping</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">accountStore</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">href</span><span class="o">:</span> <span class="nx">directoryHref</span>
+  <span class="p">},</span>
+  <span class="nx">isDefaultAccountStore</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">isDefaultGroupStore</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">};</span>
+
+<span class="nx">organization</span><span class="p">.</span><span class="nx">createAccountStoreMapping</span><span class="p">(</span><span class="nx">accountStoreMapping</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Directory is mapped!&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>In order to be able to add Groups and Accounts to the Organization in the way mentioned above, we&#8217;ve marked this Account Store as our default for both Accounts and Groups by passing the <code class="docutils literal"><span class="pre">isDefaultAccountStore</span></code> and <code class="docutils literal"><span class="pre">isDefaultGroupStore</span></code> options.</p>
+<p>Our Organization now has an associated Directory which can be used as an Account Store to add new Accounts and Groups. To enable login for the Accounts in this Organization, we must now map the Organization to an Application.</p>
+</div>
+<div class="section" id="registering-an-organization-as-an-account-store-for-an-application">
+<h4>Registering an Organization as an Account Store for an Application<a class="headerlink" href="#registering-an-organization-as-an-account-store-for-an-application" title="Permalink to this headline">¶</a></h4>
+<p>As described in <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">the Authentication chapter</span></a>, in order to allow users to log-in to an Application, you must map some kind of Account Store to it. One approach is to go one-by-one and map each Directory and/or Group to the Application. However, since we are building a multi-tenant app, and the Organization is itself an Account Store, we can just map our Organization resource to our Application resource. This would enable login for all of the Directories and Groups currently inside that Organization, as well as any we add in the future.</p>
+<p>To map an Organization to an Application, follow the steps you would for any Account Store, as described in <a class="reference internal" href="auth_n.html#create-asm"><span class="std std-ref">Mapping a new Account Store</span></a>.</p>
+</div>
+<div class="section" id="adding-an-account-to-an-organization">
+<span id="add-accnt-to-org"></span><h4>Adding an Account to an Organization<a class="headerlink" href="#adding-an-account-to-an-organization" title="Permalink to this headline">¶</a></h4>
+<p>Adding a new Account to an Organization is exactly the same as adding them to a Directory, except that you use the Organization to handle the creation request:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">accountData</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">givenName</span><span class="o">:</span> <span class="s1">&#39;Joe&#39;</span><span class="p">,</span>
+  <span class="nx">surname</span><span class="o">:</span> <span class="s1">&#39;Stormtrooper&#39;</span><span class="p">,</span>
+  <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;tk421&#39;</span><span class="p">,</span>
+  <span class="nx">email</span><span class="o">:</span> <span class="s1">&#39;tk421@stormpath.com&#39;</span><span class="p">,</span>
+  <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;Changeme1&#39;</span>
+<span class="p">};</span>
+
+<span class="nx">organization</span><span class="p">.</span><span class="nx">createAccount</span><span class="p">(</span><span class="nx">accountData</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">account</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello %s&#39;</span><span class="p">,</span> <span class="nx">account</span><span class="p">.</span><span class="nx">fullName</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="authenticating-an-account-against-an-organization">
+<span id="multitenancy-auth-to-org"></span><h2>6.3. Authenticating an Account against an Organization<a class="headerlink" href="#authenticating-an-account-against-an-organization" title="Permalink to this headline">¶</a></h2>
+<p>Authenticating an Account against an Organization works essentially the same way as described in <a class="reference internal" href="auth_n.html#how-login-works"><span class="std std-ref">4.1.2. How Login Attempts Work in Stormpath</span></a>. The only difference is that adding the Organization resource allows for an additional level of Account Stores.</p>
+<p>When a login attempt is made against an Application’s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint without specifying an Account Store, Stormpath will iterate through the index of Account Stores mapped to the Application, in priority order. For every Account Store entry:</p>
+<ul class="simple">
+<li>If it is a Directory or Group, attempt to log in on that resource.</li>
+<li>If it is an Organization:<ul>
+<li>Iterate through the index of Account Stores mapped to the Organization, in priority order. For every Account Store entry:<ul>
+<li>If it is a Directory or Group, attempt to log in on that resource.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>If the login attempt does specify an Organization, then we simply jump to that point in the steps, and the Organization&#8217;s Account Stores are iterated through as described above.</p>
+</div>
+<div class="section" id="routing-users-to-their-tenant">
+<span id="multitenancy-routing-users"></span><h2>6.4 Routing Users to their Tenant<a class="headerlink" href="#routing-users-to-their-tenant" title="Permalink to this headline">¶</a></h2>
+<p>If you are designing a public multi-tenant web application that supports multiple application tenants with private data partitioning, then you will probably want some way for users to specify which tenant they are logging in to.</p>
+<p>This tenant selection also extends to the requests that the user makes. For example, let&#8217;s say we have a multi-tenant e-commerce SaaS application that shows purchase history. If a user requests the <code class="docutils literal"><span class="pre">/purchases</span></code> view, they should only be able to see the purchases specific to their organization. This means that instead of executing a query like this to a database:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">purchases</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The application needs to know the request user’s tenant identifier so they can show only the purchases for that tenant. The application might instead execute the following query:</p>
+<div class="highlight-sql"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">from</span> <span class="n">purchases</span> <span class="k">where</span> <span class="n">tenant_id</span> <span class="o">=</span> <span class="o">?</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal"><span class="pre">?</span></code> is the <code class="docutils literal"><span class="pre">tenant_id</span></code> value obtained by inspecting the request.</p>
+<p>So if an application needs this identifier with every request, how do you ensure it is transmitted to the application in the easiest possible way for your end users? The best method is to use the <a class="reference internal" href="reference.html#ref-organization"><span class="std std-ref">Organization resource</span></a> and it&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> attribute.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Stormpath&#8217;s ID Site supports multi-tenancy right out of the box. For more information about how to handle user login in a multi-tenant set-up with ID Site, please see <a class="reference internal" href="idsite.html#idsite-multitenancy"><span class="std std-ref">the ID Site chapter</span></a>.</p>
+</div>
+<p>We present here two possible solutions that use this <code class="docutils literal"><span class="pre">nameKey</span></code>. You may support both if you wish to give your customers convenience options.</p>
+<div class="section" id="sub-domain">
+<h3>6.4.1. Sub-Domain<a class="headerlink" href="#sub-domain" title="Permalink to this headline">¶</a></h3>
+<p>The first solution is to allow your users to access your application via a unique subdomain URL:</p>
+<p><code class="docutils literal"><span class="pre">https://organizationNameKey.myapplication.io</span></code></p>
+<p>The primary benefit here is that the application never needs to ask the user for the tenant identifier, because it is inherently part of every request in the <code class="docutils literal"><span class="pre">HOST</span></code> header. Also, since we are using the Organization resource&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code>, we can guarantee that the URL is unique.</p>
+<p>There are also a few other things that we recommend with this approach:</p>
+<div class="section" id="separate-domain-space">
+<h4>Separate Domain Space<a class="headerlink" href="#separate-domain-space" title="Permalink to this headline">¶</a></h4>
+<p>Keep your customer organization subdomains space completely separate from your company&#8217;s subdomain space by using a different top-level domain name for your SaaS application.</p>
+<p>So if your company&#8217;s website URL is <code class="docutils literal"><span class="pre">http://mycompany.com</span></code>, then your customers could use the <code class="docutils literal"><span class="pre">http://mycompany.io</span></code> domain space:</p>
+<p><code class="docutils literal"><span class="pre">http://customerA.mycompany.io</span></code></p>
+<p>If you use the same domain space, it is possible that one of your customer&#8217;s will end up using a subdomain that you might want to use for your company.</p>
+<p>If you didn&#8217;t want to use a separate top-level domain, you could also use sub-subdomains. For example, the app could be accessible here:</p>
+<p><code class="docutils literal"><span class="pre">http://myapp.mycompany.com</span></code></p>
+<p>And customer organization subdomains for that app would be accessible via:</p>
+<p><code class="docutils literal"><span class="pre">http://customerA.myapp.mycompany.com</span></code></p>
+<p>It is our opinion that the separate top-level domain (e.g. <code class="docutils literal"><span class="pre">http://mycompany.io</span></code>) is the nicer alternative: it is shorter, easier to remember, easier to type, and it also looks better.</p>
+</div>
+<div class="section" id="combine-with-login-form-field">
+<h4>Combine With Login Form Field<a class="headerlink" href="#combine-with-login-form-field" title="Permalink to this headline">¶</a></h4>
+<p>If a user from a customer organization ever accesses your app directly (<code class="docutils literal"><span class="pre">https://mycompany.io</span></code>) instead of using their subdomain (<code class="docutils literal"><span class="pre">https://customerA.mycompany.io</span></code>), you still might need to provide a tenant-aware login form (described below). After login, you can redirect them to their tenant-specific URL for all subsequent requests.</p>
+</div>
+</div>
+<div class="section" id="login-form-field">
+<h3>6.4.2. Login Form Field<a class="headerlink" href="#login-form-field" title="Permalink to this headline">¶</a></h3>
+<p>An alternative, or complimentary, approach to tenant subdomains is to allow the user to specify their tenant on the login page, then storing that information. Then, for all subsequent requests to your application, you can:</p>
+<ul class="simple">
+<li>Inspect the session</li>
+<li>Look up the tenant ID</li>
+<li>Customize data views and queries based on the session&#8217;s Organization</li>
+</ul>
+<p>We advise that you auto-remember the login form tenant ID value so that field is pre-populated whenever a user returns to log in. Users don’t like having to remember and type that value in every time they log in.</p>
+<p>As already mentioned, it is strongly recommended that your tenant identifier be an Organization <code class="docutils literal"><span class="pre">nameKey</span></code>. Firstly because Organizations are the recommended resource to use to model multi-tenancy, but also because the <code class="docutils literal"><span class="pre">nameKey</span></code> attribute is unique and follows the DNS specification, which means that you could at any time adopt the Sub-Domain approach mentioned above.</p>
+<p>Stormpath supports quick implementation of all of these strategies with ID Site. For more information, please see <a class="reference internal" href="idsite.html#idsite-multitenancy"><span class="std std-ref">the ID Site chapter</span></a>.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="idsite.html" class="btn btn-neutral float-right" title="7. Using ID Site" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="auth_z.html" class="btn btn-neutral" title="5. Authorization With Stormpath" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/javascript_for_java.js"></script>
+      <script type="text/javascript" src="_static/langpicker.js"></script>
+      <script type="text/javascript" src="_static/scrollspy.js"></script>
+      <script type="text/javascript" src="_static/gumshoe.min.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  
+
+</body>
+</html>
