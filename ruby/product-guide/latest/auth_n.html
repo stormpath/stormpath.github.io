@@ -2027,10 +2027,6 @@ $ startup.sh
 </div>
 <div class="section" id="using-multi-factor-authentication">
 <span id="mfa"></span><h2>4.6. Using Multi-Factor Authentication<a class="headerlink" href="#using-multi-factor-authentication" title="Permalink to this headline">¶</a></h2>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This feature is not yet available in the Ruby SDK. In the meantime you can find the REST documentation below.</p>
-</div>
 <p>At a minimum, an Account in Stormpath requires at least one authentication factor, which is the password. However, if you would like to include additional security then Stormpath supports the creation of additional authentication factors on an Account. Currently, the additional factors are:</p>
 <ul class="simple">
 <li>SMS message to a phone</li>
@@ -2057,32 +2053,47 @@ $ startup.sh
 <span id="mfa-adding-factor"></span><h3>4.6.1. Enrolling an Additional Factor<a class="headerlink" href="#enrolling-an-additional-factor" title="Permalink to this headline">¶</a></h3>
 <p>Enrolling an additional authentication factor always happens separate from Account creation, so the process is the same regardless of whether you are creating a factor for an existing Account or one that was just created. For this example, we will create a new Account in Stormpath, then add an additional Factor resource to it.</p>
 <p>First, you create the Account:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">account</span> <span class="o">=</span> <span class="n">directory</span><span class="o">.</span><span class="n">accounts</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+  <span class="ss">given_name</span><span class="p">:</span> <span class="s1">&#39;Joe&#39;</span><span class="p">,</span>
+  <span class="ss">surname</span><span class="p">:</span> <span class="s1">&#39;Factorman&#39;</span><span class="p">,</span>
+  <span class="ss">username</span><span class="p">:</span> <span class="s1">&#39;factorman&#39;</span><span class="p">,</span>
+  <span class="ss">email</span><span class="p">:</span> <span class="s1">&#39;joe.factorman@stormpath.com&#39;</span><span class="p">,</span>
+  <span class="ss">password</span><span class="p">:</span> <span class="s1">&#39;Changeme1&#39;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
 <div class="section" id="adding-an-sms-factor">
 <span id="mfa-adding-factor-sms"></span><h4>Adding an SMS Factor<a class="headerlink" href="#adding-an-sms-factor" title="Permalink to this headline">¶</a></h4>
 <p>To add an additional SMS Factor to this Account, you send the following request:</p>
-<p>You will then get back the response:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;SMS&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:34:00.881Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:34:00.881Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;verificationStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;UNVERIFIED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample&quot;</span>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">factor</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">create_factor</span><span class="p">(</span><span class="ss">:sms</span><span class="p">,</span>
+                               <span class="ss">phone</span><span class="p">:</span> <span class="p">{</span> <span class="ss">number</span><span class="p">:</span> <span class="s1">&#39;12025550173&#39;</span><span class="p">,</span>
+                                        <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;My phone&#39;</span><span class="p">,</span>
+                                        <span class="ss">description</span><span class="p">:</span> <span class="s1">&#39;This is a my phone number&#39;</span> <span class="p">},</span>
+                               <span class="ss">challenge</span><span class="p">:</span> <span class="p">{</span> <span class="ss">message</span><span class="p">:</span> <span class="s1">&#39;Enter code please: &#39;</span> <span class="p">})</span>
+</pre></div>
+</div>
+<p>For now <code class="docutils literal"><span class="pre">factor.verification_status</span></code> will return <code class="docutils literal"><span class="pre">UNVERIFIED</span></code> and <code class="docutils literal"><span class="pre">factor.most_recent_challenge</span></code> will be <code class="docutils literal"><span class="pre">nil</span></code>. If you were to create a challenge for this Factor, <code class="docutils literal"><span class="pre">factor.most_recent_challenge</span></code> would return the actual <code class="docutils literal"><span class="pre">Challenge</span></code> instance. If that challenge was successful, <code class="docutils literal"><span class="pre">factor.verification_status</span></code> would change to <code class="docutils literal"><span class="pre">VERIFIED</span></code>.</p>
+<p>You will then get back the <code class="docutils literal"><span class="pre">Stormpath::Resource::Factor</span></code> object with the following properties:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample&#39;</span><span class="p">,</span>
+  <span class="ss">type</span><span class="p">:</span> <span class="s1">&#39;SMS&#39;</span><span class="p">,</span>
+  <span class="ss">created_at</span><span class="p">:</span> <span class="s1">&#39;2016-09-22T21:34:00.881Z&#39;</span><span class="p">,</span>
+  <span class="ss">modified_at</span><span class="p">:</span> <span class="s1">&#39;2016-09-22T21:34:00.881Z&#39;</span><span class="p">,</span>
+  <span class="ss">status</span><span class="p">:</span> <span class="s1">&#39;ENABLED&#39;</span><span class="p">,</span>
+  <span class="ss">verification_status</span><span class="p">:</span> <span class="s1">&#39;UNVERIFIED&#39;</span><span class="p">,</span>
+  <span class="ss">account</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample&#39;</span>
   <span class="p">},</span>
-  <span class="nt">&quot;challenges&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample/challenges&quot;</span>
+  <span class="ss">challenges</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/factors/29b9PiAaWqr9Hanexample/challenges&#39;</span>
   <span class="p">},</span>
-  <span class="nt">&quot;phone&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/phones/29b9PeqVcGYAelhExample&quot;</span>
+  <span class="ss">phone</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/phones/29b9PeqVcGYAelhExample&#39;</span>
   <span class="p">},</span>
-  <span class="nt">&quot;mostRecentChallenge&quot;</span><span class="p">:</span> <span class="kc">null</span>
+  <span class="ss">most_recent_challenge</span><span class="p">:</span> <span class="kp">nil</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>For now the <code class="docutils literal"><span class="pre">verificationStatus</span></code> is <code class="docutils literal"><span class="pre">UNVERIFIED</span></code> and the link to the <code class="docutils literal"><span class="pre">mostRecentChallenge</span></code> is <code class="docutils literal"><span class="pre">null</span></code>. If you were to send a challenge this Factor, the <code class="docutils literal"><span class="pre">mostRecentChallenge</span></code> link would be populated. If that challenge was successful, the <code class="docutils literal"><span class="pre">verificationStatus</span></code> would change to <code class="docutils literal"><span class="pre">VERIFIED</span></code>.</p>
-<p>For more information about the Factor resource, see <a class="reference internal" href="reference.html#ref-factor"><span class="std std-ref">the Reference chapter</span></a>.</p>
 </div>
 <div class="section" id="adding-a-google-authenticator-factor">
 <span id="mfa-adding-factor-google"></span><h4>Adding a Google Authenticator Factor<a class="headerlink" href="#adding-a-google-authenticator-factor" title="Permalink to this headline">¶</a></h4>
@@ -2091,30 +2102,38 @@ $ startup.sh
 <p class="first admonition-title">Note</p>
 <p class="last">Although the <code class="docutils literal"><span class="pre">issuer</span></code> field is not required, it is recommended because it will make a name show up under the code in the Google Authenticator (or <a class="reference external" href="https://www.authy.com/tutorials/how-use-authy-google-authenticator/">similar</a>) app.</p>
 </div>
-<p>You will then get back the response:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/46EZpOuefEEooFlexample&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;google-authenticator&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:42:57.636Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T21:42:57.636Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;accountName&quot;</span><span class="p">:</span> <span class="s2">&quot;jakub@stormpath.com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;issuer&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;secret&quot;</span><span class="p">:</span> <span class="s2">&quot;OP7JZ[...]LAV&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;keyUri&quot;</span><span class="p">:</span> <span class="s2">&quot;otpauth://totp/jakub%40stormpath.com?secret=OP7JZ[...]LAV&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;base64QRImage&quot;</span><span class="p">:</span> <span class="s2">&quot;iVBOR[...]SuQmCC&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;verificationStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;UNVERIFIED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYExample&quot;</span>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">factor</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">create_factor</span><span class="p">(</span><span class="ss">:google_authenticator</span><span class="p">,</span>
+                               <span class="ss">custom_options</span><span class="p">:</span> <span class="p">{</span>
+                                 <span class="ss">account_name</span><span class="p">:</span> <span class="s1">&#39;stormpath-google-authenticator&#39;</span><span class="p">,</span>
+                                 <span class="ss">issuer</span><span class="p">:</span> <span class="s1">&#39;ACME&#39;</span><span class="p">,</span>
+                                 <span class="ss">status</span><span class="p">:</span> <span class="s1">&#39;ENABLED&#39;</span>
+                               <span class="p">})</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">custom_options</span></code> hash is completely optional. If you just need to create a <code class="docutils literal"><span class="pre">google-authenticator</span></code> factor, the type is all you need. The <code class="docutils literal"><span class="pre">account_name</span></code> property is going to default to the <code class="docutils literal"><span class="pre">username</span></code> of the <code class="docutils literal"><span class="pre">account</span></code>.</p>
+<p>You will then get back the <code class="docutils literal"><span class="pre">Stormpath::Resource::Factor</span></code> object with the following properties:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/factors/5f3xtNUMAKD3l3wqr6BiU2&#39;</span><span class="p">,</span>
+  <span class="ss">type</span><span class="p">:</span> <span class="s1">&#39;google-authenticator&#39;</span><span class="p">,</span>
+  <span class="ss">created_at</span><span class="p">:</span> <span class="s1">&#39;2016-11-17T12:31:13.138Z&#39;</span><span class="p">,</span>
+  <span class="ss">modified_at</span><span class="p">:</span> <span class="s1">&#39;2016-11-17T12:31:13.138Z&#39;</span><span class="p">,</span>
+  <span class="ss">status</span><span class="p">:</span> <span class="s1">&#39;ENABLED&#39;</span><span class="p">,</span>
+  <span class="ss">account_name</span><span class="p">:</span> <span class="s1">&#39;stormpath-google-authenticator&#39;</span><span class="p">,</span>
+  <span class="ss">issuer</span><span class="p">:</span> <span class="s1">&#39;ACME&#39;</span><span class="p">,</span>
+  <span class="ss">secret</span><span class="p">:</span> <span class="s1">&#39;JIQPC4HBFZABCOBQA5ROU3L2QKRGKK3NVJMRGBVLR3SQSKFDG7YIMALT&#39;</span><span class="p">,</span>
+  <span class="ss">keyUri</span><span class="p">:</span> <span class="s1">&#39;otpauth://totp/ACME:marko.cilimkovic@testmail.stormpath.com?secret=JIQPC4HBFZABCOBQA5ROU3L2QKRGKK3NVJMRGBVLR3SQSKFDG7YIMALT&amp;issuer=ACME&#39;</span><span class="p">,</span>
+  <span class="ss">qr_code</span><span class="p">:</span> <span class="s1">&#39;iVBORw0KGgoAAAANSUhEUgAAAKYAAACmAQAAAAB488naAAACYklEQVR42u2XMY70IAyFHVHQJReIxDXouFJygczkAuRKdFwDiQskHQXC/2O1s7vFFuNIf7fRaBJ9IzkY+z0zxL9clf7oDdqIpsJ7yXuYR52fpMTU8YG75aPMozMHZzG1yus6RBqYNmc83aFH4IuVd/WB73sUd0dE81RuUeRW0mJV08yRf2T8NiUabfavz/euv01xIeJJublETn1X/m3aKBHlpyaySC+h3lLar6iuOG+u53YVJaXNqSOap84nlhXVqcW0x+J8cV/iIyQ0iphyHV0aUSHKp06bzVLa9Lzgt4KVpaWX2chpQqMvFoKhTZtX5SXU0qPQ6PrOPom9y1LKfXPnzaJRiPrixLRRXQO0mr0z6Pt2g2oaijlib9Pm5pWVmDpaGYXBFs9rhO8YKeXS1T4EfNOi0fdKSuEaUNpaoDfkhmcjpQy30uw1BA/JwXeUmAZEVBzgO4n6O8S09XDQfOq5Qf86SylzWmO+Ij+dOWHBUUybNnvgp01D1y2mkZJSLup0eS+G47zCwT97XUARF3u6B0KZF1enYqSUI3LjI6id8QJ0qpg2B9+vS5+mNFIdXu75PuWSNl0nnh8B0kVuLKaxu/9m0wTd/nANCUWjYACkidFwdYpKTDl7TVPIe28XPMhpUFdAXJxvZpwJrs/uE1DIAxGnkPosxED9mk5v0z6PqT6gN+wL0iMjpf1MoPmI2X8U2Fslpo69NReUbzFKc9Ny2s9nH5oHxQlJ8w2K89AVKwYhHHz5ckQJ9cSnhU4+fJBYTHtu8N+0QGyhvuJKKPbXJQh+tNB85qCk9O8fyv+k/wAszuJYC/iqIwAAAABJRU5ErkJggg==&#39;</span><span class="p">,</span>
+  <span class="ss">verification_status</span><span class="p">:</span> <span class="s1">&#39;UNVERIFIED&#39;</span><span class="p">,</span>
+  <span class="ss">account</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/5epOIHC5IxkJjlqdRVCNCg&#39;</span>
   <span class="p">},</span>
-  <span class="nt">&quot;mostRecentChallenge&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;challenges&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/46EZpOuefEEooFlexample/challenges&quot;</span>
+  <span class="ss">most_recent_challenge</span><span class="p">:</span> <span class="kp">nil</span><span class="p">,</span>
+  <span class="ss">challenges</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/factors/5f3xtNUMAKD3l3wqr6BiU2/challenges&#39;</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>For more information about the Factor resource, see <a class="reference internal" href="reference.html#ref-factor"><span class="std std-ref">the Reference chapter</span></a>.</p>
 <p>The user now needs to get this information into their Google Authenticator (or <a class="reference external" href="https://www.authy.com/tutorials/how-use-authy-google-authenticator/">similar</a>) application. The easiest way to do that is to use their app to scan a QR code. Stormpath makes this easy by giving you the QR Code in the <code class="docutils literal"><span class="pre">base64QRImage</span></code> field of the Google Authenticator Factor.</p>
 <p>You can now take this string and turn it into a QR Code image:</p>
 <ul class="simple">
@@ -2131,13 +2150,41 @@ $ startup.sh
 <div class="section" id="challenging-a-factor">
 <span id="mfa-challenge"></span><h3>4.6.2. Challenging a Factor<a class="headerlink" href="#challenging-a-factor" title="Permalink to this headline">¶</a></h3>
 <p>At this point in the example you have a brand new Account with two additional Factors.</p>
+<p>If you were to retrieve the Account&#8217;s <code class="docutils literal"><span class="pre">factors</span></code> you will get them:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">factors</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">factors</span>
+</pre></div>
+</div>
+<p>Note that it&#8217;s also possible to <code class="docutils literal"><span class="pre">search</span></code> the <code class="docutils literal"><span class="pre">factors</span></code> collection by any attribute you desire.</p>
 <p>You will now challenge each of these factors.</p>
 <div class="section" id="challenging-after-factor-creation">
 <span id="mfa-challenge-after"></span><h4>Challenging After Factor Creation<a class="headerlink" href="#challenging-after-factor-creation" title="Permalink to this headline">¶</a></h4>
 <p>This example covers challenging Factors that have already been created. To see an example of how to challenge a Factor at the same time as you are creating it, please see <a class="reference internal" href="#mfa-challenge-after"><span class="std std-ref">below</span></a>.</p>
 <div class="section" id="challenging-an-sms-factor">
 <span id="mfa-challenge-after-sms"></span><h5>Challenging an SMS Factor<a class="headerlink" href="#challenging-an-sms-factor" title="Permalink to this headline">¶</a></h5>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">challenge</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">challenges</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">message</span><span class="p">:</span> <span class="s1">&#39;Please enter the code: ${code}&#39;</span><span class="p">)</span>
+
+<span class="c1"># or if you want to use the default message</span>
+
+<span class="n">challenge</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">challenges</span><span class="o">.</span><span class="n">create</span><span class="p">({})</span>
+</pre></div>
+</div>
 <p>If you do not specify a message, then Stormpath will just send the default message: <code class="docutils literal"><span class="pre">&quot;Your</span> <span class="pre">verification</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">${code}&quot;</span></code>.</p>
+<p>In response to this request you would get back a <code class="docutils literal"><span class="pre">Stormpath::Resource::Challenge</span></code> object:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/challenges/4yglZZaXXM2XoAT5v9ITVv&#39;</span><span class="p">,</span>
+  <span class="ss">created_at</span><span class="p">:</span> <span class="s1">&#39;2016-11-17T12:52:03.953Z&#39;</span><span class="p">,</span>
+  <span class="ss">modified_at</span><span class="p">:</span> <span class="s1">&#39;2016-11-17T12:52:03.953Z&#39;</span><span class="p">,</span>
+  <span class="ss">status</span><span class="p">:</span> <span class="s1">&#39;CREATED&#39;</span><span class="p">,</span>
+  <span class="ss">message</span><span class="p">:</span> <span class="s1">&#39;Your verification code is ${code}&#39;</span><span class="p">,</span>
+  <span class="ss">account</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/4apNqgjf9DHMpbji4a0wMV&#39;</span>
+  <span class="p">},</span>
+  <span class="ss">factor</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/factors/4b4reTqJbPrpDHMYw8bf3&#39;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>The resulting SMS would look like this:</p>
 <div class="figure align-center">
 <a class="reference internal image-reference" href="_images/challenge_message.png"><img alt="SMS Challenge Message" src="_images/challenge_message.png" style="width: 371.0px; height: 267.5px;" /></a>
@@ -2145,24 +2192,25 @@ $ startup.sh
 <p>This code will remain valid for 300 seconds (5 minutes).</p>
 <p>Next, you must collect this code from the user.</p>
 <p>Once you have the code, you send it to the same Challenge you created above:</p>
-<p>And then you would get back the response:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:35:44.799Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:39:06.822Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/challenges/70xfDsguePApNdnExample&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;For the sake of example, your code is ${code}.&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;factor&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/factors/3WPF5Djir0Wg5FtPoJCPbo&quot;</span>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">challenge</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="s1">&#39;123456&#39;</span><span class="p">)</span>
+<span class="n">challenge</span><span class="o">.</span><span class="n">status</span> <span class="c1"># =&gt; &#39;SUCCESS&#39;</span>
+</pre></div>
+</div>
+<p>And then you would get back the <code class="docutils literal"><span class="pre">Stormpath::Resource::Challenge</span></code> object as the response:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/challenges/3hdllHycYNaNwgVUH21C0s&#39;</span><span class="p">,</span>
+  <span class="ss">created_at</span><span class="p">:</span> <span class="s1">&#39;2016-11-17T13:05:12.664Z&#39;</span><span class="p">,</span>
+  <span class="ss">modified_at</span><span class="p">:</span> <span class="s1">&#39;2016-11-17T13:05:12.664Z&#39;</span><span class="p">,</span>
+  <span class="ss">status</span><span class="p">:</span> <span class="s1">&#39;SUCCESS&#39;</span><span class="p">,</span>
+  <span class="ss">account</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/2d6vnI6kDI2DuuDEajZzQZ&#39;</span>
   <span class="p">},</span>
-  <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMYiX98vc&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;SUCCESS&quot;</span>
+  <span class="ss">factor</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/factors/2dN2VYr2qgrZPhaQ9YFgWh&#39;</span>
+  <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>If you had sent the wrong code, the <code class="docutils literal"><span class="pre">status</span></code> would instead be <code class="docutils literal"><span class="pre">FAILED</span></code>.</p>
-<p>For a full list of Challenge statuses, please see <a class="reference internal" href="reference.html#challenge-status-values"><span class="std std-ref">the Reference chapter</span></a>.</p>
 <p>If you had sent the wrong code, the <code class="docutils literal"><span class="pre">status</span></code> would instead be <code class="docutils literal"><span class="pre">FAILED</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -2174,7 +2222,25 @@ $ startup.sh
 <p>When you created the Google Authenticator Factor, you also generated a QR Code image for your user to scan into their app. Challenging this factor now only requires you to prompt to enter in the code from their Authenticator app.</p>
 <p>Unlike the SMS challenge process, the Google Authenticator challenge process does not require you to create a Challenge resource. Instead, the Challenge is created and verified in one step. For more information about the Challenge resource, see <a class="reference internal" href="reference.html#ref-challenge"><span class="std std-ref">the Reference chapter</span></a>.</p>
 <p>Once you have collected the code from the user, send the code generated by your Google Authenticator app:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">challenge</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">challenges</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">code</span><span class="p">:</span> <span class="s1">&#39;123456&#39;</span><span class="p">)</span>
+<span class="n">challenge</span><span class="o">.</span><span class="n">status</span> <span class="c1"># =&gt; &#39;SUCCESS&#39;</span>
+</pre></div>
+</div>
 <p>If the code is correct, Stormpath will now simultaneously create the Challenge resource and set its status to <code class="docutils literal"><span class="pre">SUCCESS</span></code>, then return it back to you:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/challenges/3hdllHycYNaNwgVUH21C0s&#39;</span><span class="p">,</span>
+  <span class="ss">created_at</span><span class="p">:</span> <span class="s1">&#39;2016-11-17T13:05:12.664Z&#39;</span><span class="p">,</span>
+  <span class="ss">modified_at</span><span class="p">:</span> <span class="s1">&#39;2016-11-17T13:05:12.664Z&#39;</span><span class="p">,</span>
+  <span class="ss">status</span><span class="p">:</span> <span class="s1">&#39;SUCCESS&#39;</span><span class="p">,</span>
+  <span class="ss">account</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/2d6vnI6kDI2DuuDEajZzQZ&#39;</span>
+  <span class="p">},</span>
+  <span class="ss">factor</span><span class="p">:</span> <span class="p">{</span>
+    <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/factors/2dN2VYr2qgrZPhaQ9YFgWh&#39;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="challenging-during-factor-creation">
@@ -2182,6 +2248,14 @@ $ startup.sh
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">For this example, we will use an SMS challenge. Challenging a Google Authenticator Factor during creation is not feasible because the user has to add the factor to their application before they can get a code.</p>
+</div>
+<p>To create a Challenge at the same time as you create the SMS Factor, you can use the same builder you used so far:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">factor</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">create_factor</span><span class="p">(</span><span class="ss">:sms</span><span class="p">,</span>
+                               <span class="ss">phone</span><span class="p">:</span> <span class="p">{</span> <span class="ss">number</span><span class="p">:</span> <span class="s1">&#39;267-555-5555&#39;</span><span class="p">,</span>
+                                        <span class="nb">name</span><span class="p">:</span> <span class="s1">&#39;Rspec test phone&#39;</span><span class="p">,</span>
+                                        <span class="ss">description</span><span class="p">:</span> <span class="s1">&#39;This is a testing phone number&#39;</span> <span class="p">},</span>
+                               <span class="ss">challenge</span><span class="p">:</span> <span class="p">{</span> <span class="ss">message</span><span class="p">:</span> <span class="s1">&#39;Welcome to the Example! Your authorization code is &#39;</span> <span class="p">})</span>
+</pre></div>
 </div>
 <p>You are telling Stormpath to send an SMS to the phone number <code class="docutils literal"><span class="pre">267-555-5555</span></code> along with the message <code class="docutils literal"><span class="pre">&quot;Welcome</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">Example!</span> <span class="pre">Your</span> <span class="pre">authorization</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">${code}&quot;</span></code>. The placeholder <code class="docutils literal"><span class="pre">${code}</span></code> will be replaced with a one-time password generated using the HOTP algorithm.</p>
 </div>
@@ -2204,11 +2278,8 @@ $ startup.sh
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Next, you will need to retrieve the Account&#8217;s <code class="docutils literal"><span class="pre">factors</span></code> collection:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/accounts/5IvkjoqcYNe3TYMExample/factors</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<p>You will need to retrieve the Account&#8217;s <code class="docutils literal"><span class="pre">factors</span></code> collection:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">factors</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">factors</span>
 </pre></div>
 </div>
 <p>Which will return:</p>
@@ -2242,7 +2313,10 @@ $ startup.sh
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>You would then send a POST to the <code class="docutils literal"><span class="pre">challenges</span></code> collection which would generate a new Challenge and send an SMS message to the number specified in the Factor&#8217;s Phone resource.</p>
+<p>You would then challenge the factor which would generate a new Challenge and send an SMS message to the number specified in the Factor&#8217;s Phone resource.</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">challenge</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">challenges</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">message</span><span class="p">:</span> <span class="s1">&#39;For the sake of example, your code is ${code}&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>

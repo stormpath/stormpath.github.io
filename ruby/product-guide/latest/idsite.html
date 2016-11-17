@@ -933,8 +933,16 @@
 </div>
 <p><strong>Use Sub-Domain</strong></p>
 <p><code class="docutils literal"><span class="pre">use_subdomain</span></code>: If combined with <code class="docutils literal"><span class="pre">organization_name_key</span></code>, will redirect the user to an ID Site with the Organization&#8217;s <code class="docutils literal"><span class="pre">name_key</span></code> as a sub-domain in its URL.</p>
-<p>For example, if your ID Site configuration is <code class="docutils literal"><span class="pre">elastic-rebel.id.stormpath.io</span></code> and the Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">home-depot</span></code>, then the SSO endpoint will resolve the following URL:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>https://home-depot.elastic-rebel.id.stormpath.io/?jwt={GENERATED_JWT}
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This functionality will only work with a custom domain that you&#8217;ve properly configured in ID Site as documented <a class="reference external" href="https://docs.stormpath.com/console/product-guide/latest/idsite.html#setting-your-own-custom-domain-name-and-ssl-certificate">here</a>. The claim will not work with the default domain assigned by Stormpath.</p>
+</div>
+<p>For example, if your ID Site configuration is <code class="docutils literal"><span class="pre">id.mydomain.com</span></code> and the Organization’s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">home-depot</span></code>, then the SSO endpoint will resolve the following URL:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span>https://home-depot.id.mydomain.com/?jwt={GENERATED_JWT}
+</pre></div>
+</div>
+<p>If you are using a custom domain, you must also make sure to put that domain in the list of Authorized Javascript Origin URLs. You can use the <code class="docutils literal"><span class="pre">*</span></code> wildcard for this. In the above example it would be:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//*.</span><span class="n">id</span><span class="o">.</span><span class="n">mydomain</span><span class="o">.</span><span class="n">com</span>
 </pre></div>
 </div>
 </div>
