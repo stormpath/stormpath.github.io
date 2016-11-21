@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Stormpath Node SDK Class: SamlProvider</title>
+	<title>Stormpath Node SDK Class: ScopeFactoryAuthenticator</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -80,13 +80,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: SamlProvider</h1>
+	<h1 class="page-title">Class: ScopeFactoryAuthenticator</h1>
 <section>
 
 <header>
     
         <h2>
-        SamlProvider
+        ScopeFactoryAuthenticator
         </h2>
         
     
@@ -99,7 +99,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
 <hr>
 <dt>
-    <h4 class="name" id="SamlProvider"><span class="type-signature"></span>new SamlProvider(samlProviderResource)</h4>
+    <h4 class="name" id="ScopeFactoryAuthenticator"><span class="type-signature"></span>new ScopeFactoryAuthenticator()</h4>
     
     
 </dt>
@@ -107,17 +107,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     
     <div class="description">
-        <p>Encapsulates a SamlProvider resource, which is a type of <a href="Provider.html">Provider</a>.
-For full documentation of the Provider resource, please see
-<a href="https://docs.stormpath.com/rest/product-guide/latest/reference.html?#provider">REST API Reference: Provider</a>.</p>
-<p>For a high-level overview of SAML Authentication, please see
-<a href="https://docs.stormpath.com/rest/product-guide/latest/auth_n.html?#authenticating-against-a-saml-directory">Authenticating Against a SAML Directory</a>.</p>
-<p>For more information about configuring SAML Authentication, please see
-<a href="https://docs.stormpath.com/rest/product-guide/latest/auth_n.html?#configuring-saml-via-rest">Configuring SAML via REST</a>.</p>
-<p>This class should not be manually constructed. It should be obtained from one
-of these methods:</p>
+        <p>Encapsulates the behavior required by OAuth authenticator classes for adding
+scope to access tokens that are created by Stormpath.</p>
+<p>This class allows you to add custom scope to Stormpath tokens by providing scope
+factory functions.  Adding custom scope is useful if you want to do stateless
+access control checks with a JWT scope property.</p>
+<p>This class should not be constructed manually. Instead, the following classes
+inherit from this class and can use the scope factory behavior:</p>
 <ul>
-<li><a href="Directory.html#getProvider">Directory.getProvider()</a></li>
+<li><a href="OAuthClientCredentialsAuthenticator.html">OAuthClientCredentialsAuthenticator</a></li>
+<li><a href="OAuthPasswordGrantRequestAuthenticator.html">OAuthPasswordGrantRequestAuthenticator</a></li>
+<li><a href="OAuthStormpathSocialAuthenticator.html">OAuthStormpathSocialAuthenticator</a></li>
+<li><a href="OAuthStormpathTokenAuthenticator.html">OAuthStormpathTokenAuthenticator</a></li>
 </ul>
     </div>
     
@@ -127,56 +128,6 @@ of these methods:</p>
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-wrapper">
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>samlProviderResource</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The JSON representation of this resource, retrieved the Stormpath REST API.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-<div>
     
 
     
@@ -212,7 +163,7 @@ of these methods:</p>
 	
 	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
 	<dd class="tag-source">
-		resource/SamlProvider.js
+		oauth/scope-factory-authenticator.js
 	</dd>
 	
 
@@ -237,21 +188,49 @@ of these methods:</p>
     
 
     
+        <h5>Example</h5>
+        
+        <p class="code-caption">Adding a user's groups to the token as scope</p>
+    
+    <pre class="sunlight-highlight-javascript">var application; // An application, fetched from Client.getApplication()
+
+function groupScopeFactory(authenticationResult, requestedScope, callback) {
+  authenticationResult.getAccount({expand: &#x27;groups&#x27;}, function(err, account) {
+    if (err) {
+      return callback(err);
+    }
+
+    var grantedScope = account.groups.items.map(function(group) {
+      return group.name;
+    }).join(&#x27; &#x27;);
+
+    callback(null, grantedScope);
+  });
+}
+
+var authenticator = new stormpath.OAuthPasswordGrantRequestAuthenticator(application);
+
+authenticator.setScopeFactory(groupScopeFactory);
+authenticator.setScopeFactorySigningKey(tenantApiKeySecret); // Same secret that was given to the previously used client
+
+var passwordGrantRequest = {
+  username: &#x27;user@example.com&#x27;,
+  password: &#x27;PAs$w0rd&#x27;,
+}
+
+authenticator.authenticate(passwordGrantRequest, function (err, oAuthPasswordGrantAuthenticationResult) {
+  if (err) {
+    return console.log(err);
+  }
+  console.log(&#x27;Access token: &#x27;, oAuthPasswordGrantAuthenticationResult.accessToken)
+});</pre>
+
+
+    
 </dd>
 
     
     </div>
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="InstanceResource.html">InstanceResource</a></li>
-    </ul>
-
 
     
 
@@ -272,7 +251,7 @@ of these methods:</p>
             
 <hr>
 <dt>
-    <h4 class="name" id="delete"><span class="type-signature"></span>delete(callback)</h4>
+    <h4 class="name" id="setScopeFactory"><span class="type-signature"></span>setScopeFactory(scopeFactory)</h4>
     
     
 </dt>
@@ -280,7 +259,9 @@ of these methods:</p>
 
     
     <div class="description">
-        <p>Deletes this resource from the API.</p>
+        <p>Sets the scope factory to be used when parsing tokens.  The scope factory is a
+developer-provided function that allows you to add custom scope to the tokens
+that Stormpath creates.  For an example, see <a href="ScopeFactoryAuthenticator.html">ScopeFactoryAuthenticator</a>.</p>
     </div>
     
 
@@ -315,7 +296,7 @@ of these methods:</p>
 
         <tr>
             
-                <td class="name"><code>callback</code></td>
+                <td class="name"><code>scopeFactory</code></td>
             
 
             <td class="type">
@@ -332,8 +313,23 @@ of these methods:</p>
 
             
 
-            <td class="description last"><p>The function to call when the delete operation is complete. Will be called
-with the parameter (err).</p></td>
+            <td class="description last"><p>The scope factory to use when processing authentication results. When it is defined,
+it will be invoked with the authentication result.  You should determine which scope
+to grant, and provide it to the callback.</p>
+<p>The function must have the signature <code>(authenticationResult, requestedScope, callback)</code>.</p>
+<ul>
+<li><p><code>authenticationResult</code> is the authentication result from the authenticator's
+authentication result class.  You can use this to fetch the account that has
+authenticated.</p>
+</li>
+<li><p><code>requestedScope</code> is the end-user requested scope that you passed as the
+<code>scope</code> option when calling the authenticator's <code>authenticate()</code> method.</p>
+</li>
+<li><p><code>callback</code> should be called with <code>(err, &lt;String&gt; grantedScope)</code> after you determine
+which scope to grant to the user.  The scope will be added to the JWT as the
+<code>scope</code> claim.  The granted scope must be a string value.</p>
+</li>
+</ul></td>
         </tr>
 
     
@@ -350,15 +346,6 @@ with the parameter (err).</p></td>
 
 	
 
-	
-	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
-	<dd class="inherited-from">
-		<ul class="dummy">
-			<li>
-				<a href="InstanceResource.html#delete">InstanceResource#delete</a>
-			</li>
-		</ul>
-	</dd>
 	
 
     
@@ -384,7 +371,7 @@ with the parameter (err).</p></td>
 	
 	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
 	<dd class="tag-source">
-		resource/InstanceResource.js
+		oauth/scope-factory-authenticator.js
 	</dd>
 	
 
@@ -415,7 +402,7 @@ with the parameter (err).</p></td>
             
 <hr>
 <dt>
-    <h4 class="name" id="getAttributeStatementMappingRules"><span class="type-signature"></span>getAttributeStatementMappingRules( [expansionOptions], callback)</h4>
+    <h4 class="name" id="setScopeFactorySigningKey"><span class="type-signature"></span>setScopeFactorySigningKey(signingKey)</h4>
     
     
 </dt>
@@ -423,7 +410,7 @@ with the parameter (err).</p></td>
 
     
     <div class="description">
-        <p>Get the <a href="SamlAttributeStatementMappingRules.html">SamlAttributeStatementMappingRules</a> resource of this SamlProvider resouce.</p>
+        <p>Sets the signing that is used to sign the new access token.</p>
     </div>
     
 
@@ -446,8 +433,6 @@ with the parameter (err).</p></td>
         <th>Type</th>
 
         
-        <th>Argument</th>
-        
 
         
 
@@ -460,13 +445,13 @@ with the parameter (err).</p></td>
 
         <tr>
             
-                <td class="name"><code>expansionOptions</code></td>
+                <td class="name"><code>signingKey</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="global.html#ExpansionOptions">ExpansionOptions</a></span>
+<span class="param-type">String</span>
 
 
 
@@ -474,52 +459,14 @@ with the parameter (err).</p></td>
             </td>
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last"><p>For retrieving linked resources of the <a href="SamlAttributeStatementMappingRules.html">SamlAttributeStatementMappingRules</a> resource during this request.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Callback function, will be called with (err, <a href="SamlAttributeStatementMappingRules.html">samlServiceProviderMetadata</a>).</p></td>
+            <td class="description last"><p>Signing key used to pack and unpack JWTs. It is <b>required</b> if the scope
+factory is set. If the factory is invoked without a signing key, an error will
+be passed to the callback.</p>
+<p>This must be the same Tenant API Key Secret that you used to create the <a href="Client.html">Client</a>
+that was used to initiate the authentication attempt.</p></td>
         </tr>
 
     
@@ -561,326 +508,7 @@ with the parameter (err).</p></td>
 	
 	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
 	<dd class="tag-source">
-		resource/SamlProvider.js
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getServiceProviderMetadata"><span class="type-signature"></span>getServiceProviderMetadata( [expansionOptions], callback)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Get the <a href="SamlServiceProviderMetadata.html">SamlServiceProviderMetadata</a> resource of this SamlProvider resouce.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-wrapper">
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>expansionOptions</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#ExpansionOptions">ExpansionOptions</a></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>For retrieving linked resources of the <a href="SamlServiceProviderMetadata.html">SamlServiceProviderMetadata</a> resource during this request.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Callback function, will be called with (err, <a href="SamlServiceProviderMetadata.html">samlServiceProviderMetadata</a>).</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-<div>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		resource/SamlProvider.js
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="invalidate"><span class="type-signature"></span>invalidate(callback)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Removes this resource, and all of it's linked resources, e.g. Custom Data, from the local cache.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-wrapper">
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>The function to call when the cache invalidation operation is complete.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-<div>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
-	<dd class="inherited-from">
-		<ul class="dummy">
-			<li>
-				<a href="InstanceResource.html#invalidate">InstanceResource#invalidate</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		resource/InstanceResource.js
+		oauth/scope-factory-authenticator.js
 	</dd>
 	
 
