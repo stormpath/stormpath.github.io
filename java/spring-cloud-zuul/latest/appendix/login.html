@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>/templates/stormpath/login.html &mdash; Stormpath Zuul Spring Cloud Starter 1.1.4 documentation</title>
+  <title>/templates/stormpath/login.html &mdash; Stormpath Zuul Spring Cloud Starter 1.2.0 documentation</title>
   
 
   
@@ -34,7 +34,10 @@
   
         <link rel="author" title="About these documents"
               href="../about.html"/>
-    <link rel="top" title="Stormpath Zuul Spring Cloud Starter 1.1.4 documentation" href="../index.html"/>
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="Stormpath Zuul Spring Cloud Starter 1.2.0 documentation" href="../index.html"/>
         <link rel="up" title="Appendix" href="../appendix.html"/>
         <link rel="next" title="/templates/stormpath/register.html" href="register.html"/>
         <link rel="prev" title="/templates/stormpath/head.html" href="head.html"/> 
@@ -407,7 +410,18 @@
 104
 105
 106
-107</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c">&lt;!--/*</span>
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c">&lt;!--/*</span>
 <span class="c">~ Copyright 2015 Stormpath, Inc.</span>
 <span class="c">~</span>
 <span class="c">~ Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
@@ -439,7 +453,8 @@
                     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;header&quot;</span>
                          <span class="na">th:with</span><span class="o">=</span><span class="s">&quot;registerLink=&#39;&amp;lt;a href=&amp;quot;&#39; + @{${registerUri}} + &#39;&amp;quot;&amp;gt;&#39; + #{stormpath.web.login.form.registerLink.text} + &#39;&amp;lt;/a&amp;gt;&#39;&quot;</span><span class="p">&gt;</span>
                         <span class="p">&lt;</span><span class="nt">span</span> <span class="na">th:if</span><span class="o">=</span><span class="s">&quot;${!registerEnabled}&quot;</span> <span class="na">th:utext</span><span class="o">=</span><span class="s">&quot;#{stormpath.web.login.form.title}&quot;</span><span class="p">&gt;</span>|Register|<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
-                        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">th:if</span><span class="o">=</span><span class="s">&quot;${registerEnabled}&quot;</span> <span class="na">th:utext</span><span class="o">=</span><span class="s">&quot;#{stormpath.web.login.form.titleWithRegister(${registerLink})}&quot;</span><span class="p">&gt;</span>|Register|<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+                        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">th:if</span><span class="o">=</span><span class="s">&quot;${registerEnabled}&quot;</span>
+                              <span class="na">th:utext</span><span class="o">=</span><span class="s">&quot;#{stormpath.web.login.form.titleWithRegister(${registerLink})}&quot;</span><span class="p">&gt;</span>|Register|<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
                     <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 
                     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;alert alert-dismissable alert-success&quot;</span> <span class="na">th:if</span><span class="o">=</span><span class="s">&quot;${not #strings.isEmpty(status)}&quot;</span><span class="p">&gt;</span>
@@ -484,24 +499,34 @@
                 <span class="p">&lt;</span><span class="nt">div</span> <span class="na">th:if</span><span class="o">=</span><span class="s">&quot;${not #lists.isEmpty(accountStores)}&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;provider-area col-xs-12 col-sm-4&quot;</span><span class="p">&gt;</span>
                     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;header&quot;</span><span class="p">&gt;</span><span class="ni">&amp;nbsp;</span><span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
                     <span class="p">&lt;</span><span class="nt">label</span><span class="p">&gt;</span>Easy 1-click login:<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
-                    <span class="p">&lt;</span><span class="nt">button</span> <span class="na">th:each</span><span class="o">=</span><span class="s">&quot;accountStore : ${accountStores}&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-social&quot;</span>
-                            <span class="na">th:classappend</span><span class="o">=</span><span class="s">&quot;${&#39;btn-&#39;+accountStore.provider.providerId}&quot;</span>
-                            <span class="na">th:id</span><span class="o">=</span><span class="s">&quot;${accountStore.provider.providerId == &#39;saml&#39; ? accountStore.href : accountStore.provider.clientId}&quot;</span><span class="p">&gt;</span>
-                    <span class="p">&lt;</span><span class="nt">th:block</span> <span class="na">th:if</span><span class="o">=</span><span class="s">&quot;${accountStore.provider.providerId != &#39;saml&#39;}&quot;</span><span class="p">&gt;</span>
-                        <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fa&quot;</span> <span class="na">th:classappend</span><span class="o">=</span><span class="s">&quot;${&#39;fa-&#39;+accountStore.provider.providerId}&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
-                        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">th:text</span><span class="o">=</span><span class="s">&quot;${accountStore.provider.providerId}&quot;</span><span class="p">&gt;</span>|Provider|<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+                    <span class="p">&lt;</span><span class="nt">th:block</span> <span class="na">th:each</span><span class="o">=</span><span class="s">&quot;accountStore : ${accountStores}&quot;</span><span class="p">&gt;</span>
+                        <span class="p">&lt;</span><span class="nt">th:block</span> <span class="na">th:switch</span><span class="o">=</span><span class="s">&quot;${accountStore.provider.providerId}&quot;</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">button</span> <span class="na">th:case</span><span class="o">=</span><span class="s">&quot;saml&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-social btn-saml&quot;</span>
+                                    <span class="na">th:id</span><span class="o">=</span><span class="s">&quot;${accountStore.href}&quot;</span><span class="p">&gt;</span>
+                                <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fa fa-lock&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+                                <span class="p">&lt;</span><span class="nt">span</span> <span class="na">th:text</span><span class="o">=</span><span class="s">&quot;${accountStore.name}&quot;</span> <span class="na">th:remove</span><span class="o">=</span><span class="s">&quot;tag&quot;</span><span class="p">&gt;</span>|SAML|<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+                            <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">button</span> <span class="na">th:case</span><span class="o">=</span><span class="s">&quot;google&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-social btn-google&quot;</span>
+                                    <span class="na">th:id</span><span class="o">=</span><span class="s">&quot;${accountStore.provider.clientId}&quot;</span>
+                                    <span class="na">th:attr</span><span class="o">=</span><span class="s">&quot;data-scope=${accountStore.provider.scope}, data-hd=${accountStore.provider.hd}, data-display=${accountStore.provider.display}, data-access_type=${accountStore.provider.accessType}&quot;</span>
+                            <span class="p">&gt;</span>
+                                <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fa fa-google&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
+                                <span class="p">&lt;</span><span class="nt">span</span> <span class="na">th:text</span><span class="o">=</span><span class="s">&quot;google&quot;</span><span class="p">&gt;</span>|Provider|<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+                            <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+                            <span class="p">&lt;</span><span class="nt">button</span> <span class="na">th:case</span><span class="o">=</span><span class="s">&quot;*&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-social&quot;</span> <span class="na">th:classappend</span><span class="o">=</span><span class="s">&quot;${&#39;btn-&#39;+accountStore.provider.providerId}&quot;</span>
+                                    <span class="na">th:id</span><span class="o">=</span><span class="s">&quot;${accountStore.provider.clientId}&quot;</span> <span class="na">th:attr</span><span class="o">=</span><span class="s">&quot;data-scope=${accountStore.provider.scope}&quot;</span><span class="p">&gt;</span>
+                                <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fa&quot;</span> <span class="na">th:classappend</span><span class="o">=</span><span class="s">&quot;${&#39;fa-&#39;+accountStore.provider.providerId}&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
+                                <span class="p">&lt;</span><span class="nt">span</span> <span class="na">th:text</span><span class="o">=</span><span class="s">&quot;${accountStore.provider.providerId}&quot;</span><span class="p">&gt;</span>|Provider|<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+                            <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+                        <span class="p">&lt;/</span><span class="nt">th:block</span><span class="p">&gt;</span>
                     <span class="p">&lt;/</span><span class="nt">th:block</span><span class="p">&gt;</span>
-                    <span class="p">&lt;</span><span class="nt">th:block</span> <span class="na">th:if</span><span class="o">=</span><span class="s">&quot;${accountStore.provider.providerId == &#39;saml&#39;}&quot;</span><span class="p">&gt;</span>
-                        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fa fa-lock&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
-                        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">th:text</span><span class="o">=</span><span class="s">&quot;${accountStore.name}&quot;</span> <span class="na">th:remove</span><span class="o">=</span><span class="s">&quot;tag&quot;</span><span class="p">&gt;</span>|SAML|<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
-                    <span class="p">&lt;/</span><span class="nt">th:block</span><span class="p">&gt;</span>
-                    <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
                 <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
             <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 
             <span class="p">&lt;</span><span class="nt">a</span> <span class="na">th:if</span><span class="o">=</span><span class="s">&quot;${verifyEnabled}&quot;</span> <span class="na">th:href</span><span class="o">=</span><span class="s">&quot;@{${verifyUri}}&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;verify&quot;</span>
                <span class="na">th:text</span><span class="o">=</span><span class="s">&quot;#{stormpath.web.login.form.verifyEmail.text}&quot;</span><span class="p">&gt;</span>|Resend Email Verification|<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
-            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">th:if</span><span class="o">=</span><span class="s">&quot;${forgotPasswordEnabled}&quot;</span> <span class="na">th:href</span><span class="o">=</span><span class="s">&quot;@{${forgotPasswordUri}}&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;to-login&quot;</span> <span class="na">th:text</span><span class="o">=</span><span class="s">&quot;#{stormpath.web.login.form.resetLink.text}&quot;</span><span class="p">&gt;</span>|Forgot
+            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">th:if</span><span class="o">=</span><span class="s">&quot;${forgotPasswordEnabled}&quot;</span> <span class="na">th:href</span><span class="o">=</span><span class="s">&quot;@{${forgotPasswordUri}}&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;to-login&quot;</span>
+               <span class="na">th:text</span><span class="o">=</span><span class="s">&quot;#{stormpath.web.login.form.resetLink.text}&quot;</span><span class="p">&gt;</span>|Forgot
                 Password?|<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
 
         <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
@@ -559,7 +584,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.1.4',
+            VERSION:'1.2.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
