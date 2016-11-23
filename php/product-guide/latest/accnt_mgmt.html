@@ -1776,7 +1776,7 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="modifying-your-directory-s-account-schema">
 <h3>3.5.2. Modifying your Directory&#8217;s Account Schema<a class="headerlink" href="#modifying-your-directory-s-account-schema" title="Permalink to this headline">¶</a></h3>
 <p>Any attributes that are in the <code class="docutils literal"><span class="pre">fields</span></code> collection can have <code class="docutils literal"><span class="pre">required</span></code> toggled to either <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>.</p>
-<p>If you wanted to set <code class="docutils literal"><span class="pre">surname</span></code> as required, you would send the following <code class="docutils literal"><span class="pre">POST</span></code>:</p>
+<p>If you wanted to set <code class="docutils literal"><span class="pre">surname</span></code> as required, you would send the following request to that particular field object:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/fields/ivVhPOaKVsPbRWrExample</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 <span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic Mlp...</span>
@@ -2220,21 +2220,7 @@ This link takes you to a secure page where you can change your password.
 <p>There are a number of different scenarios which can occur during login.</p>
 <div class="section" id="application-vs-organization-account-linking-policies">
 <h4>Application vs Organization Account Linking Policies<a class="headerlink" href="#application-vs-organization-account-linking-policies" title="Permalink to this headline">¶</a></h4>
-<p>First and foremost, both Applications and Organizations have Account Linking Policies. Stormpath will default to the Application&#8217;s Policy if you do not specify an Organization during login.</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4PbdleXaMPLE/loginAttempts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
-
-<span class="p">{</span>
-  <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;basic&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;YWxhbkBzbWl0aGVlZS5jb206UGFzcexample&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span><span class="s2">&quot;tenantOneTwoThree&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>First and foremost, both Applications and Organizations have Account Linking Policies. Stormpath will default to the Application&#8217;s Policy if you do not specify an Organization during login. This is an example of a login attempt that specifies an Organization:</p>
 <p>For an example of how this works, please see <a class="reference internal" href="#account-linking-automatic-ex2"><span class="std std-ref">below</span></a>.</p>
 </div>
 <div class="section" id="example-login-behaviors">
@@ -2274,63 +2260,9 @@ This link takes you to a secure page where you can change your password.
 </div>
 <p>Let&#8217;s say we have two Directories: a Cloud Directory, and a Facebook Directory. Both the The Cloud and Facebook Directories are mapped to the same Application, but the Cloud Directory is the default Account Store.</p>
 <p>In each of those Directories, there is an Account. One in our Cloud Directory, for user Picard:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/7hOYWCzhhKDFHFzExample&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;jlpicard&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;capt@enterprise.com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Jean-Luc&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Picard&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;Jean-Luc Picard&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;thisExample&quot;</span><span class="p">:</span> <span class="s2">&quot;isTruncated&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;...&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
 <p>And one in the Facebook Directory for user Locutus:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/raxBrEj2lkxJeQExample&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;locutus&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;locutus@b.org&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Locutus&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Ofborg&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;Locutus Ofborg&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;thisExample&quot;</span><span class="p">:</span> <span class="s2">&quot;isTruncated&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;...&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>You can link these two Accounts with a simple POST:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/accountLinks</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
-
-<span class="p">{</span>
-  <span class="nt">&quot;leftAccount&quot;</span><span class="p">:{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/7hOYWCzhhKDFHFzExample&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;rightAccount&quot;</span><span class="p">:{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/raxBrEj2lkxJeQExample&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<p>You can link these two Accounts manually:</p>
 <p>Which on success will return an Account Link:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accountLinks/4BK2fG2nW4G0cb42cnj8HH&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-28T17:32:32.327Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-28T17:32:32.327Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;leftAccount&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/7hOYWCzhhKDFHFzExample&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;rightAccount&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/raxBrEj2lkxJeQExample&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
 <p>This means that:</p>
 <ul class="simple">
 <li>this Account Link will appear in both of these Accounts&#8217; <code class="docutils literal"><span class="pre">accountLinks</span></code> collections, and</li>
@@ -2341,19 +2273,6 @@ This link takes you to a secure page where you can change your password.
 <p class="last">Account Links can be created and deleted, but they cannot be updated. For information about Account Links, please see the <a class="reference internal" href="reference.html#ref-accountlink"><span class="std std-ref">Reference chapter</span></a></p>
 </div>
 <p>There is one more aspect to Account Linking, which regards login behavior (as already summarized <a class="reference internal" href="#account-linking-login"><span class="std std-ref">above</span></a>). The Application has an <a class="reference internal" href="reference.html#ref-account-linking-policy"><span class="std std-ref">Account Linking Policy</span></a>, which is enabled:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accountLinkingPolicies/3xX7u47eCrJTN7l6nLTMTa&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-07-21T01:03:49.813Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-28T18:19:09.572Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;automaticProvisioning&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;matchingProperty&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;tenant&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/Ftlhx6oq2PwScGW3RsXeF&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Account Linking Policies can be associated with either an Application or Organization. If you would like to use an Organization&#8217;s Account Linking Policy then you must specify it in your login attempt.</p>
@@ -2367,8 +2286,7 @@ This link takes you to a secure page where you can change your password.
 <p>So far we have covered how to link Accounts manually. However, it is also possible to link Accounts automatically at login time. This linking behavior is controlled by an Account Linking Policy.</p>
 <div class="section" id="what-s-in-the-account-linking-policy">
 <span id="about-alp"></span><h4>What&#8217;s in the Account Linking Policy<a class="headerlink" href="#what-s-in-the-account-linking-policy" title="Permalink to this headline">¶</a></h4>
-<p>Every Application and Organization has an Account Linking Policy resource. In both cases the path is the same:</p>
-<p><code class="docutils literal"><span class="pre">/v1/accountLinkingPolicies/$ACCOUNT_LINKING_POLICY_ID</span></code></p>
+<p>Every Application and Organization has an Account Linking Policy resource.</p>
 <p>The Account Linking Policy has three attributes that control aspects of Account Linking behavior:</p>
 <p><strong>Status:</strong></p>
 <p>This attribute controls whether this Policy is in effect or not. If you would not like this policy to be in effect, set this to <code class="docutils literal"><span class="pre">DISABLED</span></code>.</p>
@@ -2476,34 +2394,7 @@ This link takes you to a secure page where you can change your password.
 <li>A Facebook Directory</li>
 </ul>
 <p>Your Application&#8217;s Account Linking Policy has:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accountLinkingPolicies/3xX7u47eCrJTN7l6nLTMTa&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-07-21T01:03:49.813Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-28T18:19:09.572Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;automaticProvisioning&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;matchingProperty&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;tenant&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/Ftlhx6oq2PwScGW3RsXeF&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
 <p>So when Janelle, a new user of your application, clicks on the &#8220;Login with Facebook&#8221; button on your login page, you have it send a login attempt:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/560ySU9jUOCFMXsIM1fcGC/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
-<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic NjUxW...</span>
-<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">no-cache</span>
-
-<span class="p">{</span>
-  <span class="nt">&quot;providerData&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;facebook&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;EAAT68k[...]T8TAZDZD&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
 <p>After the credentials are validated, Stormpath will do a few things:</p>
 <ol class="arabic simple">
 <li>Create an Account in the Facebook Directory.</li>
@@ -2513,15 +2404,6 @@ This link takes you to a secure page where you can change your password.
 </ol>
 <p>Your user Janelle now has an Account in the Facebook Directory, an Account in the Cloud Directory, and both of these Accounts are linked via accountLink resources.</p>
 <p>Stormpath will now return the Account from the Cloud Directory:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/4Ne98Nh3OscHLuBexample&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;jkallday@email.com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;jkallday@email.com&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Janelle&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span>
-<span class="p">}</span>
-</pre></div>
-</div>
 <p>If at a later date she were to choose to login via Google, then (assuming her Facebook and Google use the same email) Stormpath would create an Account for her in the Google Directory, link it to the Cloud Directory Account, and then return that Cloud Account.</p>
 </div>
 <div class="section" id="example-scenario-2">
@@ -2534,23 +2416,6 @@ This link takes you to a secure page where you can change your password.
 <li>The login page for this application must pass the user&#8217;s Organization <code class="docutils literal"><span class="pre">href</span></code> or <code class="docutils literal"><span class="pre">nameKey</span></code> with every login attempt.</li>
 </ul>
 <p>So a login attempt to a Facebook Directory would look like the one above, but with an Account Store specified as well, in this case an Organization <code class="docutils literal"><span class="pre">nameKey</span></code>:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1FxaAPbyW3JqNLbsPaH26R/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
-<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic NjUxW...</span>
-<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">no-cache</span>
-
-<span class="p">{</span>
-  <span class="nt">&quot;providerData&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;facebook&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span> <span class="s2">&quot;EAAT68k[...]T8TAZDZD&quot;</span>
-    <span class="s2">&quot;accountStore&quot;</span><span class="p">:</span> <span class="p">{</span>
-      <span class="nt">&quot;nameKey&quot;</span><span class="p">:</span> <span class="s2">&quot;OrganizationA&quot;</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
 <p>This targeted login attempt would tell Stormpath to go to that specific Organization&#8217;s Directories to find the Account. From that point on, any Account creation and linking policies would be enacted based on the policies associated with that particular Organization&#8217;s Directories.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
