@@ -46,8 +46,8 @@ content_top: [docs_top.html]
         </div>
         <div class="col-xs-12 col-sm-6">
           <div class="language-header lang2"></div>
-          <pre><code><a href="http://docs.stormpath.com/php/laravel/latest/quickstart.html">Follow the quickstart</a></code></pre>
-          <p class="body-copy">For web applications or REST APIs that use the Laravel framework, this package does it all. Stormpth-Laravel can add a complete user authentication and management system to your application in 15 minutes.</p>
+          <pre><code>composer require stormpath/laravel</code></pre>
+          <p class="body-copy">For web applications or REST APIs that use the Laravel framework, this package does it all. Stormpath-Laravel can add a complete user authentication and management system to your application in 15 minutes.</p>
             <div class="row">
               <div class="col-sm-12">
                 <ul class="fa-ul">
@@ -67,8 +67,8 @@ content_top: [docs_top.html]
       <div class="row">
         <div class="col-xs-12 col-sm-6 col-sm-offset-3">
           <div class="language-header lang3"></div>
-          <pre><code><a href="/php/lumen/latest/quickstart.html">Follow the quickstart</a></code></pre>
-          <p class="body-copy">For REST APIs that use the Lumen framework, this package does it all. Stormpth-Lumen can add a complete user authentication and management system to your API in 15 minutes.</p>
+          <pre><code>composer require stormpath/lumen</code></pre>
+          <p class="body-copy">For REST APIs that use the Lumen framework, this package does it all. Stormpath-Lumen can add a complete user authentication and management system to your API in 15 minutes.</p>
             <div class="row">
               <div class="col-sm-12">
                 <ul class="fa-ul">
