@@ -189,19 +189,32 @@ From this view you can:
 - Search for Groups using the search box in the top right
 - Add new Groups to this Application, via the "Create Group" button.
 
+.. _applications-accountlinking:
+
+Managing an Application's Account Linking Policy
+------------------------------------------------
+
+Clicking the "Policies" link in the left-side navigation panel will bring you to your Application's Account Linking Policy information. For more information about Account Linking, please see the `REST Product Guide's Account Management chapter <https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#what-s-in-the-account-linking-policy>`__.
+
+Specifically, you can toggle the following settings:
+
+- **Status:** Enables or disables the entire policy. If this is set to "Disabled" then the other settings will be unavailable.
+- **Automatic Provisioning:** This setting controls whether new Accounts will be automatically created in the default Account Store.
+- **Matching Property:** Allows you to select the Account attribute that is used as a basis for automatically creating account links. Currently the only available attribute is "email".
+
 .. _applications-oauth:
 
 Managing an Application's OAuth Policy
 --------------------------------------
 
-Clicking the "OAuth Policy" link in the left-side navigation panel will bring you to your Application's OAuth Policy information. Here you will find:
+The next tab after Account Linking is for your Application's OAuth policy. Here you will find:
 
 - Your **OAuth Token URL**, which is used to generate and validate tokens
 - Your **Access Token** and **Refresh Token** Time-to-Live durations. For more information about these, please see the `REST API Reference <https://docs.stormpath.com/rest/product-guide/latest/reference.html#oauth-policy>`__.
 
 .. _applications-saml:
 
-The Application's SAML Policy
+Managing an Application's SAML Policy
 --------------------------------------
 
-The Application's "SAML Policy" page contains the "SAML SSO Initiation Endpoint" that is used as part of the Service-Provider-initiated SAML flow. For more information about this, please see the `REST Product Guide's Authentication chapter <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#the-service-provider-initiated-flow>`_.
+The Application's "SAML Policy" tab contains the "SAML SSO Initiation Endpoint" that is used as part of the Service-Provider-initiated SAML flow. For more information about this, please see the `REST Product Guide's Authentication chapter <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#the-service-provider-initiated-flow>`_.

@@ -150,3 +150,14 @@ To set an Account Store as the default, make sure you are in the Account Store l
 .. note::
 
   Mirrored Directories (e.g. Social, LDAP, SAML) cannot be set as either the default Account or Group location.
+
+Managing an Organization's Account Linking Policy
+-------------------------------------------------
+
+Clicking the "Policies" link in the left-side navigation panel will bring you to your Organization's Account Linking Policy information. For more information about Account Linking, please see the `REST Product Guide's Account Management chapter <https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#what-s-in-the-account-linking-policy>`__.
+
+Specifically, you can toggle the following settings:
+
+- **Status:** Enables or disables the entire policy. If this is set to "Disabled" then the other settings will be unavailable.
+- **Automatic Provisioning:** This setting controls whether new Accounts will be automatically created in the default Account Store.
+- **Matching Property:** Allows you to select the Account attribute that is used as a basis for automatically creating account links. Currently the only available attribute is "email".
