@@ -160,6 +160,7 @@ When you are looking at the page for a specific Account, the left-side navigatio
 - **Applications:** A list of Applications that this Account is mapped to.
 - **Groups:** A list of Groups that this Account is a member of.
 - **OAuth Tokens:** A list of OAuth 2.0 tokens that were created for this Account.
+- **Linked Accounts:** A list of Accounts that are linked to this one.
 
 For more information about what you can do with these lists, see :ref:`below <accounts-othertasks>`.
 
@@ -184,7 +185,8 @@ Here you will see a list of all of the Groups that are associated with this Acco
 From this view you can:
 
 - Search for Groups using the search box in the top right
-- Add new the Account to a Group inside its owning Directory using the "Add to Group button".
+- Add the Account to a Group inside its owning Directory using the "Add to Group button".
+- Remove the Account from a Group it is currently a member of
 
 .. _accounts-oauth:
 
@@ -216,3 +218,33 @@ You can also **delete** any tokens. To delete a token, either click **Delete** i
   Deleting an Access Token does not delete the Refresh Token that was generated alongside it.
 
 For more information about OAuth tokens in Stormpath, please see `the REST Product Guide <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#configuring-token-based-authentication>`__.
+
+Managing an Account's Linked Accounts
+-------------------------------------
+
+When viewing the page for a specific Account, you can see all of its Linked Accounts by clicking on the "Linked Accounts" link in the left-side navigation panel.
+
+Here you will see a list of all of the Accounts that are linked to this Account.
+
+From this view you can:
+
+- Search the linked Accounts using the search box in the top right
+- Link this Account to another Account in the same Directory
+- Unlink any existing linked Accounts
+
+For more information about Account Linking, please see `the REST Product Guide's Account Management chapter <https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#account-linking>`__.
+
+Managing an Account's Factors
+-----------------------------
+
+When viewing the page for a specific Account, you can see all of its Factors by clicking on the "Factors" link in the left-side navigation panel.
+
+Here you will see a list of all of the Multi-Factor Authentication Factors that are associated with this Account.
+
+From this view you can:
+
+- Search the Factors using the search box in the top right
+- Add a new SMS factor
+- Remove any existing Factors
+
+For more information about Multi-Factor Authentication, please see `the REST Product Guide's Authentication chapter <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#using-multi-factor-authentication>`__.
