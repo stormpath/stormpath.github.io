@@ -84,6 +84,7 @@ For more information, continue on to one of these sections:
   client_config
   registration
   authentication
+  social_login
   user_context
   logout
   email_verification
