@@ -7,10 +7,15 @@ Configuring Your Client
 Overview
 --------
 
+In general, two configuration points should be kept in mind:
+
+1. In the case of web applications (e.g. Angular, React) the application's URL should be added to the Application's "Authorized Origin URIs" list found in the Stormpath Admin Console page for the Application.
+2. The application's base URL should be configured to be the Client API URL. Your application must know to send all Stormpath requests to the Client API URL. Instructions to do that can be found below.
+
 Angular
 -------
 
-For an Angular application, the relevant configuration is found in ``app.js``. Add the following line to the ``config`` function:
+For an Angular application using the `Stormpath AngularJS SDK <https://github.com/stormpath/stormpath-sdk-angularjs/>`__, the relevant configuration is found in ``app.js``. Add the following line to the ``config`` function:
 
 ``STORMPATH_CONFIG.ENDPOINT_PREFIX = 'https://{DNS-LABEL}.apps.stormpath.io';``
 

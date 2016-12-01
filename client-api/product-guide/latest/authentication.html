@@ -107,6 +107,8 @@
             
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuring the Client API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#application-configuration">Application Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#client-api-configuration">Client API Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#updating-the-configuration-via-rest">Updating the Configuration via REST</a></li>
 </ul>
 </li>
@@ -128,6 +130,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#oauth-2-0-login">OAuth 2.0 Login</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#password">Password</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#client-credentials">Client Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stormpath-token">Stormpath Token</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#refresh-token">Refresh Token</a></li>
 </ul>
 </li>
@@ -241,7 +244,7 @@
 </table>
 <p><strong>Account Stores</strong></p>
 <p>Any non-Cloud Account Stores mapped to this Application will also return as part of the response here, in order to allow for the rendering of Social Login buttons. They will return in an order determined by their order in the Account Store Mapping priority index. For more about this topic, please see <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#how-login-attempts-work-in-stormpath">How Login Attempts Work</a> in the REST Product Guide.</p>
-<p>Each returned <code class="docutils literal"><span class="pre">accountStore</span></code> has an <code class="docutils literal"><span class="pre">href</span></code> and a <code class="docutils literal"><span class="pre">name</span></code>. It also contains an embedded <code class="docutils literal"><span class="pre">provider</span></code> object which contains the following information:</p>
+<p>Each returned <code class="docutils literal"><span class="pre">accountStore</span></code> has an <code class="docutils literal"><span class="pre">href</span></code> and a <code class="docutils literal"><span class="pre">name</span></code>. In the case of Social Directories, you will see an <code class="docutils literal"><span class="pre">authorizeUri</span></code> which is used for <span class="xref std std-ref">Social Login</span>. Following this link will kick-off the social login flow for that provider. Each <code class="docutils literal"><span class="pre">accountStore</span></code> also contains an embedded <code class="docutils literal"><span class="pre">provider</span></code> object which contains the following information:</p>
 <table border="1" class="docutils">
 <colgroup>
 <col width="30%" />
@@ -276,33 +279,46 @@
 <p><strong>Success Response</strong></p>
 <p><code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with the JSON view model.</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;form&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;fields&quot;</span><span class="p">:</span> <span class="p">[</span>
+  <span class="nt">&quot;form&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;fields&quot;</span><span class="p">:[</span>
       <span class="p">{</span>
-        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;login&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Username or Email&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Username or Email&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;login&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;Username or Email&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;placeholder&quot;</span><span class="p">:</span><span class="s2">&quot;Username or Email&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;text&quot;</span>
       <span class="p">},</span>
       <span class="p">{</span>
-        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Password&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Password&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;password&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;Password&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;placeholder&quot;</span><span class="p">:</span><span class="s2">&quot;Password&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;password&quot;</span>
       <span class="p">}</span>
     <span class="p">]</span>
   <span class="p">},</span>
-  <span class="nt">&quot;accountStores&quot;</span><span class="p">:</span> <span class="p">[</span>
+  <span class="nt">&quot;accountStores&quot;</span><span class="p">:[</span>
     <span class="p">{</span>
-      <span class="nt">&quot;provider&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/2TRsNjHx8DB6Ca3rBal536/provider&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;facebook&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;clientId&quot;</span><span class="p">:</span> <span class="s2">&quot;1401818363453044&quot;</span>
+      <span class="nt">&quot;authorizeUri&quot;</span><span class="p">:</span><span class="s2">&quot;https://cold-diver.apps.dev.stormpath.io:443/authorize?response_type=stormpath_token&amp;account_store_href=https%3A%2F%2Fapi.stormpath.com%2Fv1%2Fdirectories%2Fiov1DJGHvkYmJSprYXTsy&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;provider&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/iov1DJGHvkYmJSprYXTsy/provider&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;facebook&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;clientId&quot;</span><span class="p">:</span><span class="s2">&quot;133216963828081&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="s2">&quot;public_profile email&quot;</span>
       <span class="p">},</span>
-      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/2TRsNjHx8DB6Ca3rBal536&quot;</span><span class="p">,</span>
-      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;A Facebook Directory&quot;</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/iov1DJGHvkYmJSprYXTsy&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Facebook Directory&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;authorizeUri&quot;</span><span class="p">:</span><span class="s2">&quot;https://cold-diver.apps.dev.stormpath.io:443/authorize?response_type=stormpath_token&amp;account_store_href=https%3A%2F%2Fapi.stormpath.com%2Fv1%2Fdirectories%2F6NOH5Y6w8ZnvdTuGfNWn7s&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;provider&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/6NOH5Y6w8ZnvdTuGfNWn7s/provider&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;linkedin&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;clientId&quot;</span><span class="p">:</span><span class="s2">&quot;789nktq0msbowv&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="s2">&quot;r_basicprofile r_emailaddress&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/6NOH5Y6w8ZnvdTuGfNWn7s&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;LinkedIn Directory&quot;</span>
     <span class="p">}</span>
   <span class="p">]</span>
 <span class="p">}</span>
@@ -318,11 +334,12 @@
 <ul class="simple">
 <li>Username &amp; Password (URL-encoded)</li>
 <li>Client Credentials (Basic Auth Base64-encoded API Key ID &amp; Secret)</li>
+<li>Stormpath Token (URL-encoded)</li>
 <li>Refresh Token (URL-encoded)</li>
 </ul>
 <p>It returns OAuth 2.0 Access and Refresh tokens.</p>
 <div class="section" id="password">
-<h3>Password<a class="headerlink" href="#password" title="Permalink to this headline">¶</a></h3>
+<span id="post-oauth-token-password"></span><h3>Password<a class="headerlink" href="#password" title="Permalink to this headline">¶</a></h3>
 <p>In this flow, the end-user provides their username and password, and an access and refresh token are returned if those credentials are correct.</p>
 <p><strong>Request</strong></p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
@@ -349,7 +366,7 @@ grant_type=password&amp;username=jakub%40stormpath.com&amp;password=Password1%21
 </div>
 </div>
 <div class="section" id="client-credentials">
-<h3>Client Credentials<a class="headerlink" href="#client-credentials" title="Permalink to this headline">¶</a></h3>
+<span id="post-oauth-token-client-credentials"></span><h3>Client Credentials<a class="headerlink" href="#client-credentials" title="Permalink to this headline">¶</a></h3>
 <p>In this flow, the end-user is authenticating with an API Key Pair that has been created for their account, and that data is passed in the headers like this:</p>
 <p><code class="docutils literal"><span class="pre">Authorization:</span> <span class="pre">Basic</span> <span class="pre">&lt;Base64UrlEncode(apiKeyId:apiKeySecret)&gt;</span></code></p>
 <p>If the API Key Pair is valid, an access and refresh token is returned.</p>
@@ -373,10 +390,32 @@ grant_type=client_credentials
 </pre></div>
 </div>
 </div>
+<div class="section" id="stormpath-token">
+<span id="post-oauth-token-stormpath-token"></span><h3>Stormpath Token<a class="headerlink" href="#stormpath-token" title="Permalink to this headline">¶</a></h3>
+<p>This token is returned as part of the <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint&#8217;s <span class="xref std std-ref">Social Login</span> flow. It can then be passed to the OAuth endpoint in order to get back OAuth 2.0 Access and Refresh tokens.</p>
+<p><strong>Request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded; charset=utf-8</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">cold-diver.apps.stormpath.io</span>
+
+grant_type=stormpath_token&amp;token=eyJraWQ[...]nfhEs
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<p><code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with OAuth token.</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;access_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQ[...]7mvg8&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;refresh_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQ[...]AKyQw&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;token_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;expires_in&quot;</span><span class="p">:</span> <span class="mi">3600</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
 <div class="section" id="refresh-token">
-<h3>Refresh Token<a class="headerlink" href="#refresh-token" title="Permalink to this headline">¶</a></h3>
-<p>This flow is used to create a new access token, using an existing refresh token.
-The request will fail if the refresh token is expired or has been revoked.</p>
+<span id="post-oauth-token-refresh-token"></span><h3>Refresh Token<a class="headerlink" href="#refresh-token" title="Permalink to this headline">¶</a></h3>
+<p>This flow is used to create a new access token, using an existing refresh token. The request will fail if the refresh token is expired or has been revoked.</p>
 <p><strong>Request</strong></p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>

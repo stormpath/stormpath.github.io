@@ -53,7 +53,7 @@ Each returned ``field`` has the following information:
 
 Any non-Cloud Account Stores mapped to this Application will also return as part of the response here, in order to allow for the rendering of Social Login buttons. They will return in an order determined by their order in the Account Store Mapping priority index. For more about this topic, please see `How Login Attempts Work <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#how-login-attempts-work-in-stormpath>`__ in the REST Product Guide.
 
-Each returned ``accountStore`` has an ``href`` and a ``name``. It also contains an embedded ``provider`` object which contains the following information:
+Each returned ``accountStore`` has an ``href`` and a ``name``. In the case of Social Directories, you will see an ``authorizeUri`` which is used for :ref:`Social Login <social-login>`. Following this link will kick-off the social login flow for that provider. Each ``accountStore`` also contains an embedded ``provider`` object which contains the following information:
 
 .. list-table::
   :widths: 30 70
@@ -89,33 +89,46 @@ Each returned ``accountStore`` has an ``href`` and a ``name``. It also contains 
 .. code-block:: json
 
   {
-    "form": {
-      "fields": [
+    "form":{
+      "fields":[
         {
-          "name": "login",
-          "label": "Username or Email",
-          "placeholder": "Username or Email",
-          "required": true,
-          "type": "text"
+          "name":"login",
+          "label":"Username or Email",
+          "placeholder":"Username or Email",
+          "required":true,
+          "type":"text"
         },
         {
-          "name": "password",
-          "label": "Password",
-          "placeholder": "Password",
-          "required": true,
-          "type": "password"
+          "name":"password",
+          "label":"Password",
+          "placeholder":"Password",
+          "required":true,
+          "type":"password"
         }
       ]
     },
-    "accountStores": [
+    "accountStores":[
       {
-        "provider": {
-          "href": "https://api.stormpath.com/v1/directories/2TRsNjHx8DB6Ca3rBal536/provider",
-          "providerId": "facebook",
-          "clientId": "1401818363453044"
+        "authorizeUri":"https://cold-diver.apps.dev.stormpath.io:443/authorize?response_type=stormpath_token&account_store_href=https%3A%2F%2Fapi.stormpath.com%2Fv1%2Fdirectories%2Fiov1DJGHvkYmJSprYXTsy",
+        "provider":{
+          "href":"https://api.stormpath.com/v1/directories/iov1DJGHvkYmJSprYXTsy/provider",
+          "providerId":"facebook",
+          "clientId":"133216963828081",
+          "scope":"public_profile email"
         },
-        "href": "https://api.stormpath.com/v1/directories/2TRsNjHx8DB6Ca3rBal536",
-        "name": "A Facebook Directory"
+        "href":"https://api.stormpath.com/v1/directories/iov1DJGHvkYmJSprYXTsy",
+        "name":"Facebook Directory"
+      },
+      {
+        "authorizeUri":"https://cold-diver.apps.dev.stormpath.io:443/authorize?response_type=stormpath_token&account_store_href=https%3A%2F%2Fapi.stormpath.com%2Fv1%2Fdirectories%2F6NOH5Y6w8ZnvdTuGfNWn7s",
+        "provider":{
+          "href":"https://api.stormpath.com/v1/directories/6NOH5Y6w8ZnvdTuGfNWn7s/provider",
+          "providerId":"linkedin",
+          "clientId":"789nktq0msbowv",
+          "scope":"r_basicprofile r_emailaddress"
+        },
+        "href":"https://api.stormpath.com/v1/directories/6NOH5Y6w8ZnvdTuGfNWn7s",
+        "name":"LinkedIn Directory"
       }
     ]
   }
@@ -133,9 +146,12 @@ The OAuth endpoint takes one of the following:
 
 - Username & Password (URL-encoded)
 - Client Credentials (Basic Auth Base64-encoded API Key ID & Secret)
+- Stormpath Token (URL-encoded)
 - Refresh Token (URL-encoded)
 
 It returns OAuth 2.0 Access and Refresh tokens.
+
+.. _post-oauth-token-password:
 
 Password
 """"""""
@@ -170,6 +186,8 @@ In this flow, the end-user provides their username and password, and an access a
 
   The ``username`` can also be the Account ``email``.
 
+.. _post-oauth-token-client-credentials:
+
 Client Credentials
 """"""""""""""""""
 
@@ -203,11 +221,43 @@ If the API Key Pair is valid, an access and refresh token is returned.
     "expires_in": 3600
   }
 
+.. _post-oauth-token-stormpath-token:
+
+Stormpath Token
+"""""""""""""""
+
+This token is returned as part of the ``/authorize`` endpoint's :ref:`Social Login <social-login>` flow. It can then be passed to the OAuth endpoint in order to get back OAuth 2.0 Access and Refresh tokens.
+
+**Request**
+
+.. code-block:: http
+
+  POST /oauth/token HTTP/1.1
+  Accept: application/json
+  Content-Type: application/x-www-form-urlencoded; charset=utf-8
+  Host: cold-diver.apps.stormpath.io
+
+  grant_type=stormpath_token&token=eyJraWQ[...]nfhEs
+
+**Response**
+
+``200 OK`` along with OAuth token.
+
+.. code-block:: json
+
+  {
+    "access_token": "eyJraWQ[...]7mvg8",
+    "refresh_token": "eyJraWQ[...]AKyQw",
+    "token_type": "Bearer",
+    "expires_in": 3600
+  }
+
+.. _post-oauth-token-refresh-token:
+
 Refresh Token
 """""""""""""
 
-This flow is used to create a new access token, using an existing refresh token.
-The request will fail if the refresh token is expired or has been revoked.
+This flow is used to create a new access token, using an existing refresh token. The request will fail if the refresh token is expired or has been revoked.
 
 **Request**
 

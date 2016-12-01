@@ -4,6 +4,19 @@
 Configuring the Client API
 ****************************
 
+Application Configuration
+===========================
+
+Applications that use the Client API have two relevant configuration parameters, both found on your Application's page in the Stormpath Admin Console:
+
+1. **Authorized Callback URIs:** This list should include any URIs that your users will be returned to after they have completed authentication with an outside provider, for example as a part of the :ref:`social login <social-login>` flow. For example, if you do not specify a redirect URI when you kick off the social login flow, the user will be redirected the first URI in this list.
+2. **Authorized Origin URIs:** This list should include the application's URL, or whatever URL will be included in the ``Origin`` header of requests sent to the Client API.
+
+Client API Configuration
+===========================
+
+Full information about configuring the Client API can be found in the Admin Console Guide (jakub.todo).
+
 While the recommended way to configure the behavior of your Application's Client API is via the Stormpath Admin Console (jakub.todo), the full configuration information can be retrieved and updated via REST.
 
 **webConfig URL**
