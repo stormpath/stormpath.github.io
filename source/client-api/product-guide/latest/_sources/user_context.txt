@@ -96,6 +96,5 @@ The above Account could be returned with its Directory information embedded:
       "status": "ENABLED"
     }
   }
-}
 
 For more information see the :ref:`configuration` chapter.
