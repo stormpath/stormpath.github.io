@@ -50,7 +50,7 @@ Here you can edit the Application's:
 - Name
 - Description
 - Status (Enabled or Disabled)
-- Authorized Callback URIs (for more on this, please see the Directory chapter sections on Social and SAML login)
+- Authorized Callback URIs (these are the URIs that a user can be returned to as part of Social or SAML login flows)
 - Custom Data
 
 On the left-hand side you will see a set of links to various resources associated with this Application, such as Accounts and Groups. For more information about these, see :ref:`applications-othertasks` below.
@@ -218,3 +218,30 @@ Managing an Application's SAML Policy
 --------------------------------------
 
 The Application's "SAML Policy" tab contains the "SAML SSO Initiation Endpoint" that is used as part of the Service-Provider-initiated SAML flow. For more information about this, please see the `REST Product Guide's Authentication chapter <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#the-service-provider-initiated-flow>`_.
+
+.. _applications-client-api:
+
+Managing an Application's Client API Configuration
+--------------------------------------------------
+
+The Application's "Client API" tab contains the configuration information for your Application's Client API endpoints.
+
+Client API
+^^^^^^^^^^
+
+Here you can modify the Client API's:
+
+- **Status:** This will either enable or disable the entire Client API and all associated endpoints.
+- **Signing API Key:** This is the API Key that will be used to sign the OAuth 2.0 access and refresh tokens that are returned by the Client API.
+- **DNS Label:** This allows you to customize the DNS label that is pre-pended to your Client API URL. To copy the whole URL to your clipboard, click the clipboard icon on the right.
+
+Endpoints
+^^^^^^^^^
+
+This is a list of the Client API endpoints, each of which can be set to "Enabled" or "Disabled".
+
+.. note::
+
+  In the case of the ``/change``, ``/forgot``, and ``/verify`` endpoints, they can also be set to "Inherit". This means that they take on the status of the Password Reset (for ``/change`` and ``/forgot``) or Verification Email (for ``/verify``) Workflows found in the default Directory for this Application.
+
+The ``/me`` endpoint also further configuration that can be done to control what else is returned along with the current Account. If you click on the gear beside the drop-down menu, an "Endpoint Configuration" modal will appear. Here you can choose which other resources will return along with the Account. For more information, please see `the Client API documentation <https://docs.stormpath.com/client-api/product-guide/latest/user_context.html>`__.
