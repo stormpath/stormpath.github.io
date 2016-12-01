@@ -1,0 +1,431 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>User Registration &mdash; Stormpath Client API Guide  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Stormpath Client API Guide  documentation" href="index.html"/>
+        <link rel="next" title="Authentication" href="authentication.html"/>
+        <link rel="prev" title="Configuring Your Client" href="client_config.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+  
+  <script src="https://cdn.optimizely.com/js/225847041.js"></script>
+
+  
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '986262161469311');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  /></noscript>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NQZZFW');</script>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Stormpath Client API Guide
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuring the Client API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#updating-the-configuration-via-rest">Updating the Configuration via REST</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="client_config.html">Configuring Your Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="client_config.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client_config.html#angular">Angular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client_config.html#android">Android</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client_config.html#ios">iOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client_config.html#react">React</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">User Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#get-registration-view-model">Get Registration View Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-new-account">Create New Account</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#get-login-view-model">Get Login View Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth-2-0-login">OAuth 2.0 Login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html#password">Password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html#client-credentials">Client Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html#refresh-token">Refresh Token</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_context.html">User Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logging Out</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#oauth-2-0-logout">OAuth 2.0 Logout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="email_verification.html">Email Verification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#trigger-verification-workflow">Trigger Verification Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#verify-email-address">Verify Email Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_reset.html">Password Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#trigger-reset-workflow">Trigger Reset Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#change-password">Change Password</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Stormpath Client API Guide</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>User Registration</li>
+    <li class="wy-breadcrumbs-aside">
+      
+          
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="user-registration">
+<span id="registration"></span><h1>User Registration<a class="headerlink" href="#user-registration" title="Permalink to this headline">¶</a></h1>
+<p><strong>URL</strong></p>
+<p><code class="docutils literal"><span class="pre">https://{DNS-LABEL}.apps.stormpath.io/register</span></code></p>
+<p>Registering a user is performed against the <code class="docutils literal"><span class="pre">/register</span></code> endpoint. A <code class="docutils literal"><span class="pre">GET</span></code> will retrieve the current registration view model, while a <code class="docutils literal"><span class="pre">POST</span></code> can pass the data for the new user Account that is to be created.</p>
+<div class="section" id="get-registration-view-model">
+<h2>Get Registration View Model<a class="headerlink" href="#get-registration-view-model" title="Permalink to this headline">¶</a></h2>
+<p>The registration view model is returned in the form of JSON. It includes a <code class="docutils literal"><span class="pre">form</span></code> object that contains a <code class="docutils literal"><span class="pre">fields</span></code> collection to be rendered in the login form, and a collection of <code class="docutils literal"><span class="pre">accountStores</span></code>.</p>
+<p><strong>Form Fields</strong></p>
+<p>Each returned <code class="docutils literal"><span class="pre">field</span></code> has the following information:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">name</span></code></td>
+<td>The name of this field.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">label</span></code></td>
+<td>The label element for this field.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">placeholder</span></code></td>
+<td>Placeholder text, if any, to put in this field when it is empty.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">required</span></code></td>
+<td>Indicates whether this field is required or not.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
+<td>The input type for this field (e.g. <code class="docutils literal"><span class="pre">text</span></code>, <code class="docutils literal"><span class="pre">email</span></code>, <code class="docutils literal"><span class="pre">password</span></code>).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Account Stores</strong></p>
+<p>Any non-Cloud Account Stores mapped to this Application will also return as part of the response here, in order to allow for the rendering of Social Login buttons. They will return in an order determined by their order in the Account Store Mapping priority index. For more about this topic, please see <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#how-login-attempts-work-in-stormpath">How Login Attempts Work</a> in the REST Product Guide.</p>
+<p>Each returned <code class="docutils literal"><span class="pre">accountStore</span></code> has an <code class="docutils literal"><span class="pre">href</span></code> and a <code class="docutils literal"><span class="pre">name</span></code>. It also contains an embedded <code class="docutils literal"><span class="pre">provider</span></code> object which contains the following information:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">href</span></code></td>
+<td>The location of the Provider resource for this Directory.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">providerId</span></code></td>
+<td>The ID for this Provider. For more information, see <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#provider">the REST Reference chapter</a>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">clientId</span></code></td>
+<td>(Social Directories only) The OAuth 2.0 Client ID for this Provider.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">scope</span></code></td>
+<td>(Social Directories only) An array containing the scope(s) that are being requested from the social provider, as configured for this account store.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/register</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">smooth-ensign.apps.stormpath.io</span>
+</pre></div>
+</div>
+<p><strong>Success Response</strong></p>
+<p><code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with the JSON view model.</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;form&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;fields&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;givenName&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;First Name&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;First Name&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;surname&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Last Name&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Last Name&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;text&quot;</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Email&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Email&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Password&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;placeholder&quot;</span><span class="p">:</span> <span class="s2">&quot;Password&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;password&quot;</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;accountStores&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;provider&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/2TRsNjHx8DB6Ca3rBal536/provider&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;facebook&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;clientId&quot;</span><span class="p">:</span> <span class="s2">&quot;1401818363453044&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/2TRsNjHx8DB6Ca3rBal536&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;My Facebook Dir&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="create-new-account">
+<h2>Create New Account<a class="headerlink" href="#create-new-account" title="Permalink to this headline">¶</a></h2>
+<p>Sending a <code class="docutils literal"><span class="pre">POST</span></code> to <code class="docutils literal"><span class="pre">/register</span></code> with an <code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code> will create a new Account in the Application&#8217;s default Account Store.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To require that additional attributes be passed you must configure the Directory&#8217;s Account Schema. For more information about this, see <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#how-to-manage-an-account-s-required-attributes">the REST Product Guide</a>.</p>
+</div>
+<p><strong>Request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/register</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json; charset=utf-8</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">violet-peace.apps.stormpath.io</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;jakub@stormpath.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;password&quot;</span><span class="p">:</span> <span class="s2">&quot;APassword!&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<p><code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with the Account information.</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;account&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5kYvdJyROImkrMHVD2fhSG&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-10-28T20:40:18.463Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-10-28T20:40:18.463Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;jakub+test9@stormpath.com&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;jakub+test9@stormpath.com&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Jakub&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;S&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;Jakub S&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;emailVerificationStatus&quot;</span><span class="p">:</span> <span class="s2">&quot;UNVERIFIED&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="authentication.html" class="btn btn-neutral float-right" title="Authentication" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="client_config.html" class="btn btn-neutral" title="Configuring Your Client" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  
+
+</body>
+</html>
