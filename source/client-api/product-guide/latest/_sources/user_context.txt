@@ -69,4 +69,33 @@ But you can also configure this endpoint to return these Account properties:
 - Directory
 - Tenant
 
+The above Account could be returned with its Directory information embedded:
+
+.. code-block:: json
+
+  {
+    "account": {
+    "href": "https://api.stormpath.com/v1/accounts/7gzK1RBUk2tF3VNhZ3AYFI",
+    "createdAt": "2016-10-26T16:48:14.457Z",
+    "modifiedAt": "2016-10-26T16:48:14.457Z",
+    "username": "jakub",
+    "email": "jakub@stormpath.com",
+    "givenName": "Jakub",
+    "middleName": "",
+    "surname": "Sw",
+    "status": "ENABLED",
+    "fullName": "Jakub Sw"
+    "emailVerificationStatus":"VERIFIED"
+    "passwordModifiedAt": "2016-11-09T21:56:21.000Z",
+    "directory": {
+      "href": "https://api.stormpath.com/v1/directories/1RU4exzcEKVaEoJTz3rDjw",
+      "createdAt": "2016-10-25T21:55:10.574Z",
+      "modifiedAt": "2016-10-25T21:55:10.574Z",
+      "name": "Directory",
+      "description": "",
+      "status": "ENABLED"
+    }
+  }
+}
+
 For more information see the :ref:`configuration` chapter.

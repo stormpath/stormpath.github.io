@@ -107,6 +107,8 @@
             
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuring the Client API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#application-configuration">Application Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#client-api-configuration">Client API Configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#updating-the-configuration-via-rest">Updating the Configuration via REST</a></li>
 </ul>
 </li>
@@ -128,6 +130,7 @@
 <li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth-2-0-login">OAuth 2.0 Login</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="authentication.html#password">Password</a></li>
 <li class="toctree-l3"><a class="reference internal" href="authentication.html#client-credentials">Client Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html#stormpath-token">Stormpath Token</a></li>
 <li class="toctree-l3"><a class="reference internal" href="authentication.html#refresh-token">Refresh Token</a></li>
 </ul>
 </li>
@@ -200,10 +203,15 @@
 <span id="client-config"></span><h1>Configuring Your Client<a class="headerlink" href="#configuring-your-client" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>In general, two configuration points should be kept in mind:</p>
+<ol class="arabic simple">
+<li>In the case of web applications (e.g. Angular, React) the application&#8217;s URL should be added to the Application&#8217;s &#8220;Authorized Origin URIs&#8221; list found in the Stormpath Admin Console page for the Application.</li>
+<li>The application&#8217;s base URL should be configured to be the Client API URL. Your application must know to send all Stormpath requests to the Client API URL. Instructions to do that can be found below.</li>
+</ol>
 </div>
 <div class="section" id="angular">
 <h2>Angular<a class="headerlink" href="#angular" title="Permalink to this headline">¶</a></h2>
-<p>For an Angular application, the relevant configuration is found in <code class="docutils literal"><span class="pre">app.js</span></code>. Add the following line to the <code class="docutils literal"><span class="pre">config</span></code> function:</p>
+<p>For an Angular application using the <a class="reference external" href="https://github.com/stormpath/stormpath-sdk-angularjs/">Stormpath AngularJS SDK</a>, the relevant configuration is found in <code class="docutils literal"><span class="pre">app.js</span></code>. Add the following line to the <code class="docutils literal"><span class="pre">config</span></code> function:</p>
 <p><code class="docutils literal"><span class="pre">STORMPATH_CONFIG.ENDPOINT_PREFIX</span> <span class="pre">=</span> <span class="pre">'https://{DNS-LABEL}.apps.stormpath.io';</span></code></p>
 </div>
 <div class="section" id="android">
