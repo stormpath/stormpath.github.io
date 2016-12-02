@@ -7,7 +7,7 @@ Configuring the Client API
 Application Configuration
 ===========================
 
-Applications that use the Client API have two relevant configuration parameters, both found on your Application's page in the Stormpath Admin Console:
+Applications that use the Client API have two relevant configuration parameters, both found on your Application's page in the `Stormpath Admin Console <https://api.stormpath.com>`__:
 
 1. **Authorized Callback URIs:** This list should include any URIs that your users will be returned to after they have completed authentication with an outside provider, for example as a part of the :ref:`social login <social-login>` flow. For example, if you do not specify a redirect URI when you kick off the social login flow, the user will be redirected the first URI in this list.
 2. **Authorized Origin URIs:** This list should include the application's URL, or whatever URL will be included in the ``Origin`` header of requests sent to the Client API.
@@ -15,13 +15,13 @@ Applications that use the Client API have two relevant configuration parameters,
 Client API Configuration
 ===========================
 
-Full information about configuring the Client API can be found in the Admin Console Guide (jakub.todo).
+The easiest way to configure your Application's Client API is using the `Stormpath Admin Console <https://api.stormpath.com>`__. After you log in, go to your Application's page, then click on "Policies" on the left. The "Client API" tab has all of the configuration settings. Full information about this can be found in `the Admin Console Guide <https://docs.stormpath.com/console/product-guide/latest/applications.html#managing-an-application-s-client-api-configuration>`__.
 
-While the recommended way to configure the behavior of your Application's Client API is via the Stormpath Admin Console (jakub.todo), the full configuration information can be retrieved and updated via REST.
+The configuration can also be retrieved and updated via REST. For more information about this, keep reading.
 
 **webConfig URL**
 
-Every Stormpath Application has a linked `webConfig` resource, which can be retrieved with it's href:
+Every Stormpath Application has a linked ``webConfig`` resource, which can be retrieved with it's URL:
 
   ``https://api.stormpath.com/v1/applicationWebConfigs/$WEB_CONFIG_ID``
 
@@ -172,7 +172,7 @@ Every Stormpath Application has a linked `webConfig` resource, which can be retr
 Updating the Configuration via REST
 ===================================
 
-Although it is recommended that you use the Admin Console (jakub.todo) to configure your Client API, the following settings can be updated via an HTTP POST:
+Although it is recommended that you use the `Admin Console <https://docs.stormpath.com/console/product-guide/latest/applications.html#managing-an-application-s-client-api-configuration>`__ to configure your Client API, the following settings can be updated via an HTTP POST:
 
 - ``status``
 - ``oauth2``
