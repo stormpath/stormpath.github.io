@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Authentication &mdash; Stormpath Client API Guide  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Stormpath Client API Guide  documentation" href="index.html"/>
+        <link rel="next" title="Social Login" href="social_login.html"/>
+        <link rel="prev" title="User Registration" href="registration.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+  
+  <script src="https://cdn.optimizely.com/js/225847041.js"></script>
+
+  
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '986262161469311');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  /></noscript>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NQZZFW');</script>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Stormpath Client API Guide
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuring the Client API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#application-configuration">Application Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#client-api-configuration">Client API Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#updating-the-configuration-via-rest">Updating the Configuration via REST</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="client_config.html">Configuring Your Client</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="client_config.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client_config.html#angular">Angular</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client_config.html#android">Android</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client_config.html#ios">iOS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="client_config.html#react">React</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">User Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#get-registration-view-model">Get Registration View Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#create-new-account">Create New Account</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#get-login-view-model">Get Login View Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oauth-2-0-login">OAuth 2.0 Login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#password">Password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#client-credentials">Client Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stormpath-token">Stormpath Token</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#refresh-token">Refresh Token</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social_login.html">Social Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#the-social-login-flow">The Social Login Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#before-you-start">Before You Start</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#configuring-your-social-provider">1. Configuring Your Social Provider</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="social_login.html#facebook">Facebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="social_login.html#google">Google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="social_login.html#github">GitHub</a></li>
+<li class="toctree-l4"><a class="reference internal" href="social_login.html#linkedin">LinkedIn</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-stormpath-social-directory">2. Create a Stormpath Social Directory</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#initiate-social-login">Initiate Social Login</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_context.html">User Context</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logging Out</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#oauth-2-0-logout">OAuth 2.0 Logout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="email_verification.html">Email Verification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#trigger-verification-workflow">Trigger Verification Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#verify-email-address">Verify Email Address</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_reset.html">Password Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#trigger-reset-workflow">Trigger Reset Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#change-password">Change Password</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Stormpath Client API Guide</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Authentication</li>
+    <li class="wy-breadcrumbs-aside">
+      
+          
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="authentication">
+<span id="id1"></span><h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h1>
+<p>Authentication in the Client API involves two endpoints:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">/login</span></code></li>
+<li><code class="docutils literal"><span class="pre">/oauth/token</span></code></li>
+</ul>
+<p>The <code class="docutils literal"><span class="pre">/login</span></code> endpoint is used to retrieve the JSON login view model, while the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint receives credentials from your application and returns back OAuth Access and Refresh tokens. For more information about both of these endpoint, see below.</p>
+<div class="section" id="get-login-view-model">
+<span id="get-login"></span><h2>Get Login View Model<a class="headerlink" href="#get-login-view-model" title="Permalink to this headline">¶</a></h2>
+<p><strong>URL</strong></p>
+<p><code class="docutils literal"><span class="pre">https://{DNS-LABEL}.apps.stormpath.io/login</span></code></p>
+<p>The login view model is returned in the form of JSON. It includes a <code class="docutils literal"><span class="pre">form</span></code> object that contains a <code class="docutils literal"><span class="pre">fields</span></code> collection to be rendered in the login form, and a collection of <code class="docutils literal"><span class="pre">accountStores</span></code>.</p>
+<p><strong>Form Fields</strong></p>
+<p>Each returned <code class="docutils literal"><span class="pre">field</span></code> has the following information:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">name</span></code></td>
+<td>The name of this field.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">label</span></code></td>
+<td>The label element for this field.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">placeholder</span></code></td>
+<td>Placeholder text, if any, to put in this field when it is empty.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">required</span></code></td>
+<td>Indicates whether this field is required or not.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">type</span></code></td>
+<td>The input type for this field (e.g. <code class="docutils literal"><span class="pre">text</span></code> or <code class="docutils literal"><span class="pre">password</span></code>).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Account Stores</strong></p>
+<p>Any non-Cloud Account Stores mapped to this Application will also return as part of the response here, in order to allow for the rendering of Social Login buttons. They will return in an order determined by their order in the Account Store Mapping priority index. For more about this topic, please see <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#how-login-attempts-work-in-stormpath">How Login Attempts Work</a> in the REST Product Guide.</p>
+<p>Each returned <code class="docutils literal"><span class="pre">accountStore</span></code> has an <code class="docutils literal"><span class="pre">href</span></code> and a <code class="docutils literal"><span class="pre">name</span></code>. In the case of Social Directories, you will see an <code class="docutils literal"><span class="pre">authorizeUri</span></code> which is used for <a class="reference internal" href="social_login.html#social-login"><span class="std std-ref">Social Login</span></a>. Following this link will kick-off the social login flow for that provider. Each <code class="docutils literal"><span class="pre">accountStore</span></code> also contains an embedded <code class="docutils literal"><span class="pre">provider</span></code> object which contains the following information:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Attribute</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">href</span></code></td>
+<td>The location of the Provider resource for this Directory.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">providerId</span></code></td>
+<td>The ID for this Provider. For more information, see <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#provider">the REST Reference chapter</a>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">clientId</span></code></td>
+<td>(Social Directories only) The OAuth 2.0 Client ID for this Provider.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">scope</span></code></td>
+<td>(Social Directories only) An array containing the scope(s) that are being requested from the social provider.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example Request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/login</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">smooth-ensign.apps.stormpath.io</span>
+</pre></div>
+</div>
+<p><strong>Success Response</strong></p>
+<p><code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with the JSON view model.</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;form&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;fields&quot;</span><span class="p">:[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;login&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;Username or Email&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;placeholder&quot;</span><span class="p">:</span><span class="s2">&quot;Username or Email&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;text&quot;</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;password&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="s2">&quot;Password&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;placeholder&quot;</span><span class="p">:</span><span class="s2">&quot;Password&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
+        <span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;password&quot;</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;accountStores&quot;</span><span class="p">:[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;authorizeUri&quot;</span><span class="p">:</span><span class="s2">&quot;https://cold-diver.apps.dev.stormpath.io:443/authorize?response_type=stormpath_token&amp;account_store_href=https%3A%2F%2Fapi.stormpath.com%2Fv1%2Fdirectories%2Fiov1DJGHvkYmJSprYXTsy&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;provider&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/iov1DJGHvkYmJSprYXTsy/provider&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;facebook&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;clientId&quot;</span><span class="p">:</span><span class="s2">&quot;133216963828081&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="s2">&quot;public_profile email&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/iov1DJGHvkYmJSprYXTsy&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Facebook Directory&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;authorizeUri&quot;</span><span class="p">:</span><span class="s2">&quot;https://cold-diver.apps.dev.stormpath.io:443/authorize?response_type=stormpath_token&amp;account_store_href=https%3A%2F%2Fapi.stormpath.com%2Fv1%2Fdirectories%2F6NOH5Y6w8ZnvdTuGfNWn7s&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;provider&quot;</span><span class="p">:{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/6NOH5Y6w8ZnvdTuGfNWn7s/provider&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;linkedin&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;clientId&quot;</span><span class="p">:</span><span class="s2">&quot;789nktq0msbowv&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;scope&quot;</span><span class="p">:</span><span class="s2">&quot;r_basicprofile r_emailaddress&quot;</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/directories/6NOH5Y6w8ZnvdTuGfNWn7s&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;LinkedIn Directory&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="oauth-2-0-login">
+<span id="post-oauth-token"></span><h2>OAuth 2.0 Login<a class="headerlink" href="#oauth-2-0-login" title="Permalink to this headline">¶</a></h2>
+<p><strong>URL</strong></p>
+<blockquote>
+<div><code class="docutils literal"><span class="pre">https://{DNS-LABEL}.apps.stormpath.io/oauth/token</span></code></div></blockquote>
+<p>The OAuth endpoint takes one of the following:</p>
+<ul class="simple">
+<li>Username &amp; Password (URL-encoded)</li>
+<li>Client Credentials (Basic Auth Base64-encoded API Key ID &amp; Secret)</li>
+<li>Stormpath Token (URL-encoded)</li>
+<li>Refresh Token (URL-encoded)</li>
+</ul>
+<p>It returns OAuth 2.0 Access and Refresh tokens.</p>
+<div class="section" id="password">
+<span id="post-oauth-token-password"></span><h3>Password<a class="headerlink" href="#password" title="Permalink to this headline">¶</a></h3>
+<p>In this flow, the end-user provides their username and password, and an access and refresh token are returned if those credentials are correct.</p>
+<p><strong>Request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">smooth-ensign.apps.stormpath.io</span>
+
+grant_type=password&amp;username=jakub%40stormpath.com&amp;password=Password1%21
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<p><code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with OAuth token.</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;access_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQi[...]0dTpiM&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;refresh_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQi[...]okvVI&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;token_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;expires_in&quot;</span><span class="p">:</span> <span class="mi">3600</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">username</span></code> can also be the Account <code class="docutils literal"><span class="pre">email</span></code>.</p>
+</div>
+</div>
+<div class="section" id="client-credentials">
+<span id="post-oauth-token-client-credentials"></span><h3>Client Credentials<a class="headerlink" href="#client-credentials" title="Permalink to this headline">¶</a></h3>
+<p>In this flow, the end-user is authenticating with an API Key Pair that has been created for their account, and that data is passed in the headers like this:</p>
+<p><code class="docutils literal"><span class="pre">Authorization:</span> <span class="pre">Basic</span> <span class="pre">&lt;Base64UrlEncode(apiKeyId:apiKeySecret)&gt;</span></code></p>
+<p>If the API Key Pair is valid, an access and refresh token is returned.</p>
+<p><strong>Request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MzZGT1dDWUJBMk1KMVBQWlVZ[...]4SWFhQkpSUTZhZ3ZHajZnSWMyeEVV</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">smooth-ensign.apps.stormpath.io</span>
+
+grant_type=client_credentials
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<p><code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with OAuth token.</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;access_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQ[...]NRaztg0&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;token_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;expires_in&quot;</span><span class="p">:</span> <span class="mi">3600</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="stormpath-token">
+<span id="post-oauth-token-stormpath-token"></span><h3>Stormpath Token<a class="headerlink" href="#stormpath-token" title="Permalink to this headline">¶</a></h3>
+<p>This token is returned as part of the <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint&#8217;s <a class="reference internal" href="social_login.html#social-login"><span class="std std-ref">Social Login</span></a> flow. It can then be passed to the OAuth endpoint in order to get back OAuth 2.0 Access and Refresh tokens.</p>
+<p><strong>Request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded; charset=utf-8</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">cold-diver.apps.stormpath.io</span>
+
+grant_type=stormpath_token&amp;token=eyJraWQ[...]nfhEs
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<p><code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with OAuth token.</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;access_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQ[...]7mvg8&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;refresh_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQ[...]AKyQw&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;token_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;expires_in&quot;</span><span class="p">:</span> <span class="mi">3600</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="refresh-token">
+<span id="post-oauth-token-refresh-token"></span><h3>Refresh Token<a class="headerlink" href="#refresh-token" title="Permalink to this headline">¶</a></h3>
+<p>This flow is used to create a new access token, using an existing refresh token. The request will fail if the refresh token is expired or has been revoked.</p>
+<p><strong>Request</strong></p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/oauth/token</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Accept</span><span class="o">:</span> <span class="l">application/json</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">smooth-ensign.apps.stormpath.io</span>
+
+grant_type=refresh_token&amp;refresh_token=eyJraWQ[...]FMQIh-fwns
+</pre></div>
+</div>
+<p><strong>Response</strong></p>
+<p><code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with OAuth token.</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;access_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQ[...]urs4iqPY&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;refresh_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJraWQ[...]fwns&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;token_type&quot;</span><span class="p">:</span> <span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;expires_in&quot;</span><span class="p">:</span> <span class="mi">3600</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="social_login.html" class="btn btn-neutral float-right" title="Social Login" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="registration.html" class="btn btn-neutral" title="User Registration" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  
+
+</body>
+</html>
