@@ -224,7 +224,7 @@ The Application's "SAML Policy" tab contains the "SAML SSO Initiation Endpoint" 
 Managing an Application's Client API Configuration
 --------------------------------------------------
 
-The Application's "Client API" tab contains the configuration information for your Application's Client API endpoints.
+The Application's "Client API" tab contains the configuration information for your Application's Client API endpoints. A full description of the Client API can be found in the `Client API Product Guide <https://docs.stormpath.com/client-api/product-guide/latest/>`__.
 
 Client API
 ^^^^^^^^^^
@@ -244,4 +244,4 @@ This is a list of the Client API endpoints, each of which can be set to "Enabled
 
   In the case of the ``/change``, ``/forgot``, and ``/verify`` endpoints, they can also be set to "Inherit". This means that they take on the status of the Password Reset (for ``/change`` and ``/forgot``) or Verification Email (for ``/verify``) Workflows found in the default Directory for this Application.
 
-The ``/me`` endpoint also further configuration that can be done to control what else is returned along with the current Account. If you click on the gear beside the drop-down menu, an "Endpoint Configuration" modal will appear. Here you can choose which other resources will return along with the Account. For more information, please see `the Client API documentation <https://docs.stormpath.com/client-api/product-guide/latest/user_context.html>`__.
+The ``/me`` endpoint also has further configuration controls what other resources are returned along with the current Account. If you click on the gear beside the drop-down menu, an "Endpoint Configuration" modal will appear. Here you can choose which other resources will return along with the Account. For more information about the ``/me`` endpoint, please see `the Client API documentation <https://docs.stormpath.com/client-api/product-guide/latest/user_context.html>`__.
