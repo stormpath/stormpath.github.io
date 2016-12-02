@@ -47,6 +47,9 @@ The list of currently-available endpoints is as follows:
   * - ``/oauth/revoke``
     - Revokes a user's existing OAuth tokens. [:ref:`More info <logout>`]
 
+  * - ``/authorize``
+    - Used to start the social login flow. [:ref:`More info <social-login>`]
+
   * - ``/register``
     - Registers a new user. Can also be used to retrieve the Registration view data for your application. [:ref:`More info <registration>`]
 
