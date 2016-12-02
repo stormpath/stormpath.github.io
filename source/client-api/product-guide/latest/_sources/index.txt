@@ -15,7 +15,7 @@ All Client API endpoints do not require an administrative API Key, so you don't 
 
 **How is this different from using Stormpath without the Client API?**
 
-Stormpath is a cloud service allows you to register users, authenticate them, and store information about them, and all without having to implement your own encryption or user databases. However, access to the Stormpath API normally requires that your application pass an administrative API Key to authenticate each request, and client-side applications are not able to securely store API Keys.
+Stormpath is a cloud service that allows you to register users, authenticate them, and store information about them, and all without having to implement your own encryption or user databases. However, access to the Stormpath API normally requires that your application pass an administrative API Key to authenticate each request, and client-side applications are not able to securely store API Keys.
 
 To accommodate these client applications, the Client API allows for basic user registration and authentication tasks to be performed without requiring an administrative API key. This means that your client applications can use these endpoints in order to, for example, authenticate a user and get back a session. With this session in hand, the client application can then continue on with its own functionality, or securely communicate with a back-end application server.
 
@@ -26,7 +26,7 @@ To accommodate these client applications, the Client API allows for basic user r
 How does the Client API Work?
 =============================
 
-The Client API exposes a configurable set of endpoints to your applications. The endpoints are hosted by Stormpath, in URLs that are customized for each one of your Stormpath Applications:
+The Client API exposes a configurable set of endpoints to your applications. The endpoints are hosted by Stormpath, and can be accessed and configured with URLs that are customized for each one of your Stormpath Applications:
 
 ``https://{DNS-LABEL}.apps.stormpath.io/{endpoint}``
 

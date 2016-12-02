@@ -149,7 +149,7 @@ The OAuth endpoint takes one of the following:
 - Stormpath Token (URL-encoded)
 - Refresh Token (URL-encoded)
 
-It returns OAuth 2.0 Access and Refresh tokens.
+It returns OAuth 2.0 Access and Refresh tokens. For background information, please see the REST Product Guide: `How Token-Based Authentication Works <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#how-token-based-authentication-works>`__
 
 .. _post-oauth-token-password:
 

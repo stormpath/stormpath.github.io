@@ -23,7 +23,7 @@ At a high level, social login involves the following steps:
 If you'd like a more detailed overview:
 
 #. User clicks provider-specific link pointing at Client API. This link is returned as part of the login view model retrieved from the ``/login`` endpoint.
-#. Your app sends GET request is sent to Client API's ``/authorize`` endpoint along with ``response_type`` and ``account_store_href``
+#. Your app sends a GET request to the Client API's ``/authorize`` endpoint along with ``response_type`` and ``account_store_href``
 #. Client API responds with 302 redirect to appropriate URL at social provider
 #. Your app sends GET request to redirect URL at social provider
 #. User logs in to social provider
