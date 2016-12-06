@@ -38,7 +38,7 @@ content_top: [docs_top.html]
                   <p><a href="/nodejs">Node.js</a></p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a href="/nodejs"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -61,7 +61,7 @@ content_top: [docs_top.html]
                   <p><a href="/java">Java</a></p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a href="/java"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
