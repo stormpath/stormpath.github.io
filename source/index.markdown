@@ -393,7 +393,7 @@ content_top: [docs_top.html]
           <div class="col-sm-6">
             <div class="guide-node-container">
               <div class="guide-node-first-row">
-                <img src="http://cdn2.hubspot.net/hubfs/475298/HTML-images/internet-white.png">
+                <img src="https://cdn2.hubspot.net/hubfs/475298/HTML-images/internet-white.png">
               </div>
               <div class="guide-node-second-row">
                 <div class="guide-node-second-row-text">
@@ -446,7 +446,7 @@ content_top: [docs_top.html]
           <div class="col-sm-6">
             <div class="guide-node-container">
               <div class="guide-node-first-row">
-                <img src="http://cdn2.hubspot.net/hubfs/475298/HTML-images/social-auth.png">
+                <img src="https://cdn2.hubspot.net/hubfs/475298/HTML-images/social-auth.png">
               </div>
               <div class="guide-node-second-row">
                 <div class="guide-node-second-row-text">
