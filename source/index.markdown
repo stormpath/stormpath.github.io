@@ -218,7 +218,7 @@ content_top: [docs_top.html]
         </div>
 
         <div class="col-md-3 col-sm-4 col-xs-6">
-          <a href="https://github.com/stormpath/stormpath-sdk-react">
+          <a href="/react">
             <div class="docs-node-container">
               <div class="docs-node-first-row">
                 <div class="docs-node-img-container">
@@ -228,10 +228,10 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="https://github.com/stormpath/stormpath-sdk-react">React</a></p>
+                  <p><a href="/react">React</a></p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a href="/react"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -252,7 +252,7 @@ content_top: [docs_top.html]
                   <p><a href="/ios">iOS</a></p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a href="/ios"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -272,7 +272,7 @@ content_top: [docs_top.html]
                   <p><a href="/android">Android</a></p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a href="/android"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -280,7 +280,7 @@ content_top: [docs_top.html]
         </div>
 
         <div class="col-md-3 col-sm-4 col-xs-6">
-          <a href="https://github.com/stormpath/stormpath-nginx">
+          <a href="/nginx">
             <div class="docs-node-container">
               <div class="docs-node-first-row">
                 <div class="docs-node-img-container">
@@ -289,10 +289,10 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="https://github.com/stormpath/stormpath-nginx">nginx</a></p>
+                  <p><a href="/nginx">nginx</a></p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a href="/nginx"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
