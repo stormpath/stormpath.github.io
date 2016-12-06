@@ -68,7 +68,7 @@ content_top: [docs_top.html]
           </a>
         </div>
         <div class="col-md-3 col-sm-4 col-xs-6">
-          <a href="https://github.com/stormpath/stormpath-sdk-angularjs">
+          <a href="/angular">
             <div class="docs-node-container">
               <div class="docs-node-first-row">
                 <div class="docs-node-img-container">
@@ -83,10 +83,10 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="https://github.com/stormpath/stormpath-sdk-angularjs"">Angular.js</a></p>
+                  <p><a href="/angular"">Angular.js</a></p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a href="/angular"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
