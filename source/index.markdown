@@ -113,7 +113,7 @@ content_top: [docs_top.html]
         </div>
 
         <div class="col-md-3 col-sm-4 col-xs-6">
-          <a href="https://docs.stormpath.com/ruby/product-guide/latest/">
+          <a href="/ruby">
             <div class="docs-node-container">
               <div class="docs-node-first-row">
                 <div class="docs-node-img-container">
@@ -123,10 +123,10 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="https://docs.stormpath.com/ruby/product-guide/latest/">Ruby</a></p>
+                  <p><a href="/ruby">Ruby</a></p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a href="/ruby"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
