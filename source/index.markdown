@@ -147,7 +147,7 @@ content_top: [docs_top.html]
                   <p><a href="/php">PHP</a></p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a href="/php"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
