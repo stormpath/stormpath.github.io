@@ -155,7 +155,7 @@ content_top: [docs_top.html]
         </div>
 
         <div class="col-md-3 col-sm-4 col-xs-6">
-          <a href="https://github.com/jarias/stormpath-sdk-go/">
+          <a href="/go">
             <div class="docs-node-container">
               <div class="docs-node-first-row">
                 <div class="docs-node-img-container">
@@ -165,10 +165,10 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="https://github.com/jarias/stormpath-sdk-go/">Go</a></p>
+                  <p><a href="/go">Go</a></p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a href="/go"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -176,7 +176,7 @@ content_top: [docs_top.html]
         </div>
 
         <div class="col-md-3 col-sm-4 col-xs-6">
-          <a href="https://github.com/stormpath/stormpath-mod-authnz-external/">
+          <a href="/apache">
             <div class="docs-node-container">
               <div class="docs-node-first-row">
                 <div class="docs-node-img-container">
@@ -186,10 +186,10 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="https://github.com/stormpath/stormpath-mod-authnz-external/">Apache</a></p>
+                  <p><a href="/apache">Apache</a></p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="#"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <a href="/apache"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>

@@ -1,0 +1,112 @@
+{% capture root_url %}{{ site.root | strip_slash }}{% endcapture %}
+
+<!DOCTYPE html>
+<html>
+  {% include head.html %}
+
+  <body {% if page.body_id %} id="{{ page.body_id }}" {% endif %} class="not-front {% if page.classes_array %} {% for class in page.classes_array %}{{ class }}{% endfor %} {% endif %} {% unless page.has_docs_menu %} no-sidebars {% endunless %}">
+    {% include page_top.html %}
+    <div class="clearfix">
+      {% include header.html %}
+
+      {% if page.content_top %}
+        <div id="content-top-wrapper">
+          <div class="region region-content-top">
+            {% include_array content_top %}
+          </div>
+        </div>
+      {% endif %}
+
+      <section class="node-js-section">
+        <div class="container">
+          <h2 class="heading-blc">Apache</h2>
+          <div id="tab">
+            <ul class="resp-tabs-list hor_1">
+              <li>HTTPD</li>
+            </ul>
+            <div class="resp-tabs-container hor_1">
+              <div>
+                <div class="box-container">
+                  <div class="top-section-grp">
+                    <div class="heading-block">
+                      <h2>HTTPD</h2>
+                    </div>
+                    <div class="two-boxes-blc">
+                      <div class="row">
+                        <a href="https://github.com/stormpath/stormpath-mod-authnz-external/#stormpath-mod-authnz-external">
+                          <div class="col-md-6 col-xs-12">
+                            <div class="single-bx">
+                              <div class="icon"><i class="fa fa-forward" aria-hidden="true"></i></div>
+                              <div class="text">Quickstart</div>
+                            </div>
+                          </div>
+                        </a>
+                        <a href="https://github.com/stormpath/stormpath-mod-authnz-external/#stormpath-mod-authnz-external">
+                          <div class="col-md-6 col-xs-12">
+                            <div class="single-bx">
+                              <div class="icon"><i class="fa fa-book" aria-hidden="true"></i></div>
+                              <div class="text">Documentation</div>
+                            </div>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                    <ul class="list-item">
+                      <li><a href="https://github.com/stormpath/stormpath-mod-authnz-external"><div class="icon"> <i class="fa fa-globe" aria-hidden="true"></i> </div>Project on GitHub</a></li>
+                    </ul>
+                  </div>
+                  <div class="text-container-blc">
+                    <p>For anyone who wants to handle user authentication in
+                      their Apache HTTPD server.</p>
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {% include dive-into-rest-docs.html %}
+
+      {% if page.has_docs_menu %}
+        <aside class="sidebars">
+          {% if page.left_sidebars %}
+            <section class="region region-sidebar-first column sidebar">
+              {% include_array left_sidebars %}
+            </section>
+          {% endif %}
+
+          {% if page.right_sidebars %}
+            <section class="region region-sidebar-second column sidebar">
+              {% include_array right_sidebars %}
+            </section>
+          {% endif %}
+        </aside>
+      {% endif %}
+
+      {% if page.hide_footer != true %}
+        {% include footer.html %}
+      {% endif %}
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        //Horizontal Tab
+        $('#tab').easyResponsiveTabs({
+          type: 'default', //Types: default, vertical, accordion
+          width: 'auto', //auto or any width like 600px
+          fit: true, // 100% fit in a container
+          tabidentify: 'hor_1', // The tab groups identifier
+          activate: function(event) { // Callback function if tab is switched
+            var $tab = $(this);
+            var $info = $('#nested-tabInfo');
+            var $name = $('span', $info);
+            $name.text($tab.text());
+            $info.show();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
