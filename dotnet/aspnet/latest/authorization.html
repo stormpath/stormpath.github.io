@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Email Verification &mdash; ASP.NET Core Library Guide  documentation</title>
+  <title>Authorization &mdash; ASP.NET Library Guide  documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="ASP.NET Core Library Guide  documentation" href="index.html"/>
-        <link rel="next" title="Troubleshooting" href="help.html"/>
-        <link rel="prev" title="Password Reset" href="password_reset.html"/> 
+    <link rel="top" title="ASP.NET Library Guide  documentation" href="index.html"/>
+        <link rel="next" title="View Templates" href="templates.html"/>
+        <link rel="prev" title="Authentication" href="authentication.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> ASP.NET Core Library Guide
+            <a href="index.html" class="icon icon-home"> ASP.NET Library Guide
           
 
           
@@ -153,10 +153,10 @@
 <li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth-2-0-password-grant">OAuth 2.0 Password Grant</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="authorization.html">Authorization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="authorization.html#requiring-login">Requiring Login</a></li>
-<li class="toctree-l2"><a class="reference internal" href="authorization.html#groups-and-roles">Groups and Roles</a></li>
-<li class="toctree-l2"><a class="reference internal" href="authorization.html#fine-grained-permissions">Fine-Grained Permissions</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Authorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requiring-login">Requiring Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#groups-and-roles">Groups and Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fine-grained-permissions">Fine-Grained Permissions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">View Templates</a><ul>
@@ -217,13 +217,13 @@
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#default-configuration">Default Configuration</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Email Verification</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#enabling-the-workflow">Enabling the Workflow</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#how-it-works">How it Works</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration Options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#auto-login">Auto Login</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#mobile-json-api">Mobile/JSON API</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#default-configuration">Default Configuration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="email_verification.html">Email Verification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#enabling-the-workflow">Enabling the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#how-it-works">How it Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#auto-login">Auto Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#default-configuration">Default Configuration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="help.html">Troubleshooting</a><ul>
@@ -262,7 +262,7 @@
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">ASP.NET Core Library Guide</a>
+          <a href="index.html">ASP.NET Library Guide</a>
         
       </nav>
 
@@ -289,13 +289,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Email Verification</li>
+      <li>Authorization</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/email_verification.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/authorization.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -306,132 +306,122 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="email-verification">
-<span id="id1"></span><h1>Email Verification<a class="headerlink" href="#email-verification" title="Permalink to this headline">¶</a></h1>
-<p>Stormpath provides a self-service email verification flow for new accounts, where users will need to verify their email address before their account is enabled. This library adds this functionality to your ASP.NET Core application automatically if it is enabled in your Stormpath Directory.</p>
-<p>By default, this library will serve an Email Verification form and callback handler at <code class="docutils literal"><span class="pre">/verify</span></code>, <em>if</em> the Verification Email workflow is enabled in Stormpath. You can change these URIs, or disable the feature entirely if you wish (see <a class="reference internal" href="#email-verification-configuration"><span class="std std-ref">Configuration Options</span></a>).</p>
-<div class="section" id="enabling-the-workflow">
-<h2>Enabling the Workflow<a class="headerlink" href="#enabling-the-workflow" title="Permalink to this headline">¶</a></h2>
-<p>To enable email verification, you need to configure the Stormpath Directory your application is using. Follow these steps:</p>
-<ol class="arabic simple">
-<li>Use the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a> to find the Stormpath Directory linked to your Application.</li>
-<li>Navigate to the Workflows section and enable the <strong>Verification Email</strong> workflow.</li>
-<li>Modify the <strong>Link Base URL</strong> to point to your application:</li>
-</ol>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>http://yourapplication.com/verify
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal"><span class="pre">/verify</span></code> route is automatically provided by this library. If you want to change the route URI, see <a class="reference internal" href="#email-verification-configuration"><span class="std std-ref">Configuration Options</span></a>.</p>
-</div>
-</div>
-<div class="section" id="how-it-works">
-<h2>How it Works<a class="headerlink" href="#how-it-works" title="Permalink to this headline">¶</a></h2>
-<p>After enabling the workflow in Stormpath, restart your ASP.NET Core application. The behavior of the <code class="docutils literal"><span class="pre">/register</span></code> route will change:</p>
-<ul class="simple">
-<li>New accounts will initially be in an <strong>unverified</strong> state, and the user will receive an email with a link.</li>
-<li>Clicking that link will take the user to <code class="docutils literal"><span class="pre">/verify</span></code>, which will automatically use the token provided in the email to verify their account.</li>
-<li>The user can now log in as usual.</li>
-<li>Additionally, visiting <code class="docutils literal"><span class="pre">/verify</span></code> directly will allow the user to request a new link.</li>
-</ul>
-</div>
-<div class="section" id="configuration-options">
-<span id="email-verification-configuration"></span><h2>Configuration Options<a class="headerlink" href="#configuration-options" title="Permalink to this headline">¶</a></h2>
-<p>This feature supports several options that you can configure using code or markup (see the <a class="reference internal" href="configuration.html#configuration"><span class="std std-ref">Configuration</span></a> section):</p>
-<ul class="simple">
-<li><strong>enabled</strong>: Whether the feature is enabled. (Default: <code class="docutils literal"><span class="pre">null</span></code>, see note below)</li>
-<li><strong>uri</strong>: The path for this feature. (Default: <code class="docutils literal"><span class="pre">/verify</span></code>)</li>
-<li><strong>nextUri</strong>: The location to send the user after verifying their email. (Default: <code class="docutils literal"><span class="pre">/login?status=verified</span></code>, but see <a class="reference internal" href="#email-verification-auto-login"><span class="std std-ref">Auto Login</span></a>)</li>
-<li><strong>view</strong>: The view to render; see <a class="reference internal" href="templates.html#templates"><span class="std std-ref">View Templates</span></a>. (Default: <code class="docutils literal"><span class="pre">verify</span></code>)</li>
-</ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <strong>enabled</strong> property can be set to <code class="docutils literal"><span class="pre">true</span></code>, <code class="docutils literal"><span class="pre">false</span></code>, or <code class="docutils literal"><span class="pre">null</span></code>. A value of <code class="docutils literal"><span class="pre">null</span></code> means that the route will automatically be enabled if the default Account Store for the current Stormpath application has the Verification Email workflow enabled.</p>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Any unchanged options will retain their default values. See the <a class="reference internal" href="#email-verification-default-configuration"><span class="std std-ref">Default Configuration</span></a> section to view the defaults.</p>
-</div>
-<div class="section" id="configuration-example">
-<h3>Configuration Example<a class="headerlink" href="#configuration-example" title="Permalink to this headline">¶</a></h3>
-<p>You could, for example, change the endpoint path by setting this configuration (shown as YAML):</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">verifyEmail</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/verifyEmail&quot;</span>
-</pre></div>
-</div>
-<p>You could also set this configuration via code:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">()</span>
+  <div class="section" id="authorization">
+<span id="id1"></span><h1>Authorization<a class="headerlink" href="#authorization" title="Permalink to this headline">¶</a></h1>
+<p>The Stormpath ASP.NET library provides two ways to easily enforce authorization in your application: group- (or role-) based access control, and permissions-based access control.</p>
+<p>Which authorization approach you choose depends on the needs of your application. For most applications, a group-based approach is the fastest and easiest way to implement authorization.</p>
+<div class="section" id="requiring-login">
+<span id="id2"></span><h2>Requiring Login<a class="headerlink" href="#requiring-login" title="Permalink to this headline">¶</a></h2>
+<p>At the most simple level, you may want certain routes or controllers to only be accessible when a user is logged in.</p>
+<p>To require a user to be logged in, simply use the <code class="docutils literal"><span class="pre">[Authorize]</span></code> attribute on your MVC or API routes:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="c1">// Will require a logged-in user for the routes in this controller</span>
+<span class="na">[Authorize]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">SecretController</span> <span class="p">:</span> <span class="n">ApiController</span>
 <span class="p">{</span>
-    <span class="n">Web</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebConfiguration</span><span class="p">()</span>
+    <span class="c1">// GET api/&lt;controller&gt;</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="nf">Get</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">VerifyEmail</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebVerifyEmailRouteConfiguration</span><span class="p">()</span>
-        <span class="p">{</span>
-            <span class="n">Uri</span> <span class="p">=</span> <span class="s">&quot;/verifyEmail&quot;</span>
-        <span class="p">}</span>
+        <span class="k">return</span> <span class="s">&quot;secret!&quot;</span><span class="p">;</span>
     <span class="p">}</span>
-<span class="p">});</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>See the <a class="reference internal" href="configuration.html#configuration"><span class="std std-ref">Configuration</span></a> section for more details on how configuration works, or <a class="reference internal" href="#email-verification-default-configuration"><span class="std std-ref">Default Configuration</span></a> to see the default values for this route.</p>
+<p>If the user is not logged in, they will be redirected to the built-in login route (<code class="docutils literal"><span class="pre">/login</span></code> by default) to log in or register. After authenticating, they will be redirected back to the original route automatically.</p>
 </div>
+<div class="section" id="groups-and-roles">
+<h2>Groups and Roles<a class="headerlink" href="#groups-and-roles" title="Permalink to this headline">¶</a></h2>
+<p>In Stormpath, an Account can belong to one or more Groups, which can represent claims or roles. Adding an Account to a Group can be thought of as adding that user to a role, or assigning a claim or label to the account.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can create and assign Groups using the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a>, or via <a class="reference external" href="https://docs.stormpath.com/csharp/product-guide/latest/accnt_mgmt.html#groups">C#</a> or <a class="reference external" href="https://docs.stormpath.com/vbnet/product-guide/latest/accnt_mgmt.html#groups">Visual Basic</a> code and the Stormpath SDK.</p>
 </div>
-<div class="section" id="auto-login">
-<span id="email-verification-auto-login"></span><h2>Auto Login<a class="headerlink" href="#auto-login" title="Permalink to this headline">¶</a></h2>
-<p>Our library implements the most secure workflow by default: the user must log in after verifying their account.</p>
-<p>By default, the user is redirected to <code class="docutils literal"><span class="pre">/login?status=verified</span></code> (the value of <code class="docutils literal"><span class="pre">verifyEmail.nextUri</span></code>), which renders the login form with a status message indicating that the account has been successfully verified.</p>
-<p>If <a class="reference internal" href="registration.html#auto-login"><span class="std std-ref">Auto Login</span></a> is enabled, the user will be automatically logged in after they reset their password. The user will <strong>not</strong> be redirected to <code class="docutils literal"><span class="pre">verifyEmail.nextUri</span></code>, but instead will be redirected to <code class="docutils literal"><span class="pre">register.nextUri</span></code>.</p>
-</div>
-<div class="section" id="mobile-json-api">
-<h2>Mobile/JSON API<a class="headerlink" href="#mobile-json-api" title="Permalink to this headline">¶</a></h2>
-<p>If you are using this library from a mobile application, or a client framework like Angular or React, you&#8217;ll interact with this endpoint via GET and POST requests.</p>
-<div class="section" id="verifying-a-user">
-<h3>Verifying a User<a class="headerlink" href="#verifying-a-user" title="Permalink to this headline">¶</a></h3>
-<p>To verify a user, make a GET request with the <code class="docutils literal"><span class="pre">sptoken</span></code> from the verification email:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span>GET /verify?sptoken=&lt;token&gt;
-Accept: application/json
+<p>For example, you might create an <code class="docutils literal"><span class="pre">admin</span></code> Group that Accounts with administrator access are assigned to. Then, in your ASP.NET project, you can restrict access to controllers and actions based on membership in that group.</p>
+<div class="section" id="requiring-a-group">
+<h3>Requiring a Group<a class="headerlink" href="#requiring-a-group" title="Permalink to this headline">¶</a></h3>
+<p>You can use the <code class="docutils literal"><span class="pre">[StormpathGroupsRequired]</span></code> attribute, along with <code class="docutils literal"><span class="pre">[Authorize]</span></code>, to require membership in one or more Groups.</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[Authorize]</span>
+<span class="na">[StormpathGroupsRequired(&quot;admin&quot;)]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">AdminController</span> <span class="p">:</span> <span class="n">Controller</span>
+<span class="p">{</span>
+    <span class="c1">// Only users in the admin group can access these actions</span>
+
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">View</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>If validation succeeds, the endpoint will respond with <code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code>.</p>
-<p>If an error occurs, you&#8217;ll get an error response:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
-  <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;sptoken parameter not provided.&quot;</span>
+<p>The attribute can be placed on both controllers (to require Group membership for all actions) and on specific actions.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">There are <code class="docutils literal"><span class="pre">StormpathGroupsRequired</span></code> attributes in two separate namespaces: <code class="docutils literal"><span class="pre">Stormpath.AspNet.Mvc</span></code> and <code class="docutils literal"><span class="pre">Stormpath.AspNet.WebApi</span></code>. Make sure you import and use the correct object (depending on whether you are applying it to MVC or Web API controllers).</p>
+</div>
+<p>It&#8217;s possible to specify a Group by <code class="docutils literal"><span class="pre">href</span></code> instead of name, if you wish:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[StormpathGroupsRequired(&quot;https://api.stormpath.com/v1/groups/aRaNdOmGrOuPiDhEre&quot;)]</span>
+<span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">ManagePayment</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nf">View</span><span class="p">();</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>It&#8217;s also possible to specify multiple Group names or <code class="docutils literal"><span class="pre">hrefs</span></code>. If the user is in <strong>any</strong> of the specified Groups, the authorization will succeed.</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[StormpathGroupsRequired(&quot;subscriber&quot;, &quot;partner&quot;)]</span>
+<span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">ManagePayment</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nf">View</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="requesting-a-new-link">
-<h3>Requesting a New Link<a class="headerlink" href="#requesting-a-new-link" title="Permalink to this headline">¶</a></h3>
-<p>To request a new link, make a POST request:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span>POST /verify
-Accept: application/json
-Content-Type: application/json
+<div class="section" id="requiring-multiple-groups">
+<h3>Requiring Multiple Groups<a class="headerlink" href="#requiring-multiple-groups" title="Permalink to this headline">¶</a></h3>
+<p>To require the user to be in more than one Group, apply the syntax twice:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[Authorize]</span>
+<span class="na">[StormpathGroupsRequired(&quot;admin&quot;)]</span>
+<span class="na">[StormpathGroupsRequired(&quot;manager&quot;)]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">AdminManagementController</span> <span class="p">:</span> <span class="n">Controller</span>
+<span class="p">{</span>
+    <span class="c1">// Only users in BOTH the admin and manager</span>
+    <span class="c1">// groups can access these actions</span>
 
-{
-  &quot;email&quot;: &quot;foo@bar.com&quot;
-}
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">View</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>The endpoint will always respond with <code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code>, regardless of whether the email address is valid.</p>
 </div>
 </div>
-<div class="section" id="default-configuration">
-<span id="email-verification-default-configuration"></span><h2>Default Configuration<a class="headerlink" href="#default-configuration" title="Permalink to this headline">¶</a></h2>
-<p>Options that are not overridden by explicit configuration (see <a class="reference internal" href="configuration.html#configuration"><span class="std std-ref">Configuration</span></a>) will retain their default values.</p>
-<p>For reference, the full default configuration for this route is shown as YAML below:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">verifyEmail</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
-    <span class="l l-Scalar l-Scalar-Plain">uri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/verify&quot;</span>
-    <span class="l l-Scalar l-Scalar-Plain">nextUri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/login?status=verified&quot;</span>
-    <span class="l l-Scalar l-Scalar-Plain">view</span><span class="p p-Indicator">:</span> <span class="s">&quot;verify&quot;</span>
+<div class="section" id="fine-grained-permissions">
+<h2>Fine-Grained Permissions<a class="headerlink" href="#fine-grained-permissions" title="Permalink to this headline">¶</a></h2>
+<p>If you need finer control over authorization, you can use Stormpath&#8217;s <a class="reference external" href="https://docs.stormpath.com/csharp/product-guide/latest/accnt_mgmt.html#how-to-store-additional-user-information-as-custom-data">Custom Data</a> feature to model any type of permissions you need in your application.</p>
+<p>For example, if you only want some users to be able to post messages in your application, you could add a <code class="docutils literal"><span class="pre">canPost:</span> <span class="pre">true</span></code> item to the Accounts who have that privilege.</p>
+<p>Requiring a particular Custom Data value is similar to requiring a Group:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[Authorize]</span>
+<span class="na">[StormpathCustomDataRequired(&quot;canPost&quot;, true)]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">CreatePostController</span> <span class="p">:</span> <span class="n">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">View</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">You can also refer to the <a class="reference external" href="https://github.com/stormpath/stormpath-framework-spec/blob/master/example-config.yaml">Example Stormpath configuration</a> to see the entire default library configuration.</p>
+<p>To require multiple Custom Data values, just add another reference:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[Authorize]</span>
+<span class="na">[StormpathCustomDataRequired(&quot;canPost&quot;, true)]</span>
+<span class="na">[StormpathCustomDataRequired(&quot;userType&quot;, &quot;admin&quot;)]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">CreateStickyPostController</span> <span class="p">:</span> <span class="n">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="n">ActionResult</span> <span class="nf">Index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">View</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </div>
 </div>
@@ -443,10 +433,10 @@ Content-Type: application/json
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="help.html" class="btn btn-neutral float-right" title="Troubleshooting" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="templates.html" class="btn btn-neutral float-right" title="View Templates" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="password_reset.html" class="btn btn-neutral" title="Password Reset" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="authentication.html" class="btn btn-neutral" title="Authentication" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -24,37 +24,16 @@ Cookie Authentication
 ---------------------
 
 If you are building a web application that serves traditional HTML pages, or a
-Single Page Application (such as Angular/React), this library will handle cookie authentication for you, out of the box!
+Single Page Application (such as Angular/React), this library will handle cookie authentication for you automatically.
 
-.. only:: aspnetcore or aspnet
-
-  To use cookie authentication, simply use the ``[Authorize]`` attribute on your MVC or Web API routes:
-
-  .. only:: aspnetcore
-
-    .. literalinclude:: code/authentication/aspnetcore/protected_route.cs
-        :language: csharp
-
-  .. only:: aspnet
-
-    .. literalinclude:: code/authentication/aspnet/protected_route.cs
-        :language: csharp
-
-.. only:: nancy
-
-  .. todo::
-
-    Description.
-
-  .. .literalinclude:: code/authentication/nancy/protected_route.cs
-      :language: csharp
-
-If the user is not logged in, they will be redirected to the built-in login route (``/login`` by default) to log in or register. After authenticating, they will be redirected back to the original route automatically.
+By default, the library hosts a login route at ``/login`` that can be used to log in with a username and password.
 
 Behind the scenes, the Stormpath middleware creates OAuth 2.0 Access and Refresh Tokens for the user (via the Stormpath API), and stores them in secure, HTTP-only cookies. After the user has logged in, these cookies will be supplied on every request. The Stormpath middleware will assert that the Access Token is valid.  If the Access Token is expired, it will attempt to refresh it with the Refresh Token.
 
 .. note::
     By default, the cookie names are ``access_token`` and ``refresh_token``. See :ref:`configuring_cookie_flags` if you want to change the defaults.
+
+This all works out of the box; you don't have to write any code! If you want to restrict parts of your application to logged-in users only, see :ref:`requiring_login` in the Authorization section.
 
 
 .. _setting_token_expiration_time:
@@ -359,7 +338,7 @@ The validation strategy can be changed via :ref:`Configuration`. The default con
 OAuth 2.0 Password Grant
 ------------------------
 
-This is the authentication strategy that you'll want to use for mobile clients, and it's supported this flow out-of-the-box.
+This is the authentication strategy that you'll want to use for mobile clients, and it's also supported out-of-the-box.
 
 In this scenario, the end-user supplies their username and password to your
 mobile application.  The mobile application sends that username and password to
@@ -372,7 +351,7 @@ uses them for future requests to your |framework| application.
 When a user wants to login to your mobile application, the mobile application
 should make this request to your application:
 
-.. code-block:: http
+.. code-block::
 
     POST /oauth/token
     Host: myapi.com
@@ -393,6 +372,10 @@ If the authentication is successful, your server will return a token response to
       "expires_in": 3600
     }
 
+.. note::
+
+  For details on how to configure the ``/oauth/token`` endpoint, see the :ref:`oauth2` section.
+
 Your mobile application should store the Access and Refresh Tokens in a secure location.
 
 .. note::
@@ -406,6 +389,11 @@ Each subsequent request the mobile application makes to your |framework| applica
     Host: myapi.com
     Accept: application/json
     Authorization: Bearer eyJraWQiOiI2Nl...
+
+Incoming requests authenticated with Bearer authentication can be further authorized using the techniques described in the :ref:`authorization` section.
+
+Getting a New Access Token
+..........................
 
 When the Access Token expires, you can use the Refresh Token to obtain a new Access Token:
 
@@ -421,8 +409,6 @@ When the Access Token expires, you can use the Refresh Token to obtain a new Acc
 
 The response will contain a new Access Token.  Once the Refresh Token expires,
 the user will have to re-authenticate with a username and password.
-
-For details on how to configure the ``/oauth/token`` endpoint, see the :ref:`oauth2` section.
 
 For full documentation on our OAuth 2.0 and token management features, please see
 `Using Stormpath for OAuth 2.0 and Access/Refresh Token Management`_

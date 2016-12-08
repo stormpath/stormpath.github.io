@@ -36,7 +36,7 @@
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="ASP.NET Library Guide  documentation" href="index.html"/>
-        <link rel="next" title="View Templates" href="templates.html"/>
+        <link rel="next" title="Authorization" href="authorization.html"/>
         <link rel="prev" title="Cross-Origin Requests" href="cors.html"/> 
 
   
@@ -151,6 +151,12 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Authentication</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#cookie-authentication">Cookie Authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#oauth-2-0-password-grant">OAuth 2.0 Password Grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authorization.html">Authorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#requiring-login">Requiring Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#groups-and-roles">Groups and Roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#fine-grained-permissions">Fine-Grained Permissions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="templates.html">View Templates</a><ul>
@@ -289,7 +295,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/authentication.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/authentication.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -316,33 +322,14 @@ should use <strong>Cookie Authentication</strong>.</li>
 <div class="section" id="cookie-authentication">
 <span id="id2"></span><h2>Cookie Authentication<a class="headerlink" href="#cookie-authentication" title="Permalink to this headline">¶</a></h2>
 <p>If you are building a web application that serves traditional HTML pages, or a
-Single Page Application (such as Angular/React), this library will handle cookie authentication for you, out of the box!</p>
-<p>To use cookie authentication, simply use the <code class="docutils literal"><span class="pre">[Authorize]</span></code> attribute on your MVC or Web API routes:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="c1">// Will require a logged-in user for the routes in this controller</span>
-<span class="na">[Authorize]</span>
-<span class="k">public</span> <span class="k">class</span> <span class="nc">SecretController</span> <span class="p">:</span> <span class="n">ApiController</span>
-<span class="p">{</span>
-    <span class="c1">// GET api/&lt;controller&gt;</span>
-    <span class="k">public</span> <span class="kt">string</span> <span class="nf">Get</span><span class="p">()</span>
-    <span class="p">{</span>
-        <span class="k">return</span> <span class="s">&quot;secret!&quot;</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="c1">// POST api/&lt;controller&gt;</span>
-    <span class="k">public</span> <span class="k">void</span> <span class="nf">Post</span><span class="p">([</span><span class="n">FromBody</span><span class="p">]</span><span class="kt">string</span> <span class="k">value</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c1">// do something</span>
-    <span class="p">}</span>
-
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>If the user is not logged in, they will be redirected to the built-in login route (<code class="docutils literal"><span class="pre">/login</span></code> by default) to log in or register. After authenticating, they will be redirected back to the original route automatically.</p>
+Single Page Application (such as Angular/React), this library will handle cookie authentication for you automatically.</p>
+<p>By default, the library hosts a login route at <code class="docutils literal"><span class="pre">/login</span></code> that can be used to log in with a username and password.</p>
 <p>Behind the scenes, the Stormpath middleware creates OAuth 2.0 Access and Refresh Tokens for the user (via the Stormpath API), and stores them in secure, HTTP-only cookies. After the user has logged in, these cookies will be supplied on every request. The Stormpath middleware will assert that the Access Token is valid.  If the Access Token is expired, it will attempt to refresh it with the Refresh Token.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">By default, the cookie names are <code class="docutils literal"><span class="pre">access_token</span></code> and <code class="docutils literal"><span class="pre">refresh_token</span></code>. See <a class="reference internal" href="#configuring-cookie-flags"><span class="std std-ref">Configuring Cookie Flags</span></a> if you want to change the defaults.</p>
 </div>
+<p>This all works out of the box; you don&#8217;t have to write any code! If you want to restrict parts of your application to logged-in users only, see <a class="reference internal" href="authorization.html#requiring-login"><span class="std std-ref">Requiring Login</span></a> in the Authorization section.</p>
 <div class="section" id="setting-token-expiration-time">
 <span id="id3"></span><h3>Setting Token Expiration Time<a class="headerlink" href="#setting-token-expiration-time" title="Permalink to this headline">¶</a></h3>
 <p>If you need to change the expiration time of the Access Token or Refresh Token, log in to the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a> and navigate to the OAuth Policy of your Stormpath Application. You can configure the time-to-live (TTL) for both Access and Refresh Tokens.</p>
@@ -413,7 +400,7 @@ for validation.</p>
 </div>
 <div class="section" id="oauth-2-0-password-grant">
 <span id="oauth2-password-grant"></span><h2>OAuth 2.0 Password Grant<a class="headerlink" href="#oauth-2-0-password-grant" title="Permalink to this headline">¶</a></h2>
-<p>This is the authentication strategy that you&#8217;ll want to use for mobile clients, and it&#8217;s supported this flow out-of-the-box.</p>
+<p>This is the authentication strategy that you&#8217;ll want to use for mobile clients, and it&#8217;s also supported out-of-the-box.</p>
 <p>In this scenario, the end-user supplies their username and password to your
 mobile application.  The mobile application sends that username and password to
 your ASP.NET server, which then verifies the password with Stormpath.</p>
@@ -422,16 +409,6 @@ an Access and Refresh Token for the user.  Your server gets these tokens from St
 uses them for future requests to your ASP.NET application.</p>
 <p>When a user wants to login to your mobile application, the mobile application
 should make this request to your application:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span>POST /oauth/token
-Host: myapi.com
-Accept: application/json
-Content-Type: application/x-www-form-urlencoded
-
-grant_type=password
-&amp;username=user@example.com
-&amp;password=theirPassword
-</pre></div>
-</div>
 <p>If the authentication is successful, your server will return a token response to your mobile application.  The response will look like this:</p>
 <div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="s2">&quot;refresh_token&quot;</span><span class="o">:</span> <span class="s2">&quot;eyJraWQiOiI2...&quot;</span><span class="p">,</span>
@@ -441,6 +418,10 @@ grant_type=password
   <span class="s2">&quot;expires_in&quot;</span><span class="o">:</span> <span class="mi">3600</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For details on how to configure the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint, see the <a class="reference internal" href="oauth2.html#oauth2"><span class="std std-ref">OAuth 2.0 API</span></a> section.</p>
 </div>
 <p>Your mobile application should store the Access and Refresh Tokens in a secure location.</p>
 <div class="admonition note">
@@ -454,6 +435,9 @@ Accept: application/json
 Authorization: Bearer eyJraWQiOiI2Nl...
 </pre></div>
 </div>
+<p>Incoming requests authenticated with Bearer authentication can be further authorized using the techniques described in the <a class="reference internal" href="authorization.html#authorization"><span class="std std-ref">Authorization</span></a> section.</p>
+<div class="section" id="getting-a-new-access-token">
+<h3>Getting a New Access Token<a class="headerlink" href="#getting-a-new-access-token" title="Permalink to this headline">¶</a></h3>
 <p>When the Access Token expires, you can use the Refresh Token to obtain a new Access Token:</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span>POST /oauth/token
 Host: myapi.com
@@ -466,9 +450,9 @@ grant_type=refresh_token
 </div>
 <p>The response will contain a new Access Token.  Once the Refresh Token expires,
 the user will have to re-authenticate with a username and password.</p>
-<p>For details on how to configure the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint, see the <a class="reference internal" href="oauth2.html#oauth2"><span class="std std-ref">OAuth 2.0 API</span></a> section.</p>
 <p>For full documentation on our OAuth 2.0 and token management features, please see
 <a class="reference external" href="http://docs.stormpath.com/guides/token-management/">Using Stormpath for OAuth 2.0 and Access/Refresh Token Management</a></p>
+</div>
 </div>
 </div>
 
@@ -479,7 +463,7 @@ the user will have to re-authenticate with a username and password.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="templates.html" class="btn btn-neutral float-right" title="View Templates" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="authorization.html" class="btn btn-neutral float-right" title="Authorization" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="cors.html" class="btn btn-neutral" title="Cross-Origin Requests" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -18,7 +18,7 @@ This documentation will show you how to get started with Stormpath and |framewor
    request_objects
    cors
    authentication
-   .. authorization
+   authorization
    .. id_site
    .. multi_environments
    templates
