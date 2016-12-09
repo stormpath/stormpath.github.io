@@ -1,13 +1,13 @@
 .. _cors:
 
-Cross-Origin Requests
+Cross-origin requests
 =====================
 
 `Cross-Origin Resource Sharing`_ (CORS) support on both the client and server is neccessary when your client and server are on different domains. For example, a single-page application running on ``mydomain.com`` but communicating to an API on ``api.mydomain.com`` will require CORS to be configured.
 
 The Stormpath |framework| library works with existing CORS solutions for |framework|, provided that the middleware pipeline is configured properly.
 
-Configuring the Pipeline
+Configuring the pipeline
 ------------------------
 
 .. note::

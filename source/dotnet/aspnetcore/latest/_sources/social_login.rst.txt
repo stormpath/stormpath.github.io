@@ -1,6 +1,6 @@
 .. _social_login:
 
-Social Login
+Social login
 ============
 
 Do you want users to authenticate with a social provider, such as Facebook?
@@ -27,7 +27,7 @@ When users log into your application with a social provider, they will be redire
 
 .. _facebook_login:
 
-Setting up Facebook Login
+Setting up Facebook login
 -------------------------
 
 To use Facebook Login with your |framework| application, you simply need to:
@@ -36,7 +36,7 @@ To use Facebook Login with your |framework| application, you simply need to:
 2. Configure a Stormpath Directory with the Facebook Application credentials.
 
 
-Create a Facebook Application
+Create a Facebook application
 .............................
 
 First, log into the `Facebook Developer Site`_ and
@@ -50,7 +50,7 @@ category for your app.  Once you've done this, click the "Create App ID" button.
 Next, click on Settings on the left side, and make note of the **App ID** and **App Secret**. You'll need those later when you connect your Facebook Application to Stormpath.
 
 
-Specify Allowed URLs
+Specify allowed URLs
 ....................
 
 The next step is to tell Facebook what URLs we'll be using Facebook
@@ -92,8 +92,8 @@ Your Directory configuration should look like this:
 Click "Create" to finish creating the Directory.
 
 
-Mapping the Directory
-.....................
+Map the Directory
+.................
 
 The new Facebook Directory needs to be associated (mapped) to your existing Application as an Account Store. This can also be done from the `Stormpath Admin Console`_.
 
@@ -102,8 +102,8 @@ To do this, click on Applications in the navigation bar, and select your Applica
 That's it!
 
 
-Testing Facebook Login
-......................
+Test Facebook login
+...................
 
 Now that you've connected your Facebook Application to Stormpath, you're ready to test your |framework| application.
 
@@ -120,7 +120,7 @@ After authorizing, you'll be redirected back to your website. If you've never lo
 
 .. _github_login:
 
-Setting up Github Login
+Setting up Github login
 -------------------------
 
 To use Github Login with your |framework| application, you simply need to:
@@ -129,7 +129,7 @@ To use Github Login with your |framework| application, you simply need to:
 2. Configure a Stormpath Directory with the Github Application credentials.
 
 
-Create a Github Application
+Create a Github application
 ...........................
 
 First, log into Github and navigate to `Developer applications`_ and click on "Register a new application". You should see something like the following:
@@ -164,15 +164,15 @@ Your Directory configuration should look like this:
 Finally, click "Create Directory" to add the Directory to Stormpath.
 
 
-Mapping the Directory
-.....................
+Map the Directory
+.................
 
 The new Github Directory needs to be associated (mapped) to your existing Application as an Account Store. This can also be done from the `Stormpath Admin Console`_.
 
 To do this, click on Applications in the navigation bar, and select your Application from the list. On the details page, click on Account Stores on the left side. Next, click “Add Account Store” and pick the new Facebook Directory you created. Click “Create Mappings”.
 
 
-Configuring Your Server URI
+Configure your server URI
 ...........................
 
 The Stormpath |framework| package requires one more bit of configuration to enable Github Login from your application. The ``stormpath.web.serverUri`` property needs to contain the base URL of your web server.
@@ -211,8 +211,8 @@ Alternatively, you can set this property in code when you configure the Stormpat
 That's it!
 
 
-Testing Github Login
-......................
+Test Github login
+.................
 
 Now that you’ve connected your Github Application to Stormpath, you’re ready to test your |framework| application.
 
@@ -229,7 +229,7 @@ You'll then be prompted to accept any requested permissions. After authorizing, 
 
 .. _google_login:
 
-Setting up Google Login
+Setting up Google login
 -----------------------
 
 To use Google Login with your |framework| application, you simply need to:
@@ -238,7 +238,7 @@ To use Google Login with your |framework| application, you simply need to:
 2. Configure a Stormpath Directory with the Google Application credentials.
 
 
-Create a Google Project
+Create a Google project
 .......................
 
 First, log into the `Google Developer Console`_ and create a new Google Project. When you click on "Create Project", you should see this:
@@ -248,7 +248,7 @@ First, log into the `Google Developer Console`_ and create a new Google Project.
 Pick a "Project Name" (usually the name of your app), and optionally a "Project ID".
 
 
-Enable Google Login
+Enable Google login
 ...................
 
 In order to use Google Login with the new Project you created, you have to enable the Google+ API.
@@ -260,7 +260,7 @@ To do this, click on the Project and select "APIs & Auth" on the side panel. Scr
 .. image:: /_static/images/google-enable-login.png
 
 
-Create OAuth Credentials
+Create OAuth credentials
 ........................
 
 Next, you'll need to create an OAuth client ID. The client ID is what allows your application (and Stormpath) to talk to Google securely.
@@ -308,16 +308,16 @@ Your Directory configuration should look like this:
 Finally, click "Create Directory" to add the Directory to Stormpath.
 
 
-Mapping the Directory
-.....................
+Map the Directory
+.................
 
 The new Google Directory needs to be associated (mapped) to your existing Application as an Account Store. This can also be done from the `Stormpath Admin Console`_.
 
 To do this, click on Applications in the navigation bar, and select your Application from the list. On the details page, click on Account Stores on the left side. Next, click “Add Account Store” and pick the Google Directory you created. Click “Create Mappings”.
 
 
-Configuring Your Server URI
-...........................
+Configure your server URI
+.........................
 
 The Stormpath |framework| package requires one more bit of configuration to enable Google Login from your application. The ``stormpath.web.serverUri`` property needs to contain the base URL of your web server.
 
@@ -354,7 +354,7 @@ Alternatively, you can set this property in code when you configure the Stormpat
 That's it!
 
 
-Testing Google Login
+Test Google login
 ....................
 
 Now that you’ve connected your Google Project to Stormpath, you’re ready to test your |framework| application.
@@ -372,7 +372,7 @@ You'll then be prompted to accept any requested permissions. After authorizing, 
 
 .. _linkedin_login:
 
-Setting up LinkedIn Login
+Setting up LinkedIn login
 -------------------------
 
 To use LinkedIn Login with your |framework| application, you simply need to:
@@ -381,7 +381,7 @@ To use LinkedIn Login with your |framework| application, you simply need to:
 2. Configure a Stormpath Directory with the LinkedIn Application credentials.
 
 
-Create a LinkedIn Application
+Create a LinkedIn application
 .............................
 
 First, log into the `LinkedIn Developer Console`_ and create a new LinkedIn Application by clicking the "Create Application" button. Fill out the fields on the form, in particular:
@@ -393,7 +393,7 @@ First, log into the `LinkedIn Developer Console`_ and create a new LinkedIn Appl
 Click "Submit" to finish creating the new application.
 
 
-Enable LinkedIn Permissions
+Enable LinkedIn permissions
 ...........................
 
 In order to use the new LinkedIn Application with Stormpath, you need to enable the correct LinkedIn permissions.
@@ -428,8 +428,8 @@ Your Directory configuration should look like this:
 Finally, click "Create Directory" to add the Directory to Stormpath.
 
 
-Mapping the Directory
-.....................
+Map the Directory
+.................
 
 The new LinkedIn Directory needs to be associated (mapped) to your existing Application as an Account Store. This can also be done from the `Stormpath Admin Console`_.
 
@@ -475,7 +475,7 @@ Alternatively, you can set this property in code when you configure the Stormpat
 That's it!
 
 
-Testing LinkedIn Login
+Test LinkedIn login
 ......................
 
 Now that you’ve connected your LinkedIn Application to Stormpath, you’re ready to test your |framework| application.

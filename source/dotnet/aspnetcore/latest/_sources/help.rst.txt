@@ -25,12 +25,12 @@ Logging
 
     Nancy.
 
-Inspecting Traffic
+Inspecting traffic
 ------------------
 
 Using a web debugging proxy like `Fiddler`_ or `Charles`_ will allow you to inspect the traffic between the Stormpath SDK and the Stormpath REST API. This can be helpful when troubleshooting communication problems.
 
-Getting Help
+Getting help
 ------------
 
 Have a question you can't find an answer to?  Things not working as expected?

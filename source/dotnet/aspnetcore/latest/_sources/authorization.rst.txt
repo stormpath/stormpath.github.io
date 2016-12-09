@@ -9,7 +9,7 @@ Which authorization approach you choose depends on the needs of your application
 
 .. _requiring_login:
 
-Requiring Login
+Requiring login
 ---------------
 
 At the most simple level, you may want certain routes or controllers to only be accessible when a user is logged in.
@@ -40,7 +40,7 @@ At the most simple level, you may want certain routes or controllers to only be 
 If the user is not logged in, they will be redirected to the built-in login route (``/login`` by default) to log in or register. After authenticating, they will be redirected back to the original route automatically.
 
 
-Groups and Roles
+Groups and roles
 ----------------
 
 In Stormpath, an Account can belong to one or more Groups, which can represent claims or roles. Adding an Account to a Group can be thought of as adding that user to a role, or assigning a claim or label to the account.
@@ -120,7 +120,7 @@ It's also possible to specify multiple Group names or ``hrefs``. If the user is 
   .. .literalinclude:: code/authorization/nancy/require_any_group.cs
       :language: csharp
 
-Requiring Multiple Groups
+Requiring multiple Groups
 .........................
 
 To require the user to be in more than one Group, apply the syntax twice:
@@ -141,7 +141,7 @@ To require the user to be in more than one Group, apply the syntax twice:
       :language: csharp
 
 
-Fine-Grained Permissions
+Fine-grained permissions
 ------------------------
 
 If you need finer control over authorization, you can use Stormpath's `Custom Data`_ feature to model any type of permissions you need in your application.

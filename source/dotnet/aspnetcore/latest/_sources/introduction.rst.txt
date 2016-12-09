@@ -39,7 +39,7 @@ Stormpath is used as a simple REST API over HTTP. This means that Stormpath can 
 or by using one of our rich SDK libraries (such as the `Stormpath .NET SDK`_).
 
 
-Who Should Use Stormpath
+Who should use Stormpath
 ------------------------
 
 Stormpath is a great service, but it's not for everyone!

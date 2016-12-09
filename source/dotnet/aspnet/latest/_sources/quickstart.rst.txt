@@ -7,13 +7,13 @@ Quickstart
 This section walks you through adding Stormpath to a new |framework| project. By the end of this short tutorial you'll have working login and registration features added to your application!
 
 
-Create a Stormpath Account
+Create a Stormpath account
 --------------------------
 
 If you haven't already, the first thing you'll want to do is `create a new Stormpath account <https://api.stormpath.com/register>`_.
 
 
-Create an API Key Pair
+Create an API Key pair
 ----------------------
 
 Once you've created a new account, you need to create an API key pair. These are your credentials for the Stormpath API. A new API key pair is easily created by logging into your dashboard and clicking the "Create an API Key" button. This will generate a new key pair for you, and prompt you to download the key pair as a file.
@@ -43,7 +43,7 @@ On Windows, the commands are:
   You can also load your credentials straight from the ``apiKey.properties`` file, or include them in your project code. See the :ref:`configuration` section for more information.
 
 
-Find Your Stormpath Application
+Find your Stormpath Application
 -------------------------------
 
 To get you up and running quickly, all new Stormpath Tenants come with a Stormpath Application called "My Application". You'll generally want one application per project, and we can use this default application to get started.
@@ -76,7 +76,7 @@ Or, on Windows:
 Now that your API credentials and Stormpath Application are set, you're ready to plug Stormpath into your project!
 
 
-Example Projects
+Example projects
 ----------------
 
 If you're feeling lazy (as all good programmers should!), you can download one of our example projects to get up and running super fast:
@@ -88,7 +88,7 @@ If you're feeling lazy (as all good programmers should!), you can download one o
   Add Nancy example project when available
 
 
-Create a New Project
+Create a new project
 --------------------
 
 If you are adding Stormpath to an existing application, skip to the next section!
@@ -126,7 +126,7 @@ If you are adding Stormpath to an existing application, skip to the next section
     Add instructions
 
 
-Install the Package
+Install the library
 -------------------
 
 .. only:: aspnetcore
@@ -183,7 +183,7 @@ The package can be installed with the NuGet Package Manager interface, or using 
     PM> install-package Stormpath.Nancy
 
 
-Initialize the Middleware
+Initialize the middleware
 ----------------------------
 
 .. only:: aspnetcore
