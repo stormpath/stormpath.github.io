@@ -38,7 +38,7 @@ content_top: [docs_top.html]
                   <p>Node.js</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/nodejs"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -61,7 +61,7 @@ content_top: [docs_top.html]
                   <p>Java</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/java"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -86,7 +86,7 @@ content_top: [docs_top.html]
                   <p>Angular.js</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/angular"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -105,7 +105,7 @@ content_top: [docs_top.html]
                   <p>Python</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/python"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -126,7 +126,7 @@ content_top: [docs_top.html]
                   <p>Ruby</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/ruby"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -147,7 +147,7 @@ content_top: [docs_top.html]
                   <p>PHP</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/php"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -168,7 +168,7 @@ content_top: [docs_top.html]
                   <p>Go</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/go"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -189,7 +189,7 @@ content_top: [docs_top.html]
                   <p>Apache</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/apache"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -210,7 +210,7 @@ content_top: [docs_top.html]
                   <p>.NET</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/dotnet"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -240,7 +240,7 @@ content_top: [docs_top.html]
                   <p>React</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/react"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -261,7 +261,7 @@ content_top: [docs_top.html]
                   <p>iOS</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/ios"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -281,7 +281,7 @@ content_top: [docs_top.html]
                   <p>Android</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/android"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
@@ -301,7 +301,7 @@ content_top: [docs_top.html]
                   <p>nginx</p>
                 </div>
                 <div class="docs-node-read-more">
-                  <a href="/nginx"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
                 </div>
               </div>
             </div>
