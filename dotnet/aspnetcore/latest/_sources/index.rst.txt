@@ -19,6 +19,7 @@ This documentation will show you how to get started with Stormpath and |framewor
    using_the_sdk
    cors
    authentication
+   api_authentication
    authorization
    id_site
    .. multi_environments

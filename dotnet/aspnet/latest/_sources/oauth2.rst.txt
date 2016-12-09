@@ -10,6 +10,8 @@ By default, this library will provide a POST route at ``/oauth/token``. Simply m
 This topic describes how to configure the OAuth 2.0 API endpoint. For details on how to use it, see the :ref:`oauth2_password_grant` section.
 
 
+.. _oauth2_config_options:
+
 Configuration options
 ---------------------
 
@@ -23,18 +25,17 @@ Additionally, there are specific options for each supported OAuth 2.0 grant type
 Client credentials grant options
 ................................
 
-.. todo::
-  Link to the client_credentials docs over on authentication.
+See the :ref:`oauth2_client_credentials_grant` topic for a detailed description of how the client credentials grant flow works.
 
-* **enabled**: Whether the Client Credentials Grant flow is enabled. (Default: ``true``)
+* **enabled**: Whether the client credentials Grant flow is enabled. (Default: ``true``)
 * **accessToken.ttl**: The time-to-live (in seconds) of the generated access token. (Default: 3600)
 
 Password grant options
 ......................
 
-See the :ref:`oauth2_password_grant` topic in the Authentication section for a detailed description of how the Password Grant flow works.
+See the :ref:`oauth2_password_grant` topic in the Authentication section for a detailed description of how the password grant flow works.
 
-* **enabled**: Whether the Password Grant flow is enabled. (Default: ``true``)
+* **enabled**: Whether the password grant flow is enabled. (Default: ``true``)
 * **validationStrategy**: Whether to validate the token locally or via the Stormpath API. (Default: local, see :ref:`token_validation_strategy`)
 
 .. note::
