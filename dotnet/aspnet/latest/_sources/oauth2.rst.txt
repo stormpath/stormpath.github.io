@@ -10,7 +10,7 @@ By default, this library will provide a POST route at ``/oauth/token``. Simply m
 This topic describes how to configure the OAuth 2.0 API endpoint. For details on how to use it, see the :ref:`oauth2_password_grant` section.
 
 
-Configuration Options
+Configuration options
 ---------------------
 
 This feature supports several options that you can configure using code or markup (see the :ref:`Configuration` section):
@@ -20,7 +20,7 @@ This feature supports several options that you can configure using code or marku
 
 Additionally, there are specific options for each supported OAuth 2.0 grant type:
 
-Client Credentials Grant Options
+Client credentials grant options
 ................................
 
 .. todo::
@@ -29,7 +29,7 @@ Client Credentials Grant Options
 * **enabled**: Whether the Client Credentials Grant flow is enabled. (Default: ``true``)
 * **accessToken.ttl**: The time-to-live (in seconds) of the generated access token. (Default: 3600)
 
-Password Grant Options
+Password grant options
 ......................
 
 See the :ref:`oauth2_password_grant` topic in the Authentication section for a detailed description of how the Password Grant flow works.
@@ -40,7 +40,7 @@ See the :ref:`oauth2_password_grant` topic in the Authentication section for a d
 .. note::
   Any unchanged options will retain their default values. See the :ref:`oauth2_default_configuration` section to view the defaults.
 
-Configuration Example
+Configuration example
 .....................
 
 To change the token endpoint URI and use remote (Stormpath API) validation of the Access Token, use this configuration (shown in YAML):
@@ -75,7 +75,7 @@ See the :ref:`configuration` section for more details on how configuration works
 
 .. _oauth2_default_configuration:
 
-Default Configuration
+Default configuration
 ---------------------
 
 Options that are not overridden by explicit configuration (see :ref:`configuration`) will retain their default values.
