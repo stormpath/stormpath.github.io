@@ -1,4 +1,4 @@
-.. _help:
+.. _troubleshooting:
 
 
 Troubleshooting
@@ -21,9 +21,8 @@ Logging
 
 .. only:: nancy
 
-  .. todo::
+  Nancy logging stuff
 
-    Nancy.
 
 Inspecting traffic
 ------------------

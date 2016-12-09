@@ -28,9 +28,6 @@ these objects will be available in the context of each request:
 
 .. only:: nancy
 
-  .. todo::
-    Add detail here.
-
   .. .literalinclude:: code/request_context/nancy/extension_methods.cs
     :language: csharp
 
@@ -44,10 +41,7 @@ Stormpath Client
 The ``IClient`` type is the starting point of the `Stormpath .NET SDK`_. You can use it to perform any action against the Stormpath API.
 
 .. note::
-  For more information about the Client object, see :ref:`using_the_sdk` and the `Stormpath .NET API documentation`_.
-
-.. todo::
-  Update this link to the One Product Guide when done.
+  For more information about the Client object, see :ref:`using_the_sdk` and the `Stormpath .NET SDK`_ documentation.
 
 
 Stormpath Application
@@ -56,9 +50,6 @@ Stormpath Application
 The ``IApplication`` type is a .NET representation of the Stormpath Application resource associated with your |framework| application. You can use this object to perform actions like creating and searching for user accounts programmatically.
 
 See :ref:`using_the_sdk` for an example of how to use the Application object.
-
-.. todo::
-  Update this link to the One Product Guide when done.
 
 
 Current Account
@@ -115,8 +106,7 @@ Stormpath IAccount
 
 .. only:: nancy
 
-  .. todo::
-    Add description
+  Nancy stuff.
 
 .. only:: aspnetcore
 
@@ -129,5 +119,4 @@ Stormpath IAccount
       :language: html
 
 
-.. _Stormpath .NET SDK: https://github.com/stormpath/stormpath-sdk-dotnet
-.. _Stormpath .NET API documentation: http://docs.stormpath.com/dotnet/api/
+.. _Stormpath .NET SDK: https://docs.stormpath.com/csharp/product-guide/latest/

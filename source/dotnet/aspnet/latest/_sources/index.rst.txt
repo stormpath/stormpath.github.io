@@ -22,7 +22,6 @@ This documentation will show you how to get started with Stormpath and |framewor
    api_authentication
    authorization
    id_site
-   .. multi_environments
    templates
    oauth2
    me_api
@@ -32,7 +31,7 @@ This documentation will show you how to get started with Stormpath and |framewor
    logout
    password_reset
    email_verification
-   help
+   troubleshooting
 
 
 License

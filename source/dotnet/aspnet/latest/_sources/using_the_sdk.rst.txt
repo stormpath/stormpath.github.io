@@ -23,8 +23,7 @@ We recommend interacting with the API asynchronously, but if your application is
 
 Simply import the ``Stormpath.SDK.Sync`` namespace at the top of your code file, and you'll see a new non-asynchronous counterpart method for each asynchronous one. For example, instead of calling ``await account.SaveAsync()``, you can simply call ``account.Save()``.
 
-.. todo::
-  Link to OPG section on sync here when it's ready.
+For more details, see the `SDK documentation <https://docs.stormpath.com/csharp/product-guide/latest/quickstart.html#asynchronous-and-synchronous-support>`_.
 
 Examples
 ''''''''
