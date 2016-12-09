@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Cross-origin requests &mdash; ASP.NET Library Guide  documentation</title>
+  <title>API authentication &mdash; ASP.NET Core Library Guide  documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="ASP.NET Library Guide  documentation" href="index.html"/>
-        <link rel="next" title="Authentication" href="authentication.html"/>
-        <link rel="prev" title="Using the Stormpath SDK" href="using_the_sdk.html"/> 
+    <link rel="top" title="ASP.NET Core Library Guide  documentation" href="index.html"/>
+        <link rel="next" title="Authorization" href="authorization.html"/>
+        <link rel="prev" title="Authentication" href="authentication.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> ASP.NET Library Guide
+            <a href="index.html" class="icon icon-home"> ASP.NET Core Library Guide
           
 
           
@@ -149,8 +149,8 @@
 <li class="toctree-l2"><a class="reference internal" href="using_the_sdk.html#examples">Examples</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Cross-origin requests</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#configuring-the-pipeline">Configuring the pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cors.html">Cross-origin requests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cors.html#configuring-the-pipeline">Configuring the pipeline</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a><ul>
@@ -158,10 +158,10 @@
 <li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth-2-0-password-grant">OAuth 2.0 password grant</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_authentication.html">API authentication</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#issuing-api-keys">Issuing API keys</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#http-basic-authentication">HTTP Basic authentication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#oauth-2-0-client-credentials-grant">OAuth 2.0 client credentials grant</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#issuing-api-keys">Issuing API keys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#http-basic-authentication">HTTP Basic authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oauth-2-0-client-credentials-grant">OAuth 2.0 client credentials grant</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="authorization.html">Authorization</a><ul>
@@ -288,7 +288,7 @@
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">ASP.NET Library Guide</a>
+          <a href="index.html">ASP.NET Core Library Guide</a>
         
       </nav>
 
@@ -315,13 +315,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Cross-origin requests</li>
+      <li>API authentication</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/cors.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/api_authentication.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -332,48 +332,86 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="cross-origin-requests">
-<span id="cors"></span><h1>Cross-origin requests<a class="headerlink" href="#cross-origin-requests" title="Permalink to this headline">¶</a></h1>
-<p><a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS">Cross-Origin Resource Sharing</a> (CORS) support on both the client and server is neccessary when your client and server are on different domains. For example, a single-page application running on <code class="docutils literal"><span class="pre">mydomain.com</span></code> but communicating to an API on <code class="docutils literal"><span class="pre">api.mydomain.com</span></code> will require CORS to be configured.</p>
-<p>The Stormpath ASP.NET library works with existing CORS solutions for ASP.NET, provided that the middleware pipeline is configured properly.</p>
-<div class="section" id="configuring-the-pipeline">
-<h2>Configuring the pipeline<a class="headerlink" href="#configuring-the-pipeline" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="api-authentication">
+<span id="id1"></span><h1>API authentication<a class="headerlink" href="#api-authentication" title="Permalink to this headline">¶</a></h1>
+<p>If you&#8217;re building an API service that other developers will consume, the Stormpath ASP.NET Core library provides two ways to authenticate users and machines:</p>
+<blockquote>
+<div><ul class="simple">
+<li>For simple services that will always use HTTPS, you can use <a class="reference internal" href="#http-basic"><span class="std std-ref">HTTP Basic authentication</span></a>.</li>
+<li>For services that require stronger security, you can use the <a class="reference internal" href="#oauth2-client-credentials-grant"><span class="std std-ref">OAuth 2.0 client credentials grant</span></a>.</li>
+</ul>
+</div></blockquote>
+<p>If you&#8217;re building a web or mobile application, head over to <a class="reference internal" href="authentication.html#authentication"><span class="std std-ref">Authentication</span></a> instead.</p>
+<div class="section" id="issuing-api-keys">
+<span id="id2"></span><h2>Issuing API keys<a class="headerlink" href="#issuing-api-keys" title="Permalink to this headline">¶</a></h2>
+<p>Regardless of the authentication mechanism you choose, you&#8217;ll need a way to distribute API keys to your users.</p>
+<p>You can manually provision API keys for your users by using the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a>:</p>
+<ol class="arabic simple">
+<li>Click on the Accounts tab</li>
+<li>Open up the details for the Account you want to create an API key for</li>
+<li>Expand the Security Credentials panel</li>
+<li>Click Create API Key</li>
+</ol>
+<p>You&#8217;ll need a way to securely distribute these API keys to your users. In a production application, you can use the <a class="reference external" href="https://docs.stormpath.com/csharp/product-guide/latest/">Stormpath .NET SDK</a> to generate the API keys programmatically and allow your users to view or download the key pairs.</p>
+</div>
+<div class="section" id="http-basic-authentication">
+<span id="http-basic"></span><h2>HTTP Basic authentication<a class="headerlink" href="#http-basic-authentication" title="Permalink to this headline">¶</a></h2>
+<p>Basic authentication is a simple way for your users to make authenticated calls to your API service. The API key ID and secret are included with every request, which makes calling the API very straightforward.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Because the API credentials are sent in the clear on every request, it is important to <strong>always</strong> use TLS (HTTPS) when building a service that uses Basic authentication. Services that need stronger security should use the <a class="reference internal" href="#oauth2-client-credentials-grant"><span class="std std-ref">OAuth 2.0 client credentials grant</span></a> instead.</p>
+</div>
+<p>The Stormpath ASP.NET Core library supports Basic authentication out-of-the-box. Once your user has an <a class="reference internal" href="#issuing-api-keys"><span class="std std-ref">API key</span></a>, they can use it to authenticate against your API by constructing the appropriate HTTP <code class="docutils literal"><span class="pre">Authorization</span></code> header:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>Authorization: Basic &lt;base64UrlSafe(apiKeyId + &quot;:&quot; + apiKeySecret)&gt;
+</pre></div>
+</div>
+<p>If the API key ID and secret are valid, the Stormpath middleware will authenticate the request, and the user will be authorized to access protected endpoints.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">In order to enable CORS support for the responses sent by the Stormpath middleware, the CORS middleware must be added to the pipeline <strong>before</strong> the Stormpath middleware.</p>
+<p class="last">See the <a class="reference internal" href="authorization.html#authorization"><span class="std std-ref">Authorization</span></a> section for details on requiring authentication for controllers and routes.</p>
 </div>
-<p>The <code class="docutils literal"><span class="pre">Microsoft.Owin.Cors</span></code> package provides a simple middleware component that can be added to your application pipeline in <code class="docutils literal"><span class="pre">Startup.cs</span></code>:</p>
-<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">Configuration</span><span class="p">(</span><span class="n">IAppBuilder</span> <span class="n">app</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="kt">var</span> <span class="n">corsPolicy</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CorsPolicy</span>
-    <span class="p">{</span>
-        <span class="n">AllowAnyMethod</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
-        <span class="n">AllowAnyHeader</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
-        <span class="n">AllowAnyOrigin</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
-        <span class="n">SupportsCredentials</span> <span class="p">=</span> <span class="k">true</span>
-    <span class="p">};</span>
+</div>
+<div class="section" id="oauth-2-0-client-credentials-grant">
+<span id="oauth2-client-credentials-grant"></span><h2>OAuth 2.0 client credentials grant<a class="headerlink" href="#oauth-2-0-client-credentials-grant" title="Permalink to this headline">¶</a></h2>
+<p>Instead of using Basic authentication and sending the API credentials with every request, you can require your users to exchange their API credentials for an OAuth 2.0 access token. This flow is slightly more complicated, but is more secure because the credentials are only sent over the wire once.</p>
+<p>Once your user has an <a class="reference internal" href="#issuing-api-keys"><span class="std std-ref">API key</span></a>, they will need to POST to the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint to obtain an access token:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>POST /oauth/token
+Content-Type: application/x-www-form-urlencoded
+Authorization: Basic &lt;base64UrlSafe(apiKeyId + &quot;:&quot; + apiKeySecret)&gt;
 
-    <span class="n">corsPolicy</span><span class="p">.</span><span class="n">Origins</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;http://localhost:56789&quot;</span><span class="p">);</span> <span class="c1">// Your API domain</span>
-
-    <span class="kt">var</span> <span class="n">corsOptions</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CorsOptions</span>
-    <span class="p">{</span>
-        <span class="n">PolicyProvider</span> <span class="p">=</span> <span class="k">new</span> <span class="n">CorsPolicyProvider</span>
-        <span class="p">{</span>
-            <span class="n">PolicyResolver</span> <span class="p">=</span> <span class="n">context</span> <span class="p">=&gt;</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="n">corsPolicy</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">};</span>
-
-    <span class="n">app</span><span class="p">.</span><span class="n">UseCors</span><span class="p">(</span><span class="n">corsOptions</span><span class="p">);</span>
-
-    <span class="n">app</span><span class="p">.</span><span class="n">UseStormpath</span><span class="p">();</span>
-
-    <span class="c1">// Other middleware here...</span>
+grant_type=client_credentials
+</pre></div>
+</div>
+<p>If the API key ID and secret are valid, the server will return a JSON response:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;access_token&quot;</span><span class="p">:</span> <span class="s2">&quot;eyJ0eXAiOiJKV1QiL...&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;token_type&quot;</span><span class="p">:</span> <span class="s2">&quot;bearer&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;expires_in&quot;</span><span class="p">:</span> <span class="mi">3600</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>If you have trouble with this configuration, make sure CORS is not being handled separately by MVC or Web API, or by IIS. The <code class="docutils literal"><span class="pre">handlers</span></code> section of <code class="docutils literal"><span class="pre">system.webServer</span></code> in <code class="docutils literal"><span class="pre">web.config</span></code> should include this item:</p>
-<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;remove</span> <span class="na">name=</span><span class="s">&quot;OPTIONSVerbHandler&quot;</span> <span class="nt">/&gt;</span>
+<p>The response has the following properties:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">access_token</span></code> - The access token itself.</li>
+<li><code class="docutils literal"><span class="pre">token_type</span></code> - This will always be <code class="docutils literal"><span class="pre">bearer</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">expires_in</span></code> - The number of seconds the token is valid.</li>
+</ul>
+</div></blockquote>
+<p>The user can then make requests to your API by including the access token:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>GET /secret
+Authorization: Bearer eyJ0eXAiOiJKV1QiL...
 </pre></div>
+</div>
+<p>If the access token is valid and has not expired, the Stormpath middleware will authenticate the request, and the user will be authorized to access protected endpoints.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">See the <a class="reference internal" href="authorization.html#authorization"><span class="std std-ref">Authorization</span></a> section for details on requiring authentication for controllers and routes.</p>
+</div>
+<p>The client credentials grant type is enabled by default. You can disable it, or change the access token TTL, by changing the <a class="reference internal" href="oauth2.html#oauth2-config-options"><span class="std std-ref">OAuth 2.0 route configuration</span></a>.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The client credentials flow requires the API credentials to be sent in the clear at the start of the session, so using TLS (HTTPS) is still important.</p>
 </div>
 </div>
 </div>
@@ -385,10 +423,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="authentication.html" class="btn btn-neutral float-right" title="Authentication" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="authorization.html" class="btn btn-neutral float-right" title="Authorization" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="using_the_sdk.html" class="btn btn-neutral" title="Using the Stormpath SDK" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="authentication.html" class="btn btn-neutral" title="Authentication" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

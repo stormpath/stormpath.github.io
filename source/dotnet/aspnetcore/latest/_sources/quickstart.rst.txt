@@ -84,9 +84,6 @@ If you're feeling lazy (as all good programmers should!), you can download one o
 - `ASP.NET Core 1.0 MVC Example Project`_
 - `ASP.NET MVC 5 Example Project`_
 
-.. todo::
-  Add Nancy example project when available
-
 
 Create a new project
 --------------------
@@ -122,8 +119,7 @@ If you are adding Stormpath to an existing application, skip to the next section
 
 .. only:: nancy
 
-  .. todo::
-    Add instructions
+  Nancy instructions
 
 
 Install the library
@@ -139,8 +135,7 @@ Install the library
 
 .. only:: nancy
 
-  .. todo::
-    Add blurb.
+  Nancy blurb
 
 It includes the `Stormpath .NET SDK`_, the Stormpath OWIN middleware, and pre-rendered views that work out of the box.
 
@@ -213,10 +208,9 @@ Initialize the middleware
 
 .. only:: nancy
 
-  .. todo::
-    Add steps
+  Add steps
 
-  .. note:: It's important that the Stormpath middleware is added **before** any middleware that needs to be protected, such as <todo>!
+  .. note:: It's important that the Stormpath middleware is added **before** any middleware that needs to be protected, such as...!
 
 
 With this minimal configuration, the library will do the following:
@@ -242,8 +236,7 @@ That's it, you're ready to go! Compile and run your project, and try navigating 
 
 .. only:: nancy
 
-  .. todo::
-    Add info
+  Add links
 
 .. only:: aspnetcore
 
