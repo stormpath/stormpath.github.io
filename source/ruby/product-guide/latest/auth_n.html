@@ -963,9 +963,9 @@
 </ul>
 <p>The first three kinds of OAuth Grant Types differ only in what credentials are passed to Stormpath in order to generate the token. The Stormpath Factor Challenge Type requires a Challenge <code class="docutils literal"><span class="pre">href</span></code> and <code class="docutils literal"><span class="pre">code</span></code> that you get as part of the <a class="reference internal" href="#mfa"><span class="std std-ref">Multi-Factor Authentication process</span></a>. For more information on those, keep reading. For more information about the Refresh Grant Type, see <a class="reference internal" href="#refresh-oauth-token"><span class="std std-ref">below</span></a>.</p>
 <p><strong>Targeting a Specific Account Store</strong></p>
-<p>It is possible to target token generation against a particular Directory, Group, or Organization. You do this either by passing the Account Store&#8217;s <code class="docutils literal"><span class="pre">href</span></code>, or the Organization&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code>.</p>
+<p>It is possible to target token generation against a particular Directory, Group, or Organization. You do this either by passing the Account Store&#8217;s <code class="docutils literal"><span class="pre">href</span></code>, or the Organization&#8217;s <code class="docutils literal"><span class="pre">organizationNameKey</span></code>.</p>
 <p><code class="docutils literal"><span class="pre">grant_type=password&amp;username=tom&#64;stormpath.com&amp;password=Secret1&amp;accountStore=https://api.stormpath.com/v1/directories/1bcd23ec1d0a8wa6</span></code></p>
-<p><code class="docutils literal"><span class="pre">grant_type=password&amp;username=tom&#64;stormpath.com&amp;password=Secret1&amp;nameKey=anOrganization</span></code></p>
+<p><code class="docutils literal"><span class="pre">grant_type=password&amp;username=tom&#64;stormpath.com&amp;password=Secret1&amp;organizationNameKey=anOrganization</span></code></p>
 <p>This allows you to bypass the usual default Account Store and login priority and instead send the token generation to a particular Account Store.</p>
 <div class="section" id="client-credentials">
 <h5>Client Credentials<a class="headerlink" href="#client-credentials" title="Permalink to this headline">¶</a></h5>
@@ -1033,7 +1033,7 @@ properties from the <code class="docutils literal"><span class="pre">Stormpath::
 </pre></div>
 </div>
 <p>Once your application receives the request, the first thing to do is to validate the token, either using Stormpath, or using local application-side logic. The benefit of using Stormpath to validate the token through the REST API (or an SDK that is using the REST API) is that Stormpath can validate the token against the state of your Application and Account resources. To illustrate the difference:</p>
-<table border="1" class="docutils">
+<table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="67%" />
 <col width="17%" />
@@ -1807,7 +1807,7 @@ $ startup.sh
 <span id="saml-response-jwt"></span><h5>SAML Account Assertion JWT<a class="headerlink" href="#saml-account-assertion-jwt" title="Permalink to this headline">¶</a></h5>
 <p>This JWT again contains both Headers and a Body with Claims.</p>
 <p><strong>Header</strong></p>
-<table border="1" class="docutils">
+<table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="18%" />
 <col width="12%" />
@@ -1839,7 +1839,7 @@ $ startup.sh
 </tbody>
 </table>
 <p><strong>Body</strong></p>
-<table border="1" class="docutils">
+<table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="20%" />
 <col width="80%" />
@@ -1914,7 +1914,7 @@ $ startup.sh
 </div>
 <p>The token itself will contain two parts, a Header and a Body that itself contains claims.</p>
 <p><strong>Header</strong></p>
-<table border="1" class="docutils">
+<table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="18%" />
 <col width="12%" />
@@ -1939,7 +1939,7 @@ $ startup.sh
 </table>
 <p><strong>Body</strong></p>
 <p>The <a class="reference external" href="https://tools.ietf.org/html/rfc7519#section-4.1">claims</a> for the JWT body are as follows:</p>
-<table border="1" class="docutils">
+<table border="1" class="colwidths-given docutils">
 <colgroup>
 <col width="18%" />
 <col width="12%" />
@@ -2030,7 +2030,7 @@ $ startup.sh
 <p>At a minimum, an Account in Stormpath requires at least one authentication factor, which is the password. However, if you would like to include additional security then Stormpath supports the creation of additional authentication factors on an Account. Currently, the additional factors are:</p>
 <ul class="simple">
 <li>SMS message to a phone</li>
-<li>Google Authenticator</li>
+<li>Google Authenticator (TOTP)</li>
 </ul>
 <p>The multi-factor authentication process works as follows with text messages:</p>
 <ol class="arabic simple">
@@ -2155,10 +2155,13 @@ $ startup.sh
 </pre></div>
 </div>
 <p>Note that it&#8217;s also possible to <code class="docutils literal"><span class="pre">search</span></code> the <code class="docutils literal"><span class="pre">factors</span></code> collection by any attribute you desire.</p>
-<p>You will now challenge each of these factors.</p>
+<p>You can now challenge each of these factors.</p>
 <div class="section" id="challenging-after-factor-creation">
 <span id="mfa-challenge-after"></span><h4>Challenging After Factor Creation<a class="headerlink" href="#challenging-after-factor-creation" title="Permalink to this headline">¶</a></h4>
-<p>This example covers challenging Factors that have already been created. To see an example of how to challenge a Factor at the same time as you are creating it, please see <a class="reference internal" href="#mfa-challenge-after"><span class="std std-ref">below</span></a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This example covers challenging Factors that have already been created. To see an example of how to challenge a Factor at the same time as you are creating it, please see <a class="reference internal" href="#mfa-challenge-after"><span class="std std-ref">below</span></a>.</p>
+</div>
 <div class="section" id="challenging-an-sms-factor">
 <span id="mfa-challenge-after-sms"></span><h5>Challenging an SMS Factor<a class="headerlink" href="#challenging-an-sms-factor" title="Permalink to this headline">¶</a></h5>
 <div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">challenge</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">challenges</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">message</span><span class="p">:</span> <span class="s1">&#39;Please enter the code: ${code}&#39;</span><span class="p">)</span>
@@ -2168,7 +2171,10 @@ $ startup.sh
 <span class="n">challenge</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">challenges</span><span class="o">.</span><span class="n">create</span><span class="p">({})</span>
 </pre></div>
 </div>
-<p>If you do not specify a message, then Stormpath will just send the default message: <code class="docutils literal"><span class="pre">&quot;Your</span> <span class="pre">verification</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">${code}&quot;</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you do not specify a message, then Stormpath will just send the default message: <code class="docutils literal"><span class="pre">&quot;Your</span> <span class="pre">verification</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">${code}&quot;</span></code>.</p>
+</div>
 <p>In response to this request you would get back a <code class="docutils literal"><span class="pre">Stormpath::Resource::Challenge</span></code> object:</p>
 <div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/challenges/4yglZZaXXM2XoAT5v9ITVv&#39;</span><span class="p">,</span>
@@ -2191,7 +2197,7 @@ $ startup.sh
 </div>
 <p>This code will remain valid for 300 seconds (5 minutes).</p>
 <p>Next, you must collect this code from the user.</p>
-<p>Once you have the code, you send it to the same Challenge you created above:</p>
+<p>Once you have the code, you submit it to the same Challenge you created above:</p>
 <div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">challenge</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="s1">&#39;123456&#39;</span><span class="p">)</span>
 <span class="n">challenge</span><span class="o">.</span><span class="n">status</span> <span class="c1"># =&gt; &#39;SUCCESS&#39;</span>
 </pre></div>
@@ -2221,7 +2227,7 @@ $ startup.sh
 <span id="mfa-challenge-after-google"></span><h5>Challenging a Google Authenticator Factor<a class="headerlink" href="#challenging-a-google-authenticator-factor" title="Permalink to this headline">¶</a></h5>
 <p>When you created the Google Authenticator Factor, you also generated a QR Code image for your user to scan into their app. Challenging this factor now only requires you to prompt to enter in the code from their Authenticator app.</p>
 <p>Unlike the SMS challenge process, the Google Authenticator challenge process does not require you to create a Challenge resource. Instead, the Challenge is created and verified in one step. For more information about the Challenge resource, see <a class="reference internal" href="reference.html#ref-challenge"><span class="std std-ref">the Reference chapter</span></a>.</p>
-<p>Once you have collected the code from the user, send the code generated by your Google Authenticator app:</p>
+<p>Once you have collected the code from the user, submit it:</p>
 <div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">challenge</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">challenges</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">code</span><span class="p">:</span> <span class="s1">&#39;123456&#39;</span><span class="p">)</span>
 <span class="n">challenge</span><span class="o">.</span><span class="n">status</span> <span class="c1"># =&gt; &#39;SUCCESS&#39;</span>
 </pre></div>
@@ -2257,7 +2263,7 @@ $ startup.sh
                                <span class="ss">challenge</span><span class="p">:</span> <span class="p">{</span> <span class="ss">message</span><span class="p">:</span> <span class="s1">&#39;Welcome to the Example! Your authorization code is &#39;</span> <span class="p">})</span>
 </pre></div>
 </div>
-<p>You are telling Stormpath to send an SMS to the phone number <code class="docutils literal"><span class="pre">122-233-34444</span></code> along with the message <code class="docutils literal"><span class="pre">&quot;Welcome</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">Example!</span> <span class="pre">Your</span> <span class="pre">authorization</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">${code}&quot;</span></code>. The placeholder <code class="docutils literal"><span class="pre">${code}</span></code> will be replaced with a one-time password generated using the HOTP algorithm.</p>
+<p>You are telling Stormpath to send an SMS to the phone number <code class="docutils literal"><span class="pre">267-555-5555</span></code> along with the message <code class="docutils literal"><span class="pre">&quot;Welcome</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">Example!</span> <span class="pre">Your</span> <span class="pre">authorization</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">${code}&quot;</span></code>. The placeholder <code class="docutils literal"><span class="pre">${code}</span></code> will be replaced with a one-time password generated using the HOTP algorithm.</p>
 </div>
 <div class="section" id="challenging-a-factor-after-login">
 <h4>Challenging a Factor After Login<a class="headerlink" href="#challenging-a-factor-after-login" title="Permalink to this headline">¶</a></h4>
