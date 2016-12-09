@@ -35,7 +35,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/nodejs">Node.js</a></p>
+                  <p>Node.js</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/nodejs"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -58,7 +58,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/java">Java</a></p>
+                  <p>Java</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/java"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -83,7 +83,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/angular"">Angular.js</a></p>
+                  <p>Angular.js</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/angular"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -102,7 +102,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/python">Python</a></p>
+                  <p>Python</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/python"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -123,7 +123,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/ruby">Ruby</a></p>
+                  <p>Ruby</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/ruby"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -144,7 +144,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/php">PHP</a></p>
+                  <p>PHP</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/php"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -165,7 +165,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/go">Go</a></p>
+                  <p>Go</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/go"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -186,7 +186,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/apache">Apache</a></p>
+                  <p>Apache</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/apache"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -207,7 +207,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/dotnet">.NET</a></p>
+                  <p>.NET</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/dotnet"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -222,13 +222,22 @@ content_top: [docs_top.html]
             <div class="docs-node-container">
               <div class="docs-node-first-row">
                 <div class="docs-node-img-container">
-                  <svg class="svg php-svg" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs>
-                  <style>.php-svg .cls-1{fill:#009dff;}.php-svg .cls-2{fill:none;stroke:#009dff;stroke-miterlimit:10;stroke-width:2px;}</style></defs><title>PHP</title><path class="cls-1" d="M33,60.54V45.16h2.45v.74A5.7,5.7,0,0,1,37,45.12a6,6,0,0,1,1.68-.25,4.8,4.8,0,0,1,1.7.28,3,3,0,0,1,1.28.91,4.3,4.3,0,0,1,.81,1.64,9.41,9.41,0,0,1,.28,2.47v1a8.17,8.17,0,0,1-.36,2.62,4.21,4.21,0,0,1-1,1.68,3.72,3.72,0,0,1-1.57.9,7.12,7.12,0,0,1-2,.27l-.57,0-.6-.05-.58-.08-.49-.09v4.08Zm7.2-10.36A6.88,6.88,0,0,0,40,48.7a2.36,2.36,0,0,0-.4-.93,1.43,1.43,0,0,0-.67-.49,2.89,2.89,0,0,0-1-.14l-.54,0a4,4,0,0,0-.55.09,6,6,0,0,0-.62.19q-.33.12-.73.29v6.54c.38.07.75.13,1.09.16a9.63,9.63,0,0,0,1,.05,4.23,4.23,0,0,0,1.06-.12,1.58,1.58,0,0,0,.79-.48,2.39,2.39,0,0,0,.49-1,6.67,6.67,0,0,0,.17-1.67Z"/><path class="cls-1" d="M52.31,56.42v-7.1a5.15,5.15,0,0,0-.09-1.08,1.58,1.58,0,0,0-.3-.68,1.11,1.11,0,0,0-.55-.36,3,3,0,0,0-.84-.1,5.43,5.43,0,0,0-.8.06c-.26,0-.51.09-.75.15s-.46.12-.66.2l-.54.21v8.7H45.15V40.88h2.62v4.83a6.76,6.76,0,0,1,.67-.31,7.05,7.05,0,0,1,.83-.27,8.78,8.78,0,0,1,1-.19,7.21,7.21,0,0,1,1-.07,4.47,4.47,0,0,1,1.75.3,2.78,2.78,0,0,1,1.14.87,3.53,3.53,0,0,1,.62,1.39A8.37,8.37,0,0,1,55,49.28v7.14Z"/><path class="cls-1" d="M57.66,60.54V45.16h2.45v.74a5.71,5.71,0,0,1,1.62-.78,6,6,0,0,1,1.68-.25,4.78,4.78,0,0,1,1.7.28,3,3,0,0,1,1.28.91,4.3,4.3,0,0,1,.81,1.64,9.41,9.41,0,0,1,.28,2.47v1a8.11,8.11,0,0,1-.36,2.62,4.19,4.19,0,0,1-1,1.68,3.72,3.72,0,0,1-1.57.9,7.13,7.13,0,0,1-2,.27l-.57,0-.6-.05-.58-.08-.49-.09v4.08Zm7.2-10.36a6.89,6.89,0,0,0-.13-1.47,2.37,2.37,0,0,0-.4-.93,1.44,1.44,0,0,0-.67-.49,2.9,2.9,0,0,0-1-.14l-.54,0a4,4,0,0,0-.55.09,6.09,6.09,0,0,0-.62.19q-.33.12-.73.29v6.54q.58.11,1.09.16a9.63,9.63,0,0,0,1,.05,4.22,4.22,0,0,0,1.06-.12,1.58,1.58,0,0,0,.79-.48,2.4,2.4,0,0,0,.49-1,6.72,6.72,0,0,0,.17-1.67Z"/><ellipse class="cls-2" cx="50" cy="50" rx="35" ry="17.5"/></svg>
+                  <svg class="svg php-svg" id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                    <defs>
+                      <style>.php-svg .cls-1{fill:#009dff;}.php-svg .cls-2{fill:none;stroke:#009dff;stroke-miterlimit:10;stroke-width:2px;}</style>
+                    </defs>
+                    <title>PHP</title>
+                    <path class="cls-1" d="M33,60.54V45.16h2.45v.74A5.7,5.7,0,0,1,37,45.12a6,6,0,0,1,1.68-.25,4.8,4.8,0,0,1,1.7.28,3,3,0,0,1,1.28.91,4.3,4.3,0,0,1,.81,1.64,9.41,9.41,0,0,1,.28,2.47v1a8.17,8.17,0,0,1-.36,2.62,4.21,4.21,0,0,1-1,1.68,3.72,3.72,0,0,1-1.57.9,7.12,7.12,0,0,1-2,.27l-.57,0-.6-.05-.58-.08-.49-.09v4.08Zm7.2-10.36A6.88,6.88,0,0,0,40,48.7a2.36,2.36,0,0,0-.4-.93,1.43,1.43,0,0,0-.67-.49,2.89,2.89,0,0,0-1-.14l-.54,0a4,4,0,0,0-.55.09,6,6,0,0,0-.62.19q-.33.12-.73.29v6.54c.38.07.75.13,1.09.16a9.63,9.63,0,0,0,1,.05,4.23,4.23,0,0,0,1.06-.12,1.58,1.58,0,0,0,.79-.48,2.39,2.39,0,0,0,.49-1,6.67,6.67,0,0,0,.17-1.67Z"/>
+                    <path class="cls-1" d="M52.31,56.42v-7.1a5.15,5.15,0,0,0-.09-1.08,1.58,1.58,0,0,0-.3-.68,1.11,1.11,0,0,0-.55-.36,3,3,0,0,0-.84-.1,5.43,5.43,0,0,0-.8.06c-.26,0-.51.09-.75.15s-.46.12-.66.2l-.54.21v8.7H45.15V40.88h2.62v4.83a6.76,6.76,0,0,1,.67-.31,7.05,7.05,0,0,1,.83-.27,8.78,8.78,0,0,1,1-.19,7.21,7.21,0,0,1,1-.07,4.47,4.47,0,0,1,1.75.3,2.78,2.78,0,0,1,1.14.87,3.53,3.53,0,0,1,.62,1.39A8.37,8.37,0,0,1,55,49.28v7.14Z"/>
+                      <style>.react-svg .cls-1{fill:#009dff;}.react-svg .cls-2{fill:none;stroke:#009dff;stroke-miterlimit:10;stroke-width:2px;}</style>
+                    <path class="cls-1" d="M57.66,60.54V45.16h2.45v.74a5.71,5.71,0,0,1,1.62-.78,6,6,0,0,1,1.68-.25,4.78,4.78,0,0,1,1.7.28,3,3,0,0,1,1.28.91,4.3,4.3,0,0,1,.81,1.64,9.41,9.41,0,0,1,.28,2.47v1a8.11,8.11,0,0,1-.36,2.62,4.19,4.19,0,0,1-1,1.68,3.72,3.72,0,0,1-1.57.9,7.13,7.13,0,0,1-2,.27l-.57,0-.6-.05-.58-.08-.49-.09v4.08Zm7.2-10.36a6.89,6.89,0,0,0-.13-1.47,2.37,2.37,0,0,0-.4-.93,1.44,1.44,0,0,0-.67-.49,2.9,2.9,0,0,0-1-.14l-.54,0a4,4,0,0,0-.55.09,6.09,6.09,0,0,0-.62.19q-.33.12-.73.29v6.54q.58.11,1.09.16a9.63,9.63,0,0,0,1,.05,4.22,4.22,0,0,0,1.06-.12,1.58,1.58,0,0,0,.79-.48,2.4,2.4,0,0,0,.49-1,6.72,6.72,0,0,0,.17-1.67Z"/>
+                    <ellipse class="cls-2" cx="50" cy="50" rx="35" ry="17.5"/>
+                  </svg>
                 </div>
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/react">React</a></p>
+                  <p>React</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/react"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -249,7 +258,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/ios">iOS</a></p>
+                  <p>iOS</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/ios"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -269,7 +278,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/android">Android</a></p>
+                  <p>Android</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/android"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
@@ -289,7 +298,7 @@ content_top: [docs_top.html]
               </div>
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
-                  <p><a href="/nginx">nginx</a></p>
+                  <p>nginx</p>
                 </div>
                 <div class="docs-node-read-more">
                   <a href="/nginx"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
