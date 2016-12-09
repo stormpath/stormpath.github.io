@@ -15,9 +15,6 @@ There are a few ways you can set these configuration options:
 * API credentials file (``apiKey.properties``, used to set the Stormpath API Key and Secret)
 * Inline options in code (supplied to the middleware constructor)
 
-.. todo::
-  Add web.config or appsettings.json
-
 
 .. _config_loading_order:
 
@@ -356,9 +353,6 @@ For example, to hardcode the Stormpath API credentials (not recommended!), you c
 The Stormpath Client constructor ignores the ``stormpath.web`` node of the configuration. For more information about setting options on the SDK Client object, please see the
 `.NET SDK documentation <https://docs.stormpath.com/dotnet/api/html/M_Stormpath_SDK_Client_IClientBuilder_SetConfiguration.htm>`_.
 
-
-.. todo::
-  Add logging when it's added to middleware and packages
 
 .. _Web Configuration Defaults: https://github.com/stormpath/stormpath-dotnet-config/blob/master/src/Stormpath.Configuration.Abstractions/Default.cs
 .. _Stormpath .NET SDK: https://github.com/stormpath/stormpath-sdk-dotnet

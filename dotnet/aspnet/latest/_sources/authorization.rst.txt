@@ -30,10 +30,6 @@ At the most simple level, you may want certain routes or controllers to only be 
 
 .. only:: nancy
 
-  .. todo::
-
-    Description.
-
   .. .literalinclude:: code/authentication/nancy/protected_route.cs
       :language: csharp
 

@@ -42,12 +42,7 @@ Configuring the pipeline
 
 .. only:: nancy
 
-  .. todo::
-
     Nancy stuff.
-
-
-
 
 
 .. _Cross-Origin Resource Sharing: https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
