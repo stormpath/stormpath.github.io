@@ -6,10 +6,11 @@ Login
 
 The login feature of this library allows you to accept login attempts from any active Stormpath account in the Stormpath directory linked to your application. If the attempt is successful, cookies are created automatically for the user (see :ref:`cookie_authentication`).
 
-.. todo::
-  See social_login if you want to accept logins from providers such as Facebook or Google.
-
 By default, this library will serve an HTML login page at ``/login``.  You can change this URI, or disable the feature entirely if you wish.
+
+.. note::
+
+  See the :ref:`social_login` section if you want users to log in with external providers like Facebook or Google.
 
 
 .. _login_configuration:
