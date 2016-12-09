@@ -99,6 +99,58 @@ By default, the user is redirected to ``/login?status=verified`` (the value of `
 If :ref:`auto_login` is enabled, the user will be automatically logged in after they reset their password. The user will **not** be redirected to ``verifyEmail.nextUri``, but instead will be redirected to ``register.nextUri``.
 
 
+Pre-verify handler
+------------------
+
+If you need to run code before a user verifies their email address, you can attach a pre-verify handler when you configure the Stormpath middleware:
+
+.. only:: aspnet
+
+  .. literalinclude:: code/email_verification/aspnet/preverify_handler.cs
+      :language: csharp
+
+.. only:: aspnetcore
+
+  .. literalinclude:: code/email_verification/aspnetcore/preverify_handler.cs
+      :language: csharp
+
+.. only:: nancy
+
+  .. .literalinclude:: code/email_verification/nancy/preverify_handler.cs
+      :language: csharp
+
+The signature of the handler is a ``Func`` that accepts a ``PreVerifyEmailContext`` and a ``CancellationToken``, and returns a ``Task``. It can be declared as a method instead of with lambda syntax:
+
+.. literalinclude:: code/email_verification/preverify_handler_method.cs
+    :language: csharp
+
+
+Post-verify handler
+-------------------
+
+If you need to run code after user verifies their email address, you can attach a post-verify handler when you configure the Stormpath middleware:
+
+.. only:: aspnet
+
+  .. literalinclude:: code/email_verification/aspnet/postverify_handler.cs
+      :language: csharp
+
+.. only:: aspnetcore
+
+  .. literalinclude:: code/email_verification/aspnetcore/postverify_handler.cs
+      :language: csharp
+
+.. only:: nancy
+
+  .. .literalinclude:: code/email_verification/nancy/postverify_handler.cs
+      :language: csharp
+
+The signature of the handler is a ``Func`` that accepts a ``PostVerifyEmailContext`` and a ``CancellationToken``, and returns a ``Task``. It can be declared as a method instead of with lambda syntax:
+
+.. literalinclude:: code/email_verification/postverify_handler_method.cs
+    :language: csharp
+
+
 Mobile/JSON API
 ---------------
 

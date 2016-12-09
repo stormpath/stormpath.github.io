@@ -188,18 +188,22 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#configuration-options">Configuration options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#password-strength-requirements">Password strength requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email verification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#pre-registration-handler">Pre-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#post-registration-handler">Post-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#default-configuration">Default configuration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="login.html#configuration-options">Configuration options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="login.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#pre-login-handler">Pre-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#post-login-handler">Post-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#default-configuration">Default configuration</a></li>
 </ul>
@@ -215,6 +219,8 @@
 <li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="logout.html#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logout.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#pre-logout-handler">Pre-logout handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#post-logout-handler">Post-logout handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logout.html#default-configuration">Default configuration</a></li>
 </ul>
 </li>
@@ -223,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#configuration-options">Configuration options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#pre-reset-handler">Pre-reset handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#post-reset-handler">Post-reset handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#default-configuration">Default configuration</a></li>
 </ul>
@@ -232,6 +240,8 @@
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#configuration-options">Configuration options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#pre-verify-handler">Pre-verify handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#post-verify-handler">Post-verify handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#default-configuration">Default configuration</a></li>
 </ul>
@@ -335,6 +345,10 @@ Stormpath provides integrations with the following services:</p>
 <li>If the user has never logged in before (a new account), they will be redirected to the location set of the <code class="docutils literal"><span class="pre">nextUri</span></code> option in the <a class="reference internal" href="registration.html#registration-configuration"><span class="std std-ref">registration route configuration</span></a>.</li>
 <li>If the user is a returning account, they will be redirected to the location set in the <code class="docutils literal"><span class="pre">nextUri</span></code> option of the <a class="reference internal" href="login.html#login-configuration"><span class="std std-ref">login route configuration</span></a>.</li>
 </ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you want to run code automatically when a user registers or logs in using social login, you can use the pre/post handlers available for <a class="reference internal" href="registration.html#registration"><span class="std std-ref">Registration</span></a> and <a class="reference internal" href="login.html#login"><span class="std std-ref">Login</span></a>.</p>
+</div>
 </div>
 <div class="section" id="setting-up-facebook-login">
 <span id="facebook-login"></span><h2>Setting up Facebook login<a class="headerlink" href="#setting-up-facebook-login" title="Permalink to this headline">¶</a></h2>

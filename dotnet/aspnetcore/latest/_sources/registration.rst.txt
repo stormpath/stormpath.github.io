@@ -59,6 +59,128 @@ You could also set this configuration via code:
 See the :ref:`configuration` section for more details on how configuration works, or :ref:`register_default_configuration` to see the default values for this route.
 
 
+Password strength requirements
+------------------------------
+
+Stormpath supports complex password strength rules, such as the number of letters or special characters required.  These settings are controlled on a per-Directory basis.
+
+If you want to modify the password strength rules for your application, use the `Stormpath Admin Console`_ to find the directory that is mapped to your application, and modify the associated password policy.
+
+For more information, see the `Account Password Strength Policy`_ section in the REST API documentation.
+
+
+Email verification
+------------------
+
+We **highly** recommend that you use email verification, as it adds an additional layer of security to your site (it makes it harder for bots to create spam accounts).
+
+Email verification will be automatically enabled if the Verification Email workflow is enabled on the Stormpath Directory linked to your application; see the :ref:`email_verification` section.
+
+
+.. _auto_login:
+
+Auto login
+----------
+
+After registering, the default behavior is to require the user to enter their new credentials to log in. If you want users to be automatically logged in after they register, use this configuration:
+
+.. code-block:: yaml
+
+  web:
+    register:
+      autoLogin: true
+      nextUri: "/"
+
+By default the ``nextUri`` is to ``/`` (the root page), but you can modify this to whatever destination you want.
+
+.. note::
+  The :ref:`email_verification` and :ref:`password_reset` features will observe this setting as well.
+
+
+Pre-registration handler
+------------------------
+
+If you need to run code before a registration attempt is sent to Stormpath, you can attach a pre-registration handler when you configure the Stormpath middleware:
+
+.. only:: aspnet
+
+  .. literalinclude:: code/registration/aspnet/preregistration_handler.cs
+      :language: csharp
+
+.. only:: aspnetcore
+
+  .. literalinclude:: code/registration/aspnetcore/preregistration_handler.cs
+      :language: csharp
+
+.. only:: nancy
+
+  .. .literalinclude:: code/registration/nancy/preregistration_handler.cs
+      :language: csharp
+
+The signature of the handler is a ``Func`` that accepts a ``PreRegistrationContext`` and a ``CancellationToken``, and returns a ``Task``. It can be declared as a method instead of with lambda syntax:
+
+.. literalinclude:: code/registration/preregistration_handler_method.cs
+    :language: csharp
+
+.. note::
+
+  New user accounts created through an external login mechanism (such as :ref:`social_login`) will trigger both the pre/post-registration handlers and the pre/post-login handlers.
+
+Targeting an Account Store
+..........................
+
+If you want to save the new Account in a specific Account Store (rather than the default Account Store for the Application), you can use a pre-registration handler to specify the Account Store:
+
+.. literalinclude:: code/registration/preregistration_target_dir.cs
+    :language: csharp
+
+
+Post-registration handler
+-------------------------
+
+If you need to run code after a new account has been created, you can attach a post-registration handler when you configure the Stormpath middleware:
+
+.. only:: aspnet
+
+  .. literalinclude:: code/registration/aspnet/postregistration_handler.cs
+      :language: csharp
+
+.. only:: aspnetcore
+
+  .. literalinclude:: code/registration/aspnetcore/postregistration_handler.cs
+      :language: csharp
+
+.. only:: nancy
+
+  .. .literalinclude:: code/registration/nancy/postregistration_handler.cs
+      :language: csharp
+
+The signature of the handler is a ``Func`` that accepts a ``PostRegistrationContext`` and a ``CancellationToken``, and returns a ``Task``. It can be declared as a method instead of with lambda syntax:
+
+.. literalinclude:: code/registration/postregistration_handler_method.cs
+    :language: csharp
+
+.. note::
+
+  New user accounts created through an external login mechanism (such as :ref:`social_login`) will trigger both the pre/post-registration handlers and the pre/post-login handlers.
+
+Saving Custom Data for new Accounts
+...................................
+
+A common use for a post-registration handler is to save some data automatically for new Accounts. For example, you could add a default quota value for every new user:
+
+.. literalinclude:: code/registration/postregistration_save_data.cs
+    :language: csharp
+
+Addding new Accounts to groups
+..............................
+
+Another use for a post-registration handler is automatically adding new Accounts to an existing Group:
+
+.. literalinclude:: code/registration/postregistration_add_group.cs
+    :language: csharp
+
+
 .. _register_customizing_form:
 
 Customizing the form
@@ -215,135 +337,6 @@ Or, in code:
 
 Any visible fields that are omitted from the ``fieldOrder`` array will be placed at the end of the form.
 
-
-Password strength requirements
-------------------------------
-
-Stormpath supports complex password strength rules, such as the number of letters or special characters required.  These settings are controlled on a per-Directory basis.
-
-If you want to modify the password strength rules for your application, use the `Stormpath Admin Console`_ to find the directory that is mapped to your application, and modify the associated password policy.
-
-For more information, see the `Account Password Strength Policy`_ section in the REST API documentation.
-
-
-Email verification
-------------------
-
-We **highly** recommend that you use email verification, as it adds an additional layer of security to your site (it makes it harder for bots to create spam accounts).
-
-Email verification will be automatically enabled if the Verification Email workflow is enabled on the Stormpath Directory linked to your application; see the :ref:`email_verification` section.
-
-
-.. _auto_login:
-
-Auto login
-----------
-
-After registering, the default behavior is to require the user to enter their new credentials to log in. If you want users to be automatically logged in after they register, use this configuration:
-
-.. code-block:: yaml
-
-  web:
-    register:
-      autoLogin: true
-      nextUri: "/"
-
-By default the ``nextUri`` is to ``/`` (the root page), but you can modify this to whatever destination you want.
-
-.. note::
-  The :ref:`email_verification` and :ref:`password_reset` features will observe this setting as well.
-
-
-.. todo::
-  .. _pre_registration_handler:
-
-  Pre Registration Handler
-  .. ------------------------
-
-  Want to validate or modify the form data before it's handled by Stormpath? Then this is
-  the handler that you want to use!
-
-  To use a ``preRegistrationHandler`` you need to define your handler function in
-  the Stormpath middleware setup::
-
-      app.use(stormpath.init(app, {
-        preRegistrationHandler: function (formData, req, res, next) {
-          console.log('Got registration request', formData);
-          next();
-        }
-      }));
-
-  As you can see in the example above, the ``preRegistrationHandler`` function
-  takes in four parameters:
-
-  - ``formData``: The data submitted in the form.
-  - ``req``: The Express request object.  This can be used to modify the incoming
-    request directly.
-  - ``res``: The Express response object.  This can be used to modify the HTTP
-    response directly.
-  - ``next``: The callback to call after you have done your custom work.  If you
-    call this with an error then we immediately return this error to the user and
-    form processing stops.  But if you call it without an error, then our library
-    will continue to process the form and respond with the default behavior.
-
-  In the example below, we'll use the ``preRegistrationHandler`` to validate that
-  the user doesn't enter an email domain that is restricted::
-
-      app.use(stormpath.init(app, {
-        preRegistrationHandler: function (formData, req, res, next) {
-          if (formData.email.indexOf('@some-domain.com') !== -1) {
-            return next(new Error('You\'re not allowed to register with \'@some-domain.com\'.'));
-          }
-
-          next();
-        }
-      }));
-
-  .. _post_registration_handler:
-
-  Post Registration Handler
-  .. -------------------------
-
-  Want to run some custom code after a user registers for your site?  If so, this
-  is the event you want to handle!
-
-  By defining a ``postRegistrationHandler`` you're able to do stuff like:
-
-  - Send a new user a welcome email.
-  - Generate API keys for all new users.
-  - Setup Stripe billing.
-  - etc.
-
-  To use a ``postRegistrationHandler``, you need to define your handler function
-  in the Stormpath middleware setup::
-
-      app.use(stormpath.init(app, {
-        postRegistrationHandler: function (account, req, res, next) {
-          console.log('User:', account.email, 'just registered!');
-          next();
-        }
-      }));
-
-  As you can see in the example above, the ``postRegistrationHandler`` function
-  takes in four parameters:
-
-  - ``account``: The new, successfully created, user account.
-  - ``req``: The Express request object.  This can be used to modify the incoming
-    request directly.
-  - ``res``: The Express response object.  This can be used to modify the HTTP
-    response directly.
-  - ``next``: The callback to call when you're done doing whatever it is you want
-    to do.  If you call this, execution will continue on normally.  If you don't
-    call this, you're responsible for handling the response.
-
-  In the example below, we'll use the ``postRegistrationHandler`` to redirect the
-  user to a special page (*instead of the normal registration flow*)::
-
-      app.use(stormpath.init(app, {
-        postRegistrationHandler: function (account, req, res, next) {
-          res.redirect(302, '/secretpage').end();
-        }
-      }));
 
 .. _json_registration_api:
 

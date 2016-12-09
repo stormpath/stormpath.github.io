@@ -116,6 +116,58 @@ By default, the user is redirected to ``/login?status=reset`` (the value of ``ch
 If :ref:`auto_login` is enabled, the user will be automatically logged in after they reset their password. The user will **not** be redirected to ``changePassword.nextUri``, but instead will be redirected to ``register.nextUri``.
 
 
+Pre-reset handler
+-----------------
+
+If you need to run code before a user resets their password, you can attach a pre-reset handler when you configure the Stormpath middleware:
+
+.. only:: aspnet
+
+  .. literalinclude:: code/password_reset/aspnet/prereset_handler.cs
+      :language: csharp
+
+.. only:: aspnetcore
+
+  .. literalinclude:: code/password_reset/aspnetcore/prereset_handler.cs
+      :language: csharp
+
+.. only:: nancy
+
+  .. .literalinclude:: code/password_reset/nancy/prereset_handler.cs
+      :language: csharp
+
+The signature of the handler is a ``Func`` that accepts a ``PreChangePasswordContext`` and a ``CancellationToken``, and returns a ``Task``. It can be declared as a method instead of with lambda syntax:
+
+.. literalinclude:: code/password_reset/prereset_handler_method.cs
+    :language: csharp
+
+
+Post-reset handler
+------------------
+
+If you need to run code after user resets their password, you can attach a post-reset handler when you configure the Stormpath middleware:
+
+.. only:: aspnet
+
+  .. literalinclude:: code/password_reset/aspnet/postreset_handler.cs
+      :language: csharp
+
+.. only:: aspnetcore
+
+  .. literalinclude:: code/password_reset/aspnetcore/postreset_handler.cs
+      :language: csharp
+
+.. only:: nancy
+
+  .. .literalinclude:: code/password_reset/nancy/postreset_handler.cs
+      :language: csharp
+
+The signature of the handler is a ``Func`` that accepts a ``PostChangePasswordContext`` and a ``CancellationToken``, and returns a ``Task``. It can be declared as a method instead of with lambda syntax:
+
+.. literalinclude:: code/password_reset/postreset_handler_method.cs
+    :language: csharp
+
+
 Mobile/JSON API
 ---------------
 

@@ -24,6 +24,10 @@ When users log into your application with a social provider, they will be redire
 * If the user has never logged in before (a new account), they will be redirected to the location set of the ``nextUri`` option in the :ref:`registration route configuration <registration_configuration>`.
 * If the user is a returning account, they will be redirected to the location set in the ``nextUri`` option of the :ref:`login route configuration <login_configuration>`.
 
+.. note::
+
+  If you want to run code automatically when a user registers or logs in using social login, you can use the pre/post handlers available for :ref:`registration` and :ref:`login`.
+
 
 .. _facebook_login:
 

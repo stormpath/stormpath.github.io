@@ -188,18 +188,22 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#configuration-options">Configuration options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#password-strength-requirements">Password strength requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email verification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#pre-registration-handler">Pre-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#post-registration-handler">Post-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#default-configuration">Default configuration</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Login</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pre-login-handler">Pre-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#post-login-handler">Post-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#default-configuration">Default configuration</a></li>
 </ul>
@@ -215,6 +219,8 @@
 <li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="logout.html#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logout.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#pre-logout-handler">Pre-logout handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#post-logout-handler">Post-logout handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logout.html#default-configuration">Default configuration</a></li>
 </ul>
 </li>
@@ -223,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#configuration-options">Configuration options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#pre-reset-handler">Pre-reset handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#post-reset-handler">Post-reset handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#default-configuration">Default configuration</a></li>
 </ul>
@@ -232,6 +240,8 @@
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#configuration-options">Configuration options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#pre-verify-handler">Pre-verify handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#post-verify-handler">Post-verify handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#default-configuration">Default configuration</a></li>
 </ul>
@@ -362,6 +372,95 @@
 <p>See the <a class="reference internal" href="configuration.html#configuration"><span class="std std-ref">Configuration</span></a> section for more details on how configuration works, or <a class="reference internal" href="#login-default-configuration"><span class="std std-ref">Default configuration</span></a> to see the default values for this route.</p>
 </div>
 </div>
+<div class="section" id="next-uri">
+<h2>Next URI<a class="headerlink" href="#next-uri" title="Permalink to this headline">¶</a></h2>
+<p>If the login attempt is successful, the user will be redirected to <code class="docutils literal"><span class="pre">/</span></code> by default. If you want to change this, set the <code class="docutils literal"><span class="pre">nextUri</span></code> option:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">nextUri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/dashboard&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pre-login-handler">
+<h2>Pre-login handler<a class="headerlink" href="#pre-login-handler" title="Permalink to this headline">¶</a></h2>
+<p>If you need to run code before a login attempt is sent to Stormpath, you can attach a pre-login handler when you configure the Stormpath middleware:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">UseStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathMiddlewareOptions</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Configuration</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">(),</span> <span class="c1">// existing config, if any</span>
+    <span class="n">PreLoginHandler</span> <span class="p">=</span> <span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The signature of the handler is a <code class="docutils literal"><span class="pre">Func</span></code> that accepts a <code class="docutils literal"><span class="pre">PreLoginContext</span></code> and a <code class="docutils literal"><span class="pre">CancellationToken</span></code>, and returns a <code class="docutils literal"><span class="pre">Task</span></code>. It can be declared as a method instead of with lambda syntax:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="n">Task</span> <span class="nf">MyPreLoginHandler</span><span class="p">(</span>
+    <span class="n">PreLoginContext</span> <span class="n">context</span><span class="p">,</span>
+    <span class="n">CancellationToken</span> <span class="n">ct</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The handler will run regardless of the login mechanism. Logins through the <a class="reference internal" href="#login"><span class="std std-ref">Login</span></a> route, the <a class="reference internal" href="#json-login-api"><span class="std std-ref">Mobile/JSON API</span></a>, <a class="reference internal" href="social_login.html#social-login"><span class="std std-ref">Social login</span></a>, and so on will all trigger the handler.</p>
+</div>
+<div class="section" id="targeting-an-account-store">
+<h3>Targeting an Account Store<a class="headerlink" href="#targeting-an-account-store" title="Permalink to this headline">¶</a></h3>
+<p>A common use for the pre-login handler is to target a specific Account Store or Organization during login:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">PreLoginHandler</span> <span class="p">=</span> <span class="k">async</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="n">AccountStore</span> <span class="p">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">GetDirectoryAsync</span><span class="p">(</span>
+        <span class="s">&quot;https://api.stormpath.com/v1/directories/xxx&quot;</span><span class="p">,</span> <span class="n">ct</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For more information about how targeting an Account Store works, see the <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#generating-an-oauth-2-0-access-token">token generation section</a> of the Product Guide.</p>
+</div>
+</div>
+</div>
+<div class="section" id="post-login-handler">
+<h2>Post-login handler<a class="headerlink" href="#post-login-handler" title="Permalink to this headline">¶</a></h2>
+<p>If you need to run code after a successful login attempt has occurred, you can attach a post-login handler when you configure the Stormpath middleware:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">UseStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathMiddlewareOptions</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Configuration</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">(),</span> <span class="c1">// existing config, if any</span>
+    <span class="n">PostLoginHandler</span> <span class="p">=</span> <span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The signature of the handler is a <code class="docutils literal"><span class="pre">Func</span></code> that accepts a <code class="docutils literal"><span class="pre">PostLoginContext</span></code> and a <code class="docutils literal"><span class="pre">CancellationToken</span></code>, and returns a <code class="docutils literal"><span class="pre">Task</span></code>. It can be declared as a method instead of with lambda syntax:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="n">Task</span> <span class="nf">MyPostLoginHandler</span><span class="p">(</span>
+    <span class="n">PostLoginContext</span> <span class="n">context</span><span class="p">,</span>
+    <span class="n">CancellationToken</span> <span class="n">ct</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The handler will run regardless of the login mechanism. Logins through the <a class="reference internal" href="#login"><span class="std std-ref">Login</span></a> route, the <a class="reference internal" href="#json-login-api"><span class="std std-ref">Mobile/JSON API</span></a>, <a class="reference internal" href="social_login.html#social-login"><span class="std std-ref">Social login</span></a>, and so on will all trigger the handler.</p>
+</div>
+<div class="section" id="modifying-custom-data-on-login">
+<h3>Modifying Custom Data on login<a class="headerlink" href="#modifying-custom-data-on-login" title="Permalink to this headline">¶</a></h3>
+<p>One use for the post-login handler is to automatically save data to the Account&#8217;s Custom Data when a user logs in. For example, you could save the current time to Custom Data:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">PostLoginHandler</span> <span class="p">=</span> <span class="k">async</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="n">Account</span><span class="p">.</span><span class="n">CustomData</span><span class="p">[</span><span class="s">&quot;lastSeen&quot;</span><span class="p">]</span> <span class="p">=</span> <span class="n">DateTimeOffset</span><span class="p">.</span><span class="n">UtcNow</span><span class="p">;</span>
+    <span class="k">await</span> <span class="n">ctx</span><span class="p">.</span><span class="n">Account</span><span class="p">.</span><span class="n">SaveAsync</span><span class="p">(</span><span class="n">ct</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="section" id="customizing-the-form">
 <span id="login-customizing-form"></span><h2>Customizing the form<a class="headerlink" href="#customizing-the-form" title="Permalink to this headline">¶</a></h2>
 <p>The login form will render these required fields by default:</p>
@@ -420,15 +519,6 @@
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you want to go beyond customizing the fields on the form, see <a class="reference internal" href="templates.html#templates"><span class="std std-ref">View templates</span></a>.</p>
-</div>
-</div>
-<div class="section" id="next-uri">
-<h2>Next URI<a class="headerlink" href="#next-uri" title="Permalink to this headline">¶</a></h2>
-<p>If the login attempt is successful, the user will be redirected to <code class="docutils literal"><span class="pre">/</span></code> by default. If you want to change this, set the <code class="docutils literal"><span class="pre">nextUri</span></code> option:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">login</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">nextUri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/dashboard&quot;</span>
-</pre></div>
 </div>
 </div>
 <div class="section" id="mobile-json-api">

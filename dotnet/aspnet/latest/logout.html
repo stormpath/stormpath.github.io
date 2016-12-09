@@ -188,18 +188,22 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#configuration-options">Configuration options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="registration.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#password-strength-requirements">Password strength requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email verification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#pre-registration-handler">Pre-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#post-registration-handler">Post-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#default-configuration">Default configuration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="login.html#configuration-options">Configuration options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="login.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#pre-login-handler">Pre-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#post-login-handler">Post-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#default-configuration">Default configuration</a></li>
 </ul>
@@ -215,6 +219,8 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Logout</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pre-logout-handler">Pre-logout handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#post-logout-handler">Post-logout handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#default-configuration">Default configuration</a></li>
 </ul>
 </li>
@@ -223,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#configuration-options">Configuration options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#pre-reset-handler">Pre-reset handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#post-reset-handler">Post-reset handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#default-configuration">Default configuration</a></li>
 </ul>
@@ -232,6 +240,8 @@
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#configuration-options">Configuration options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#pre-verify-handler">Pre-verify handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#post-verify-handler">Post-verify handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#default-configuration">Default configuration</a></li>
 </ul>
@@ -369,6 +379,52 @@ Simply make a POST request to this URI and the user&#8217;s tokens and cookies w
 </pre></div>
 </div>
 <p>See the <a class="reference internal" href="configuration.html#configuration"><span class="std std-ref">Configuration</span></a> section for more details on how configuration works, or <a class="reference internal" href="#logout-default-configuration"><span class="std std-ref">Default configuration</span></a> to see the default values for this route.</p>
+</div>
+</div>
+<div class="section" id="pre-logout-handler">
+<h2>Pre-logout handler<a class="headerlink" href="#pre-logout-handler" title="Permalink to this headline">¶</a></h2>
+<p>If you need to run code before a user logs out, you can attach a pre-logout handler when you configure the Stormpath middleware:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">UseStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathMiddlewareOptions</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Configuration</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">(),</span> <span class="c1">// existing config, if any</span>
+    <span class="n">PreLogoutHandler</span> <span class="p">=</span> <span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The signature of the handler is a <code class="docutils literal"><span class="pre">Func</span></code> that accepts a <code class="docutils literal"><span class="pre">PreLogoutContext</span></code> and a <code class="docutils literal"><span class="pre">CancellationToken</span></code>, and returns a <code class="docutils literal"><span class="pre">Task</span></code>. It can be declared as a method instead of with lambda syntax:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="n">Task</span> <span class="nf">MyPreLogoutHandler</span><span class="p">(</span>
+    <span class="n">PreLogoutContext</span> <span class="n">context</span><span class="p">,</span>
+    <span class="n">CancellationToken</span> <span class="n">ct</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="post-logout-handler">
+<h2>Post-logout handler<a class="headerlink" href="#post-logout-handler" title="Permalink to this headline">¶</a></h2>
+<p>If you need to run code after user logs out, you can attach a post-logout handler when you configure the Stormpath middleware:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">UseStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathMiddlewareOptions</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Configuration</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">(),</span> <span class="c1">// existing config, if any</span>
+    <span class="n">PostLogoutHandler</span> <span class="p">=</span> <span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The signature of the handler is a <code class="docutils literal"><span class="pre">Func</span></code> that accepts a <code class="docutils literal"><span class="pre">PostLogoutContext</span></code> and a <code class="docutils literal"><span class="pre">CancellationToken</span></code>, and returns a <code class="docutils literal"><span class="pre">Task</span></code>. It can be declared as a method instead of with lambda syntax:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="n">Task</span> <span class="nf">MyPostLogoutHandler</span><span class="p">(</span>
+    <span class="n">PostLogoutContext</span> <span class="n">context</span><span class="p">,</span>
+    <span class="n">CancellationToken</span> <span class="n">ct</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
 </div>
 </div>
 <div class="section" id="default-configuration">
