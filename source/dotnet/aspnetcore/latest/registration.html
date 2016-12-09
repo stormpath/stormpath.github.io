@@ -188,18 +188,22 @@
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Registration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#configuration-options">Configuration options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#password-strength-requirements">Password strength requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#email-verification">Email verification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pre-registration-handler">Pre-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#post-registration-handler">Post-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#default-configuration">Default configuration</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="login.html#configuration-options">Configuration options</a></li>
-<li class="toctree-l2"><a class="reference internal" href="login.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#pre-login-handler">Pre-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#post-login-handler">Post-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#customizing-the-form">Customizing the form</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#default-configuration">Default configuration</a></li>
 </ul>
@@ -215,6 +219,8 @@
 <li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="logout.html#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logout.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#pre-logout-handler">Pre-logout handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#post-logout-handler">Post-logout handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logout.html#default-configuration">Default configuration</a></li>
 </ul>
 </li>
@@ -223,6 +229,8 @@
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#configuration-options">Configuration options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#pre-reset-handler">Pre-reset handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#post-reset-handler">Post-reset handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="password_reset.html#default-configuration">Default configuration</a></li>
 </ul>
@@ -232,6 +240,8 @@
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#how-it-works">How it works</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#configuration-options">Configuration options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#pre-verify-handler">Pre-verify handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#post-verify-handler">Post-verify handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#mobile-json-api">Mobile/JSON API</a></li>
 <li class="toctree-l2"><a class="reference internal" href="email_verification.html#default-configuration">Default configuration</a></li>
 </ul>
@@ -359,6 +369,118 @@ You can change this URI, or disable the feature entirely if you wish.</p>
 </pre></div>
 </div>
 <p>See the <a class="reference internal" href="configuration.html#configuration"><span class="std std-ref">Configuration</span></a> section for more details on how configuration works, or <a class="reference internal" href="#register-default-configuration"><span class="std std-ref">Default configuration</span></a> to see the default values for this route.</p>
+</div>
+</div>
+<div class="section" id="password-strength-requirements">
+<h2>Password strength requirements<a class="headerlink" href="#password-strength-requirements" title="Permalink to this headline">¶</a></h2>
+<p>Stormpath supports complex password strength rules, such as the number of letters or special characters required.  These settings are controlled on a per-Directory basis.</p>
+<p>If you want to modify the password strength rules for your application, use the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a> to find the directory that is mapped to your application, and modify the associated password policy.</p>
+<p>For more information, see the <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#manage-password-policies">Account Password Strength Policy</a> section in the REST API documentation.</p>
+</div>
+<div class="section" id="email-verification">
+<h2>Email verification<a class="headerlink" href="#email-verification" title="Permalink to this headline">¶</a></h2>
+<p>We <strong>highly</strong> recommend that you use email verification, as it adds an additional layer of security to your site (it makes it harder for bots to create spam accounts).</p>
+<p>Email verification will be automatically enabled if the Verification Email workflow is enabled on the Stormpath Directory linked to your application; see the <a class="reference internal" href="email_verification.html#email-verification"><span class="std std-ref">Email verification</span></a> section.</p>
+</div>
+<div class="section" id="auto-login">
+<span id="id2"></span><h2>Auto login<a class="headerlink" href="#auto-login" title="Permalink to this headline">¶</a></h2>
+<p>After registering, the default behavior is to require the user to enter their new credentials to log in. If you want users to be automatically logged in after they register, use this configuration:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">autoLogin</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="l l-Scalar l-Scalar-Plain">nextUri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/&quot;</span>
+</pre></div>
+</div>
+<p>By default the <code class="docutils literal"><span class="pre">nextUri</span></code> is to <code class="docutils literal"><span class="pre">/</span></code> (the root page), but you can modify this to whatever destination you want.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <a class="reference internal" href="email_verification.html#email-verification"><span class="std std-ref">Email verification</span></a> and <a class="reference internal" href="password_reset.html#password-reset"><span class="std std-ref">Password reset</span></a> features will observe this setting as well.</p>
+</div>
+</div>
+<div class="section" id="pre-registration-handler">
+<h2>Pre-registration handler<a class="headerlink" href="#pre-registration-handler" title="Permalink to this headline">¶</a></h2>
+<p>If you need to run code before a registration attempt is sent to Stormpath, you can attach a pre-registration handler when you configure the Stormpath middleware:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathOptions</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Configuration</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">(),</span> <span class="c1">// existing config, if any</span>
+    <span class="n">PreRegistrationHandler</span> <span class="p">=</span> <span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The signature of the handler is a <code class="docutils literal"><span class="pre">Func</span></code> that accepts a <code class="docutils literal"><span class="pre">PreRegistrationContext</span></code> and a <code class="docutils literal"><span class="pre">CancellationToken</span></code>, and returns a <code class="docutils literal"><span class="pre">Task</span></code>. It can be declared as a method instead of with lambda syntax:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="n">Task</span> <span class="nf">MyPreRegistrationHandler</span><span class="p">(</span>
+    <span class="n">PreRegistrationContext</span> <span class="n">context</span><span class="p">,</span>
+    <span class="n">CancellationToken</span> <span class="n">ct</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">New user accounts created through an external login mechanism (such as <a class="reference internal" href="social_login.html#social-login"><span class="std std-ref">Social login</span></a>) will trigger both the pre/post-registration handlers and the pre/post-login handlers.</p>
+</div>
+<div class="section" id="targeting-an-account-store">
+<h3>Targeting an Account Store<a class="headerlink" href="#targeting-an-account-store" title="Permalink to this headline">¶</a></h3>
+<p>If you want to save the new Account in a specific Account Store (rather than the default Account Store for the Application), you can use a pre-registration handler to specify the Account Store:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">PreRegistrationHandler</span> <span class="p">=</span> <span class="k">async</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="n">AccountStore</span> <span class="p">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">GetDirectoryAsync</span><span class="p">(</span>
+        <span class="s">&quot;https://api.stormpath.com/v1/directories/xxx&quot;</span><span class="p">,</span> <span class="n">ct</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="post-registration-handler">
+<h2>Post-registration handler<a class="headerlink" href="#post-registration-handler" title="Permalink to this headline">¶</a></h2>
+<p>If you need to run code after a new account has been created, you can attach a post-registration handler when you configure the Stormpath middleware:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathOptions</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Configuration</span> <span class="p">=</span> <span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">(),</span> <span class="c1">// existing config, if any</span>
+    <span class="n">PostRegistrationHandler</span> <span class="p">=</span> <span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The signature of the handler is a <code class="docutils literal"><span class="pre">Func</span></code> that accepts a <code class="docutils literal"><span class="pre">PostRegistrationContext</span></code> and a <code class="docutils literal"><span class="pre">CancellationToken</span></code>, and returns a <code class="docutils literal"><span class="pre">Task</span></code>. It can be declared as a method instead of with lambda syntax:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="n">Task</span> <span class="nf">MyPostRegistrationHandler</span><span class="p">(</span>
+    <span class="n">PostRegistrationContext</span> <span class="n">context</span><span class="p">,</span>
+    <span class="n">CancellationToken</span> <span class="n">ct</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">Task</span><span class="p">.</span><span class="n">FromResult</span><span class="p">(</span><span class="m">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">New user accounts created through an external login mechanism (such as <a class="reference internal" href="social_login.html#social-login"><span class="std std-ref">Social login</span></a>) will trigger both the pre/post-registration handlers and the pre/post-login handlers.</p>
+</div>
+<div class="section" id="saving-custom-data-for-new-accounts">
+<h3>Saving Custom Data for new Accounts<a class="headerlink" href="#saving-custom-data-for-new-accounts" title="Permalink to this headline">¶</a></h3>
+<p>A common use for a post-registration handler is to save some data automatically for new Accounts. For example, you could add a default quota value for every new user:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">PostRegistrationHandler</span> <span class="p">=</span> <span class="k">async</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">ctx</span><span class="p">.</span><span class="n">Account</span><span class="p">.</span><span class="n">CustomData</span><span class="p">[</span><span class="s">&quot;quota&quot;</span><span class="p">]</span> <span class="p">=</span> <span class="m">100</span><span class="p">;</span>
+    <span class="k">await</span> <span class="n">ctx</span><span class="p">.</span><span class="n">Account</span><span class="p">.</span><span class="n">SaveAsync</span><span class="p">(</span><span class="n">ct</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="addding-new-accounts-to-groups">
+<h3>Addding new Accounts to groups<a class="headerlink" href="#addding-new-accounts-to-groups" title="Permalink to this headline">¶</a></h3>
+<p>Another use for a post-registration handler is automatically adding new Accounts to an existing Group:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">PostRegistrationHandler</span> <span class="p">=</span> <span class="k">async</span> <span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">ct</span><span class="p">)</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="k">await</span> <span class="n">ctx</span><span class="p">.</span><span class="n">Account</span><span class="p">.</span><span class="n">AddGroupAsync</span><span class="p">(</span><span class="s">&quot;rebels&quot;</span><span class="p">,</span> <span class="n">ct</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="customizing-the-form">
@@ -520,32 +642,6 @@ successfully.  You can create a custom field by defining a new field configurati
 </pre></div>
 </div>
 <p>Any visible fields that are omitted from the <code class="docutils literal"><span class="pre">fieldOrder</span></code> array will be placed at the end of the form.</p>
-</div>
-</div>
-<div class="section" id="password-strength-requirements">
-<h2>Password strength requirements<a class="headerlink" href="#password-strength-requirements" title="Permalink to this headline">¶</a></h2>
-<p>Stormpath supports complex password strength rules, such as the number of letters or special characters required.  These settings are controlled on a per-Directory basis.</p>
-<p>If you want to modify the password strength rules for your application, use the <a class="reference external" href="https://api.stormpath.com">Stormpath Admin Console</a> to find the directory that is mapped to your application, and modify the associated password policy.</p>
-<p>For more information, see the <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#manage-password-policies">Account Password Strength Policy</a> section in the REST API documentation.</p>
-</div>
-<div class="section" id="email-verification">
-<h2>Email verification<a class="headerlink" href="#email-verification" title="Permalink to this headline">¶</a></h2>
-<p>We <strong>highly</strong> recommend that you use email verification, as it adds an additional layer of security to your site (it makes it harder for bots to create spam accounts).</p>
-<p>Email verification will be automatically enabled if the Verification Email workflow is enabled on the Stormpath Directory linked to your application; see the <a class="reference internal" href="email_verification.html#email-verification"><span class="std std-ref">Email verification</span></a> section.</p>
-</div>
-<div class="section" id="auto-login">
-<span id="id2"></span><h2>Auto login<a class="headerlink" href="#auto-login" title="Permalink to this headline">¶</a></h2>
-<p>After registering, the default behavior is to require the user to enter their new credentials to log in. If you want users to be automatically logged in after they register, use this configuration:</p>
-<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
-  <span class="l l-Scalar l-Scalar-Plain">register</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">autoLogin</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
-    <span class="l l-Scalar l-Scalar-Plain">nextUri</span><span class="p p-Indicator">:</span> <span class="s">&quot;/&quot;</span>
-</pre></div>
-</div>
-<p>By default the <code class="docutils literal"><span class="pre">nextUri</span></code> is to <code class="docutils literal"><span class="pre">/</span></code> (the root page), but you can modify this to whatever destination you want.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <a class="reference internal" href="email_verification.html#email-verification"><span class="std std-ref">Email verification</span></a> and <a class="reference internal" href="password_reset.html#password-reset"><span class="std std-ref">Password reset</span></a> features will observe this setting as well.</p>
 </div>
 </div>
 <div class="section" id="mobile-json-api">

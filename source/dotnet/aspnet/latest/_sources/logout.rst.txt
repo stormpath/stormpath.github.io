@@ -70,46 +70,56 @@ You could also set this configuration via code:
 See the :ref:`configuration` section for more details on how configuration works, or :ref:`logout_default_configuration` to see the default values for this route.
 
 
-.. todo::
+Pre-logout handler
+------------------------
 
-  .. _post_logout_handler:
+If you need to run code before a user logs out, you can attach a pre-logout handler when you configure the Stormpath middleware:
 
-  Post Logout Handler
-  .. -------------------
+.. only:: aspnet
 
-  Want to run some custom code after a user has logged out of your site?
-  By defining a ``postLogoutHandler`` you're able to do just that!
+  .. literalinclude:: code/logout/aspnet/prelogout_handler.cs
+      :language: csharp
 
-  To use a ``postLogoutHandler``, you need to define your handler function
-  in the Stormpath config::
+.. only:: aspnetcore
 
-      app.use(stormpath.init(app, {
-        postLogoutHandler: function (account, req, res, next) {
-          console.log('User', account.email, 'just logged out!');
-          next();
-        }
-      }));
+  .. literalinclude:: code/logout/aspnetcore/prelogout_handler.cs
+      :language: csharp
 
-  As you can see in the example above, the ``postLogoutHandler`` function
-  takes four parameters:
+.. only:: nancy
 
-  - ``account``: The successfully logged out user account.
-  - ``req``: The Express request object.  This can be used to modify the incoming
-    request directly.
-  - ``res``: The Express response object.  This can be used to modify the HTTP
-    response directly.
-  - ``next``: The callback to call when you're done doing whatever it is you want
-    to do.  If you call this, execution will continue on normally.  If you don't
-    call this, you're responsible for handling the response.
+  .. .literalinclude:: code/logout/nancy/prelogout_handler.cs
+      :language: csharp
 
-  In the example below, we'll use the ``postLogoutHandler`` to redirect the
-  user to a special page (*instead of the normal logout flow*)::
+The signature of the handler is a ``Func`` that accepts a ``PreLogoutContext`` and a ``CancellationToken``, and returns a ``Task``. It can be declared as a method instead of with lambda syntax:
 
-      app.use(stormpath.init(app, {
-        postLogoutHandler: function (account, req, res, next) {
-          res.redirect(302, '/farewell').end();
-        }
-      }));
+.. literalinclude:: code/logout/prelogout_handler_method.cs
+    :language: csharp
+
+
+Post-logout handler
+-------------------------
+
+If you need to run code after user logs out, you can attach a post-logout handler when you configure the Stormpath middleware:
+
+.. only:: aspnet
+
+  .. literalinclude:: code/logout/aspnet/postlogout_handler.cs
+      :language: csharp
+
+.. only:: aspnetcore
+
+  .. literalinclude:: code/logout/aspnetcore/postlogout_handler.cs
+      :language: csharp
+
+.. only:: nancy
+
+  .. .literalinclude:: code/logout/nancy/postlogout_handler.cs
+      :language: csharp
+
+The signature of the handler is a ``Func`` that accepts a ``PostLogoutContext`` and a ``CancellationToken``, and returns a ``Task``. It can be declared as a method instead of with lambda syntax:
+
+.. literalinclude:: code/logout/postlogout_handler_method.cs
+    :language: csharp
 
 
 .. _logout_default_configuration:
