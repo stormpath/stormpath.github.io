@@ -18,7 +18,7 @@ By default, this library will use pre-built views for the following routes:
 * Change Password Page (``/change``)
 * Email Verifiation Page (``/verify``)
 
-In the case of the the :ref:`Registration <register_customizing_form>` and :ref:`Login <login_customizing_form>` routes, the form fields can be customized simply by changing their configuration, no view code required!
+In the case of the the :ref:`Registration <register_customizing_form>` and :ref:`Login <login_customizing_form>` routes, the form fields can be customized simply by changing their configuration, no template coding required!
 
 
 .. _templates_custom_views:
@@ -56,6 +56,10 @@ You could also set this configuration via code:
   .. .literalinclude:: code/templates/nancy/custom_view.cs
     :language: csharp
 
+.. note::
+
+  If you create your own custom views, you **must** pass the a state token value back to the server; see :ref:`templates_state_token` below.
+
 Feel free to copy and modify our `pre-built view templates`_, and use them as a starting point!
 
 .. todo::
@@ -81,4 +85,21 @@ Each route has a view model class defined in the ``Stormpath.Owin.Abstractions.V
 | :ref:`email_verification`                  | ``Stormpath.Owin.Abstractions.ViewModel.VerifyEmailFormViewModel``    |
 +--------------------------------------------+-----------------------------------------------------------------------+
 
-.. _pre-built view templates: https://github.com/stormpath/stormpath-dotnet-owin-middleware/tree/master/src/Stormpath.Owin.Views
+
+.. _templates_state_token:
+
+State token
+...........
+
+Each view model includes a ``StateToken`` property, whose value must be passed back to the server when submitting the form. If you don't include this value, you will get an error.
+
+Passing the state value is as simple as including this HTML in your template:
+
+.. code-block:: html
+
+  <input name="@Stormpath.Owin.Abstractions.StringConstants.StateTokenName"
+         type="hidden"
+         value="@Model.StateToken"/>
+
+
+.. _pre-built view templates: https://github.com/stormpath/stormpath-dotnet-owin-middleware/tree/master/src/Stormpath.Owin.Views/Views/Stormpath

@@ -345,7 +345,7 @@
 <li>Change Password Page (<code class="docutils literal"><span class="pre">/change</span></code>)</li>
 <li>Email Verifiation Page (<code class="docutils literal"><span class="pre">/verify</span></code>)</li>
 </ul>
-<p>In the case of the the <a class="reference internal" href="registration.html#register-customizing-form"><span class="std std-ref">Registration</span></a> and <a class="reference internal" href="login.html#login-customizing-form"><span class="std std-ref">Login</span></a> routes, the form fields can be customized simply by changing their configuration, no view code required!</p>
+<p>In the case of the the <a class="reference internal" href="registration.html#register-customizing-form"><span class="std std-ref">Registration</span></a> and <a class="reference internal" href="login.html#login-customizing-form"><span class="std std-ref">Login</span></a> routes, the form fields can be customized simply by changing their configuration, no template coding required!</p>
 </div>
 <div class="section" id="custom-views">
 <span id="templates-custom-views"></span><h2>Custom views<a class="headerlink" href="#custom-views" title="Permalink to this headline">¶</a></h2>
@@ -373,7 +373,11 @@
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>Feel free to copy and modify our <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-owin-middleware/tree/master/src/Stormpath.Owin.Views">pre-built view templates</a>, and use them as a starting point!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you create your own custom views, you <strong>must</strong> pass the a state token value back to the server; see <a class="reference internal" href="#templates-state-token"><span class="std std-ref">State token</span></a> below.</p>
+</div>
+<p>Feel free to copy and modify our <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-owin-middleware/tree/master/src/Stormpath.Owin.Views/Views/Stormpath">pre-built view templates</a>, and use them as a starting point!</p>
 <div class="section" id="view-models">
 <h3>View models<a class="headerlink" href="#view-models" title="Permalink to this headline">¶</a></h3>
 <p>Each route has a view model class defined in the <code class="docutils literal"><span class="pre">Stormpath.Owin.Abstractions.ViewModel</span></code> namespace. If you are supplying your own views, use these models:</p>
@@ -403,6 +407,16 @@
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section" id="state-token">
+<span id="templates-state-token"></span><h3>State token<a class="headerlink" href="#state-token" title="Permalink to this headline">¶</a></h3>
+<p>Each view model includes a <code class="docutils literal"><span class="pre">StateToken</span></code> property, whose value must be passed back to the server when submitting the form. If you don&#8217;t include this value, you will get an error.</p>
+<p>Passing the state value is as simple as including this HTML in your template:</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">input</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;@Stormpath.Owin.Abstractions.StringConstants.StateTokenName&quot;</span>
+       <span class="na">type</span><span class="o">=</span><span class="s">&quot;hidden&quot;</span>
+       <span class="na">value</span><span class="o">=</span><span class="s">&quot;@Model.StateToken&quot;</span><span class="p">/&gt;</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
