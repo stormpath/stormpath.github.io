@@ -28,6 +28,8 @@ You can manually provision API keys for your users by using the `Stormpath Admin
 
 You'll need a way to securely distribute these API keys to your users. In a production application, you can use the `Stormpath .NET SDK`_ to generate the API keys programmatically and allow your users to view or download the key pairs.
 
+For more details, see the `API Key Authentication`_ topic in the .NET SDK documentation.
+
 .. _http_basic:
 
 HTTP Basic authentication
@@ -107,3 +109,4 @@ The client credentials grant type is enabled by default. You can disable it, or 
 
 .. _Stormpath Admin Console: https://api.stormpath.com/login
 .. _Stormpath .NET SDK: https://docs.stormpath.com/csharp/product-guide/latest/
+.. _API Key Authentication: https://docs.stormpath.com/csharp/product-guide/latest/auth_n.html#how-api-key-authentication-works-in-stormpath
