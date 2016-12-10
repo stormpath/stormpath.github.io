@@ -2030,7 +2030,7 @@ $ startup.sh
 <p>At a minimum, an Account in Stormpath requires at least one authentication factor, which is the password. However, if you would like to include additional security then Stormpath supports the creation of additional authentication factors on an Account. Currently, the additional factors are:</p>
 <ul class="simple">
 <li>SMS message to a phone</li>
-<li>Google Authenticator (TOTP)</li>
+<li>Google Authenticator</li>
 </ul>
 <p>The multi-factor authentication process works as follows with text messages:</p>
 <ol class="arabic simple">
@@ -2134,7 +2134,8 @@ $ startup.sh
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The user now needs to get this information into their Google Authenticator (or <a class="reference external" href="https://www.authy.com/tutorials/how-use-authy-google-authenticator/">similar</a>) application. The easiest way to do that is to use their app to scan a QR code. Stormpath makes this easy by giving you the QR Code in the <code class="docutils literal"><span class="pre">base64_q_r_image</span></code> field of the Google Authenticator Factor.</p>
+<p>The user now needs to get this information into their Google Authenticator (or <a class="reference external" href="https://www.authy.com/tutorials/how-use-authy-google-authenticator/">similar</a>) application. The easiest way to do that is to use their app to scan a QR code.</p>
+<p>Stormpath makes this easy by giving you the QR Code in the <code class="docutils literal"><span class="pre">base64_q_r_image</span></code> field of the Google Authenticator Factor.</p>
 <p>You can now take this string and turn it into a QR Code image:</p>
 <ul class="simple">
 <li>You could use a QR Code Library, such as <a class="reference external" href="https://davidshimjs.github.io/qrcodejs/">QRCode.js</a></li>
@@ -2171,6 +2172,7 @@ $ startup.sh
 <span class="n">challenge</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">challenges</span><span class="o">.</span><span class="n">create</span><span class="p">({})</span>
 </pre></div>
 </div>
+<p>This operation will automatically cause the factor to be challenged, meaning that the user will receive a code as soon as this operation is executed.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you do not specify a message, then Stormpath will just send the default message: <code class="docutils literal"><span class="pre">&quot;Your</span> <span class="pre">verification</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">${code}&quot;</span></code>.</p>
@@ -2232,7 +2234,7 @@ $ startup.sh
 <span class="n">challenge</span><span class="o">.</span><span class="n">status</span> <span class="c1"># =&gt; &#39;SUCCESS&#39;</span>
 </pre></div>
 </div>
-<p>If the code is correct, Stormpath will now simultaneously create the Challenge resource and set its status to <code class="docutils literal"><span class="pre">SUCCESS</span></code>, then return it back to you:</p>
+<p>If the code is correct, Stormpath will now simultaneously create the Challenge resource and set its status to <code class="docutils literal"><span class="pre">SUCCESS</span></code>, then return it back to you.</p>
 <div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="ss">href</span><span class="p">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/challenges/3hdllHycYNaNwgVUH21C0s&#39;</span><span class="p">,</span>
   <span class="ss">created_at</span><span class="p">:</span> <span class="s1">&#39;2016-11-17T13:05:12.664Z&#39;</span><span class="p">,</span>
@@ -2267,6 +2269,7 @@ $ startup.sh
 </div>
 <div class="section" id="challenging-a-factor-after-login">
 <h4>Challenging a Factor After Login<a class="headerlink" href="#challenging-a-factor-after-login" title="Permalink to this headline">¶</a></h4>
+<p>The first step is to authenticate the user.</p>
 <p>If authentication is successful, you will get back the Account:</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/5IvkjoqcYNe3TYMExample&quot;</span><span class="p">,</span>

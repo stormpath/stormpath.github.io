@@ -2541,7 +2541,7 @@ the application&#8217;s <code class="docutils literal"><span class="pre">samlPol
 <p>At a minimum, an Account in Stormpath requires at least one authentication factor, which is the password. However, if you would like to include additional security then Stormpath supports the creation of additional authentication factors on an Account. Currently, the additional factors are:</p>
 <ul class="simple">
 <li>SMS message to a phone</li>
-<li>Google Authenticator (TOTP)</li>
+<li>Google Authenticator</li>
 </ul>
 <p>The multi-factor authentication process works as follows with text messages:</p>
 <ol class="arabic simple">
@@ -2662,7 +2662,8 @@ the application&#8217;s <code class="docutils literal"><span class="pre">samlPol
 </pre></div>
 </div>
 <p>For more information about the Factor resource, see <a class="reference internal" href="reference.html#ref-factor"><span class="std std-ref">the Reference chapter</span></a>.</p>
-<p>The user now needs to get this information into their Google Authenticator (or <a class="reference external" href="https://www.authy.com/tutorials/how-use-authy-google-authenticator/">similar</a>) application. The easiest way to do that is to use their app to scan a QR code. Stormpath makes this easy by giving you the QR Code in the <code class="docutils literal"><span class="pre">base64_q_r_image</span></code> field of the Google Authenticator Factor.</p>
+<p>The user now needs to get this information into their Google Authenticator (or <a class="reference external" href="https://www.authy.com/tutorials/how-use-authy-google-authenticator/">similar</a>) application. The easiest way to do that is to use their app to scan a QR code.</p>
+<p>Stormpath makes this easy by giving you the QR Code in the <code class="docutils literal"><span class="pre">base64_q_r_image</span></code> field of the Google Authenticator Factor.</p>
 <p>You can now take this string and turn it into a QR Code image:</p>
 <ul class="simple">
 <li>You could use a QR Code Library, such as <a class="reference external" href="https://davidshimjs.github.io/qrcodejs/">QRCode.js</a></li>
@@ -2748,6 +2749,7 @@ the application&#8217;s <code class="docutils literal"><span class="pre">samlPol
 <span class="p">}</span>
 </pre></div>
 </div>
+<p>This operation will automatically cause the factor to be challenged, meaning that the user will receive a code as soon as this operation is executed.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you do not specify a message, then Stormpath will just send the default message: <code class="docutils literal"><span class="pre">&quot;Your</span> <span class="pre">verification</span> <span class="pre">code</span> <span class="pre">is</span> <span class="pre">${code}&quot;</span></code>.</p>
@@ -2808,7 +2810,6 @@ the application&#8217;s <code class="docutils literal"><span class="pre">samlPol
 </div>
 <p>If you had sent the wrong code, the <code class="docutils literal"><span class="pre">status</span></code> would instead be <code class="docutils literal"><span class="pre">FAILED</span></code>.</p>
 <p>For a full list of Challenge statuses, please see <a class="reference internal" href="reference.html#challenge-status-values"><span class="std std-ref">the Reference chapter</span></a>.</p>
-<p>If you had sent the wrong code, the <code class="docutils literal"><span class="pre">status</span></code> would instead be <code class="docutils literal"><span class="pre">FAILED</span></code>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">You could also pass the Challenge <code class="docutils literal"><span class="pre">href</span></code> and the <code class="docutils literal"><span class="pre">code</span></code> to Stormpath and get back an OAuth 2.0 Access Token. For more information about this see <a class="reference internal" href="#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>.</p>
@@ -2829,7 +2830,7 @@ the application&#8217;s <code class="docutils literal"><span class="pre">samlPol
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>If the code is correct, Stormpath will now simultaneously create the Challenge resource and set its status to <code class="docutils literal"><span class="pre">SUCCESS</span></code>, then return it back to you:</p>
+<p>If the code is correct, Stormpath will now simultaneously create the Challenge resource and set its status to <code class="docutils literal"><span class="pre">SUCCESS</span></code>, then return it back to you.</p>
 <div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
   <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/challenges/EGDIpcgffklwo6HywNzTw&quot;</span><span class="p">,</span>
   <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-22T22:50:59.241Z&quot;</span><span class="p">,</span>
@@ -2873,7 +2874,7 @@ the application&#8217;s <code class="docutils literal"><span class="pre">samlPol
 </div>
 <div class="section" id="challenging-a-factor-after-login">
 <h4>Challenging a Factor After Login<a class="headerlink" href="#challenging-a-factor-after-login" title="Permalink to this headline">¶</a></h4>
-<p>The first step will be getting the user authenticated.</p>
+<p>The first step is to authenticate the user.</p>
 <p>In the case of REST, this means a <code class="docutils literal"><span class="pre">POST</span></code> to your Application resource&#8217;s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint. In this case it will be very helpful to also include <code class="docutils literal"><span class="pre">expand=account</span></code>.</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/1gk4Dxzi6o4PbdleXaMPLE/loginAttempts?expand=account</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 <span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
