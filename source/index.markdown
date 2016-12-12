@@ -343,10 +343,10 @@ content_top: [docs_top.html]
               </div>
               <div class="api-node-second-row">
                 <div class="api-node-second-row-text">
-                  Product Guide
+                  <a href="/rest/product-guide/latest/">Product Guide</a>
                 </div>
                 <div class="api-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/rest/product-guide/latest/"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -360,10 +360,10 @@ content_top: [docs_top.html]
               </div>
               <div class="api-node-second-row">
                 <div class="api-node-second-row-text">
-                  Error Codes
+                  <a href="/rest/product-guide/latest/errors.html">Error Codes</a>
                 </div>
                 <div class="api-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/rest/product-guide/latest/errors.html"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -389,10 +389,10 @@ content_top: [docs_top.html]
               </div>
               <div class="guide-node-second-row">
                 <div class="guide-node-second-row-text">
-                  Multi-Tenant SaaS
+                  <a href="/rest/product-guide/latest/multitenancy.html">Multi-Tenant SaaS</a>
                 </div>
                 <div class="guide-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/rest/product-guide/latest/multitenancy.html"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -406,10 +406,10 @@ content_top: [docs_top.html]
               </div>
               <div class="guide-node-second-row">
                 <div class="guide-node-second-row-text">
-                  ID Site (Hosted User Interfaces)
+                  <a href="/rest/product-guide/latest/idsite.html">ID Site (Hosted User Interfaces)</a>
                 </div>
                 <div class="guide-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/rest/product-guide/latest/idsite.html"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -424,10 +424,10 @@ content_top: [docs_top.html]
               </div>
               <div class="guide-node-second-row">
                 <div class="guide-node-second-row-text">
-                  Account Linking
+                  <a href="/rest/product-guide/latest/accnt_mgmt.html#account-linking">Account Linking</a>
                 </div>
                 <div class="guide-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/rest/product-guide/latest/accnt_mgmt.html#account-linking"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -441,10 +441,10 @@ content_top: [docs_top.html]
               </div>
               <div class="guide-node-second-row">
                 <div class="guide-node-second-row-text">
-                  Multi-Factor Authentication
+                  <a href="/rest/product-guide/latest/auth_n.html#using-multi-factor-authentication">Multi-Factor Authentication</a>
                 </div>
                 <div class="guide-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/rest/product-guide/latest/auth_n.html#using-multi-factor-authentication"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -459,10 +459,10 @@ content_top: [docs_top.html]
               </div>
               <div class="guide-node-second-row">
                 <div class="guide-node-second-row-text">
-                  Social Authentication
+                  <a href="/rest/product-guide/latest/auth_n.html#how-social-authentication-works">Social Authentication</a>
                 </div>
                 <div class="guide-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/rest/product-guide/latest/auth_n.html#how-social-authentication-works"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -476,10 +476,10 @@ content_top: [docs_top.html]
               </div>
               <div class="guide-node-second-row">
                 <div class="guide-node-second-row-text">
-                  API Authentication
+                  <a href="/rest/product-guide/latest/auth_n.html">API Authentication</a>
                 </div>
                 <div class="guide-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/rest/product-guide/latest/auth_n.html"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -494,10 +494,10 @@ content_top: [docs_top.html]
               </div>
               <div class="guide-node-second-row">
                 <div class="guide-node-second-row-text">
-                  Active Directory / LDAP Authentication
+                  <a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory">Active Directory / LDAP Authentication</a>
                 </div>
                 <div class="guide-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/rest/product-guide/latest/auth_n.html#authenticating-against-an-ldap-directory"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -511,10 +511,10 @@ content_top: [docs_top.html]
               </div>
               <div class="guide-node-second-row">
                 <div class="guide-node-second-row-text">
-                  SAML Authentication
+                  <a href="/console/product-guide/latest/appendix-saml.html">SAML Authentication</a>
                 </div>
                 <div class="guide-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/console/product-guide/latest/appendix-saml.html"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
@@ -529,10 +529,10 @@ content_top: [docs_top.html]
               </div>
               <div class="guide-node-second-row">
                 <div class="guide-node-second-row-text">
-                  Admin Console Guide
+                  <a href="/console/product-guide/latest/">Admin Console Guide</a>
                 </div>
                 <div class="guide-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/console/product-guide/latest/"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
