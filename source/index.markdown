@@ -326,10 +326,10 @@ content_top: [docs_top.html]
               </div>
               <div class="api-node-second-row">
                 <div class="api-node-second-row-text">
-                  Quick Start
+                  <a href="/rest/product-guide/latest/quickstart.html">Quick Start</a>
                 </div>
                 <div class="api-node-second-row-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  <a href="/rest/product-guide/latest/quickstart.html"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                 </div>
               </div>
             </div>
