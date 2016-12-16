@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Tutorial &mdash; Stormpath Default Spring Boot Starter 1.2.2 documentation</title>
+  <title>Tutorial &mdash; Stormpath Default Spring Boot Starter 1.2.3 documentation</title>
   
 
   
@@ -34,7 +34,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Stormpath Default Spring Boot Starter 1.2.2 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath Default Spring Boot Starter 1.2.3 documentation" href="index.html"/>
         <link rel="next" title="Configuration" href="config.html"/>
         <link rel="prev" title="Quickstart" href="quickstart.html"/> 
 
@@ -745,7 +745,7 @@ Spring Security.</p>
 <p>As before, we allow unauthenticated access to the homepage <code class="docutils literal"><span class="pre">/</span></code> in <code class="docutils literal"><span class="pre">SpringSecurityWebAppConfig.java</span></code>.</p>
 <p>For more on <code class="docutils literal"><span class="pre">HttpSecurity</span></code> with Spring Security, see <a class="reference external" href="http://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/#jc-httpsecurity">its HttpSecurity documentation</a>.</p>
 <p>We&#8217;ve added a new method to our <code class="docutils literal"><span class="pre">HelloController</span></code>. It does not call out any other authorizaton requirements. As such,
-anyone logged in will be able to access <code class="docutils literal"><span class="pre">/me</span></code>. Furthermore, anyone NOT logged in trying to access <code class="docutils literal"><span class="pre">/me</span></code> will automatically
+anyone logged in will be able to access <code class="docutils literal"><span class="pre">/userdetails</span></code>. Furthermore, anyone NOT logged in trying to access <code class="docutils literal"><span class="pre">/userdetails</span></code> will automatically
 be redirected to the <code class="docutils literal"><span class="pre">/login</span></code> view.</p>
 <div class="highlight-java"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -760,16 +760,16 @@ be redirected to the <code class="docutils literal"><span class="pre">/login</sp
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloController</span> <span class="o">{</span>
 
     <span class="o">...</span>
-    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&quot;/me&quot;</span><span class="o">)</span>
-    <span class="n">String</span> <span class="nf">me</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="s">&quot;me&quot;</span><span class="o">;</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&quot;/userdetails&quot;</span><span class="o">)</span>
+    <span class="n">String</span> <span class="nf">userDetails</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="s">&quot;userdetails&quot;</span><span class="o">;</span>
     <span class="o">}</span>
     <span class="o">...</span>
 <span class="o">}</span>
 </pre></div>
 </td></tr></table></div>
-<p>Try it out. Launch the application as before, and then browse to: <code class="docutils literal"><span class="pre">http://localhost:8080/me</span></code>. You will be redirected to the <code class="docutils literal"><span class="pre">/login</span></code>
-and then after you login to a valid Stormpath Account, you will automatically be brought back to <code class="docutils literal"><span class="pre">/me</span></code>. That&#8217;s the Stormpath magic at work!</p>
+<p>Try it out. Launch the application as before, and then browse to: <code class="docutils literal"><span class="pre">http://localhost:8080/userdetails</span></code>. You will be redirected to the <code class="docutils literal"><span class="pre">/login</span></code>
+and then after you login to a valid Stormpath Account, you will automatically be brought back to <code class="docutils literal"><span class="pre">/userdetails</span></code>. That&#8217;s the Stormpath magic at work!</p>
 <p>Now, we&#8217;ll look at fine grained controls using Spring Security permissions connected to Stormpath custom data.</p>
 <p>Every first class object in Stormpath can have custom data associated with it. For instance, you can have custom data at the Group level as well
 as at the Account level.</p>
@@ -832,10 +832,10 @@ refresh tokens. The Token Management feature is included &#8220;out of the box&#
 <p>The Token Management feature is supported all through the Java SDK stack, including Servlet, Spring, Spring Boot and
 Spring Security (with and without WebMVC).</p>
 <p>This part of the tutorial exercises the Token Magement features using Spring Security Spring Boot WebMVC.</p>
-<p>There&#8217;s a simple <cite>&#64;RestController</cite> called <cite>MeController</cite> that returns information about the authenticated account.</p>
+<p>There&#8217;s a simple <cite>&#64;RestController</cite> called <cite>UserDetailsController</cite> that returns information about the authenticated account.</p>
 <div class="highlight-java"><div class="highlight"><pre><span></span><span class="nd">@RestController</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MeController</span> <span class="o">{</span>
-    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/me&quot;</span><span class="o">,</span> <span class="n">produces</span> <span class="o">=</span> <span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON_VALUE</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">UserDetailsController</span> <span class="o">{</span>
+    <span class="nd">@RequestMapping</span><span class="o">(</span><span class="n">value</span><span class="o">=</span><span class="s">&quot;/userdetails&quot;</span><span class="o">,</span> <span class="n">produces</span> <span class="o">=</span> <span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON_VALUE</span><span class="o">)</span>
     <span class="kd">public</span> <span class="n">AccountInfo</span> <span class="nf">info</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">req</span><span class="o">)</span> <span class="o">{</span>
         <span class="c1">// must be logged in to get here per Spring Security config</span>
         <span class="n">Account</span> <span class="n">account</span> <span class="o">=</span> <span class="n">AccountResolver</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">.</span><span class="na">getAccount</span><span class="o">(</span><span class="n">req</span><span class="o">);</span>
@@ -845,7 +845,7 @@ Spring Security (with and without WebMVC).</p>
 <span class="o">}</span>
 </pre></div>
 </div>
-<p>In order to hit the <cite>/me</cite> endpoint, we&#8217;ll first, we&#8217;ll get an <cite>access_token</cite> and a <cite>refresh_token</cite> by hitting the
+<p>In order to hit the <cite>/userdetails</cite> endpoint, we&#8217;ll first, we&#8217;ll get an <cite>access_token</cite> and a <cite>refresh_token</cite> by hitting the
 <cite>/oauth/token</cite> endpoint:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>curl -v -X POST <span class="se">\</span>
   -H <span class="s2">&quot;Origin: http://localhost:8080&quot;</span> <span class="se">\</span>
@@ -865,10 +865,10 @@ Spring Security (with and without WebMVC).</p>
 </pre></div>
 </div>
 <p>The response includes the tokens as well as information on their type (<cite>Bearer</cite> in this case) and when it expires.</p>
-<p>We can now use the <cite>access_token</cite> to hit the <cite>/me</cite> endpoint:</p>
+<p>We can now use the <cite>access_token</cite> to hit the <cite>/userdetails</cite> endpoint:</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>curl <span class="se">\</span>
   -H <span class="s2">&quot;Authorization: Bearer eyJraWQiOiJSOTJTQkhKQzFVNERBSU1HUTNNSE9HVk1YIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI2M1laa1FBNjRTdEdUQjFhVEhlNGdPIiwiaWF0IjoxNDU0NDM4MTQ3LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy82dkZUNEFSZldDbXVIVlY4Vmt0alRvIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy80V1NjTWJBbm8zVjk1aWlTc3dralBYIiwiZXhwIjoxNDU0NDQxNzQ3LCJydGkiOiI2M1laa01xMTlzYUhxTHZqSDFtbzRLIn0.-3NNpi7-DTvl2VNCfHHFNwWVikmeCyNPy6KEu--XYjk&quot;</span> <span class="se">\</span>
-  http://localhost:8080/me
+  http://localhost:8080/userdetails
 </pre></div>
 </div>
 <p>You will get a response like this:</p>
@@ -914,7 +914,7 @@ previously.</p>
 need to login again.</p>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>curl <span class="se">\</span>
   -H <span class="s2">&quot;Authorization: Bearer eyJraWQiOiJSOTJTQkhKQzFVNERBSU1HUTNNSE9HVk1YIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiI1eDlxbWlES2U0RmlFMU02alhLSDBMIiwiaWF0IjoxNDU0NDQ0MTU1LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy82dkZUNEFSZldDbXVIVlY4Vmt0alRvIiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy80V1NjTWJBbm8zVjk1aWlTc3dralBYIiwiZXhwIjoxNDU0NDQ3NzU1LCJydGkiOiI2M1laa01xMTlzYUhxTHZqSDFtbzRLIn0.J2NR7MV3OoolYImfUNiu8SCDvaQdresHTnPHgL7mO1Q&quot;</span> <span class="se">\</span>
-  http://localhost:8080/me
+  http://localhost:8080/userdetails
 </pre></div>
 </div>
 <p>Here&#8217;s the response:</p>
@@ -980,7 +980,7 @@ for more information on all that the Stormpath Java SDK has to offer.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.2.2',
+            VERSION:'1.2.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
