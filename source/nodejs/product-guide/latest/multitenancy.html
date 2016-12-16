@@ -383,7 +383,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="auth_n.html#using-multi-factor-authentication">4.6. Using Multi-Factor Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#using-multi-factor-authentication-mfa">4.6. Using Multi-Factor Authentication (MFA)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="auth_n.html#enrolling-an-additional-factor">4.6.1. Enrolling an Additional Factor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="auth_n.html#adding-an-sms-factor">Adding an SMS Factor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="auth_n.html#adding-a-google-authenticator-factor">Adding a Google Authenticator Factor</a></li>
@@ -1077,6 +1077,32 @@
 </li>
 </ul>
 <p>If the login attempt does specify an Organization, then we simply jump to that point in the steps, and the Organization&#8217;s Account Stores are iterated through as described above.</p>
+<p>In the Node SDK, you can specify an Organization in your login request like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">application</span><span class="p">;</span> <span class="c1">// An Application, fetched from Client.getApplication();</span>
+
+<span class="kd">var</span> <span class="nx">authRequest</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;user@example.com&#39;</span><span class="p">,</span>
+  <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;RawPassw0rd!&#39;</span><span class="p">,</span>
+  <span class="nx">accountStore</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">nameKey</span><span class="o">:</span> <span class="s1">&#39;app1&#39;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">application</span><span class="p">.</span><span class="nx">authenticateAccount</span><span class="p">(</span><span class="nx">authRequest</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">authResult</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">authResult</span><span class="p">.</span><span class="nx">getAccount</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">account</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Account has authenticated: &#39;</span><span class="p">,</span> <span class="nx">account</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="routing-users-to-their-tenant">
 <span id="multitenancy-routing-users"></span><h2>6.4 Routing Users to their Tenant<a class="headerlink" href="#routing-users-to-their-tenant" title="Permalink to this headline">¶</a></h2>
