@@ -383,7 +383,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="auth_n.html#using-multi-factor-authentication">4.6. Using Multi-Factor Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#using-multi-factor-authentication-mfa">4.6. Using Multi-Factor Authentication (MFA)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="auth_n.html#enrolling-an-additional-factor">4.6.1. Enrolling an Additional Factor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="auth_n.html#adding-an-sms-factor">Adding an SMS Factor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="auth_n.html#adding-a-google-authenticator-factor">Adding a Google Authenticator Factor</a></li>
@@ -1874,9 +1874,9 @@ This link takes you to a secure page where you can change your password.
 <li><a class="reference internal" href="auth_n.html#social-authn"><span class="std std-ref">How Social Authentication Works</span></a></li>
 </ul>
 </div>
-<p>To quickly recap: Every source of user Accounts requires its own Directory in Stormpath. This means that users who directly register through your app will probably be stored inside a Cloud Directory, users who choose to login with Facebook will have to go into a Facebook Directory, and so on.</p>
+<p>To quickly recap: Every source of user Accounts requires its own Directory in Stormpath. This means that users who directly register through your app will probably be stored inside a Cloud Directory, users who choose to login with Facebook will be stored in a Facebook Directory, and so on.</p>
 <p>When a user chooses to log in with a non-Cloud Directory (e.g. Facebook, SAML, etc), Stormpath creates an Account resource to represent them in the appropriate Directory and then returns it upon successful login.</p>
-<p>What happens if a user logs in directly with your application one day, then with Facebook the next day, and then with Google as well. The answer is that they will have 3 different Account resources, each one in a different Directory.</p>
+<p>What happens if a user logs in directly with your application one day, then with Facebook the next day, and then with Google as well? The answer is that they will have 3 different Account resources, each one in a different Directory.</p>
 <p>To unify these Accounts, Stormpath offers Account Linking. Account Linking allows you to ensure that the Account that is returned on authentication is always the same Account found in the <a class="reference internal" href="#add-to-app-or-org"><span class="std std-ref">default Account Store</span></a>.</p>
 <p>So in the above example, the user could create three separate Accounts in three separate Directories, but if all of those Accounts were linked then each login attempt would always return the same Account resource, regardless of which login method they chose. Moreover, each Account would be associated with the Account in the default Directory via Account Links.</p>
 <p id="account-linking-benefits"><strong>What if I only want to support Social/SAML/etc?</strong></p>
@@ -1942,9 +1942,10 @@ This link takes you to a secure page where you can change your password.
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Account Links can be created and deleted, but they cannot be updated. For information about Account Links, please see the <a class="reference internal" href="reference.html#ref-accountlink"><span class="std std-ref">Reference chapter</span></a></p>
+<p class="last">Account Links can be created and deleted, but they cannot be updated. For information about Account Links, please see the <a class="reference internal" href="reference.html#ref-accountlink"><span class="std std-ref">Reference chapter</span></a>.</p>
 </div>
-<p>There is one more aspect to Account Linking, which regards login behavior (as already summarized <a class="reference internal" href="#account-linking-login"><span class="std std-ref">above</span></a>). The Application has an <a class="reference internal" href="reference.html#ref-account-linking-policy"><span class="std std-ref">Account Linking Policy</span></a>, which is enabled:</p>
+<p>There is one more aspect to Account Linking, which regards login behavior (as already summarized <a class="reference internal" href="#account-linking-login"><span class="std std-ref">above</span></a>). The Application needs to have an <a class="reference internal" href="reference.html#ref-account-linking-policy"><span class="std std-ref">Account Linking Policy</span></a> enabled:</p>
+<p>You can enable the Account Linking Policy like this:</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Account Linking Policies can be associated with either an Application or Organization. If you would like to use an Organization&#8217;s Account Linking Policy then you must specify it in your login attempt.</p>
@@ -1955,15 +1956,15 @@ This link takes you to a secure page where you can change your password.
 </div>
 <div class="section" id="how-to-link-accounts-automatically">
 <span id="account-linking-automatic"></span><h3>How to Link Accounts Automatically<a class="headerlink" href="#how-to-link-accounts-automatically" title="Permalink to this headline">¶</a></h3>
-<p>So far we have covered how to link Accounts manually. However, it is also possible to link Accounts automatically at login time. This linking behavior is controlled by an Account Linking Policy.</p>
+<p>So far we have covered how to link Accounts manually. However, it is also possible to link Accounts automatically at login time. This linking behavior is controlled by an Account Linking Policy. See the above section to learn how to enable the Account Linking Policy for either an Application or an Organization.</p>
 <div class="section" id="what-s-in-the-account-linking-policy">
 <span id="about-alp"></span><h4>What&#8217;s in the Account Linking Policy<a class="headerlink" href="#what-s-in-the-account-linking-policy" title="Permalink to this headline">¶</a></h4>
 <p>Every Application and Organization has an Account Linking Policy resource.</p>
 <p>The Account Linking Policy has three attributes that control aspects of Account Linking behavior:</p>
-<p><strong>Status:</strong></p>
+<p><strong>Status</strong></p>
 <p>This attribute controls whether this Policy is in effect or not. If you would not like this policy to be in effect, set this to <code class="docutils literal"><span class="pre">DISABLED</span></code>.</p>
 <p>If Account Linking is enabled then Stormpath will check linked Accounts on login and behave as described in <a class="reference internal" href="#account-linking-login"><span class="std std-ref">How Login Works with Linked Accounts</span></a>. If it is disabled, you are still able to link Accounts manually, but Stormpath takes no actions based upon these links.</p>
-<p><strong>Automatic Provisioning:</strong></p>
+<p><strong>Automatic Provisioning</strong></p>
 <p>This attribute tells Stormpath whether you would like new Accounts to be automatically created in the default Account Store.</p>
 <p>For example: if a user Account is created in a Social Directory (e.g. Google), and they do not already have an Account in the default Account Store, Automatic Provisioning would then create an Account with the same information inside the default Account Store. That Account would then be automatically linked to the Account in the Social Directory.</p>
 <p><strong>Matching Property</strong></p>

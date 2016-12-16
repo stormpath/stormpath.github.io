@@ -383,7 +383,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="auth_n.html#using-multi-factor-authentication">4.6. Using Multi-Factor Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auth_n.html#using-multi-factor-authentication-mfa">4.6. Using Multi-Factor Authentication (MFA)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="auth_n.html#enrolling-an-additional-factor">4.6.1. Enrolling an Additional Factor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="auth_n.html#adding-an-sms-factor">Adding an SMS Factor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="auth_n.html#adding-a-google-authenticator-factor">Adding a Google Authenticator Factor</a></li>
@@ -1628,10 +1628,6 @@ This link takes you to a secure page where you can change your password.
 <div class="section" id="how-to-manage-an-account-s-required-attributes">
 <span id="account-schema"></span><h2>3.5. How to Manage an Account&#8217;s Required Attributes<a class="headerlink" href="#how-to-manage-an-account-s-required-attributes" title="Permalink to this headline">¶</a></h2>
 <p>Every Directory has its own Account Schema. This Schema allows you to control which Account attributes (referred to as <code class="docutils literal"><span class="pre">fields</span></code> within the Account Schema) must be passed as part of new Account creation.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This feature is not yet available in the Node.js SDK. In the meantime, please consult the REST API documentation below.</p>
-</div>
 <div class="section" id="retrieving-your-directory-s-account-schema">
 <h3>3.5.1. Retrieving your Directory&#8217;s Account Schema<a class="headerlink" href="#retrieving-your-directory-s-account-schema" title="Permalink to this headline">¶</a></h3>
 <p>You will find a link to the <code class="docutils literal"><span class="pre">accountSchema</span></code> resource in your Directory:</p>
@@ -1646,62 +1642,83 @@ This link takes you to a secure page where you can change your password.
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>You can send a <code class="docutils literal"><span class="pre">GET</span></code> to that URL, with an <code class="docutils literal"><span class="pre">expand</span></code> parameter for the <code class="docutils literal"><span class="pre">fields</span></code> collection:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">GET</span> <span class="nn">/v1/schemas/ivVhIkQVLGSLnExample?expand=fields</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic MlpG...</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
+<p>You can send a GET request to see your Directory&#8217;s <code class="docutils literal"><span class="pre">accountSchema</span></code> resource:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">directory</span><span class="p">;</span> <span class="c1">// A Directory object, fetched from Client.getDirectory();</span>
+
+<span class="nx">directory</span><span class="p">.</span><span class="nx">getAccountSchema</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">schema</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">schema</span><span class="p">);</span>
+<span class="p">});</span>
 </pre></div>
 </div>
-<p>And get back the Account Schema:</p>
-<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
-  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;fields&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample/fields&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;offset&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="nt">&quot;limit&quot;</span><span class="p">:</span> <span class="mi">25</span><span class="p">,</span>
-    <span class="nt">&quot;size&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="p">{</span>
-        <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/fields/ivVhM4VPvZQycQexample&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;givenName&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-        <span class="nt">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
-          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample&quot;</span>
-        <span class="p">}</span>
-      <span class="p">},</span>
-      <span class="p">{</span>
-        <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/fields/ivVhPOaKVsPbRWrExample&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-08-19T20:03:25.497Z&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;surname&quot;</span><span class="p">,</span>
-        <span class="nt">&quot;required&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-        <span class="nt">&quot;schema&quot;</span><span class="p">:</span> <span class="p">{</span>
-          <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample&quot;</span>
-        <span class="p">}</span>
-      <span class="p">}</span>
-    <span class="p">]</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;directory&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/iusmp6mK91ZZ5example&quot;</span>
+<p>This will return the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;href&quot;</span><span class="o">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;createdAt&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;modifiedAt&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;fields&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;href&quot;</span><span class="o">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample/fields&quot;</span> <span class="p">},</span>
+  <span class="s2">&quot;directory&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;href&quot;</span><span class="o">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/directories/iusmp6mK91ZZ5example&quot;</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To see the fields collection, you can make another GET request:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">schema</span><span class="p">;</span> <span class="c1">// A Schema object, fetched from Directory.getAccountSchema();</span>
+
+<span class="nx">schema</span><span class="p">.</span><span class="nx">getFields</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">collectionResource</span><span class="p">){</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
   <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">collectionResource</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>This will return the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;href&quot;</span><span class="o">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/schemas/ivVhIkQVLGSLnLexample/fields&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;offset&quot;</span><span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+  <span class="s2">&quot;limit&quot;</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span>
+  <span class="s2">&quot;size&quot;</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="s2">&quot;items&quot;</span><span class="o">:</span> <span class="p">[</span>
+    <span class="s2">&quot;Field&quot;</span> <span class="p">{</span>
+      <span class="s2">&quot;href&quot;</span><span class="o">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/fields/ivVhM4VPvZQycQexample&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;createdAt&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;modifiedAt&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;givenName&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="s2">&quot;schema&quot;</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;Field&quot;</span> <span class="p">{</span>
+      <span class="s2">&quot;href&quot;</span><span class="o">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/fields/ivVhPOaKVsPbRWrExample&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;createdAt&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-08-19T19:42:41.961Z&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;modifiedAt&quot;</span><span class="o">:</span> <span class="s2">&quot;2016-08-19T20:03:25.497Z&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;surname&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;required&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="s2">&quot;schema&quot;</span><span class="o">:</span> <span class="s2">&quot;schema&quot;</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <p>The two Account attributes (or <code class="docutils literal"><span class="pre">fields</span></code>) that can be toggled here are <code class="docutils literal"><span class="pre">givenName</span></code> and <code class="docutils literal"><span class="pre">surname</span></code>. By default both of these have <code class="docutils literal"><span class="pre">required</span></code> set to <code class="docutils literal"><span class="pre">false</span></code> for any Directories created after August 13, 2016.</p>
 <p>This means that (providing your Directory was created after <code class="docutils literal"><span class="pre">2016-08-13</span></code>) you can create a new Account by passing only two attributes, <code class="docutils literal"><span class="pre">email</span></code> and <code class="docutils literal"><span class="pre">password</span></code>:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories/iusmp6mK91ZZ5example/accounts</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic Mlp...</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">application</span><span class="p">;</span> <span class="c1">// An application, fetched from Client.getApplication();</span>
 
-{
-  &quot;email&quot;:&quot;test123@email.com&quot;,
-  &quot;password&quot;:&quot;APassword1234&quot;
-}
+<span class="kd">var</span> <span class="nx">accountData</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;test123@email.com&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;password&quot;</span><span class="o">:</span> <span class="s2">&quot;APassword1234&quot;</span>
+<span class="p">};</span>
+
+<span class="nx">application</span><span class="p">.</span><span class="nx">createAccount</span><span class="p">(</span><span class="nx">accountData</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">account</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Hello %s&#39;</span><span class="p">,</span> <span class="nx">account</span><span class="p">.</span><span class="nx">email</span><span class="p">);</span>
+<span class="p">});</span>
 </pre></div>
 </div>
 </div>
@@ -1709,15 +1726,26 @@ This link takes you to a secure page where you can change your password.
 <h3>3.5.2. Modifying your Directory&#8217;s Account Schema<a class="headerlink" href="#modifying-your-directory-s-account-schema" title="Permalink to this headline">¶</a></h3>
 <p>Any attributes that are in the <code class="docutils literal"><span class="pre">fields</span></code> collection can have <code class="docutils literal"><span class="pre">required</span></code> toggled to either <code class="docutils literal"><span class="pre">true</span></code> or <code class="docutils literal"><span class="pre">false</span></code>.</p>
 <p>If you wanted to set <code class="docutils literal"><span class="pre">surname</span></code> as required, you would send the following request to that particular field object:</p>
-<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/fields/ivVhPOaKVsPbRWrExample</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
-<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
-<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic Mlp...</span>
-<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json</span>
-<span class="na">Cache-Control</span><span class="o">:</span> <span class="l">no-cache</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="c1">// First, get the fields</span>
+<span class="nx">schema</span><span class="p">.</span><span class="nx">getFields</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">collectionResource</span><span class="p">){</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
 
-<span class="p">{</span>
-  <span class="nt">&quot;required&quot;</span><span class="p">:</span><span class="s2">&quot;true&quot;</span>
-<span class="p">}</span>
+  <span class="c1">// Next, get the surname field and set it&#39;s required attribute to true</span>
+  <span class="kd">var</span> <span class="nx">surnameField</span> <span class="o">=</span> <span class="nx">collectionResource</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+  <span class="nx">surnameField</span><span class="p">.</span><span class="nx">required</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+
+  <span class="c1">// Lastly, update the resource</span>
+  <span class="nx">surnameField</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">updatedResource</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">updatedResource</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
 </pre></div>
 </div>
 <p>And get back the following <code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code>:</p>
@@ -2116,10 +2144,6 @@ still delete the resource by using the generic <code class="docutils literal"><s
 </div>
 <div class="section" id="account-linking">
 <span id="id10"></span><h2>3.8. Account Linking<a class="headerlink" href="#account-linking" title="Permalink to this headline">¶</a></h2>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">This feature is not yet available in the Node.js SDK. In the meantime you can find the REST documentation below.</p>
-</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p>Before you read this section, we recommend that you familiarize yourself with:</p>
@@ -2128,9 +2152,9 @@ still delete the resource by using the generic <code class="docutils literal"><s
 <li><a class="reference internal" href="auth_n.html#social-authn"><span class="std std-ref">How Social Authentication Works</span></a></li>
 </ul>
 </div>
-<p>To quickly recap: Every source of user Accounts requires its own Directory in Stormpath. This means that users who directly register through your app will probably be stored inside a Cloud Directory, users who choose to login with Facebook will have to go into a Facebook Directory, and so on.</p>
+<p>To quickly recap: Every source of user Accounts requires its own Directory in Stormpath. This means that users who directly register through your app will probably be stored inside a Cloud Directory, users who choose to login with Facebook will be stored in a Facebook Directory, and so on.</p>
 <p>When a user chooses to log in with a non-Cloud Directory (e.g. Facebook, SAML, etc), Stormpath creates an Account resource to represent them in the appropriate Directory and then returns it upon successful login.</p>
-<p>What happens if a user logs in directly with your application one day, then with Facebook the next day, and then with Google as well. The answer is that they will have 3 different Account resources, each one in a different Directory.</p>
+<p>What happens if a user logs in directly with your application one day, then with Facebook the next day, and then with Google as well? The answer is that they will have 3 different Account resources, each one in a different Directory.</p>
 <p>To unify these Accounts, Stormpath offers Account Linking. Account Linking allows you to ensure that the Account that is returned on authentication is always the same Account found in the <a class="reference internal" href="#add-to-app-or-org"><span class="std std-ref">default Account Store</span></a>.</p>
 <p>So in the above example, the user could create three separate Accounts in three separate Directories, but if all of those Accounts were linked then each login attempt would always return the same Account resource, regardless of which login method they chose. Moreover, each Account would be associated with the Account in the default Directory via Account Links.</p>
 <p id="account-linking-benefits"><strong>What if I only want to support Social/SAML/etc?</strong></p>
@@ -2147,6 +2171,31 @@ still delete the resource by using the generic <code class="docutils literal"><s
 <div class="section" id="application-vs-organization-account-linking-policies">
 <h4>Application vs Organization Account Linking Policies<a class="headerlink" href="#application-vs-organization-account-linking-policies" title="Permalink to this headline">¶</a></h4>
 <p>First and foremost, both Applications and Organizations have Account Linking Policies. Stormpath will default to the Application&#8217;s Policy if you do not specify an Organization during login. This is an example of a login attempt that specifies an Organization:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">application</span><span class="p">;</span> <span class="c1">// An Application, fetched from Client.getApplication();</span>
+
+<span class="kd">var</span> <span class="nx">authRequest</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;user@example.com&#39;</span><span class="p">,</span>
+  <span class="nx">password</span><span class="o">:</span> <span class="s1">&#39;RawPassw0rd!&#39;</span><span class="p">,</span>
+  <span class="nx">accountStore</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">nameKey</span><span class="o">:</span> <span class="s1">&#39;app1&#39;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">application</span><span class="p">.</span><span class="nx">authenticateAccount</span><span class="p">(</span><span class="nx">authRequest</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">authResult</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">authResult</span><span class="p">.</span><span class="nx">getAccount</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">account</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Account has authenticated: &#39;</span><span class="p">,</span> <span class="nx">account</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
 <p>For an example of how this works, please see <a class="reference internal" href="#account-linking-automatic-ex2"><span class="std std-ref">below</span></a>.</p>
 </div>
 <div class="section" id="example-login-behaviors">
@@ -2186,9 +2235,81 @@ still delete the resource by using the generic <code class="docutils literal"><s
 </div>
 <p>Let&#8217;s say we have two Directories: a Cloud Directory, and a Facebook Directory. Both the The Cloud and Facebook Directories are mapped to the same Application, but the Cloud Directory is the default Account Store.</p>
 <p>In each of those Directories, there is an Account. One in our Cloud Directory, for user Picard:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/7hOYWCzhhKDFHFzExample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;jlpicard&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;capt@enterprise.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Jean-Luc&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Picard&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;Jean-Luc Picard&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;thisExample&quot;</span><span class="p">:</span> <span class="s2">&quot;isTruncated&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;...&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>And one in the Facebook Directory for user Locutus:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/raxBrEj2lkxJeQExample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;locutus&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;locutus@b.org&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Locutus&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Ofborg&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;Locutus Ofborg&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;thisExample&quot;</span><span class="p">:</span> <span class="s2">&quot;isTruncated&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;...&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>You can link these two Accounts manually:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">leftAccount</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">href</span><span class="o">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/7hOYWCzhhKDFHFzExample&#39;</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">rightAccount</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">href</span><span class="o">:</span> <span class="s1">&#39;https://api.stormpath.com/v1/accounts/raxBrEj2lkxJeQExample&#39;</span>
+<span class="p">};</span>
+
+<span class="c1">// You can link a current Account with another Account using Account.createAccountLink();</span>
+
+<span class="kd">var</span> <span class="nx">account</span><span class="p">;</span> <span class="c1">// A previously fetched Account object</span>
+
+<span class="nx">account</span><span class="p">.</span><span class="nx">createAccountLink</span><span class="p">(</span><span class="nx">rightAccount</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">accountLink</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Account Link Created&#39;</span><span class="p">,</span> <span class="nx">accountLink</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// OR you can link two Accounts using Tenant.createAccountLink();</span>
+
+<span class="kd">var</span> <span class="nx">tenant</span><span class="p">;</span> <span class="c1">// A previously fetched Tenant object</span>
+
+<span class="nx">tenant</span><span class="p">.</span><span class="nx">createAccountLink</span><span class="p">(</span><span class="nx">leftAccount</span><span class="p">,</span> <span class="nx">rightAccount</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">accountLink</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Account Link Created&#39;</span><span class="p">,</span> <span class="nx">accountLink</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
 <p>Which on success will return an Account Link:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accountLinks/4BK2fG2nW4G0cb42cnj8HH&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-28T17:32:32.327Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-28T17:32:32.327Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;leftAccount&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/7hOYWCzhhKDFHFzExample&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;rightAccount&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/raxBrEj2lkxJeQExample&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>This means that:</p>
 <ul class="simple">
 <li>this Account Link will appear in both of these Accounts&#8217; <code class="docutils literal"><span class="pre">accountLinks</span></code> collections, and</li>
@@ -2196,9 +2317,64 @@ still delete the resource by using the generic <code class="docutils literal"><s
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Account Links can be created and deleted, but they cannot be updated. For information about Account Links, please see the <a class="reference internal" href="reference.html#ref-accountlink"><span class="std std-ref">Reference chapter</span></a></p>
+<p class="last">Account Links can be created and deleted, but they cannot be updated. For information about Account Links, please see the <a class="reference internal" href="reference.html#ref-accountlink"><span class="std std-ref">Reference chapter</span></a>.</p>
 </div>
-<p>There is one more aspect to Account Linking, which regards login behavior (as already summarized <a class="reference internal" href="#account-linking-login"><span class="std std-ref">above</span></a>). The Application has an <a class="reference internal" href="reference.html#ref-account-linking-policy"><span class="std std-ref">Account Linking Policy</span></a>, which is enabled:</p>
+<p>There is one more aspect to Account Linking, which regards login behavior (as already summarized <a class="reference internal" href="#account-linking-login"><span class="std std-ref">above</span></a>). The Application needs to have an <a class="reference internal" href="reference.html#ref-account-linking-policy"><span class="std std-ref">Account Linking Policy</span></a> enabled:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accountLinkingPolicies/3xX7u47eCrJTN7l6nLTMTa&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-07-21T01:03:49.813Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-28T18:19:09.572Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;automaticProvisioning&quot;</span><span class="p">:</span> <span class="s2">&quot;DISABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;matchingProperty&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;tenant&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/Ftlhx6oq2PwScGW3RsXeF&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can enable the Account Linking Policy like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="c1">// You can enable an Application&#39;s Account Linking Policy</span>
+
+<span class="kd">var</span> <span class="nx">application</span><span class="p">;</span> <span class="c1">// An application, fetched from Client.getApplication();</span>
+
+<span class="nx">application</span><span class="p">.</span><span class="nx">getAccountLinkingPolicy</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">AccountLinkingPolicy</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">AccountLinkingPolicy</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="s1">&#39;ENABLED&#39;</span><span class="p">;</span>
+
+  <span class="nx">AccountLinkingPolicy</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">updatedResource</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Enabled Account Linking Policy: &#39;</span><span class="p">,</span> <span class="nx">updatedResource</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="c1">// You can also enable an Organization&#39;s Account Linking Policy</span>
+
+<span class="kd">var</span> <span class="nx">organization</span><span class="p">;</span> <span class="c1">// A previously fetched Organization object</span>
+
+<span class="nx">organization</span><span class="p">.</span><span class="nx">getAccountLinkingPolicy</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">AccountLinkingPolicy</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">AccountLinkingPolicy</span><span class="p">.</span><span class="nx">status</span> <span class="o">=</span> <span class="s1">&#39;ENABLED&#39;</span><span class="p">;</span>
+
+  <span class="nx">AccountLinkingPolicy</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">updatedResource</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Enabled Account Linking Policy: &#39;</span><span class="p">,</span> <span class="nx">updatedResource</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre></div>
+</div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Account Linking Policies can be associated with either an Application or Organization. If you would like to use an Organization&#8217;s Account Linking Policy then you must specify it in your login attempt.</p>
@@ -2209,15 +2385,16 @@ still delete the resource by using the generic <code class="docutils literal"><s
 </div>
 <div class="section" id="how-to-link-accounts-automatically">
 <span id="account-linking-automatic"></span><h3>How to Link Accounts Automatically<a class="headerlink" href="#how-to-link-accounts-automatically" title="Permalink to this headline">¶</a></h3>
-<p>So far we have covered how to link Accounts manually. However, it is also possible to link Accounts automatically at login time. This linking behavior is controlled by an Account Linking Policy.</p>
+<p>So far we have covered how to link Accounts manually. However, it is also possible to link Accounts automatically at login time. This linking behavior is controlled by an Account Linking Policy. See the above section to learn how to enable the Account Linking Policy for either an Application or an Organization.</p>
 <div class="section" id="what-s-in-the-account-linking-policy">
 <span id="about-alp"></span><h4>What&#8217;s in the Account Linking Policy<a class="headerlink" href="#what-s-in-the-account-linking-policy" title="Permalink to this headline">¶</a></h4>
 <p>Every Application and Organization has an Account Linking Policy resource.</p>
+<p>In both cases the path is the same: <code class="docutils literal"><span class="pre">/v1/accountLinkingPolicies/$ACCOUNT_LINKING_POLICY_ID</span></code></p>
 <p>The Account Linking Policy has three attributes that control aspects of Account Linking behavior:</p>
-<p><strong>Status:</strong></p>
+<p><strong>Status</strong></p>
 <p>This attribute controls whether this Policy is in effect or not. If you would not like this policy to be in effect, set this to <code class="docutils literal"><span class="pre">DISABLED</span></code>.</p>
 <p>If Account Linking is enabled then Stormpath will check linked Accounts on login and behave as described in <a class="reference internal" href="#account-linking-login"><span class="std std-ref">How Login Works with Linked Accounts</span></a>. If it is disabled, you are still able to link Accounts manually, but Stormpath takes no actions based upon these links.</p>
-<p><strong>Automatic Provisioning:</strong></p>
+<p><strong>Automatic Provisioning</strong></p>
 <p>This attribute tells Stormpath whether you would like new Accounts to be automatically created in the default Account Store.</p>
 <p>For example: if a user Account is created in a Social Directory (e.g. Google), and they do not already have an Account in the default Account Store, Automatic Provisioning would then create an Account with the same information inside the default Account Store. That Account would then be automatically linked to the Account in the Social Directory.</p>
 <p><strong>Matching Property</strong></p>
@@ -2309,6 +2486,7 @@ still delete the resource by using the generic <code class="docutils literal"><s
 <div class="section" id="account-matching-and-account-verification">
 <span id="account-linking-verification"></span><h4>Account Matching and Account Verification<a class="headerlink" href="#account-matching-and-account-verification" title="Permalink to this headline">¶</a></h4>
 <p>Stormpath will only automatically link to and from Accounts that have had their email verified.</p>
+<p>This means that the Account resource must have its <code class="docutils literal"><span class="pre">emailVerificationStatus</span></code> set to <code class="docutils literal"><span class="pre">VERIFIED</span></code>.</p>
 <p>Accounts in Mirror Directories will have their email verification status verified on creation, as will any Accounts that are automatically provisioned from Accounts that are themselves verified.</p>
 </div>
 <div class="section" id="example-scenario-1">
@@ -2320,7 +2498,44 @@ still delete the resource by using the generic <code class="docutils literal"><s
 <li>A Facebook Directory</li>
 </ul>
 <p>Your Application&#8217;s Account Linking Policy has:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accountLinkingPolicies/3xX7u47eCrJTN7l6nLTMTa&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-07-21T01:03:49.813Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-09-28T18:19:09.572Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;automaticProvisioning&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;matchingProperty&quot;</span><span class="p">:</span> <span class="s2">&quot;email&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;tenant&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/tenants/Ftlhx6oq2PwScGW3RsXeF&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>So when Janelle, a new user of your application, clicks on the &#8220;Login with Facebook&#8221; button on your login page, you have it send a login attempt:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">application</span><span class="p">;</span> <span class="c1">// An Application, fetched from Client.getApplication();</span>
+
+<span class="kd">var</span> <span class="nx">providerAccountRequest</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">providerData</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">providerId</span><span class="o">:</span> <span class="s1">&#39;facebook&#39;</span><span class="p">,</span>
+    <span class="nx">accessToken</span><span class="o">:</span> <span class="s1">&#39;abc1235&#39;</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">application</span><span class="p">.</span><span class="nx">getAccount</span><span class="p">(</span><span class="nx">providerAccountRequest</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">providerAccountResult</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// If the user is authenticating for the first time, a new Account is created in the Provider Directory</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">providerAccountResult</span><span class="p">.</span><span class="nx">created</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;This user was newly created in the Directory.&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// The user is authenticated!</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">providerAccountResult</span><span class="p">.</span><span class="nx">account</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
 <p>After the credentials are validated, Stormpath will do a few things:</p>
 <ol class="arabic simple">
 <li>Create an Account in the Facebook Directory.</li>
@@ -2330,6 +2545,15 @@ still delete the resource by using the generic <code class="docutils literal"><s
 </ol>
 <p>Your user Janelle now has an Account in the Facebook Directory, an Account in the Cloud Directory, and both of these Accounts are linked via accountLink resources.</p>
 <p>Stormpath will now return the Account from the Cloud Directory:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/4Ne98Nh3OscHLuBexample&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;jkallday@email.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;jkallday@email.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;Janelle&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>If at a later date she were to choose to login via Google, then (assuming her Facebook and Google use the same email) Stormpath would create an Account for her in the Google Directory, link it to the Cloud Directory Account, and then return that Cloud Account.</p>
 </div>
 <div class="section" id="example-scenario-2">
@@ -2342,6 +2566,33 @@ still delete the resource by using the generic <code class="docutils literal"><s
 <li>The login page for this application must pass the user&#8217;s Organization <code class="docutils literal"><span class="pre">href</span></code> or <code class="docutils literal"><span class="pre">nameKey</span></code> with every login attempt.</li>
 </ul>
 <p>So a login attempt to a Facebook Directory would look like the one above, but with an Account Store specified as well, in this case an Organization <code class="docutils literal"><span class="pre">nameKey</span></code>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">application</span><span class="p">;</span> <span class="c1">// An Application, fetched from Client.getApplication();</span>
+
+<span class="kd">var</span> <span class="nx">providerAccountRequest</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">providerData</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">providerId</span><span class="o">:</span> <span class="s1">&#39;facebook&#39;</span><span class="p">,</span>
+    <span class="nx">accessToken</span><span class="o">:</span> <span class="s1">&#39;abc1235&#39;</span><span class="p">,</span>
+    <span class="nx">accountStore</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s1">&#39;nameKey&#39;</span><span class="o">:</span> <span class="s1">&#39;app1&#39;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="nx">application</span><span class="p">.</span><span class="nx">getAccount</span><span class="p">(</span><span class="nx">providerAccountRequest</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">providerAccountResult</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// If the user is authenticating for the first time, a new Account is created in the Provider Directory</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">providerAccountResult</span><span class="p">.</span><span class="nx">created</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;This user was newly created in the Directory.&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// The user is authenticated!</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">providerAccountResult</span><span class="p">.</span><span class="nx">account</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
 <p>This targeted login attempt would tell Stormpath to go to that specific Organization&#8217;s Directories to find the Account. From that point on, any Account creation and linking policies would be enacted based on the policies associated with that particular Organization&#8217;s Directories.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>

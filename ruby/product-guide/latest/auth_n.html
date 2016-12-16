@@ -383,7 +383,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#using-multi-factor-authentication">4.6. Using Multi-Factor Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-multi-factor-authentication-mfa">4.6. Using Multi-Factor Authentication (MFA)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#enrolling-an-additional-factor">4.6.1. Enrolling an Additional Factor</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#adding-an-sms-factor">Adding an SMS Factor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adding-a-google-authenticator-factor">Adding a Google Authenticator Factor</a></li>
@@ -996,7 +996,7 @@
 <li>And the challenge code that the user received on their phone.</li>
 </ul>
 <p><code class="docutils literal"><span class="pre">grant_type=stormpath_factor_challenge&amp;challenge=https://api.stormpath.com/v1/challenges/$CHALLENGE_ID&amp;code=123456</span></code></p>
-<p>For more information about these resources and how to obtain them, please see <a class="reference internal" href="#mfa"><span class="std std-ref">4.6. Using Multi-Factor Authentication</span></a>.</p>
+<p>For more information about these resources and how to obtain them, please see <a class="reference internal" href="#mfa"><span class="std std-ref">4.6. Using Multi-Factor Authentication (MFA)</span></a>.</p>
 </div>
 <div class="section" id="token-generation-example">
 <h5>Token Generation Example<a class="headerlink" href="#token-generation-example" title="Permalink to this headline">¶</a></h5>
@@ -2025,8 +2025,8 @@ $ startup.sh
 </div>
 </div>
 </div>
-<div class="section" id="using-multi-factor-authentication">
-<span id="mfa"></span><h2>4.6. Using Multi-Factor Authentication<a class="headerlink" href="#using-multi-factor-authentication" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="using-multi-factor-authentication-mfa">
+<span id="mfa"></span><h2>4.6. Using Multi-Factor Authentication (MFA)<a class="headerlink" href="#using-multi-factor-authentication-mfa" title="Permalink to this headline">¶</a></h2>
 <p>At a minimum, an Account in Stormpath requires at least one authentication factor, which is the password. However, if you would like to include additional security then Stormpath supports the creation of additional authentication factors on an Account. Currently, the additional factors are:</p>
 <ul class="simple">
 <li>SMS message to a phone</li>
@@ -2155,7 +2155,6 @@ $ startup.sh
 <div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">factors</span> <span class="o">=</span> <span class="n">account</span><span class="o">.</span><span class="n">factors</span>
 </pre></div>
 </div>
-<p>Note that it&#8217;s also possible to <code class="docutils literal"><span class="pre">search</span></code> the <code class="docutils literal"><span class="pre">factors</span></code> collection by any attribute you desire.</p>
 <p>You can now challenge each of these factors.</p>
 <div class="section" id="challenging-after-factor-creation">
 <span id="mfa-challenge-after"></span><h4>Challenging After Factor Creation<a class="headerlink" href="#challenging-after-factor-creation" title="Permalink to this headline">¶</a></h4>
@@ -2227,7 +2226,7 @@ $ startup.sh
 </div>
 <div class="section" id="challenging-a-google-authenticator-factor">
 <span id="mfa-challenge-after-google"></span><h5>Challenging a Google Authenticator Factor<a class="headerlink" href="#challenging-a-google-authenticator-factor" title="Permalink to this headline">¶</a></h5>
-<p>When you created the Google Authenticator Factor, you also generated a QR Code image for your user to scan into their app. Challenging this factor now only requires you to prompt to enter in the code from their Authenticator app.</p>
+<p>When you created the Google Authenticator Factor, you also generated a QR Code image for your user to scan into their app. Challenging this factor now only requires you to prompt the user to enter in the code from their Authenticator app.</p>
 <p>Unlike the SMS challenge process, the Google Authenticator challenge process does not require you to create a Challenge resource. Instead, the Challenge is created and verified in one step. For more information about the Challenge resource, see <a class="reference internal" href="reference.html#ref-challenge"><span class="std std-ref">the Reference chapter</span></a>.</p>
 <p>Once you have collected the code from the user, submit it:</p>
 <div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">challenge</span> <span class="o">=</span> <span class="n">factor</span><span class="o">.</span><span class="n">challenges</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">code</span><span class="p">:</span> <span class="s1">&#39;123456&#39;</span><span class="p">)</span>
