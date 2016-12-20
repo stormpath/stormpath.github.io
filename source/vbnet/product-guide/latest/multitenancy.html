@@ -34,9 +34,6 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Stormpath Visual Basic Documentation  documentation" href="index.html"/>
         <link rel="next" title="7. Using ID Site" href="idsite.html"/>
         <link rel="prev" title="5. Authorization With Stormpath" href="auth_z.html"/> 
@@ -431,7 +428,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Multi-Tenancy with Stormpath</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="">6. Multi-Tenancy with Stormpath</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#what-is-a-multi-tenant-application">6.1. What Is a Multi-Tenant Application?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#modeling-tenants-in-stormpath">6.2. Modeling Tenants in Stormpath</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#multi-tenancy-and-the-stormpath-data-model">6.2.1 Multi-Tenancy and the Stormpath Data Model</a><ul>
@@ -812,7 +809,7 @@
 <span id="multitenancy"></span><h1>6. Multi-Tenancy with Stormpath<a class="headerlink" href="#multi-tenancy-with-stormpath" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="what-is-a-multi-tenant-application">
 <h2>6.1. What Is a Multi-Tenant Application?<a class="headerlink" href="#what-is-a-multi-tenant-application" title="Permalink to this headline">¶</a></h2>
-<p>Is your application a multi-tenant application? If you already know, then feel free to <a class="reference internal" href="#multitenancy-modeling"><span class="std std-ref">skip this section</span></a>. If you are unsure, there are two questions that might clarify the issue for you. The first pertains to your application architecture, and the second to your application&#8217;s relationship to its users.</p>
+<p>Is your application a multi-tenant application? If you already know, then feel free to <a class="reference internal" href="#multitenancy-modeling"><span>skip this section</span></a>. If you are unsure, there are two questions that might clarify the issue for you. The first pertains to your application architecture, and the second to your application&#8217;s relationship to its users.</p>
 <p><strong>Will your application&#8217;s customers share the same infrastructure?</strong></p>
 <p>The best way to understand this first aspect of multi-tenancy is by thinking of a condo: lots of residents making use of a shared building infrastructure while maintaining their own private and secure living areas. Similar to this, a <strong>multi-tenant application</strong> is a single application infrastructure that services multiple organization tenants simultaneously.</p>
 <p>For example, if you are creating your own cloud-based team chat application, you will have multiple organizations connecting to the same servers and databases, and using the same basic application code. The infrastructure, both hardware and software, will be shared among all of your customers.</p>
@@ -841,16 +838,16 @@
 <p><strong>Remember:</strong> Stormpath itself is a multi-tenant application, so your Stormpath Tenant resource represents your space within Stormpath.</p>
 <p class="last">Your application&#8217;s tenants are represented by Organization resources. Do not confuse the two! The Stormpath Tenant has almost no relevance to this multi-tenancy discussion, which is about your application&#8217;s tenants.</p>
 </div>
-<p>For more about user log-in, see <a class="reference internal" href="#multitenancy-auth-to-org"><span class="std std-ref">6.3. Authenticating an Account against an Organization</span></a> below.</p>
+<p>For more about user log-in, see <a class="reference internal" href="#multitenancy-auth-to-org"><span>6.3. Authenticating an Account against an Organization</span></a> below.</p>
 <p>For more information about the Organization resource, see:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#multitenancy-why-orgs"><span class="std std-ref">Why use Organizations?</span></a></li>
-<li><a class="reference internal" href="#multitenancy-organizations"><span class="std std-ref">Working With Organizations</span></a></li>
+<li><a class="reference internal" href="#multitenancy-why-orgs"><span>Why use Organizations?</span></a></li>
+<li><a class="reference internal" href="#multitenancy-organizations"><span>Working With Organizations</span></a></li>
 </ul>
 <p><strong>Directories</strong></p>
 <p>Directories are the the top-level Account Store for both Accounts and Groups. All of your Accounts will have to exist inside a Directory. Here is a very simple example of how an Application, Organization and Directory can relate to one another:</p>
 <div class="figure align-center" id="id2">
-<a class="reference internal image-reference" href="_images/simple_ERD_TpD.png"><img alt="Directory with Organization and Application" src="_images/simple_ERD_TpD.png" style="width: 191.07px; height: 326.37px;" /></a>
+<a class="reference internal image-reference" href="_images/simple_ERD_TpD.png"><img alt="Directory with Organization and Application" src="_images/simple_ERD_TpD.png" /></a>
 <p class="caption"><span class="caption-text"><em>Application + Organization + Directory</em></span></p>
 </div>
 <p>A few more relevant points about the Directory resource:</p>
@@ -860,15 +857,15 @@
 <li>Password and Account Creation Policies are defined on a per-Directory basis</li>
 <li>Emails are configured on a per-Directory basis</li>
 </ul>
-<p>Whether you choose to have one Directory for each Organization, or multiple Organizations within one Directory depends on your requirements. More on that distinction can be found <a class="reference internal" href="#multitenancy-strategies"><span class="std std-ref">below</span></a>.</p>
+<p>Whether you choose to have one Directory for each Organization, or multiple Organizations within one Directory depends on your requirements. More on that distinction can be found <a class="reference internal" href="#multitenancy-strategies"><span>below</span></a>.</p>
 <p><strong>Groups</strong></p>
 <p>Groups must always belong to a Directory, but they are otherwise very flexible. Specifically, they have two functions worth mentioning in this context.</p>
 <ul class="simple">
-<li>First of all, Groups can be the primary Account Store for your Organization: So you could have one Directory for your application, and then one Group for each tenant Organization. More on this <a class="reference internal" href="#multitenancy-strategies"><span class="std std-ref">below</span></a>.</li>
+<li>First of all, Groups can be the primary Account Store for your Organization: So you could have one Directory for your application, and then one Group for each tenant Organization. More on this <a class="reference internal" href="#multitenancy-strategies"><span>below</span></a>.</li>
 <li>Secondly, Groups can also be used to model user roles, like an &#8220;admin&#8221; user role. Below you can find a simple diagram with a Group being used both to model a tenant and a role:</li>
 </ul>
 <div class="figure align-center" id="id3">
-<a class="reference internal image-reference" href="_images/simple_ERD_TpG.png"><img alt="Group with Directory, Organization, and Application" src="_images/simple_ERD_TpG.png" style="width: 259.05px; height: 435.6px;" /></a>
+<a class="reference internal image-reference" href="_images/simple_ERD_TpG.png"><img alt="Group with Directory, Organization, and Application" src="_images/simple_ERD_TpG.png" /></a>
 <p class="caption"><span class="caption-text"><em>Application + Organization + Directory</em></span></p>
 </div>
 <div class="section" id="why-use-organizations">
@@ -886,8 +883,8 @@
 <li><strong>Can a user only sign-up for one tenant with a particular email address?</strong> (As opposed to being able to use the same email address to access multiple tenants)</li>
 <li><strong>Will your tenants all have different password strength requirements?</strong></li>
 </ul>
-<p>If the answer to either of these questions is &#8220;Yes&#8221;, then you will want to map each Organization to its own Directory. We will call this the <a class="reference internal" href="#multitenancy-dpo"><span class="std std-ref">&#8220;Directory per Organization&#8221; strategy</span></a>.</p>
-<p>If the answer to either of them is &#8220;No&#8221;, then you will want to have only one Directory, and map each Organization to its own Group. We will call this the <a class="reference internal" href="#multitenancy-gpo"><span class="std std-ref">&#8220;Group per Organization&#8221; strategy</span></a>.</p>
+<p>If the answer to either of these questions is &#8220;Yes&#8221;, then you will want to map each Organization to its own Directory. We will call this the <a class="reference internal" href="#multitenancy-dpo"><span>&#8220;Directory per Organization&#8221; strategy</span></a>.</p>
+<p>If the answer to either of them is &#8220;No&#8221;, then you will want to have only one Directory, and map each Organization to its own Group. We will call this the <a class="reference internal" href="#multitenancy-gpo"><span>&#8220;Group per Organization&#8221; strategy</span></a>.</p>
 <p>The reasoning here is very simple: because Stormpath stores certain things on the Directory resource, if you want each of your tenants to be able to customize things that are stored on the Directory level, then each one will need their own Directory!</p>
 <div class="section" id="strategy-1-directory-per-organization">
 <span id="multitenancy-dpo"></span><h4>Strategy 1: Directory per Organization<a class="headerlink" href="#strategy-1-directory-per-organization" title="Permalink to this headline">¶</a></h4>
@@ -904,7 +901,7 @@
 <h5>Directory per Organization Example<a class="headerlink" href="#directory-per-organization-example" title="Permalink to this headline">¶</a></h5>
 <p>Here is an example implementation that uses Directories to model tenants. It is important to note that this is just an example. Stormpath has a very flexible data model with intentionally versatile resources. If you&#8217;d like to discuss your particular implementation needs please <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">get in touch</a>!</p>
 <div class="figure align-center" id="id4">
-<a class="reference internal image-reference" href="_images/ERD_TpD.png"><img alt="Tenant per Directory" src="_images/ERD_TpD.png" style="width: 1248.3px; height: 996.3px;" /></a>
+<a class="reference internal image-reference" href="_images/ERD_TpD.png"><img alt="Tenant per Directory" src="_images/ERD_TpD.png" /></a>
 <p class="caption"><span class="caption-text"><em>Directory per Organization ERD.</em></span></p>
 </div>
 <div class="admonition note">
@@ -934,7 +931,7 @@
 <h5>Tenants as Groups Example<a class="headerlink" href="#tenants-as-groups-example" title="Permalink to this headline">¶</a></h5>
 <p>Below we have an example of an implementation that uses Groups to model tenants. This shows just one possible scenario, and if you&#8217;d like to discuss your particular implementation needs please <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">get in touch</a>!</p>
 <div class="figure align-center" id="id5">
-<a class="reference internal image-reference" href="_images/ERD_TpG.png"><img alt="Tenant per Group" src="_images/ERD_TpG.png" style="width: 1422.9px; height: 1064.7px;" /></a>
+<a class="reference internal image-reference" href="_images/ERD_TpG.png"><img alt="Tenant per Group" src="_images/ERD_TpG.png" /></a>
 <p class="caption"><span class="caption-text"><em>Tenants as Groups ERD</em></span></p>
 </div>
 <div class="admonition note">
@@ -1034,8 +1031,8 @@
 </div>
 <div class="section" id="registering-an-organization-as-an-account-store-for-an-application">
 <h4>Registering an Organization as an Account Store for an Application<a class="headerlink" href="#registering-an-organization-as-an-account-store-for-an-application" title="Permalink to this headline">¶</a></h4>
-<p>As described in <a class="reference internal" href="auth_n.html#authn"><span class="std std-ref">the Authentication chapter</span></a>, in order to allow users to log-in to an Application, you must map some kind of Account Store to it. One approach is to go one-by-one and map each Directory and/or Group to the Application. However, since we are building a multi-tenant app, and the Organization is itself an Account Store, we can just map our Organization resource to our Application resource. This would enable login for all of the Directories and Groups currently inside that Organization, as well as any we add in the future.</p>
-<p>To map an Organization to an Application, follow the steps you would for any Account Store, as described in <a class="reference internal" href="auth_n.html#create-asm"><span class="std std-ref">Mapping a new Account Store</span></a>.</p>
+<p>As described in <a class="reference internal" href="auth_n.html#authn"><span>the Authentication chapter</span></a>, in order to allow users to log-in to an Application, you must map some kind of Account Store to it. One approach is to go one-by-one and map each Directory and/or Group to the Application. However, since we are building a multi-tenant app, and the Organization is itself an Account Store, we can just map our Organization resource to our Application resource. This would enable login for all of the Directories and Groups currently inside that Organization, as well as any we add in the future.</p>
+<p>To map an Organization to an Application, follow the steps you would for any Account Store, as described in <a class="reference internal" href="auth_n.html#create-asm"><span>Mapping a new Account Store</span></a>.</p>
 </div>
 <div class="section" id="adding-an-account-to-an-organization">
 <span id="add-accnt-to-org"></span><h4>Adding an Account to an Organization<a class="headerlink" href="#adding-an-account-to-an-organization" title="Permalink to this headline">¶</a></h4>
@@ -1056,7 +1053,7 @@
 </div>
 <div class="section" id="authenticating-an-account-against-an-organization">
 <span id="multitenancy-auth-to-org"></span><h2>6.3. Authenticating an Account against an Organization<a class="headerlink" href="#authenticating-an-account-against-an-organization" title="Permalink to this headline">¶</a></h2>
-<p>Authenticating an Account against an Organization works essentially the same way as described in <a class="reference internal" href="auth_n.html#how-login-works"><span class="std std-ref">4.1.2. How Login Attempts Work in Stormpath</span></a>. The only difference is that adding the Organization resource allows for an additional level of Account Stores.</p>
+<p>Authenticating an Account against an Organization works essentially the same way as described in <a class="reference internal" href="auth_n.html#how-login-works"><span>4.1.2. How Login Attempts Work in Stormpath</span></a>. The only difference is that adding the Organization resource allows for an additional level of Account Stores.</p>
 <p>When a login attempt is made against an Application’s <code class="docutils literal"><span class="pre">/loginAttempts</span></code> endpoint without specifying an Account Store, Stormpath will iterate through the index of Account Stores mapped to the Application, in priority order. For every Account Store entry:</p>
 <ul class="simple">
 <li>If it is a Directory or Group, attempt to log in on that resource.</li>
@@ -1082,10 +1079,10 @@
 </pre></div>
 </div>
 <p>where <code class="docutils literal"><span class="pre">?</span></code> is the <code class="docutils literal"><span class="pre">tenant_id</span></code> value obtained by inspecting the request.</p>
-<p>So if an application needs this identifier with every request, how do you ensure it is transmitted to the application in the easiest possible way for your end users? The best method is to use the <a class="reference internal" href="reference.html#ref-organization"><span class="std std-ref">Organization resource</span></a> and it&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> attribute.</p>
+<p>So if an application needs this identifier with every request, how do you ensure it is transmitted to the application in the easiest possible way for your end users? The best method is to use the <a class="reference internal" href="reference.html#ref-organization"><span>Organization resource</span></a> and it&#8217;s <code class="docutils literal"><span class="pre">nameKey</span></code> attribute.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Stormpath&#8217;s ID Site supports multi-tenancy right out of the box. For more information about how to handle user login in a multi-tenant set-up with ID Site, please see <a class="reference internal" href="idsite.html#idsite-multitenancy"><span class="std std-ref">the ID Site chapter</span></a>.</p>
+<p class="last">Stormpath&#8217;s ID Site supports multi-tenancy right out of the box. For more information about how to handle user login in a multi-tenant set-up with ID Site, please see <a class="reference internal" href="idsite.html#idsite-multitenancy"><span>the ID Site chapter</span></a>.</p>
 </div>
 <p>We present here two possible solutions that use this <code class="docutils literal"><span class="pre">nameKey</span></code>. You may support both if you wish to give your customers convenience options.</p>
 <div class="section" id="sub-domain">
@@ -1121,7 +1118,7 @@
 </ul>
 <p>We advise that you auto-remember the login form tenant ID value so that field is pre-populated whenever a user returns to log in. Users don’t like having to remember and type that value in every time they log in.</p>
 <p>As already mentioned, it is strongly recommended that your tenant identifier be an Organization <code class="docutils literal"><span class="pre">nameKey</span></code>. Firstly because Organizations are the recommended resource to use to model multi-tenancy, but also because the <code class="docutils literal"><span class="pre">nameKey</span></code> attribute is unique and follows the DNS specification, which means that you could at any time adopt the Sub-Domain approach mentioned above.</p>
-<p>Stormpath supports quick implementation of all of these strategies with ID Site. For more information, please see <a class="reference internal" href="idsite.html#idsite-multitenancy"><span class="std std-ref">the ID Site chapter</span></a>.</p>
+<p>Stormpath supports quick implementation of all of these strategies with ID Site. For more information, please see <a class="reference internal" href="idsite.html#idsite-multitenancy"><span>the ID Site chapter</span></a>.</p>
 </div>
 </div>
 </div>
