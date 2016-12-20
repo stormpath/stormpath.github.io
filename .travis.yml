@@ -6,6 +6,7 @@ language: python
 python: 3.5
 install: pip install awscli
 script:
+- aws s3 rm s3://docs.stormpath.com --recursive > /dev/null 2>&1
 - aws s3 sync --exclude '.git/*' --exclude 'README.md' --exclude '.travis.yml' --exclude '.gitignore' --exclude '.htaccess' --exclude 'CNAME' --delete . s3://docs.stormpath.com > /dev/null 2>&1
 - aws configure set preview.cloudfront true
 - aws cloudfront create-invalidation --distribution-id E295LTTF931EVS --paths '/*'
