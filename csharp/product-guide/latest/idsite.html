@@ -34,9 +34,6 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Stormpath C# Documentation  documentation" href="index.html"/>
         <link rel="next" title="REST API Reference" href="reference.html"/>
         <link rel="prev" title="6. Multi-Tenancy with Stormpath" href="multitenancy.html"/> 
@@ -464,7 +461,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">7. Using ID Site</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="">7. Using ID Site</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#what-is-an-id-site">7.1. What is an ID Site?</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#why-should-i-use-stormpath-id-site">Why should I use Stormpath ID Site?</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#browser-support">Browser Support</a></li>
@@ -814,7 +811,7 @@
 <h2>7.1. What is an ID Site?<a class="headerlink" href="#what-is-an-id-site" title="Permalink to this headline">¶</a></h2>
 <p>Stormpath ID Site is a set of hosted and pre-built user interface screens that take care of common identity functions for your applications — log in, registration, and password reset. ID Site can be accessed via your own custom domain like <code class="docutils literal"><span class="pre">id.mydomain.com</span></code> and shared across multiple applications to create centralized authentication. It supports regular login to your Stormpath Directories, as well as Social and SAML login.</p>
 <div class="figure align-center" id="id1">
-<a class="reference internal image-reference" href="_images/id_site_screen.png"><img alt="ID Site Screenshot" src="_images/id_site_screen.png" style="width: 645.0px; height: 428.0px;" /></a>
+<a class="reference internal image-reference" href="_images/id_site_screen.png"><img alt="ID Site Screenshot" src="_images/id_site_screen.png" /></a>
 <p class="caption"><span class="caption-text"><em>An example ID Site</em></span></p>
 </div>
 <p>The screens and functionality of ID Site are completely customizable. You have full access to the source code of the ID Site screens so you can make simple changes like adding your own logo and changing CSS or more complex changes like adding fields, JavaScript code, screens, removing screens, and even changing how the screens behave.</p>
@@ -842,7 +839,7 @@
 <p>On the ID Site, the user will enter their data and complete the appropriate action, like login. ID Site will automatically detect any Workflow or Social Login configurations set in Stormpath and show the appropriate buttons, messaging, and behavior.</p>
 <p>After the user has logged-in successfully, they will be redirected back to your application’s Callback URI. For illustration purposes, this could be <code class="docutils literal"><span class="pre">https://imperialxchange.com/idSiteResult</span></code>. When the ID Site redirects back to your application, it will pass a secure JWT that represents the account in Stormpath. Using the Stormpath SDK, your application will handle the request to <code class="docutils literal"><span class="pre">/idSiteResult</span></code>, validate that the JWT is correct, and return an <code class="docutils literal"><span class="pre">ID</span> <span class="pre">Site</span> <span class="pre">Account</span> <span class="pre">Result</span></code>. The <code class="docutils literal"><span class="pre">ID</span> <span class="pre">Site</span> <span class="pre">Account</span> <span class="pre">Result</span></code> will include the Stormpath Account object and additional information, such as any state that was passed by your application or whether or not the Account returned is newly created.</p>
 <div class="figure align-center" id="id2">
-<a class="reference internal image-reference" href="_images/id_site_flow.png"><img alt="ID Site Flow" src="_images/id_site_flow.png" style="width: 855.0px; height: 518.0px;" /></a>
+<a class="reference internal image-reference" href="_images/id_site_flow.png"><img alt="ID Site Flow" src="_images/id_site_flow.png" /></a>
 <p class="caption"><span class="caption-text"><em>The ID Site Flow</em></span></p>
 </div>
 </div>
@@ -888,7 +885,7 @@
 <div class="section" id="step-2-handling-the-callback-to-your-application-from-id-site">
 <h3>Step 2: Handling the Callback to your Application from ID Site<a class="headerlink" href="#step-2-handling-the-callback-to-your-application-from-id-site" title="Permalink to this headline">¶</a></h3>
 <p>Once the user signs up or logs in to your application, they will be redirected back to your application&#8217;s configured Callback URI that was set in the JWT. In addition to the Callback URI, ID Site will include a <code class="docutils literal"><span class="pre">jwtResponse</span></code> parameter in the query. For example, if the specified Callback URI is <code class="docutils literal"><span class="pre">https://yourapp.com/dashboard</span></code> then the user will be redirected to:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>https://yourapp.com/dashboard?jwtResponse={GENERATED_ID_SITE_ASSERTION_JWT}
+<div class="highlight-python"><div class="highlight"><pre><span></span>https://yourapp.com/dashboard?jwtResponse={GENERATED_ID_SITE_ASSERTION_JWT}
 </pre></div>
 </div>
 <p>The <code class="docutils literal"><span class="pre">jwtResponse</span></code> represents a JWT that provides a signed security assertion about who the user is and what they did on ID Site.</p>
@@ -915,9 +912,9 @@
 <p>In some cases you may wish to exchange the ID Site assertion (JWT) for a Stormpath OAuth 2.0 token.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">For background information, please see <a class="reference internal" href="auth_n.html#token-authn"><span class="std std-ref">4.2. How Token-Based Authentication Works</span></a>.</p>
+<p class="last">For background information, please see <a class="reference internal" href="auth_n.html#token-authn"><span>4.2. How Token-Based Authentication Works</span></a>.</p>
 </div>
-<p>In this situation, after the user has been authenticated via ID Site, a developer may want to control their authorization with an OAuth 2.0 Token. This is done by passing the JWT similar to the way we passed the user&#8217;s credentials as described in <a class="reference internal" href="auth_n.html#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>. The difference is that instead of using the <code class="docutils literal"><span class="pre">password</span></code> grant type and passing credentials, we will use the <code class="docutils literal"><span class="pre">stormpath_token</span></code> type and pass the JWT we got from ID Site.</p>
+<p>In this situation, after the user has been authenticated via ID Site, a developer may want to control their authorization with an OAuth 2.0 Token. This is done by passing the JWT similar to the way we passed the user&#8217;s credentials as described in <a class="reference internal" href="auth_n.html#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token</span></a>. The difference is that instead of using the <code class="docutils literal"><span class="pre">password</span></code> grant type and passing credentials, we will use the <code class="docutils literal"><span class="pre">stormpath_token</span></code> type and pass the JWT we got from ID Site.</p>
 <p>Stormpath will validate the JWT (i.e. ensure that it has not been tampered with, is not expired, and the Account that it&#8217;s associated with is still valid) and then return an OAuth 2.0 Access Token:</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">jwt</span> <span class="p">=</span> <span class="n">incoming_uri</span><span class="p">.</span><span class="n">Split</span><span class="p">(</span><span class="sc">&#39;=&#39;</span><span class="p">)[</span><span class="m">1</span><span class="p">];</span>
 
@@ -930,7 +927,7 @@
     <span class="p">.</span><span class="n">AuthenticateAsync</span><span class="p">(</span><span class="n">idSiteTokenExchangeRequest</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>For more information about Stormpath&#8217;s OAuth 2.0 tokens, please see <a class="reference internal" href="auth_n.html#generate-oauth-token"><span class="std std-ref">Generating an OAuth 2.0 Access Token</span></a>.</p>
+<p>For more information about Stormpath&#8217;s OAuth 2.0 tokens, please see <a class="reference internal" href="auth_n.html#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token</span></a>.</p>
 </div>
 </div>
 <div class="section" id="step-3-optional-logging-out-of-id-site">
@@ -956,7 +953,7 @@
 </div>
 <div class="section" id="resetting-your-password-with-id-site">
 <span id="idsite-password-reset"></span><h3>Resetting Your Password with ID Site<a class="headerlink" href="#resetting-your-password-with-id-site" title="Permalink to this headline">¶</a></h3>
-<p>The Account Management chapter has an overview of <a class="reference internal" href="accnt_mgmt.html#password-reset-flow"><span class="std std-ref">Password Reset</span></a> in Stormpath. In that flow, a user chooses to reset their password, then receives an email with a link to a page on your application that allows them to set a new password.</p>
+<p>The Account Management chapter has an overview of <a class="reference internal" href="accnt_mgmt.html#password-reset-flow"><span>Password Reset</span></a> in Stormpath. In that flow, a user chooses to reset their password, then receives an email with a link to a page on your application that allows them to set a new password.</p>
 <p>If you are using ID Site for login, then it stands to reason that you would want them to land on your ID Site for password reset as well. All you have to do is send the user to ID Site with a special path (<code class="docutils literal"><span class="pre">/#/reset</span></code>) and a claim containing the password reset token from the email link.</p>
 <p>The password token should be pulled out of the request URL (the <code class="docutils literal"><span class="pre">sptoken=</span></code> parameter). Then, the path and token can be supplied when building the ID Site redirect URL:</p>
 <div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">logoutUrl</span> <span class="p">=</span> <span class="n">app</span><span class="p">.</span><span class="n">NewIdSiteUrlBuilder</span><span class="p">()</span>
@@ -971,20 +968,20 @@
 </div>
 <div class="section" id="using-id-site-for-multi-tenancy">
 <span id="idsite-multitenancy"></span><h2>7.5. Using ID Site for Multi-tenancy<a class="headerlink" href="#using-id-site-for-multi-tenancy" title="Permalink to this headline">¶</a></h2>
-<p>If you are <a class="reference internal" href="multitenancy.html#create-org"><span class="std std-ref">using Organizations to model multi-tenancy</span></a>, then you will want to map these as Account Stores for your Application.</p>
-<p>From that point, ID Site is able to handle either of the multi-tenant user routing methods described in <a class="reference internal" href="multitenancy.html#multitenancy-routing-users"><span class="std std-ref">the Multi-tenancy Chapter</span></a>.</p>
+<p>If you are <a class="reference internal" href="multitenancy.html#create-org"><span>using Organizations to model multi-tenancy</span></a>, then you will want to map these as Account Stores for your Application.</p>
+<p>From that point, ID Site is able to handle either of the multi-tenant user routing methods described in <a class="reference internal" href="multitenancy.html#multitenancy-routing-users"><span>the Multi-tenancy Chapter</span></a>.</p>
 <p>There are a few methods on <code class="docutils literal"><span class="pre">IIdSiteUrlBuilder</span></code> that you can use to implement your particular multi-tenancy strategy:</p>
 <p><strong>Organization nameKey</strong></p>
 <p><code class="docutils literal"><span class="pre">SetOrganizationNameKey</span></code>: Allows you to specify an Organization&#8217;s <code class="docutils literal"><span class="pre">namekey</span></code>. The user is sent to the ID Site for that Organization, and is forced to log in to that Organization.</p>
 <p><strong>Show Organization Field</strong></p>
 <p><code class="docutils literal"><span class="pre">SetShowOrganizationField</span></code>: Toggles the &#8220;Organization&#8221; field on and off on ID Site. Used on its own, it will allow the user to specify the Organization that they would like to log in to.</p>
 <div class="figure align-center" id="id5">
-<a class="reference internal image-reference" href="_images/id_site_sof_empty.png"><img alt="ID Site with sof toggled on" src="_images/id_site_sof_empty.png" style="width: 632.0px; height: 473.0px;" /></a>
+<a class="reference internal image-reference" href="_images/id_site_sof_empty.png"><img alt="ID Site with sof toggled on" src="_images/id_site_sof_empty.png" /></a>
 <p class="caption"><span class="caption-text"><em>ID Site with Organization field on and prepopulated</em></span></p>
 </div>
 <p>If combined with <code class="docutils literal"><span class="pre">SetOrganizationNameKey</span></code>, this will pre-populate that field with the Organization&#8217;s name.</p>
 <div class="figure align-center" id="id6">
-<a class="reference internal image-reference" href="_images/id_site_sof_prepop.png"><img alt="ID Site with sof and onk toggled on" src="_images/id_site_sof_prepop.png" style="width: 633.0px; height: 478.0px;" /></a>
+<a class="reference internal image-reference" href="_images/id_site_sof_prepop.png"><img alt="ID Site with sof and onk toggled on" src="_images/id_site_sof_prepop.png" /></a>
 <p class="caption"><span class="caption-text"><em>ID Site with Organization field on and prepopulated</em></span></p>
 </div>
 <div class="admonition note">
@@ -998,11 +995,11 @@
 <p class="last">This functionality will only work with a custom domain that you&#8217;ve properly configured in ID Site as documented <a class="reference external" href="https://docs.stormpath.com/console/product-guide/latest/idsite.html#setting-your-own-custom-domain-name-and-ssl-certificate">here</a>. The claim will not work with the default domain assigned by Stormpath.</p>
 </div>
 <p>For example, if your ID Site configuration is <code class="docutils literal"><span class="pre">id.mydomain.com</span></code> and the Organization’s <code class="docutils literal"><span class="pre">nameKey</span></code> is <code class="docutils literal"><span class="pre">home-depot</span></code>, then the SSO endpoint will resolve the following URL:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>https://home-depot.id.mydomain.com/?jwt={GENERATED_JWT}
+<div class="highlight-python"><div class="highlight"><pre><span></span>https://home-depot.id.mydomain.com/?jwt={GENERATED_JWT}
 </pre></div>
 </div>
 <p>If you are using a custom domain, you must also make sure to put that domain in the list of Authorized Javascript Origin URLs. You can use the <code class="docutils literal"><span class="pre">*</span></code> wildcard for this. In the above example it would be:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">https</span><span class="p">:</span><span class="o">//*.</span><span class="n">id</span><span class="o">.</span><span class="n">mydomain</span><span class="o">.</span><span class="n">com</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span>https://*.id.mydomain.com
 </pre></div>
 </div>
 </div>
@@ -1015,7 +1012,7 @@
 <li>User is redirected to ID Site.</li>
 <li>User authenticates successfully on ID Site.</li>
 <li>ID Site redirects the user back to Application A with an ID Site Assertion for Application A.</li>
-<li>At this point you could (optionally) <a class="reference internal" href="#idsite-jwt-to-oauth"><span class="std std-ref">exchange the ID Site JWT for an OAuth token</span></a>.</li>
+<li>At this point you could (optionally) <a class="reference internal" href="#idsite-jwt-to-oauth"><span>exchange the ID Site JWT for an OAuth token</span></a>.</li>
 <li>User now goes to Application B while unauthenticated with that application and clicks on &#8220;Log in&#8221;.</li>
 <li>User is redirected to ID Site.</li>
 <li>ID Site detects the user&#8217;s authenticated session and redirects them back to Application B with an ID Site Assertion for Application B.</li>

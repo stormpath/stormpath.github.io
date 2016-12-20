@@ -34,9 +34,6 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Stormpath Python Documentation  documentation" href="index.html"/>
         <link rel="next" title="6. Multi-Tenancy with Stormpath" href="multitenancy.html"/>
         <link rel="prev" title="4. Authenticating Accounts with Stormpath" href="auth_n.html"/> 
@@ -410,7 +407,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">5. Authorization With Stormpath</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="">5. Authorization With Stormpath</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#what-is-authorization">5.1. What is Authorization?</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#simple-authorization">5.1.1. Simple Authorization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#permissions-based-authorization">5.1.2. Permissions-based Authorization</a></li>
@@ -827,22 +824,22 @@
 <p>From the perspective of a REST API, Stormpath only serves as the repository for authorization data. Authorization enforcement must happen on the client-side, and one of the many <a class="reference external" href="https://docs.stormpath.com/home/">Stormpath Integrations</a> can help you with this. In this section we will discuss how to model the authorization data which is extremely important to your overall security model.</p>
 <div class="section" id="how-to-use-groups-to-model-authorization-roles">
 <span id="role-groups"></span><h3>5.2.1. How to Use Groups to Model Authorization Roles<a class="headerlink" href="#how-to-use-groups-to-model-authorization-roles" title="Permalink to this headline">¶</a></h3>
-<p>The Group resource is central to many of the more advanced forms of authorization available with Stormpath. Among other things, you can use Groups for things like <a class="reference internal" href="accnt_mgmt.html#hierarchy-groups"><span class="std std-ref">modelling hierarchies</span></a>, as well as creating user roles that span every organization that is using your application.</p>
+<p>The Group resource is central to many of the more advanced forms of authorization available with Stormpath. Among other things, you can use Groups for things like <a class="reference internal" href="accnt_mgmt.html#hierarchy-groups"><span>modelling hierarchies</span></a>, as well as creating user roles that span every organization that is using your application.</p>
 <p>As we have already said, you can think of Groups as labels applied to Accounts via the GroupMembership resource. They can be used to organize users, like having all Accounts belonging to users from Tatooine associated with a &#8220;Tatooine&#8221; user Group resource. However, much in the same way that a label can be used to define an officer&#8217;s rank (and thereby what he is authorized to do), Groups can also be used to model &#8220;roles&#8221; in Stormpath for the purposes of role-based access control. If we associate an Account with a certain role Group, then that Account will have all the authorizations defined for that Group. Moreover, if an Account is associated with multiple Groups then it will inherit authorization from all of them.</p>
 <p>Note that when we say &#8220;user Group&#8221; and &#8220;role Group&#8221; we are not discussing two different types of Group resources here, but just pointing out that the Group resource has multiple applications. So that &#8220;Tatooine&#8221; Group could be used to organize all Accounts for users residing on Tatooine, but it could also come with some sort of authorization permissions associated with it as well. A more common scenario would be having a Group called  &#8220;administrators&#8221;, and that could be used to organize everyone with the permissions required for an administrator in your application.</p>
 <p>Also roles do not require you to use permissions-based authorization. You can still include checks in your code along the lines of <code class="docutils literal"><span class="pre">if</span> <span class="pre">(user.group(&quot;authRole&quot;)</span> <span class="pre">{...</span></code>.</p>
 <p>Now that we have some understanding of authorization roles in Stormpath, we can discussion another powerful use of Stormpath&#8217;s flexible data model.</p>
 <div class="section" id="application-wide-roles">
 <span id="app-wide-roles"></span><h4>Application-Wide Roles<a class="headerlink" href="#application-wide-roles" title="Permalink to this headline">¶</a></h4>
-<p>In a multi-tenant SaaS application, it is easy to imagine a scenario where you might want to have user Accounts segregated based upon the tenant that they belong to, while at the same time defining authorization based on broader, application-wide roles. In Stormpath, we recommended that you model every tenant that uses your Application using the <strong>Organization</strong> resource. The Organization resource is a container for Directory and Group resources that makes it easier to model user bases with multiple tenants. For more information about this, please see the <a class="reference internal" href="multitenancy.html#multitenancy"><span class="std std-ref">multi-tenancy chapter</span></a>.</p>
+<p>In a multi-tenant SaaS application, it is easy to imagine a scenario where you might want to have user Accounts segregated based upon the tenant that they belong to, while at the same time defining authorization based on broader, application-wide roles. In Stormpath, we recommended that you model every tenant that uses your Application using the <strong>Organization</strong> resource. The Organization resource is a container for Directory and Group resources that makes it easier to model user bases with multiple tenants. For more information about this, please see the <a class="reference internal" href="multitenancy.html#multitenancy"><span>multi-tenancy chapter</span></a>.</p>
 <p>Alongside these Organizations and their Account Stores, it is also possible to define application-wide Groups that allow for roles that span across Organizations, regardless of which tenant a user belongs to. We can illustrate this with an example.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This just one possible way of modeling a multi-tenant app with application-wide roles. Your approach may vary. If you need help with modeling your user base, feel free to contact us at <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a> and we will help as best as we can.</p>
 </div>
-<p>Specifically, we will use the Tenant-per-Group example from <a class="reference internal" href="multitenancy.html#multitenancy-strategies"><span class="std std-ref">the Multi-tenancy chapter</span></a>.</p>
+<p>Specifically, we will use the Tenant-per-Group example from <a class="reference internal" href="multitenancy.html#multitenancy-strategies"><span>the Multi-tenancy chapter</span></a>.</p>
 <div class="figure align-center" id="id3">
-<a class="reference internal image-reference" href="_images/ERD_TpG.png"><img alt="A multi-tenant implementation" src="_images/ERD_TpG.png" style="width: 1581.0px; height: 1183.0px;" /></a>
+<a class="reference internal image-reference" href="_images/ERD_TpG.png"><img alt="A multi-tenant implementation" src="_images/ERD_TpG.png" /></a>
 <p class="caption"><span class="caption-text"><em>An example multi-tenant application</em></span></p>
 </div>
 <p>To recap: The &#8220;Lightning Banking&#8221; application must support multiple tenants for each of the bank&#8217;s subsidiaries (&#8220;Bank of A&#8221;, &#8220;Bank of B&#8221;, etc), each modeled as an Organization resource.</p>
@@ -851,7 +848,7 @@
 <p>Now our banking application has roles that we want applied across all of its tenants, such as &#8220;User&#8221; and &#8220;Application Administrator&#8221;. Modeling these can be accomplished by creating Groups for them, and then associating the appropriate Accounts with them. Voila, application-wide roles.</p>
 <p>So Claire is a customer at the Bank of A, and is associated with the &#8220;Bank of A&#8221; tenant Group. But she is also just a regular user, so she is also associated with the &#8220;User&#8221; role Group. We have a separate user Esther, who is a customer of Bank of B. She is associated with the Bank of B tenant Group, but because she has the same role as Claire, she is associated with the same role Group.</p>
 <p>The actual authorization checks that you do here are irrelevant, so you can still use what we have called &#8220;simple authorization&#8221; with these roles, or you can use permission-based authorization checks.</p>
-<p>More information about the APIs that allow you to create, retrieve and search an Application&#8217;s Groups can be found in the the <a class="reference internal" href="accnt_mgmt.html#group-mgmt"><span class="std std-ref">Account Management section</span></a>, while more information about multi-Tenancy can be found <a class="reference internal" href="multitenancy.html#multitenancy"><span class="std std-ref">in the multi-tenancy section</span></a>.</p>
+<p>More information about the APIs that allow you to create, retrieve and search an Application&#8217;s Groups can be found in the the <a class="reference internal" href="accnt_mgmt.html#group-mgmt"><span>Account Management section</span></a>, while more information about multi-Tenancy can be found <a class="reference internal" href="multitenancy.html#multitenancy"><span>in the multi-tenancy section</span></a>.</p>
 </div>
 </div>
 <div class="section" id="using-permissions">
@@ -879,10 +876,10 @@
 </pre></div>
 </div>
 <p>How is this flexibility possible? Custom Data.</p>
-<p>As mentioned earlier, Stormpath resources like Accounts and Groups are created along with a linked <a class="reference internal" href="reference.html#ref-customdata"><span class="std std-ref">customData</span></a> resource. This resource is very useful for implementing both Account permissions and role (AKA Group) permissions. Essentially, any user-level permissions are defined in a <code class="docutils literal"><span class="pre">customData</span></code> resource linked to a user Account, while any role-level permissions are defined in a <code class="docutils literal"><span class="pre">customData</span></code> resource linked to a role Group. This allows for Stormpath to model user-unique permissions as well as permissions inherited by virtue of a user having one (or more) roles.</p>
+<p>As mentioned earlier, Stormpath resources like Accounts and Groups are created along with a linked <a class="reference internal" href="reference.html#ref-customdata"><span>customData</span></a> resource. This resource is very useful for implementing both Account permissions and role (AKA Group) permissions. Essentially, any user-level permissions are defined in a <code class="docutils literal"><span class="pre">customData</span></code> resource linked to a user Account, while any role-level permissions are defined in a <code class="docutils literal"><span class="pre">customData</span></code> resource linked to a role Group. This allows for Stormpath to model user-unique permissions as well as permissions inherited by virtue of a user having one (or more) roles.</p>
 <p>Permissions in Stormpath can be modeled as an array inside the <code class="docutils literal"><span class="pre">customData</span></code> resource. They can be as simple as a key-value pair, or more complex objects. A user Account could have their user-unique permissions defined in a <code class="docutils literal"><span class="pre">customData</span></code> resource linked to from their Account. At the same time, their Account would be linked to the application-wide &#8220;Admin&#8221; Group which would have its own linked <code class="docutils literal"><span class="pre">customData</span></code> resource that would contain definitions of the permissions of all the users with the Admin role in your application.</p>
-<p>For more information about adding customData to a user, please see the <a class="reference internal" href="accnt_mgmt.html#add-user-customdata"><span class="std std-ref">Account Management section</span></a>.</p>
-<p>To find out all the different things you can do with customData please see the <a class="reference internal" href="accnt_mgmt.html#add-user-customdata"><span class="std std-ref">Account Custom Data Section</span></a>.</p>
+<p>For more information about adding customData to a user, please see the <a class="reference internal" href="accnt_mgmt.html#add-user-customdata"><span>Account Management section</span></a>.</p>
+<p>To find out all the different things you can do with customData please see the <a class="reference internal" href="accnt_mgmt.html#add-user-customdata"><span>Account Custom Data Section</span></a>.</p>
 </div>
 <div class="section" id="checking-user-and-role-permissions">
 <h4>Checking User and Role Permissions<a class="headerlink" href="#checking-user-and-role-permissions" title="Permalink to this headline">¶</a></h4>
