@@ -32,9 +32,6 @@
   
 
   
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="ASP.NET Library Guide  documentation" href="index.html"/>
         <link rel="next" title="Authorization" href="authorization.html"/>
         <link rel="prev" title="Authentication" href="authentication.html"/> 
@@ -158,7 +155,7 @@
 <li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth-2-0-password-grant">OAuth 2.0 password grant</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API authentication</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="">API authentication</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#issuing-api-keys">Issuing API keys</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#http-basic-authentication">HTTP Basic authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#oauth-2-0-client-credentials-grant">OAuth 2.0 client credentials grant</a></li>
@@ -321,7 +318,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/api_authentication.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/api_authentication.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -337,11 +334,11 @@
 <p>If you&#8217;re building an API service that other developers will consume, the Stormpath ASP.NET library provides two ways to authenticate users and machines:</p>
 <blockquote>
 <div><ul class="simple">
-<li>For simple services that will always use HTTPS, you can use <a class="reference internal" href="#http-basic"><span class="std std-ref">HTTP Basic authentication</span></a>.</li>
-<li>For services that require stronger security, you can use the <a class="reference internal" href="#oauth2-client-credentials-grant"><span class="std std-ref">OAuth 2.0 client credentials grant</span></a>.</li>
+<li>For simple services that will always use HTTPS, you can use <a class="reference internal" href="#http-basic"><span>HTTP Basic authentication</span></a>.</li>
+<li>For services that require stronger security, you can use the <a class="reference internal" href="#oauth2-client-credentials-grant"><span>OAuth 2.0 client credentials grant</span></a>.</li>
 </ul>
 </div></blockquote>
-<p>If you&#8217;re building a web or mobile application, head over to <a class="reference internal" href="authentication.html#authentication"><span class="std std-ref">Authentication</span></a> instead.</p>
+<p>If you&#8217;re building a web or mobile application, head over to <a class="reference internal" href="authentication.html#authentication"><span>Authentication</span></a> instead.</p>
 <div class="section" id="issuing-api-keys">
 <span id="id2"></span><h2>Issuing API keys<a class="headerlink" href="#issuing-api-keys" title="Permalink to this headline">¶</a></h2>
 <p>Regardless of the authentication mechanism you choose, you&#8217;ll need a way to distribute API keys to your users.</p>
@@ -360,22 +357,22 @@
 <p>Basic authentication is a simple way for your users to make authenticated calls to your API service. The API key ID and secret are included with every request, which makes calling the API very straightforward.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">Because the API credentials are sent in the clear on every request, it is important to <strong>always</strong> use TLS (HTTPS) when building a service that uses Basic authentication. Services that need stronger security should use the <a class="reference internal" href="#oauth2-client-credentials-grant"><span class="std std-ref">OAuth 2.0 client credentials grant</span></a> instead.</p>
+<p class="last">Because the API credentials are sent in the clear on every request, it is important to <strong>always</strong> use TLS (HTTPS) when building a service that uses Basic authentication. Services that need stronger security should use the <a class="reference internal" href="#oauth2-client-credentials-grant"><span>OAuth 2.0 client credentials grant</span></a> instead.</p>
 </div>
-<p>The Stormpath ASP.NET library supports Basic authentication out-of-the-box. Once your user has an <a class="reference internal" href="#issuing-api-keys"><span class="std std-ref">API key</span></a>, they can use it to authenticate against your API by constructing the appropriate HTTP <code class="docutils literal"><span class="pre">Authorization</span></code> header:</p>
+<p>The Stormpath ASP.NET library supports Basic authentication out-of-the-box. Once your user has an <a class="reference internal" href="#issuing-api-keys"><span>API key</span></a>, they can use it to authenticate against your API by constructing the appropriate HTTP <code class="docutils literal"><span class="pre">Authorization</span></code> header:</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span>Authorization: Basic &lt;base64UrlSafe(apiKeyId + &quot;:&quot; + apiKeySecret)&gt;
 </pre></div>
 </div>
 <p>If the API key ID and secret are valid, the Stormpath middleware will authenticate the request, and the user will be authorized to access protected endpoints.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">See the <a class="reference internal" href="authorization.html#authorization"><span class="std std-ref">Authorization</span></a> section for details on requiring authentication for controllers and routes.</p>
+<p class="last">See the <a class="reference internal" href="authorization.html#authorization"><span>Authorization</span></a> section for details on requiring authentication for controllers and routes.</p>
 </div>
 </div>
 <div class="section" id="oauth-2-0-client-credentials-grant">
 <span id="oauth2-client-credentials-grant"></span><h2>OAuth 2.0 client credentials grant<a class="headerlink" href="#oauth-2-0-client-credentials-grant" title="Permalink to this headline">¶</a></h2>
 <p>Instead of using Basic authentication and sending the API credentials with every request, you can require your users to exchange their API credentials for an OAuth 2.0 access token. This flow is slightly more complicated, but is more secure because the credentials are only sent over the wire once.</p>
-<p>Once your user has an <a class="reference internal" href="#issuing-api-keys"><span class="std std-ref">API key</span></a>, they will need to POST to the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint to obtain an access token:</p>
+<p>Once your user has an <a class="reference internal" href="#issuing-api-keys"><span>API key</span></a>, they will need to POST to the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint to obtain an access token:</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span>POST /oauth/token
 Content-Type: application/x-www-form-urlencoded
 Authorization: Basic &lt;base64UrlSafe(apiKeyId + &quot;:&quot; + apiKeySecret)&gt;
@@ -407,9 +404,9 @@ Authorization: Bearer eyJ0eXAiOiJKV1QiL...
 <p>If the access token is valid and has not expired, the Stormpath middleware will authenticate the request, and the user will be authorized to access protected endpoints.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">See the <a class="reference internal" href="authorization.html#authorization"><span class="std std-ref">Authorization</span></a> section for details on requiring authentication for controllers and routes.</p>
+<p class="last">See the <a class="reference internal" href="authorization.html#authorization"><span>Authorization</span></a> section for details on requiring authentication for controllers and routes.</p>
 </div>
-<p>The client credentials grant type is enabled by default. You can disable it, or change the access token TTL, by changing the <a class="reference internal" href="oauth2.html#oauth2-config-options"><span class="std std-ref">OAuth 2.0 route configuration</span></a>.</p>
+<p>The client credentials grant type is enabled by default. You can disable it, or change the access token TTL, by changing the <a class="reference internal" href="oauth2.html#oauth2-config-options"><span>OAuth 2.0 route configuration</span></a>.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The client credentials flow requires the API credentials to be sent in the clear at the start of the session, so using TLS (HTTPS) is still important.</p>

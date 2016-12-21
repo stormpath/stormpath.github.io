@@ -32,9 +32,6 @@
   
 
   
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="ASP.NET Core Library Guide  documentation" href="index.html"/>
         <link rel="next" title="API authentication" href="api_authentication.html"/>
         <link rel="prev" title="Cross-origin requests" href="cors.html"/> 
@@ -153,7 +150,7 @@
 <li class="toctree-l2"><a class="reference internal" href="cors.html#configuring-the-pipeline">Configuring the pipeline</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Authentication</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Authentication</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#cookie-authentication">Cookie authentication</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#oauth-2-0-password-grant">OAuth 2.0 password grant</a></li>
 </ul>
@@ -321,7 +318,7 @@
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/authentication.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/authentication.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -339,11 +336,11 @@ your choices look like this:</p>
 <blockquote>
 <div><ul class="simple">
 <li>If you are building a traditional web app or single page application, you
-should use <a class="reference internal" href="#cookie-authentication"><span class="std std-ref">Cookie authentication</span></a>.</li>
-<li>If you are building a mobile application, you should use the <a class="reference internal" href="#oauth2-password-grant"><span class="std std-ref">OAuth 2.0 password grant</span></a>.</li>
+should use <a class="reference internal" href="#cookie-authentication"><span>Cookie authentication</span></a>.</li>
+<li>If you are building a mobile application, you should use the <a class="reference internal" href="#oauth2-password-grant"><span>OAuth 2.0 password grant</span></a>.</li>
 </ul>
 </div></blockquote>
-<p>If you&#8217;re building an API service that other developers will use, head over to <a class="reference internal" href="api_authentication.html#api-authentication"><span class="std std-ref">API authentication</span></a> instead.</p>
+<p>If you&#8217;re building an API service that other developers will use, head over to <a class="reference internal" href="api_authentication.html#api-authentication"><span>API authentication</span></a> instead.</p>
 <div class="section" id="cookie-authentication">
 <span id="id2"></span><h2>Cookie authentication<a class="headerlink" href="#cookie-authentication" title="Permalink to this headline">¶</a></h2>
 <p>If you are building a web application that serves traditional HTML pages, or a
@@ -352,9 +349,9 @@ Single Page Application (such as Angular/React), this library will handle cookie
 <p>Behind the scenes, the Stormpath middleware creates OAuth 2.0 Access and Refresh Tokens for the user (via the Stormpath API), and stores them in secure, HTTP-only cookies. After the user has logged in, these cookies will be supplied on every request. The Stormpath middleware will assert that the Access Token is valid.  If the Access Token is expired, it will attempt to refresh it with the Refresh Token.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">By default, the cookie names are <code class="docutils literal"><span class="pre">access_token</span></code> and <code class="docutils literal"><span class="pre">refresh_token</span></code>. See <a class="reference internal" href="#configuring-cookie-flags"><span class="std std-ref">Configuring cookie flags</span></a> if you want to change the defaults.</p>
+<p class="last">By default, the cookie names are <code class="docutils literal"><span class="pre">access_token</span></code> and <code class="docutils literal"><span class="pre">refresh_token</span></code>. See <a class="reference internal" href="#configuring-cookie-flags"><span>Configuring cookie flags</span></a> if you want to change the defaults.</p>
 </div>
-<p>This all works out of the box; you don&#8217;t have to write any code! If you want to restrict parts of your application to logged-in users only, see <a class="reference internal" href="authorization.html#requiring-login"><span class="std std-ref">Requiring login</span></a> in the Authorization section.</p>
+<p>This all works out of the box; you don&#8217;t have to write any code! If you want to restrict parts of your application to logged-in users only, see <a class="reference internal" href="authorization.html#requiring-login"><span>Requiring login</span></a> in the Authorization section.</p>
 <div class="section" id="setting-token-expiration-time">
 <span id="id3"></span><h3>Setting token expiration time<a class="headerlink" href="#setting-token-expiration-time" title="Permalink to this headline">¶</a></h3>
 <p>If you need to change the expiration time of the Access Token or Refresh Token, log in to the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a> and navigate to the OAuth Policy of your Stormpath Application. You can configure the time-to-live (TTL) for both Access and Refresh Tokens.</p>
@@ -362,7 +359,7 @@ Single Page Application (such as Angular/React), this library will handle cookie
 <div class="section" id="configuring-cookie-flags">
 <span id="id4"></span><h3>Configuring cookie flags<a class="headerlink" href="#configuring-cookie-flags" title="Permalink to this headline">¶</a></h3>
 <p>This library creates two cookies, one for the Access Token and one for the
-Refresh Token. The cookie details are configurable via code or markup (see the <a class="reference internal" href="configuration.html#configuration"><span class="std std-ref">Configuration</span></a> section).</p>
+Refresh Token. The cookie details are configurable via code or markup (see the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section).</p>
 <p>The default cookie configuration (in YAML) is:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">accessTokenCookie</span><span class="p p-Indicator">:</span>
@@ -403,7 +400,7 @@ and Refresh Token cookies to make an authentication decision. The first step is 
 <p>With the <code class="docutils literal"><span class="pre">local</span></code> strategy, the middleware only checks the signature and expiration of
 the Access Token to determine whether it is valid.  It does not check whether the token has been revoked.</p>
 <p>If you want the ability to revoke Access Tokens, you&#8217;ll need to update your configuration to opt-in to the <code class="docutils literal"><span class="pre">stormpath</span></code> validation strategy. This will make a network call to the Stormpath API on every incoming request. If the Access Token has been revoked, or the Stormpath Account has been disabled or deleted, the Access Token will not be considered valid.</p>
-<p>The validation strategy can be changed via <a class="reference internal" href="configuration.html#configuration"><span class="std std-ref">Configuration</span></a>. The default configuration (in YAML) is:</p>
+<p>The validation strategy can be changed via <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a>. The default configuration (in YAML) is:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
   <span class="l l-Scalar l-Scalar-Plain">oauth2</span><span class="p p-Indicator">:</span>
     <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
@@ -456,12 +453,12 @@ grant_type=password
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">For details on how to configure the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint, see the <a class="reference internal" href="oauth2.html#oauth2"><span class="std std-ref">OAuth 2.0 API</span></a> section.</p>
+<p class="last">For details on how to configure the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint, see the <a class="reference internal" href="oauth2.html#oauth2"><span>OAuth 2.0 API</span></a> section.</p>
 </div>
 <p>Your mobile application should store the Access and Refresh Tokens in a secure location.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">By default the Access Token is valid for 1 hour, and the Refresh Token is valid for 60 days. You can configure this in the Stormpath Admin Console; see <a class="reference internal" href="#setting-token-expiration-time"><span class="std std-ref">Setting token expiration time</span></a>.</p>
+<p class="last">By default the Access Token is valid for 1 hour, and the Refresh Token is valid for 60 days. You can configure this in the Stormpath Admin Console; see <a class="reference internal" href="#setting-token-expiration-time"><span>Setting token expiration time</span></a>.</p>
 </div>
 <p>Each subsequent request the mobile application makes to your ASP.NET Core application should include the Access Token as a <code class="docutils literal"><span class="pre">Bearer</span></code> header:</p>
 <div class="highlight-none"><div class="highlight"><pre><span></span>GET /profile
@@ -470,7 +467,7 @@ Accept: application/json
 Authorization: Bearer eyJraWQiOiI2Nl...
 </pre></div>
 </div>
-<p>Incoming requests authenticated with Bearer authentication can be further authorized using the techniques described in the <a class="reference internal" href="authorization.html#authorization"><span class="std std-ref">Authorization</span></a> section.</p>
+<p>Incoming requests authenticated with Bearer authentication can be further authorized using the techniques described in the <a class="reference internal" href="authorization.html#authorization"><span>Authorization</span></a> section.</p>
 <div class="section" id="getting-a-new-access-token">
 <h3>Getting a new access token<a class="headerlink" href="#getting-a-new-access-token" title="Permalink to this headline">¶</a></h3>
 <p>When the Access Token expires, you can use the Refresh Token to obtain a new Access Token:</p>
