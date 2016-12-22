@@ -123,9 +123,9 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="">Configuration</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#loading-order">Loading order</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#required-settings">Required settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment variables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#markup-file-yaml-or-json">Markup file (YAML or JSON)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#api-credentials-file">API credentials file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#markup-file-yaml-or-json">Markup file (YAML or JSON)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#environment-variables">Environment variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#inline-options">Inline options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#default-features">Default features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#disabling-features">Disabling features</a></li>
@@ -335,15 +335,38 @@
 <p>The default configuration enables a lot of functionality by default, but you may want to customize the behavior of the library to suit the needs of your application.</p>
 <p>There are a few ways you can set these configuration options:</p>
 <ul class="simple">
-<li>Environment variables</li>
-<li>Markup file (YAML or JSON)</li>
-<li>API credentials file (<code class="docutils literal"><span class="pre">apiKey.properties</span></code>, used to set the Stormpath API Key and Secret)</li>
-<li>Inline options in code (supplied to the middleware constructor)</li>
+<li><a class="reference internal" href="#config-apikey"><span>API credentials file</span></a> (for the API key ID and secret only)</li>
+<li><a class="reference internal" href="#config-markup"><span>Markup file (YAML or JSON)</span></a></li>
+<li><a class="reference internal" href="#config-env"><span>Environment variables</span></a></li>
+<li><a class="reference internal" href="#config-inline"><span>Inline configuration in code</span></a> (supplied to the middleware constructor)</li>
 </ul>
 <div class="section" id="loading-order">
 <span id="config-loading-order"></span><h2>Loading order<a class="headerlink" href="#loading-order" title="Permalink to this headline">¶</a></h2>
-<p>These configuration methods are loaded in the order above. This means that values supplied via inline code will override any values supplied via a markup file for the same settings. Likewise, values supplied via a markup file will override values supplied via environment variables for the same settings.</p>
-<p>Any settings that are not specified using <strong>any</strong> method will fall back to the <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-config/blob/master/src/Stormpath.Configuration.Abstractions/Default.cs">Web Configuration Defaults</a>.</p>
+<p>These configuration sources are scanned and loaded in this order:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">apiKey.properties</span></code> file in the <code class="docutils literal"><span class="pre">~/.stormpath</span></code> directory <em>(see note below)</em></li>
+<li><code class="docutils literal"><span class="pre">stormpath.json</span></code> file in the <code class="docutils literal"><span class="pre">~/.stormpath</span></code> directory</li>
+<li><code class="docutils literal"><span class="pre">stormpath.yaml</span></code> file in the <code class="docutils literal"><span class="pre">~/.stormpath</span></code> directory</li>
+<li><code class="docutils literal"><span class="pre">apiKey.properties</span></code> file in the application base directory <em>(see note below)</em></li>
+<li><code class="docutils literal"><span class="pre">stormpath.json</span></code> file in the application base directory</li>
+<li><code class="docutils literal"><span class="pre">stormpath.yaml</span></code> file in the application base directory</li>
+<li>Environment variables</li>
+<li>Inline configuration in code</li>
+</ul>
+<p>This means that values supplied via inline code will override any values supplied via environment variables for the same settings. Likewise, values supplied via environment variables will override values supplied via a JSON or YAML file for the same settings.</p>
+<div class="section" id="stormpath-directory">
+<h3>.stormpath directory<a class="headerlink" href="#stormpath-directory" title="Permalink to this headline">¶</a></h3>
+<p>On Unix-like machines, the path <code class="docutils literal"><span class="pre">~/.stormpath/</span></code> is searched.</p>
+<p>On Windows machines, the path is <code class="docutils literal"><span class="pre">%HOMEDRIVE%%HOMEPATH%%\.stormpath\</span></code>. This is typically resolved to <code class="docutils literal"><span class="pre">C:\Users\&lt;username&gt;\.stormpath\</span></code>.</p>
+</div>
+<div class="section" id="application-base-directory">
+<h3>Application base directory<a class="headerlink" href="#application-base-directory" title="Permalink to this headline">¶</a></h3>
+<p>The application&#8217;s base directory is defined as the directory that <code class="docutils literal"><span class="pre">project.json</span></code> or <code class="docutils literal"><span class="pre">appsettings.json</span></code> resides in.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Any settings that are not specified using <strong>any</strong> method will fall back to the <a class="reference external" href="https://github.com/stormpath/stormpath-dotnet-config/blob/master/src/Stormpath.Configuration.Abstractions/Default.cs">Web Configuration Defaults</a>.</p>
+</div>
+</div>
 </div>
 <div class="section" id="required-settings">
 <h2>Required settings<a class="headerlink" href="#required-settings" title="Permalink to this headline">¶</a></h2>
@@ -356,40 +379,14 @@ the Stormpath middleware to initialize properly:</p>
 <p>Additionally, if you have more than one Application resource in your Stormpath tenant, either <code class="docutils literal"><span class="pre">stormpath.application.name</span></code> or <code class="docutils literal"><span class="pre">stormpath.application.href</span></code> must be set.</p>
 <p>If these values aren&#8217;t set (using one of the methods below), the Stormpath middleware component with throw an error on startup.</p>
 </div>
-<div class="section" id="environment-variables">
-<h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
-<p>Configuration options can be set in environment variables by formatting the key name with underscores. For example, <code class="docutils literal"><span class="pre">stormpath.client.apiKey.id</span></code> becomes <code class="docutils literal"><span class="pre">STORMPATH_CLIENT_APIKEY_ID</span></code>.</p>
-<div class="admonition tip">
-<p class="first admonition-title">Tip</p>
-<p class="last">It is a best practice to store confidential information in environment
-variables, to avoid hard-coding it into your application. We recommend you store your confidential Stormpath information (API credentials and application URL) in this way.</p>
-</div>
-<p>In a bash-like shell, you can set environment variables by running these commands:</p>
-<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_ID</span><span class="o">=</span>your_id_here
-<span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_SECRET</span><span class="o">=</span>your_secret_here
-<span class="nb">export</span> <span class="nv">STORMPATH_APPLICATION_HREF</span><span class="o">=</span>your_app_href
-</pre></div>
-</div>
-<p>On Windows, the commands are:</p>
-<div class="highlight-powershell"><div class="highlight"><pre><span></span><span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_ID</span> <span class="n">your_id_here</span>
-<span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_SECRET</span> <span class="n">your_secret_here</span>
-<span class="n">setx</span> <span class="n">STORMPATH_APPLICATION_HREF</span> <span class="n">your_app_href</span>
-</pre></div>
-</div>
-<p>Any configuration option can be set using environment variables. The above are just examples!</p>
+<div class="section" id="api-credentials-file">
+<span id="config-apikey"></span><h2>API credentials file<a class="headerlink" href="#api-credentials-file" title="Permalink to this headline">¶</a></h2>
+<p>The API Key ID (<code class="docutils literal"><span class="pre">stormpath.client.apiKey.id</span></code>) and API Key Secret (<code class="docutils literal"><span class="pre">stormpath.client.apiKey.secret</span></code>) can be set by placing the <code class="docutils literal"><span class="pre">apiKey.properties</span></code> generated by the Stormpath Admin Console file in one of the <a class="reference internal" href="#config-loading-order"><span>searched locations</span></a>.</p>
+<p>If you don&#8217;t opt to store the Stormpath API credentials in <a class="reference internal" href="#config-env"><span>environment variables</span></a>, this functionality makes it easy to download the <code class="docutils literal"><span class="pre">apiKey.properties</span></code> file from Stormpath and place it directly in one of these locations.</p>
 </div>
 <div class="section" id="markup-file-yaml-or-json">
 <span id="config-markup"></span><h2>Markup file (YAML or JSON)<a class="headerlink" href="#markup-file-yaml-or-json" title="Permalink to this headline">¶</a></h2>
-<p>Configuration options can also be set by placing a file called <code class="docutils literal"><span class="pre">stormpath.yaml</span></code> or <code class="docutils literal"><span class="pre">stormpath.json</span></code> in one of these locations:</p>
-<ul class="simple">
-<li><strong>Hidden .stormpath Directory</strong></li>
-</ul>
-<p>On Unix-like machines, the path <code class="docutils literal"><span class="pre">~/.stormpath/</span></code> is searched.</p>
-<p>On Windows machines, the path is <code class="docutils literal"><span class="pre">%HOMEDRIVE%%HOMEPATH%%\.stormpath</span></code>. This is typically resolved to <code class="docutils literal"><span class="pre">C:\Users\&lt;username&gt;\.stormpath</span></code>.</p>
-<ul class="simple">
-<li><strong>Application Base Directory</strong></li>
-</ul>
-<p>The application&#8217;s base directory is defined as the directory that <code class="docutils literal"><span class="pre">project.json</span></code> or <code class="docutils literal"><span class="pre">appsettings.json</span></code> resides in.</p>
+<p>Configuration options can also be set by placing a file called <code class="docutils literal"><span class="pre">stormpath.yaml</span></code> or <code class="docutils literal"><span class="pre">stormpath.json</span></code> in one of the <a class="reference internal" href="#config-loading-order"><span>searched locations</span></a>.</p>
 <p>For example, this <code class="docutils literal"><span class="pre">stormpath.yaml</span></code> file will disable the default <code class="docutils literal"><span class="pre">/register</span></code> and <code class="docutils literal"><span class="pre">/login</span></code> routes:</p>
 <div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="nn">---</span>
 <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
@@ -415,20 +412,33 @@ variables, to avoid hard-coding it into your application. We recommend you store
 <p>In both cases, the <code class="docutils literal"><span class="pre">stormpath</span></code> root node is implied and should be omitted.</p>
 <div class="admonition tip">
 <p class="first admonition-title">Tip</p>
-<p class="last">You can also refer to the <a class="reference external" href="https://github.com/stormpath/stormpath-framework-spec/blob/master/example-config.yaml">Example Stormpath configuration</a> to see the entire default library configuration in YAML.</p>
+<p class="last">You can refer to the <a class="reference external" href="https://github.com/stormpath/stormpath-framework-spec/blob/master/example-config.yaml">Example Stormpath configuration</a> to see the entire default library configuration in YAML.</p>
 </div>
 </div>
-<div class="section" id="api-credentials-file">
-<h2>API credentials file<a class="headerlink" href="#api-credentials-file" title="Permalink to this headline">¶</a></h2>
-<p>The API Key ID (<code class="docutils literal"><span class="pre">stormpath.client.apiKey.id</span></code>) and API Key Secret (<code class="docutils literal"><span class="pre">stormpath.client.apiKey.secret</span></code>) can be set by placing the <code class="docutils literal"><span class="pre">apiKey.properties</span></code> generated by the Stormpath Admin Console file in one of these locations:</p>
-<ul class="simple">
-<li><code class="docutils literal"><span class="pre">~/.stormpath/</span></code> (where <code class="docutils literal"><span class="pre">~</span></code> represents the user&#8217;s home directory)</li>
-<li>The application&#8217;s base directory</li>
-</ul>
-<p>If you don&#8217;t opt to store the Stormpath API credentials in environment variables, this functionality makes it easy to download the <code class="docutils literal"><span class="pre">apiKey.properties</span></code> file from Stormpath and place it directly in one of these locations.</p>
+<div class="section" id="environment-variables">
+<span id="config-env"></span><h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
+<p>Configuration options can be set in environment variables by formatting the key name with underscores. For example, <code class="docutils literal"><span class="pre">stormpath.client.apiKey.id</span></code> becomes <code class="docutils literal"><span class="pre">STORMPATH_CLIENT_APIKEY_ID</span></code>.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">It is a best practice to store confidential information in environment
+variables, to avoid hard-coding it into your application. We recommend you store your confidential Stormpath information (API credentials and application URL) in this way.</p>
+</div>
+<p>In a bash-like shell, you can set environment variables by running these commands:</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_ID</span><span class="o">=</span>your_id_here
+<span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_SECRET</span><span class="o">=</span>your_secret_here
+<span class="nb">export</span> <span class="nv">STORMPATH_APPLICATION_HREF</span><span class="o">=</span>your_app_href
+</pre></div>
+</div>
+<p>On Windows, the commands are:</p>
+<div class="highlight-powershell"><div class="highlight"><pre><span></span><span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_ID</span> <span class="n">your_id_here</span>
+<span class="n">setx</span> <span class="n">STORMPATH_CLIENT_APIKEY_SECRET</span> <span class="n">your_secret_here</span>
+<span class="n">setx</span> <span class="n">STORMPATH_APPLICATION_HREF</span> <span class="n">your_app_href</span>
+</pre></div>
+</div>
+<p>Any configuration option can be set using environment variables. The above are just examples!</p>
 </div>
 <div class="section" id="inline-options">
-<h2>Inline options<a class="headerlink" href="#inline-options" title="Permalink to this headline">¶</a></h2>
+<span id="config-inline"></span><h2>Inline options<a class="headerlink" href="#inline-options" title="Permalink to this headline">¶</a></h2>
 <p>If you wish to define your configuration in code, you can do so when initializing the middleware.</p>
 <p>Values set using inline code have the highest precedence and will override any values set with other methods, such as a markup file. (See <a class="reference internal" href="#config-loading-order"><span>Loading order</span></a>.)</p>
 <p>The middleware accepts a parameter of type <code class="docutils literal"><span class="pre">StormpathConfiguration</span></code> (found in <code class="docutils literal"><span class="pre">Stormpath.Configuration.Abstractions</span></code>):</p>
