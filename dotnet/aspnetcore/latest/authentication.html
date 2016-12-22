@@ -1,0 +1,594 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Authentication &mdash; ASP.NET Core Library Guide  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="ASP.NET Core Library Guide  documentation" href="index.html"/>
+        <link rel="next" title="API authentication" href="api_authentication.html"/>
+        <link rel="prev" title="Cross-origin requests" href="cors.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+  
+  <script src="https://cdn.optimizely.com/js/225847041.js"></script>
+
+  
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '986262161469311');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  /></noscript>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NQZZFW');</script>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> ASP.NET Core Library Guide
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-does-this-library-do">What does this library do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#who-should-use-stormpath">Who should use Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-a-stormpath-account">Create a Stormpath account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-an-api-key-pair">Create an API Key pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#find-your-stormpath-application">Find your Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#example-projects">Example projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-a-new-project">Create a new project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#install-the-library">Install the library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#initialize-the-middleware">Initialize the middleware</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#loading-order">Loading order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#required-settings">Required settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#api-credentials-file">API credentials file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#markup-file-yaml-or-json">Markup file (YAML or JSON)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#inline-options">Inline options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#default-features">Default features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#disabling-features">Disabling features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#disabling-content-types">Disabling content types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#specifying-the-server-uri">Specifying the server URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#stormpath-client-options">Stormpath Client options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request_context.html">Request context</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request_context.html#stormpath-client">Stormpath Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request_context.html#stormpath-application">Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request_context.html#current-account">Current Account</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="using_the_sdk.html">Using the Stormpath SDK</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="using_the_sdk.html#tasks-and-cancellation">Tasks and Cancellation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_the_sdk.html#making-synchronous-calls">Making synchronous calls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_the_sdk.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cors.html">Cross-origin requests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cors.html#configuring-the-pipeline">Configuring the pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cookie-authentication">Cookie authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#oauth-2-0-password-grant">OAuth 2.0 password grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_authentication.html">API authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#issuing-api-keys">Issuing API keys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#http-basic-authentication">HTTP Basic authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#oauth-2-0-client-credentials-grant">OAuth 2.0 client credentials grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authorization.html">Authorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#requiring-login">Requiring login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#groups-and-roles">Groups and roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#fine-grained-permissions">Fine-grained permissions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="id_site.html">ID Site</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="id_site.html#who-should-use-id-site">Who should use ID Site?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="id_site.html#how-does-it-work">How does it work?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">View templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#default-views">Default views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#custom-views">Custom views</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="oauth2.html">OAuth 2.0 API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="oauth2.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oauth2.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="me_api.html">Current user API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#using-the-endpoint">Using the endpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#link-expansion">Link expansion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#password-strength-requirements">Password strength requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#pre-registration-handler">Pre-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#post-registration-handler">Post-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#customizing-the-form">Customizing the form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#pre-login-handler">Pre-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#post-login-handler">Post-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#customizing-the-form">Customizing the form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social_login.html">Social login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#setting-up-facebook-login">Setting up Facebook login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#setting-up-github-login">Setting up Github login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#setting-up-google-login">Setting up Google login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#setting-up-linkedin-login">Setting up LinkedIn login</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#pre-logout-handler">Pre-logout handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#post-logout-handler">Post-logout handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_reset.html">Password reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#enabling-the-workflow">Enabling the workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#pre-reset-handler">Pre-reset handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#post-reset-handler">Post-reset handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="email_verification.html">Email verification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#enabling-the-workflow">Enabling the workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#pre-verify-handler">Pre-verify handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#post-verify-handler">Post-verify handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#inspecting-traffic">Inspecting traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#getting-help">Getting help</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+  <hr/>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/csharp/product-guide/latest">C# SDK Documentation &rarr;</a>
+  </li>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/vbnet/product-guide/latest">VB SDK Documentation &rarr;</a>
+  </li>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/dotnet/api/">SDK API Reference &rarr;</a>
+  </li>
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ASP.NET Core Library Guide</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Authentication</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/authentication.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="authentication">
+<span id="id1"></span><h1>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h1>
+<p>This library offers several options for securing your web or mobile application and authenticating your users.  Which strategy should you use?  The answer depends on your use case, and we&#8217;ll discuss each one in detail. At a high level,
+your choices look like this:</p>
+<blockquote>
+<div><ul class="simple">
+<li>If you are building a traditional web app or single page application, you
+should use <a class="reference internal" href="#cookie-authentication"><span>Cookie authentication</span></a>.</li>
+<li>If you are building a mobile application, you should use the <a class="reference internal" href="#oauth2-password-grant"><span>OAuth 2.0 password grant</span></a>.</li>
+</ul>
+</div></blockquote>
+<p>If you&#8217;re building an API service that other developers will use, head over to <a class="reference internal" href="api_authentication.html#api-authentication"><span>API authentication</span></a> instead.</p>
+<div class="section" id="cookie-authentication">
+<span id="id2"></span><h2>Cookie authentication<a class="headerlink" href="#cookie-authentication" title="Permalink to this headline">¶</a></h2>
+<p>If you are building a web application that serves traditional HTML pages, or a
+Single Page Application (such as Angular/React), this library will handle cookie authentication for you automatically.</p>
+<p>By default, the library hosts a login route at <code class="docutils literal"><span class="pre">/login</span></code> that can be used to log in with a username and password.</p>
+<p>Behind the scenes, the Stormpath middleware creates OAuth 2.0 Access and Refresh Tokens for the user (via the Stormpath API), and stores them in secure, HTTP-only cookies. After the user has logged in, these cookies will be supplied on every request. The Stormpath middleware will assert that the Access Token is valid.  If the Access Token is expired, it will attempt to refresh it with the Refresh Token.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By default, the cookie names are <code class="docutils literal"><span class="pre">access_token</span></code> and <code class="docutils literal"><span class="pre">refresh_token</span></code>. See <a class="reference internal" href="#configuring-cookie-flags"><span>Configuring cookie flags</span></a> if you want to change the defaults.</p>
+</div>
+<p>This all works out of the box; you don&#8217;t have to write any code! If you want to restrict parts of your application to logged-in users only, see <a class="reference internal" href="authorization.html#requiring-login"><span>Requiring login</span></a> in the Authorization section.</p>
+<div class="section" id="setting-token-expiration-time">
+<span id="id3"></span><h3>Setting token expiration time<a class="headerlink" href="#setting-token-expiration-time" title="Permalink to this headline">¶</a></h3>
+<p>If you need to change the expiration time of the Access Token or Refresh Token, log in to the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a> and navigate to the OAuth Policy of your Stormpath Application. You can configure the time-to-live (TTL) for both Access and Refresh Tokens.</p>
+</div>
+<div class="section" id="configuring-cookie-flags">
+<span id="id4"></span><h3>Configuring cookie flags<a class="headerlink" href="#configuring-cookie-flags" title="Permalink to this headline">¶</a></h3>
+<p>This library creates two cookies, one for the Access Token and one for the
+Refresh Token. The cookie details are configurable via code or markup (see the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section).</p>
+<p>The default cookie configuration (in YAML) is:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">accessTokenCookie</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;access_token&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">domain</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+    <span class="l l-Scalar l-Scalar-Plain">httpOnly</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="s">&quot;/&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">secure</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+
+  <span class="l l-Scalar l-Scalar-Plain">refreshTokenCookie</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="s">&quot;refresh_token&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">domain</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+    <span class="l l-Scalar l-Scalar-Plain">httpOnly</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+    <span class="l l-Scalar l-Scalar-Plain">path</span><span class="p p-Indicator">:</span> <span class="s">&quot;/&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">secure</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+</pre></div>
+</div>
+<p>The flags behave as follows:</p>
+<ul class="simple">
+<li><strong>name</strong> - Controls the name of the cookie stored in the user&#8217;s browser.</li>
+<li><strong>domain</strong> - Set this if needed; e.g. &#8220;subdomain.mydomain.com&#8221;. (Default: <code class="docutils literal"><span class="pre">null</span></code>.)</li>
+<li><strong>httpOnly</strong> - Controls the <code class="docutils literal"><span class="pre">HttpOnly</span></code> flag on the cookie. Be careful if changing this, because <code class="docutils literal"><span class="pre">false</span></code> exposes cookies to XSS attacks. (Default: <code class="docutils literal"><span class="pre">true</span></code>.)</li>
+<li><strong>path</strong> - Unless explicitly set, this property will inherit <code class="docutils literal"><span class="pre">stormpath.web.basePath</span></code>. (Default: <code class="docutils literal"><span class="pre">/</span></code>.)</li>
+<li><strong>secure</strong> - Controls the <code class="docutils literal"><span class="pre">Secure</span></code> flag on the cookie. A value of <code class="docutils literal"><span class="pre">null</span></code> means that the Secure flag will be automatically set in HTTPS environments (as detected by the request URI). This can be explicitly set, but we recommend leaving automatic detection on. (Default: <code class="docutils literal"><span class="pre">null</span></code>.)</li>
+</ul>
+</div>
+<div class="section" id="token-validation-strategy">
+<span id="id5"></span><h3>Token validation strategy<a class="headerlink" href="#token-validation-strategy" title="Permalink to this headline">¶</a></h3>
+<p>When a request comes in to your server, the Stormpath middleware will use the Access Token
+and Refresh Token cookies to make an authentication decision. The first step is to validate the Access Token to make sure it hasn&#8217;t been tampered with.</p>
+<p>There are two validation strategies: local validation (the default) and Stormpath validation. Local validation does <strong>not</strong> make a network request to the Stormpath API, while Stormpath validation does make a network request and supports token revocation.</p>
+<p>Both validation strategies follow the same pattern:</p>
+<ul class="simple">
+<li>If the Access Token is valid, accept the request.</li>
+<li>If the Access Token is expired or invalid, attempt to get a new one from the Stormpath API by using the Refresh Token.</li>
+<li>Deny the request if no new Access Token can be obtained.</li>
+</ul>
+<p>With the <code class="docutils literal"><span class="pre">local</span></code> strategy, the middleware only checks the signature and expiration of
+the Access Token to determine whether it is valid.  It does not check whether the token has been revoked.</p>
+<p>If you want the ability to revoke Access Tokens, you&#8217;ll need to update your configuration to opt-in to the <code class="docutils literal"><span class="pre">stormpath</span></code> validation strategy. This will make a network call to the Stormpath API on every incoming request. If the Access Token has been revoked, or the Stormpath Account has been disabled or deleted, the Access Token will not be considered valid.</p>
+<p>The validation strategy can be changed via <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a>. The default configuration (in YAML) is:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">oauth2</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">password</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">validationStrategy</span><span class="p p-Indicator">:</span> <span class="s">&quot;local&quot;</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>When using local validation, your server will not be aware of token revocation
+or any changes to the associated Stormpath account.  <strong>This is a security
+trade-off that optimizes for performance.</strong>  If you prefer extra security, use
+the <code class="docutils literal"><span class="pre">stormpath</span></code> validation option.</p>
+<p class="last">If you prefer local validation for the performance benefit, you can add a little more
+security by using a short expiration time for your Access Tokens (such as five minutes or
+less).  This will limit the amount of time that the Access Token can be used
+for validation.</p>
+</div>
+</div>
+</div>
+<div class="section" id="oauth-2-0-password-grant">
+<span id="oauth2-password-grant"></span><h2>OAuth 2.0 password grant<a class="headerlink" href="#oauth-2-0-password-grant" title="Permalink to this headline">¶</a></h2>
+<p>This is the authentication strategy that you&#8217;ll want to use for mobile clients, and it&#8217;s also supported out-of-the-box.</p>
+<p>In this scenario, the end-user supplies their username and password to your
+mobile application.  The mobile application sends that username and password to
+your ASP.NET Core server, which then verifies the password with Stormpath.</p>
+<p>If the account is valid and the password is correct, Stormpath will generate
+an Access and Refresh Token for the user.  Your server gets these tokens from Stormpath and then sends them down to your mobile application. The mobile application then stores the tokens in a secure location, and
+uses them for future requests to your ASP.NET Core application.</p>
+<p>When a user wants to login to your mobile application, the mobile application
+should make this request to your application:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>POST /oauth/token
+Host: myapi.com
+Accept: application/json
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password
+&amp;username=user@example.com
+&amp;password=theirPassword
+</pre></div>
+</div>
+<p>If the authentication is successful, your server will return a token response to your mobile application.  The response will look like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;refresh_token&quot;</span><span class="o">:</span> <span class="s2">&quot;eyJraWQiOiI2...&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;stormpath_access_token_href&quot;</span><span class="o">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accessTokens/3bBAHmSuTJ64DM574awVen&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;token_type&quot;</span><span class="o">:</span> <span class="s2">&quot;Bearer&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;access_token&quot;</span><span class="o">:</span> <span class="s2">&quot;eyJraWQiOiI2Nl...&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;expires_in&quot;</span><span class="o">:</span> <span class="mi">3600</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For details on how to configure the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint, see the <a class="reference internal" href="oauth2.html#oauth2"><span>OAuth 2.0 API</span></a> section.</p>
+</div>
+<p>Your mobile application should store the Access and Refresh Tokens in a secure location.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By default the Access Token is valid for 1 hour, and the Refresh Token is valid for 60 days. You can configure this in the Stormpath Admin Console; see <a class="reference internal" href="#setting-token-expiration-time"><span>Setting token expiration time</span></a>.</p>
+</div>
+<p>Each subsequent request the mobile application makes to your ASP.NET Core application should include the Access Token as a <code class="docutils literal"><span class="pre">Bearer</span></code> header:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>GET /profile
+Host: myapi.com
+Accept: application/json
+Authorization: Bearer eyJraWQiOiI2Nl...
+</pre></div>
+</div>
+<p>Incoming requests authenticated with Bearer authentication can be further authorized using the techniques described in the <a class="reference internal" href="authorization.html#authorization"><span>Authorization</span></a> section.</p>
+<div class="section" id="getting-a-new-access-token">
+<h3>Getting a new access token<a class="headerlink" href="#getting-a-new-access-token" title="Permalink to this headline">¶</a></h3>
+<p>When the Access Token expires, you can use the Refresh Token to obtain a new Access Token:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>POST /oauth/token
+Host: myapi.com
+Accept: application/json
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=refresh_token
+&amp;refresh_token=eyJraWQiOiI2...
+</pre></div>
+</div>
+<p>The response will contain a new Access Token.  Once the Refresh Token expires,
+the user will have to re-authenticate with a username and password.</p>
+<p>For full documentation on our OAuth 2.0 and token management features, please see
+<a class="reference external" href="http://docs.stormpath.com/guides/token-management/">Using Stormpath for OAuth 2.0 and Access/Refresh Token Management</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api_authentication.html" class="btn btn-neutral float-right" title="API authentication" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cors.html" class="btn btn-neutral" title="Cross-origin requests" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath, Inc..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/scrollspy.js"></script>
+      <script type="text/javascript" src="_static/gumshoe.min.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+   
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-29159574-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+  </script>
+  <script type="text/javascript">
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+    function _kms(u){
+        setTimeout(function(){
+            var d = document, f = d.getElementsByTagName('script')[0],
+                    s = d.createElement('script');
+            s.type = 'text/javascript'; s.async = true; s.src = u;
+            f.parentNode.insertBefore(s, f);
+        }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+  </script>
+  <script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+
+</body>
+</html>

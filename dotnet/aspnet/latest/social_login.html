@@ -1,0 +1,783 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Social login &mdash; ASP.NET Library Guide  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="ASP.NET Library Guide  documentation" href="index.html"/>
+        <link rel="next" title="Logout" href="logout.html"/>
+        <link rel="prev" title="Login" href="login.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+  
+  <script src="https://cdn.optimizely.com/js/225847041.js"></script>
+
+  
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '986262161469311');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  /></noscript>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NQZZFW');</script>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> ASP.NET Library Guide
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-does-this-library-do">What does this library do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#who-should-use-stormpath">Who should use Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-a-stormpath-account">Create a Stormpath account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-an-api-key-pair">Create an API Key pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#find-your-stormpath-application">Find your Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#example-projects">Example projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-a-new-project">Create a new project</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#install-the-library">Install the library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#initialize-the-middleware">Initialize the middleware</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#loading-order">Loading order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#required-settings">Required settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#api-credentials-file">API credentials file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#markup-file-yaml-or-json">Markup file (YAML or JSON)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#inline-options">Inline options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#default-features">Default features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#disabling-features">Disabling features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#disabling-content-types">Disabling content types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#specifying-the-server-uri">Specifying the server URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#stormpath-client-options">Stormpath Client options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request_context.html">Request context</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request_context.html#stormpath-client">Stormpath Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request_context.html#stormpath-application">Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request_context.html#current-account">Current Account</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="using_the_sdk.html">Using the Stormpath SDK</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="using_the_sdk.html#tasks-and-cancellation">Tasks and Cancellation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_the_sdk.html#making-synchronous-calls">Making synchronous calls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_the_sdk.html#examples">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cors.html">Cross-origin requests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cors.html#configuring-the-pipeline">Configuring the pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#cookie-authentication">Cookie authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth-2-0-password-grant">OAuth 2.0 password grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_authentication.html">API authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#issuing-api-keys">Issuing API keys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#http-basic-authentication">HTTP Basic authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#oauth-2-0-client-credentials-grant">OAuth 2.0 client credentials grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authorization.html">Authorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#requiring-login">Requiring login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#groups-and-roles">Groups and roles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authorization.html#fine-grained-permissions">Fine-grained permissions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="id_site.html">ID Site</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="id_site.html#who-should-use-id-site">Who should use ID Site?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="id_site.html#how-does-it-work">How does it work?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">View templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#default-views">Default views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#custom-views">Custom views</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="oauth2.html">OAuth 2.0 API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="oauth2.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="oauth2.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="me_api.html">Current user API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#using-the-endpoint">Using the endpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#link-expansion">Link expansion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#password-strength-requirements">Password strength requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#pre-registration-handler">Pre-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#post-registration-handler">Post-registration handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#customizing-the-form">Customizing the form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#pre-login-handler">Pre-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#post-login-handler">Post-login handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#customizing-the-form">Customizing the form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Social login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-facebook-login">Setting up Facebook login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-github-login">Setting up Github login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-google-login">Setting up Google login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-linkedin-login">Setting up LinkedIn login</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#pre-logout-handler">Pre-logout handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#post-logout-handler">Post-logout handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_reset.html">Password reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#enabling-the-workflow">Enabling the workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#pre-reset-handler">Pre-reset handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#post-reset-handler">Post-reset handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="email_verification.html">Email verification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#enabling-the-workflow">Enabling the workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#configuration-options">Configuration options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#pre-verify-handler">Pre-verify handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#post-verify-handler">Post-verify handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#inspecting-traffic">Inspecting traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#getting-help">Getting help</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+  <hr/>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/csharp/product-guide/latest">C# SDK Documentation &rarr;</a>
+  </li>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/vbnet/product-guide/latest">VB SDK Documentation &rarr;</a>
+  </li>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/dotnet/api/">SDK API Reference &rarr;</a>
+  </li>
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ASP.NET Library Guide</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Social login</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/social_login.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="social-login">
+<span id="id1"></span><h1>Social login<a class="headerlink" href="#social-login" title="Permalink to this headline">¶</a></h1>
+<p>Do you want users to authenticate with a social provider, such as Facebook?
+Stormpath provides integrations with the following services:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#facebook-login"><span>Facebook Login</span></a></li>
+<li><a class="reference internal" href="#google-login"><span>Google Login</span></a></li>
+<li><a class="reference internal" href="#github-login"><span>Github Login</span></a></li>
+<li><a class="reference internal" href="#linkedin-login"><span>LinkedIn Login</span></a></li>
+</ul>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Setting up social login in your Stormpath-powered application is easy. Follow the steps in the appropriate section below to set up the external provider and configure a Social Directory in the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a>. Then, map the new Social Directory to your existing Stormpath Application.</p>
+<p>Once the Social Directory is mapped, your ASP.NET application is ready to go! If you are using the included <a class="reference internal" href="templates.html#templates"><span>default views</span></a>, the appropriate buttons will appear on the <a class="reference internal" href="login.html#login"><span>login route</span></a> automatically.</p>
+<p>When users log into your application with a social provider, they will be redirected to one of two locations:</p>
+<ul class="simple">
+<li>If the user has never logged in before (a new account), they will be redirected to the location set of the <code class="docutils literal"><span class="pre">nextUri</span></code> option in the <a class="reference internal" href="registration.html#registration-configuration"><span>registration route configuration</span></a>.</li>
+<li>If the user is a returning account, they will be redirected to the location set in the <code class="docutils literal"><span class="pre">nextUri</span></code> option of the <a class="reference internal" href="login.html#login-configuration"><span>login route configuration</span></a>.</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you want to run code automatically when a user registers or logs in using social login, you can use the pre/post handlers available for <a class="reference internal" href="registration.html#registration"><span>Registration</span></a> and <a class="reference internal" href="login.html#login"><span>Login</span></a>.</p>
+</div>
+</div>
+<div class="section" id="setting-up-facebook-login">
+<span id="facebook-login"></span><h2>Setting up Facebook login<a class="headerlink" href="#setting-up-facebook-login" title="Permalink to this headline">¶</a></h2>
+<p>To use Facebook Login with your ASP.NET application, you simply need to:</p>
+<ol class="arabic simple">
+<li>Create a Facebook Application through the <a class="reference external" href="https://developers.facebook.com/">Facebook Developer Site</a> .</li>
+<li>Configure a Stormpath Directory with the Facebook Application credentials.</li>
+</ol>
+<div class="section" id="create-a-facebook-application">
+<h3>Create a Facebook application<a class="headerlink" href="#create-a-facebook-application" title="Permalink to this headline">¶</a></h3>
+<p>First, log into the <a class="reference external" href="https://developers.facebook.com/">Facebook Developer Site</a> and
+create a new Facebook App. You can do this by clicking the &#8220;My Apps&#8221; menu at the top of the screen, and then clicking on the &#8220;Add a New App&#8221; button.  You should see something like the following:</p>
+<img alt="_images/facebook-new-project.png" src="_images/facebook-new-project.png" />
+<p>Enter a &#8220;Display Name&#8221; (the name of your app), and choose a
+category for your app.  Once you&#8217;ve done this, click the &#8220;Create App ID&#8221; button.</p>
+<p>Next, click on Settings on the left side, and make note of the <strong>App ID</strong> and <strong>App Secret</strong>. You&#8217;ll need those later when you connect your Facebook Application to Stormpath.</p>
+</div>
+<div class="section" id="specify-allowed-urls">
+<h3>Specify allowed URLs<a class="headerlink" href="#specify-allowed-urls" title="Permalink to this headline">¶</a></h3>
+<p>The next step is to tell Facebook what URLs we&#8217;ll be using Facebook
+Login from.</p>
+<p>From the Settings page, click the &#8220;Add Platform&#8221; button. When prompted, select &#8220;Website&#8221; as your platform type.</p>
+<p>In the &#8220;Site URL&#8221; box, enter your private and public root URLs.  This should be
+something like <code class="docutils literal"><span class="pre">http://localhost:5000</span></code> or <code class="docutils literal"><span class="pre">http://mysite.com</span></code>.  If you
+want to allow Facebook Login from multiple URLs (local development, production,
+etc.) you can just click the &#8220;Add Platform&#8221; button again and enter another URL.</p>
+<p>Click the &#8220;Save Changes&#8221; button at the bottom of the page.</p>
+<p>Next, click on &#8220;Add Product&#8221; on the left side of the page, and add Facebook Login. In the &#8220;Valid OAuth redirect URIs&#8221; field, add the callback URI provided by this library, which is <code class="docutils literal"><span class="pre">/callbacks/facebook</span></code> by default. If your site is hosted locally on port 5000, your callback URI is <code class="docutils literal"><span class="pre">http://localhost:5000/callbacks/facebook</span></code>.</p>
+<p>Your configuration should look something like this:</p>
+<img alt="_images/facebook-url-settings.png" src="_images/facebook-url-settings.png" />
+<p>Lastly, click the &#8220;Save Changes&#8221; button once more to save the changes.</p>
+</div>
+<div class="section" id="create-a-facebook-directory">
+<h3>Create a Facebook Directory<a class="headerlink" href="#create-a-facebook-directory" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve created a Facebook Application, you need to create a Stormpath Directory that contains the Facebook Application credentials. This allows Stormpath to interact with the Facebook API on your ASP.NET application&#8217;s behalf.</p>
+<p>To do this, visit the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a> and click on Directories in the navigation bar. Click &#8220;Create Directory&#8221; and choose Facebook as the Directory type. Next, enter the following information:</p>
+<ul class="simple">
+<li><strong>Name</strong>: Any descriptive name for the Directory.</li>
+<li><strong>Facebook Client ID</strong>: Insert your Facebook App ID from the previous steps.</li>
+<li><strong>Facebook Client Secret</strong>: Insert your Facebook App Secret.</li>
+</ul>
+<p>Your Directory configuration should look like this:</p>
+<img alt="_images/facebook-social-directory.png" src="_images/facebook-social-directory.png" />
+<p>Click &#8220;Create&#8221; to finish creating the Directory.</p>
+</div>
+<div class="section" id="map-the-directory">
+<h3>Map the Directory<a class="headerlink" href="#map-the-directory" title="Permalink to this headline">¶</a></h3>
+<p>The new Facebook Directory needs to be associated (mapped) to your existing Application as an Account Store. This can also be done from the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a>.</p>
+<p>To do this, click on Applications in the navigation bar, and select your Application from the list. On the details page, click on Account Stores on the left side. Next, click &#8220;Add Account Store&#8221; and pick the Facebook Directory you created. Click &#8220;Create Mappings&#8221;.</p>
+<p>That&#8217;s it!</p>
+</div>
+<div class="section" id="test-facebook-login">
+<h3>Test Facebook login<a class="headerlink" href="#test-facebook-login" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve connected your Facebook Application to Stormpath, you&#8217;re ready to test your ASP.NET application.</p>
+<p>Restart ASP.NET (if it&#8217;s running) and try visiting the login page (<code class="docutils literal"><span class="pre">/login</span></code>) in your browser. If you&#8217;re using the default views included with this library, you should see the following:</p>
+<img alt="_images/login-page-facebook.png" src="_images/login-page-facebook.png" />
+<p>Try logging in! When you click the Facebook button you&#8217;ll be prompted to authorize the application using your Facebook account:</p>
+<img alt="_images/login-page-facebook-permissions.png" src="_images/login-page-facebook-permissions.png" />
+<p>After authorizing, you&#8217;ll be redirected back to your website. If you&#8217;ve never logged into this application with Facebook before, you&#8217;ll be redirected to the <code class="docutils literal"><span class="pre">nextUri</span></code> set in the <a class="reference internal" href="registration.html#registration-configuration"><span>registration route configuration</span></a>. If you have logged into this application with Facebook before, you&#8217;ll be redirected to the <code class="docutils literal"><span class="pre">nextUri</span></code> set in the <a class="reference internal" href="login.html#login-configuration"><span>login route configuration</span></a>.</p>
+</div>
+</div>
+<div class="section" id="setting-up-github-login">
+<span id="github-login"></span><h2>Setting up Github login<a class="headerlink" href="#setting-up-github-login" title="Permalink to this headline">¶</a></h2>
+<p>To use Github Login with your ASP.NET application, you simply need to:</p>
+<ol class="arabic simple">
+<li>Create a Github Application on Github.</li>
+<li>Configure a Stormpath Directory with the Github Application credentials.</li>
+</ol>
+<div class="section" id="create-a-github-application">
+<h3>Create a Github application<a class="headerlink" href="#create-a-github-application" title="Permalink to this headline">¶</a></h3>
+<p>First, log into Github and navigate to <a class="reference external" href="https://github.com/settings/developers">Developer applications</a> and click on &#8220;Register a new application&#8221;. You should see something like the following:</p>
+<img alt="_images/github-new-application.png" src="_images/github-new-application.png" />
+<p>Fill out the fields on the form:</p>
+<ul class="simple">
+<li><strong>Application name</strong>: The name of your application.</li>
+<li><strong>Homepage URL</strong>: The base URL of your application.</li>
+<li><strong>Application description</strong>: A basic description of your application.</li>
+<li><strong>Authorization callback URL</strong>: By default, this library hosts a callback route at <code class="docutils literal"><span class="pre">/callbacks/github</span></code>. For example, if your application is running locally on port 5000, your callback URL would be <code class="docutils literal"><span class="pre">http://localhost:5000/callbacks/github</span></code>.</li>
+</ul>
+<p>Click &#8220;Register application&#8221; to finish creating the new application. Make a note of the <strong>Client ID</strong> and <strong>Client Secret</strong>. You&#8217;ll need those in the next step.</p>
+</div>
+<div class="section" id="create-a-github-directory">
+<h3>Create a Github Directory<a class="headerlink" href="#create-a-github-directory" title="Permalink to this headline">¶</a></h3>
+<p>Now that you’ve created a Github Application, you need to create a Stormpath Directory that contains the Github Application credentials. This allows Stormpath to interact with the Github API on your ASP.NET application’s behalf.</p>
+<p>To do this, visit the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a> and click on Directories in the navigation bar. Click “Create Directory” and choose Github as the Directory type. Next, enter the following information:</p>
+<ul class="simple">
+<li><strong>Name</strong>: Any descriptive name for the Directory.</li>
+<li><strong>Github Client ID</strong>: Insert your Github Client ID from the previous step.</li>
+<li><strong>Github Client Secret</strong>: Insert your Github Client Secret.</li>
+</ul>
+<p>Your Directory configuration should look like this:</p>
+<blockquote>
+<div><img alt="_images/github-social-directory.png" src="_images/github-social-directory.png" />
+</div></blockquote>
+<p>Finally, click &#8220;Create Directory&#8221; to add the Directory to Stormpath.</p>
+</div>
+<div class="section" id="id2">
+<h3>Map the Directory<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>The new Github Directory needs to be associated (mapped) to your existing Application as an Account Store. This can also be done from the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a>.</p>
+<p>To do this, click on Applications in the navigation bar, and select your Application from the list. On the details page, click on Account Stores on the left side. Next, click “Add Account Store” and pick the new Facebook Directory you created. Click “Create Mappings”.</p>
+</div>
+<div class="section" id="configure-your-server-uri">
+<h3>Configure your server URI<a class="headerlink" href="#configure-your-server-uri" title="Permalink to this headline">¶</a></h3>
+<p>The Stormpath ASP.NET package requires one more bit of configuration to enable Github Login from your application. The <code class="docutils literal"><span class="pre">stormpath.web.serverUri</span></code> property needs to contain the base URL of your web server.</p>
+<p>You can configure this using a <a class="reference internal" href="configuration.html#config-markup"><span>YAML or JSON file</span></a>. For example, in YAML:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+   <span class="l l-Scalar l-Scalar-Plain">serverUri</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost:5000</span>
+</pre></div>
+</div>
+<p>Alternatively, you can set this property in code when you configure the Stormpath middleware:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">UseStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Web</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebConfiguration</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">ServerUri</span> <span class="p">=</span> <span class="s">&quot;http://localhost:5000&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For more information on configuration, see the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section.</p>
+</div>
+<p>That&#8217;s it!</p>
+</div>
+<div class="section" id="test-github-login">
+<h3>Test Github login<a class="headerlink" href="#test-github-login" title="Permalink to this headline">¶</a></h3>
+<p>Now that you’ve connected your Github Application to Stormpath, you’re ready to test your ASP.NET application.</p>
+<p>Restart ASP.NET (if it’s running) and try visiting the login page (<code class="docutils literal"><span class="pre">/login</span></code>) in your browser. If you’re using the default views included with this library, you should see the following:</p>
+<img alt="_images/login-page-github.png" src="_images/login-page-github.png" />
+<p>Try logging in!  When you click the Github button you&#8217;ll be redirected to Github, and prompted to authenticate your Github account:</p>
+<img alt="_images/github-permissions-page.png" src="_images/github-permissions-page.png" />
+<p>You&#8217;ll then be prompted to accept any requested permissions. After authorizing, you&#8217;ll be redirected back to your website. If you&#8217;ve never logged into this application with Github before, you&#8217;ll be redirected to the <code class="docutils literal"><span class="pre">nextUri</span></code> set in the <a class="reference internal" href="registration.html#registration-configuration"><span>registration route configuration</span></a>. If you have logged into this application with Github before, you&#8217;ll be redirected to the <code class="docutils literal"><span class="pre">nextUri</span></code> set in the <a class="reference internal" href="login.html#login-configuration"><span>login route configuration</span></a>.</p>
+</div>
+</div>
+<div class="section" id="setting-up-google-login">
+<span id="google-login"></span><h2>Setting up Google login<a class="headerlink" href="#setting-up-google-login" title="Permalink to this headline">¶</a></h2>
+<p>To use Google Login with your ASP.NET application, you simply need to:</p>
+<ol class="arabic simple">
+<li>Create a Google Application in the <a class="reference external" href="https://console.developers.google.com/project">Google Developer Console</a>.</li>
+<li>Configure a Stormpath Directory with the Google Application credentials.</li>
+</ol>
+<div class="section" id="create-a-google-project">
+<h3>Create a Google project<a class="headerlink" href="#create-a-google-project" title="Permalink to this headline">¶</a></h3>
+<p>First, log into the <a class="reference external" href="https://console.developers.google.com/project">Google Developer Console</a> and create a new Google Project. When you click on &#8220;Create Project&#8221;, you should see this:</p>
+<img alt="_images/google-new-project.png" src="_images/google-new-project.png" />
+<p>Pick a &#8220;Project Name&#8221; (usually the name of your app), and optionally a &#8220;Project ID&#8221;.</p>
+</div>
+<div class="section" id="enable-google-login">
+<h3>Enable Google login<a class="headerlink" href="#enable-google-login" title="Permalink to this headline">¶</a></h3>
+<p>In order to use Google Login with the new Project you created, you have to enable the Google+ API.</p>
+<p>To do this, click on the Project and select &#8220;APIs &amp; Auth&#8221; on the side panel. Scroll through the API until you see &#8220;Google+ API&#8221;, then click the
+&#8220;OFF&#8221; button to enable it.  You should now see the &#8220;Google+ API&#8221; as
+&#8220;ON&#8221; in your API list:</p>
+<img alt="_images/google-enable-login.png" src="_images/google-enable-login.png" />
+</div>
+<div class="section" id="create-oauth-credentials">
+<h3>Create OAuth credentials<a class="headerlink" href="#create-oauth-credentials" title="Permalink to this headline">¶</a></h3>
+<p>Next, you&#8217;ll need to create an OAuth client ID. The client ID is what allows your application (and Stormpath) to talk to Google securely.</p>
+<p>From the &#8220;APIs &amp; Auth&#8221; menu, click on &#8220;Credentials&#8221;. Click the &#8220;Create New Client ID&#8221; button and follow these steps:</p>
+<ol class="arabic simple">
+<li>Select &#8220;Web application&#8221; for your &#8220;Application Type&#8221;.</li>
+<li>Remove everything from the &#8220;Authorized Javascript Origins&#8221; box.</li>
+<li>Add the callback URI of your site (both publicly and locally) into the
+&#8220;Authorized Redirect URI&#8221; box.  This tells Google where to
+redirect users after they&#8217;ve logged in with Google.  The default callback
+URI for this library is <code class="docutils literal"><span class="pre">/callbacks/google</span></code>.</li>
+</ol>
+<p>In the end, your settings should look like this:</p>
+<img alt="_images/google-oauth-settings.png" src="_images/google-oauth-settings.png" />
+<p>Once you&#8217;ve specified your settings, click the &#8220;Create Client ID&#8221;
+button.</p>
+<p>Make note of the <strong>Client ID</strong> and <strong>Client secret</strong>. You&#8217;ll need those in the next step.</p>
+</div>
+<div class="section" id="create-a-google-directory">
+<h3>Create a Google Directory<a class="headerlink" href="#create-a-google-directory" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve created a Google Project, you need to create a Stormpath Directory that contains the Google Project credentials. This allows Stormpath to interact with the Google API on your ASP.NET application&#8217;s behalf.</p>
+<p>To do this, visit the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a> and click on Directories in the navigation bar. Click &#8220;Create Directory&#8221; and choose Google as the Directory type. Next, enter the following information:</p>
+<ul class="simple">
+<li><strong>Name</strong>: Any descriptive name for the Directory.</li>
+<li><strong>Google Client ID</strong>: Insert your Google Client ID from the previous step.</li>
+<li><strong>Google Client Secret</strong>: Insert your Google Client secret.</li>
+<li><strong>Google Authorized Redirect URI</strong>: Insert your Google Redirect
+URL from the previous step.</li>
+</ul>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">Only enter the URI you&#8217;re currently using! For example, if you are running your app in development mode, set it to your local URL. When you deploy your application, set it to your production URI.</p>
+</div>
+<p>Your Directory configuration should look like this:</p>
+<blockquote>
+<div><img alt="_images/google-social-directory.png" src="_images/google-social-directory.png" />
+</div></blockquote>
+<p>Finally, click &#8220;Create Directory&#8221; to add the Directory to Stormpath.</p>
+</div>
+<div class="section" id="id3">
+<h3>Map the Directory<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>The new Google Directory needs to be associated (mapped) to your existing Application as an Account Store. This can also be done from the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a>.</p>
+<p>To do this, click on Applications in the navigation bar, and select your Application from the list. On the details page, click on Account Stores on the left side. Next, click “Add Account Store” and pick the Google Directory you created. Click “Create Mappings”.</p>
+</div>
+<div class="section" id="id4">
+<h3>Configure your server URI<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>The Stormpath ASP.NET package requires one more bit of configuration to enable Google Login from your application. The <code class="docutils literal"><span class="pre">stormpath.web.serverUri</span></code> property needs to contain the base URL of your web server.</p>
+<p>You can configure this using a <a class="reference internal" href="configuration.html#config-markup"><span>YAML or JSON file</span></a>. For example, in YAML:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+   <span class="l l-Scalar l-Scalar-Plain">serverUri</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost:5000</span>
+</pre></div>
+</div>
+<p>Alternatively, you can set this property in code when you configure the Stormpath middleware:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">UseStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Web</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebConfiguration</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">ServerUri</span> <span class="p">=</span> <span class="s">&quot;http://localhost:5000&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For more information on configuration, see the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section.</p>
+</div>
+<p>That&#8217;s it!</p>
+</div>
+<div class="section" id="test-google-login">
+<h3>Test Google login<a class="headerlink" href="#test-google-login" title="Permalink to this headline">¶</a></h3>
+<p>Now that you’ve connected your Google Project to Stormpath, you’re ready to test your ASP.NET application.</p>
+<p>Restart ASP.NET (if it’s running) and try visiting the login page (<code class="docutils literal"><span class="pre">/login</span></code>) in your browser. If you’re using the default views included with this library, you should see the following:</p>
+<img alt="_images/login-page-google.png" src="_images/login-page-google.png" />
+<p>Try logging in!  When you click the Google button you&#8217;ll be redirected to Google, and prompted to select your Google account:</p>
+<img alt="_images/login-page-google-account.png" src="_images/login-page-google-account.png" />
+<p>You&#8217;ll then be prompted to accept any requested permissions. After authorizing, you&#8217;ll be redirected back to your website. If you&#8217;ve never logged into this application with Google before, you&#8217;ll be redirected to the <code class="docutils literal"><span class="pre">nextUri</span></code> set in the <a class="reference internal" href="registration.html#registration-configuration"><span>registration route configuration</span></a>. If you have logged into this application with Google before, you&#8217;ll be redirected to the <code class="docutils literal"><span class="pre">nextUri</span></code> set in the <a class="reference internal" href="login.html#login-configuration"><span>login route configuration</span></a>.</p>
+</div>
+</div>
+<div class="section" id="setting-up-linkedin-login">
+<span id="linkedin-login"></span><h2>Setting up LinkedIn login<a class="headerlink" href="#setting-up-linkedin-login" title="Permalink to this headline">¶</a></h2>
+<p>To use LinkedIn Login with your ASP.NET application, you simply need to:</p>
+<ol class="arabic simple">
+<li>Create a LinkedIn Application in the <a class="reference external" href="https://www.linkedin.com/developer/apps">LinkedIn Developer Console</a>.</li>
+<li>Configure a Stormpath Directory with the LinkedIn Application credentials.</li>
+</ol>
+<div class="section" id="create-a-linkedin-application">
+<h3>Create a LinkedIn application<a class="headerlink" href="#create-a-linkedin-application" title="Permalink to this headline">¶</a></h3>
+<p>First, log into the <a class="reference external" href="https://www.linkedin.com/developer/apps">LinkedIn Developer Console</a> and create a new LinkedIn Application by clicking the &#8220;Create Application&#8221; button. Fill out the fields on the form, in particular:</p>
+<ul class="simple">
+<li><strong>Name</strong>: The name of your application.</li>
+<li><strong>Application Use</strong>: Pick the intended use of your application.</li>
+<li><strong>Website URL</strong>: The base URL of your application.</li>
+</ul>
+<p>Click &#8220;Submit&#8221; to finish creating the new application.</p>
+</div>
+<div class="section" id="enable-linkedin-permissions">
+<h3>Enable LinkedIn permissions<a class="headerlink" href="#enable-linkedin-permissions" title="Permalink to this headline">¶</a></h3>
+<p>In order to use the new LinkedIn Application with Stormpath, you need to enable the correct LinkedIn permissions.</p>
+<p>Under the &#8220;Default Application Permissions&#8221; section, enable the <code class="docutils literal"><span class="pre">r_basicprofile</span></code> and the <code class="docutils literal"><span class="pre">r_emailaddress</span></code> permissions. These permissions allow Stormpath to access the basic profile properties like email and first, middle, and last name.</p>
+<p>You&#8217;ll also need to add our application callback URIs to the &#8220;OAuth 2.0&#8221; section. The default callback in this library is <code class="docutils literal"><span class="pre">/callbacks/linkedin</span></code>. For instance, if your site is running locally on port 3000, as well as under the &#8220;www.example.com&#8221; domain, you&#8217;d add two redirect URIs:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://localhost:3000/callbacks/linkedin">http://localhost:3000/callbacks/linkedin</a></li>
+<li><a class="reference external" href="https://www.example.com/callbacks/linkedin">https://www.example.com/callbacks/linkedin</a></li>
+</ul>
+<img alt="_images/linkedin-oauth-configuration.png" src="_images/linkedin-oauth-configuration.png" />
+<p>Make a note of the <strong>Client ID</strong> and <strong>Client Secret</strong>. You&#8217;ll need those in the next step.</p>
+</div>
+<div class="section" id="create-a-linkedin-directory">
+<h3>Create a LinkedIn Directory<a class="headerlink" href="#create-a-linkedin-directory" title="Permalink to this headline">¶</a></h3>
+<p>Now that you’ve created a LinkedIn Application, you need to create a Stormpath Directory that contains the LinkedIn Application credentials. This allows Stormpath to interact with the LinkedIn API on your ASP.NET application’s behalf.</p>
+<p>To do this, visit the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a> and click on Directories in the navigation bar. Click “Create Directory” and choose LinkedIn as the Directory type. Next, enter the following information:</p>
+<ul class="simple">
+<li><strong>Name</strong>: Any descriptive name for the Directory.</li>
+<li><strong>LinkedIn Client ID</strong>: Insert your LinkedIn Client ID from the previous step.</li>
+<li><strong>LinkedIn Client Secret</strong>: Insert your LinkedIn Client Secret.</li>
+</ul>
+<p>Your Directory configuration should look like this:</p>
+<blockquote>
+<div><img alt="_images/linkedin-social-directory.png" src="_images/linkedin-social-directory.png" />
+</div></blockquote>
+<p>Finally, click &#8220;Create Directory&#8221; to add the Directory to Stormpath.</p>
+</div>
+<div class="section" id="id5">
+<h3>Map the Directory<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>The new LinkedIn Directory needs to be associated (mapped) to your existing Application as an Account Store. This can also be done from the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a>.</p>
+<p>To do this, click on Applications in the navigation bar, and select your Application from the list. On the details page, click on Account Stores on the left side. Next, click “Add Account Store” and pick the new Facebook Directory you created. Click “Create Mappings”.</p>
+</div>
+<div class="section" id="configuring-your-server-uri">
+<h3>Configuring Your Server URI<a class="headerlink" href="#configuring-your-server-uri" title="Permalink to this headline">¶</a></h3>
+<p>The Stormpath ASP.NET package requires one more bit of configuration to enable LinkedIn Login from your application. The <code class="docutils literal"><span class="pre">stormpath.web.serverUri</span></code> property needs to contain the base URL of your web server.</p>
+<p>You can configure this using a <a class="reference internal" href="configuration.html#config-markup"><span>YAML or JSON file</span></a>. For example, in YAML:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="nn">---</span>
+<span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">web</span><span class="p p-Indicator">:</span>
+   <span class="l l-Scalar l-Scalar-Plain">serverUri</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">http://localhost:5000</span>
+</pre></div>
+</div>
+<p>Alternatively, you can set this property in code when you configure the Stormpath middleware:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">UseStormpath</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathConfiguration</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Web</span> <span class="p">=</span> <span class="k">new</span> <span class="n">WebConfiguration</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">ServerUri</span> <span class="p">=</span> <span class="s">&quot;http://localhost:5000&quot;</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For more information on configuration, see the <a class="reference internal" href="configuration.html#configuration"><span>Configuration</span></a> section.</p>
+</div>
+<p>That&#8217;s it!</p>
+</div>
+<div class="section" id="test-linkedin-login">
+<h3>Test LinkedIn login<a class="headerlink" href="#test-linkedin-login" title="Permalink to this headline">¶</a></h3>
+<p>Now that you’ve connected your LinkedIn Application to Stormpath, you’re ready to test your ASP.NET application.</p>
+<p>Restart ASP.NET (if it’s running) and try visiting the login page (<code class="docutils literal"><span class="pre">/login</span></code>) in your browser. If you’re using the default views included with this library, you should see the following:</p>
+<img alt="_images/login-page-linkedin.png" src="_images/login-page-linkedin.png" />
+<p>Try logging in!  When you click the LinkedIn button you&#8217;ll be redirected to LinkedIn, and prompted to select your LinkedIn account:</p>
+<img alt="_images/linkedin-permissions-page.png" src="_images/linkedin-permissions-page.png" />
+<p>You&#8217;ll then be prompted to accept any requested permissions. After authorizing, you&#8217;ll be redirected back to your website. If you&#8217;ve never logged into this application with LinkedIn before, you&#8217;ll be redirected to the <code class="docutils literal"><span class="pre">nextUri</span></code> set in the <a class="reference internal" href="registration.html#registration-configuration"><span>registration route configuration</span></a>. If you have logged into this application with LinkedIn before, you&#8217;ll be redirected to the <code class="docutils literal"><span class="pre">nextUri</span></code> set in the <a class="reference internal" href="login.html#login-configuration"><span>login route configuration</span></a>.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="logout.html" class="btn btn-neutral float-right" title="Logout" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="login.html" class="btn btn-neutral" title="Login" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath, Inc..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/scrollspy.js"></script>
+      <script type="text/javascript" src="_static/gumshoe.min.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+   
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-29159574-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+  </script>
+  <script type="text/javascript">
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+    function _kms(u){
+        setTimeout(function(){
+            var d = document, f = d.getElementsByTagName('script')[0],
+                    s = d.createElement('script');
+            s.type = 'text/javascript'; s.async = true; s.src = u;
+            f.parentNode.insertBefore(s, f);
+        }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+  </script>
+  <script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+
+</body>
+</html>
