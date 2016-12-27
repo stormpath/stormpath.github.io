@@ -150,9 +150,7 @@ should make this request to your application:
     Accept: application/json
     Content-Type: application/x-www-form-urlencoded
 
-    grant_type=password
-    &username=user@example.com
-    &password=theirPassword
+    grant_type=password&username=user%40example.com&password=thePassword
 
 If the authentication is successful, your server will return a token response to your mobile application.  The response will look like this::
 
@@ -196,8 +194,7 @@ When the Access Token expires, you can use the Refresh Token to obtain a new Acc
     Accept: application/json
     Content-Type: application/x-www-form-urlencoded
 
-    grant_type=refresh_token
-    &refresh_token=eyJraWQiOiI2...
+    grant_type=refresh_token&refresh_token=eyJraWQiOiI2...
 
 The response will contain a new Access Token.  Once the Refresh Token expires,
 the user will have to re-authenticate with a username and password.
