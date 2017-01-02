@@ -1,0 +1,669 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Authorization &mdash; ASP.NET Core Library Guide  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="ASP.NET Core Library Guide  documentation" href="index.html"/>
+        <link rel="next" title="ID Site" href="id_site.html"/>
+        <link rel="prev" title="API authentication" href="api_authentication.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+  
+  <script src="https://cdn.optimizely.com/js/225847041.js"></script>
+
+  
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '986262161469311');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  /></noscript>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NQZZFW');</script>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> ASP.NET Core Library Guide
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+  
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-does-this-library-do">What does this library do?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#who-should-use-stormpath">Who should use Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-a-stormpath-account">Create a Stormpath account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-an-api-key-pair">Create an API Key pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#find-your-stormpath-application">Find your Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#example-projects">Example projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#create-a-new-project">Create a new project</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#creating-a-new-project-in-visual-studio">Creating a New Project in Visual Studio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#creating-a-new-project-without-visual-studio">Creating a New Project Without Visual Studio</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#install-the-library">Install the library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#initialize-the-middleware">Initialize the middleware</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#loading-order">Loading order</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#stormpath-directory">.stormpath directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#application-base-directory">Application base directory</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#required-settings">Required settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#api-credentials-file">API credentials file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#markup-file-yaml-or-json">Markup file (YAML or JSON)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#inline-options">Inline options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#default-features">Default features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#disabling-features">Disabling features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#disabling-content-types">Disabling content types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#specifying-the-server-uri">Specifying the server URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#stormpath-client-options">Stormpath Client options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request_context.html">Request context</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request_context.html#stormpath-client">Stormpath Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request_context.html#stormpath-application">Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request_context.html#current-account">Current Account</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="request_context.html#claimsidentity">ClaimsIdentity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="request_context.html#stormpath-iaccount">Stormpath IAccount</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="using_the_sdk.html">Using the Stormpath SDK</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="using_the_sdk.html#tasks-and-cancellation">Tasks and Cancellation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_the_sdk.html#making-synchronous-calls">Making synchronous calls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using_the_sdk.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="using_the_sdk.html#search-for-an-account-by-email-address">Search for an account by email address</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using_the_sdk.html#update-a-user-s-password">Update a user&#8217;s password</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cors.html">Cross-origin requests</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cors.html#configuring-the-pipeline">Configuring the pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#cookie-authentication">Cookie authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html#setting-token-expiration-time">Setting token expiration time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html#configuring-cookie-flags">Configuring cookie flags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html#token-validation-strategy">Token validation strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth-2-0-password-grant">OAuth 2.0 password grant</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html#getting-a-new-access-token">Getting a new access token</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_authentication.html">API authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#issuing-api-keys">Issuing API keys</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#http-basic-authentication">HTTP Basic authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_authentication.html#oauth-2-0-client-credentials-grant">OAuth 2.0 client credentials grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Authorization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requiring-login">Requiring login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#groups-and-roles">Groups and roles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requiring-a-group">Requiring a Group</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#requiring-multiple-groups">Requiring multiple Groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#fine-grained-permissions">Fine-grained permissions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="id_site.html">ID Site</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="id_site.html#who-should-use-id-site">Who should use ID Site?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="id_site.html#how-does-it-work">How does it work?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="id_site.html#enabling-id-site">Enabling ID Site</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">View templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#default-views">Default views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#custom-views">Custom views</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="templates.html#view-models">View models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="templates.html#state-token">State token</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="oauth2.html">OAuth 2.0 API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="oauth2.html#configuration-options">Configuration options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="oauth2.html#client-credentials-grant-options">Client credentials grant options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oauth2.html#password-grant-options">Password grant options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="oauth2.html#configuration-example">Configuration example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="oauth2.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="me_api.html">Current user API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#configuration-options">Configuration options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="me_api.html#configuration-example">Configuration example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#using-the-endpoint">Using the endpoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#link-expansion">Link expansion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="me_api.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration-options">Configuration options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#configuration-example">Configuration example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#password-strength-requirements">Password strength requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#pre-registration-handler">Pre-registration handler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#targeting-an-account-store">Targeting an Account Store</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#post-registration-handler">Post-registration handler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#saving-custom-data-for-new-accounts">Saving Custom Data for new Accounts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#addding-new-accounts-to-groups">Addding new Accounts to groups</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#customizing-the-form">Customizing the form</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#making-fields-optional">Making fields optional</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#adding-custom-fields">Adding custom fields</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#changing-field-order">Changing field order</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#mobile-json-api">Mobile/JSON API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#getting-the-form-view-model">Getting the form view model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#registering-a-user">Registering a user</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#supplying-custom-fields">Supplying custom fields</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#configuration-options">Configuration options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="login.html#configuration-example">Configuration example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#pre-login-handler">Pre-login handler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="login.html#targeting-an-account-store">Targeting an Account Store</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#post-login-handler">Post-login handler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="login.html#modifying-custom-data-on-login">Modifying Custom Data on login</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#customizing-the-form">Customizing the form</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#mobile-json-api">Mobile/JSON API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="login.html#making-a-login-attempt">Making a login attempt</a></li>
+<li class="toctree-l3"><a class="reference internal" href="login.html#getting-the-form-view-model">Getting the form view model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social_login.html">Social login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#setting-up-facebook-login">Setting up Facebook login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-facebook-application">Create a Facebook application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#specify-allowed-urls">Specify allowed URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-facebook-directory">Create a Facebook Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#map-the-directory">Map the Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#test-facebook-login">Test Facebook login</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#setting-up-github-login">Setting up Github login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-github-application">Create a Github application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-github-directory">Create a Github Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#id2">Map the Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#configure-your-server-uri">Configure your server URI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#test-github-login">Test Github login</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#setting-up-google-login">Setting up Google login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-google-project">Create a Google project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#enable-google-login">Enable Google login</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-oauth-credentials">Create OAuth credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-google-directory">Create a Google Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#id3">Map the Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#id4">Configure your server URI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#test-google-login">Test Google login</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#setting-up-linkedin-login">Setting up LinkedIn login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-linkedin-application">Create a LinkedIn application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#enable-linkedin-permissions">Enable LinkedIn permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-linkedin-directory">Create a LinkedIn Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#id5">Map the Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#configuring-your-server-uri">Configuring Your Server URI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#test-linkedin-login">Test LinkedIn login</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#configuration-options">Configuration options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="logout.html#configuration-example">Configuration example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#pre-logout-handler">Pre-logout handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#post-logout-handler">Post-logout handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_reset.html">Password reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#enabling-the-workflow">Enabling the workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#configuration-options">Configuration options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="password_reset.html#forgot-route">Forgot Route</a></li>
+<li class="toctree-l3"><a class="reference internal" href="password_reset.html#change-route">Change Route</a></li>
+<li class="toctree-l3"><a class="reference internal" href="password_reset.html#configuration-example">Configuration example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#pre-reset-handler">Pre-reset handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#post-reset-handler">Post-reset handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#mobile-json-api">Mobile/JSON API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="email_verification.html">Email verification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#enabling-the-workflow">Enabling the workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#how-it-works">How it works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#configuration-options">Configuration options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="email_verification.html#configuration-example">Configuration example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#auto-login">Auto login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#pre-verify-handler">Pre-verify handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#post-verify-handler">Post-verify handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#mobile-json-api">Mobile/JSON API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="email_verification.html#verifying-a-user">Verifying a User</a></li>
+<li class="toctree-l3"><a class="reference internal" href="email_verification.html#requesting-a-new-link">Requesting a new link</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="email_verification.html#default-configuration">Default configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#inspecting-traffic">Inspecting traffic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html#getting-help">Getting help</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+
+  <hr/>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/csharp/product-guide/latest">C# SDK Documentation &rarr;</a>
+  </li>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/vbnet/product-guide/latest">VB SDK Documentation &rarr;</a>
+  </li>
+
+  <li class="toctree-l1">
+    <a class="reference internal" href="/dotnet/api/">SDK API Reference &rarr;</a>
+  </li>
+
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ASP.NET Core Library Guide</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Authorization</li>
+    <li class="wy-breadcrumbs-aside">
+      
+          
+          <a href="_sources/authorization.txt" rel="nofollow"> View page source</a>
+        
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="authorization">
+<span id="id1"></span><h1>Authorization<a class="headerlink" href="#authorization" title="Permalink to this headline">¶</a></h1>
+<p>The Stormpath ASP.NET Core library provides two ways to easily enforce authorization in your application: group- (or role-) based access control, and permissions-based access control.</p>
+<p>Which authorization approach you choose depends on the needs of your application. For most applications, a group-based approach is the fastest and easiest way to implement authorization.</p>
+<div class="section" id="requiring-login">
+<span id="id2"></span><h2>Requiring login<a class="headerlink" href="#requiring-login" title="Permalink to this headline">¶</a></h2>
+<p>At the most simple level, you may want certain routes or controllers to only be accessible when a user is logged in.</p>
+<p>To require a user to be logged in, simply use the <code class="docutils literal"><span class="pre">[Authorize]</span></code> attribute on your MVC or API routes:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[Authorize]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">ProfileController</span> <span class="p">:</span> <span class="n">Controller</span>
+<span class="p">{</span>
+    <span class="c1">// GET: /profile</span>
+    <span class="k">public</span> <span class="n">IActionResult</span> <span class="nf">Index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// [Authorize] will require a logged-in user for this action</span>
+        <span class="k">return</span> <span class="nf">View</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the user is not logged in, they will be redirected to the built-in login route (<code class="docutils literal"><span class="pre">/login</span></code> by default) to log in or register. After authenticating, they will be redirected back to the original route automatically.</p>
+</div>
+<div class="section" id="groups-and-roles">
+<h2>Groups and roles<a class="headerlink" href="#groups-and-roles" title="Permalink to this headline">¶</a></h2>
+<p>In Stormpath, an Account can belong to one or more Groups, which can represent claims or roles. Adding an Account to a Group can be thought of as adding that user to a role, or assigning a claim or label to the account.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can create and assign Groups using the <a class="reference external" href="https://api.stormpath.com/login">Stormpath Admin Console</a>, or via <a class="reference external" href="https://docs.stormpath.com/csharp/product-guide/latest/accnt_mgmt.html#groups">C#</a> or <a class="reference external" href="https://docs.stormpath.com/vbnet/product-guide/latest/accnt_mgmt.html#groups">Visual Basic</a> code and the Stormpath SDK.</p>
+</div>
+<p>For example, you might create an <code class="docutils literal"><span class="pre">admin</span></code> Group that Accounts with administrator access are assigned to. Then, in your ASP.NET Core project, you can restrict access to controllers and actions based on membership in that group.</p>
+<div class="section" id="requiring-a-group">
+<h3>Requiring a Group<a class="headerlink" href="#requiring-a-group" title="Permalink to this headline">¶</a></h3>
+<p>In ASP.NET Core, authorization is handled by named policies defined in the <code class="docutils literal"><span class="pre">Startup</span></code> class. To create a policy that requires a Stormpath Group, use this code in the <code class="docutils literal"><span class="pre">ConfigureServices</span></code> method:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthorization</span><span class="p">(</span><span class="n">opt</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">AddPolicy</span><span class="p">(</span><span class="s">&quot;AdminOnly&quot;</span><span class="p">,</span> <span class="n">policy</span> <span class="p">=&gt;</span> <span class="n">policy</span><span class="p">.</span><span class="n">AddRequirements</span><span class="p">(</span>
+        <span class="k">new</span> <span class="nf">StormpathGroupsRequirement</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">)));</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Then, you can use this policy in the <code class="docutils literal"><span class="pre">Authorize</span></code> attribute on controllers or routes:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[Authorize(Policy = &quot;AdminOnly&quot;)]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">AdminController</span> <span class="p">:</span> <span class="n">Controller</span>
+<span class="p">{</span>
+    <span class="c1">// Only users in the admin group can access these actions</span>
+
+    <span class="k">public</span> <span class="n">IActionResult</span> <span class="nf">Index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">View</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>It&#8217;s possible to specify a Group by <code class="docutils literal"><span class="pre">href</span></code> instead of name, if you wish:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthorization</span><span class="p">(</span><span class="n">opt</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">AddPolicy</span><span class="p">(</span><span class="s">&quot;PayingMembersOnly&quot;</span><span class="p">,</span> <span class="n">policy</span> <span class="p">=&gt;</span> <span class="n">policy</span><span class="p">.</span><span class="n">AddRequirements</span><span class="p">(</span>
+        <span class="k">new</span> <span class="nf">StormpathGroupsRequirement</span><span class="p">(</span><span class="s">&quot;https://api.stormpath.com/v1/groups/aRaNdOmGrOuPiDhEre&quot;</span><span class="p">)));</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>It&#8217;s also possible to specify multiple Group names or <code class="docutils literal"><span class="pre">hrefs</span></code>. If the user is in <strong>any</strong> of the specified Groups, the authorization will succeed.</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthorization</span><span class="p">(</span><span class="n">opt</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">AddPolicy</span><span class="p">(</span><span class="s">&quot;PayingMembersOnly&quot;</span><span class="p">,</span> <span class="n">policy</span> <span class="p">=&gt;</span> <span class="n">policy</span><span class="p">.</span><span class="n">AddRequirements</span><span class="p">(</span>
+        <span class="k">new</span> <span class="nf">StormpathGroupsRequirement</span><span class="p">(</span><span class="s">&quot;subscriber&quot;</span><span class="p">,</span> <span class="s">&quot;partner&quot;</span><span class="p">)));</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="requiring-multiple-groups">
+<h3>Requiring multiple Groups<a class="headerlink" href="#requiring-multiple-groups" title="Permalink to this headline">¶</a></h3>
+<p>To require the user to be in more than one Group, apply the syntax twice:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthorization</span><span class="p">(</span><span class="n">opt</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">AddPolicy</span><span class="p">(</span><span class="s">&quot;AdminManagers&quot;</span><span class="p">,</span> <span class="n">policy</span> <span class="p">=&gt;</span> <span class="n">policy</span>
+        <span class="p">.</span><span class="n">AddRequirements</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathGroupsRequirement</span><span class="p">(</span><span class="s">&quot;admin&quot;</span><span class="p">))</span>
+        <span class="p">.</span><span class="n">AddRequirements</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathGroupsRequirement</span><span class="p">(</span><span class="s">&quot;manager&quot;</span><span class="p">)));</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="fine-grained-permissions">
+<h2>Fine-grained permissions<a class="headerlink" href="#fine-grained-permissions" title="Permalink to this headline">¶</a></h2>
+<p>If you need finer control over authorization, you can use Stormpath&#8217;s <a class="reference external" href="https://docs.stormpath.com/csharp/product-guide/latest/accnt_mgmt.html#how-to-store-additional-user-information-as-custom-data">Custom Data</a> feature to model any type of permissions you need in your application.</p>
+<p>For example, if you only want some users to be able to post messages in your application, you could add a <code class="docutils literal"><span class="pre">canPost:</span> <span class="pre">true</span></code> item to the Accounts who have that privilege.</p>
+<p>Requiring a particular Custom Data value is similar to requiring a Group:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthorization</span><span class="p">(</span><span class="n">opt</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">AddPolicy</span><span class="p">(</span><span class="s">&quot;CanPost&quot;</span><span class="p">,</span> <span class="n">policy</span> <span class="p">=&gt;</span> <span class="n">policy</span><span class="p">.</span><span class="n">AddRequirements</span><span class="p">(</span>
+        <span class="k">new</span> <span class="nf">StormpathCustomDataRequirement</span><span class="p">(</span><span class="s">&quot;canPost&quot;</span><span class="p">,</span> <span class="k">true</span><span class="p">)));</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Once the policy has been defined, you can use it on your controllers and actions:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="na">[Authorize(Policy = &quot;CanPost&quot;)]</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">CreatePostController</span> <span class="p">:</span> <span class="n">Controller</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="n">IActionResult</span> <span class="nf">Index</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="nf">View</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To require multiple Custom Data values, just add another reference:</p>
+<div class="highlight-csharp"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthorization</span><span class="p">(</span><span class="n">opt</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">opt</span><span class="p">.</span><span class="n">AddPolicy</span><span class="p">(</span><span class="s">&quot;CanPostStickies&quot;</span><span class="p">,</span> <span class="n">policy</span> <span class="p">=&gt;</span> <span class="n">policy</span>
+        <span class="p">.</span><span class="n">AddRequirements</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathCustomDataRequirement</span><span class="p">(</span><span class="s">&quot;canPost&quot;</span><span class="p">,</span> <span class="k">true</span><span class="p">))</span>
+        <span class="p">.</span><span class="n">AddRequirements</span><span class="p">(</span><span class="k">new</span> <span class="n">StormpathCustomDataRequirement</span><span class="p">(</span><span class="s">&quot;userType&quot;</span><span class="p">,</span> <span class="s">&quot;admin&quot;</span><span class="p">)));</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="id_site.html" class="btn btn-neutral float-right" title="ID Site" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="api_authentication.html" class="btn btn-neutral" title="API authentication" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath, Inc..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="_static/scrollspy.js"></script>
+      <script type="text/javascript" src="_static/gumshoe.min.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+   
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-29159574-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script type="text/javascript">
+    (function(d,s,i,r) {
+        if (d.getElementById(i)){return;}
+        var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+        n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/475298.js';
+        e.parentNode.insertBefore(n, e);
+    })(document,"script","hs-analytics",300000);
+  </script>
+  <script type="text/javascript">
+    var _kmq = _kmq || [];
+    var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';
+    function _kms(u){
+        setTimeout(function(){
+            var d = document, f = d.getElementsByTagName('script')[0],
+                    s = d.createElement('script');
+            s.type = 'text/javascript'; s.async = true; s.src = u;
+            f.parentNode.insertBefore(s, f);
+        }, 1);
+    }
+    _kms('//i.kissmetrics.com/i.js');
+    _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');
+  </script>
+  <script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+
+  
+
+</body>
+</html>
