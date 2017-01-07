@@ -321,7 +321,7 @@ For example, in YAML:
   ---
   stormpath:
     web:
-     serverUri: http://localhost:5000
+     serverUri: "http://localhost:5000"
 
 Alternatively, you can set this property in code when you configure the Stormpath middleware:
 
@@ -339,6 +339,38 @@ Alternatively, you can set this property in code when you configure the Stormpat
 
  .. .literalinclude:: code/configuration/nancy/anonymous_inline_config.cs
    :language: csharp
+
+
+Specifying the Stormpath base URL
+---------------------------------
+
+If you are using a different deployment of Stormpath (our Enterprise tier, for example), you'll need to update the base URL that the SDK connects to.
+
+This can be done via YAML:
+
+.. code-block:: yaml
+
+ ---
+ stormpath:
+   client:
+     baseUrl: "https://enterprise.stormpath.io/v1"
+
+Or, in ``Startup.cs``:
+
+.. only:: aspnetcore
+
+  .. literalinclude:: code/configuration/aspnetcore/stormpath_baseurl.cs
+    :language: csharp
+
+.. only:: aspnet
+
+  .. literalinclude:: code/configuration/aspnet/stormpath_baseurl.cs
+    :language: csharp
+
+.. only:: nancy
+
+  .. .literalinclude:: code/configuration/nancy/stormpath_baseurl.cs
+    :language: csharp
 
 
 Stormpath Client options
