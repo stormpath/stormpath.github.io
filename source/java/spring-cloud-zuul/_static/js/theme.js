@@ -75,8 +75,9 @@ function ThemeNav () {
             })
 
         // Make tables responsive
-        $("table.docutils:not(.field-list)")
-            .wrap("<div class='wy-table-responsive'></div>");
+        //Commenting these two lines out per https://github.com/stormpath/stormpath-sphinx-theme/issues/4:
+        //$("table.docutils:not(.field-list)")
+        //    .wrap("<div class='wy-table-responsive'></div>");
 
         // Add expand links to all parents of nested ul
         $('.wy-menu-vertical ul').not('.simple').siblings('a').each(function () {

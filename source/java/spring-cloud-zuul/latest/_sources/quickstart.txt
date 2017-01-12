@@ -27,7 +27,7 @@ Add the |project|
 This step allows you to enable Stormpath in a Spring Cloud Zuul gateway project with *very minimal* configuration.
 It includes Stormpath Spring Security, Stormpath Spring WebMVC and Stormpath Thymeleaf templates.
 
-Using your favorite dependency resolution build tool like Maven or Gradle, add the ``stormpath-zuul-spring-cloud-starter-1.2.3.jar`` to your project dependencies. For example:
+Using your favorite dependency resolution build tool like Maven or Gradle, add the ``stormpath-zuul-spring-cloud-starter-1.3.0.jar`` to your project dependencies. For example:
 
 **Maven**:
 
@@ -36,7 +36,7 @@ Using your favorite dependency resolution build tool like Maven or Gradle, add t
     <dependency>
         <groupId>com.stormpath.spring</groupId>
         <artifactId>stormpath-zuul-spring-cloud-starter</artifactId>
-        <version>1.2.3</version>
+        <version>1.3.0</version>
     </dependency>
 
 **Gradle**:
@@ -44,7 +44,7 @@ Using your favorite dependency resolution build tool like Maven or Gradle, add t
 .. code-block:: groovy
 
     dependencies {
-        compile 'com.stormpath.spring:stormpath-zuul-spring-cloud-starter:1.2.3'
+        compile 'com.stormpath.spring:stormpath-zuul-spring-cloud-starter:1.3.0'
     }
 
 That's it!  Stormpath is now enabled in your Spring Cloud Zuul gateway!
@@ -54,30 +54,15 @@ That's it!  Stormpath is now enabled in your Spring Cloud Zuul gateway!
 Spring Security
 ^^^^^^^^^^^^^^^
 
-The |project| assumes Spring Security will be used to secure your gateway by default.  To ensure this
-works correctly, you will need a Spring Security configuration class and apply the ``stormpath()`` hook:
+The |project| assumes Spring Security will be used to secure your gateway by default.
 
-.. code-block:: java
-    :emphasize-lines: 7
 
-    import static com.stormpath.spring.config.StormpathWebSecurityConfigurer.stormpath;
-
-    @Configuration
-    public class SpringSecurityWebAppConfig extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.apply(stormpath());
-        }
-    }
-
-Without this, you will see a browser popup prompting for authentication, which is the default basic authentication behavior for Spring Security.
-
-Also, by default, all paths are locked down with Spring Security. Stormpath's Spring Security integration follows this idiomatic behavior.
+By default, all paths are locked down with Spring Security. Stormpath's Spring Security integration follows this idiomatic behavior.
 
 Disabling Spring Security
 """""""""""""""""""""""""
 
-If you do not want to use Spring Security, do not add the ``SpringSecurityWebAppConfig`` class shown above (or just comment out the ``http.apply(stormpath())`` line if you do not want to remove the class).  Also set the following two config properties:
+If you do not want to use our Spring Security integration, set the following two config properties:
 
 .. code-block:: yaml
 
@@ -126,8 +111,8 @@ Wasn't that easy?!
   You probably noticed that you couldn't register a user account without specifying a sufficiently strong password.
   This is because, by default, Stormpath enforces certain password strength rules.
 
-  If you'd like to change these password strength rules, you can do so easily by visiting the `Stormpath Admin Console`_,
-  navigating to your your application's user ``Directory``, and then changing the "Password Strength Policy".
+  If you'd like to change these password strength rules, you can do so easily. Visit the `Stormpath Admin Console`_,
+  navigate to your your application's user ``Directory``, and then choose the ``Password Policy`` tab on the ``Policies`` page.
 
 Any Problems?
 ^^^^^^^^^^^^^
@@ -158,13 +143,13 @@ Did you experience any problems with this quickstart?  It might not have worked 
          stormpathFilter:
            order: preferred_value #must be an integer
 
-  By default, the ``StormpathFilter`` is ordered as ``Ordered.HIGHEST_PRECEDENCE``, but if you have multiple
-  filters with that same order value, you might have to change the order of the other filters as well.
+  Spring Security is ordered as ``0`` (which is its default) and the ``StormpathFilter`` is ordered as ``10`` by default.
+  If you have multiple filters with that same order value, you might have to change the order of the other filters as well.
 
 
 * you're using the ``spring-boot-starter-parent`` as a ``parent`` and you are getting errors related to Spring
-  Security. The Stormpath starter relies on Spring Security 4.1.x. The current release at the time of this writing
-  of the ``spring-boot-starter-parent`` is 1.4.0 and it also relies on Spring Security 4.1.x. Prior versions of
+  Security. The Stormpath starter relies on Spring Security 4.2.x. The current release at the time of this writing
+  of the ``spring-boot-starter-parent`` is 1.4.3 and it also relies on Spring Security 4.1.x. Prior versions of
   the ``spring-boot-starter-parent`` rely on Spring Security 3.2.x. Our first recommendation is to use the latest
   version of the ``spring-boot-starter-parent``. However, if you must use earlier versions, there is a simple
   solution to this, which is to override the Spring Security version in your ``pom.xml``
@@ -182,14 +167,14 @@ Did you experience any problems with this quickstart?  It might not have worked 
          <parent>
              <groupId>org.springframework.boot</groupId>
              <artifactId>spring-boot-starter-parent</artifactId>
-             <version>1.4.0.RELEASE</version>
+             <version>1.4.3.RELEASE</version>
              <relativePath/> <!-- lookup parent from repository -->
          </parent>
 
          <properties>
              <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
              <java.version>1.8</java.version>
-             <spring-security.version>4.1.2.RELEASE</spring-security.version>
+             <spring-security.version>4.2.0.RELEASE</spring-security.version>
          </properties>
 
          <dependencies>
@@ -197,7 +182,7 @@ Did you experience any problems with this quickstart?  It might not have worked 
              <dependency>
                  <groupId>com.stormpath.spring</groupId>
                  <artifactId>stormpath-zuul-spring-cloud-starter</artifactId>
-                 <version>1.2.3</version>
+                 <version>1.3.0</version>
              </dependency>
 
              <!-- Other dependencies... -->
@@ -219,7 +204,7 @@ That was just a little example of how much functionality is ready right out of t
 * Token authentication for Javascript Single Page Applications (SPAs) and mobile clients like those on iOS and Android.
 * Account email verification (verify an email address is valid before enabling a user account)
 * Secure CSRF protection on views with forms
-* Events to react to registration, login, logout, etc
+* Events to react to registration, login, logout, etc.
 * Session-free (stateless) secure user account identification
 * HTTP Basic and OAuth2 authentication
 * and more!
