@@ -22,7 +22,7 @@
     <a title="Stormpath  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">Stormpath Docs</a> (100% documented)</p>
+        <p><a href="index.html">Stormpath Docs</a> (98% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -42,7 +42,7 @@
                 <a href="Classes/Account.html">Account</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/RegistrationModel.html">RegistrationModel</a>
+                <a href="Classes/RegistrationForm.html">RegistrationForm</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/Stormpath.html">Stormpath</a>
@@ -53,9 +53,6 @@
               <li class="nav-group-task">
                 <a href="Classes/StormpathError.html">StormpathError</a>
               </li>
-              <li class="nav-group-task">
-                <a href="Classes/StormpathSocialProviderConfiguration.html">StormpathSocialProviderConfiguration</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -65,7 +62,15 @@
                 <a href="Enums/AccountStatus.html">AccountStatus</a>
               </li>
               <li class="nav-group-task">
-                <a href="Enums/StormpathSocialProvider.html">StormpathSocialProvider</a>
+                <a href="Enums/Provider.html">Provider</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/JSON.html">JSON</a>
               </li>
             </ul>
           </li>
@@ -100,40 +105,19 @@
 <p>iOS 8.0+ / Xcode 8.0+ (Swift 3)</p>
 <a href='#set-up' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='set-up'>Set up</h1>
 
-<p>Stormpath&rsquo;s iOS SDK allows developers utilizing Stormpath to quickly integrate authentication and token management into their app. </p>
+<p>Stormpath&rsquo;s iOS SDK allows developers utilizing Stormpath to quickly integrate authentication and token management into their apps. </p>
 
 <p>We&rsquo;re constantly iterating and improving the SDK, so please don&rsquo;t hesitate to send us your feedback! You can reach us via <a href="mailto:support@stormpath.com">support@stormpath.com</a>, or on the issue tracker for feature requests. </p>
-<a href='#setting-up-a-compatible-backend' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='setting-up-a-compatible-backend'>Setting up a Compatible Backend</h2>
-
-<p>Stormpath&rsquo;s framework integrations plug into popular web frameworks and expose pre-built API endpoints that you can customize. These web framework integrations are:</p>
-
-<ul>
-<li><a href="https://docs.stormpath.com/nodejs/express/latest/">Express</a></li>
-<li><a href="https://docs.stormpath.com/php/laravel/latest/">Laravel</a></li>
-<li><a href="https://docs.stormpath.com/dotnet/aspnetcore/latest/">.NET Core</a></li>
-<li><a href="https://docs.stormpath.com/java/">Spring / Java Servlet</a></li>
-<li><a href="https://github.com/stormpath/stormpath-rails">Ruby on Rails</a></li>
-</ul>
-
-<p>If you&rsquo;re just testing, it&rsquo;s pretty quick to set up a server using the <a href="https://github.com/stormpath/express-stormpath-sample-project">express sample project</a>. </p>
 <a href='#installation' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='installation'>Installation</h1>
 <a href='#cocoapods' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='cocoapods'>CocoaPods</h2>
 
 <p>Stormpath is available through <a href="https://cocoapods.org/">CocoaPods</a>. Add this line to your <code>Podfile</code> to begin:</p>
-<pre class="highlight ruby"><code><span class="n">pod</span> <span class="s1">'Stormpath'</span><span class="p">,</span> <span class="s1">'~&gt; 2.0'</span>
-</code></pre>
-
-<p>For older versions of Swift:</p>
-<pre class="highlight ruby"><code><span class="c1"># Swift 2.3; Xcode 8</span>
-<span class="n">pod</span> <span class="s1">'Stormpath'</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">'https://github.com/Stormpath/stormpath-sdk-ios.git'</span><span class="p">,</span> <span class="ss">:branch</span> <span class="o">=&gt;</span> <span class="s1">'swift2.3'</span>
-
-<span class="c1"># Swift 2.2; Xcode 7</span>
-<span class="n">pod</span> <span class="s1">'Stormpath'</span><span class="p">,</span> <span class="s1">'~&gt; 1.3'</span>
+<pre class="highlight ruby"><code><span class="n">pod</span> <span class="s1">'Stormpath'</span><span class="p">,</span> <span class="s1">'~&gt; 3.0'</span>
 </code></pre>
 <a href='#carthage' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='carthage'>Carthage</h2>
 
 <p>To use Stormpath with <a href="https://github.com/Carthage/Carthage">Carthage</a>, specify it in your <code>Cartfile</code>:</p>
-<pre class="highlight plaintext"><code>github "stormpath/stormpath-sdk-ios" ~&gt; 2.0
+<pre class="highlight plaintext"><code>github "stormpath/stormpath-sdk-ios" ~&gt; 3.0
 </code></pre>
 <a href='#usage' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='usage'>Usage</h1>
 
@@ -147,29 +131,25 @@
 <p>For Objective-C projects: </p>
 <pre class="highlight plaintext"><code>#import "Stormpath-Swift.h"
 </code></pre>
-<a href='#setting-up-the-api-endpoints' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='setting-up-the-api-endpoints'>Setting up the API Endpoints</h2>
+<a href='#configuring-stormpath' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='configuring-stormpath'>Configuring Stormpath</h2>
 
-<p>Stormpath&rsquo;s default configuration will attempt to connect to <code>http://localhost:3000/</code>. This is the default configuration for the <code>express-stormpath</code> integration and is useful when you&rsquo;re testing in the iOS simulator. However, you&rsquo;ll need to modify this for any other setups. </p>
+<p>The iOS SDK (v3) leverages the <a href="https://docs.stormpath.com/client-api/product-guide/latest/index.html">Stormpath Client API</a> for its authentication needs. You&rsquo;ll need to sign into the <a href="https://api.stormpath.com/">Stormpath Admin Console</a> to get your Client API details. Go into your Application &gt; Policies &gt; Client API, and ensure that it&rsquo;s enabled. Copy your Client API URL, and set it in your Xcode project: </p>
 
 <p>Swift:</p>
-<pre class="highlight plaintext"><code>StormpathConfiguration.defaultConfiguration.APIURL = URL(string: "http://localhost:3000")!
+<pre class="highlight plaintext"><code>Stormpath.sharedSession.configuration.APIURL = URL(string: "https://edjiang.apps.stormpath.io")!
 </code></pre>
 
 <p>Objective-C:</p>
-<pre class="highlight plaintext"><code>[StormpathConfiguration defaultConfiguration].APIURL = [[URL alloc] initWithString:@"http://localhost:3000"];
+<pre class="highlight plaintext"><code>[[SPHStormpath sharedSession] configuration].APIURL = [[NSURL alloc] initWithString:@"https://edjiang.apps.stormpath.io"];
 </code></pre>
-
-<p><em>Note: As of the iOS 9 SDK, Apple has enabled App Transport Security by default. If you&rsquo;re developing against an <code>http</code> endpoint, you&rsquo;ll need to disable it. For production, you should always be using <code>https</code> for your API endpoints.</em></p>
 <a href='#user-registration' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='user-registration'>User registration</h2>
 
-<p>In order to register a user, instantiate a <code>RegistrationModel</code> object. By default, Stormpath framework integrations require an <code>email</code>, <code>password</code>, <code>givenName</code>, and <code>surname</code>. </p>
-<pre class="highlight plaintext"><code>let account = RegistrationModel(email: "user@example.com", password: "ExamplePassword")
-account.givenName = "Example"
-account.surname = "McExample"
+<p>In order to register a user, instantiate a <code>RegistrationForm</code> object. Stormpath requires an <code>email</code> and <code>password</code> to register.</p>
+<pre class="highlight plaintext"><code>let newUser = RegistrationForm(email: "user@example.com", password: "ExamplePassword")
 </code></pre>
 
 <p>Then, just invoke the register method on <code>Stormpath</code> class:</p>
-<pre class="highlight plaintext"><code>Stormpath.sharedSession.register(account) { (account, error) -&gt; Void in
+<pre class="highlight plaintext"><code>Stormpath.sharedSession.register(account: newUser) { (account, error) -&gt; Void in
     guard let account = account where error == nil else {
         //The account registration failed
         return
@@ -183,7 +163,7 @@ account.surname = "McExample"
 <a href='#logging-in' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='logging-in'>Logging in</h2>
 
 <p>To log in, collect the email (or username) and password from the user, and then pass them to the login method:</p>
-<pre class="highlight plaintext"><code>Stormpath.sharedSession.login("user@example.com", password: "ExamplePassword") { (success, error) -&gt; Void in
+<pre class="highlight plaintext"><code>Stormpath.sharedSession.login(username: "user@example.com", password: "ExamplePassword") { success, error in
     guard error == nil else {
         // We could not authenticate the user with the given credentials. Handle the error. 
         return
@@ -191,21 +171,26 @@ account.surname = "McExample"
     // The user is now logged in, and you can use the Stormpath access token to make API requests!
 }
 </code></pre>
+<a href='#logging-in-with-social-providers' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='logging-in-with-social-providers'>Logging in with Social Providers</h2>
 
-<p><strong>Note: Logging in does not work in the iOS 10 simulator because of a simulator bug. However, logging in works on actual devices, or older simulators, like the iOS 9 simulator. To test your app, use the iOS 9 simulator, or run the code on a physical device. See this <a href="http://stackoverflow.com/questions/38456471/secitemadd-always-returns-error-34018-in-xcode-8-beta-gm-in-ios-10-simulator">Stack Overflow</a> thread for more information on the simulator bug.</strong></p>
-<a href='#logging-in-with-facebook-or-google' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='logging-in-with-facebook-or-google'>Logging in with Facebook or Google</h2>
-
-<p>Stormpath also supports logging in with Facebook or Google. There are two flows for enabling this:</p>
+<p>Stormpath also supports logging in with a variety of social providers Facebook, Google, LinkedIn, GitHub, and more. There are two flows for enabling this:</p>
 
 <ol>
-<li>Let Stormpath handle the Facebook / Google Login.</li>
-<li>Use the Facebook / Google iOS SDK to get an access token, and pass it to Stormpath to log in.</li>
+<li>Let Stormpath handle the social login.</li>
+<li>Use the social provider&rsquo;s iOS SDK to get an access token, and pass it to Stormpath to log in.</li>
 </ol>
 
-<p>We&rsquo;ve made it extremely easy to set up social login without using the Facebook / Google SDK, but if you need to use their SDKs for more features besides logging in, you should use flow #2 (and skip directly to <a href="#using-the-google-or-facebook-sdk">Using the Facebook or Google SDK</a>). </p>
-<a href='#setting-up-your-appdelegate' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='setting-up-your-appdelegate'>Setting up your AppDelegate</h3>
+<p>We&rsquo;ve made it extremely easy to set up social login without using the social provider SDKs, but if you need to use their SDKs for more features besides logging in, you should use flow #2 (and skip directly to <a href="#using-a-social-provider-sdk">Using a social provider SDK</a>). </p>
+<a href='#configure-your-social-directory-in-stormpath' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='configure-your-social-directory-in-stormpath'>Configure Your Social Directory in Stormpath</h3>
 
-<p>In your Xcode project, add the following methods to your <code>AppDelegate</code>:</p>
+<p>To set up your social directory, read more about <a href="https://docs.stormpath.com/client-api/product-guide/latest/social_login.html#before-you-start">social login in the Stormpath Client API Guide</a>.</p>
+<a href='#setting-up-your-xcode-project' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='setting-up-your-xcode-project'>Setting up your Xcode project</h3>
+
+<p>In your Xcode project, you&rsquo;ll need to create a URL Scheme so that the login process can call back to your app. Go to the project&rsquo;s info tab. Under <q>URL Types</q>, add a new entry, and in the URL schemes form field, type in your Client API&rsquo;s DNS label, but reversed. For instance, if your Client API DNS Label is <code>edjiang.apps.stormpath.io</code>, type in <code>io.stormpath.apps.edjiang</code>. </p>
+
+<p>In the <a href="https://api.stormpath.com">Stormpath Admin Console</a>&rsquo;s Application settings, add that URL as an <q>authorized callback URL</q>, appending <code>://stormpathCallback</code>. Following my earlier example, I would use <code>io.stormpath.apps.edjiang</code>. </p>
+
+<p>Also, add the following methods to your <code>AppDelegate</code> in your Xcode project:</p>
 <pre class="highlight plaintext"><code>// iOS 9+ link handler
 func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any]) -&gt; Bool {
     return Stormpath.sharedSession.application(app, open: url, options: options)
@@ -216,63 +201,43 @@ func application(_ application: UIApplication, open url: URL, sourceApplication:
     return Stormpath.sharedSession.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
 }
 </code></pre>
-<a href='#setting-up-facebook-login' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='setting-up-facebook-login'>Setting up Facebook Login</h3>
+<a href='#initiating-social-login' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='initiating-social-login'>Initiating Social Login</h3>
 
-<p>To get started, you first need to <a href="https://developers.facebook.com/?advanced_app_create=true">register an application</a> with Facebook. After registering your app, go into your app dashboard&rsquo;s settings page. Click <q>Add Platform</q>, and fill in your Bundle ID, and turn <q>Single Sign On</q> on. </p>
-
-<p>Then, <a href="https://api.stormpath.com/login">sign into Stormpath</a> and add a Facebook directory to your account. Fill the App ID and Secret with the values given to you in the Facebook app dashboard. Then, add the directory to your Stormpath application. </p>
-
-<p>Finally, open up your App&rsquo;s Xcode project and go to the project&rsquo;s info tab. Under <q>URL Types</q>, add a new entry, and in the URL schemes form field, type in <code>fb[APP_ID_HERE]</code>, replacing <code>[APP_ID_HERE]</code> with your Facebook App ID. </p>
-
-<p>Then, you can initiate the login screen by calling: </p>
-<pre class="highlight plaintext"><code>Stormpath.sharedSession.login(socialProvider: .facebook) { (success, error) -&gt; Void in
+<p>Now, you can initiate the login screen by calling: </p>
+<pre class="highlight plaintext"><code>Stormpath.sharedSession.login(provider: .facebook) { (success, error) -&gt; Void in
     // This callback is the same as the regular Stormpath.login callback. 
     // If the user cancels the login, the login was never started, and
     // this callback will not be called.
 }
 </code></pre>
-<a href='#setting-up-google-login' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='setting-up-google-login'>Setting up Google Login</h3>
-
-<p>To get started, you first need to <a href="https://console.developers.google.com/project">register an application</a> with Google. Click <q>Enable and Manage APIs</q>, and then the credentials tab. Create two sets of OAuth Client IDs, one as <q>Web Application</q>, and one as <q>iOS</q>. </p>
-
-<p>Then, <a href="https://api.stormpath.com/login">sign into Stormpath</a> and add a Google directory to your account. Fill in the Client ID and Secret with the values given to you for the web client. (You can fill in <q>Google Authorized Redirect URI</q> with <code>http://YOURSERVER/callbacks/google</code>. Then, add the directory to your Stormpath application. </p>
-
-<p>Finally, open up your App&rsquo;s Xcode project and go to the project&rsquo;s info tab. Under <q>URL Types</q>, add a new entry, and in the URL schemes form field, type in your Google iOS Client&rsquo;s <code>iOS URL scheme</code> from the Google Developer Console. </p>
-
-<p>Then, you can initiate the login screen by calling: </p>
-<pre class="highlight plaintext"><code>Stormpath.sharedSession.login(socialProvider: .google) { (success, error) -&gt; Void in
-    // Same callback as above
-}
-</code></pre>
-<a href='#using-the-google-or-facebook-sdk' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='using-the-google-or-facebook-sdk'>Using the Google or Facebook SDK</h3>
+<a href='#using-a-social-provider-sdk' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='using-a-social-provider-sdk'>Using a Social Provider SDK</h3>
 
 <p>If you&rsquo;re using the <a href="https://developers.facebook.com/docs/facebook-login/ios">Facebook SDK</a> or <a href="https://developers.google.com/identity/sign-in/ios/">Google SDK</a> for your app, follow their setup instructions instead. Once you successfully sign in with their SDK, utilize the following methods to send your access token to Stormpath, and log in your user: </p>
-<pre class="highlight plaintext"><code>Stormpath.sharedSession.login(socialProvider: .facebook, accessToken: FBSDKAccessToken.currentAccessToken().tokenString) { (success, error) -&gt; Void in
+<pre class="highlight plaintext"><code>Stormpath.sharedSession.login(provider: .facebook, accessToken: FBSDKAccessToken.currentAccessToken().tokenString) { (success, error) -&gt; Void in
     // Same callback as above
 }
 
-Stormpath.sharedSession.login(socialProvider: .google, accessToken: GIDSignIn.sharedInstance().currentUser.authentication.accessToken) { (success, error) -&gt; Void in
+Stormpath.sharedSession.login(provider: .google, accessToken: GIDSignIn.sharedInstance().currentUser.authentication.accessToken) { (success, error) -&gt; Void in
     // Same callback as above
 }
 </code></pre>
-<a href='#github-and-linkedin-login' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='github-and-linkedin-login'>GitHub and LinkedIn login</h3>
-
-<p>GitHub and LinkedIn login are not officially supported in the iOS SDK, but there is a way to implement it. <a href="https://github.com/edjiang/stormpath-mobile-linkedin-example">See this example project</a> for more details. </p>
 <a href='#using-the-access-token' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='using-the-access-token'>Using the Access Token</h2>
 
 <p>You can utilize the access token to access any of your API endpoints that require authentication. It&rsquo;s stored as a property on the Stormpath object as <code>Stormpath.sharedSession.accessToken</code>. If you need to refresh it, use <code>Stormpath.sharedSession.refreshAccessToken()</code>. Depending on the networking library you&rsquo;re using, here&rsquo;s how you&rsquo;d use the access token:</p>
 <a href='#nsurlsession' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='nsurlsession'>NSURLSession</h3>
 <pre class="highlight plaintext"><code>var request = URLRequest(URL: url)
-request.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
+request.setValue("Bearer " + accessToken ?? "", forHTTPHeaderField: "Authorization")
 </code></pre>
 <a href='#alamofire' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h3 id='alamofire'>Alamofire</h3>
-<pre class="highlight plaintext"><code>let headers = ["Authorization": "Bearer " + accessToken]
+<pre class="highlight plaintext"><code>let headers = ["Authorization": "Bearer " + accessToken ?? ""]
 Alamofire.request(url, method: .get, headers: headers)
 </code></pre>
+
+<p><em>Note: As of the iOS 9 SDK, Apple has enabled App Transport Security by default. If you&rsquo;re developing against an <code>http</code> endpoint, you&rsquo;ll need to disable it. For production, you should always be using <code>https</code> for your API endpoints.</em></p>
 <a href='#account-data' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='account-data'>Account data</h2>
 
 <p>Stormpath&rsquo;s framework integrations provide a default endpoint for retrieving profile information. Fetch the account data by using me:</p>
-<pre class="highlight plaintext"><code>Stormpath.sharedSession.me { (account, error) -&gt; Void in
+<pre class="highlight plaintext"><code>Stormpath.sharedSession.me { account, error in
     guard let account = account where error == nil else {
         // We might not be logged in, the API is misconfigured, the API is down, etc
         return
@@ -288,7 +253,7 @@ Alamofire.request(url, method: .get, headers: headers)
 <a href='#password-reset' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='password-reset'>Password reset</h2>
 
 <p>To reset a user&rsquo;s password, you&rsquo;ll need to collect their email first. Then simply pass that email to the <code>resetPassword</code> function like so:</p>
-<pre class="highlight plaintext"><code>Stormpath.sharedSession.resetPassword("user@example.com") { (success, error) -&gt; Void in
+<pre class="highlight plaintext"><code>Stormpath.sharedSession.resetPassword(email: "user@example.com") { success, error in
     guard error == nil else {
         // A network or API problem occurred. 
         return
@@ -311,28 +276,13 @@ Alamofire.request(url, method: .get, headers: headers)
 <p>For user errors, <code>StormpathError</code> will have the HTTP error code of the API response (usually 400), and <code>localizedDescription</code> set to a user-readable error message which is safe to display to the user. </p>
 
 <p>In special cases, StormpathError will have code 0 or 1. These are developer errors that should not be displayed to the user. 0 stands for <q>Stormpath SDK Error</q>, and most likely indicates a bug with the Stormpath SDK that should be reported to us. 1 stands for <q>API Response Error</q>, and means that the API responded with something unexpected. This most likely means that you have your backend integration misconfigured. </p>
-<a href='#custom-configuration' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='custom-configuration'>Custom configuration</h2>
+<a href='#configuring-stormpath-with-info-plist' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='configuring-stormpath-with-info-plist'>Configuring Stormpath with Info.plist</h2>
 
-<p><code>StormpathConfiguration</code> can be used to point Stormpath to a specific API URL, as well as custom endpoints. While you can modify the object directly, you can also put your configuration in Info.plist. To add the Stormpath configuration, right click on Info.plist, and click <q>open as source code</q>. Before the last <code>&lt;/plist&gt;</code> tag, paste: </p>
+<p><code>StormpathConfiguration</code> can be used to point Stormpath to a specific API URL. While you can modify the object directly, you can also put your configuration in Info.plist. To add the Stormpath configuration, right click on Info.plist, and click <q>open as source code</q>. Before the last <code>&lt;/plist&gt;</code> tag, paste: </p>
 <pre class="highlight xml"><code><span class="nt">&lt;key&gt;</span>Stormpath<span class="nt">&lt;/key&gt;</span>
 <span class="nt">&lt;dict&gt;</span>
     <span class="nt">&lt;key&gt;</span>APIURL<span class="nt">&lt;/key&gt;</span>
     <span class="nt">&lt;string&gt;</span>http://localhost:3000<span class="nt">&lt;/string&gt;</span>
-    <span class="nt">&lt;key&gt;</span>customEndpoints<span class="nt">&lt;/key&gt;</span>
-    <span class="nt">&lt;dict&gt;</span>
-        <span class="nt">&lt;key&gt;</span>me<span class="nt">&lt;/key&gt;</span>
-        <span class="nt">&lt;string&gt;</span>/me<span class="nt">&lt;/string&gt;</span>
-        <span class="nt">&lt;key&gt;</span>verifyEmail<span class="nt">&lt;/key&gt;</span>
-        <span class="nt">&lt;string&gt;</span>/verify<span class="nt">&lt;/string&gt;</span>
-        <span class="nt">&lt;key&gt;</span>forgotPassword<span class="nt">&lt;/key&gt;</span>
-        <span class="nt">&lt;string&gt;</span>/forgot<span class="nt">&lt;/string&gt;</span>
-        <span class="nt">&lt;key&gt;</span>oauth<span class="nt">&lt;/key&gt;</span>
-        <span class="nt">&lt;string&gt;</span>/oauth/token<span class="nt">&lt;/string&gt;</span>
-        <span class="nt">&lt;key&gt;</span>logout<span class="nt">&lt;/key&gt;</span>
-        <span class="nt">&lt;string&gt;</span>/logout<span class="nt">&lt;/string&gt;</span>
-        <span class="nt">&lt;key&gt;</span>register<span class="nt">&lt;/key&gt;</span>
-        <span class="nt">&lt;string&gt;</span>/register<span class="nt">&lt;/string&gt;</span>
-    <span class="nt">&lt;/dict&gt;</span>
 <span class="nt">&lt;/dict&gt;</span>
 </code></pre>
 
@@ -357,8 +307,8 @@ Alamofire.request(url, method: .get, headers: headers)
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="https://github.com/stormpath/stormpath-sdk-ios" target="_blank" rel="external">Stormpath</a>. All rights reserved. (Last updated: 2016-09-21)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2016 <a class="link" href="https://github.com/stormpath/stormpath-sdk-ios" target="_blank" rel="external">Stormpath</a>. All rights reserved. (Last updated: 2016-12-22)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.3</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>
