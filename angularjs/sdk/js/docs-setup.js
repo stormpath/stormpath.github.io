@@ -1,7 +1,6 @@
 NG_DOCS={
   "sections": {
-    "api": "API Reference",
-    "server": "Server Integration Guide"
+    "api": "API Reference"
   },
   "pages": [
     {
@@ -10,8 +9,8 @@ NG_DOCS={
       "shortName": "API Documentation",
       "type": "overview",
       "moduleName": "API Documentation",
-      "shortDescription": "Stormpath Angular JS SDK",
-      "keywords": "access angular angularjs api app application authenticate authorization back-end build compontents control current demo description detailed development documentation existing find frameworks fully-featured github guide help https integration io js logged module moment object org overview project properly quickstart requires scratch sdk server setup shields spa start starting status stormpath svg ui-router user users version view work"
+      "shortDescription": "Stormpath Angular JS SDK Ng Docs",
+      "keywords": "access angular angularjs api application authenticate authorization compontents control current description detailed docs documentation find github io js library logged module ng object overview quickstart sdk shields started stormpath svg ui-router user users version view"
     },
     {
       "section": "api",
@@ -105,6 +104,60 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "stormpath.oauth",
+      "shortName": "stormpath.oauth",
+      "type": "overview",
+      "moduleName": "stormpath.oauth",
+      "shortDescription": "This module provides the StormpathOAuth",
+      "keywords": "api client-side implementing module oauth oauth2 overview services stormpath stormpathoauth stormpathoauthtoken workflow"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.oauth.StormpathOAuth",
+      "shortName": "stormpath.oauth.StormpathOAuth",
+      "type": "service",
+      "moduleName": "stormpath.oauth",
+      "shortDescription": "A service for managing the OAuth client-side authentication flow logic. It",
+      "keywords": "$auth $q access active add additional api attempt attempts authenticate authenticating authentication automatically client-side current currently data default defers email endsession expects field flow generc grant headers logic managing method methods nedeed oauth object offers optional options opts overriden parameter password post promise refresh refreshing removes removetoken request requestdata requestopts response revokation revoke revoking service settokenresponse specific storage stored stores stormpath stormpathoauth stormpathoauthtoken successful token tokens type updates user workflow"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.oauth.StormpathOAuthProvider",
+      "shortName": "stormpath.oauth.StormpathOAuthProvider",
+      "type": "service",
+      "moduleName": "stormpath.oauth",
+      "shortDescription": "Provides the StormpathOAuth",
+      "keywords": "api oauth service stormpath stormpath_config stormpathoauth stormpathoauthprovider"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.oauth.StormpathOAuthToken",
+      "shortName": "stormpath.oauth.StormpathOAuthToken",
+      "type": "service",
+      "moduleName": "stormpath.oauth",
+      "shortDescription": "A service for managing OAuth tokens. It offers a simple interface for storing",
+      "keywords": "$q access api attempt authorization camel-cased case components constructed data details fails failure generic getaccesstoken getrefreshtoken gettoken gettokenstore gettokentype header implementation indicating interface load loading managing method methods oauth object offers operation overrided promise provider read reading reason record refresh rejected rejection relying removes removetoken resolved response result retrieves returned service set sets settoken settokenresponse settokenstoretype simple snake-cased specific storage store stores storing stormpath stormpathoauthtoken succeeded succeeds token tokens tokenstore tokenstoremanager tokenstoretype transforms type utility"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.oauth.StormpathOAuthTokenProvider",
+      "shortName": "stormpath.oauth.StormpathOAuthTokenProvider",
+      "type": "service",
+      "moduleName": "stormpath.oauth",
+      "shortDescription": "Provides the StormpathOAuthToken",
+      "keywords": "api data details gettokenstore load method oauth read record service sets settokenstoretype store stormpath stormpath_config stormpathoauthtoken stormpathoauthtokenprovider token tokens tokenstore tokenstoremanager tokenstoretype type"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.socialLogin.$processSocialAuthToken",
+      "shortName": "stormpath.socialLogin.$processSocialAuthToken",
+      "type": "service",
+      "moduleName": "stormpath.socialLogin",
+      "shortDescription": "Executes the flow for processing social authentication tokens returned from",
+      "keywords": "$processsocialauthtoken api appropriate authenticate authentication broadcast concludes events executes failure flow function grant immediatelly login parameters processing promise query redirect resolved returned returns service social sociallogin stormpath stormpath_token success token tokens type url user"
+    },
+    {
+      "section": "api",
       "id": "stormpath.socialLoginService",
       "shortName": "stormpath.socialLoginService",
       "type": "overview",
@@ -118,8 +171,8 @@ NG_DOCS={
       "shortName": "stormpath.socialLoginService.$socialLogin",
       "type": "object",
       "moduleName": "stormpath.socialLoginService",
-      "shortDescription": "The social login service provides methods for letting users logging in with Facebook, Google, etc.",
-      "keywords": "$sociallogin api facebook google letting logging login methods object service social socialloginservice stormpath users"
+      "shortDescription": "The social login service provides a generic authorization interface through",
+      "keywords": "$sociallogin account accountstorehref additional api attempts authenticate authentication authorization authorize authorizes configured ends flow generic href interface login method object options parameters provide provider redirect request send service set social social_login_redirect_uri socialloginservice starts store stormpath stormpath_config successful uri user"
     },
     {
       "section": "api",
@@ -129,15 +182,6 @@ NG_DOCS={
       "moduleName": "stormpath.socialLoginService",
       "shortDescription": "Provides the $socialLogin service.",
       "keywords": "$sociallogin $socialloginprovider api configuration currently methods object provider service socialloginservice stormpath"
-    },
-    {
-      "section": "api",
-      "id": "stormpath.socialLoginService.$spJsLoader",
-      "shortName": "stormpath.socialLoginService.$spJsLoader",
-      "type": "object",
-      "moduleName": "stormpath.socialLoginService",
-      "shortDescription": "The $spJsLoader provides a method for loading scripts during runtime.",
-      "keywords": "$spjsloader api load loading method object provider runtime scripts sdks services social socialloginservice stormpath"
     },
     {
       "section": "api",
@@ -209,7 +253,7 @@ NG_DOCS={
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "Add this directive to a button or link in order to authenticate using a social provider.",
-      "keywords": "add api apps authenticate authorized blank button class client console container creating developer directive directory email facebook field google http leave link oauth order postmessage provider public_profile recommends redirect server-side set sign-in social sp-client-id sp-scope sp-social-login spsociallogin stormpath uri"
+      "keywords": "account add additional additionally api augmented authenticate button class container corresponding directive email example facebook field fields google href http link object options order overriden provider set social social_login_options sp-name sp-options sp-social-login spsociallogin store stormpath stormpath_config"
     },
     {
       "section": "api",
@@ -227,7 +271,52 @@ NG_DOCS={
       "type": "object",
       "moduleName": "stormpath",
       "shortDescription": "This constant allows you to configure the internal settings of the module,",
-      "keywords": "$auth $authenticated $authenticationfailure $currentuser $notloggedin $registered $routechangeunauthenticated $routechangeunauthorized $sessionend $sociallogin $statechangeunauthenticated $statechangeunauthorized $user accept access account active add allowedorigins allows angular api application attempts auth_service_name authenticated authentication authentication_endpoint authentication_failure_event_name authentication_success_event_name backend base behaviour block browser change_password_endpoint changes config configure constant consume content control cookie cookies create created credentials current_user_uri currently data default delete delivered destroy_session_endpoint directive domain email email_verification_endpoint endpoint endpoint_prefix endpoints event events express fetch fired forgot_password_endpoint form form_content_type format forward get_user_event group http inject internal invalid json logged login logs meet methods_create methods_get methods_passwordresetrequest methods_resetpassword methods_verify methods_verifypasswordresettoken modified module mozilla myapp mydomain names not_logged_in_event object omit org password passwordresetrequest port post posts prefix properties property register_uri registered_event_name rejected relate request requests requires reset resetpassword resolved respond route route_change_unauthenticated route_change_unauthorized router rule running sdk server service session session_end_event settings slash social social_login_service_name splogout sptoken state_change_unauthenticated state_change_unauthorized stormpath stormpath_config submitting token tokens trailing trigger type ui unauthorized uri url user username users userservice verification verify verifying verifypasswordresettoken visit xsrf"
+      "keywords": "$auth $authenticated $authenticationfailure $currentuser $notloggedin $oauthrequesterror $registered $routechangeunauthenticated $routechangeunauthorized $sessionend $sociallogin $statechangeunauthenticated $statechangeunauthorized $user accept access account active add additional admin allowedorigins allows angular api appended application attempt attempts auth_service_name authenticate authenticated authentication authentication_endpoint authentication_failure_event_name authentication_success_event_name authorization auto_authorized_uris automatically backend base based bearer behaviour block browser change_password_endpoint changed changes client config configure console constant consume control cookie cookies create created credentials current_user_uri currently data default delete delivered destroy_session_endpoint detail determines directive directory domain email email_verification_endpoint endpoint endpoint_prefix endpoints event events express facebook fails fetch fired flow flows forgot_password_endpoint form format forward get_user_event google grant group header http inject internal invalid issue json key-value library list local localstorage logged login logs lowercase making mapped match matches mechanism meet methods_create methods_get methods_passwordresetrequest methods_resetpassword methods_verify methods_verifypasswordresettoken modified module mozilla myapp mydomain names not_logged_in_event oauth oauth-based oauth_authentication_endpoint oauth_default_token_store_type oauth_request_error oauth_revoke_endpoint object omit options org override parameters password passwordresetrequest port post posts prefix properties property provider providerid providers query redirect refresh refresh_token register_uri registered_event_name rejected relate relative relevant request requested requests requires reset resetpassword resolved respond response returned revoke route route_change_unauthenticated route_change_unauthorized router rule running sdk server service session session_end_event set settings slash social social_login_authorize_uri social_login_options social_login_redirect_uri social_login_response_type social_login_service_name splogout sptoken state_change_unauthenticated state_change_unauthorized storage stored stormpath stormpath_config stormpathoauthtokenprovider strategy submitting support token tokens tokenstore tokenstoremanager trailing trigger type ui unauthorized underlying uri url urls user username users userservice v2 verification verify verifying verifypasswordresettoken visit xsrf"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.tokenStore",
+      "shortName": "stormpath.tokenStore",
+      "type": "overview",
+      "moduleName": "stormpath.tokenStore",
+      "shortDescription": "This module provides a global access point for registering and fetching token",
+      "keywords": "access api fetching global mechanisms module oauth overview point registering store stormpath token tokenstore"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.tokenStore.LocalStorageTokenStore",
+      "shortName": "stormpath.tokenStore.LocalStorageTokenStore",
+      "type": "service",
+      "moduleName": "stormpath.tokenStore",
+      "shortDescription": "Implements token storage via browser localStorage.",
+      "keywords": "api attempts browser implements indication key key-value local localstorage localstoragetokenstore method pair rejected remove representation resolved retrieve service storage store stormpath string success token tokenstore unsupported"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.tokenStore.TokenStore",
+      "shortName": "stormpath.tokenStore.TokenStore",
+      "type": "object",
+      "moduleName": "stormpath.tokenStore",
+      "shortDescription": "A token store implementation. It allows simple key-value pair storing, fetching,",
+      "keywords": "allows api deleting fetching implementation indication key-value method methods object pair promises reason rejection remove representation resolve resolved retrieve retrieved retrieves return simple store stores storing stormpath string success synchronous token tokenstore"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.tokenStore.TokenStoreManager",
+      "shortName": "stormpath.tokenStore.TokenStoreManager",
+      "type": "object",
+      "moduleName": "stormpath.tokenStore",
+      "shortDescription": "This service provides methods for registering token stores (with duck-typed",
+      "keywords": "$q alsomystore angular api app basicstore better code concrete contract data delete duck-typed example expected function gettokenstore implement implementation implementations indicating instances interface key localstoragetokenstore method methods module mystore object organisation promise provided reason registering registertokenstore reject rejection remove removes resolve result retrieving return returning returns satisfy service store stored stores stormpath success takes token tokenstore tokenstoremanager validation var"
+    },
+    {
+      "section": "api",
+      "id": "stormpath.tokenStore.TokenStoreManagerProvider",
+      "shortName": "stormpath.tokenStore.TokenStoreManagerProvider",
+      "type": "service",
+      "moduleName": "stormpath.tokenStore",
+      "shortDescription": "Provides the TokenStoreManager service.",
+      "keywords": "api service stormpath tokenstore tokenstoremanager tokenstoremanagerprovider"
     },
     {
       "section": "api",
@@ -258,26 +347,25 @@ NG_DOCS={
     },
     {
       "section": "api",
+      "id": "stormpath.utils.StormpathOAuthInterceptor",
+      "shortName": "stormpath.utils.StormpathOAuthInterceptor",
+      "type": "service",
+      "moduleName": "stormpath.utils",
+      "shortDescription": "Processes requests and response errors to avoid manual OAuth flow integration.",
+      "keywords": "$http adds api authorization auto_authorized_uris avoid config domain domains errors expression external flow going handles header headers integration list manual match method oauth oauth-based object outgoing processes promise property request requests response service specific stormpath stormpathoauthinterceptor utils"
+    },
+    {
+      "section": "api",
       "id": "stormpath.whileResolvingUser:while-resolving-user",
       "shortName": "while-resolving-user",
       "type": "directive",
       "moduleName": "stormpath",
       "shortDescription": "[DEPRECATED]",
       "keywords": "api directive ifuserstateunknown stormpath whileresolvinguser"
-    },
-    {
-      "section": "server",
-      "id": "index",
-      "shortName": "Server Integration Guide",
-      "type": "overview",
-      "moduleName": "Server Integration Guide",
-      "shortDescription": "Server Integration Guide",
-      "keywords": "access account accounts add agnostic angular api application applications apps assumes attacks attempts authenticate authenticate-an-account authenticating authentication authentication_endpoint back-end based best blog browser changed choice client communicate complete consume cookie cookie-based cookies create create-an-account creation currently description directly docs email endpoint endpoints ensure environment environments expected expiration expire express find flag flow forgot form front-end generate guide heard html http http-only https identifies implement insecure integrate integrated integration issue issued issuing javascript js json json-login-api json-registration-api jwt jwts language logged-in login logs manage management manually methods model modify modifying module node oauth object overview password place policy post production properties_authentication_endpoint protect protected read refresh registration remove render reset reset-an-accounts-password respond rest revocation revoked sdk sdks secondary secure secure-only sense server session session-related sessions set setup single sp statement storage store stored stormpath stormpath_config strategy support system table token tokens triggering truth ttl type unauthorized urls user vague valid verification verify verify-an-email-address view visit work workflow works xss"
     }
   ],
   "apis": {
-    "api": true,
-    "server": false
+    "api": true
   },
   "html5Mode": false,
   "editExample": true,
