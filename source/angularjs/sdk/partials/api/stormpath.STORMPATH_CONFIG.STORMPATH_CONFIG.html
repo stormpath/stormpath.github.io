@@ -1,4 +1,4 @@
-<a href="https://github.com/stormpath/stormpath-sdk-angularjs/edit/master/./src/stormpath.config.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/5e33c79/./src/stormpath.config.js#L22" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">STORMPATH_CONFIG</code>
+<a href="https://github.com/stormpath/stormpath-sdk-angularjs/edit/master/./src/stormpath.config.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/e92956a/./src/stormpath.config.js#L22" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">STORMPATH_CONFIG</code>
 <div><span class="hint">object in module <code ng:non-bindable="">stormpath</code>
 </span>
 </div>
@@ -42,6 +42,13 @@ successfully submitting the login form.</p>
 <div class="auth_service_name"><div class="auth-service-name-page"><p>Default: <code>$auth</code></p>
 <p>The name of the authentication service, this changes the
 service name that you inject.</p>
+</div></div>
+</li>
+<li><h3 id="properties_auto_authorized_uris">AUTO_AUTHORIZED_URIS</h3>
+<div class="auto_authorized_uris"><div class="auto-authorized-uris-page"><p>Default: <code>[&#39;/me$&#39;]</code></p>
+<p>The list of URLs to match when making requests.  If an OAuth strategy is
+being used and the request matches this URL, this library will automatically
+add the <code>Authorization: Bearer &lt;token&gt;</code> header to the request.</p>
 </div></div>
 </li>
 <li><h3 id="properties_change_password_endpoint">CHANGE_PASSWORD_ENDPOINT</h3>
@@ -108,11 +115,6 @@ Express SDK see
 to create password reset tokens.</p>
 </div></div>
 </li>
-<li><h3 id="properties_form_content_type">FORM_CONTENT_TYPE</h3>
-<div class="form_content_type"><div class="form-content-type-page"><p>Default: <code>&#39;application/x-www-form-urlencoded&#39;</code></p>
-<p>The content type that is used for form posts.</p>
-</div></div>
-</li>
 <li><h3 id="properties_get_user_event">GET_USER_EVENT</h3>
 <div class="get_user_event"><div class="get-user-event-page"><p>Default: <code>$currentUser</code></p>
 <p>The name of the event that is fired when
@@ -125,6 +127,37 @@ is resolved with a user object.</p>
 <p>The name of the event that is fired when
 <a href="#/api/stormpath.userService.$user#methods_get">$user.get()</a>
 is rejected without a user.</p>
+</div></div>
+</li>
+<li><h3 id="properties_oauth_authentication_endpoint">OAUTH_AUTHENTICATION_ENDPOINT</h3>
+<div class="oauth_authentication_endpoint"><div class="oauth-authentication-endpoint-page"><p>Default: <code>/oauth/token</code></p>
+<p>The endpoint that is used to authenticate and refresh using OAuth tokens.
+This endpoint MUST support password and refresh_token grant authentication
+flows.</p>
+</div></div>
+</li>
+<li><h3 id="properties_oauth_default_token_store_type">OAUTH_DEFAULT_TOKEN_STORE_TYPE</h3>
+<div class="oauth_default_token_store_type"><div class="oauth-default-token-store-type-page"><p>Default: <code>localStorage</code></p>
+<p>The default type of local storage used by
+<a href="#/api/stormpath.oauth.StormpathOAuthTokenProvider">stormpath.oauth.StormpathOAuthTokenProvider</a>.</p>
+</div></div>
+</li>
+<li><h3 id="properties_oauth_request_error">OAUTH_REQUEST_ERROR</h3>
+<div class="oauth_request_error"><div class="oauth-request-error-page"><p>Default: <code>$oAuthRequestError</code></p>
+<p>The name of the event that is fired when the user attempts OAuth-based
+authentication, and fails due to an OAuth issue.</p>
+</div></div>
+</li>
+<li><h3 id="properties_oauth_revoke_endpoint">OAUTH_REVOKE_ENDPOINT</h3>
+<div class="oauth_revoke_endpoint"><div class="oauth-revoke-endpoint-page"><p>The name under which tokens are stored in the token storage mechanism.
+Might not be relevant if the underlying storage mechanism is not key-value
+based.</p>
+<p>See <a href="#/api/stormpath.tokenStore.TokenStoreManager">TokenStoreManager</a> for more detail.</p>
+</div></div>
+</li>
+<li><h3 id="properties_oauth_revoke_endpoint">OAUTH_REVOKE_ENDPOINT</h3>
+<div class="oauth_revoke_endpoint"><div class="oauth-revoke-endpoint-page"><p>Default: <code>/oauth/revoke</code></p>
+<p>The endpoint that is used to revoke OAuth tokens.</p>
 </div></div>
 </li>
 <li><h3 id="properties_registered_event_name">REGISTERED_EVENT_NAME</h3>
@@ -161,6 +194,31 @@ meet (such as not being in a specified group)</p>
 <p>The name of the event that is fired when the user logs out via the
 <a href="#/api/stormpath.spLogout:spLogout">spLogout</a>
 directive</p>
+</div></div>
+</li>
+<li><h3 id="properties_social_login_authorize_uri">SOCIAL_LOGIN_AUTHORIZE_URI</h3>
+<div class="social_login_authorize_uri"><div class="social-login-authorize-uri-page"><p>The relative URI of the endpoint used for social auth.
+Should <b>not</b> be changed if Client API is used.</p>
+</div></div>
+</li>
+<li><h3 id="properties_social_login_options">SOCIAL_LOGIN_OPTIONS</h3>
+<div class="social_login_options"><div class="social-login-options-page"><p>Options that are set for a given social authentication provider when
+making a social authentication request. These are appended to the request
+as query parameters, and will override any default options, or options
+set in the Stormpath admin console.</p>
+<p>The settings are mapped by providerId of a directory (e.g. <code>google</code>, <code>facebook</code>).</p>
+<p>Additional providers may be added to the object, but must all be in lowercase.</p>
+</div></div>
+</li>
+<li><h3 id="properties_social_login_redirect_uri">SOCIAL_LOGIN_REDIRECT_URI</h3>
+<div class="social_login_redirect_uri"><div class="social-login-redirect-uri-page"><p>The URI that the social login flow will redirect to after a login attempt.
+This URI is relative to the base application URI.</p>
+</div></div>
+</li>
+<li><h3 id="properties_social_login_response_type">SOCIAL_LOGIN_RESPONSE_TYPE</h3>
+<div class="social_login_response_type"><div class="social-login-response-type-page"><p>The response type requested from the Stormpath Social Login v2 API.
+Determines the type of token that will be returned for OAuth authentication
+against the Stormpath OAuth API, when making social login attempts.</p>
 </div></div>
 </li>
 <li><h3 id="properties_social_login_service_name">SOCIAL_LOGIN_SERVICE_NAME</h3>
