@@ -302,28 +302,14 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#how-social-authentication-works">4.3. How Social Authentication Works</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#google">4.3.1. Google</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#step-1-create-a-social-directory-for-google">Step 1: Create a Social Directory for Google</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#step-2-map-the-google-directory-as-an-account-store-for-your-application">Step 2: Map the Google Directory as an Account Store for Your Application</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#step-3-access-an-account-with-google-tokens">Step 3: Access an Account with Google Tokens</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#facebook">4.3.2. Facebook</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#step-1-create-a-social-directory-for-facebook">Step 1: Create a Social Directory for Facebook</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#step-2-map-the-facebook-directory-as-an-account-store-for-your-application">Step 2: Map the Facebook Directory as an Account Store for Your Application</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#step-3-access-an-account-with-facebook-tokens">Step 3: Access an Account with Facebook Tokens</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#github">4.3.3. Github</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#step-1-create-a-social-directory-for-github">Step 1: Create a Social Directory for GitHub</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#step-2-map-the-github-directory-as-an-account-store-for-your-application">Step 2: Map the GitHub Directory as an Account Store for Your Application</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#step-3-access-an-account-with-github-tokens">Step 3: Access an Account with GitHub Tokens</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#linkedin">4.3.4 LinkedIn</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#step-1-create-a-social-directory-for-linkedin">Step 1: Create a Social Directory for LinkedIn</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#step-2-map-the-linkedin-directory-as-an-account-store-for-your-application">Step 2: Map the LinkedIn Directory as an Account Store for Your Application</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#step-3-access-an-account-with-linkedin-tokens">Step 3: Access an Account with LinkedIn Tokens</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attribute-mappings">Attribute Mappings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scopes">Scopes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#social-login-providers">Social Login Providers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#google">4.3.1. Google</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#facebook">4.3.2. Facebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#github">4.3.3. Github</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linkedin">4.3.4 LinkedIn</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#twitter">4.3.5. Twitter</a></li>
 </ul>
 </li>
 </ul>
@@ -517,6 +503,24 @@
 </li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#generating-an-oauth-2-0-access-token">Generating an OAuth 2.0 Access Token</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#client-credentials">Client Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#social">Social</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#password">Password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#stormpath-factor-challenge">Stormpath Factor Challenge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix.html#token-generation-example">Token Generation Example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="appendix.html#social-login-deprecated">Social Login (Deprecated)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#google">Google</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#facebook">Facebook</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#github">GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix.html#linkedin">LinkedIn</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="errors.html">Stormpath Error Codes</a><ul>
@@ -1091,120 +1095,10 @@
 <li><strong>Stormpath Factor Challenge Type:</strong> a Stormpath Challenge <code class="docutils literal"><span class="pre">href</span></code> and <code class="docutils literal"><span class="pre">code</span></code></li>
 <li><strong>Refresh Grant Type:</strong> For information about using the an OAuth Refresh token <a class="reference internal" href="#refresh-oauth-token"><span>see below</span></a></li>
 </ul>
-<p>The first three kinds of OAuth Grant Types differ only in what credentials are passed to Stormpath in order to generate the token. The Stormpath Factor Challenge Type requires a Challenge <code class="docutils literal"><span class="pre">href</span></code> and <code class="docutils literal"><span class="pre">code</span></code> that you get as part of the <a class="reference internal" href="#mfa"><span>Multi-Factor Authentication process</span></a>. For more information on those, keep reading. For more information about the Refresh Grant Type, see <a class="reference internal" href="#refresh-oauth-token"><span>below</span></a>.</p>
-<p><strong>Targeting a Specific Account Store</strong></p>
-<p>It is possible to target token generation against a particular Directory, Group, or Organization. You do this either by passing the Account Store&#8217;s <code class="docutils literal"><span class="pre">href</span></code>, or the Organization&#8217;s <code class="docutils literal"><span class="pre">organizationNameKey</span></code>.</p>
-<p><code class="docutils literal"><span class="pre">grant_type=password&amp;username=tom&#64;stormpath.com&amp;password=Secret1&amp;accountStore=https://api.stormpath.com/v1/directories/1bcd23ec1d0a8wa6</span></code></p>
-<p><code class="docutils literal"><span class="pre">grant_type=password&amp;username=tom&#64;stormpath.com&amp;password=Secret1&amp;organizationNameKey=anOrganization</span></code></p>
-<p>This allows you to bypass the usual default Account Store and login priority and instead send the token generation to a particular Account Store.</p>
-<div class="section" id="client-credentials">
-<h5>Client Credentials<a class="headerlink" href="#client-credentials" title="Permalink to this headline">¶</a></h5>
-<p>For the <strong>Client Credentials Grant Type</strong>, you pass the <strong>Client ID</strong> and <strong>Secret</strong>:</p>
-<p><code class="docutils literal"><span class="pre">grant_type=client_credentials&amp;client_id=2ZFMV4WVVexample&amp;client_secret=XEPJolhnMYexample</span></code></p>
-</div>
-<div class="section" id="social">
-<h5>Social<a class="headerlink" href="#social" title="Permalink to this headline">¶</a></h5>
-<p>For the <strong>Social Grant Type</strong> you must pass:</p>
-<ul class="simple">
-<li>The <strong>Provider ID</strong> which matches the Provider ID of the <a class="reference internal" href="#social-authn"><span>Social Directory</span></a> (e.g. <cite>facebook</cite> or <cite>github</cite>)</li>
-<li>And either the Authorization <strong>Code</strong> or</li>
-<li>The <strong>Access Token</strong> for that Social Provider</li>
-</ul>
-<p>All together, this would look like this:</p>
-<p><code class="docutils literal"><span class="pre">grant_type=stormpath_social&amp;providerId=facebook&amp;accessToken=EAA68kW...</span></code></p>
-</div>
-<div class="section" id="password">
-<h5>Password<a class="headerlink" href="#password" title="Permalink to this headline">¶</a></h5>
-<p>Finally, for the <strong>Password Grant Type</strong>, you pass the user&#8217;s <strong>username</strong> and <strong>password</strong>:</p>
-<p><code class="docutils literal"><span class="pre">grant_type=password&amp;username=tom%40stormpath.com&amp;password=Secret1</span></code></p>
-</div>
-<div class="section" id="stormpath-factor-challenge">
-<h5>Stormpath Factor Challenge<a class="headerlink" href="#stormpath-factor-challenge" title="Permalink to this headline">¶</a></h5>
-<p>For this grant type, you will need:</p>
-<ul class="simple">
-<li>The <strong>URL of a Stormpath Challenge Resource</strong>. Currently, this can only be a Challenge related to an SMS Factor.</li>
-<li>And the challenge code that the user received on their phone.</li>
-</ul>
-<p><code class="docutils literal"><span class="pre">grant_type=stormpath_factor_challenge&amp;challenge=https://api.stormpath.com/v1/challenges/$CHALLENGE_ID&amp;code=123456</span></code></p>
-<p>For more information about these resources and how to obtain them, please see <a class="reference internal" href="#mfa"><span>4.6. Using Multi-Factor Authentication (MFA)</span></a>.</p>
-</div>
-<div class="section" id="token-generation-example">
-<h5>Token Generation Example<a class="headerlink" href="#token-generation-example" title="Permalink to this headline">¶</a></h5>
-<p>In this example we will demonstrate the Password Grant Type:</p>
-<ul class="simple">
-<li>The user inputs their credentials into a form and submits them.</li>
-<li>Your application in turn takes the credentials and formulates the OAuth 2.0 Access Token request to Stormpath.</li>
-<li>When Stormpath returns with the Access Token Response, you can then return the Access Token and/or the Refresh Token to the client.</li>
-</ul>
-<p>So you would send the following request:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$passwordGrant</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Stormpath\Oauth\PasswordGrantRequest</span><span class="p">(</span><span class="s1">&#39;han@millenniumfalcon.com&#39;</span><span class="p">,</span> <span class="s1">&#39;SuperP4ss!&#39;</span><span class="p">);</span>
-
-<span class="nv">$auth</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Stormpath\Oauth\PasswordGrantAuthenticator</span><span class="p">(</span><span class="nv">$application</span><span class="p">);</span>
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$auth</span><span class="o">-&gt;</span><span class="na">authenticate</span><span class="p">(</span><span class="nv">$passwordGrant</span><span class="p">);</span>
-</pre></div>
-</div>
-<p>Which would result in this response:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Oauth\OauthGrantAuthenticationResult</span><span class="p">)</span>
-  <span class="k">private</span> <span class="s1">&#39;accessToken&#39;</span> <span class="o">=&gt;</span>
-    <span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Resource\AccessToken</span><span class="p">)</span>
-      <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accessTokens/2HQNpNVD124O8muiSpOMro&#39;</span>
-
-  <span class="k">private</span> <span class="s1">&#39;accessTokenString&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;eyJraWQiOiIxUE4zRlhJMFU3OUUyTUhDRjZYVVlH...&#39;</span>
-
-  <span class="k">private</span> <span class="s1">&#39;refreshToken&#39;</span> <span class="o">=&gt;</span>
-    <span class="nx">object</span><span class="p">(</span><span class="nx">Stormpath\Resource\RefreshToken</span><span class="p">)</span>
-      <span class="k">public</span> <span class="s1">&#39;href&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accessTokens/2HQNpNVD124O8muiSpOMro&#39;</span>
-
-  <span class="k">private</span> <span class="s1">&#39;refreshTokenString&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;eyJraWQiOiIxUE4zRlhJMFU3OUUyTUhDRjZYVVlH...&#39;</span> <span class="c1">// JWT truncated for space</span>
-  <span class="k">private</span> <span class="s1">&#39;accessTokenHref&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;https://api.stormpath.com/v1/accessTokens/2HQNpNVD124O8muiSpOMro&#39;</span>
-  <span class="k">private</span> <span class="s1">&#39;tokenType&#39;</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">&#39;Bearer&#39;</span>
-  <span class="k">private</span> <span class="s1">&#39;expiresIn&#39;</span> <span class="o">=&gt;</span> <span class="nx">int</span> <span class="mi">1800</span>
-</pre></div>
-</div>
-<p>This is an <strong>OAuth 2.0 Access Token Response</strong> and includes the following:</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="18%" />
-<col width="12%" />
-<col width="71%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">Attribute</th>
-<th class="head">Type</th>
-<th class="head">Description</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>accessToken</td>
-<td>Object (StormpathResourceAccessToken)</td>
-<td>The Access Token as an object.</td>
-</tr>
-<tr class="row-odd"><td>accessTokenString</td>
-<td>String (JSON Web Token)</td>
-<td>The Access Token as a JWT-formatted string.</td>
-</tr>
-<tr class="row-even"><td>refreshToken</td>
-<td>Object (StormpathResourceRefreshToken)</td>
-<td>The Refresh Token as an object. (Only available via the Password Grant Type)</td>
-</tr>
-<tr class="row-odd"><td>refreshTokenString</td>
-<td>String (JSON Web Token)</td>
-<td>The Refresh Token as a JWT-formatted string.</td>
-</tr>
-<tr class="row-even"><td>accessTokenHref</td>
-<td>String</td>
-<td>The href location of the token in Stormpath.</td>
-</tr>
-<tr class="row-odd"><td>tokenType</td>
-<td>String</td>
-<td>The type of token that was returned (Typically Bearer)</td>
-</tr>
-<tr class="row-even"><td>expiresIn</td>
-<td>Number</td>
-<td>The time in seconds before the token expires.</td>
-</tr>
-</tbody>
-</table>
+<p>The recommended way of generating an OAuth token now is to using the Client API. For more information on this, please see <a class="reference external" href="https://docs.stormpath.com/client-api/product-guide/latest/authentication.html#oauth-2-0-login">the Client API Guide&#8217;s Authentication chapter</a>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The older, alternate way of generating an OAuth 2.0 token is documented <a class="reference internal" href="appendix.html#generate-oauth-token-old"><span>here</span></a>.</p>
 </div>
 </div>
 <div class="section" id="validating-an-access-token">
@@ -1389,10 +1283,16 @@
 <span id="social-authn"></span><h2>4.3. How Social Authentication Works<a class="headerlink" href="#how-social-authentication-works" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id5">
 <ul class="simple">
-<li><a class="reference internal" href="#google" id="id35">4.3.1. Google</a></li>
-<li><a class="reference internal" href="#facebook" id="id36">4.3.2. Facebook</a></li>
-<li><a class="reference internal" href="#github" id="id37">4.3.3. Github</a></li>
-<li><a class="reference internal" href="#linkedin" id="id38">4.3.4 LinkedIn</a></li>
+<li><a class="reference internal" href="#attribute-mappings" id="id35">Attribute Mappings</a></li>
+<li><a class="reference internal" href="#scopes" id="id36">Scopes</a></li>
+<li><a class="reference internal" href="#social-login-providers" id="id37">Social Login Providers</a><ul>
+<li><a class="reference internal" href="#google" id="id38">4.3.1. Google</a></li>
+<li><a class="reference internal" href="#facebook" id="id39">4.3.2. Facebook</a></li>
+<li><a class="reference internal" href="#github" id="id40">4.3.3. Github</a></li>
+<li><a class="reference internal" href="#linkedin" id="id41">4.3.4 LinkedIn</a></li>
+<li><a class="reference internal" href="#twitter" id="id42">4.3.5. Twitter</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <p>Social authentication essentially means using the &#8220;Log in with x&#8221; button in your application, where &#8220;x&#8221; is a Social Login Provider of some kind. The Social Login Providers currently supported by Stormpath are:</p>
@@ -1401,43 +1301,130 @@
 <li><a class="reference internal" href="#authn-facebook"><span>Facebook</span></a></li>
 <li><a class="reference internal" href="#authn-github"><span>Github</span></a></li>
 <li><a class="reference internal" href="#authn-linkedin"><span>LinkedIn</span></a></li>
+<li><a class="reference internal" href="#authn-twitter"><span>Twitter</span></a></li>
 </ul>
 <p>Social Directories are a kind of mirrored Directory, in that they are used to mirror user information found in an external database. This means that entities like Groups can only exist in a your Stormpath Social Directory if they are mirrored in from the external Social provider. For more information, please see the <a class="reference internal" href="accnt_mgmt.html#about-mirror-dir"><span>Account Management chapter</span></a>.</p>
 <p><em>The Social Login Process</em></p>
 <p>In general, the social login process works as follows:</p>
 <ol class="arabic simple">
 <li>The user who wishes to authenticate will click a &#8220;Log in with x&#8221; link.</li>
-<li>The user will be asked by the Provider to accept the permissions required by your app.</li>
-<li>The Provider will return the user to your application with an Access Token or Authorization Code.</li>
-<li>Stormpath will take this token/code and use it to query the provider for:<ul>
-<li>an email address</li>
-<li>a first name</li>
-<li>a last name.</li>
-</ul>
-</li>
-</ol>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">If Stormpath is unable to retrieve the user&#8217;s first and last name, it will populate those attributes with a default value: <code class="docutils literal"><span class="pre">NOT_PROVIDED</span></code>.</p>
-</div>
-<ol class="arabic simple" start="5">
-<li>Stormpath will search for a Directory that matches the provider of the token/code. If one is not found, an error will be returned.</li>
-<li>Once the Directory is located, Stormpath will look for an Account in your application&#8217;s Directories that matches this information.</li>
+<li>The user authenticates and i asked by the Provider to accept the permissions required by your app.</li>
+<li>Once the user accepts the permissions, the Provider sends back the user&#8217;s information</li>
+<li>Stormpath will look for an Account in your application&#8217;s Directories that matches this information.</li>
 </ol>
 <p>As a developer, integrating Social Login into your application with Stormpath only requires three steps:</p>
 <ol class="arabic simple">
 <li>Create a Social Directory for your Provider.</li>
 <li>Map the Directory as an Account Store to an Application resource. When an Account Store (in this case a Directory) is mapped to an Application, the Accounts in the AccountStore are considered the Application’s users and they can log in to it.</li>
-<li>Include the provider-specific logic that will access the social account (e.g. embed the appropriate link in your site that will send an authentication request to the social provider)</li>
+<li>Include the appropriate social login button for that Provider, linking it to the Stormpath Client API&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint. For more information about this, see below, or go to <a class="reference external" href="https://docs.stormpath.com/client-api/product-guide/latest/social_login.html">the Client API Guide</a>.</li>
 </ol>
+<div class="section" id="attribute-mappings">
+<span id="social-authn-mappings"></span><h3><a class="toc-backref" href="#id35">Attribute Mappings</a><a class="headerlink" href="#attribute-mappings" title="Permalink to this headline">¶</a></h3>
+<p>Each social provider returns their own specific information about a user. The returned information is stored inside that Account&#8217;s Provider Data in a <code class="docutils literal"><span class="pre">userInfo</span></code> object. This information can also be mapped to Stormpath Account attributes using mapping configured in the Directory Provider&#8217;s <code class="docutils literal"><span class="pre">userInfoMappingRules</span></code>.</p>
+<p>For example, if we look at a Google user&#8217;s <code class="docutils literal"><span class="pre">userInfo</span></code>:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/accounts/1Voi7LQ6NGnTPskjn9eZBA/providerData&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-04-29T17:31:23.676Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-11-10T18:22:46.749Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;accessToken&quot;</span><span class="p">:</span><span class="s2">&quot;ya2[...]Nhs&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;google&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;refreshToken&quot;</span><span class="p">:</span><span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;userInfo&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;123111111111111111234&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;email&quot;</span><span class="p">:</span><span class="s2">&quot;jakub@stormpath.com&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Jakub Swiatczak&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;firstName&quot;</span><span class="p">:</span><span class="s2">&quot;Jakub&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;lastName&quot;</span><span class="p">:</span><span class="s2">&quot;Swiatczak&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;link&quot;</span><span class="p">:</span><span class="s2">&quot;https://plus.google.com/1023540111341293534&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;profilePictureUrl&quot;</span><span class="p">:</span><span class="s2">&quot;https://lh4.googleusercontent.com/-8HcexamplekMuE/AAAAAAAAAAI/AAAAAAAAACI/VtAVULicGV4/photo.jpg&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;gender&quot;</span><span class="p">:</span><span class="s2">&quot;male&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;locale&quot;</span><span class="p">:</span><span class="kc">null</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We can see that Google returns an attribute called &#8220;gender&#8221;. We can map this to a piece of Custom Data attached to the Account by creating a new rule in the Directory Provider&#8217;s <code class="docutils literal"><span class="pre">userInfoMappingRules</span></code>.</p>
+<div class="highlight-html"><div class="highlight"><pre><span></span>POST /v1/userInfoMappingRules/3HuqEWMWi7wts1CEXAMPLE HTTP/1.1
+Host: api.stormpath.com
+Content-Type: application/json
+Authorization: Basic MlpGT[...]xxdmk0
+
+{
+  &quot;items&quot;:[
+    {
+      &quot;name&quot;:&quot;gender&quot;,
+      &quot;accountAttributes&quot;:[
+        &quot;customData.gender&quot;
+        ]
+    }
+    ]
+}
+</pre></div>
+</div>
+<p>The response is a <code class="docutils literal"><span class="pre">200</span> <span class="pre">OK</span></code> along with the User Info Mapping Rules:</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.stormpath.com/v1/userInfoMappingRules/3HuqEWMWi7wts1CEXAMPLE&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-10-27T16:56:10.429Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-12-02T15:31:38.928Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;items&quot;</span><span class="p">:[</span>
+    <span class="p">{</span>
+      <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;gender&quot;</span><span class="p">,</span>
+      <span class="nt">&quot;accountAttributes&quot;</span><span class="p">:[</span>
+        <span class="s2">&quot;customData.gender&quot;</span>
+      <span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Any Accounts that log into this Directory will now have a new Custom Data value created and Google&#8217;s &#8220;gender&#8221; value will be placed in there.</p>
+</div>
+<div class="section" id="scopes">
+<h3><a class="toc-backref" href="#id36">Scopes</a><a class="headerlink" href="#scopes" title="Permalink to this headline">¶</a></h3>
+<p>The Directory&#8217;s Provider now has a <code class="docutils literal"><span class="pre">scope</span></code> array where you can define what Scopes are requested from the Social provider. These arrays have default values that are automatically included for each different kind of provider.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="40%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Social Provider</th>
+<th class="head">Default Scopes</th>
+<th class="head">More Info</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Google</td>
+<td><code class="docutils literal"><span class="pre">profile</span></code>, <code class="docutils literal"><span class="pre">email</span></code></td>
+<td><a class="reference external" href="Google’sOAuthLoginScopesdocumentation">Google OAuth Scopes</a></td>
+</tr>
+<tr class="row-odd"><td>Facebook</td>
+<td><code class="docutils literal"><span class="pre">public_profile</span></code>, <code class="docutils literal"><span class="pre">email</span></code></td>
+<td><a class="reference external" href="https://developers.facebook.com/docs/facebook-login/permissions/">Permissions With Facebook Login</a></td>
+</tr>
+<tr class="row-even"><td>GitHub</td>
+<td><code class="docutils literal"><span class="pre">user:email</span></code></td>
+<td><a class="reference external" href="https://developer.github.com/v3/oauth/#scopes">GitHub OAuth Scopes</a></td>
+</tr>
+<tr class="row-odd"><td>LinkedIn</td>
+<td><code class="docutils literal"><span class="pre">r_basicprofile</span></code>, <code class="docutils literal"><span class="pre">r_emailaddress</span></code></td>
+<td><a class="reference external" href="LinkedIn’s“ProfileFields”documentation">LinkedIn Profile Fields</a></td>
+</tr>
+</tbody>
+</table>
+<p>Additional scopes can be selected by going to the Directory&#8217;s page in the Stormpath Admin Console and clicking on the <strong>Scopes</strong> tab found under &#8220;Provider Configuration&#8221;.</p>
+</div>
+<div class="section" id="social-login-providers">
+<h3><a class="toc-backref" href="#id37">Social Login Providers</a><a class="headerlink" href="#social-login-providers" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="google">
-<span id="authn-google"></span><h3><a class="toc-backref" href="#id35">4.3.1. Google</a><a class="headerlink" href="#google" title="Permalink to this headline">¶</a></h3>
+<span id="authn-google"></span><h4><a class="toc-backref" href="#id38">4.3.1. Google</a><a class="headerlink" href="#google" title="Permalink to this headline">¶</a></h4>
 <p>Before you integrate Google Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application in the <a class="reference external" href="https://console.developers.google.com/start">Google Developer Console</a></li>
 <li>Enable Google Login for your Google application</li>
 <li>Retrieve the OAuth Credentials (Client ID and Secret) for your Google application</li>
-<li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication.</li>
+<li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.dev.stormpath.io/authorize/callback</span></code>).</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1445,8 +1432,12 @@
 </div>
 <p>For more information, please see the <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">Google OAuth 2.0 documentation</a>.</p>
 <div class="section" id="step-1-create-a-social-directory-for-google">
-<h4>Step 1: Create a Social Directory for Google<a class="headerlink" href="#step-1-create-a-social-directory-for-google" title="Permalink to this headline">¶</a></h4>
+<h5>Step 1: Create a Social Directory for Google<a class="headerlink" href="#step-1-create-a-social-directory-for-google" title="Permalink to this headline">¶</a></h5>
 <p>Creating this Directory for Google requires that you provide information from Google as a Provider resource. This can be accomplished by creating a new Directory:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Instead of specifying the Redirect URI in the Provider resource, you can also just include it as part of your authentication process. For more information, continue reading.</p>
+</div>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$provider</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">dataStore</span><span class="o">-&gt;</span><span class="na">instantiate</span><span class="p">(</span><span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">GOOGLE_PROVIDER</span><span class="p">);</span>
 <span class="nv">$provider</span><span class="o">-&gt;</span><span class="na">clientId</span> <span class="o">=</span> <span class="s2">&quot;857385-m8vk0fn2r7jmjo.apps.googleusercontent.com&quot;</span><span class="p">;</span>
 <span class="nv">$provider</span><span class="o">-&gt;</span><span class="na">clientSecret</span> <span class="o">=</span> <span class="s2">&quot;ehs7_-bA7OWQSQ4&quot;</span><span class="p">;</span>
@@ -1467,49 +1458,36 @@
 </div>
 </div>
 <div class="section" id="step-2-map-the-google-directory-as-an-account-store-for-your-application">
-<h4>Step 2: Map the Google Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-google-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<h5>Step 2: Map the Google Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-google-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h5>
 <p>Creating an Account Store Mapping between your new Google Directory and your Stormpath Application can be done as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
 </div>
 <div class="section" id="step-3-access-an-account-with-google-tokens">
-<h4>Step 3: Access an Account with Google Tokens<a class="headerlink" href="#step-3-access-an-account-with-google-tokens" title="Permalink to this headline">¶</a></h4>
-<p>To access or create an Account in your new Google Directory, you must gather a Google <strong>Authorization Code</strong> on behalf of the user. This requires leveraging <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2">Google’s OAuth 2.0 protocol</a> and the user’s consent for your application’s permissions.</p>
-<p>Generally, this will include embedding a link in your site that will send an authentication request to Google. Once the user has authenticated, Google will redirect the response to your application, including the <strong>Authorization Code</strong> or <strong>Access Token</strong>. This is documented in detail here: <a class="reference external" href="https://developers.google.com/identity/protocols/OAuth2WebServer">Using OAuth 2.0 for Web Server Applications</a>.</p>
+<h5>Step 3: Access an Account with Google Tokens<a class="headerlink" href="#step-3-access-an-account-with-google-tokens" title="Permalink to this headline">¶</a></h5>
+<p>To access or create an Account in your new Google Directory you use the Client API&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint. Full documentation of this endpoint can be found in <a class="reference external" href="https://docs.stormpath.com/client-api/product-guide/latest/social_login.html">the Client API Product Guide</a>.</p>
+<p>At a high level, the process works as follows:</p>
+<ol class="arabic simple">
+<li>The user clicks on a “Login with Google” link pointing at your application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint</li>
+<li>Stormpath handles the login to Google and redirects the user back to your app with a Stormpath Token JWT response</li>
+</ol>
+<p>You can then, for example, pass that Stormpath token to the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint and receive back OAuth 2.0 access and refresh tokens as described in <a class="reference internal" href="#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It is required that your Google application requests the <code class="docutils literal"><span class="pre">email</span></code> scope from Google. If the authorization code or access token does not grant <code class="docutils literal"><span class="pre">email</span></code> scope, you will not be able to get an Account. For more information about scopes please see <a class="reference external" href="https://developers.google.com/+/web/api/rest/oauth#login-scopes">Google&#8217;s OAuth Login Scopes documentation</a>.</p>
+<p class="last">The older, alternate way of handling this login is documented <a class="reference internal" href="appendix.html#authn-google-old"><span>here</span></a>.</p>
 </div>
-<p>Once the Authorization Code is gathered, you send this request:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$providerRequest</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Stormpath\Provider\GoogleProviderAccountRequest</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
-                        <span class="s2">&quot;code&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;4/a3p_fn0sMDQlyFVTYwfl5GAj0Obd.oiruVLbQZSwU3oEBd8DOtNApQzTCiwI&quot;</span>
-                    <span class="p">));</span>
-
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">(</span><span class="nv">$providerRequest</span><span class="p">);</span>
-<span class="nv">$account</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">();</span>
-</pre></div>
-</div>
-<p>If you have already exchanged an Authorization Code for an Access Token, this can be passed to Stormpath in a similar fashion:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$providerRequest</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Stormpath\Provider\GoogleProviderRequest</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
-                        <span class="s2">&quot;accessToken&quot;</span> <span class="o">=&gt;</span><span class="s2">&quot;y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4&quot;</span>
-                    <span class="p">));</span>
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">(</span><span class="nx">request</span><span class="p">);</span>
-<span class="nv">$account</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">();</span>
-</pre></div>
-</div>
-<p>Either way, Stormpath will use the code or access token provided to retrieve information about your Google Account, then return a Stormpath Account.</p>
-<p>In order to know if the Account was created or if it already existed in the Stormpath’s Google Directory you can use the <code class="docutils literal"><span class="pre">isNewAccount();</span></code> method on the result object. It will return <code class="docutils literal"><span class="pre">true</span></code> if it is a newly created Account, or <code class="docutils literal"><span class="pre">false</span></code> if it already existed.</p>
 </div>
 </div>
 <div class="section" id="facebook">
-<span id="authn-facebook"></span><h3><a class="toc-backref" href="#id36">4.3.2. Facebook</a><a class="headerlink" href="#facebook" title="Permalink to this headline">¶</a></h3>
+<span id="authn-facebook"></span><h4><a class="toc-backref" href="#id39">4.3.2. Facebook</a><a class="headerlink" href="#facebook" title="Permalink to this headline">¶</a></h4>
 <p>Before you integrate Facebook Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application on the <a class="reference external" href="https://developers.facebook.com/">Facebook Developer Site</a></li>
 <li>Retrieve your OAuth credentials (App ID and App Secret)</li>
 <li>Add your application&#8217;s private and public root URLs</li>
+<li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.dev.stormpath.io/authorize/callback</span></code>).</li>
 </ul>
 <p>For more information, please see the <a class="reference external" href="https://developers.facebook.com/docs/apps/register">Facebook documentation</a>.</p>
 <div class="section" id="step-1-create-a-social-directory-for-facebook">
-<h4>Step 1: Create a Social Directory for Facebook<a class="headerlink" href="#step-1-create-a-social-directory-for-facebook" title="Permalink to this headline">¶</a></h4>
+<h5>Step 1: Create a Social Directory for Facebook<a class="headerlink" href="#step-1-create-a-social-directory-for-facebook" title="Permalink to this headline">¶</a></h5>
 <p>Creating this Directory requires that you provide information from Facebook as a Provider resource. This can be accomplished by creating a new Directory:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$provider</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">dataStore</span><span class="o">-&gt;</span><span class="na">instantiate</span><span class="p">(</span><span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">FACEBOOK_PROVIDER</span><span class="p">);</span>
 <span class="nv">$provider</span><span class="o">-&gt;</span><span class="na">clientId</span> <span class="o">=</span> <span class="s2">&quot;1011854538839621&quot;</span><span class="p">;</span>
@@ -1526,40 +1504,35 @@
 </div>
 </div>
 <div class="section" id="step-2-map-the-facebook-directory-as-an-account-store-for-your-application">
-<h4>Step 2: Map the Facebook Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-facebook-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<h5>Step 2: Map the Facebook Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-facebook-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h5>
 <p>Creating an Account Store Mapping between your new Facebook Directory and your Stormpath Application can be done as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
 </div>
 <div class="section" id="step-3-access-an-account-with-facebook-tokens">
-<h4>Step 3: Access an Account with Facebook Tokens<a class="headerlink" href="#step-3-access-an-account-with-facebook-tokens" title="Permalink to this headline">¶</a></h4>
-<p>To access or create an Account in your new Facebook Directory, you need to gather a <strong>User Access Token</strong> from Facebook before submitting it to Stormpath. This is possible either by using a <a class="reference external" href="https://developers.facebook.com/docs/facebook-login/access-tokens/#usertokens">Facebook SDK Library</a>, or <a class="reference external" href="https://developers.facebook.com/tools/explorer/">Facebook’s Graph Explorer</a> for testing.</p>
+<h5>Step 3: Access an Account with Facebook Tokens<a class="headerlink" href="#step-3-access-an-account-with-facebook-tokens" title="Permalink to this headline">¶</a></h5>
+<p>To access or create an Account in your new Facebook Directory you use the Client API&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint. Full documentation of this endpoint can be found in <a class="reference external" href="https://docs.stormpath.com/client-api/product-guide/latest/social_login.html">the Client API Product Guide</a>.</p>
+<p>At a high level, the process works as follows:</p>
+<ol class="arabic simple">
+<li>The user clicks on a “Login with Facebook&#8221; link pointing at your application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint</li>
+<li>Stormpath handles the login to Facebook and redirects the user back to your app with a Stormpath Token JWT response</li>
+</ol>
+<p>You can then, for example, pass that Stormpath token to the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint and receive back OAuth 2.0 access and refresh tokens as described in <a class="reference internal" href="#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It is required that your Facebook application requests the <code class="docutils literal"><span class="pre">email</span></code> scope from Facebook. If the access token does not grant <code class="docutils literal"><span class="pre">email</span></code> scope, you will not be able to get an Account with an access token. For more information about scopes please see <a class="reference external" href="https://developers.facebook.com/docs/facebook-login/permissions/">Permissions with Facebook Login</a>.</p>
+<p class="last">The older, alternate way of handling this login is documented <a class="reference internal" href="appendix.html#authn-facebook-old"><span>here</span></a>.</p>
 </div>
-<p>Once the User Access Token is gathered, you send this request:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$providerAccountRequest</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Stormpath\Provider\FacebookProviderAccountRequest</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
-                                <span class="s2">&quot;accessToken&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;CABTmZxAZBxBADbr1l7ZCwHpjivBt9T0GZBqjQdTmgyO0OkUq37HYaBi4F23f49f5&quot;</span>
-                            <span class="p">));</span>
-
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">(</span><span class="nv">$providerRequest</span><span class="p">);</span>
-<span class="nv">$account</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">();</span>
-</pre></div>
-</div>
-<p>Stormpath will use the Access Token provided to retrieve information about your Facebook Account, then return a Stormpath Account. If you would like to get back an OAuth token instead, please see the <a class="reference internal" href="#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token above</span></a>.</p>
-<p>In order to know if the Account was created or if it already existed in Stormpath’s Facebook Directory you can use the <code class="docutils literal"><span class="pre">isNewAccount();</span></code> method on the result object. It will return <code class="docutils literal"><span class="pre">true</span></code> if it is a newly-created Account, or <code class="docutils literal"><span class="pre">false</span></code> if it already existed.</p>
 </div>
 </div>
 <div class="section" id="github">
-<span id="authn-github"></span><h3><a class="toc-backref" href="#id37">4.3.3. Github</a><a class="headerlink" href="#github" title="Permalink to this headline">¶</a></h3>
+<span id="authn-github"></span><h4><a class="toc-backref" href="#id40">4.3.3. Github</a><a class="headerlink" href="#github" title="Permalink to this headline">¶</a></h4>
 <p>Before you integrate GitHub Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application in the <a class="reference external" href="https://developer.github.com/">GitHub Developer Site</a></li>
-<li>Retrieve OAuth Credentials (Client ID and Secret) for your GitHub application</li>
+<li>Retrieve OAuth Credentials (Client ID and Secret) for your GitHub application. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.dev.stormpath.io/authorize/callback</span></code>).</li>
 <li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication.</li>
 </ul>
 <p>For more information, please see the <a class="reference external" href="https://developer.github.com/guides/basics-of-authentication/#registering-your-app">GitHub documentation on registering your app</a>.</p>
 <div class="section" id="step-1-create-a-social-directory-for-github">
-<h4>Step 1: Create a Social Directory for GitHub<a class="headerlink" href="#step-1-create-a-social-directory-for-github" title="Permalink to this headline">¶</a></h4>
+<h5>Step 1: Create a Social Directory for GitHub<a class="headerlink" href="#step-1-create-a-social-directory-for-github" title="Permalink to this headline">¶</a></h5>
 <p>Creating this Directory requires that you provide information from GitHub as a Provider resource. This can be accomplished by creating a new Directory:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$provider</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">dataStore</span><span class="o">-&gt;</span><span class="na">instantiate</span><span class="p">(</span><span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">GITHUB_PROVIDER</span><span class="p">);</span>
 <span class="nv">$provider</span><span class="o">-&gt;</span><span class="na">clientId</span> <span class="o">=</span> <span class="s2">&quot;48f983a65887df76&quot;</span><span class="p">;</span>
@@ -1576,40 +1549,35 @@
 </div>
 </div>
 <div class="section" id="step-2-map-the-github-directory-as-an-account-store-for-your-application">
-<h4>Step 2: Map the GitHub Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-github-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<h5>Step 2: Map the GitHub Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-github-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h5>
 <p>Creating an Account Store Mapping between your new GitHub Directory and your Stormpath Application can be done as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
 </div>
 <div class="section" id="step-3-access-an-account-with-github-tokens">
-<h4>Step 3: Access an Account with GitHub Tokens<a class="headerlink" href="#step-3-access-an-account-with-github-tokens" title="Permalink to this headline">¶</a></h4>
-<p>To access or create an Account in your new Github Directory, you must gather a Github <strong>Authorization Code</strong> on behalf of the user. This requires leveraging <a class="reference external" href="https://developer.github.com/v3/oauth">Github&#8217;s OAuth 2.0 protocol</a> and the user’s consent for your application’s permissions.</p>
-<p>Generally, this will include embedding a link in your site that will send an authentication request to Github. Once the user has authenticated, Github will redirect the response to your application, including the <strong>Authorization Code</strong>. This is documented in detail <a class="reference external" href="https://developer.github.com/v3/oauth/#web-application-flow">here</a>.</p>
+<h5>Step 3: Access an Account with GitHub Tokens<a class="headerlink" href="#step-3-access-an-account-with-github-tokens" title="Permalink to this headline">¶</a></h5>
+<p>To access or create an Account in your new GitHub Directory you use the Client API&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint. Full documentation of this endpoint can be found in <a class="reference external" href="https://docs.stormpath.com/client-api/product-guide/latest/social_login.html">the Client API Product Guide</a>.</p>
+<p>At a high level, the process works as follows:</p>
+<ol class="arabic simple">
+<li>The user clicks on a “Login with GitHub” link pointing at your application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint</li>
+<li>Stormpath handles the login to GitHub and redirects the user back to your app with a Stormpath Token JWT response</li>
+</ol>
+<p>You can then, for example, pass that Stormpath token to the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint and receive back OAuth 2.0 access and refresh tokens as described in <a class="reference internal" href="#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It is required that your GitHub application requests the <code class="docutils literal"><span class="pre">user:email</span></code> scope from GitHub. If the access token does not grant <code class="docutils literal"><span class="pre">user:email</span></code> scope, you will not be able to get an Account with an access token. For more information about this see <a class="reference external" href="https://developer.github.com/v3/oauth/#scopes">Github&#8217;s documentation on OAuth scopes</a>.</p>
+<p class="last">The older, alternate way of handling this login is documented <a class="reference internal" href="appendix.html#authn-github-old"><span>here</span></a>.</p>
 </div>
-<p>Once the Authorization Code is gathered, you need to use the <a class="reference external" href="https://developer.github.com/v3/oauth/#2-github-redirects-back-to-your-site">Github Access Token Endpoint</a> to exchange this code for an access token.  Then you can send this information to Stormpath:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$providerRequest</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\Stormpath\Provider\GithubProviderRequest</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
-                            <span class="s2">&quot;accessToken&quot;</span> <span class="o">=&gt;</span><span class="s2">&quot;fn0sMDQlyFVTYwfl5GAj0Obd&quot;</span>
-                        <span class="p">));</span>
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">(</span><span class="nx">request</span><span class="p">);</span>
-<span class="nv">$account</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">();</span>
-</pre></div>
-</div>
-<p>Stormpath will use the Access Token provided to retrieve information about your GitHub Account, then return a Stormpath Account. If you would like to get back an OAuth token instead, please see the <a class="reference internal" href="#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token above</span></a>.</p>
-<p>In order to know if the Account was created or if it already existed in the Stormpath’s GitHub Directory you can use the isNewAccount(); method on the result object. It will return true if it is a newly created account; false otherwise.</p>
 </div>
 </div>
 <div class="section" id="linkedin">
-<span id="authn-linkedin"></span><h3><a class="toc-backref" href="#id38">4.3.4 LinkedIn</a><a class="headerlink" href="#linkedin" title="Permalink to this headline">¶</a></h3>
+<span id="authn-linkedin"></span><h4><a class="toc-backref" href="#id41">4.3.4 LinkedIn</a><a class="headerlink" href="#linkedin" title="Permalink to this headline">¶</a></h4>
 <p>Before you integrate LinkedIn Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application in the <a class="reference external" href="https://www.linkedin.com/secure/developer?newapp=">LinkedIn Developer Site</a></li>
-<li>Add your application&#8217;s redirect URLs, which are the URL the user will be returned to after successful authentication.</li>
+<li>Add your application&#8217;s redirect URLs, which are the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.dev.stormpath.io/authorize/callback</span></code>).</li>
 <li>Retrieve OAuth Credentials (Client ID and Secret) for your LinkedIn application</li>
 </ul>
 <p>For more information, please see <a class="reference external" href="https://developer.linkedin.com/docs/oauth2">LinkedIn&#8217;s OAuth documentation</a>.</p>
 <div class="section" id="step-1-create-a-social-directory-for-linkedin">
-<h4>Step 1: Create a Social Directory for LinkedIn<a class="headerlink" href="#step-1-create-a-social-directory-for-linkedin" title="Permalink to this headline">¶</a></h4>
+<h5>Step 1: Create a Social Directory for LinkedIn<a class="headerlink" href="#step-1-create-a-social-directory-for-linkedin" title="Permalink to this headline">¶</a></h5>
 <p>Creating this Directory requires that you provide information from LinkedIn as a Provider resource. This can be accomplished by creating a new Directory:</p>
 <div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$provider</span> <span class="o">=</span> <span class="nv">$client</span><span class="o">-&gt;</span><span class="na">dataStore</span><span class="o">-&gt;</span><span class="na">instantiate</span><span class="p">(</span><span class="nx">\Stormpath\Stormpath</span><span class="o">::</span><span class="na">LINKEDIN_PROVIDER</span><span class="p">);</span>
 <span class="nv">$provider</span><span class="o">-&gt;</span><span class="na">clientId</span> <span class="o">=</span> <span class="s2">&quot;857385m8vk0fn2r7j&quot;</span><span class="p">;</span>
@@ -1626,36 +1594,71 @@
 </div>
 </div>
 <div class="section" id="step-2-map-the-linkedin-directory-as-an-account-store-for-your-application">
-<h4>Step 2: Map the LinkedIn Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-linkedin-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<h5>Step 2: Map the LinkedIn Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-linkedin-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h5>
 <p>Creating an Account Store Mapping between your new LinkedIn Directory and your Stormpath Application can be done as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
 </div>
 <div class="section" id="step-3-access-an-account-with-linkedin-tokens">
-<h4>Step 3: Access an Account with LinkedIn Tokens<a class="headerlink" href="#step-3-access-an-account-with-linkedin-tokens" title="Permalink to this headline">¶</a></h4>
-<p>To access or create an Account in your new LinkedIn Directory, you must gather a LinkedIn <strong>Authorization Code</strong> on behalf of the user. This requires leveraging <a class="reference external" href="https://developer.linkedin.com/docs/oauth2">LinkedIn&#8217;s OAuth 2.0 protocol</a> and the user’s consent for your application’s permissions.</p>
-<p>Generally, this will include embedding a link in your site that will send an authentication request to LinkedIn. Once the user has authenticated, LinkedIn will redirect the response to your application, along with an Authorization Code. This is documented in detail in LinkedIn&#8217;s <a class="reference external" href="https://developer.linkedin.com/docs/oauth2#hero-par_longformtext_3_longform-text-content-par_resourceparagraph_3">Authenticating with OAuth 2.0 page</a>. Note that it is also possible for you to use the Authorization Code to retrieve an Access Token yourself.</p>
+<h5>Step 3: Access an Account with LinkedIn Tokens<a class="headerlink" href="#step-3-access-an-account-with-linkedin-tokens" title="Permalink to this headline">¶</a></h5>
+<p>To access or create an Account in your new LinkedIn Directory you use the Client API&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint. Full documentation of this endpoint can be found in <a class="reference external" href="https://docs.stormpath.com/client-api/product-guide/latest/social_login.html">the Client API Product Guide</a>.</p>
+<p>At a high level, the process works as follows:</p>
+<ol class="arabic simple">
+<li>The user clicks on a “Login with LinkedIn” link pointing at your application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint</li>
+<li>Stormpath handles the login to LinkedIn and redirects the user back to your app with a Stormpath Token JWT response</li>
+</ol>
+<p>You can then, for example, pass that Stormpath token to the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint and receive back OAuth 2.0 access and refresh tokens as described in <a class="reference internal" href="#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token</span></a>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">It is required that your LinkedIn application requests the <code class="docutils literal"><span class="pre">r_basicprofile</span></code> and <code class="docutils literal"><span class="pre">r_emailaddress</span></code> scopes (or &#8220;fields&#8221;) from LinkedIn. If the Authorization Code does not grant these scopes, you will not be able to get an Account. For more information about LinkedIn scopes, see <a class="reference external" href="https://developer.linkedin.com/docs/fields">LinkedIn&#8217;s &#8220;Profile Fields&#8221; documentation</a>.</p>
+<p class="last">The older, alternate way of handling this login is documented <a class="reference internal" href="appendix.html#authn-github-old"><span>here</span></a>.</p>
 </div>
-<p>Once the Authorization Code is gathered, you can send it to Stormpath:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$providerRequest</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedInProviderRequest</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
-    <span class="s2">&quot;code&quot;</span> <span class="o">=&gt;</span> <span class="s2">&quot;4/a3p_fn0sMDQlyFVTYwfl5GAj0Obd.oiruVLbQZSwU3oEBd8DOtNApQzTCiwI&quot;</span>
-<span class="p">));</span>
+</div>
+</div>
+<div class="section" id="twitter">
+<span id="authn-twitter"></span><h4><a class="toc-backref" href="#id42">4.3.5. Twitter</a><a class="headerlink" href="#twitter" title="Permalink to this headline">¶</a></h4>
+<p>Before you integrate Twitter Login with Stormpath, you must complete the following steps:</p>
+<ul class="simple">
+<li>Create an application on the <a class="reference external" href="https://apps.twitter.com/">Twitter Application Management Site</a></li>
+<li>Retrieve your OAuth credentials (App ID and App Secret)</li>
+<li>Add your application&#8217;s &#8220;Callback URL&#8221;, which is the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.stormpath.io/authorize/callback</span></code>).</li>
+</ul>
+<p>For more information, please see the <a class="reference external" href="https://dev.twitter.com/oauth/overview/application-owner-access-tokens">Twitter documentation</a>.</p>
+<div class="section" id="step-1-create-a-social-directory-for-twitter">
+<h5>Step 1: Create a Social Directory for Twitter<a class="headerlink" href="#step-1-create-a-social-directory-for-twitter" title="Permalink to this headline">¶</a></h5>
+<p>Creating this Directory requires that you provide information from Twitter as a Provider resource. This can be accomplished by creating a new Directory:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This feature is not yet supported in the PHP SDK. A REST example has been included below.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic NVdYRVp...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json; charset=utf-8</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
 
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">(</span><span class="nv">$providerRequest</span><span class="p">);</span>
-<span class="nv">$account</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">();</span>
+<span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Twitter&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;A Twitter directory&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;provider&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;twitter&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;clientId&quot;</span><span class="p">:</span><span class="s2">&quot;OybhZeT6uncdBX3KVmIExample&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span><span class="s2">&quot;d2hzXTBZsJs4FdDX0l5Queen8Ww21v9L2T1YrOJAE2lLfExample&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
-<p>If you have already exchanged the code for an Access Token, you can send that instead:</p>
-<div class="highlight-php"><div class="highlight"><pre><span></span><span class="nv">$providerRequest</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LinkedInProviderRequest</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
-                        <span class="s2">&quot;accessToken&quot;</span> <span class="o">=&gt;</span><span class="s2">&quot;y29.1.AADN_Xo2hxQflWwsgCSK-WjSw1mNfZiv4&quot;</span>
-                    <span class="p">));</span>
-<span class="nv">$result</span> <span class="o">=</span> <span class="nv">$application</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">(</span><span class="nx">request</span><span class="p">);</span>
-<span class="nv">$account</span> <span class="o">=</span> <span class="nv">$result</span><span class="o">-&gt;</span><span class="na">getAccount</span><span class="p">();</span>
-</pre></div>
 </div>
-<p>Stormpath will use the <code class="docutils literal"><span class="pre">code</span></code> or <code class="docutils literal"><span class="pre">accessToken</span></code> provided to retrieve information about your LinkedIn Account, then return a Stormpath Account. If you would like to get back an OAuth token instead, please see the <a class="reference internal" href="#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token above</span></a>.</p>
-<p>In order to know if the Account was created or if it already existed in the Stormpath’s LinkedIn Directory you can use the isNewAccount(); method on the result object. It will return true if it is a newly created account; false otherwise.</p>
+<div class="section" id="step-2-map-the-twitter-directory-as-an-account-store-for-your-application">
+<h5>Step 2: Map the Twitter Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-twitter-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h5>
+<p>Creating an Account Store Mapping between your new Twitter Directory and your Stormpath Application can be done as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
+</div>
+<div class="section" id="step-3-access-an-account-with-twitter-tokens">
+<h5>Step 3: Access an Account with Twitter Tokens<a class="headerlink" href="#step-3-access-an-account-with-twitter-tokens" title="Permalink to this headline">¶</a></h5>
+<p>To access or create an Account in your new Twitter Directory you use the Client API&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint. Full documentation of this endpoint can be found in <a class="reference external" href="https://docs.stormpath.com/client-api/product-guide/latest/social_login.html">the Client API Product Guide</a>.</p>
+<p>At a high level, the process works as follows:</p>
+<ol class="arabic simple">
+<li>The user clicks on a “Login with Twitter&#8221; link pointing at your application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint</li>
+<li>Stormpath handles the login to Twitter and redirects the user back to your app with a Stormpath Token JWT response</li>
+</ol>
+<p>You can then, for example, pass that Stormpath token to the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint and receive back OAuth 2.0 access and refresh tokens as described in <a class="reference internal" href="#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token</span></a>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -1663,12 +1666,12 @@
 <span id="ldap-dir-authn"></span><h2>4.4. Authenticating Against an LDAP Directory<a class="headerlink" href="#authenticating-against-an-ldap-directory" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id6">
 <ul class="simple">
-<li><a class="reference internal" href="#the-ldap-authentication-flow" id="id39">The LDAP Authentication Flow</a></li>
-<li><a class="reference internal" href="#mirror-directories-and-ldap" id="id40">Mirror Directories and LDAP</a></li>
-<li><a class="reference internal" href="#setting-up-login-with-ldap" id="id41">Setting Up Login With LDAP</a><ul>
-<li><a class="reference internal" href="#step-1-create-an-ldap-directory" id="id42">Step 1: Create an LDAP Directory</a></li>
-<li><a class="reference internal" href="#step-2-install-your-ldap-agent" id="id43">Step 2: Install your LDAP Agent</a></li>
-<li><a class="reference internal" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" id="id44">Step 3: Map the LDAP Directory as an Account Store for Your Application</a></li>
+<li><a class="reference internal" href="#the-ldap-authentication-flow" id="id43">The LDAP Authentication Flow</a></li>
+<li><a class="reference internal" href="#mirror-directories-and-ldap" id="id44">Mirror Directories and LDAP</a></li>
+<li><a class="reference internal" href="#setting-up-login-with-ldap" id="id45">Setting Up Login With LDAP</a><ul>
+<li><a class="reference internal" href="#step-1-create-an-ldap-directory" id="id46">Step 1: Create an LDAP Directory</a></li>
+<li><a class="reference internal" href="#step-2-install-your-ldap-agent" id="id47">Step 2: Install your LDAP Agent</a></li>
+<li><a class="reference internal" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" id="id48">Step 3: Map the LDAP Directory as an Account Store for Your Application</a></li>
 </ul>
 </li>
 </ul>
@@ -1679,7 +1682,7 @@
 <li>If you are using Azure Active Directory, then you will want to read the <a class="reference internal" href="#azure"><span>Azure Active Directory</span></a> section.</li>
 </ul>
 <div class="section" id="the-ldap-authentication-flow">
-<h3><a class="toc-backref" href="#id39">The LDAP Authentication Flow</a><a class="headerlink" href="#the-ldap-authentication-flow" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id43">The LDAP Authentication Flow</a><a class="headerlink" href="#the-ldap-authentication-flow" title="Permalink to this headline">¶</a></h3>
 <p>There are two different authentication flows for LDAP directories: one for Active Directory, and another for all other directories that use the LDAP protocol.</p>
 <p><strong>LDAP</strong></p>
 <div class="figure align-center">
@@ -1691,14 +1694,14 @@
 </div>
 </div>
 <div class="section" id="mirror-directories-and-ldap">
-<h3><a class="toc-backref" href="#id40">Mirror Directories and LDAP</a><a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id44">Mirror Directories and LDAP</a><a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
 <p>To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory. If this fulfills your requirements, then the story ends here. However, if you need to support other kinds of login (and therefore other kinds of Directories) it is recommended that you maintain a &#8220;master&#8221; Directory alongside your Mirror Directory. For more about this, see <a class="reference internal" href="accnt_mgmt.html#account-linking"><span>3.8. Account Linking</span></a>.</p>
 </div>
 <div class="section" id="setting-up-login-with-ldap">
-<h3><a class="toc-backref" href="#id41">Setting Up Login With LDAP</a><a class="headerlink" href="#setting-up-login-with-ldap" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id45">Setting Up Login With LDAP</a><a class="headerlink" href="#setting-up-login-with-ldap" title="Permalink to this headline">¶</a></h3>
 <p>The step-by-step process for setting-up LDAP login is as follows:</p>
 <div class="section" id="step-1-create-an-ldap-directory">
-<span id="authn-ldap-dir-creation"></span><h4><a class="toc-backref" href="#id42">Step 1: Create an LDAP Directory</a><a class="headerlink" href="#step-1-create-an-ldap-directory" title="Permalink to this headline">¶</a></h4>
+<span id="authn-ldap-dir-creation"></span><h4><a class="toc-backref" href="#id46">Step 1: Create an LDAP Directory</a><a class="headerlink" href="#step-1-create-an-ldap-directory" title="Permalink to this headline">¶</a></h4>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p>This feature is not yet available in the PHP SDK. Please use the Stormpath Admin Console, or see below for the REST API instructions.</p>
@@ -1765,7 +1768,7 @@
 <p>For more information about all of these values, please see the Reference chapter&#8217;s <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#directory">Directory</a> section.</p>
 </div>
 <div class="section" id="step-2-install-your-ldap-agent">
-<h4><a class="toc-backref" href="#id43">Step 2: Install your LDAP Agent</a><a class="headerlink" href="#step-2-install-your-ldap-agent" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id47">Step 2: Install your LDAP Agent</a><a class="headerlink" href="#step-2-install-your-ldap-agent" title="Permalink to this headline">¶</a></h4>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The LDAP Agent can be installed anywhere, as long as the location allows it access to your LDAP server.</p>
@@ -1801,7 +1804,7 @@ $ startup.sh
 <p>The Agent will start synchronizing immediately, pushing the configured data to Stormpath. You will see the synchronized user Accounts and Groups appear in the Stormpath Directory, and the Accounts will be able to log in to any Stormpath-enabled application that you assign. When the Agent detects local changes, additions or deletions to the mirrored Accounts or Groups, it will automatically propagate those changes to Stormpath.</p>
 </div>
 <div class="section" id="step-3-map-the-ldap-directory-as-an-account-store-for-your-application">
-<h4><a class="toc-backref" href="#id44">Step 3: Map the LDAP Directory as an Account Store for Your Application</a><a class="headerlink" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id48">Step 3: Map the LDAP Directory as an Account Store for Your Application</a><a class="headerlink" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
 <p>Creating an Account Store Mapping between your new LDAP Directory and your Stormpath Application can be done as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
 <p>The log-in process will now proceed as it would for <a class="reference internal" href="#how-login-works"><span>any other kind of Directory</span></a>.</p>
 <div class="admonition note">
@@ -1815,10 +1818,10 @@ $ startup.sh
 <span id="saml-authn"></span><h2>4.5. Authenticating Against a SAML Directory<a class="headerlink" href="#authenticating-against-a-saml-directory" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id7">
 <ul class="simple">
-<li><a class="reference internal" href="#stormpath-as-a-service-provider" id="id45">4.5.1. Stormpath as a Service Provider</a></li>
-<li><a class="reference internal" href="#configuring-saml" id="id46">4.5.2. Configuring SAML</a></li>
-<li><a class="reference internal" href="#configuring-saml-via-rest" id="id47">4.5.3. Configuring SAML via REST</a></li>
-<li><a class="reference internal" href="#the-stormpath-saml-flow" id="id48">4.5.4. The Stormpath SAML Flow</a></li>
+<li><a class="reference internal" href="#stormpath-as-a-service-provider" id="id49">4.5.1. Stormpath as a Service Provider</a></li>
+<li><a class="reference internal" href="#configuring-saml" id="id50">4.5.2. Configuring SAML</a></li>
+<li><a class="reference internal" href="#configuring-saml-via-rest" id="id51">4.5.3. Configuring SAML via REST</a></li>
+<li><a class="reference internal" href="#the-stormpath-saml-flow" id="id52">4.5.4. The Stormpath SAML Flow</a></li>
 </ul>
 </div>
 <p>SAML is an XML-based standard for exchanging authentication and authorization data between security domains. Stormpath enables you to allow customers to log-in by authenticating with an external SAML Identity Provider. Stormpath supports both the Service Provider initiated flow and the Identity Provider initiated flow.</p>
@@ -1828,7 +1831,7 @@ $ startup.sh
 <p>If you&#8217;d like to know about how to configure SAML using just the REST API, please see <a class="reference internal" href="#saml-configuration-rest"><span>Configuring SAML via REST</span></a>.</p>
 <p>If you&#8217;d like to understand the steps involved in a SAML login, see the <a class="reference internal" href="#saml-flow"><span>SAML Login Flow section</span></a>.</p>
 <div class="section" id="stormpath-as-a-service-provider">
-<span id="saml-overview"></span><h3><a class="toc-backref" href="#id45">4.5.1. Stormpath as a Service Provider</a><a class="headerlink" href="#stormpath-as-a-service-provider" title="Permalink to this headline">¶</a></h3>
+<span id="saml-overview"></span><h3><a class="toc-backref" href="#id49">4.5.1. Stormpath as a Service Provider</a><a class="headerlink" href="#stormpath-as-a-service-provider" title="Permalink to this headline">¶</a></h3>
 <p>As mentioned above, Stormpath supports both Service Provider (SP) initiated and Identity Provider (IdP) initiated SAML authentication.  In SAML terminology, the user is the <strong>User Agent</strong>, your application (along with Stormpath) is the <strong>Service Provider</strong>, and the third-party SAML authentication site is the <strong>Identity Provider</strong> or <strong>IdP</strong>.</p>
 <div class="section" id="identity-provider-initiated-saml-authentication">
 <h4>Identity Provider Initiated SAML Authentication<a class="headerlink" href="#identity-provider-initiated-saml-authentication" title="Permalink to this headline">¶</a></h4>
@@ -1857,7 +1860,7 @@ $ startup.sh
 </div>
 </div>
 <div class="section" id="configuring-saml">
-<span id="saml-configuration"></span><h3><a class="toc-backref" href="#id46">4.5.2. Configuring SAML</a><a class="headerlink" href="#configuring-saml" title="Permalink to this headline">¶</a></h3>
+<span id="saml-configuration"></span><h3><a class="toc-backref" href="#id50">4.5.2. Configuring SAML</a><a class="headerlink" href="#configuring-saml" title="Permalink to this headline">¶</a></h3>
 <p>SAML configuration instructions can be found in the <a class="reference external" href="https://docs.stormpath.com/console/product-guide/latest/appendix-saml.html">SAML Appendix</a> of the Stormpath Admin Console Guide.</p>
 <div class="section" id="salesforce">
 <span id="id8"></span><h4>Salesforce<a class="headerlink" href="#salesforce" title="Permalink to this headline">¶</a></h4>
@@ -1885,7 +1888,7 @@ $ startup.sh
 </div>
 </div>
 <div class="section" id="configuring-saml-via-rest">
-<span id="saml-configuration-rest"></span><h3><a class="toc-backref" href="#id47">4.5.3. Configuring SAML via REST</a><a class="headerlink" href="#configuring-saml-via-rest" title="Permalink to this headline">¶</a></h3>
+<span id="saml-configuration-rest"></span><h3><a class="toc-backref" href="#id51">4.5.3. Configuring SAML via REST</a><a class="headerlink" href="#configuring-saml-via-rest" title="Permalink to this headline">¶</a></h3>
 <p>Here you will explain to you the steps that are required to configure Stormpath as a SAML Service Provider using only the REST API.</p>
 <p>It is recommend that you configure SAML using the Stormpath Admin console, as explained in the above <a class="reference internal" href="#saml-configuration"><span>IdP-specific configuration instructions</span></a>. However, understanding the REST underpinnings of those instructions will allow you to automate some or all of the configuration process, if that is something that your application requires.</p>
 <p>Also, currently the IdP-initiated flow can only be configured via REST, and not yet via the Stormpath Admin Console.</p>
@@ -2155,7 +2158,7 @@ $ startup.sh
 </div>
 </div>
 <div class="section" id="the-stormpath-saml-flow">
-<span id="saml-flow"></span><h3><a class="toc-backref" href="#id48">4.5.4. The Stormpath SAML Flow</a><a class="headerlink" href="#the-stormpath-saml-flow" title="Permalink to this headline">¶</a></h3>
+<span id="saml-flow"></span><h3><a class="toc-backref" href="#id52">4.5.4. The Stormpath SAML Flow</a><a class="headerlink" href="#the-stormpath-saml-flow" title="Permalink to this headline">¶</a></h3>
 <p>The two SAML authentication flows that Stormpath supports differ primarily in their starting points, and so <a class="reference internal" href="#saml-sp-init-flow"><span>the Service Provider (SP) initiated flow</span></a> is really just the Identity Provider (IdP) initiated flow with a different starting point.</p>
 <div class="section" id="the-identity-provider-initiated-flow">
 <span id="saml-idp-init-flow"></span><h4>The Identity Provider Initiated Flow<a class="headerlink" href="#the-identity-provider-initiated-flow" title="Permalink to this headline">¶</a></h4>
@@ -2948,7 +2951,7 @@ $ startup.sh
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, Stormpath, Inc.
+        &copy; Copyright 2017, Stormpath, Inc.
 
     </p>
   </div>
