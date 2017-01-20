@@ -16,7 +16,93 @@ content_top: [docs_top.html]
       </div>
       <div class="documentation-subtitle row">
         <div class="col-md-12">
-          <p>Integrations</p>
+          <p>Front-End Integrations</p>
+        </div>
+      </div>
+      <div class="documentation-nodes row">
+        <div class="col-md-3 col-sm-4 col-xs-6">
+          <a href="/angular">
+            <div class="docs-node-container">
+              <div class="docs-node-first-row">
+                <div class="docs-node-img-container">
+                  <svg class="svg angular-svg" id="8e9cf588-974e-46c9-855a-5619492dff5f" data-name="Layer 1" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.\30 67d3d27-ca15-436b-aca5-0f19dff287a0{fill:#ff1658;}.\33 fbf1f75-c5ff-4a14-a0f4-b0d4bc1044b8{fill:none;stroke:#ff1658;stroke-miterlimit:10;stroke-width:2px;}</style></defs><title>Angular</title><path class="067d3d27-ca15-436b-aca5-0f19dff287a0" d="M55.84,59.42l-2.16-6.81H46.23L44,59.42H41.41l6.81-20.81h3.55l6.81,20.81ZM50.94,44.18q-.27-.85-.48-1.67t-.37-1.75h-.27q-.19.93-.38,1.75T49,44.18l-2,6.07H52.9Z"/><polygon class="3fbf1f75-c5ff-4a14-a0f4-b0d4bc1044b8" points="71.43 65.57 50 77.48 28.57 65.57 25 33.43 50 21.52 75 33.43 71.43 65.57"/></svg>
+                </div>
+              </div>
+              <div class="docs-node-second-row">
+                <div class="docs-node-text">
+                  <p>Angular</p>
+                </div>
+                <div class="docs-node-read-more">
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-3 col-sm-4 col-xs-6">
+          <a href="/react">
+            <div class="docs-node-container">
+              <div class="docs-node-first-row">
+                <div class="docs-node-img-container">
+                  <svg class="svg react-svg" id="c30446ff-f1b0-4c89-b981-7f77748d373a" data-name="Layer 1" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.\38 d7d6ceb-0a82-4b77-8818-f29ab64b61a9{fill:none;stroke:#009dff;stroke-miterlimit:10;stroke-width:2px;}</style></defs><title>React</title><circle class="8d7d6ceb-0a82-4b77-8818-f29ab64b61a9" cx="50" cy="50" r="5.5"/><ellipse class="8d7d6ceb-0a82-4b77-8818-f29ab64b61a9" cx="50" cy="50" rx="27.5" ry="13.75" transform="translate(-18.3 68.3) rotate(-60)"/><ellipse class="8d7d6ceb-0a82-4b77-8818-f29ab64b61a9" cx="50" cy="50" rx="27.5" ry="13.75"/><ellipse class="8d7d6ceb-0a82-4b77-8818-f29ab64b61a9" cx="50" cy="50" rx="13.75" ry="27.5" transform="translate(-18.3 31.7) rotate(-30)"/></svg>
+                </div>
+              </div>
+              <div class="docs-node-second-row">
+                <div class="docs-node-text">
+                  <p>React</p>
+                </div>
+                <div class="docs-node-read-more">
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-3 col-sm-4 col-xs-6">
+          <a href="/ios">
+            <div class="docs-node-container">
+              <div class="docs-node-first-row">
+                <div class="docs-node-img-container">
+                  <svg class="svg ios-svg" id="75fd5089-d84e-4494-ba50-3b8883daa932" data-name="Layer 1" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.cfddba9e-dd34-45a0-9a04-4f6f2f99b212{fill:#364052;}</style></defs><title>iOS</title><path class="cfddba9e-dd34-45a0-9a04-4f6f2f99b212" d="M60,35.77a6.46,6.46,0,0,1,.67,0h.15a11,11,0,0,1,7.27,3.1A14.13,14.13,0,0,0,63,49.77a13.86,13.86,0,0,0,6.92,12.08,27.18,27.18,0,0,1-3,5.72c-2.2,3.29-4.1,5.81-6.77,5.85H60a7.71,7.71,0,0,1-3.27-.85,13.16,13.16,0,0,0-5.6-1.3,13.67,13.67,0,0,0-5.85,1.34,8.75,8.75,0,0,1-3.27.9h-.11c-2.37,0-4.59-2.89-6.82-6.09a33.45,33.45,0,0,1-5-12.47c-.63-3.6-.87-8.8,1.64-13.13a11.41,11.41,0,0,1,9.6-5.88h.11a13.44,13.44,0,0,1,4.79,1.29,11.75,11.75,0,0,0,4.17,1.14,11.67,11.67,0,0,0,4-1.11A15.91,15.91,0,0,1,60,35.77m0-2c-3.92,0-7.62,2.58-9.63,2.58-2.17,0-5.43-2.42-9-2.42h-.16a13.42,13.42,0,0,0-11.3,6.89c-4.89,8.46-1.24,20.89,3.44,27.72,2.3,3.29,5,7,8.47,7H42c3.5-.14,4.81-2.23,9-2.23s5.37,2.15,8.87,2.15h.2c3.76-.06,6.13-3.36,8.39-6.74a27.66,27.66,0,0,0,3.84-7.81A12.08,12.08,0,0,1,65,49.75c-.06-6.95,5.69-10.33,6-10.49a12.8,12.8,0,0,0-10.08-5.45,8.44,8.44,0,0,0-.88,0Z"/><path class="cfddba9e-dd34-45a0-9a04-4f6f2f99b212" d="M58.87,22.95A11,11,0,0,1,56.56,28,9.28,9.28,0,0,1,52,31a10.83,10.83,0,0,1,2.38-5,11.07,11.07,0,0,1,4.53-3m2-2.45a12.53,12.53,0,0,0-8.1,4.19,11.71,11.71,0,0,0-2.89,8.49l.54,0a10.58,10.58,0,0,0,7.64-3.89,12.3,12.3,0,0,0,2.82-8.82Z"/></svg>
+                </div>
+              </div>
+              <div class="docs-node-second-row">
+                <div class="docs-node-text">
+                  <p>iOS</p>
+                </div>
+                <div class="docs-node-read-more">
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-md-3 col-sm-4 col-xs-6">
+          <a href="/android">
+            <div class="docs-node-container">
+              <div class="docs-node-first-row">
+                <div class="docs-node-img-container">
+                  <svg class="svg android-svg" id="d369e3bd-07c8-4c06-838d-c009bba8ddd4" data-name="Layer 1" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.\33 ec3508c-76a5-4df8-ae38-225630bd1e39,.\36 0adafc2-cbef-40f1-b09e-32f4133fddee{fill:none;stroke:#00cc6d;stroke-miterlimit:10;stroke-width:2px;}.\36 0adafc2-cbef-40f1-b09e-32f4133fddee{stroke-linecap:square;}</style></defs><title>Android</title><rect class="3ec3508c-76a5-4df8-ae38-225630bd1e39" x="38.02" y="38.7" width="23.95" height="23.95"/><path class="3ec3508c-76a5-4df8-ae38-225630bd1e39" d="M59.58,33c0-4.63-4.29-8.38-9.58-8.38S40.42,28.38,40.42,33Z"/><line class="60adafc2-cbef-40f1-b09e-32f4133fddee" x1="32.04" y1="38.7" x2="32.04" y2="50.67"/><line class="60adafc2-cbef-40f1-b09e-32f4133fddee" x1="45.21" y1="68.64" x2="45.21" y2="74.63"/><line class="60adafc2-cbef-40f1-b09e-32f4133fddee" x1="54.79" y1="68.64" x2="54.79" y2="74.63"/><line class="60adafc2-cbef-40f1-b09e-32f4133fddee" x1="67.96" y1="38.7" x2="67.96" y2="50.67"/></svg>
+                </div>
+              </div>
+              <div class="docs-node-second-row">
+                <div class="docs-node-text">
+                  <p>Android</p>
+                </div>
+                <div class="docs-node-read-more">
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="documentation-subtitle row">
+        <div class="col-md-12">
+          <p>Back-End Integrations</p>
         </div>
       </div>
       <div class="documentation-nodes row">
@@ -51,26 +137,6 @@ content_top: [docs_top.html]
               <div class="docs-node-second-row">
                 <div class="docs-node-text">
                   <p>Java</p>
-                </div>
-                <div class="docs-node-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-3 col-sm-4 col-xs-6">
-          <a href="/angular">
-            <div class="docs-node-container">
-              <div class="docs-node-first-row">
-                <div class="docs-node-img-container">
-                  <svg class="svg angular-svg" id="8e9cf588-974e-46c9-855a-5619492dff5f" data-name="Layer 1" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.\30 67d3d27-ca15-436b-aca5-0f19dff287a0{fill:#ff1658;}.\33 fbf1f75-c5ff-4a14-a0f4-b0d4bc1044b8{fill:none;stroke:#ff1658;stroke-miterlimit:10;stroke-width:2px;}</style></defs><title>Angular</title><path class="067d3d27-ca15-436b-aca5-0f19dff287a0" d="M55.84,59.42l-2.16-6.81H46.23L44,59.42H41.41l6.81-20.81h3.55l6.81,20.81ZM50.94,44.18q-.27-.85-.48-1.67t-.37-1.75h-.27q-.19.93-.38,1.75T49,44.18l-2,6.07H52.9Z"/><polygon class="3fbf1f75-c5ff-4a14-a0f4-b0d4bc1044b8" points="71.43 65.57 50 77.48 28.57 65.57 25 33.43 50 21.52 75 33.43 71.43 65.57"/></svg>
-                </div>
-              </div>
-              <div class="docs-node-second-row">
-                <div class="docs-node-text">
-                  <p>Angular</p>
                 </div>
                 <div class="docs-node-read-more">
                   <i class="fa fa-arrow-right" aria-hidden="true"></i>
@@ -201,66 +267,6 @@ content_top: [docs_top.html]
         </div>
 
         <div class="col-md-3 col-sm-4 col-xs-6">
-          <a href="/react">
-            <div class="docs-node-container">
-              <div class="docs-node-first-row">
-                <div class="docs-node-img-container">
-                  <svg class="svg react-svg" id="c30446ff-f1b0-4c89-b981-7f77748d373a" data-name="Layer 1" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.\38 d7d6ceb-0a82-4b77-8818-f29ab64b61a9{fill:none;stroke:#009dff;stroke-miterlimit:10;stroke-width:2px;}</style></defs><title>React</title><circle class="8d7d6ceb-0a82-4b77-8818-f29ab64b61a9" cx="50" cy="50" r="5.5"/><ellipse class="8d7d6ceb-0a82-4b77-8818-f29ab64b61a9" cx="50" cy="50" rx="27.5" ry="13.75" transform="translate(-18.3 68.3) rotate(-60)"/><ellipse class="8d7d6ceb-0a82-4b77-8818-f29ab64b61a9" cx="50" cy="50" rx="27.5" ry="13.75"/><ellipse class="8d7d6ceb-0a82-4b77-8818-f29ab64b61a9" cx="50" cy="50" rx="13.75" ry="27.5" transform="translate(-18.3 31.7) rotate(-30)"/></svg>
-                </div>
-              </div>
-              <div class="docs-node-second-row">
-                <div class="docs-node-text">
-                  <p>React</p>
-                </div>
-                <div class="docs-node-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-3 col-sm-4 col-xs-6">
-          <a href="/ios">
-            <div class="docs-node-container">
-              <div class="docs-node-first-row">
-                <div class="docs-node-img-container">
-                  <svg class="svg ios-svg" id="75fd5089-d84e-4494-ba50-3b8883daa932" data-name="Layer 1" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.cfddba9e-dd34-45a0-9a04-4f6f2f99b212{fill:#364052;}</style></defs><title>iOS</title><path class="cfddba9e-dd34-45a0-9a04-4f6f2f99b212" d="M60,35.77a6.46,6.46,0,0,1,.67,0h.15a11,11,0,0,1,7.27,3.1A14.13,14.13,0,0,0,63,49.77a13.86,13.86,0,0,0,6.92,12.08,27.18,27.18,0,0,1-3,5.72c-2.2,3.29-4.1,5.81-6.77,5.85H60a7.71,7.71,0,0,1-3.27-.85,13.16,13.16,0,0,0-5.6-1.3,13.67,13.67,0,0,0-5.85,1.34,8.75,8.75,0,0,1-3.27.9h-.11c-2.37,0-4.59-2.89-6.82-6.09a33.45,33.45,0,0,1-5-12.47c-.63-3.6-.87-8.8,1.64-13.13a11.41,11.41,0,0,1,9.6-5.88h.11a13.44,13.44,0,0,1,4.79,1.29,11.75,11.75,0,0,0,4.17,1.14,11.67,11.67,0,0,0,4-1.11A15.91,15.91,0,0,1,60,35.77m0-2c-3.92,0-7.62,2.58-9.63,2.58-2.17,0-5.43-2.42-9-2.42h-.16a13.42,13.42,0,0,0-11.3,6.89c-4.89,8.46-1.24,20.89,3.44,27.72,2.3,3.29,5,7,8.47,7H42c3.5-.14,4.81-2.23,9-2.23s5.37,2.15,8.87,2.15h.2c3.76-.06,6.13-3.36,8.39-6.74a27.66,27.66,0,0,0,3.84-7.81A12.08,12.08,0,0,1,65,49.75c-.06-6.95,5.69-10.33,6-10.49a12.8,12.8,0,0,0-10.08-5.45,8.44,8.44,0,0,0-.88,0Z"/><path class="cfddba9e-dd34-45a0-9a04-4f6f2f99b212" d="M58.87,22.95A11,11,0,0,1,56.56,28,9.28,9.28,0,0,1,52,31a10.83,10.83,0,0,1,2.38-5,11.07,11.07,0,0,1,4.53-3m2-2.45a12.53,12.53,0,0,0-8.1,4.19,11.71,11.71,0,0,0-2.89,8.49l.54,0a10.58,10.58,0,0,0,7.64-3.89,12.3,12.3,0,0,0,2.82-8.82Z"/></svg>
-                </div>
-              </div>
-              <div class="docs-node-second-row">
-                <div class="docs-node-text">
-                  <p>iOS</p>
-                </div>
-                <div class="docs-node-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-3 col-sm-4 col-xs-6">
-          <a href="/android">
-            <div class="docs-node-container">
-              <div class="docs-node-first-row">
-                <div class="docs-node-img-container">
-                  <svg class="svg android-svg" id="d369e3bd-07c8-4c06-838d-c009bba8ddd4" data-name="Layer 1" xmlns="https://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><style>.\33 ec3508c-76a5-4df8-ae38-225630bd1e39,.\36 0adafc2-cbef-40f1-b09e-32f4133fddee{fill:none;stroke:#00cc6d;stroke-miterlimit:10;stroke-width:2px;}.\36 0adafc2-cbef-40f1-b09e-32f4133fddee{stroke-linecap:square;}</style></defs><title>Android</title><rect class="3ec3508c-76a5-4df8-ae38-225630bd1e39" x="38.02" y="38.7" width="23.95" height="23.95"/><path class="3ec3508c-76a5-4df8-ae38-225630bd1e39" d="M59.58,33c0-4.63-4.29-8.38-9.58-8.38S40.42,28.38,40.42,33Z"/><line class="60adafc2-cbef-40f1-b09e-32f4133fddee" x1="32.04" y1="38.7" x2="32.04" y2="50.67"/><line class="60adafc2-cbef-40f1-b09e-32f4133fddee" x1="45.21" y1="68.64" x2="45.21" y2="74.63"/><line class="60adafc2-cbef-40f1-b09e-32f4133fddee" x1="54.79" y1="68.64" x2="54.79" y2="74.63"/><line class="60adafc2-cbef-40f1-b09e-32f4133fddee" x1="67.96" y1="38.7" x2="67.96" y2="50.67"/></svg>
-                </div>
-              </div>
-              <div class="docs-node-second-row">
-                <div class="docs-node-text">
-                  <p>Android</p>
-                </div>
-                <div class="docs-node-read-more">
-                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </div>
-              </div>
-            </div>
-          </a>
-        </div>
-
-        <div class="col-md-3 col-sm-4 col-xs-6">
           <a href="/nginx">
             <div class="docs-node-container">
               <div class="docs-node-first-row">
@@ -334,6 +340,34 @@ content_top: [docs_top.html]
               <div class="api-node-second-row">
                 <div class="api-node-second-row-text">
                   Error Codes
+                </div>
+                <div class="api-node-second-row-read-more">
+                  <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="stormpath-guide-section">
+    <div class="container">
+      <div class="documentation-subtitle row">
+        <div class="col-md-12">
+          <p>Client API</p>
+        </div>
+      </div>
+      <div class="rest-api-node-container row">
+        <div class="col-md-4 col-xs-12">
+          <a href="/client-api/product-guide/latest/">
+            <div class="api-node-container">
+              <div class="api-node-first-row">
+                <i class="fa fa-book" aria-hidden="true"></i>
+              </div>
+              <div class="api-node-second-row">
+                <div class="api-node-second-row-text">
+                  Product Guide
                 </div>
                 <div class="api-node-second-row-read-more">
                   <i class="fa fa-arrow-right" aria-hidden="true"></i>
