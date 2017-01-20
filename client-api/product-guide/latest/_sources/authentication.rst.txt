@@ -109,7 +109,7 @@ Each returned ``accountStore`` has an ``href`` and a ``name``. In the case of So
     },
     "accountStores":[
       {
-        "authorizeUri":"https://cold-diver.apps.dev.stormpath.io:443/authorize?response_type=stormpath_token&account_store_href=https%3A%2F%2Fapi.stormpath.com%2Fv1%2Fdirectories%2Fiov1DJGHvkYmJSprYXTsy",
+        "authorizeUri":"https://cold-diver.apps.stormpath.io:443/authorize?response_type=stormpath_token&account_store_href=https%3A%2F%2Fapi.stormpath.com%2Fv1%2Fdirectories%2Fiov1DJGHvkYmJSprYXTsy",
         "provider":{
           "href":"https://api.stormpath.com/v1/directories/iov1DJGHvkYmJSprYXTsy/provider",
           "providerId":"facebook",
@@ -120,7 +120,7 @@ Each returned ``accountStore`` has an ``href`` and a ``name``. In the case of So
         "name":"Facebook Directory"
       },
       {
-        "authorizeUri":"https://cold-diver.apps.dev.stormpath.io:443/authorize?response_type=stormpath_token&account_store_href=https%3A%2F%2Fapi.stormpath.com%2Fv1%2Fdirectories%2F6NOH5Y6w8ZnvdTuGfNWn7s",
+        "authorizeUri":"https://cold-diver.apps.stormpath.io:443/authorize?response_type=stormpath_token&account_store_href=https%3A%2F%2Fapi.stormpath.com%2Fv1%2Fdirectories%2F6NOH5Y6w8ZnvdTuGfNWn7s",
         "provider":{
           "href":"https://api.stormpath.com/v1/directories/6NOH5Y6w8ZnvdTuGfNWn7s/provider",
           "providerId":"linkedin",
