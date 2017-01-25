@@ -30,9 +30,6 @@
   
 
   
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Express Library Guide 3.2.0 documentation" href="index.html"/>
         <link rel="next" title="Templates" href="templates.html"/>
         <link rel="prev" title="Password Reset" href="password_reset.html"/> 
@@ -527,7 +524,7 @@
     <li class="wy-breadcrumbs-aside">
       
           
-          <a href="_sources/multi_tenancy.rst.txt" rel="nofollow"> View page source</a>
+          <a href="_sources/multi_tenancy.txt" rel="nofollow"> View page source</a>
         
       
     </li>
@@ -605,7 +602,7 @@ setup in Stormpath:</p>
 <h2>Authenticated Organization Context<a class="headerlink" href="#authenticated-organization-context" title="Permalink to this headline">¶</a></h2>
 <p>When a user authenticates through an organization, their access token will indicate which organization they logged into.  You can pull this information from the authentication result, which is attached to the <code class="docutils literal"><span class="pre">req.authenticationResult.expandedJwt.claims.org</span></code> property, which is the href of the organization that the user has authenticated against.</p>
 <p>Here is an example of using the authentication result to determine which organization a user has authenticated against:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">authenticationRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
 
   <span class="kd">var</span> <span class="nx">client</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;stormpathClient&#39;</span><span class="p">);</span>
   <span class="kd">var</span> <span class="nx">orgHref</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">authenticationResult</span><span class="p">.</span><span class="nx">expandedJwt</span><span class="p">.</span><span class="nx">claims</span><span class="p">.</span><span class="nx">org</span><span class="p">;</span>
