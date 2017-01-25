@@ -2206,7 +2206,7 @@ $ startup.sh
 <h4>Step 5: Configure Your Application<a class="headerlink" href="#step-5-configure-your-application" title="Permalink to this headline">¶</a></h4>
 <p>Your Stormpath Application Resource has two parts that are relevant to SAML:</p>
 <ol class="arabic simple">
-<li>An <code class="docutils literal"><span class="pre">authorizedCallbackUri</span></code> Array that defines the authorized URIs that the IdP can return your user to. These should be URIs that you host yourself.</li>
+<li>An <code class="docutils literal"><span class="pre">authorizedCallbackUri</span></code> Array that defines the authorized URIs that the IdP can return your user to with the authentication result. These should be URIs that you host yourself.</li>
 </ol>
 <p>You should create any URIs here that you would like included as authorized callback URIs, to a maximum of 4000 characters in total length.</p>
 <div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/applications/$APPLICATION_ID</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
@@ -2548,7 +2548,7 @@ $ startup.sh
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">cb_uri</span></code></td>
 <td>No</td>
-<td>The callback URI to use once the user takes an action on the ID Site or Identity provider. This must match a Authorized Callback URI on Application resource, otherwise the flow will default to the first Callback URI that does not contain a wildcard.</td>
+<td>The callback URI to use once the user takes an action on the ID Site or Identity provider. This URI will be passed a secure JWT as a URL parameter, and it&#8217;s job will be to validate that JWT and return the Stormpath Account. This URI must match a Authorized Callback URI on an Application resource, otherwise the flow will default to the first Callback URI that does not contain a wildcard.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">jti</span></code></td>
 <td>Yes</td>

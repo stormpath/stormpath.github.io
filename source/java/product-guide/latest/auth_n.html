@@ -1153,7 +1153,7 @@
 <div class="section" id="refreshing-access-tokens">
 <span id="refresh-oauth-token"></span><h4><a class="toc-backref" href="#id33">Refreshing Access Tokens</a><a class="headerlink" href="#refreshing-access-tokens" title="Permalink to this headline">¶</a></h4>
 <p>In the event that the Access Token expires, the user can generate a new one using the Refresh Token without re-entering their credentials.</p>
-<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">OAuthPasswordGrantRequestAuthentication</span> <span class="n">request</span> <span class="o">=</span>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">OAuthRefreshTokenRequestAuthentication</span> <span class="n">request</span> <span class="o">=</span>
     <span class="n">OAuthRequests</span><span class="o">.</span><span class="na">OAUTH_REFRESH_TOKEN_REQUEST</span>
         <span class="o">.</span><span class="na">builder</span><span class="o">()</span>
         <span class="o">.</span><span class="na">setRefreshToken</span><span class="o">(</span><span class="n">refreshTokenString</span><span class="o">)</span>
@@ -1855,7 +1855,7 @@ $ startup.sh
 <h4>Step 5: Configure Your Application<a class="headerlink" href="#step-5-configure-your-application" title="Permalink to this headline">¶</a></h4>
 <p>Your Stormpath Application Resource has two parts that are relevant to SAML:</p>
 <ol class="arabic simple">
-<li>An <code class="docutils literal"><span class="pre">authorizedCallbackUri</span></code> Array that defines the authorized URIs that the IdP can return your user to. These should be URIs that you host yourself.</li>
+<li>An <code class="docutils literal"><span class="pre">authorizedCallbackUri</span></code> Array that defines the authorized URIs that the IdP can return your user to with the authentication result. These should be URIs that you host yourself.</li>
 </ol>
 <p>You should create any URIs here that you would like included as authorized callback URIs, to a maximum of 4000 characters in total length.</p>
 <div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">application</span><span class="o">.</span><span class="na">setAuthorizedCallbackUris</span><span class="o">(</span><span class="n">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span>
@@ -2169,7 +2169,7 @@ $ startup.sh
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">cb_uri</span></code></td>
 <td>No</td>
-<td>The callback URI to use once the user takes an action on the ID Site or Identity provider. This must match a Authorized Callback URI on Application resource, otherwise the flow will default to the first Callback URI that does not contain a wildcard.</td>
+<td>The callback URI to use once the user takes an action on the ID Site or Identity provider. This URI will be passed a secure JWT as a URL parameter, and it&#8217;s job will be to validate that JWT and return the Stormpath Account. This URI must match a Authorized Callback URI on an Application resource, otherwise the flow will default to the first Callback URI that does not contain a wildcard.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">jti</span></code></td>
 <td>Yes</td>
