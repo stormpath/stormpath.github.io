@@ -30,9 +30,6 @@
   
 
   
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="Express Library Guide 3.2.0 documentation" href="index.html"/>
         <link rel="next" title="Authentication" href="authentication.html"/>
         <link rel="prev" title="Configuration" href="configuration.html"/> 
@@ -527,7 +524,7 @@
     <li class="wy-breadcrumbs-aside">
       
           
-          <a href="_sources/user_data.rst.txt" rel="nofollow"> View page source</a>
+          <a href="_sources/user_data.txt" rel="nofollow"> View page source</a>
         
       
     </li>
@@ -574,10 +571,10 @@ user is logged in.  If the user is not logged in, we bypass your middleware and
 redirect the user to the login page for HTML requests, or send a 401 error for
 JSON requests.</p>
 <p>For example, if you&#8217;ve defined a simple view that should simply display a user&#8217;s
-email address, we can use the <code class="docutils literal"><span class="pre">loginRequired</span></code> middleware to require them to be
+email address, we can use the <code class="docutils literal"><span class="pre">authenticationRequired</span></code> middleware to require them to be
 logged in, and show them their email if so:</p>
 <blockquote>
-<div><div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/email&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+<div><div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/email&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">authenticationRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Your email address is: &#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">email</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
@@ -652,7 +649,7 @@ user data for you.  Simply use the <cite>expand</cite> config option:</p>
 </div>
 <p>Our library will pre-expand those resources for you, so that
 they are statically available inside your handler:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">authenticationRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">customData</span><span class="p">);</span>
 <span class="p">});</span>
 </pre></div>
@@ -688,7 +685,7 @@ won&#8217;t be able to squeeze all 1,000 groups into a single object (<em>it&#82
 efficient</em>) &#8211; so instead, you have to iterate over the collection.</p>
 <p>Below is an example which shows how you can iterate over a collection resource
 (<em>groups, in this case</em>):</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">authenticationRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">groups</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span> <span class="nx">iterator</span><span class="p">(</span><span class="nx">group</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;group:&#39;</span><span class="p">,</span> <span class="nx">group</span><span class="p">);</span>
     <span class="nx">cb</span><span class="p">();</span>
@@ -704,7 +701,7 @@ will be called for each resource in the collection.  The second function will be
 called when you&#8217;ve finished iterating through all of the available resources.</p>
 <p>So, given the example above, we could just as easily iterate over all of a
 user&#8217;s <code class="docutils literal"><span class="pre">apiKeys</span></code>:</p>
-<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">authenticationRequired</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">apiKeys</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">apiKey</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;apiKey:&#39;</span><span class="p">,</span> <span class="nx">apiKey</span><span class="p">);</span>
     <span class="nx">callback</span><span class="p">();</span>
