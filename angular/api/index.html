@@ -98,52 +98,23 @@
 				<pre><code>npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--save angular-stormpath</span>
 </code></pre><p>Then use it in your app like so:</p>
 				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Component } from <span class="hljs-string">'@angular/core'</span>;
-<span class="hljs-keyword">import</span> { Observable } from <span class="hljs-string">'rxjs'</span>;
-<span class="hljs-keyword">import</span> { Account, Stormpath } from <span class="hljs-string">'angular-stormpath'</span>;
+<span class="hljs-keyword">import</span> { AuthPortComponent } from <span class="hljs-string">'angular-stormpath'</span>;
 
 <span class="hljs-meta">@Component</span>({
   selector: <span class="hljs-string">'app-root'</span>,
   template: <span class="hljs-string">`&lt;div *ngIf="(user$ | async)" class="row text-center"&gt;
-       &lt;h2 class=""&gt;
-         Welcome, ({{ ( user$ | async ).fullName }}).
-       &lt;/h2&gt;
-       &lt;hr/&gt;
-       &lt;h4&gt;What would you like to do?&lt;/h4&gt;
+ &lt;h2&gt;
+   Welcome, {{ ( user$ | async ).fullName }}.
+ &lt;/h2&gt;
 
-       &lt;ul class="nav nav-pills nav-stacked text-centered"&gt;
-         &lt;li role="presentation" (click)="logout()"&gt;&lt;a href="#"&gt;Logout&lt;/a&gt;&lt;/li&gt;
-       &lt;/ul&gt;
-     &lt;/div&gt;
+ &lt;ul class="nav nav-pills nav-stacked text-centered"&gt;
+   &lt;li role="presentation" (click)="logout()"&gt;&lt;a href="#"&gt;Logout&lt;/a&gt;&lt;/li&gt;
+ &lt;/ul&gt;
+&lt;/div&gt;
 
-     &lt;sp-authport&gt;&lt;/sp-authport&gt;`</span>,
-  providers: [Stormpath]
+&lt;sp-authport&gt;&lt;/sp-authport&gt;`</span>
 })
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AppComponent {
-  <span class="hljs-keyword">private</span> user$: Observable&lt;Account | <span class="hljs-built_in">boolean</span>&gt;;
-  <span class="hljs-keyword">private</span> loggedIn$: Observable&lt;<span class="hljs-built_in">boolean</span>&gt;;
-  <span class="hljs-keyword">private</span> login: <span class="hljs-built_in">boolean</span>;
-  <span class="hljs-keyword">private</span> register: <span class="hljs-built_in">boolean</span>;
-
-  <span class="hljs-keyword">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">public</span> stormpath: Stormpath</span>) {}
-
-  ngOnInit() {
-    <span class="hljs-keyword">this</span>.login = <span class="hljs-literal">true</span>;
-    <span class="hljs-keyword">this</span>.register = <span class="hljs-literal">false</span>;
-    <span class="hljs-keyword">this</span>.user$ = <span class="hljs-keyword">this</span>.stormpath.user$;
-    <span class="hljs-keyword">this</span>.loggedIn$ = <span class="hljs-keyword">this</span>.user$.map(user =&gt; !!user);
-  }
-
-  showLogin() {
-    <span class="hljs-keyword">this</span>.login = !(<span class="hljs-keyword">this</span>.register = <span class="hljs-literal">false</span>);
-  }
-
-  showRegister() {
-    <span class="hljs-keyword">this</span>.register = !(<span class="hljs-keyword">this</span>.login = <span class="hljs-literal">false</span>);
-  }
-
-  logout() {
-    <span class="hljs-keyword">this</span>.stormpath.logout();
-  }
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AppComponent extends AuthPortComponent {
 }
 </code></pre>
 				<p>You may also find it useful to view the <a href="https://github.com/stormpath/stormpath-sdk-angular/blob/master/demo/app.component.ts">demo source</a>.</p>
@@ -182,44 +153,39 @@ config.autoAuthorizedUris.push(<span class="hljs-keyword">new</span> <span class
 
 <span class="hljs-meta">@Component</span>({
   selector: <span class="hljs-string">'demo-app'</span>,
-  template: <span class="hljs-string">`
-      &lt;div class="container"&gt;
-        &lt;br/&gt;
-        &lt;br/&gt;
-        &lt;div *ngIf="(user$ | async)" class="row text-center"&gt;
-          &lt;h2 class=""&gt;
-            Welcome, ({{ ( user$ | async ).fullName }}).
-          &lt;/h2&gt;
-          &lt;hr/&gt;
+  template: <span class="hljs-string">`&lt;div class="container"&gt;
+&lt;div *ngIf="(user$ | async)" class="row text-center"&gt;
+  &lt;h2&gt;
+    Welcome, {{ ( user$ | async ).fullName }}.
+  &lt;/h2&gt;
+  &lt;hr/&gt;
 
-          &lt;ul class="nav nav-pills nav-stacked text-centered"&gt;
-            &lt;li role="presentation" (click)="logout(); false"&gt;&lt;a href=""&gt;Logout&lt;/a&gt;&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/div&gt;
+  &lt;ul class="nav nav-pills nav-stacked text-centered"&gt;
+    &lt;li role="presentation" (click)="logout(); false"&gt;&lt;a href=""&gt;Logout&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
 
-        &lt;template #loginform&gt;
-          &lt;div *ngIf="error" class="alert alert-danger"&gt;{{error}}&lt;/div&gt;
-          &lt;form&gt;
-              &lt;label for="email"&gt;Email&lt;/label&gt;
-              &lt;input id="email" name="login" type="text" [(ngModel)]="loginFormModel.login"&gt;
-              &lt;label for="passwordField"&gt;Password&lt;/label&gt;
-              &lt;input id="passwordField" name="password" type="password" [(ngModel)]="loginFormModel.password"&gt;
-              &lt;button (click)="login()"&gt;Login&lt;/button&gt;
-          &lt;/form&gt;
-        &lt;/template&gt;
+&lt;template #loginform&gt;
+  &lt;div *ngIf="error" class="alert alert-danger"&gt;{{error}}&lt;/div&gt;
+  &lt;form&gt;
+      &lt;label for="email"&gt;Email&lt;/label&gt;
+      &lt;input id="email" name="login" type="text" [(ngModel)]="loginFormModel.login"&gt;
+      &lt;label for="passwordField"&gt;Password&lt;/label&gt;
+      &lt;input id="passwordField" name="password" type="password" [(ngModel)]="loginFormModel.password"&gt;
+      &lt;button (click)="login()"&gt;Login&lt;/button&gt;
+  &lt;/form&gt;
+&lt;/template&gt;
 
-        &lt;template #authport&gt;
-            &lt;div *ngIf="(user$ | async) === false"&gt;
-                &lt;h2&gt;Sign In&lt;/h2&gt;
-                &lt;login-form [customTemplate]="loginform"&gt;&lt;/login-form&gt;
-            &lt;/div&gt;
-        &lt;/template&gt;
+&lt;template #authport&gt;
+  &lt;div *ngIf="(user$ | async) === false"&gt;
+      &lt;h2&gt;Sign In&lt;/h2&gt;
+      &lt;login-form [customTemplate]="loginform"&gt;&lt;/login-form&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
 
-        &lt;sp-authport [customTemplate]="authport"&gt;&lt;/sp-authport&gt;
+&lt;sp-authport [customTemplate]="authport"&gt;&lt;/sp-authport&gt;
 
-      &lt;/div&gt;
-    `</span>,
-  providers: [Stormpath]
+&lt;/div&gt;`</span>
 })
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AppComponent <span class="hljs-keyword">implements</span> OnInit {
 
@@ -266,7 +232,7 @@ config.autoAuthorizedUris.push(<span class="hljs-keyword">new</span> <span class
   }
 }
 </code></pre>
-				<p><strong>NOTE:</strong> One problem with this approach is you&#39;ll need to copy all the referenced variables in the template into your component. Another option is to extend the existing Stormpath component and override its <code>template</code> variable in <code>@Component</code>.</p>
+				<p><strong>NOTE:</strong> One problem with this approach is you&#39;ll need to copy all the referenced variables in the template into your component. Another option is to extend the existing Stormpath component and override its <code>template</code> variable in <code>@Component</code>. This is the recommended solution if you&#39;re using Angular 2.3+.</p>
 				<h4 id="access-token-storage">Access Token Storage</h4>
 				<p>To change the storage mechanism for authentication tokens from localStorage (the default), to cookies, change the class for the &#39;tokenStore&#39; provider.</p>
 				<pre><code class="lang-typescript">{
@@ -289,12 +255,11 @@ config.autoAuthorizedUris.push(<span class="hljs-keyword">new</span> <span class
     <span class="hljs-comment">// everything is exported Stormpath namespace</span>
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre><h2 id="documentation">Documentation</h2>
-				<p>All documentation is auto-generated from the source via typedoc and can be viewed here:
-				<a href="https://docs.stormpath.com/angular/api">https://docs.stormpath.com/angular/api</a></p>
+				<p>All documentation is auto-generated from the source via typedoc and can be viewed at <a href="https://docs.stormpath.com/angular/api">https://docs.stormpath.com/angular/api</a>.</p>
 				<h2 id="development">Development</h2>
 				<h3 id="prepare-your-environment">Prepare your environment</h3>
 				<ul>
-					<li>Install <a href="http://nodejs.org/">Node.js</a> and NPM (should come with)</li>
+					<li>Install <a href="http://nodejs.org/">Node.js</a> and npm</li>
 					<li>Install local dev dependencies: <code>npm install</code> while current directory is this repo</li>
 				</ul>
 				<h3 id="development-server">Development server</h3>
