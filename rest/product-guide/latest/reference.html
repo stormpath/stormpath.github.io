@@ -310,6 +310,7 @@
 <li class="toctree-l4"><a class="reference internal" href="auth_n.html#github">4.3.3. Github</a></li>
 <li class="toctree-l4"><a class="reference internal" href="auth_n.html#linkedin">4.3.4 LinkedIn</a></li>
 <li class="toctree-l4"><a class="reference internal" href="auth_n.html#twitter">4.3.5. Twitter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="auth_n.html#generic-oauth-2-0-login">4.3.6. Generic OAuth 2.0 Login</a></li>
 </ul>
 </li>
 </ul>
@@ -4215,18 +4216,18 @@
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">providerId</span></code></td>
 <td>String</td>
-<td><code class="docutils literal"><span class="pre">stormpath</span></code> (for a Cloud Directory); <code class="docutils literal"><span class="pre">ad</span></code> or <code class="docutils literal"><span class="pre">ldap</span></code> (for LDAP Directories); <code class="docutils literal"><span class="pre">facebook</span></code>, <code class="docutils literal"><span class="pre">google</span></code>, <code class="docutils literal"><span class="pre">github</span></code>, <code class="docutils literal"><span class="pre">linkedin</span></code>, or <code class="docutils literal"><span class="pre">twitter</span></code> (for Social Directories); <code class="docutils literal"><span class="pre">saml</span></code> (for SAML Directories)</td>
-<td>Specifies the type of Provider for the associated Directory.</td>
+<td>See description</td>
+<td>Specifies the type of Provider for the associated Directory. This is an arbitrary value in the case of Generic OAuth Directories. Otherwise: <code class="docutils literal"><span class="pre">stormpath</span></code> (for a Cloud Directory); <code class="docutils literal"><span class="pre">ad</span></code> or <code class="docutils literal"><span class="pre">ldap</span></code> (for LDAP Directories); <code class="docutils literal"><span class="pre">facebook</span></code>, <code class="docutils literal"><span class="pre">google</span></code>, <code class="docutils literal"><span class="pre">github</span></code>, <code class="docutils literal"><span class="pre">linkedin</span></code>, or <code class="docutils literal"><span class="pre">twitter</span></code> (for Social Directories); <code class="docutils literal"><span class="pre">saml</span></code> (for SAML Directories).</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">providerType</span></code></td>
 <td>String</td>
 <td>(See description)</td>
-<td>For generic providers, the value will be <code class="docutils literal"><span class="pre">oauth</span></code>. For all others, the value will match the <code class="docutils literal"><span class="pre">providerId</span></code>.</td>
+<td>For Generic OAuth Directories, the value will be <code class="docutils literal"><span class="pre">oauth</span></code>. For all others, the value will match the <code class="docutils literal"><span class="pre">providerId</span></code>.</td>
 </tr>
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">scope</span></code></td>
 <td>Array</td>
 <td>N/A</td>
-<td>(Social only) An array of the scopes that are configured for this Social Provider. These are the scopes that will be requested as part of the OAuth 2.0 token retrieval.</td>
+<td>(Social or Generic OAuth only) An array of the scopes that are configured for this Social Provider. These are the scopes that will be requested as part of the OAuth 2.0 token retrieval.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">userInfoMappingRules</span></code></td>
 <td>Link</td>
@@ -4236,49 +4237,74 @@
 <tr class="row-odd"><td><code class="docutils literal"><span class="pre">clientId</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>(Social only) The OAuth 2.0 Client ID for this Provider.</td>
+<td>(Social or Generic OAuth only) The OAuth 2.0 Client ID for this Provider.</td>
 </tr>
 <tr class="row-even"><td><code class="docutils literal"><span class="pre">clientSecret</span></code></td>
 <td>String</td>
 <td>N/A</td>
-<td>(Social only) The OAuth 2.0 Client Secret for this Provider.</td>
+<td>(Social or Generic OAuth only) The OAuth 2.0 Client Secret for this Provider.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">redirectURL</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">accessTokenType</span></code></td>
+<td>String</td>
+<td><code class="docutils literal"><span class="pre">bearer</span></code>, <code class="docutils literal"><span class="pre">access_token</span></code>, <code class="docutils literal"><span class="pre">oauth_token</span></code></td>
+<td>The format in which the OAuth Token is passed to the provider.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">authorizationEndpoint</span></code></td>
+<td>String</td>
+<td>Valid URL</td>
+<td>(Generic OAuth only) The endpoint used to retrieve the Authorization Code.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">idField</span></code></td>
+<td>String</td>
+<td>N/A</td>
+<td>(Generic OAuth only) The field in the provider&#8217;s user object that contains the user ID.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">resourceEndpoint</span></code></td>
+<td>String</td>
+<td>Valid URL</td>
+<td>(Generic OAuth only) The endpoint used to retrieve the User data from the provider.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">tokenEndpoint</span></code></td>
+<td>String</td>
+<td>Valid URL</td>
+<td>(Generic OAuth only) The endpoint used to exchange the Authorization Code for an OAuth token.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">redirectURL</span></code></td>
 <td>String</td>
 <td>A valid URL</td>
-<td>(Social only) The URL to redirect to after the user has authenticated. Currently only used for the Google providers.</td>
+<td>(Google only) The URL to redirect to after the user has authenticated.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">agent</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">agent</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>(LDAP only) A link to the Provider&#8217;s Agent. For more information see <a class="reference internal" href="#ref-ldap-agent"><span>below</span></a>.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ssoLoginUrl</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ssoLoginUrl</span></code></td>
 <td>String</td>
 <td>N/A</td>
 <td>(SAML only) The URL for the IdP&#8217;s SSO URL. For more information see <a class="reference internal" href="auth_n.html#saml-configuration"><span>4.5.2. Configuring SAML</span></a>.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">ssoLogoutUrl</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ssoLogoutUrl</span></code></td>
 <td>String</td>
 <td>N/A</td>
 <td>(SAML only) The URL for the IdP&#8217;s SSO logout endpoint. For more information see <a class="reference internal" href="auth_n.html#saml-configuration"><span>4.5.2. Configuring SAML</span></a>.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">encodedX509SigningCert</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">encodedX509SigningCert</span></code></td>
 <td>String</td>
 <td>N/A</td>
 <td>(SAML only) The public key from the SAML Identity Provider used to sign the assertions that are returned to Stormpath. For more information see <a class="reference internal" href="auth_n.html#saml-configuration"><span>4.5.2. Configuring SAML</span></a>.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">requestSignatureAlgorithm</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">requestSignatureAlgorithm</span></code></td>
 <td>String</td>
 <td><code class="docutils literal"><span class="pre">RSA-SHA256</span></code> (Default), <code class="docutils literal"><span class="pre">RSA-SHA1</span></code></td>
 <td>(SAML only) The algorithm used by the SAML Identity Provider to sign SAML assertions that are returned to Stormpath. For more information see <a class="reference internal" href="auth_n.html#saml-configuration"><span>4.5.2. Configuring SAML</span></a>.</td>
 </tr>
-<tr class="row-odd"><td><code class="docutils literal"><span class="pre">attributeStatementMappingRules</span></code></td>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">attributeStatementMappingRules</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>(SAML only) This object contains the rules that map SAML assertions to Stormpath resource attributes. For information about what&#8217;s found in this object, see <a class="reference internal" href="#ref-attribute-mapping"><span>below</span></a>. For more information about how it is used, please see <a class="reference internal" href="auth_n.html#saml-mapping"><span>Step 7 of the SAML configuration section</span></a>.</td>
 </tr>
-<tr class="row-even"><td><code class="docutils literal"><span class="pre">serviceProviderMetadata</span></code></td>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">serviceProviderMetadata</span></code></td>
 <td>Link</td>
 <td>N/A</td>
 <td>(SAML only) This object contains metadata related to your Service Provider. For information about what&#8217;s found in this object, see <a class="reference internal" href="#ref-sp-metadata"><span>below</span></a>. For more information about how it is used, please see <a class="reference internal" href="auth_n.html#configure-sp-in-idp"><span>Step 3 of the SAML configuration section</span></a>.</td>

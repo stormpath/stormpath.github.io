@@ -310,6 +310,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#github">4.3.3. Github</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#linkedin">4.3.4 LinkedIn</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#twitter">4.3.5. Twitter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generic-oauth-2-0-login">4.3.6. Generic OAuth 2.0 Login</a></li>
 </ul>
 </li>
 </ul>
@@ -996,8 +997,8 @@
 </div>
 <p>The values for both properties are stored as <a class="reference external" href="https://en.wikipedia.org/wiki/ISO_8601#Durations">ISO 8601 Durations</a>.</p>
 <p>If you wanted to change the TTL for the Access Token to 30 minutes and the Refresh Token to 7 days, you could send the following request:</p>
-<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">oauthPolicy</span><span class="o">.</span><span class="na">setAccessTokenTtl</span><span class="o">(</span><span class="s">&quot;P8D&quot;</span><span class="o">);</span>
-<span class="n">oauthPolicy</span><span class="o">.</span><span class="na">setRefreshTokenTtl</span><span class="o">(</span><span class="s">&quot;PT2M&quot;</span><span class="o">);</span>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="n">oauthPolicy</span><span class="o">.</span><span class="na">setAccessTokenTtl</span><span class="o">(</span><span class="s">&quot;PT30M&quot;</span><span class="o">);</span>
+<span class="n">oauthPolicy</span><span class="o">.</span><span class="na">setRefreshTokenTtl</span><span class="o">(</span><span class="s">&quot;P7D&quot;</span><span class="o">);</span>
 <span class="n">oauthPolicy</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
 </pre></div>
 </div>
@@ -1206,11 +1207,12 @@
 <li><a class="reference internal" href="#github" id="id40">4.3.3. Github</a></li>
 <li><a class="reference internal" href="#linkedin" id="id41">4.3.4 LinkedIn</a></li>
 <li><a class="reference internal" href="#twitter" id="id42">4.3.5. Twitter</a></li>
+<li><a class="reference internal" href="#generic-oauth-2-0-login" id="id43">4.3.6. Generic OAuth 2.0 Login</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<p>Social authentication essentially means using the &#8220;Log in with x&#8221; button in your application, where &#8220;x&#8221; is a Social Login Provider of some kind. The Social Login Providers currently supported by Stormpath are:</p>
+<p>Social authentication essentially means using the &#8220;Log in with x&#8221; button in your application, where &#8220;x&#8221; is a Social Login Provider of some kind. There are a number of Social Login Providers that Stormpath supports out-of-the-box:</p>
 <ul class="simple">
 <li><a class="reference internal" href="#authn-google"><span>Google</span></a></li>
 <li><a class="reference internal" href="#authn-facebook"><span>Facebook</span></a></li>
@@ -1218,6 +1220,7 @@
 <li><a class="reference internal" href="#authn-linkedin"><span>LinkedIn</span></a></li>
 <li><a class="reference internal" href="#authn-twitter"><span>Twitter</span></a></li>
 </ul>
+<p>However, Stormpath also supports the creation of Social Directories for so-called Generic OAuth Providers. These Directories should work with any Social Login Provider that provides an OAuth 2.0 flow. For more information about this, see <a class="reference internal" href="#authn-generic-oauth"><span>below</span></a>.</p>
 <p>Social Directories are a kind of mirrored Directory, in that they are used to mirror user information found in an external database. This means that entities like Groups can only exist in a your Stormpath Social Directory if they are mirrored in from the external Social provider. For more information, please see the <a class="reference internal" href="accnt_mgmt.html#about-mirror-dir"><span>Account Management chapter</span></a>.</p>
 <p><em>The Social Login Process</em></p>
 <p>In general, the social login process works as follows:</p>
@@ -1337,7 +1340,19 @@ Authorization: Basic MlpGT[...]xxdmk0
 </tr>
 </tbody>
 </table>
-<p>Additional scopes can be selected by going to the Directory&#8217;s page in the Stormpath Admin Console and clicking on the <strong>Scopes</strong> tab found under &#8220;Provider Configuration&#8221;.</p>
+<p>Additional scopes can be selected by going to the Directory&#8217;s page in the Stormpath Admin Console and clicking on the <strong>Scopes</strong> tab found under &#8220;Provider Configuration&#8221; or by passing a <code class="docutils literal"><span class="pre">scopes</span></code> array to the Directory&#8217;s Provider resource:</p>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories/4LL10Q3FNkiMLWmXfFQ1OU/provider</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic NVdYR...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json; charset=utf-8</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;scopes&quot;</span><span class="p">:[</span>
+    <span class="s2">&quot;user_about_me&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="social-login-providers">
 <h3><a class="toc-backref" href="#id37">Social Login Providers</a><a class="headerlink" href="#social-login-providers" title="Permalink to this headline">¶</a></h3>
@@ -1345,10 +1360,10 @@ Authorization: Basic MlpGT[...]xxdmk0
 <span id="authn-google"></span><h4><a class="toc-backref" href="#id38">4.3.1. Google</a><a class="headerlink" href="#google" title="Permalink to this headline">¶</a></h4>
 <p>Before you integrate Google Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
-<li>Create an application in the <a class="reference external" href="https://console.developers.google.com/start">Google Developer Console</a></li>
+<li>Create an application in the <a class="reference external" href="https://consoleelopers.google.com/start">Google Developer Console</a></li>
 <li>Enable Google Login for your Google application</li>
 <li>Retrieve the OAuth Credentials (Client ID and Secret) for your Google application</li>
-<li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.dev.stormpath.io/authorize/callback</span></code>).</li>
+<li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.stormpath.io/authorize/callback</span></code>).</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1408,7 +1423,7 @@ Authorization: Basic MlpGT[...]xxdmk0
 <li>Create an application on the <a class="reference external" href="https://developers.facebook.com/">Facebook Developer Site</a></li>
 <li>Retrieve your OAuth credentials (App ID and App Secret)</li>
 <li>Add your application&#8217;s private and public root URLs</li>
-<li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.dev.stormpath.io/authorize/callback</span></code>).</li>
+<li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.stormpath.io/authorize/callback</span></code>).</li>
 </ul>
 <p>For more information, please see the <a class="reference external" href="https://developers.facebook.com/docs/apps/register">Facebook documentation</a>.</p>
 <div class="section" id="step-1-create-a-social-directory-for-facebook">
@@ -1453,7 +1468,7 @@ Authorization: Basic MlpGT[...]xxdmk0
 <p>Before you integrate GitHub Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application in the <a class="reference external" href="https://developer.github.com/">GitHub Developer Site</a></li>
-<li>Retrieve OAuth Credentials (Client ID and Secret) for your GitHub application. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.dev.stormpath.io/authorize/callback</span></code>).</li>
+<li>Retrieve OAuth Credentials (Client ID and Secret) for your GitHub application. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.stormpath.io/authorize/callback</span></code>).</li>
 <li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication.</li>
 </ul>
 <p>For more information, please see the <a class="reference external" href="https://developer.github.com/guides/basics-of-authentication/#registering-your-app">GitHub documentation on registering your app</a>.</p>
@@ -1499,7 +1514,7 @@ Authorization: Basic MlpGT[...]xxdmk0
 <p>Before you integrate LinkedIn Login with Stormpath, you must complete the following steps:</p>
 <ul class="simple">
 <li>Create an application in the <a class="reference external" href="https://www.linkedin.com/secure/developer?newapp=">LinkedIn Developer Site</a></li>
-<li>Add your application&#8217;s redirect URLs, which are the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.dev.stormpath.io/authorize/callback</span></code>).</li>
+<li>Add your application&#8217;s redirect URLs, which are the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://cold-diver.apps.stormpath.io/authorize/callback</span></code>).</li>
 <li>Retrieve OAuth Credentials (Client ID and Secret) for your LinkedIn application</li>
 </ul>
 <p>For more information, please see <a class="reference external" href="https://developer.linkedin.com/docs/oauth2">LinkedIn&#8217;s OAuth documentation</a>.</p>
@@ -1588,18 +1603,199 @@ Authorization: Basic MlpGT[...]xxdmk0
 <p>You can then, for example, pass that Stormpath token to the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint and receive back OAuth 2.0 access and refresh tokens as described in <a class="reference internal" href="#generate-oauth-token"><span>Generating an OAuth 2.0 Access Token</span></a>.</p>
 </div>
 </div>
+<div class="section" id="generic-oauth-2-0-login">
+<span id="authn-generic-oauth"></span><h4><a class="toc-backref" href="#id43">4.3.6. Generic OAuth 2.0 Login</a><a class="headerlink" href="#generic-oauth-2-0-login" title="Permalink to this headline">¶</a></h4>
+<p>While Stormpath supports any provider that offers login via an OAuth 2.0 flow, the following providers have been tested and confirmed as working:</p>
+<ul class="simple">
+<li>Amazon</li>
+<li>Imgur</li>
+<li>Instagram</li>
+<li>StackExchange</li>
+<li>Twitch</li>
+</ul>
+<p>You can find example configurations for these providers <a class="reference internal" href="#generic-oauth-config"><span>below</span></a>. The instructions below should allow you to integrate with any other OAuth provider not listed here. If you have any questions about integrating with an OAuth provider not listed here, feel free to contact us at <a class="reference external" href="mailto:support&#37;&#52;&#48;stormpath&#46;com">support<span>&#64;</span>stormpath<span>&#46;</span>com</a> and we will help as best as we can.</p>
+<p>Before you integrate your OAuth provider with Stormpath, you must complete the following steps:</p>
+<ul class="simple">
+<li>Create an application with that provider</li>
+<li>Enable OAuth 2.0 login with that provider</li>
+<li>Add your application&#8217;s redirect URL, which is the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint (e.g. <code class="docutils literal"><span class="pre">https://endless-winter.apps.stormpath.io/authorize/callback</span></code>).</li>
+</ul>
+<p>You will also need to gather the following information from the provider:</p>
+<ul class="simple">
+<li><strong>Client ID &amp; Secret:</strong> These are the OAuth credentials that Stormpath will need in order to communicate with the provider.</li>
+<li><strong>Authorization Endpoint:</strong> Used to retrieve the Authorization Code from the provider. This endpoint will often end with <code class="docutils literal"><span class="pre">/authorize</span></code>.</li>
+<li><strong>Token Endpoint:</strong> Accepts the Authorization Code you retrieve from the Authorization Endpoint and returns an Access Token. This endpoint will often end with <code class="docutils literal"><span class="pre">/token</span></code>.</li>
+<li><strong>Resource Endpoint:</strong> Accepts the Access Token you got from the Token Endpoint and returns the user data. This is usually the endpoint that is used to retrieve the user object.</li>
+<li><strong>Access Token Type:</strong> This is the format of the token that is passed by Stormpath to the provider in order to retrieve the user data. Most providers support all three formats: <code class="docutils literal"><span class="pre">bearer</span></code>, <code class="docutils literal"><span class="pre">oauth_token</span></code>, <code class="docutils literal"><span class="pre">access_token</span></code>. <code class="docutils literal"><span class="pre">bearer</span></code> means that the token is passed as part of a Bearer Authentication header, while <code class="docutils literal"><span class="pre">oauth_token</span></code> and <code class="docutils literal"><span class="pre">access_token</span></code> are both URL parameters. Most providers support all three, but this is not always true.</li>
+<li><strong>ID Field:</strong> This is the field that contains the user ID in the user data that is retrieved by Stormpath from the Resource Endpoint.</li>
+</ul>
+<p>Example configurations can be found <a class="reference internal" href="#generic-oauth-config"><span>below</span></a>. Information about actually initiating Social Login can be found in <a class="reference external" href="https://docs.stormpath.com/client-api/product-guide/latest/social_login.html#initiate-social-login">the Client API documentation</a>.</p>
+<div class="section" id="step-1-create-a-directory-for-your-oauth-provider">
+<h5>Step 1: Create a Directory for your OAuth provider<a class="headerlink" href="#step-1-create-a-directory-for-your-oauth-provider" title="Permalink to this headline">¶</a></h5>
+<p>Creating this Directory requires that you provide information about your Provider resource. This can be accomplished by creating a new Directory:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This feature is currently not supported in the Java SDK. An example of a REST request has been included instead.</p>
+</div>
+<div class="highlight-http"><div class="highlight"><pre><span></span><span class="nf">POST</span> <span class="nn">/v1/directories</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="na">Authorization</span><span class="o">:</span> <span class="l">Basic NVdYR...</span>
+<span class="na">Content-Type</span><span class="o">:</span> <span class="l">application/json; charset=utf-8</span>
+<span class="na">Host</span><span class="o">:</span> <span class="l">api.stormpath.com</span>
+
+<span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="s2">&quot;Amazon&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;A generic OAuth directory for Amazon&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;provider&quot;</span><span class="p">:{</span>
+    <span class="nt">&quot;providerId&quot;</span><span class="p">:</span><span class="s2">&quot;amazon&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;clientId&quot;</span><span class="p">:</span><span class="s2">&quot;amzn1.application-oa2-client.99daa08example302d144a8ea&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span><span class="s2">&quot;93342d47bbecbexample0655228fced82&quot;</span>
+    <span class="s2">&quot;authorizationEndpoint&quot;</span><span class="p">:</span><span class="s2">&quot;https://www.amazon.com/ap/oa&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;tokenEndpoint&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.amazon.com/auth/o2/token&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;resourceEndpoint&quot;</span><span class="p">:</span><span class="s2">&quot;https://api.amazon.com/user/profile&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;idField&quot;</span><span class="p">:</span><span class="s2">&quot;user_id&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;accessTokenType&quot;</span><span class="p">:</span><span class="s2">&quot;bearer&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;scope&quot;</span><span class="p">:[</span>
+      <span class="s2">&quot;profile&quot;</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-2-map-the-directory-as-an-account-store-for-your-application">
+<h5>Step 2: Map the Directory as an Account Store for Your Application<a class="headerlink" href="#step-2-map-the-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h5>
+<p>Creating an Account Store Mapping between your new Google Directory and your Stormpath Application can be done as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
+</div>
+<div class="section" id="step-3-access-an-account-with-the-client-api">
+<h5>Step 3: Access an Account with the Client API<a class="headerlink" href="#step-3-access-an-account-with-the-client-api" title="Permalink to this headline">¶</a></h5>
+<p>To access or create an Account in your new Directory you use the Client API&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint. Full documentation of this endpoint can be found in <a class="reference external" href="https://docs.stormpath.com/client-api/product-guide/latest/social_login.html">the Client API Product Guide</a>.</p>
+<p>At a high level, the process works as follows:</p>
+<ol class="arabic simple">
+<li>The user clicks on a “Login with ______” link pointing at your application&#8217;s <code class="docutils literal"><span class="pre">/authorize</span></code> endpoint</li>
+<li>Stormpath handles the login and redirects the user back to your app with a Stormpath Token JWT response</li>
+</ol>
+<p>You can then, for example, pass that Stormpath token to the <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint and receive back OAuth 2.0 access and refresh tokens as described in <a class="reference external" href="https://docs.stormpath.com/client-api/product-guide/latest/authentication.html#oauth-2-0-login">the Client API Guide</a>.</p>
+</div>
+<div class="section" id="example-configurations">
+<span id="generic-oauth-config"></span><h5>Example Configurations<a class="headerlink" href="#example-configurations" title="Permalink to this headline">¶</a></h5>
+<p>This section contains examples of Providers configured for 5 common OAuth login providers, though we have removed irrelevant values (e.g. <code class="docutils literal"><span class="pre">createdAt</span></code>), which means that you can copy this JSON and simply fill-in your own values where necessary.</p>
+<p><em>ID Field</em></p>
+<p>ID Field must refer to the location of the user&#8217;s ID as found within the user object returned from the Resource Endpoint. If not specified, the default value for this field is simply <code class="docutils literal"><span class="pre">id</span></code>.</p>
+<p>Some providers return the ID field nested inside other objects. In this case, you must indicate the nesting using a period. For example, Imgur returns the <code class="docutils literal"><span class="pre">id</span></code> within a <code class="docutils literal"><span class="pre">data</span></code> object. This means that the value of <code class="docutils literal"><span class="pre">idField</span></code> should be <code class="docutils literal"><span class="pre">data.id</span></code>.</p>
+<p><em>Provider ID</em></p>
+<p>The provider ID can contain any string value that you like, but your Application cannot have more than one Directory with any given <code class="docutils literal"><span class="pre">providerId</span></code> value.</p>
+<div class="section" id="amazon">
+<span id="config-amazon"></span><h6>Amazon<a class="headerlink" href="#amazon" title="Permalink to this headline">¶</a></h6>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;accessTokenType&quot;</span><span class="p">:</span> <span class="s2">&quot;bearer&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;authorizationEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://www.amazon.com/ap/oa&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;clientId&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_CLIENT_ID&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_CLIENT_SECRET&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;idField&quot;</span><span class="p">:</span> <span class="s2">&quot;user_id&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;amazon&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerType&quot;</span><span class="p">:</span> <span class="s2">&quot;oauth2&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;resourceEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.amazon.com/user/profile&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;scope&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;profile&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;tokenEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.amazon.com/auth/o2/token&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In order for the flow to succeed, you must configure Stormpath to request the <code class="docutils literal"><span class="pre">profile</span></code> scope.</p>
+</div>
+</div>
+<div class="section" id="imgur">
+<h6>Imgur<a class="headerlink" href="#imgur" title="Permalink to this headline">¶</a></h6>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;accessTokenType&quot;</span><span class="p">:</span> <span class="s2">&quot;bearer&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;authorizationEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.imgur.com/oauth2/authorize&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;clientId&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_CLIENT_ID&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_CLIENT_SECRET&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;idField&quot;</span><span class="p">:</span> <span class="s2">&quot;data.id&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;imgur&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerType&quot;</span><span class="p">:</span> <span class="s2">&quot;oauth2&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;resourceEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.imgur.com/3/account/me&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;scope&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="nt">&quot;tokenEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.imgur.com/oauth2/token&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="instagram">
+<h6>Instagram<a class="headerlink" href="#instagram" title="Permalink to this headline">¶</a></h6>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;accessTokenType&quot;</span><span class="p">:</span> <span class="s2">&quot;access_token&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;authorizationEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.instagram.com/oauth/authorize&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;clientId&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_CLIENT_ID&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_CLIENT_SECRET&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;idField&quot;</span><span class="p">:</span> <span class="s2">&quot;data.id&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;instagram&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerType&quot;</span><span class="p">:</span> <span class="s2">&quot;oauth2&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;resourceEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.instagram.com/v1/users/self&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;scope&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="nt">&quot;tokenEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.instagram.com/oauth/access_token&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="stackexchange">
+<h6>StackExchange<a class="headerlink" href="#stackexchange" title="Permalink to this headline">¶</a></h6>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;accessTokenType&quot;</span><span class="p">:</span> <span class="s2">&quot;access_token&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;authorizationEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://stackexchange.com/oauth&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;clientId&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_CLIENT_ID&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_CLIENT_SECRET&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;idField&quot;</span><span class="p">:</span> <span class="s2">&quot;items[0].user_id&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;stackexchange&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerType&quot;</span><span class="p">:</span> <span class="s2">&quot;oauth2&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;resourceEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stackexchange.com/2.2/me?order=desc&amp;sort=reputation&amp;site=stackapps&amp;key=YOUR_APP_KEY&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;scope&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">&quot;no_expiry&quot;</span>
+  <span class="p">],</span>
+  <span class="nt">&quot;tokenEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://stackexchange.com/oauth/access_token&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In order for the flow to succeed, you must configure Stormpath to request the <code class="docutils literal"><span class="pre">no_expiry</span></code> scope.</p>
+<p class="last">Also the Resource Endpoint requires you to include a <code class="docutils literal"><span class="pre">key</span></code> that is found on your StackApp&#8217;s configuration page.</p>
+</div>
+</div>
+<div class="section" id="twitch">
+<h6>Twitch<a class="headerlink" href="#twitch" title="Permalink to this headline">¶</a></h6>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;accessTokenType&quot;</span><span class="p">:</span> <span class="s2">&quot;oauth_token&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;authorizationEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.twitch.tv/kraken/oauth2/authorize&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;clientId&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_CLIENT_ID&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;clientSecret&quot;</span><span class="p">:</span> <span class="s2">&quot;YOUR_CLIENT_SECRET&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;idField&quot;</span><span class="p">:</span> <span class="s2">&quot;_id&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerId&quot;</span><span class="p">:</span> <span class="s2">&quot;twitch&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;providerType&quot;</span><span class="p">:</span> <span class="s2">&quot;oauth2&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;resourceEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.twitch.tv/kraken/user&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;scope&quot;</span><span class="p">:</span> <span class="p">[],</span>
+  <span class="nt">&quot;tokenEndpoint&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.twitch.tv/kraken/oauth2/token&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="authenticating-against-an-ldap-directory">
 <span id="ldap-dir-authn"></span><h2>4.4. Authenticating Against an LDAP Directory<a class="headerlink" href="#authenticating-against-an-ldap-directory" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id6">
 <ul class="simple">
-<li><a class="reference internal" href="#the-ldap-authentication-flow" id="id43">The LDAP Authentication Flow</a></li>
-<li><a class="reference internal" href="#mirror-directories-and-ldap" id="id44">Mirror Directories and LDAP</a></li>
-<li><a class="reference internal" href="#setting-up-login-with-ldap" id="id45">Setting Up Login With LDAP</a><ul>
-<li><a class="reference internal" href="#step-1-create-an-ldap-directory" id="id46">Step 1: Create an LDAP Directory</a></li>
-<li><a class="reference internal" href="#step-2-install-your-ldap-agent" id="id47">Step 2: Install your LDAP Agent</a></li>
-<li><a class="reference internal" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" id="id48">Step 3: Map the LDAP Directory as an Account Store for Your Application</a></li>
+<li><a class="reference internal" href="#the-ldap-authentication-flow" id="id44">The LDAP Authentication Flow</a></li>
+<li><a class="reference internal" href="#mirror-directories-and-ldap" id="id45">Mirror Directories and LDAP</a></li>
+<li><a class="reference internal" href="#setting-up-login-with-ldap" id="id46">Setting Up Login With LDAP</a><ul>
+<li><a class="reference internal" href="#step-1-create-an-ldap-directory" id="id47">Step 1: Create an LDAP Directory</a></li>
+<li><a class="reference internal" href="#step-2-install-your-ldap-agent" id="id48">Step 2: Install your LDAP Agent</a></li>
+<li><a class="reference internal" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" id="id49">Step 3: Map the LDAP Directory as an Account Store for Your Application</a></li>
 </ul>
 </li>
 </ul>
@@ -1610,7 +1806,7 @@ Authorization: Basic MlpGT[...]xxdmk0
 <li>If you are using Azure Active Directory, then you will want to read the <a class="reference internal" href="#azure"><span>Azure Active Directory</span></a> section.</li>
 </ul>
 <div class="section" id="the-ldap-authentication-flow">
-<h3><a class="toc-backref" href="#id43">The LDAP Authentication Flow</a><a class="headerlink" href="#the-ldap-authentication-flow" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id44">The LDAP Authentication Flow</a><a class="headerlink" href="#the-ldap-authentication-flow" title="Permalink to this headline">¶</a></h3>
 <p>There are two different authentication flows for LDAP directories: one for Active Directory, and another for all other directories that use the LDAP protocol.</p>
 <p><strong>LDAP</strong></p>
 <div class="figure align-center">
@@ -1622,21 +1818,21 @@ Authorization: Basic MlpGT[...]xxdmk0
 </div>
 </div>
 <div class="section" id="mirror-directories-and-ldap">
-<h3><a class="toc-backref" href="#id44">Mirror Directories and LDAP</a><a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id45">Mirror Directories and LDAP</a><a class="headerlink" href="#mirror-directories-and-ldap" title="Permalink to this headline">¶</a></h3>
 <p>To recap: With LDAP integration, Stormpath is simply mirroring the canonical LDAP user directory. If this fulfills your requirements, then the story ends here. However, if you need to support other kinds of login (and therefore other kinds of Directories) it is recommended that you maintain a &#8220;master&#8221; Directory alongside your Mirror Directory. For more about this, see <a class="reference internal" href="accnt_mgmt.html#account-linking"><span>3.8. Account Linking</span></a>.</p>
 </div>
 <div class="section" id="setting-up-login-with-ldap">
-<h3><a class="toc-backref" href="#id45">Setting Up Login With LDAP</a><a class="headerlink" href="#setting-up-login-with-ldap" title="Permalink to this headline">¶</a></h3>
+<h3><a class="toc-backref" href="#id46">Setting Up Login With LDAP</a><a class="headerlink" href="#setting-up-login-with-ldap" title="Permalink to this headline">¶</a></h3>
 <p>The step-by-step process for setting-up LDAP login is as follows:</p>
 <div class="section" id="step-1-create-an-ldap-directory">
-<span id="authn-ldap-dir-creation"></span><h4><a class="toc-backref" href="#id46">Step 1: Create an LDAP Directory</a><a class="headerlink" href="#step-1-create-an-ldap-directory" title="Permalink to this headline">¶</a></h4>
+<span id="authn-ldap-dir-creation"></span><h4><a class="toc-backref" href="#id47">Step 1: Create an LDAP Directory</a><a class="headerlink" href="#step-1-create-an-ldap-directory" title="Permalink to this headline">¶</a></h4>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">The ability to create an LDAP directory is not yet available in the Java SDK. Please use the Stormpath Admin Console, or see below for the REST API instructions.</p>
 </div>
 </div>
 <div class="section" id="step-2-install-your-ldap-agent">
-<h4><a class="toc-backref" href="#id47">Step 2: Install your LDAP Agent</a><a class="headerlink" href="#step-2-install-your-ldap-agent" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id48">Step 2: Install your LDAP Agent</a><a class="headerlink" href="#step-2-install-your-ldap-agent" title="Permalink to this headline">¶</a></h4>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The LDAP Agent can be installed anywhere, as long as the location allows it access to your LDAP server.</p>
@@ -1672,7 +1868,7 @@ $ startup.sh
 <p>The Agent will start synchronizing immediately, pushing the configured data to Stormpath. You will see the synchronized user Accounts and Groups appear in the Stormpath Directory, and the Accounts will be able to log in to any Stormpath-enabled application that you assign. When the Agent detects local changes, additions or deletions to the mirrored Accounts or Groups, it will automatically propagate those changes to Stormpath.</p>
 </div>
 <div class="section" id="step-3-map-the-ldap-directory-as-an-account-store-for-your-application">
-<h4><a class="toc-backref" href="#id48">Step 3: Map the LDAP Directory as an Account Store for Your Application</a><a class="headerlink" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
+<h4><a class="toc-backref" href="#id49">Step 3: Map the LDAP Directory as an Account Store for Your Application</a><a class="headerlink" href="#step-3-map-the-ldap-directory-as-an-account-store-for-your-application" title="Permalink to this headline">¶</a></h4>
 <p>Creating an Account Store Mapping between your new LDAP Directory and your Stormpath Application can be done as described in <a class="reference internal" href="#create-asm"><span>Mapping a new Account Store</span></a>.</p>
 <p>The log-in process will now proceed as it would for <a class="reference internal" href="#how-login-works"><span>any other kind of Directory</span></a>.</p>
 <div class="admonition note">
@@ -1686,10 +1882,10 @@ $ startup.sh
 <span id="saml-authn"></span><h2>4.5. Authenticating Against a SAML Directory<a class="headerlink" href="#authenticating-against-a-saml-directory" title="Permalink to this headline">¶</a></h2>
 <div class="contents local topic" id="id7">
 <ul class="simple">
-<li><a class="reference internal" href="#stormpath-as-a-service-provider" id="id49">4.5.1. Stormpath as a Service Provider</a></li>
-<li><a class="reference internal" href="#configuring-saml" id="id50">4.5.2. Configuring SAML</a></li>
-<li><a class="reference internal" href="#configuring-saml-via-rest" id="id51">4.5.3. Configuring SAML via REST</a></li>
-<li><a class="reference internal" href="#the-stormpath-saml-flow" id="id52">4.5.4. The Stormpath SAML Flow</a></li>
+<li><a class="reference internal" href="#stormpath-as-a-service-provider" id="id50">4.5.1. Stormpath as a Service Provider</a></li>
+<li><a class="reference internal" href="#configuring-saml" id="id51">4.5.2. Configuring SAML</a></li>
+<li><a class="reference internal" href="#configuring-saml-via-rest" id="id52">4.5.3. Configuring SAML via REST</a></li>
+<li><a class="reference internal" href="#the-stormpath-saml-flow" id="id53">4.5.4. The Stormpath SAML Flow</a></li>
 </ul>
 </div>
 <p>SAML is an XML-based standard for exchanging authentication and authorization data between security domains. Stormpath enables you to allow customers to log-in by authenticating with an external SAML Identity Provider. Stormpath supports both the Service Provider initiated flow and the Identity Provider initiated flow.</p>
@@ -1699,7 +1895,7 @@ $ startup.sh
 <p>If you&#8217;d like to know about how to configure SAML using just the REST API, please see <a class="reference internal" href="#saml-configuration-rest"><span>Configuring SAML via REST</span></a>.</p>
 <p>If you&#8217;d like to understand the steps involved in a SAML login, see the <a class="reference internal" href="#saml-flow"><span>SAML Login Flow section</span></a>.</p>
 <div class="section" id="stormpath-as-a-service-provider">
-<span id="saml-overview"></span><h3><a class="toc-backref" href="#id49">4.5.1. Stormpath as a Service Provider</a><a class="headerlink" href="#stormpath-as-a-service-provider" title="Permalink to this headline">¶</a></h3>
+<span id="saml-overview"></span><h3><a class="toc-backref" href="#id50">4.5.1. Stormpath as a Service Provider</a><a class="headerlink" href="#stormpath-as-a-service-provider" title="Permalink to this headline">¶</a></h3>
 <p>As mentioned above, Stormpath supports both Service Provider (SP) initiated and Identity Provider (IdP) initiated SAML authentication.  In SAML terminology, the user is the <strong>User Agent</strong>, your application (along with Stormpath) is the <strong>Service Provider</strong>, and the third-party SAML authentication site is the <strong>Identity Provider</strong> or <strong>IdP</strong>.</p>
 <div class="section" id="identity-provider-initiated-saml-authentication">
 <h4>Identity Provider Initiated SAML Authentication<a class="headerlink" href="#identity-provider-initiated-saml-authentication" title="Permalink to this headline">¶</a></h4>
@@ -1728,7 +1924,7 @@ $ startup.sh
 </div>
 </div>
 <div class="section" id="configuring-saml">
-<span id="saml-configuration"></span><h3><a class="toc-backref" href="#id50">4.5.2. Configuring SAML</a><a class="headerlink" href="#configuring-saml" title="Permalink to this headline">¶</a></h3>
+<span id="saml-configuration"></span><h3><a class="toc-backref" href="#id51">4.5.2. Configuring SAML</a><a class="headerlink" href="#configuring-saml" title="Permalink to this headline">¶</a></h3>
 <p>SAML configuration instructions can be found in the <a class="reference external" href="https://docs.stormpath.com/console/product-guide/latest/appendix-saml.html">SAML Appendix</a> of the Stormpath Admin Console Guide.</p>
 <div class="section" id="salesforce">
 <span id="id8"></span><h4>Salesforce<a class="headerlink" href="#salesforce" title="Permalink to this headline">¶</a></h4>
@@ -1756,7 +1952,7 @@ $ startup.sh
 </div>
 </div>
 <div class="section" id="configuring-saml-via-rest">
-<span id="saml-configuration-rest"></span><h3><a class="toc-backref" href="#id51">4.5.3. Configuring SAML via REST</a><a class="headerlink" href="#configuring-saml-via-rest" title="Permalink to this headline">¶</a></h3>
+<span id="saml-configuration-rest"></span><h3><a class="toc-backref" href="#id52">4.5.3. Configuring SAML via REST</a><a class="headerlink" href="#configuring-saml-via-rest" title="Permalink to this headline">¶</a></h3>
 <p>Here you will explain to you the steps that are required to configure Stormpath as a SAML Service Provider using only the REST API.</p>
 <p>It is recommend that you configure SAML using the Stormpath Admin console, as explained in the above <a class="reference internal" href="#saml-configuration"><span>IdP-specific configuration instructions</span></a>. However, understanding the REST underpinnings of those instructions will allow you to automate some or all of the configuration process, if that is something that your application requires.</p>
 <p>Also, currently the IdP-initiated flow can only be configured via REST, and not yet via the Stormpath Admin Console.</p>
@@ -1981,7 +2177,7 @@ $ startup.sh
 </div>
 </div>
 <div class="section" id="the-stormpath-saml-flow">
-<span id="saml-flow"></span><h3><a class="toc-backref" href="#id52">4.5.4. The Stormpath SAML Flow</a><a class="headerlink" href="#the-stormpath-saml-flow" title="Permalink to this headline">¶</a></h3>
+<span id="saml-flow"></span><h3><a class="toc-backref" href="#id53">4.5.4. The Stormpath SAML Flow</a><a class="headerlink" href="#the-stormpath-saml-flow" title="Permalink to this headline">¶</a></h3>
 <p>The two SAML authentication flows that Stormpath supports differ primarily in their starting points, and so <a class="reference internal" href="#saml-sp-init-flow"><span>the Service Provider (SP) initiated flow</span></a> is really just the Identity Provider (IdP) initiated flow with a different starting point.</p>
 <div class="section" id="the-identity-provider-initiated-flow">
 <span id="saml-idp-init-flow"></span><h4>The Identity Provider Initiated Flow<a class="headerlink" href="#the-identity-provider-initiated-flow" title="Permalink to this headline">¶</a></h4>
