@@ -1,0 +1,59 @@
+<a href="https://github.com/stormpath/stormpath-sdk-angularjs/edit/master/./src/stormpath.tokenStore.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/e92956a/./src/stormpath.tokenStore.js#L126" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">TokenStoreManager</code>
+<div><span class="hint">service in module <code ng:non-bindable="">stormpath.tokenStore</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="stormpath-tokenstore-tokenstoremanager-page"><p>This service provides methods for registering token stores (with duck-typed
+validation), as well as retrieving them by name.</p>
+<p>Token store implementations must implement the
+<a href="#/api/stormpath.tokenStore.TokenStore">TokenStore interface</a>.</p>
+<p>All token stores are expected to satisfy the following contract:</p>
+<ul>
+<li>Instances must have a <code>put</code> method that takes a key and a value, stores them, and returns a promise indicating success</li>
+<li>Instances must have a <code>get</code> method that takes a key and returns a promise containing the value for the given key, or a rejection with a reason</li>
+<li>Instances must have a <code>remove</code> method that takes a key and removes the value, returning the result as a promise</li>
+</ul>
+<p>See <a href="#/api/stormpath.tokenStore.LocalStorageTokenStore">LocalStorageTokenStore</a>
+for an example of an implementation.</p>
+</div></div>
+<div class="member method"><h2 id="methods">Methods</h2>
+<ul class="methods"><li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/e92956a/./src/stormpath.tokenStore.js#L162" class="view-source icon-eye-open"> </a><h3 id="methods_gettokenstore">getTokenStore(name)</h3>
+<div class="gettokenstore"><h5 id="methods_gettokenstore_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>name</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="stormpath-tokenstore-tokenstoremanager-gettokenstore-page"><p>The name of the token store implementation.</p>
+</div></td></tr></tbody></table><h5 id="methods_gettokenstore_returns">Returns</h5><table class="variables-matrix"><tr><td><a href="" class="label type-hint type-hint-tokenstore">TokenStore</a></td><td><div class="stormpath-tokenstore-tokenstoremanager-gettokenstore-page"><p>The token store implementation stored under that name</p>
+</div></td></tr></table></div>
+</li>
+<li><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/e92956a/./src/stormpath.tokenStore.js#L139" class="view-source icon-eye-open"> </a><h3 id="methods_registertokenstore">registerTokenStore(name, tokenStore)</h3>
+<div class="registertokenstore"><h5 id="methods_registertokenstore_parameters">Parameters</h5><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>name</td><td><a href="" class="label type-hint type-hint-string">String</a></td><td><div class="stormpath-tokenstore-tokenstoremanager-registertokenstore-page"><p>The name under which to store the token store implementation</p>
+</div></td></tr><tr><td>tokenStore</td><td><a href="" class="label type-hint type-hint-tokenstore">TokenStore</a></td><td><div class="stormpath-tokenstore-tokenstoremanager-registertokenstore-page"><p>A concrete <a href="#/api/stormpath.tokenStore.TokenStore">TokenStore</a></p>
+</div></td></tr></tbody></table></div>
+</li>
+</ul>
+</div>
+<h2 id="example">Example</h2>
+<div class="example"><div class="stormpath-tokenstore-tokenstoremanager-page"><pre class="prettyprint linenums">
+angular.module('app')
+  .run(['$q', 'TokenStoreManager', function($q, TokenStoreManager) {
+    // Can also be provided by a service/factory for better code organisation
+    var myStore = {
+      data: {},
+      get: function get(key) {
+        return this.data[key] ? $q.resolve(this.data[key]) : $q.reject();
+      },
+      put: function put(key, value) {
+        this.data[key] = value;
+        return $q.resolve();
+      },
+      remove: function remove(key) {
+        delete this.data[key];
+        return $q.resolve();
+      }
+    };
+
+    TokenStoreManager.registerTokenStore('basicStore', myStore);
+
+    var alsoMyStore = TokenStoreManager.getTokenStore('basicStore');
+  }]);
+</pre>
+</div></div>
+</div>
