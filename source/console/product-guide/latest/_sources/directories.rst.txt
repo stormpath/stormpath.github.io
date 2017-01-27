@@ -179,7 +179,7 @@ In order to enable login via Facebook, you must also map this Directory to one o
 
   Depending on what SDK or Integration you are using, further steps may also be necessary to fully enable Login with Facebook.
 
-At this point, any users that choose to login via Facebook will go through the Facebook OAuth 2.0 process and have new Accounts created inside this Directory using information retrieved from Facebook.
+At this point, any users that choose to login via Facebook will go through the Facebook OAuth 2.0 process and have new Accounts created inside this Directory using information retrieved from Facebook. For more information about Social Login, see the `Client API documentation <https://docs.stormpath.com/client-api/product-guide/latest/social_login.html#initiate-social-login>`__.
 
 .. _create-github:
 
@@ -224,7 +224,7 @@ In order to enable login via GitHub, you must also map this Directory to one or 
 
   Depending on what SDK or Integration you are using, further steps may also be necessary to fully enable Login with GitHub.
 
-At this point, any users that choose to login via GitHub will go through the GitHub OAuth 2.0 process and have new Accounts created inside this Directory using information retrieved from GitHub.
+At this point, any users that choose to login via GitHub will go through the GitHub OAuth 2.0 process and have new Accounts created inside this Directory using information retrieved from GitHub. For more information about Social Login, see the `Client API documentation <https://docs.stormpath.com/client-api/product-guide/latest/social_login.html#initiate-social-login>`__.
 
 .. _create-linkedin:
 
@@ -250,7 +250,6 @@ Additionally, you must add your LinkedIn application's:
 
 - Client ID
 - Client Secret
-- Authorized Redirect URI
 
 All of these are obtained from `LinkedIn <https://www.linkedin.com/developer/apps/>`__.
 
@@ -270,11 +269,108 @@ In order to enable login via LinkedIn, you must also map this Directory to one o
 
   Depending on what SDK or Integration you are using, further steps may also be necessary to fully enable Login with LinkedIn.
 
-At this point, any users that choose to login via LinkedIn will go through the LinkedIn OAuth 2.0 process and have new Accounts created inside this Directory using information retrieved from LinkedIn.
+At this point, any users that choose to login via LinkedIn will go through the LinkedIn OAuth 2.0 process and have new Accounts created inside this Directory using information retrieved from LinkedIn. For more information about Social Login, see the `Client API documentation <https://docs.stormpath.com/client-api/product-guide/latest/social_login.html#initiate-social-login>`__.
 
-.. _create-twitter:
+.. _create-Twitter:
+
+Twitter
+^^^^^^^^^^^^
+
+Before you integrate Twitter Login with Stormpath, you must complete the following steps:
+
+- Create an application in the `Twitter Application Management Site <https://apps.twitter.com/>`__
+- Add your application’s redirect URL, which is the URL the user will be returned to after successful authentication. If you are using the Client API, then this should be your ``authorize/callback`` endpoint.
+- Retrieve OAuth Credentials (Client ID and Secret) for your Twitter application
+
+For more information, please see Twitter’s `OAuth documentation <https://dev.twitter.com/web/sign-in/implementing>`__.
+
+Step 1: Create the Twitter Directory
+"""""""""""""""""""""""""""""""""""""
+
+To create a new Twitter Directory, start by clicking on **Create Directory** in the top right of the main `Directories page <https://api.stormpath.com/ui2/index.html#/directories>`__. This will bring up the "Create Directory" dialog.
+
+From here you must specify a "Directory Type", for which you should select the "Twitter" icon. On the next page you will also need a "Name" for your Directory. The name must be unique within your Tenant.
+
+Additionally, you must add your Twitter application's:
+
+- Client ID
+- Client Secret
+
+All of these are obtained from `Twitter <https://apps.twitter.com/>`__.
+
+Optionally, you can also:
+
+- Enter in a "Description" for the Directory.
+- Toggle the status from its default "Enabled" status to "Disabled"
+
+After you have completed this, click **Create** and the "Create Directory" dialog will close and you will see your new Directory in the list view.
+
+Step 2: Map the Twitter Directory to your Application
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+In order to enable login via Twitter, you must also map this Directory to one or more of your Application resources. For instructions on how to do this, please see :ref:`applications-accountstores`.
+
+.. note::
+
+  Depending on what SDK or Integration you are using, further steps may also be necessary to fully enable Login with Twitter.
+
+At this point, any users that choose to login via Twitter will go through the Twitter OAuth 2.0 process and have new Accounts created inside this Directory using information retrieved from Twitter. For more information about Social Login, see the `Client API documentation <https://docs.stormpath.com/client-api/product-guide/latest/social_login.html#initiate-social-login>`__.
 
 .. _create-generic:
+
+Generic OAuth
+^^^^^^^^^^^^^^
+
+In addition to the out-of-the-box support for the Social Login Providers detailed above, Stormpath also supports the creation of Generic OAuth Directories. These Directories should work with any Social Login Provider that offers an OAuth 2.0 login flow.
+
+.. note::
+
+  For more detailed information about Generic OAuth along with example configurations, please see `the Authentication chapter of the REST Product Guide <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#generic-oauth-2-0-login>`__.
+
+Before adding your Generic OAuth Directory in Stormpath, you must complete the following steps:
+
+- Create an application with that provider
+
+- Enable OAuth 2.0 login with that provider
+
+- Add your application's redirect URL, which is the URL the user will be returned to after successful authentication. If you are using the Client API, then this will be your Application's ``/authorize`` endpoint (e.g. ``https://endless-winter.apps.stormpath.io/authorize/callback``).
+
+Step 1: Create the Generic OAuth Directory
+""""""""""""""""""""""""""""""""""""""""""""
+
+To create a new Generic OAuth Directory, start by clicking on **Create Directory** in the top right of the main `Directories page <https://api.stormpath.com/ui2/index.html#/directories>`__. This will bring up the "Create Directory" dialog.
+
+From here select "OAuth 2.0". In the next view, you will to specify a "Name" for your Directory. The name must be unique within your Tenant.
+
+Additionally, you must add your application's:
+
+- Provider ID: This can be any name of your choosing, but your Application cannot have more than one mapped Account Store with that Provider ID.
+- Client ID
+- Client Secret
+- Authorization Endpoint
+- Token Endpoint
+- Resource Endpoint
+- Access Token Type
+
+To see explanations and example values for these, refer to `the Authentication chapter of the REST Product Guide <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#generic-oauth-2-0-login>`__.
+
+Optionally, you can also:
+
+- Enter in a "Description" for the Directory.
+- Toggle the status from its default "Enabled" status to "Disabled"
+
+After you have completed this, click **Create** and the "Create Directory" dialog will close and you will see your new Directory in the list view.
+
+Step 2: Map the Generic OAuth Directory to your Application
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+In order to enable login via your OAuth provider, you must also map this Directory to one or more of your Application resources. For instructions on how to do this, please see :ref:`applications-accountstores`.
+
+.. note::
+
+  Depending on what SDK or Integration you are using, further steps may also be necessary to fully enable login.
+
+At this point, any users that choose to login via LinkedIn will go through the OAuth 2.0 process and have new Accounts created inside this Directory using information retrieved from your OAuth provider. For more information about Social Login, see the `Client API documentation <https://docs.stormpath.com/client-api/product-guide/latest/social_login.html#initiate-social-login>`__.
 
 .. _directories-create-ldap:
 
