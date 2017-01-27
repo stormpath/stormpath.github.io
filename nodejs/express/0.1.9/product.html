@@ -1,0 +1,896 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Product Guide &mdash; Express-Stormpath 0.1.0 documentation</title>
+  
+
+  
+  
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="about.html"/>
+    <link rel="top" title="Express-Stormpath 0.1.0 documentation" href="index.html"/>
+        <link rel="next" title="Getting Help" href="help.html"/>
+        <link rel="prev" title="Quickstart" href="quickstart.html"/> 
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        <a href="index.html" class="fa fa-home"> Express-Stormpath</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+        
+            <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#who-should-use-stormpath">Who Should Use Stormpath</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#create-a-stormpath-account">Create a Stormpath Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#create-an-api-key-pair">Create an API Key Pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#create-a-stormpath-application">Create a Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#bonus-create-a-directory">Bonus: Create a Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="setup.html#install-the-package">Install the Package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#initialize-express-stormpath">Initialize Express-Stormpath</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#testing-it-out">Testing It Out</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Product Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enforce-user-authentication">Enforce User Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enforce-user-authorization">Enforce User Authorization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#restrict-session-duration-expiration">Restrict Session Duration / Expiration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#enable-caching">Enable Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#access-user-data">Access User Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-custom-user-data">Working With Custom User Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customize-redirect-logic">Customize Redirect Logic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customize-user-registration-fields">Customize User Registration Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customize-user-login-fields">Customize User Login Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customize-user-registration-login-and-logout-routes">Customize User Registration, Login, and Logout Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#customize-the-views">Customize the Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#disable-the-built-in-views">Disable the Built-in Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-account-verification">Use Account Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-password-reset">Use Password Reset</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Getting Help</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-9">Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-8">Version 0.1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-7">Version 0.1.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-6">Version 0.1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-5">Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-4">Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-3">Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-2">Version 0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-0-1-0">Version 0.1.0</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-8-version-0-1-9">Version 0.1.8 -&gt; Version 0.1.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-7-version-0-1-8">Version 0.1.7 -&gt; Version 0.1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-6-version-0-1-7">Version 0.1.6 -&gt; Version 0.1.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-5-version-0-1-6">Version 0.1.5 -&gt; Version 0.1.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-4-version-0-1-5">Version 0.1.4 -&gt; Version 0.1.5</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-3-version-0-1-4">Version 0.1.3 -&gt; Version 0.1.4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-2-version-0-1-3">Version 0.1.2 -&gt; Version 0.1.3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-1-0-version-0-1-2">Version 0.1.0 -&gt; Version 0.1.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-0-0-version-0-1-0">Version 0.0.0 -&gt; Version 0.1.0</a></li>
+</ul>
+</li>
+</ul>
+
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">Express-Stormpath</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Product Guide</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          <a href="_sources/product.txt" rel="nofollow"> View page source</a>
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            
+  <div class="section" id="product-guide">
+<h1>Product Guide<a class="headerlink" href="#product-guide" title="Permalink to this headline">¶</a></h1>
+<p>This product guide covers more advanced Express-Stormpath usage.  You can
+selectively jump around from topic-to-topic to discover all the neat features
+that Express-Stormpath provides!</p>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>There are two ways to configure Express-Stormpath &#8211; you can list all of your
+settings manually when initializing the Stormpath middleware, or you can specify
+your settings via environment variables.</p>
+<p>If you want to specify settings via middleware, you can do so by specifying
+their names like so:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">secretKey</span><span class="o">:</span> <span class="s1">&#39;blah&#39;</span><span class="p">,</span>
+  <span class="nx">enableHttps</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>As an alternative, you could specify these settings via environment variables,
+by using the same names, with a twist: each name must be in all caps, start with
+&#8216;stormpath&#8217;, and use underscores instead of spaces.</p>
+<p>For instance, if I wanted to reproduce the above with environment variables, I
+could define the following variables:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span> <span class="kr">export</span> <span class="nx">STORMPATH_SECRET_KEY</span><span class="o">=</span><span class="nx">blah</span>
+<span class="nx">$</span> <span class="kr">export</span> <span class="nx">STORMPATH_ENABLE_HTTPS</span><span class="o">=</span><span class="kc">false</span>
+</pre></div>
+</div>
+<p>Then, when defining my middleware, I could simply write:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enforce-user-authentication">
+<h2>Enforce User Authentication<a class="headerlink" href="#enforce-user-authentication" title="Permalink to this headline">¶</a></h2>
+<p>Now that we&#8217;ve seen how easy it is to register, login, and logout users in your
+Express app, let&#8217;s see how simple it is to restrict views to logged-in users only.</p>
+<p>Let&#8217;s say you have a simple view which should only be accessible to users who
+have logged in.  Below is a code sample which shows how easy it is to restrict
+access to your view:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/secret&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&quot;If you&#39;re seeing this page, you must be logged in!&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">loginRequired</span></code> middleware makes enforcing user authentication extremely
+simple.</p>
+<p>If you try to visit the <code class="docutils literal"><span class="pre">/secret</span></code> URL and you&#8217;re not logged in, you&#8217;ll be
+redirected to: <code class="docutils literal"><span class="pre">/login?next=%2Fsecret</span></code>.  If you then enter your credentials
+and log in &#8211; you&#8217;ll be immediately redirected back to the page you were trying
+to access: <code class="docutils literal"><span class="pre">/secret</span></code>.</p>
+</div>
+<div class="section" id="enforce-user-authorization">
+<h2>Enforce User Authorization<a class="headerlink" href="#enforce-user-authorization" title="Permalink to this headline">¶</a></h2>
+<p>Stormpath supports extremely complex authorization rules.  This section aims to
+provide a basic introduction to Express-Stormpath&#8217;s authorization enforcement
+(<em>this topic is covered in-depth later on</em>).</p>
+<p>The main authorization resource in Stormpath is the <code class="docutils literal"><span class="pre">Group</span></code>.  A Stormpath
+Group is a named resource (<em>admins, developers, paid users, free users, etc.</em>)
+which can be assigned to any number of user accounts.</p>
+<p>Let&#8217;s say you&#8217;re building a site that has three tiers of users: free users, paid
+users, and admins.  In this case, you&#8217;d want to create three Stormpath Groups:
+<code class="docutils literal"><span class="pre">free</span> <span class="pre">users</span></code>, <code class="docutils literal"><span class="pre">paid</span> <span class="pre">users</span></code>, and <code class="docutils literal"><span class="pre">admins</span></code>.</p>
+<p>If you visit your Stormpath Directory in the <a class="reference external" href="https://api.stormpath.com/v#!directories">Directory Dashboard</a>, then
+click the &#8220;Groups&#8221; tab, you can create your groups here, as well as assign users
+to groups.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you&#8217;d like to learn how to create groups pragmatically, you can look at
+our Node library&#8217;s <a class="reference external" href="http://docs.stormpath.com/nodejs/api/application#createGroup">createGroup</a> documentation.</p>
+</div>
+<p>Now that we&#8217;ve created our groups, and also added our user to the &#8220;free users&#8221;
+group &#8211; let&#8217;s see how we can enforce different types of authorization on
+our user using the <code class="docutils literal"><span class="pre">groupsRequired</span></code> middleware:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/admins&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">groupsRequired</span><span class="p">([</span><span class="s1">&#39;admins&#39;</span><span class="p">]),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;If you can see this page, you must be in the `admins` group!&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>If a user tries to visit <code class="docutils literal"><span class="pre">/admins</span></code>, they&#8217;ll get redirected to the login page
+and won&#8217;t be able to access the view.</p>
+<p>What if we wanted to build a view only accessible to users who are both free
+users and admins?  In this case we could just list both required groups:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/free_users_and_admins&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">groupsRequired</span><span class="p">([</span><span class="s1">&#39;free users&#39;</span><span class="p">,</span> <span class="s1">&#39;admins&#39;</span><span class="p">]),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;If you can see this page, you must be in the `free users` and `admins` group!&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Now that you&#8217;ve seen how you can require a user to be a member of multiple
+groups, let&#8217;s take a look at how you can enforce selective group membership:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/any_user&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">groupsRequired</span><span class="p">([</span><span class="s1">&#39;free users&#39;</span><span class="p">,</span> <span class="s1">&#39;paid users&#39;</span><span class="p">,</span> <span class="s1">&#39;admins&#39;</span><span class="p">],</span> <span class="kc">false</span><span class="p">),</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;If you can see this page, you must be in at least one of the specified groups!&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The view above lists three groups, and sets the <code class="docutils literal"><span class="pre">all</span></code> parameter to <code class="docutils literal"><span class="pre">false</span></code>
+&#8211; signifying that a user must be a member of <strong>at least one</strong> of the listed
+groups in order to gain access.</p>
+</div>
+<div class="section" id="restrict-session-duration-expiration">
+<h2>Restrict Session Duration / Expiration<a class="headerlink" href="#restrict-session-duration-expiration" title="Permalink to this headline">¶</a></h2>
+<p>Another thing people commonly want to do is restrict how long a user can be
+logged in without activity before being forced to log into their account again.</p>
+<p>You can easily change the default session / cookie expiration by modifying the
+<code class="docutils literal"><span class="pre">sessionDuration</span></code> setting:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">sessionDuration</span><span class="o">:</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">15</span><span class="p">,</span> <span class="c1">// Make sessions expire after 15 minutes.</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>By default, sessions will not expire for one month (<em>out of convenience</em>).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <code class="docutils literal"><span class="pre">sessionDuration</span></code> setting expects an integer, which must be the number
+of <strong>milliseconds</strong> before the session will expire &#8211; if you miscalculate
+this number, your sessions will expire very quickly!</p>
+</div>
+</div>
+<div class="section" id="enable-caching">
+<h2>Enable Caching<a class="headerlink" href="#enable-caching" title="Permalink to this headline">¶</a></h2>
+<p>The best kind of websites are fast websites.  As of version <strong>0.1.5</strong>,
+Express-Stormpath includes built-in support for caching.  You can currently use
+either:</p>
+<ul class="simple">
+<li>A local memory cache (<em>default</em>).</li>
+<li>A <a class="reference external" href="http://memcached.org/">memcached</a> cache.</li>
+<li>A <a class="reference external" href="http://redis.io/">redis</a> cache.</li>
+</ul>
+<p>All can be easily configured using configuration variables.</p>
+<p>There are several configuration settings you can specify when initializing the
+Stormpath middleware:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">cache</span></code> - The type of cache to use: <code class="docutils literal"><span class="pre">'memory'</span></code>, <code class="docutils literal"><span class="pre">'memcached'</span></code>, or
+<code class="docutils literal"><span class="pre">'redis'</span></code>).  Defaults to <code class="docutils literal"><span class="pre">'memory'</span></code>.  If you want to use local memory as a
+cache, just set memory here and leave all other fields blank!</li>
+<li><code class="docutils literal"><span class="pre">cacheHost</span></code> - The hostname of the cache (<em>ex: &#8216;127.0.0.1&#8217;</em>).</li>
+<li><code class="docutils literal"><span class="pre">cachePort</span></code> - The port of the cache (<em>ex: 11211</em>).</li>
+<li><code class="docutils literal"><span class="pre">cacheTTL</span></code> - The amount of time (<em>in seconds</em>) to cache resources before
+expiring them.  Defaults to <code class="docutils literal"><span class="pre">300</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">cacheTTI</span></code> - If this amount of time has passed (<em>in seconds</em>) since a
+resource was last accessed, it will be expired.  Defaults to <code class="docutils literal"><span class="pre">300</span></code>.</li>
+<li><code class="docutils literal"><span class="pre">cacheOptions</span></code> - An object which holds additional configuration options for
+the cache (<em>like username, password, etc.</em>).</li>
+</ul>
+<p>Here&#8217;s an example showing how to enable caching for a memcached server that is
+running locally with no username / password:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">cache</span><span class="o">:</span> <span class="s1">&#39;memcached&#39;</span><span class="p">,</span>
+  <span class="nx">cacheHost</span><span class="o">:</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span>
+  <span class="nx">cachePort</span><span class="o">:</span> <span class="mi">11211</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>Here&#8217;s an example which shows how to enable caching for a redis server that is
+running locally with a required password:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">cache</span><span class="o">:</span> <span class="s1">&#39;redis&#39;</span><span class="p">,</span>
+  <span class="nx">cacheHost</span><span class="o">:</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span>
+  <span class="nx">cachePort</span><span class="o">:</span> <span class="mi">6379</span><span class="p">,</span>
+  <span class="nx">cacheOptions</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">auth_pass</span><span class="o">:</span> <span class="s1">&#39;xxx&#39;</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="access-user-data">
+<h2>Access User Data<a class="headerlink" href="#access-user-data" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s take a quick look at how we can access user data from a custom view.</p>
+<p>Let&#8217;s say we&#8217;ve defined a simple view that should simply display a user&#8217;s email
+address.  We can make use of the magical <code class="docutils literal"><span class="pre">res.locals.user</span></code> context variable to
+do this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">stormpath</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express-stormpath&#39;</span><span class="p">);</span>
+
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/email&#39;</span><span class="p">,</span> <span class="nx">stormpath</span><span class="p">.</span><span class="nx">loginRequired</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Your email address is:&#39;</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">user</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">res.locals.user</span></code> context allows you to directly interact with the current
+<code class="docutils literal"><span class="pre">user</span></code> object.  This means you can perform <em>any</em> action on the <code class="docutils literal"><span class="pre">user</span></code> object
+directly.</p>
+<p>For more information on what you can do with a <code class="docutils literal"><span class="pre">user</span></code> object, please see
+the Node library documentation: <a class="reference external" href="http://docs.stormpath.com/nodejs/api/account">http://docs.stormpath.com/nodejs/api/account</a></p>
+<p>Let&#8217;s say you want to change a user&#8217;s <code class="docutils literal"><span class="pre">givenName</span></code> (<em>first name</em>).  You could
+easily accomplish this with the following code:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// assuming we&#39;re inside of a request</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">givenName</span> <span class="o">=</span> <span class="s1">&#39;Randall&#39;</span><span class="p">;</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;User change saved successfully.&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>As you can see above, you can directly modify <code class="docutils literal"><span class="pre">user</span></code> attributes, then
+persist any changes by running <code class="docutils literal"><span class="pre">res.locals.user.save()</span></code>.</p>
+</div>
+<div class="section" id="working-with-custom-user-data">
+<h2>Working With Custom User Data<a class="headerlink" href="#working-with-custom-user-data" title="Permalink to this headline">¶</a></h2>
+<p>In addition to managing basic user fields, Stomrpath also allows you to store
+up to 10MB of JSON information with each user account!</p>
+<p>Instead of defining a database table for users, and another database table for
+user profile information &#8211; with Stormpath, you don&#8217;t need either!</p>
+<p>Let&#8217;s take a look at how easy it is to store custom data on a <code class="docutils literal"><span class="pre">user</span></code>
+model:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// assuming we&#39;re inside of a request</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">customData</span><span class="p">.</span><span class="nx">somefield</span> <span class="o">=</span> <span class="s1">&#39;somevalue&#39;</span><span class="p">;</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">customData</span><span class="p">[</span><span class="s1">&#39;anotherfield&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;json&#39;</span><span class="o">:</span> <span class="s1">&#39;data&#39;</span><span class="p">};</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">customData</span><span class="p">[</span><span class="s1">&#39;woot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">10.202223</span><span class="p">;</span>
+<span class="nx">res</span><span class="p">.</span><span class="nx">locals</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">save</span><span class="p">();</span>
+
+<span class="nx">user</span><span class="p">.</span><span class="nx">customData</span><span class="p">[</span><span class="s1">&#39;woot&#39;</span><span class="p">];</span>
+<span class="c1">// 10.202223</span>
+
+<span class="k">delete</span> <span class="nx">user</span><span class="p">.</span><span class="nx">customData</span><span class="p">[</span><span class="s1">&#39;woot&#39;</span><span class="p">];</span>
+<span class="nx">user</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">updatedUser</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">updatedUser</span><span class="p">.</span><span class="nx">customData</span><span class="p">.</span><span class="nx">woot</span><span class="p">;</span>
+    <span class="c1">// undefined</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>As you can see above &#8211; storing custom information on a <code class="docutils literal"><span class="pre">user</span></code> account is
+extremely simple!</p>
+</div>
+<div class="section" id="customize-redirect-logic">
+<h2>Customize Redirect Logic<a class="headerlink" href="#customize-redirect-logic" title="Permalink to this headline">¶</a></h2>
+<p>As you might have already noticed by playing around with the registration and
+login pages &#8211; when you first register or log into an account, you&#8217;ll be
+immediately redirected to the URL <code class="docutils literal"><span class="pre">/</span></code>.</p>
+<p>This is actually a configurable setting &#8211; you can easily modify this default
+redirect URL by adding the following config setting:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">redirectUrl</span><span class="o">:</span> <span class="s1">&#39;/dashboard&#39;</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>This allows you to build nicer apps as you can do stuff like redirect newly
+registered users to a tutorial, dashboard, or something similar.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If a user visits a page which has restricted access, they&#8217;ll be redirected
+to the login page.  Once the user logs in, they&#8217;ll be immediately redirected
+back to whatever page they were initially trying to access (<em>this behavior
+overrides the ``redirectUrl`` setting</em>).</p>
+</div>
+</div>
+<div class="section" id="customize-user-registration-fields">
+<h2>Customize User Registration Fields<a class="headerlink" href="#customize-user-registration-fields" title="Permalink to this headline">¶</a></h2>
+<p>In many cases you might want to change the fields you collect when a user
+registers.  Let&#8217;s customize the fields we ask for when a user registers!</p>
+<p>Every user you register ends up getting stored in Stormpath as an <a class="reference external" href="http://docs.stormpath.com/rest/product-guide/#accounts">Account</a>
+object.  Accounts in Stormpath have several fields you can set:</p>
+<ul class="simple">
+<li>username</li>
+<li>email (<strong>required</strong>)</li>
+<li>password (<strong>required</strong>)</li>
+<li>givenName (<strong>required</strong>) also known as &#8220;first name&#8221;</li>
+<li>middleName</li>
+<li>surname (<strong>required</strong>) also known as &#8220;last name&#8221;</li>
+</ul>
+<p>By default, the built-in registration view that Express-Stormpath ships with gets
+you a registration page that looks like this:</p>
+<img alt="_images/registration-page.png" src="_images/registration-page.png" />
+<p>As you can see, it includes the <code class="docutils literal"><span class="pre">givenName</span></code>, <code class="docutils literal"><span class="pre">middleName</span></code>, <code class="docutils literal"><span class="pre">surname</span></code>,
+<code class="docutils literal"><span class="pre">email</span></code>, and <code class="docutils literal"><span class="pre">password</span></code> fields by default.  All of these fields are
+required, with the exception of <code class="docutils literal"><span class="pre">middleName</span></code>.</p>
+<p>What happens if a user enters an invalid value &#8211; or leaves a required field
+blank?  They&#8217;ll see something like this:</p>
+<img alt="_images/registration-page-error.png" src="_images/registration-page-error.png" />
+<p>But what if you want to force the user to enter a value for middle name?  Doing
+so is easy!  Express-Stormpath is <strong>highly customizable</strong>, and allows you to
+easily control which fields are accepted, and which fields are required.</p>
+<p>To require a user to enter a middle name field, set the following value in your
+Express app config:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">enableMiddleName</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">requireMiddleName</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>Now go ahead and give it a try &#8211; if you attempt to create a new user and don&#8217;t
+specify a middle name, you&#8217;ll see an error!</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Each Stormpath field allows you to specify two config values:
+<code class="docutils literal"><span class="pre">enableFieldName</span></code> and <code class="docutils literal"><span class="pre">requireFieldName</span></code>.  The <code class="docutils literal"><span class="pre">enableXXX</span></code> setting
+controls whether or not the specified field is displayed on the registration
+page &#8211; the <code class="docutils literal"><span class="pre">requireXXX</span></code> field controls whether or not the specified field
+is required by the user to successfully complete the registration process.</p>
+</div>
+<p>Lastly, it&#8217;s also simple to add in a <code class="docutils literal"><span class="pre">username</span></code> field (<em>either required or
+optional</em>).  Just like the examples above, you can use the <code class="docutils literal"><span class="pre">enable</span></code> and
+<code class="docutils literal"><span class="pre">require</span></code> settings to control the registration behavior:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">enableUsername</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="nx">requireUsername</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>And that&#8217;s it!</p>
+</div>
+<div class="section" id="customize-user-login-fields">
+<h2>Customize User Login Fields<a class="headerlink" href="#customize-user-login-fields" title="Permalink to this headline">¶</a></h2>
+<p>If you visit your login page (<code class="docutils literal"><span class="pre">/login</span></code>), you will see (<em>by default</em>), two
+input boxes: one for <code class="docutils literal"><span class="pre">email</span></code> and one for <code class="docutils literal"><span class="pre">password</span></code>.</p>
+<p>While this is fine for most purposes, sometimes you might want to let users log
+in with a <code class="docutils literal"><span class="pre">username</span></code> <strong>or</strong> <code class="docutils literal"><span class="pre">email</span></code> (especially if your site collects
+<code class="docutils literal"><span class="pre">username</span></code> during registration).</p>
+<p>Doing this is simple: by enabling the <code class="docutils literal"><span class="pre">enableUsername</span></code> setting you&#8217;ll not
+only make the <code class="docutils literal"><span class="pre">username</span></code> field available on the registration page,
+but also on the login page (<em>so users can log in by entering either their
+``username`` or ``email`` and ``password``</em>).</p>
+<p>To enable <code class="docutils literal"><span class="pre">username</span></code> support, just set the following config variable:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">enableUsername</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>You should now see the following on your login page:</p>
+<img alt="_images/login-page.png" src="_images/login-page.png" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In the example above we didn&#8217;t set the <code class="docutils literal"><span class="pre">requireUsername</span></code> field
+to <code class="docutils literal"><span class="pre">true</span></code> &#8211; if we did, this would ensure that when a new user registers
+for the site, they <strong>must</strong> pick a <code class="docutils literal"><span class="pre">username</span></code>.</p>
+<p class="last">The <code class="docutils literal"><span class="pre">requireUsername</span></code> field has no effect on the login page.</p>
+</div>
+</div>
+<div class="section" id="customize-user-registration-login-and-logout-routes">
+<h2>Customize User Registration, Login, and Logout Routes<a class="headerlink" href="#customize-user-registration-login-and-logout-routes" title="Permalink to this headline">¶</a></h2>
+<p>By default, Express-Stormpath automatically enables three separate views and
+routes:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">/register</span></code> - the registration view</li>
+<li><code class="docutils literal"><span class="pre">/login</span></code> - the login view</li>
+<li><code class="docutils literal"><span class="pre">/logout</span></code> - the logout view</li>
+</ul>
+<p>Customizing the built-in URL routes is quite simple.  There are several config
+variables you can change to control these URL mappings.  To change them, just
+modify your app&#8217;s config.</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">registrationUrl</span></code> &#8211; default: <code class="docutils literal"><span class="pre">/register</span></code></li>
+<li><code class="docutils literal"><span class="pre">loginUrl</span></code> &#8211; default: <code class="docutils literal"><span class="pre">/login</span></code></li>
+<li><code class="docutils literal"><span class="pre">logoutUrl</span></code> &#8211; default: <code class="docutils literal"><span class="pre">/logout</span></code></li>
+</ul>
+<p>If you were to modify your config such that:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">registrationUrl</span><span class="o">:</span> <span class="s1">&#39;/welcome&#39;</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>Then visit <code class="docutils literal"><span class="pre">/welcome</span></code>, you&#8217;d see your registration page there, instead!</p>
+</div>
+<div class="section" id="customize-the-views">
+<h2>Customize the Views<a class="headerlink" href="#customize-the-views" title="Permalink to this headline">¶</a></h2>
+<p>Although I personally find our registration and login pages to be incredibly
+good looking &#8211; I realize that you might not share my same design passion!</p>
+<p>Express-Stormpath was built with customizability in mind, and makes it very easy
+to build your own custom registration and login views.</p>
+<p>Let&#8217;s start by looking at the built-in views:
+<a class="reference external" href="https://github.com/stormpath/stormpath-express/tree/master/lib/views">https://github.com/stormpath/stormpath-express/tree/master/lib/views</a></p>
+<p>Here&#8217;s a quick rundown of what each template is for:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">base.jade</span></code> is the base template that the registration and login templates
+extend.  It provides a basic <a class="reference external" href="http://getbootstrap.com/">bootstrap</a> based layout, with a couple of
+blocks for customizing the child templates.</li>
+<li><code class="docutils literal"><span class="pre">login.jade</span></code> is the login page.  It has some logic to flash error messages
+to the user if something fails, and also dynamically determines which input
+boxes to display based on the app&#8217;s settings.</li>
+<li><code class="docutils literal"><span class="pre">register.jade</span></code> is the registration page.  It has some logic to flash error
+messages to the user if something fails, and also dynamically determines
+which input boxes to display based on the app&#8217;s settings.</li>
+</ul>
+<p>If you&#8217;re comfortable with <a class="reference external" href="http://jade-lang.com/">Jade</a>, you can copy these templates to your
+project directly, and customize them yourself.  If you&#8217;re not already a super
+Express guru, continue reading!</p>
+<div class="section" id="the-most-basic-view">
+<h3>The Most Basic View<a class="headerlink" href="#the-most-basic-view" title="Permalink to this headline">¶</a></h3>
+<p>Let&#8217;s say you want to build your own, fully customized registration and login
+views &#8211; no problem!</p>
+<p>The first thing you need to do is create two views in the <code class="docutils literal"><span class="pre">views</span></code>
+directory of your project.</p>
+<p>First, copy the following code into <code class="docutils literal"><span class="pre">views/register.jade</span></code>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre>// Display an error if there is any.
+if error
+  p #{error}
+
+form(method=&#39;post&#39;)
+  input(name=&#39;_csrf&#39;, type=&#39;hidden&#39;, value=csrfToken)
+
+  // This block of code renders the desired input boxes for registering users.
+  if app.get(&#39;stormpathEnableUsername&#39;)
+    input(placeholder=&#39;Username&#39;, name=&#39;username&#39;, required=app.get(&#39;stormpathRequireUsername&#39;) ? true : false, type=&#39;text&#39;)
+
+  if app.get(&#39;stormpathEnableGivenName&#39;)
+    input(placeholder=&#39;First Name&#39;, name=&#39;givenName&#39;, required=app.get(&#39;stormpathRequireGivenName&#39;) ? true : false, type=&#39;text&#39;)
+
+  if app.get(&#39;stormpathEnableMiddleName&#39;)
+    input(placeholder=&#39;Middle Name&#39;, name=&#39;middleName&#39;, required=app.get(&#39;stormpathRequireMiddleName&#39;) ? true : false, type=&#39;text&#39;)
+
+  if app.get(&#39;stormpathEnableSurname&#39;)
+    input(placeholder=&#39;Last Name&#39;, name=&#39;surname&#39;, required=app.get(&#39;stormpathRequireSurname&#39;) ? true : false, type=&#39;text&#39;)
+
+  input(placeholder=&#39;Email&#39;, name=&#39;email&#39;, required=&#39;true&#39;, type=&#39;text&#39;)
+  input(placeholder=&#39;Password&#39;, name=&#39;password&#39;, required=&#39;true&#39;, type=&#39;password&#39;)
+
+  button(type=&#39;submit&#39;) Create Account
+</pre></div>
+</div>
+<p>The simple template you see above is the most basic possible registration page.
+It renders all of the appropriate input forms, based on your settings.</p>
+<p>Next, copy the following code into <code class="docutils literal"><span class="pre">views/login.jade</span></code>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre>// Display an error if there is any.
+if error
+  p #{error}
+
+form(method=&#39;post&#39;)
+  input(name=&#39;_csrf&#39;, type=&#39;hidden&#39;, value=csrfToken)
+
+  if app.get(&#39;stormpathEnableUsername&#39;)
+    input(placeholder=&#39;Username or Email&#39;, required=true, name=&#39;login&#39;, type=&#39;text&#39;)
+  else
+    input(placeholder=&#39;Email&#39;, required=true, name=&#39;login&#39;, type=&#39;text&#39;)
+
+  input(placeholder=&#39;Password&#39;, required=true, type=&#39;password&#39;, name=&#39;password&#39;)
+  button(type=&#39;submit&#39;) Log In
+</pre></div>
+</div>
+<p>This is the most basic login template possible.</p>
+</div>
+<div class="section" id="update-template-paths">
+<h3>Update Template Paths<a class="headerlink" href="#update-template-paths" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve got the simplest possible templates ready to go, let&#8217;s activate
+them!  In your app&#8217;s config, you&#8217;ll need to specify the path to your new
+templates like so:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">registrationView</span><span class="o">:</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/views/register.jade&#39;</span><span class="p">,</span>
+  <span class="nx">loginView</span><span class="o">:</span> <span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/views/login.jade&#39;</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>That will tell Express-Stormpath to render the templates you created above instead
+of the built-in ones!</p>
+<p>Now, if you open your browser and checkout <code class="docutils literal"><span class="pre">/register</span></code> and <code class="docutils literal"><span class="pre">/login</span></code>, you
+should see something like the following:</p>
+<img alt="_images/registration-page-basic.png" src="_images/registration-page-basic.png" />
+<img alt="_images/login-page-basic.png" src="_images/login-page-basic.png" />
+<p><strong>BAM!</strong>  That wasn&#8217;t so bad, was it?  You now have your own customized
+registration and login templates &#8211; all you need to do now is design them the
+way you want!</p>
+</div>
+</div>
+<div class="section" id="disable-the-built-in-views">
+<h2>Disable the Built-in Views<a class="headerlink" href="#disable-the-built-in-views" title="Permalink to this headline">¶</a></h2>
+<p>If for some reason you want to write your own registration, login, and logout
+views (<em>not recommended</em>), you can easily disable all of the automatic
+functionality described above by modifying your app config and adding the
+following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">enableRegistration</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nx">enableLogin</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+  <span class="nx">enableLogout</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-account-verification">
+<h2>Use Account Verification<a class="headerlink" href="#use-account-verification" title="Permalink to this headline">¶</a></h2>
+<p>As of Express-Stormpath <strong>0.1.8</strong>, it is now possible to easily enable an
+&#8220;Account Verification Workflow&#8221;, which makes newly registered users click a link
+in in their email inbox before completing user the user registration process.</p>
+<p>If you&#8217;d like to ensure your users are registering with legitimate email
+addresses, this feature makes the process as painless as possible =)</p>
+<div class="section" id="configure-the-workflow">
+<h3>Configure the Workflow<a class="headerlink" href="#configure-the-workflow" title="Permalink to this headline">¶</a></h3>
+<p>The first thing you need to do to enable &#8220;Account Verification&#8221; functionality
+in your Express app is visit the <a class="reference external" href="https://api.stormpath.com/v#!directories">Directory Dashboard</a> and select your default
+user directory.</p>
+<p>Next, you should see several options in a tab.  You will want to click the
+&#8220;Workflows&#8221; button.  Once you&#8217;ve landed on this page, you&#8217;ll then want to click
+the &#8220;show&#8221; link to the right of the &#8220;Account Registration and Verification&#8221;
+header.  This section allows you to configure your &#8220;Account Verification&#8221;
+settings.</p>
+<p>On this page, the only thing you <strong>need</strong> to change is the &#8220;Account Verification
+Base URL&#8221; setting at the top.  You need to set this to be:
+<code class="docutils literal"><span class="pre">https://mysite.com/verified</span></code>, substituting in your own website address.</p>
+<p>For instance, if your site lives at <code class="docutils literal"><span class="pre">https://www.mysite.com</span></code>, you&#8217;ll want to
+set &#8220;Account Verification Base URL&#8221; to <code class="docutils literal"><span class="pre">https://www.mysite.com/verified</span></code>.</p>
+<p>This URL determines where a user will be redirected after clicking the
+verification link in the email we send them.  If you&#8217;re testing things out
+locally, you can also set this to a local URL (eg:
+<code class="docutils literal"><span class="pre">http://localhost:3000/verified</span></code>).</p>
+<p>After setting &#8220;Account Verification Base URL&#8221;, you can also adjust any of the
+other settings below &#8211; you can customize the email templates that are used to
+email the user, and a variety of other options.</p>
+<p>When you&#8217;re finished customizing the &#8220;Account Verification Workflow&#8221;, be sure
+to hit the &#8220;Update&#8221; button at the bottom of the page.</p>
+</div>
+<div class="section" id="enable-account-verification-in-your-app">
+<h3>Enable Account Verification in Your App<a class="headerlink" href="#enable-account-verification-in-your-app" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve configured the &#8220;Account Verification&#8221; settings on Stormpath&#8217;s
+side, you need to configure your Express application to enable account
+verification.</p>
+<p>You can do this easily by modifying your application config like so:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">enableAccountVerification</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>And...  That&#8217;s all you have to do!</p>
+</div>
+<div class="section" id="test-it-out">
+<h3>Test it Out<a class="headerlink" href="#test-it-out" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve fully enabled account verification functionality in your app,
+open up the registration page in your Express app and check it out!  After
+creating a new user account, you&#8217;ll be greeted by a message informing you that
+before you can continue you need to click the verification link in your inbox.
+This page looks like this:</p>
+<img alt="_images/verification.png" src="_images/verification.png" />
+<p>Then, depending on your &#8220;Account Verification Workflow&#8221; configuration, the user
+will see an email that looks like the following:</p>
+<img alt="_images/verification-email.png" src="_images/verification-email.png" />
+<p>When a user clicks the link in their email, they&#8217;ll reach a success page that
+looks like this:</p>
+<img alt="_images/verification-complete.png" src="_images/verification-complete.png" />
+<p>And lastly, once a user clicks the verification link, they&#8217;ll be automatically
+logged into their account, then redirected to the main page of your site
+(whatever URL is set as <code class="docutils literal"><span class="pre">redirectUrl</span></code> in your configuration).  They&#8217;ll also
+be shown this page for a few seconds to let them know the change was successful.</p>
+<p>Not bad, right?</p>
+</div>
+<div class="section" id="customization">
+<h3>Customization<a class="headerlink" href="#customization" title="Permalink to this headline">¶</a></h3>
+<p>Much like all other Express-Stormpath features, the account verification feature is
+completely customizable.</p>
+<p>You can easily change the account verification templates by modifying the following
+configuration variables, respectively:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">stormpathAccountVerificationEmailSentView</span></code> - The view which is shown after
+a new user creates an account.</li>
+<li><code class="docutils literal"><span class="pre">stormpathAccountVerificationCompleteView</span></code> - The view which is shown after
+a user clicks the verification link in their email.</li>
+</ul>
+<p>If you&#8217;d like to override the default views, you should take a look at the
+ones included with Express-Stormpath here:
+<a class="reference external" href="https://github.com/stormpath/stormpath-express/tree/master/lib/views">https://github.com/stormpath/stormpath-express/tree/master/lib/views</a>
+and use these as a base for your own views.</p>
+</div>
+</div>
+<div class="section" id="use-password-reset">
+<h2>Use Password Reset<a class="headerlink" href="#use-password-reset" title="Permalink to this headline">¶</a></h2>
+<p>As of Express-Stormpath <strong>0.1.6</strong>, it is now possible to easily enable a &#8220;Password
+Reset Workflow&#8221;, which allows your users to reset their passwords automatically.</p>
+<p>We highly encourage you to use this feature, as it provides a simple and secure
+way to allow your users to reset their passwords without hassle.</p>
+<div class="section" id="id1">
+<h3>Configure the Workflow<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>The first thing you need to do to enable &#8220;Password Reset&#8221; functionality in your
+Express app is visit the <a class="reference external" href="https://api.stormpath.com/v#!directories">Directory Dashboard</a> and select your default user
+directory.</p>
+<p>Next, you should see several options in a tab.  You will want to click the
+&#8220;Workflows&#8221; button.  Once you&#8217;ve landed on this page, you&#8217;ll then want to click
+the &#8220;show&#8221; link to the right of the &#8220;Password Reset&#8221; header.  This section
+allows you to configure your &#8220;Password Reset&#8221; settings.</p>
+<p>On this page, the only thing you <strong>need</strong> to change is the &#8220;Base URL&#8221; setting at
+the top.  You need to set this to be: <code class="docutils literal"><span class="pre">https://mysite.com/forgot/change</span></code>,
+substituting in your own website address.</p>
+<p>For instance, if your site lives at <code class="docutils literal"><span class="pre">https://www.mysite.com</span></code>, you&#8217;ll want to
+set &#8220;Base URL&#8221; to <code class="docutils literal"><span class="pre">https://www.mysite.com/forgot/change</span></code>.</p>
+<p>This URL determines where a user will be redirected after attempting to reset
+their password on your website.  If you&#8217;re testing things out locally, you can
+also set this to a local URL (eg: <code class="docutils literal"><span class="pre">http://localhost:3000/forgot/change</span></code>).</p>
+<p>After setting &#8220;Base URL&#8221;, you can also adjust any of the other settings below &#8211;
+you can customize the email templates that are used to email the user, and a
+variety of other options.</p>
+<p>When you&#8217;re finished customizing the &#8220;Password Reset Workflow&#8221;, be sure to hit
+the &#8220;Update&#8221; button at the bottom of the page.</p>
+</div>
+<div class="section" id="enable-password-reset-in-your-app">
+<h3>Enable Password Reset in Your App<a class="headerlink" href="#enable-password-reset-in-your-app" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve configured the &#8220;Password Reset&#8221; settings on Stormpath&#8217;s side,
+you need to configure your Express application to enable password reset.</p>
+<p>You can do this easily by modifying your application config like so:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">enableForgotPassword</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+<p>And...  That&#8217;s all you have to do!</p>
+</div>
+<div class="section" id="id2">
+<h3>Test it Out<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<p>Now that you&#8217;ve fully enabled password reset functionality in your app, open up
+the login page in your Express app and check it out!  You should see a &#8220;Forgot
+Password?&#8221; link below the login form which looks like this:</p>
+<img alt="_images/forgot.png" src="_images/forgot.png" />
+<p>If you click the &#8220;Forgot Password?&#8221; link, you&#8217;ll be brought to a password reset
+page that looks like this:</p>
+<img alt="_images/forgot-init.png" src="_images/forgot-init.png" />
+<p>After filling in their email address, a user will see the following page:</p>
+<img alt="_images/forgot-email-sent.png" src="_images/forgot-email-sent.png" />
+<p>Then, depending on your &#8220;Password Reset Workflow&#8221; configuration, the user will
+see an email that looks like the following:</p>
+<img alt="_images/forgot-email.png" src="_images/forgot-email.png" />
+<p>When a user clicks the link in their email, they&#8217;ll reach a password change page
+that looks like this:</p>
+<img alt="_images/forgot-change.png" src="_images/forgot-change.png" />
+<p>And lastly, once a user changes their password successfully, they&#8217;ll be
+automatically logged into their account, then redirected to the main page of
+your site (whatever URL is set as <code class="docutils literal"><span class="pre">redirectUrl</span></code> in your configuration).
+They&#8217;ll also be shown this page for a few seconds to let them know the change
+was successful:</p>
+<img alt="_images/forgot-complete.png" src="_images/forgot-complete.png" />
+<p>Not bad, right?</p>
+</div>
+<div class="section" id="id3">
+<h3>Customization<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>Much like all other Express-Stormpath features, the password reset feature is
+completely customizable.</p>
+<p>You can easily change the password reset templates by modifying the following
+configuration variables, respectively:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">forgotPasswordView</span></code> - The view which is shown when a user clicks the
+&#8220;Forgot Password?&#8221; link on the login page.</li>
+<li><code class="docutils literal"><span class="pre">forgotPasswordEmailSentView</span></code> - The view which is shown after a user
+has successfully requested a password reset.</li>
+<li><code class="docutils literal"><span class="pre">forgotPasswordChangeView</span></code> - The view which is shown to a user after
+they&#8217;ve clicked the link in their email.  This view allows the user to
+change their password.</li>
+<li><code class="docutils literal"><span class="pre">forgotPasswordCompleteView</span></code> - The view which is shown after the user has
+successfully reset their account password.</li>
+</ul>
+<p>If you&#8217;d like to override the default views, you should take a look at the
+ones included with Express-Stormpath here:
+<a class="reference external" href="https://github.com/stormpath/stormpath-express/tree/master/lib/views">https://github.com/stormpath/stormpath-express/tree/master/lib/views</a>
+and use these as a base for your own views.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="help.html" class="btn btn-neutral float-right" title="Getting Help">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="quickstart.html" class="btn btn-neutral" title="Quickstart"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2014, Stormpath, Inc..
+    </p>
+  </div>
+
+  <a href="https://github.com/snide/sphinx_rtd_theme">Sphinx theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+  <script type="text/javascript">var _gaq = _gaq || [];   _gaq.push(['_setAccount', 'UA-29159574-1']);   _gaq.push(['_setDomainName', 'stormpath.com']);   _gaq.push(['_trackPageview']);    (function() {     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;     ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);   })();</script><script type="text/javascript">var _kmq = _kmq || [];   var _kmk = _kmk || '684b854336bd3a6523260ebd991eec06b18b929a';   function _kms(u){     setTimeout(function(){       var d = document, f = d.getElementsByTagName('script')[0],       s = d.createElement('script');       s.type = 'text/javascript'; s.async = true; s.src = u;       f.parentNode.insertBefore(s, f);     }, 1);   }   _kms('//i.kissmetrics.com/i.js');   _kms('//doug1izaerwt3.cloudfront.net/' + _kmk + '.1.js');</script><script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+</body>
+</html>
