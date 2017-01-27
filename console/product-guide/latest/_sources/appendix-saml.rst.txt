@@ -22,7 +22,7 @@ The only difference in configuration steps between the two kinds of flows is tha
 
 These instructions assume that you have two things:
 
-- A Stormpath account with at least an **Advanced plan**
+- A Stormpath account with `a plan that supports SAML <https://stormpath.com/pricing>`__
 
 - A developer Account with one of the following Identity Providers who support SAML:
 
@@ -1027,10 +1027,10 @@ Specifically, you want that Account's ``providerData`` resource, which you can s
 .. code-block:: json
 
   {
-    href: "https://api.stormpath.com/v1/accounts/4QwSP7tumdJJoCzPHiZ1Oq/providerData",
-    createdAt: "2017-01-11T01:38:18.211Z",
-    modifiedAt: "2017-01-11T23:55:02.413Z",
-    providerId: "saml"
+    "href": "https://api.stormpath.com/v1/accounts/4QwSP7tumdJJoCzPHiZ1Oq/providerData",
+    "createdAt": "2017-01-11T01:38:18.211Z",
+    "modifiedAt": "2017-01-11T23:55:02.413Z",
+    "providerId": "saml"
   }
 
 Everything here other than ``href``, ``createdAt`` and ``modifiedAt`` are Attributes passed by G-Suite.

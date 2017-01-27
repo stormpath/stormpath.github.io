@@ -39,6 +39,8 @@ This section will tell you how to:
   - :ref:`Facebook <create-facebook>`
   - :ref:`GitHub <create-github>`
   - :ref:`LinkedIn <create-linkedin>`
+  - :ref:`Twitter <create-twitter>`
+  - :ref:`Generic OAuth <create-generic>`
 
 - :ref:`Create an AD/LDAP Directory <directories-create-ldap>`
 
@@ -78,6 +80,8 @@ Currently, Stormpath allows your users to log in using their credentials from th
 - :ref:`Facebook <create-facebook>`
 - :ref:`GitHub <create-github>`
 - :ref:`LinkedIn <create-linkedin>`
+- :ref:`Twitter <create-twitter>`
+- :ref:`Generic OAuth <create-generic>`
 
 In order to configure this, you will need to input information about the Social Login Provider into a newly-created Stormpath Directory. Every Provider will need its own Directory (i.e. if you want users to log in with Google and Facebook, then you will have to create a Directory for each).
 
@@ -114,11 +118,6 @@ Optionally, you can also:
 
 - Enter in a "Description" for the Directory.
 - Toggle the status from its default "Enabled" status to "Disabled"
-
-.. figure:: images/directories/directories_create_google.png
-  :align: center
-  :scale: 100%
-  :alt: Google Directory
 
 After you have completed this, click **Create** and the "Create Directory" dialog will close and you will see your new Directory in the list view.
 
@@ -169,11 +168,6 @@ Optionally, you can also:
 - Enter in a "Description" for the Directory.
 - Toggle the status from its default "Enabled" status to "Disabled"
 
-.. figure:: images/directories/directories_create_fb.png
-  :align: center
-  :scale: 100%
-  :alt: Facebook Directory
-
 After you have completed this, click **Create** and the "Create Directory" dialog will close and you will see your new Directory in the list view.
 
 Step 2: Map the Facebook Directory to your Application
@@ -218,11 +212,6 @@ Optionally, you can also:
 
 - Enter in a "Description" for the Directory.
 - Toggle the status from its default "Enabled" status to "Disabled"
-
-.. figure:: images/directories/directories_create_github.png
-  :align: center
-  :scale: 100%
-  :alt: GitHub Directory
 
 After you have completed this, click **Create** and the "Create Directory" dialog will close and you will see your new Directory in the list view.
 
@@ -270,11 +259,6 @@ Optionally, you can also:
 - Enter in a "Description" for the Directory.
 - Toggle the status from its default "Enabled" status to "Disabled"
 
-.. figure:: images/directories/directories_create_linkedin.png
-  :align: center
-  :scale: 100%
-  :alt: LinkedIn Directory
-
 After you have completed this, click **Create** and the "Create Directory" dialog will close and you will see your new Directory in the list view.
 
 Step 2: Map the LinkedIn Directory to your Application
@@ -288,12 +272,16 @@ In order to enable login via LinkedIn, you must also map this Directory to one o
 
 At this point, any users that choose to login via LinkedIn will go through the LinkedIn OAuth 2.0 process and have new Accounts created inside this Directory using information retrieved from LinkedIn.
 
+.. _create-twitter:
+
+.. _create-generic:
+
 .. _directories-create-ldap:
 
 Create an AD/LDAP Directory
---------------------------
+---------------------------
 
-In order to allow your users to login via external LDAP directories, including Active Directory, you will need at least an "Advanced" subscription or higher. For more information, please see the `Stormpath pricing page <https://stormpath.com/pricing>`__.
+In order to allow your users to login via external LDAP directories, including Active Directory, you will need a Subscription that supports it. For more information, please see the `Stormpath pricing page <https://stormpath.com/pricing>`__.
 
 To create a new AD/LDAP Directory, start by clicking on **Create Directory** in the top right of the main `Directories page <https://api.stormpath.com/ui2/index.html#/directories>`__. This will bring up the "Create Directory" dialog.
 

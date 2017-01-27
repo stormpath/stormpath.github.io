@@ -12,7 +12,6 @@ Welcome to the Stormpath Admin Console Guide
    directories
    groups
    accounts
-   agents
    idsite
    Appendix: SAML <appendix-saml>
 
