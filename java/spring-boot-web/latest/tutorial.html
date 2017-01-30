@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Tutorial &mdash; Stormpath Default Spring Boot Starter 1.4.0 documentation</title>
+  <title>Tutorial &mdash; Stormpath Default Spring Boot Starter 1.5.0 documentation</title>
   
 
   
@@ -34,7 +34,7 @@
   
         <link rel="author" title="About these documents"
               href="about.html"/>
-    <link rel="top" title="Stormpath Default Spring Boot Starter 1.4.0 documentation" href="index.html"/>
+    <link rel="top" title="Stormpath Default Spring Boot Starter 1.5.0 documentation" href="index.html"/>
         <link rel="next" title="Configuration" href="config.html"/>
         <link rel="prev" title="Quickstart" href="quickstart.html"/> 
 
@@ -189,6 +189,8 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#pre-register-handler">Pre Register Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#post-register-handler">Post Register Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="registration.html#events">Events</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="registration.html#registered-account">Registered Account</a></li>
 <li class="toctree-l3"><a class="reference internal" href="registration.html#verified-account">Verified Account</a></li>
@@ -205,7 +207,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#view">View</a></li>
-<li class="toctree-l2"><a class="reference internal" href="login.html#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#pre-login-handler">Pre Login Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#post-login-handler">Post Login Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#events">Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="login.html#authentication-state">Authentication State</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="login.html#saving-authentication-state">Saving Authentication State</a></li>
@@ -469,11 +473,13 @@
 <li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-accesstokencookie-secure">stormpath.web.accessTokenCookie.secure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-accesstokencookie-path">stormpath.web.accessTokenCookie.path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-accesstokencookie-domain">stormpath.web.accessTokenCookie.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-accesstokencookie-maxage">stormpath.web.accessTokenCookie.maxAge</a></li>
 <li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-name">stormpath.web.refreshTokenCookie.name</a></li>
 <li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-httponly">stormpath.web.refreshTokenCookie.httpOnly</a></li>
 <li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-secure">stormpath.web.refreshTokenCookie.secure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-path">stormpath.web.refreshTokenCookie.path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-domain">stormpath.web.refreshTokenCookie.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-maxage">stormpath.web.refreshTokenCookie.maxAge</a></li>
 <li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-produces">stormpath.web.produces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-autologin">stormpath.web.register.autoLogin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-givenname-enabled">stormpath.web.register.form.fields.givenName.enabled</a></li>
@@ -751,12 +757,16 @@ annotation:</p>
 <p>On line 5 we are getting hold of the Stormpath Application and on line 9 we are obtaining its name for display.</p>
 <p>For this example, we don&#8217;t want Spring Security locking everything down, which is its default behavior. So, we will simply
 disable it. That&#8217;s where the <code class="docutils literal"><span class="pre">application.properties</span></code> files comes in:</p>
-<div class="highlight-java"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">stormpath</span><span class="o">.</span><span class="na">spring</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">enabled</span> <span class="o">=</span> <span class="kc">false</span>
-<span class="n">security</span><span class="o">.</span><span class="na">basic</span><span class="o">.</span><span class="na">enabled</span> <span class="o">=</span> <span class="kc">false</span>
+<div class="highlight-java"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">stormpath</span><span class="o">.</span><span class="na">spring</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">enabled</span> <span class="o">=</span> <span class="kc">false</span>
 </pre></div>
 </td></tr></table></div>
-<p>The first line disables Stormpath&#8217;s hooks into Spring Security and the second line disables Spring Security itself.</p>
+<p>That property disables Spring Security and avoids our Spring Security integration to be loaded.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Alternatively you can disable the Stormpath Spring Security integration while keeping Spring Security enabled. Such setup will allow you
+to take full control of Spring Security&#8217;s configuration without having Stormath&#8217;s integration in the mix. This can be
+achieved by having <cite>stormpath.spring.security.enabled = false</cite> in your configuration file.</p>
+</div>
 <p>Pretty simple setup, right? In the next section, we&#8217;ll layer in some flow logic based on logged-in state. And then we
 will refine that to make use of all the Spring Security has to offer in making our lives easier.</p>
 </div>
@@ -1296,6 +1306,10 @@ need to login again.</p>
 <p>As you can see from the examples above, Stormpath provides powerful oauth2 Token Management out-of-the-box using the
 <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint. There is no additional coding required on your part to make use of the Token Management
 feature.</p>
+<p>You may notice that there is no class in this part of the tutorial that extends <code class="docutils literal"><span class="pre">WebSecurityConfigurerAdapter</span></code>.
+In this particular case, <em>all</em> user-defined paths are locked down. This is the default for Spring Security and the
+Stormpath Spring Security integration follows suit.</p>
+<p>If you fire up the tutorial app and browse to the home page: <a class="reference external" href="http://localhost:8080/">http://localhost:8080/</a>, you will be redirected to <cite>/login</cite>.</p>
 </div>
 <div class="section" id="wrapping-up">
 <span id="id8"></span><h2><a class="toc-backref" href="#id16">Wrapping Up</a><a class="headerlink" href="#wrapping-up" title="Permalink to this headline">¶</a></h2>
@@ -1348,7 +1362,7 @@ for more information on all that the Stormpath Java SDK has to offer.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.4.0',
+            VERSION:'1.5.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
