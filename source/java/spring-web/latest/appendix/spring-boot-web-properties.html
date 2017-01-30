@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>stormpath.web.account.jwt.ttl &mdash; Stormpath Spring WebMVC Integration 1.4.0 documentation</title>
+  <title>stormpath.web.account.jwt.ttl &mdash; Stormpath Spring WebMVC Integration 1.5.0 documentation</title>
   
 
   
@@ -34,7 +34,7 @@
   
         <link rel="author" title="About these documents"
               href="../about.html"/>
-    <link rel="top" title="Stormpath Spring WebMVC Integration 1.4.0 documentation" href="../index.html"/> 
+    <link rel="top" title="Stormpath Spring WebMVC Integration 1.5.0 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -187,6 +187,8 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../registration.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../registration.html#pre-register-handler">Pre Register Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../registration.html#post-register-handler">Post Register Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../registration.html#events">Events</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../registration.html#registered-account">Registered Account</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../registration.html#verified-account">Verified Account</a></li>
@@ -203,7 +205,9 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../login.html#next-uri">Next URI</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../login.html#view">View</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../login.html#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../login.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../login.html#pre-login-handler">Pre Login Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../login.html#post-login-handler">Post Login Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../login.html#events">Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../login.html#authentication-state">Authentication State</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../login.html#saving-authentication-state">Saving Authentication State</a></li>
@@ -445,11 +449,13 @@
 <li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-accesstokencookie-secure">stormpath.web.accessTokenCookie.secure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-accesstokencookie-path">stormpath.web.accessTokenCookie.path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-accesstokencookie-domain">stormpath.web.accessTokenCookie.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-accesstokencookie-maxage">stormpath.web.accessTokenCookie.maxAge</a></li>
 <li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-refreshtokencookie-name">stormpath.web.refreshTokenCookie.name</a></li>
 <li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-refreshtokencookie-httponly">stormpath.web.refreshTokenCookie.httpOnly</a></li>
 <li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-refreshtokencookie-secure">stormpath.web.refreshTokenCookie.secure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-refreshtokencookie-path">stormpath.web.refreshTokenCookie.path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-refreshtokencookie-domain">stormpath.web.refreshTokenCookie.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-refreshtokencookie-maxage">stormpath.web.refreshTokenCookie.maxAge</a></li>
 <li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-produces">stormpath.web.produces</a></li>
 <li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-register-autologin">stormpath.web.register.autoLogin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="default-stormpath-properties.html#stormpath-web-register-form-fields-givenname-enabled">stormpath.web.register.form.fields.givenName.enabled</a></li>
@@ -606,7 +612,7 @@
 <div class="section" id="stormpath-web-authc-savers-cookie-enabled">
 <h1>stormpath.web.authc.savers.cookie.enabled<a class="headerlink" href="#stormpath-web-authc-savers-cookie-enabled" title="Permalink to this headline">¶</a></h1>
 <p><strong>Default Value:</strong> <code class="docutils literal"><span class="pre">true</span></code></p>
-<p>Controls if a successful authentication should be reflected on future HTTP requests by using a digitally-signed account identity cookie. This property is true by default.  The cookie&#8217;s properties are configurable via the stormpath.web.account.cookie.* properties.</p>
+<p>Controls if a successful authentication should be reflected on future HTTP requests by using a digitally-signed account identity cookie. This property is true by default.  The cookie&#8217;s properties are configurable via the stormpath.web.accessTokenCookie.* and stormpath.web.refreshTokenCookie.* properties.</p>
 </div>
 <div class="section" id="stormpath-web-request-remoteuser-strategy">
 <h1>stormpath.web.request.remoteUser.strategy<a class="headerlink" href="#stormpath-web-request-remoteuser-strategy" title="Permalink to this headline">¶</a></h1>
@@ -911,6 +917,10 @@
 <h1>stormpath.web.accessTokenCookie.domain<a class="headerlink" href="#stormpath-web-accesstokencookie-domain" title="Permalink to this headline">¶</a></h1>
 <p><strong>Default Value:</strong> <code class="docutils literal"><span class="pre">null</span></code></p>
 </div>
+<div class="section" id="stormpath-web-accesstokencookie-maxage">
+<h1>stormpath.web.accessTokenCookie.maxAge<a class="headerlink" href="#stormpath-web-accesstokencookie-maxage" title="Permalink to this headline">¶</a></h1>
+<p><strong>Default Value:</strong> <code class="docutils literal"><span class="pre">0</span></code></p>
+</div>
 <div class="section" id="stormpath-web-refreshtokencookie-name">
 <h1>stormpath.web.refreshTokenCookie.name<a class="headerlink" href="#stormpath-web-refreshtokencookie-name" title="Permalink to this headline">¶</a></h1>
 <p><strong>Default Value:</strong> <code class="docutils literal"><span class="pre">refresh_token</span></code></p>
@@ -930,6 +940,10 @@
 <div class="section" id="stormpath-web-refreshtokencookie-domain">
 <h1>stormpath.web.refreshTokenCookie.domain<a class="headerlink" href="#stormpath-web-refreshtokencookie-domain" title="Permalink to this headline">¶</a></h1>
 <p><strong>Default Value:</strong> <code class="docutils literal"><span class="pre">null</span></code></p>
+</div>
+<div class="section" id="stormpath-web-refreshtokencookie-maxage">
+<h1>stormpath.web.refreshTokenCookie.maxAge<a class="headerlink" href="#stormpath-web-refreshtokencookie-maxage" title="Permalink to this headline">¶</a></h1>
+<p><strong>Default Value:</strong> <code class="docutils literal"><span class="pre">0</span></code></p>
 </div>
 <div class="section" id="stormpath-web-produces">
 <h1>stormpath.web.produces<a class="headerlink" href="#stormpath-web-produces" title="Permalink to this headline">¶</a></h1>
@@ -1300,7 +1314,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4.0',
+            VERSION:'1.5.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

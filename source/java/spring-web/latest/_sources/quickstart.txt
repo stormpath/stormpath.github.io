@@ -27,7 +27,7 @@ Add the |project|
 This step allows you to enable Stormpath in a Spring  web app with *very minimal* configuration.
 It includes Stormpath Spring Security, Stormpath Spring WebMVC and Stormpath Thymeleaf templates.
 
-Using your favorite dependency resolution build tool like Maven or Gradle, add the ``stormpath-spring-security-webmvc-1.4.0.jar`` to your project dependencies. For example:
+Using your favorite dependency resolution build tool like Maven or Gradle, add the ``stormpath-spring-security-webmvc-1.5.0.jar`` to your project dependencies. For example:
 
 **Maven**:
 
@@ -36,7 +36,7 @@ Using your favorite dependency resolution build tool like Maven or Gradle, add t
     <dependency>
         <groupId>com.stormpath.spring</groupId>
         <artifactId>stormpath-spring-security-webmvc</artifactId>
-        <version>1.4.0</version>
+        <version>1.5.0</version>
     </dependency>
 
 **Gradle**:
@@ -44,7 +44,7 @@ Using your favorite dependency resolution build tool like Maven or Gradle, add t
 .. code-block:: groovy
 
     dependencies {
-        compile 'com.stormpath.spring:stormpath-spring-security-webmvc:1.4.0'
+        compile 'com.stormpath.spring:stormpath-spring-security-webmvc:1.5.0'
     }
 
 
@@ -78,7 +78,7 @@ By default, all paths are locked down with Spring Security. Stormpath's Spring S
 Disabling Spring Security
 """""""""""""""""""""""""
 
-If you do not want to use our Spring Security integration, set the following two config properties:
+If you do not want to use our Spring Security integration, set the following config property:
 
 .. code-block:: yaml
 
@@ -88,10 +88,18 @@ If you do not want to use our Spring Security integration, set the following two
        security:
          enabled: false
 
-   # disable Spring Security entirely:
-   security:
-     basic:
-       enabled: false
+.. note::
+
+   Alternatively you can disable Spring Security for good by having the following property in your configuration file:
+
+   .. code-block:: yaml
+
+      # disable Spring Security altogether:
+      security:
+        basic:
+          enabled: false
+
+   This will disable Spring Security along with the Stormpath Spring Security integration.
 
 
 That's it! You're ready to start using Stormpath in your Spring  web application!
@@ -124,6 +132,13 @@ Any Problems?
 ^^^^^^^^^^^^^
 
 Did you experience any problems with this quickstart?  It might not have worked perfectly for you if:
+
+* There might be some cases in which you want to completely turn Stormpath off. For example, if you do not have an ApiKey in
+  your machine then Stormpath will simply not boot. In those scenarios you can add the following property in the configuration file:
+
+  .. code-block:: properties
+
+     stormpath.enabled = false
 
 
 * you have more than one Application registered with Stormpath.  If this is the case, you'll need to configure your

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>web.stormpath.properties &mdash; Stormpath Java Servlet Plugin 1.4.0 documentation</title>
+  <title>web.stormpath.properties &mdash; Stormpath Java Servlet Plugin 1.5.0 documentation</title>
   
 
   
@@ -34,7 +34,7 @@
   
         <link rel="author" title="About these documents"
               href="../about.html"/>
-    <link rel="top" title="Stormpath Java Servlet Plugin 1.4.0 documentation" href="../index.html"/>
+    <link rel="top" title="Stormpath Java Servlet Plugin 1.5.0 documentation" href="../index.html"/>
         <link rel="up" title="Appendix" href="../appendix.html"/>
         <link rel="next" title="i18n.properties" href="i18n-properties.html"/>
         <link rel="prev" title="Appendix" href="../appendix.html"/> 
@@ -188,6 +188,8 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../registration.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../registration.html#pre-register-handler">Pre Register Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../registration.html#post-register-handler">Post Register Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../registration.html#events">Events</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../registration.html#registered-account">Registered Account</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../registration.html#verified-account">Verified Account</a></li>
@@ -203,7 +205,9 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../login.html#next-uri">Next URI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../login.html#i18n">i18n</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../login.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../login.html#pre-login-handler">Pre Login Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../login.html#post-login-handler">Post Login Handler</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../login.html#events">Events</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../login.html#authentication-state">Authentication State</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="../login.html#saving-authentication-state">Saving Authentication State</a></li>
@@ -432,7 +436,7 @@
 <div></div></blockquote>
 <div class="section" id="web-stormpath-properties">
 <span id="id1"></span><h1>web.stormpath.properties<a class="headerlink" href="#web-stormpath-properties" title="Permalink to this headline">¶</a></h1>
-<p>In stormpath-sdk-servlet-1.4.0.jar: <code class="docutils literal"><span class="pre">/com/stormpath/sdk/servlet/config/web.stormpath.properties</span></code></p>
+<p>In stormpath-sdk-servlet-1.5.0.jar: <code class="docutils literal"><span class="pre">/com/stormpath/sdk/servlet/config/web.stormpath.properties</span></code></p>
 <div class="highlight-properties"><div class="highlight"><pre><span></span><span class="c">#</span>
 <span class="c"># Copyright 2016 Stormpath, Inc.</span>
 <span class="c">#</span>
@@ -460,16 +464,21 @@
 <span class="na">stormpath.web.oauth2.client_credentials.enabled</span> <span class="o">=</span> <span class="s">true</span>
 <span class="na">stormpath.web.oauth2.password.enabled</span> <span class="o">=</span> <span class="s">true</span>
 <span class="na">stormpath.web.oauth2.password.validationStrategy</span> <span class="o">=</span> <span class="s">local</span>
+<span class="na">stormpath.web.oauth2.revoke.uri</span> <span class="o">=</span> <span class="s">/oauth/revoke</span>
 <span class="na">stormpath.web.accessTokenCookie.name</span> <span class="o">=</span> <span class="s">access_token</span>
 <span class="na">stormpath.web.accessTokenCookie.httpOnly</span> <span class="o">=</span> <span class="s">true</span>
 <span class="na">stormpath.web.accessTokenCookie.secure</span> <span class="o">=</span>
 <span class="na">stormpath.web.accessTokenCookie.path</span> <span class="o">=</span>
 <span class="na">stormpath.web.accessTokenCookie.domain</span> <span class="o">=</span>
+<span class="c">## default of 0 means that TTL from OAuthPolicy will be used</span>
+<span class="na">stormpath.web.accessTokenCookie.maxAge</span> <span class="o">=</span> <span class="s">0</span>
 <span class="na">stormpath.web.refreshTokenCookie.name</span> <span class="o">=</span> <span class="s">refresh_token</span>
 <span class="na">stormpath.web.refreshTokenCookie.httpOnly</span> <span class="o">=</span> <span class="s">true</span>
 <span class="na">stormpath.web.refreshTokenCookie.secure</span> <span class="o">=</span>
 <span class="na">stormpath.web.refreshTokenCookie.path</span> <span class="o">=</span>
 <span class="na">stormpath.web.refreshTokenCookie.domain</span> <span class="o">=</span>
+<span class="c">## default of 0 means that TTL from OAuthPolicy will be used</span>
+<span class="na">stormpath.web.refreshTokenCookie.maxAge</span> <span class="o">=</span> <span class="s">0</span>
 <span class="na">stormpath.web.produces</span> <span class="o">=</span> <span class="s">application/json,text/html</span>
 <span class="na">stormpath.web.register.enabled</span> <span class="o">=</span> <span class="s">true</span>
 <span class="c"># The context-relative path to the register (&#39;new user&#39;) view:</span>
@@ -539,6 +548,10 @@
 <span class="na">stormpath.web.verifyEmail.form.fields.email.placeholder</span> <span class="o">=</span> <span class="s">stormpath.web.verifyEmail.form.fields.email.placeholder</span>
 <span class="na">stormpath.web.verifyEmail.form.fields.email.required</span> <span class="o">=</span> <span class="s">true</span>
 <span class="na">stormpath.web.verifyEmail.form.fields.email.type</span> <span class="o">=</span> <span class="s">text</span>
+
+<span class="c">## default SAML SP initiated endpoint</span>
+<span class="na">stormpath.web.saml.uri</span> <span class="o">=</span> <span class="s">/saml</span>
+
 <span class="na">stormpath.web.login.enabled</span> <span class="o">=</span> <span class="s">true</span>
 <span class="c"># The context-relative path to the login view:</span>
 <span class="na">stormpath.web.login.uri</span> <span class="o">=</span> <span class="s">/login</span>
@@ -741,9 +754,12 @@
 <span class="c">#</span>
 <span class="c"># The value is a comma-delimited list of one or more of &#39;cookie&#39; and &#39;disabled&#39; values:</span>
 <span class="c">#</span>
-<span class="c"># cookie:   Store the account state in a cookie.  The cookie&#39;s settings are controlled by the</span>
-<span class="c">#           stormpath.web.account.cookie.* properties below.  The same cookie is read later when the</span>
+<span class="c"># cookie:   Store the account state in a cookie. The same cookie is read later when the</span>
 <span class="c">#           stormpath.web.account.resolvers property contains a &#39;cookie&#39; value (without the quotes).</span>
+<span class="c">#           The account state is stored in a cookie called access_token by default. A second cookie</span>
+<span class="c">#           called refresh_token is set as well and is used to retrieve a new access_token when expired.</span>
+<span class="c">#           The cookies&#39; settings are controlled via the stormpath.web.accessTokenCookie.* and</span>
+<span class="c">#           stormpath.web.refreshTokenCookie.* properties above. This is part of a standard oauth2 workflow.</span>
 <span class="c">#</span>
 <span class="c"># disabled: Do not store the account state during a request.  This is a good option if your server-side app</span>
 <span class="c">#           authenticates every request (for example, a REST API).</span>
@@ -837,7 +853,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.4.0',
+            VERSION:'1.5.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
