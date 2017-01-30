@@ -117,6 +117,21 @@
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AppComponent extends AuthPortComponent {
 }
 </code></pre>
+				<p>If you&#39;re using a version of Angular &lt; 2.3, extending AuthPortComponent won&#39;t work for you. As an alternative, you can inject the <code>Stormpath</code> service into your component, subscribe to <code>stormpath.user$</code> and implement <code>logout()</code> yourself.</p>
+				<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Account, Stormpath } from <span class="hljs-string">'angular-stormpath'</span>;
+...
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> AppComponent {
+  user$: Observable&lt;Account | <span class="hljs-built_in">boolean</span>&gt;;
+
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params"><span class="hljs-keyword">private</span> stormpath: Stormpath</span>) {
+    <span class="hljs-keyword">this</span>.user$ = <span class="hljs-keyword">this</span>.stormpath.user$;
+  }
+
+  logout(): <span class="hljs-built_in">void</span> {
+    <span class="hljs-keyword">this</span>.stormpath.logout();
+  }
+}
+</code></pre>
 				<p>You may also find it useful to view the <a href="https://github.com/stormpath/stormpath-sdk-angular/blob/master/demo/app.component.ts">demo source</a>.</p>
 				<h3 id="configuration">Configuration</h3>
 				<p>To override the endpoint prefix or URIs for the various endpoints, you can modify the defaults in <a href="https://github.com/stormpath/stormpath-sdk-angular/blob/master/src/stormpath/stormpath.config.ts">StormpathConfiguration</a>.</p>
