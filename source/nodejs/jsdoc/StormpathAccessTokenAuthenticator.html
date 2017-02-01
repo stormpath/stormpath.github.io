@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Stormpath Node SDK Class: GroupMembership</title>
+	<title>Stormpath Node SDK Class: StormpathAccessTokenAuthenticator</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -80,13 +80,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: GroupMembership</h1>
+	<h1 class="page-title">Class: StormpathAccessTokenAuthenticator</h1>
 <section>
 
 <header>
     
         <h2>
-        GroupMembership
+        StormpathAccessTokenAuthenticator
         </h2>
         
     
@@ -99,7 +99,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
 <hr>
 <dt>
-    <h4 class="name" id="GroupMembership"><span class="type-signature"></span>new GroupMembership(groupMembershipResource)</h4>
+    <h4 class="name" id="StormpathAccessTokenAuthenticator"><span class="type-signature"></span>new StormpathAccessTokenAuthenticator(client)</h4>
     
     
 </dt>
@@ -107,13 +107,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     
     <div class="description">
-        <p>Encapsulates a GroupMembership resource. For full documentation of this resource, please see
-<a href="https://docs.stormpath.com/rest/product-guide/latest/reference.html?#group-membership">REST API Reference: Group Membership</a>.</p>
-<p>This class should not be manually constructed. It should be obtained from one of these methods:</p>
+        <p>Creates an authenticator that can be used to validate access tokens that have
+been issued by a Stormpath Tenant, using API Keys created for accounts in that
+tenant's  &quot;Stormpath Administrators&quot; directory.  Access tokens can be issued
+with one of the following methods:</p>
 <ul>
-<li><a href="Account.html#getGroupMemberships">Account.getGroupMemberships()</a></li>
+<li><a href="OAuthClientCredentialsAuthenticator.html#authenticate">OAuthClientCredentialsAuthenticator.authenticate()</a></li>
+<li><a href="OAuthPasswordGrantRequestAuthenticator.html#authenticate">OAuthPasswordGrantRequestAuthenticator.authenticate()</a></li>
+<li><a href="OAuthStormpathTokenAuthenticator.html#authenticate">OAuthStormpathTokenAuthenticator.authenticate()</a></li>
 </ul>
-<p>To remove the group membership, call the <code>delete()</code> method on an instance of this class.</p>
     </div>
     
 
@@ -148,13 +150,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
         <tr>
             
-                <td class="name"><code>groupMembershipResource</code></td>
+                <td class="name"><code>client</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type"><a href="Client.html">Client</a></span>
 
 
 
@@ -165,7 +167,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
             
 
-            <td class="description last"><p>The JSON representation of this resource, retrieved the Stormpath REST API.</p></td>
+            <td class="description last"><p>A constructed <a href="Client.html">Client</a> instance, which will be bound to
+the Stormpath Tenant in which access token tokens will be validated.</p></td>
         </tr>
 
     
@@ -207,7 +210,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 	
 	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
 	<dd class="tag-source">
-		resource/GroupMembership.js
+		oauth/stormpath-access-token-authenticator.js
 	</dd>
 	
 
@@ -232,21 +235,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     
 
     
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">var client = new stormpath.Client();
+
+var authenticator = new stormpath.StormpathAccessTokenAuthenticator(client);</pre>
+
+
+    
 </dd>
 
     
     </div>
-
-    
-        <h3 class="subsection-title">Extends</h3>
-
-        
-
-
-    <ul>
-        <li><a href="InstanceResource.html">InstanceResource</a></li>
-    </ul>
-
 
     
 
@@ -267,7 +267,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             
 <hr>
 <dt>
-    <h4 class="name" id="delete"><span class="type-signature"></span>delete(callback)</h4>
+    <h4 class="name" id="authenticate"><span class="type-signature"></span>authenticate(jwtAccessTokenString, callback)</h4>
     
     
 </dt>
@@ -275,7 +275,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     
     <div class="description">
-        <p>Deletes this resource from the API.</p>
+        <p>Authenticates an access token, in the form of compact JWT string.</p>
     </div>
     
 
@@ -306,6 +306,30 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>jwtAccessTokenString</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The compact JWT string</p></td>
+        </tr>
+
     
 
         <tr>
@@ -327,194 +351,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
             
 
-            <td class="description last"><p>The function to call when the delete operation is complete. Will be called
-with the parameter (err).</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-<div>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
-	<dd class="inherited-from">
-		<ul class="dummy">
-			<li>
-				<a href="InstanceResource.html#delete">InstanceResource#delete</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		resource/InstanceResource.js
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getAccount"><span class="type-signature"></span>getAccount( [options], Callback)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Retrieves the <a href="Account.html">account</a> resource of this membership.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-wrapper">
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#ExpansionOptions">ExpansionOptions</a></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>For retrieving linked resources of the <a href="Account.html">Account</a> during this request.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>Callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Callback function, will be called with (err, <a href="Account.html">account</a>).</p></td>
+            <td class="description last"><p>Will be called with (err, <a href="StormpathAccessTokenAuthenticationResult.html">StormpathAccessTokenAuthenticationResult</a>).</p></td>
         </tr>
 
     
@@ -556,7 +393,7 @@ with the parameter (err).</p></td>
 	
 	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
 	<dd class="tag-source">
-		resource/GroupMembership.js
+		oauth/stormpath-access-token-authenticator.js
 	</dd>
 	
 
@@ -581,181 +418,20 @@ with the parameter (err).</p></td>
     
 
     
-</dd>
-
+        <h5>Example</h5>
         
-            
-<hr>
-<dt>
-    <h4 class="name" id="getGroup"><span class="type-signature"></span>getGroup( [options], Callback)</h4>
-    
-    
-</dt>
-<dd>
+    <pre class="sunlight-highlight-javascript">var jwtAccessTokenString = &#x27;eyJraWQiOiI2NldURFJVM1paSkNZVFJVVlZTUUw3WEJOIiwic3R0IjoiYWNjZXNzIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiIzV0llS3N1SmR6YWR5YzN4U1ltc1l6IiwiaWF0IjoxNDY5ODMzNzQ3LCJpc3MiOiJodHRwczovL2FwaS5zdG9ybXBhdGguY29tL3YxL2FwcGxpY2F0aW9ucy8yNGs3SG5ET3o0dFE5QVJzQnRQVU42Iiwic3ViIjoiaHR0cHM6Ly9hcGkuc3Rvcm1wYXRoLmNvbS92MS9hY2NvdW50cy8yRWRHb3htbGpuODBlRHZjM0JzS05EIiwiZXhwIjoxNDY5ODM0MzQ3LCJydGkiOiIzV0llS3BhRWpQSGZMbXk2R0l2Ynd2In0.9J7HvhgJZxvxuE-0PiarTDTFPCVVLR_nvRByULNA01Q&#x27;;
 
-    
-    <div class="description">
-        <p>Retrieves the <a href="Group.html">group</a> resource of this membership.</p>
-    </div>
-    
+authenticator.authenticate(jwtAccessTokenString, function(err, authenticationResult) {
+  if (err) {
+    console.log(err);
+  } else {
+    authenticationResult.getAccount(function(err, account){
+      console.log(&#x27;Authenticated Account&#x27;, account);
+    });
+  }
+});</pre>
 
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-<div class="params-table-wrapper">
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#ExpansionOptions">ExpansionOptions</a></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>For retrieving linked resources of the <a href="Group.html">group</a> during this request.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>Callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Callback function, will be called with (err, <a href="Group.html">group</a>).</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-<div>
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		resource/GroupMembership.js
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
 </dd>
@@ -764,7 +440,7 @@ with the parameter (err).</p></td>
             
 <hr>
 <dt>
-    <h4 class="name" id="invalidate"><span class="type-signature"></span>invalidate(callback)</h4>
+    <h4 class="name" id="forApplication"><span class="type-signature"></span>forApplication(application)</h4>
     
     
 </dt>
@@ -772,7 +448,9 @@ with the parameter (err).</p></td>
 
     
     <div class="description">
-        <p>Removes this resource, and all of it's linked resources, e.g. Custom Data, from the local cache.</p>
+        <p>Indicate a specific Stormpath Application as an additional authorization check.
+If an application is specified, the authentication attempt will fail if the
+access token was not issued by the specified application.</p>
     </div>
     
 
@@ -807,13 +485,16 @@ with the parameter (err).</p></td>
 
         <tr>
             
-                <td class="name"><code>callback</code></td>
+                <td class="name"><code>application</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type"><a href="Application.html">Application</a></span>
+|
+
+<span class="param-type">Object</span>
 
 
 
@@ -824,7 +505,8 @@ with the parameter (err).</p></td>
 
             
 
-            <td class="description last"><p>The function to call when the cache invalidation operation is complete.</p></td>
+            <td class="description last"><p>An <a href="Application.html">Application</a> instance, or object
+literal with an href property that indicates the desired application.</p></td>
         </tr>
 
     
@@ -841,15 +523,6 @@ with the parameter (err).</p></td>
 
 	
 
-	
-	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
-	<dd class="inherited-from">
-		<ul class="dummy">
-			<li>
-				<a href="InstanceResource.html#invalidate">InstanceResource#invalidate</a>
-			</li>
-		</ul>
-	</dd>
 	
 
     
@@ -875,7 +548,7 @@ with the parameter (err).</p></td>
 	
 	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
 	<dd class="tag-source">
-		resource/InstanceResource.js
+		oauth/stormpath-access-token-authenticator.js
 	</dd>
 	
 
@@ -898,6 +571,122 @@ with the parameter (err).</p></td>
     
 
     
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">var client = new stormpath.Client();
+
+var authenticator = new stormpath.StormpathAccessTokenAuthenticator(client);
+
+var applicationHref = &#x27;https://api.stormpath.com/v1/applications/3WIeKpaEjPHfLmy6GIvbwv&#x27;;
+
+authenticator.forApplication({
+  href: applicationHref
+});</pre>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="withLocalValidation"><span class="type-signature"></span>withLocalValidation()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Calling this method will convert this authenticator to &quot;local validation&quot; mode.
+In this mode, the authenticator will cache the related access token resource,
+and subsequent authentication attempts will skip the REST API request for the
+access token resource, until that resource expires from the local cache, as
+configured by your caching rules (see <a href="Client.html">Client</a>). This can speed up your
+authentication layer, as the authentication is now done locally without a
+network request.</p>
+<p><strong>Warning.  This mode has a security tradeoff.</strong> Because of the caching nature
+of this mode, access tokens will be considred valid until the expire, and your
+local application will not know if another process as deleted this resource from
+the Stormpath REST API.  When using local validation, we suggest shorter
+expiration times, as configured by the issuing application's <a href="OAuthPolicy.html">OAuthPolicy</a>.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		oauth/stormpath-access-token-authenticator.js
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">var authenticator = new stormpath.StormpathAccessTokenAuthenticator(client);
+
+authenticator.withLocalValidation();</pre>
+
 
     
 </dd>
@@ -950,7 +739,7 @@ with the parameter (err).</p></td>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
 	
-		on 2017-01-31T18:32:56-08:00
+		on 2017-01-31T18:32:57-08:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
