@@ -8,9 +8,9 @@ This section will show you how to set-up Stormpath to allow your users to log in
 
 **What are the Service Provider and Identity Provider Initiated flows?**
 
-In the Service Provider (SP) -initiated flow, the user starts at your application. From a login page (either ID Site or one inside your Stormpath-powered application), the user is redirected to the Identity Provider. After authenticating with the Identity Provider, the user is returned to the application in an authenticated state.
+In the Service Provider (SP)-initiated flow, the user starts at your application. From a login page (either ID Site or one inside your Stormpath-powered application), the user is redirected to the Identity Provider. After authenticating with the Identity Provider, the user is returned to the application in an authenticate state.
 
-In the Identity Provider (IdP) Initiated flow, the user starts at the Identity Provider. After logging-in to the IdP, the user selects the Stormpath-enabled web application from within the IdP’s site, and is redirected to the application in an authenticated state.
+In the Identity Provider (IdP)-initiated flow, the user starts at the Identity Provider. After logging-in to the IdP, the user selects the Stormpath-enabled web application from within the IdP’s site, and is redirected to the application in an authenticated state.
 
 For more, see the `Product Guide <https://docs.stormpath.com/rest/product-guide/latest/auth_n.html#the-stormpath-saml-flow>`__. Feel free to toggle to the language of your choice by clicking on "Switch Language" in the upper left-hand corner of the page.
 
@@ -1079,9 +1079,9 @@ Step 7: (IdP-initiated Flow Only) Generate a RelayState
 Active Directory Federation Services
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Stormpath's allows you to link your Active Directory to Stormpath via SAML and Active Directory Federation Services (ADFS). In order to link the two, you must configure your ADFS server with information about your Stormpath Directory, and vice versa. This will then allow users to log in to your application by authenticating with the ADFS server, and have their Active Directory user information mirrored into Stormpath.
+Stormpath's allows you to link your Active Directory to Stormpath via SAML and Active Directory Federation Services (ADFS). In order to link the two, you must configure your ADFS server with information about your Stormpath Directory, and vice versa. This will then allow users to log in to your application by authenticating with the ADFS server, and have their Active Directory user information mirrored into Stormpath. Both SP-initiated and IDP-initiated workflows are available.
 
-These instructions assume that you have an instance of Windows Server 2012 R2 running ADFS 3.0, fully configured and with existing users.
+These instructions assume that you have an instance of Windows Server 2012 R2 running ADFS 2.0 or 3.0, fully configured and with existing users.
 
 Step 1: Download Your Signing Certificate
 """"""""""""""""""""""""""""""""""""""""""""""
@@ -1228,6 +1228,27 @@ By default, the only user information that is passed by ADFS is the User Princip
       Given-Name   --> firstName  -->        givenName
 
   Since the ADFS Claim is what is being received by Stormpath, the Admin Console only needs to know the mapping between the ADFS Claim and the Account Attribute.
+
+Step 6: (IdP-initiated Flow Only) Generate a RelayState
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+#. After going through the SP-initiated instructions above, navigate back to your SAML Directory in the Admin Console. Under the Identity Provider" tab, copy the "Assertion Consumer Service URL". We will be using this later.
+
+#. Click on the "Generate Default Relay State" button. In this box, you'll need to select the Application your Directory is mapped to, and select your API key. The API key you select should be the same API key you used to connect to Stormpath when you started your Application. You'll also need to add the same callback URI you added to your Application. Copy the generated default relay state and close out of the box.
+
+#. In ADFS, navigate back to ADFS Management and expand "Trust Relationships". Click on "Relying Party Trusts". Double click to open the Relying Party you created earlier. On the "Endpoints" tab, double click to edit the SAML Assertion Consumer Endpoint. Double check that the endpoint type is "SAML Assertion Consumer" and that the binding is "POST". Click the checkbox next to "Set the trusted URL as default". In the trusted url textbox, add the Assertion Consumer Service URL that you saved earlier. Next, add the default relay state you generated as a url parameter. The resulting string should look like this:
+
+``https://stormpath-environment.com/v1/directories/$DIRECTORY_ID/saml/sso/post?RelayState=$DEFAULT_RELAY_STATE``
+
+#. Click "OK" to save the endpoint.
+
+#. Next, click on the "Add SAML" button. Make sure the endpoint type is "SAML Assertion Consumer" and that the binding is "POST". Set the Index to 1. In the "Trusted URL" text box, add the Assertion Consumer Server URL. That string look like this:
+
+``https://stormpath-environment.com/v1/directories/$DIRECTORY_ID/saml/sso/post``
+
+#. Click "OK" to save the endpoint, and then click "Apply" to save all changes.
+
+#. Lastly, restart the ADFSSRV service. You can do so by opening the "Server Manage", clicking on the "ADFS" tab, scrolling down to "Services", and right clicking on the service whose service name is "ADFSSRV". From this list, you should click on "Restart Services".
 
 .. _create-azure:
 
