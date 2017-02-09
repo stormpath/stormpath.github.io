@@ -1,0 +1,1890 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Forwarded Request &mdash; Stormpath Zuul Spring Cloud Starter 1.5.3 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="about.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Stormpath Zuul Spring Cloud Starter 1.5.3 documentation" href="index.html"/>
+        <link rel="next" title="Internationalization (i18n)" href="i18n.html"/>
+        <link rel="prev" title="Request Context" href="request.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+  
+  <script src="https://cdn.optimizely.com/js/225847041.js"></script>
+
+  
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '986262161469311');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  /></noscript>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NQZZFW');</script>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Stormpath Zuul Spring Cloud Starter
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-the-project">What is the Stormpath Zuul Spring Cloud Starter?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#who-should-use-stormpath">Who should use Stormpath?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#get-an-api-key">Get an API Key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#add-the-project">Add the Stormpath Zuul Spring Cloud Starter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#spring-security">Spring Security</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="quickstart.html#disabling-spring-security">Disabling Spring Security</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#configure-zuul">Configure Zuul</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#try-it">Try it!</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="quickstart.html#any-problems">Any Problems?</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="quickstart.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config.html#zuul-config">Zuul Config</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#no-stormpath-config">No Stormpath Config?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#property-overrides">Property Overrides</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config.html#security-considerations-passwords-and-secret-values">Security Considerations: Passwords and secret values</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#bean-overrides">Bean Overrides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#stormpath-client">Stormpath Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config.html#api-key">API Key</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html#http-proxy">HTTP Proxy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html#authentication-scheme">Authentication Scheme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html#caching">Caching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="config.html#usage">Usage</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="config.html#stormpath-application">Stormpath Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="config.html#id1">Usage</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration">Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#enabled">Enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#uri">URI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#next-uri">Next URI</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="registration.html#next-query-parameter">Next Query Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#view">View</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#autologin">AutoLogin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#form-fields">Form Fields</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="registration.html#form-field-definitions">Form Field Definitions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="registration.html#standard-form-fields">Standard Form Fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="registration.html#custom-form-fields">Custom Form Fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="registration.html#optional-form-fields">Optional Form Fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="registration.html#disabling-form-fields">Disabling Form Fields</a></li>
+<li class="toctree-l4"><a class="reference internal" href="registration.html#form-field-order">Form Field Order</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#password-strength">Password Strength</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email Verification</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#try-it">Try it!</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#verify-link-base-url">Verify Link Base URL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#verify-next-uri">Verify Next URI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#pre-register-handler">Pre Register Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#post-register-handler">Post Register Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#events">Events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#registered-account">Registered Account</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#verified-account">Verified Account</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#security-notice">Security Notice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#uri">URI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="login.html#next-query-parameter">Next Query Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#view">View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#pre-login-handler">Pre Login Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#post-login-handler">Post Login Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#events">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#authentication-state">Authentication State</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="login.html#saving-authentication-state">Saving Authentication State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="login.html#cookie-storage">Cookie Storage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="login.html#cookie-config">Cookie Config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="login.html#jwt-creation">JWT Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="login.html#disabling-cookie-storage">Disabling Cookie Storage</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="login.html#custom-savers">Custom Savers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#spring-security">Spring Security</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social.html">Social Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social.html#facebook-login">Facebook Login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social.html#create-a-facebook-app">Create a Facebook App</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social.html#specify-allowed-urls">Specify Allowed URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social.html#create-a-facebook-directory">Create a Facebook Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social.html#test-it-out">Test it Out</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#google-login">Google Login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social.html#create-a-google-project">Create a Google Project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social.html#enable-google-login">Enable Google Login</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social.html#create-oauth-credentials">Create OAuth Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social.html#create-a-google-directory">Create a Google Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social.html#id1">Test it Out</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#linkedin-login">LinkedIn Login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social.html#create-a-linkedin-application">Create a LinkedIn Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social.html#enable-linkedin-permissions">Enable LinkedIn Permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social.html#create-a-linkedin-directory">Create a LinkedIn Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social.html#id2">Test it Out</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="social.html#json-api">JSON API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="forgot-password.html">Forgot Password</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#configure-the-workflow">Configure the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#try-it">Try it!</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-uri">Forgot URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-next-uri">Forgot Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#forgot-view">Forgot View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-uri">Change Password URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-next-uri">Change Password Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#change-password-view">Change Password View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="forgot-password.html#i18n">i18n</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#uri">URI</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="logout.html#next-query-parameter">Next Query Parameter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#events">Events</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request-authentication.html">HTTP Request Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request-authentication.html#http-basic-authentication">HTTP Basic Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="request-authentication.html#token-authentication">Token Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="request-authentication.html#get-a-token">Get a Token</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="request-authentication.html#curl">cURL</a></li>
+<li class="toctree-l4"><a class="reference internal" href="request-authentication.html#html-form-and-ajax">HTML Form and AJAX</a></li>
+<li class="toctree-l4"><a class="reference internal" href="request-authentication.html#origin-or-referer-required">Origin or Referer Required</a></li>
+<li class="toctree-l4"><a class="reference internal" href="request-authentication.html#https-required">HTTPS Required</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="request-authentication.html#api-key-authentication">API Key Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="request-authentication.html#determining-api-key-authentication">Determining API Key Authentication</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request.html">Request Context</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="request.html#current-user-account">Current User Account</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="request.html#account-resolver">Account Resolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="request.html#request-attributes">Request Attributes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="request.html#request-attribute-names">Request Attribute Names</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="request.html#http-servlet-request-api">HTTP Servlet Request API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="request.html#httpservletrequest-getremoteuser">HttpServletRequest getRemoteUser()</a></li>
+<li class="toctree-l4"><a class="reference internal" href="request.html#httpservletrequest-getuserprincipal">HttpServletRequest getUserPrincipal()</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="request.html#stormpath-application">Stormpath Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="request.html#spring-autowiring">Spring autowiring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="request.html#application-resolver">Application Resolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="request.html#id2">Request Attributes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="request.html#default-request-attribute-name">Default Request Attribute Name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="request.html#custom-request-attribute-names">Custom Request Attribute Names</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="request.html#stormpath-client">Stormpath Client</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="request.html#id3">Spring autowiring</a></li>
+<li class="toctree-l3"><a class="reference internal" href="request.html#client-resolver">Client Resolver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="request.html#id4">Request Attributes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="request.html#id5">Default Request Attribute Name</a></li>
+<li class="toctree-l4"><a class="reference internal" href="request.html#id6">Custom Request Attribute Names</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Forwarded Request</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#forwarded-account-header-name">Forwarded Account Header Name</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#forwarded-account-header-value">Forwarded Account Header Value</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#single-account-field">Single Account Field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-json">Account JSON</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conversion-rules">Conversion Rules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#each"><code class="docutils literal"><span class="pre">each</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#elements"><code class="docutils literal"><span class="pre">elements</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enabled"><code class="docutils literal"><span class="pre">enabled</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#field"><code class="docutils literal"><span class="pre">field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fields"><code class="docutils literal"><span class="pre">fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#name"><code class="docutils literal"><span class="pre">name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#strategy"><code class="docutils literal"><span class="pre">strategy</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#forwarded-account-header-jwt">Forwarded Account Header JWT</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#forwarded-account-header-jwt-enabled"><code class="docutils literal"><span class="pre">enabled</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#expirationseconds"><code class="docutils literal"><span class="pre">expirationSeconds</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#notbeforeseconds"><code class="docutils literal"><span class="pre">notBeforeSeconds</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#claims"><code class="docutils literal"><span class="pre">claims</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#header"><code class="docutils literal"><span class="pre">header</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#key"><code class="docutils literal"><span class="pre">key</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#alg"><code class="docutils literal"><span class="pre">alg</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9"><code class="docutils literal"><span class="pre">enabled</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#encoding"><code class="docutils literal"><span class="pre">encoding</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id"><code class="docutils literal"><span class="pre">id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resource"><code class="docutils literal"><span class="pre">resource</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#value"><code class="docutils literal"><span class="pre">value</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#valueclaim"><code class="docutils literal"><span class="pre">valueClaim</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#forwarded-account-jwt-valueclaim-enabled"><code class="docutils literal"><span class="pre">enabled</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#forwarded-account-jwt-valueclaim-name"><code class="docutils literal"><span class="pre">name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#signing-key-bean">Signing Key Bean</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#custom-header-value">Custom Header Value</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#account-to-map-function">Account-to-Map Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-to-string-function">Account-to-String Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#account-header-value-resolver">Account Header Value Resolver</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="i18n.html">Internationalization (i18n)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#languages">Languages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#request-locale">Request Locale</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#view-templates">View Templates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i18n.html#i18n-properties">i18n.properties</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="events.html#requesteventlistener">RequestEventListener</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#id2">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#listener-best-practices">Listener Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="events.html#spring-security">Spring Security</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="caching.html">Caching</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#disable-caching">Disable Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caching.html#cache-configuration">Cache Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="caching.html#cache-regions">Cache Regions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="caching.html#nonce-cache-region">Nonce Cache Region</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="idsite.html">ID Site</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#how-does-it-work">How Does It Work?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#enable-id-site">Enable ID Site</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#configure-your-application">Configure Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idsite.html#try-it">Try It!</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="views.html">Custom Views</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="views.html#thymeleaf-views">Thymeleaf Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#internationalization-i18n">Internationalization (i18n)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#head-template">Head Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#css">CSS</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="views.html#css-overrides">CSS Overrides</a></li>
+<li class="toctree-l3"><a class="reference internal" href="views.html#css-replacement">CSS Replacement</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="views.html#change-a-default-view">Change a Default View</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="appendix/default-stormpath-properties.html">Default Stormpath Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-baseurl">stormpath.client.baseUrl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-connectiontimeout">stormpath.client.connectionTimeout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-enabled">stormpath.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-apikey-id">stormpath.client.apiKey.id</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-apikey-secret">stormpath.client.apiKey.secret</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-apikey-file">stormpath.client.apiKey.file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-apikey-fileidpropertyname">stormpath.client.apiKey.fileIdPropertyName</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-apikey-filesecretpropertyname">stormpath.client.apiKey.fileSecretPropertyName</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-cachemanager-enabled">stormpath.client.cacheManager.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-cachemanager-defaultttl">stormpath.client.cacheManager.defaultTtl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-cachemanager-defaulttti">stormpath.client.cacheManager.defaultTti</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-application-href">stormpath.application.href</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-authenticationscheme">stormpath.client.authenticationScheme</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-proxy-host">stormpath.client.proxy.host</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-proxy-port">stormpath.client.proxy.port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-proxy-username">stormpath.client.proxy.username</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-client-proxy-password">stormpath.client.proxy.password</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-account-jwt-ttl">stormpath.web.account.jwt.ttl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-account-jwt-signaturealgorithm">stormpath.web.account.jwt.signatureAlgorithm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-authc-savers-cookie-enabled">stormpath.web.authc.savers.cookie.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-request-remoteuser-strategy">stormpath.web.request.remoteUser.strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-request-userprincipal-strategy">stormpath.web.request.userPrincipal.strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-request-client-attributenames">stormpath.web.request.client.attributeNames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-request-application-attributenames">stormpath.web.request.application.attributeNames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-csrf-token-enabled">stormpath.web.csrf.token.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-csrf-token-ttl">stormpath.web.csrf.token.ttl</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-csrf-token-name">stormpath.web.csrf.token.name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-nonce-cache-name">stormpath.web.nonce.cache.name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-stormpathfilter-enabled">stormpath.web.stormpathFilter.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-stormpathfilter-order">stormpath.web.stormpathFilter.order</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-stormpathfilter-urlpatterns">stormpath.web.stormpathFilter.urlPatterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-stormpathfilter-servletnames">stormpath.web.stormpathFilter.servletNames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-stormpathfilter-dispatchertypes">stormpath.web.stormpathFilter.dispatcherTypes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-stormpathfilter-matchafter">stormpath.web.stormpathFilter.matchAfter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-head-view">stormpath.web.head.view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-head-fragmentselector">stormpath.web.head.fragmentSelector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-head-cssuris">stormpath.web.head.cssUris</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-head-extracssuris">stormpath.web.head.extraCssUris</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-enabled">stormpath.web.login.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-uri">stormpath.web.login.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-nexturi">stormpath.web.login.nextUri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-view">stormpath.web.login.view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-forgotpassword-enabled">stormpath.web.forgotPassword.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-forgotpassword-uri">stormpath.web.forgotPassword.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-forgotpassword-nexturi">stormpath.web.forgotPassword.nextUri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-forgotpassword-view">stormpath.web.forgotPassword.view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-enabled">stormpath.web.register.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-uri">stormpath.web.register.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-nexturi">stormpath.web.register.nextUri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-view">stormpath.web.register.view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-verifyemail-enabled">stormpath.web.verifyEmail.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-verifyemail-uri">stormpath.web.verifyEmail.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-verifyemail-nexturi">stormpath.web.verifyEmail.nextUri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-verifyemail-view">stormpath.web.verifyEmail.view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-logout-enabled">stormpath.web.logout.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-logout-uri">stormpath.web.logout.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-logout-nexturi">stormpath.web.logout.nextUri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-logout-invalidatehttpsession">stormpath.web.logout.invalidateHttpSession</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-changepassword-enabled">stormpath.web.changePassword.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-changepassword-uri">stormpath.web.changePassword.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-changepassword-nexturi">stormpath.web.changePassword.nextUri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-changepassword-view">stormpath.web.changePassword.view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-oauth2-enabled">stormpath.web.oauth2.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-oauth2-uri">stormpath.web.oauth2.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-oauth2-origin-authorizer-originuris">stormpath.web.oauth2.origin.authorizer.originUris</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-idsite-enabled">stormpath.web.idSite.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-idsite-loginuri">stormpath.web.idSite.loginUri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-idsite-registeruri">stormpath.web.idSite.registerUri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-idsite-forgoturi">stormpath.web.idSite.forgotUri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-idsite-resulturi">stormpath.web.idSite.resultUri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-idsite-usesubdomain">stormpath.web.idSite.useSubdomain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-idsite-showorganizationfield">stormpath.web.idSite.showOrganizationField</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-callback-enabled">stormpath.web.callback.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-callback-uri">stormpath.web.callback.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-application-domain">stormpath.web.application.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#id2">stormpath.application.href</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-oauth2-password-validationstrategy">stormpath.web.oauth2.password.validationStrategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-accesstokencookie-name">stormpath.web.accessTokenCookie.name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-accesstokencookie-httponly">stormpath.web.accessTokenCookie.httpOnly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-accesstokencookie-secure">stormpath.web.accessTokenCookie.secure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-accesstokencookie-path">stormpath.web.accessTokenCookie.path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-accesstokencookie-domain">stormpath.web.accessTokenCookie.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-accesstokencookie-maxage">stormpath.web.accessTokenCookie.maxAge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-name">stormpath.web.refreshTokenCookie.name</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-httponly">stormpath.web.refreshTokenCookie.httpOnly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-secure">stormpath.web.refreshTokenCookie.secure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-path">stormpath.web.refreshTokenCookie.path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-domain">stormpath.web.refreshTokenCookie.domain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-refreshtokencookie-maxage">stormpath.web.refreshTokenCookie.maxAge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-produces">stormpath.web.produces</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-autologin">stormpath.web.register.autoLogin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-givenname-enabled">stormpath.web.register.form.fields.givenName.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-givenname-visible">stormpath.web.register.form.fields.givenName.visible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-givenname-label">stormpath.web.register.form.fields.givenName.label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-givenname-placeholder">stormpath.web.register.form.fields.givenName.placeholder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-givenname-required">stormpath.web.register.form.fields.givenName.required</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-givenname-type">stormpath.web.register.form.fields.givenName.type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-middlename-enabled">stormpath.web.register.form.fields.middleName.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-middlename-visible">stormpath.web.register.form.fields.middleName.visible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-middlename-label">stormpath.web.register.form.fields.middleName.label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-middlename-placeholder">stormpath.web.register.form.fields.middleName.placeholder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-middlename-required">stormpath.web.register.form.fields.middleName.required</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-middlename-type">stormpath.web.register.form.fields.middleName.type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-surname-enabled">stormpath.web.register.form.fields.surname.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-surname-visible">stormpath.web.register.form.fields.surname.visible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-surname-label">stormpath.web.register.form.fields.surname.label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-surname-placeholder">stormpath.web.register.form.fields.surname.placeholder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-surname-required">stormpath.web.register.form.fields.surname.required</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-surname-type">stormpath.web.register.form.fields.surname.type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-username-enabled">stormpath.web.register.form.fields.username.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-username-visible">stormpath.web.register.form.fields.username.visible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-username-label">stormpath.web.register.form.fields.username.label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-username-placeholder">stormpath.web.register.form.fields.username.placeholder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-username-required">stormpath.web.register.form.fields.username.required</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-username-type">stormpath.web.register.form.fields.username.type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-email-enabled">stormpath.web.register.form.fields.email.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-email-visible">stormpath.web.register.form.fields.email.visible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-email-label">stormpath.web.register.form.fields.email.label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-email-placeholder">stormpath.web.register.form.fields.email.placeholder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-email-required">stormpath.web.register.form.fields.email.required</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-email-type">stormpath.web.register.form.fields.email.type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-password-enabled">stormpath.web.register.form.fields.password.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-password-visible">stormpath.web.register.form.fields.password.visible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-password-label">stormpath.web.register.form.fields.password.label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-password-placeholder">stormpath.web.register.form.fields.password.placeholder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-password-required">stormpath.web.register.form.fields.password.required</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-password-type">stormpath.web.register.form.fields.password.type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-confirmpassword-enabled">stormpath.web.register.form.fields.confirmPassword.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-confirmpassword-visible">stormpath.web.register.form.fields.confirmPassword.visible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-confirmpassword-label">stormpath.web.register.form.fields.confirmPassword.label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-confirmpassword-placeholder">stormpath.web.register.form.fields.confirmPassword.placeholder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-confirmpassword-required">stormpath.web.register.form.fields.confirmPassword.required</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fields-confirmpassword-type">stormpath.web.register.form.fields.confirmPassword.type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-register-form-fieldorder">stormpath.web.register.form.fieldOrder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-login-enabled">stormpath.web.login.form.fields.login.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-login-visible">stormpath.web.login.form.fields.login.visible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-login-label">stormpath.web.login.form.fields.login.label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-login-placeholder">stormpath.web.login.form.fields.login.placeholder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-login-required">stormpath.web.login.form.fields.login.required</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-login-type">stormpath.web.login.form.fields.login.type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-password-enabled">stormpath.web.login.form.fields.password.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-password-visible">stormpath.web.login.form.fields.password.visible</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-password-label">stormpath.web.login.form.fields.password.label</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-password-placeholder">stormpath.web.login.form.fields.password.placeholder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-password-required">stormpath.web.login.form.fields.password.required</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fields-password-type">stormpath.web.login.form.fields.password.type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-login-form-fieldorder">stormpath.web.login.form.fieldOrder</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-changepassword-autologin">stormpath.web.changePassword.autoLogin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-changepassword-erroruri">stormpath.web.changePassword.errorUri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-social-facebook-uri">stormpath.web.social.facebook.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-social-github-uri">stormpath.web.social.github.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-social-google-uri">stormpath.web.social.google.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-social-linkedin-uri">stormpath.web.social.linkedin.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-me-enabled">stormpath.web.me.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-me-uri">stormpath.web.me.uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-me-expand-apikeys">stormpath.web.me.expand.apiKeys</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-me-expand-applications">stormpath.web.me.expand.applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-me-expand-customdata">stormpath.web.me.expand.customData</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-me-expand-directory">stormpath.web.me.expand.directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-me-expand-groupmemberships">stormpath.web.me.expand.groupMemberships</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-me-expand-groups">stormpath.web.me.expand.groups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-me-expand-providerdata">stormpath.web.me.expand.providerData</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-me-expand-tenant">stormpath.web.me.expand.tenant</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-http-authc-challenge">stormpath.web.http.authc.challenge</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-json-view-resolver-order">stormpath.web.json.view.resolver.order</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-jsp-view-resolver-order">stormpath.web.jsp.view.resolver.order</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-assets-defaultservletname">stormpath.web.assets.defaultServletName</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-assets-enabled">stormpath.web.assets.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-assets-css-enabled">stormpath.web.assets.css.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-assets-js-enabled">stormpath.web.assets.js.enabled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="appendix/default-stormpath-properties.html#stormpath-web-assets-handlermapping-order">stormpath.web.assets.handlerMapping.order</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/i18n-properties.html">i18n.properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/stormpath-css.html">stormpath.css</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/change-password.html">/templates/stormpath/change-password.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/forgot-password.html">/templates/stormpath/forgot-password.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/head.html">/templates/stormpath/head.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/login.html">/templates/stormpath/login.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/register.html">/templates/stormpath/register.html</a></li>
+<li class="toctree-l2"><a class="reference internal" href="appendix/verify.html">/templates/stormpath/verify.html</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Stormpath Zuul Spring Cloud Starter</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Forwarded Request</li>
+    <li class="wy-breadcrumbs-aside">
+      
+          
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <blockquote>
+<div></div></blockquote>
+<div class="section" id="forwarded-request">
+<span id="id1"></span><h1>Forwarded Request<a class="headerlink" href="#forwarded-request" title="Permalink to this headline">¶</a></h1>
+<p>If a user has authenticated, either by using a <a class="reference internal" href="login.html#login"><span class="std std-ref">login form</span></a> or via
+<a class="reference internal" href="request-authentication.html#request-authentication"><span class="std std-ref">Request Authentication</span></a>, the user account data will be forwarded to any backend
+origin servers behind the gateway in a request header.</p>
+<p>The origin server(s) may inspect this request header to discover information about the user.  This information can
+be used to customize views, send emails, update user-specific data, or practically anything else you can think of that
+might be user-specific.</p>
+<p>This page covers how to customize everything related to this header and its contents.</p>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#forwarded-account-header-name" id="id12">Forwarded Account Header Name</a></li>
+<li><a class="reference internal" href="#forwarded-account-header-value" id="id13">Forwarded Account Header Value</a><ul>
+<li><a class="reference internal" href="#single-account-field" id="id14">Single Account Field</a></li>
+<li><a class="reference internal" href="#account-json" id="id15">Account JSON</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#forwarded-account-header-jwt" id="id16">Forwarded Account Header JWT</a><ul>
+<li><a class="reference internal" href="#forwarded-account-header-jwt-enabled" id="id17"><code class="docutils literal"><span class="pre">enabled</span></code></a></li>
+<li><a class="reference internal" href="#expirationseconds" id="id18"><code class="docutils literal"><span class="pre">expirationSeconds</span></code></a></li>
+<li><a class="reference internal" href="#notbeforeseconds" id="id19"><code class="docutils literal"><span class="pre">notBeforeSeconds</span></code></a></li>
+<li><a class="reference internal" href="#claims" id="id20"><code class="docutils literal"><span class="pre">claims</span></code></a></li>
+<li><a class="reference internal" href="#header" id="id21"><code class="docutils literal"><span class="pre">header</span></code></a></li>
+<li><a class="reference internal" href="#key" id="id22"><code class="docutils literal"><span class="pre">key</span></code></a></li>
+<li><a class="reference internal" href="#valueclaim" id="id23"><code class="docutils literal"><span class="pre">valueClaim</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#custom-header-value" id="id24">Custom Header Value</a><ul>
+<li><a class="reference internal" href="#account-to-map-function" id="id25">Account-to-Map Function</a></li>
+<li><a class="reference internal" href="#account-to-string-function" id="id26">Account-to-String Function</a></li>
+<li><a class="reference internal" href="#account-header-value-resolver" id="id27">Account Header Value Resolver</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="forwarded-account-header-name">
+<h2><a class="toc-backref" href="#id12">Forwarded Account Header Name</a><a class="headerlink" href="#forwarded-account-header-name" title="Permalink to this headline">¶</a></h2>
+<p>If a user account is associated with a request that will be forwarded to an origin server, the account will be
+converted to a String and added to the forwarded request as an HTTP request header.  The default header name is
+<code class="docutils literal"><span class="pre">X-Forwarded-User</span></code>, a de-facto HTTP header for forwarding user account information.</p>
+<p>If you want to specify a different HTTP header name, set the <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.name</span></code> configuration property:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">X-Forwarded-User</span>
+</pre></div>
+</div>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p class="last">If you change this name, ensure the origin server(s) behind your gateway are updated to look for the new header name as well.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If there is no user account associated with the request, the header will not be present in the forwarded request at all.</p>
+</div>
+</div>
+<div class="section" id="forwarded-account-header-value">
+<h2><a class="toc-backref" href="#id13">Forwarded Account Header Value</a><a class="headerlink" href="#forwarded-account-header-value" title="Permalink to this headline">¶</a></h2>
+<p>If a user <code class="docutils literal"><span class="pre">Account</span></code> is associated with the request, the forwarded account header value will be a String that represents the
+account.</p>
+<p>You can customize this String value to be anything you like - such as a simple single value like the account&#8217;s username
+or email, or the entire account as a JSON document, or even a cryptographically-safe
+<a class="reference internal" href="#forwarded-account-header-jwt"><span class="std std-ref">JSON Web Token (JWT)</span></a> that represents the account information you choose.</p>
+<p>By default, a digitally-signed account <a class="reference internal" href="#forwarded-account-header-jwt"><span class="std std-ref">JWT</span></a> will be used as the header value.
+When an origin server reads the forwarded header value, the origin server can verify the JWT signature.  This allows
+the origin server to cryptographically guarantee the account information in the JWT has not been unknowingly changed or
+tampered with in transit. JWTs are among the simplest and safest means of secure identity assertion, so the
+Stormpath Zuul Spring Cloud Starter chooses this approach by default to help ensure best-practices security.</p>
+<p>If JWTs are not desirable - perhaps because you implicitly trust the network and machine transmission to your origin
+servers - you can <a class="reference internal" href="#forwarded-account-header-jwt-enabled"><span class="std std-ref">disable the JWT approach entirely</span></a> and either send over a
+<a class="reference internal" href="#forwarded-account-single-field"><span class="std std-ref">single string value</span></a> or a <a class="reference internal" href="#forwarded-account-json"><span class="std std-ref">plain JSON document</span></a>.
+If you don&#8217;t have a preference however, it is recommended in most scenarios to retain the additional security benefits
+JWTs can offer.</p>
+<p>Because JWT construction is a secondary concern after you&#8217;ve chosen which account data to represent in the header, we&#8217;ll
+cover account value customization first, and then finish with instructions on how to represent this information as a JWT.</p>
+<div class="section" id="single-account-field">
+<span id="forwarded-account-single-field"></span><h3><a class="toc-backref" href="#id14">Single Account Field</a><a class="headerlink" href="#single-account-field" title="Permalink to this headline">¶</a></h3>
+<p>If you do not want or need the security guarantees of a JWT and want your header value to be a single string value,
+such as the account&#8217;s username or email, you can set the following configuration:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+        <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">single</span>
+          <span class="l l-Scalar l-Scalar-Plain">field</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">username</span>
+</pre></div>
+</div>
+<p>This configuration states that <a class="reference internal" href="#forwarded-account-header-jwt-enabled"><span class="std std-ref">JWT is disabled</span></a>, and we&#8217;ll use a value
+conversion strategy of <code class="docutils literal"><span class="pre">single</span></code> which means we want the header to be a single account field value (we&#8217;ll talk about
+<a class="reference internal" href="#forwarded-account-header-jwt"><span class="std std-ref">JWTs</span></a> and <a class="reference internal" href="#object-conversion-strategy"><span class="std std-ref">conversion strategies</span></a> later).  The
+account field that we want to use as the value is indicated by the <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.value.field</span></code>
+config property, which in this case is <code class="docutils literal"><span class="pre">username</span></code>.</p>
+<p>With the above config, if an account with a username of <code class="docutils literal"><span class="pre">tk421</span></code> was associated with the request, the header sent to
+the origin server(s) would look like this:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">x-forwarded-user</span><span class="o">:</span> <span class="s">tk421</span>
+</pre></div>
+</div>
+<p>A similar example using the account email instead is shown in the <a class="reference internal" href="#object-conversion-field"><span class="std std-ref">field</span></a> section.</p>
+<p>You can set the <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.value.field</span></code> to a name of any <a class="reference external" href="http://softwareengineering.stackexchange.com/questions/238033/what-does-it-mean-when-data-is-scalar">scalar</a> property defined on the
+<a class="reference external" href="https://docs.stormpath.com/java/apidocs/com/stormpath/sdk/account/Account.html">com.stormpath.sdk.account.Account</a>
+interface.  For example:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">email</span></code></li>
+<li><code class="docutils literal"><span class="pre">givenName</span></code></li>
+<li><code class="docutils literal"><span class="pre">middleName</span></code></li>
+<li><code class="docutils literal"><span class="pre">surname</span></code></li>
+<li><code class="docutils literal"><span class="pre">fullName</span></code></li>
+<li>etc...</li>
+</ul>
+<p>That said, a single account field is often not sufficient, nor is it cryptographically signed to guarantee data
+integrity, so you may prefer an Account JSON document or a signed JWT instead.</p>
+</div>
+<div class="section" id="account-json">
+<span id="forwarded-account-json"></span><h3><a class="toc-backref" href="#id15">Account JSON</a><a class="headerlink" href="#account-json" title="Permalink to this headline">¶</a></h3>
+<p>You can serialize the request Account, as well as objects or collections reachable from the
+<a class="reference external" href="https://docs.stormpath.com/java/apidocs/com/stormpath/sdk/account/Account.html">com.stormpath.sdk.account.Account</a>
+interface (like <code class="docutils literal"><span class="pre">CustomData</span></code> and its <code class="docutils literal"><span class="pre">Groups</span></code> collection and more), as a single JSON
+document. The resulting JSON document string will be the forwarded account value.</p>
+<p>So how do you specify which of the Account&#8217;s fields and its reachable objects (the &#8216;graph&#8217;) should be included in the
+final JSON document?  With <em>conversion rules</em>.</p>
+<div class="section" id="conversion-rules">
+<span id="id3"></span><h4>Conversion Rules<a class="headerlink" href="#conversion-rules" title="Permalink to this headline">¶</a></h4>
+<p>Account-to-String conversion is performed according to rules that you can specify for the account and
+its graph of connected objects.  We call these rules <em>conversion rules</em>  and you can specify conversion config for any
+object or collection encountered in a graph.</p>
+<p>For the purposes of the forwarded account header, the account associated with the
+request is always the &#8216;root&#8217; of the object graph to convert; its properties and reachable objects/collections may also be
+serialized by specifying a parallel graph of conversion rules.  The account object graph will be traversed according to
+your rules, and the resulting output will be a single JSON document that has the same graph structure as your
+specified conversion graph.</p>
+<p>So what are the conversion rules?</p>
+<p>Before explaining each possible option in detail, let&#8217;s see what the default configuration looks like and we&#8217;ll
+explain what it means. Or if you prefer, you can read about the
+<a class="reference internal" href="#object-graph-conversion"><span class="std std-ref">available configuration options</span></a> first, and then return here to see
+them used in context.</p>
+<p>Here are the default Account conversion rules, specified as various <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.value.*</span></code> config
+properties.  This is the default configuration in effect if you don&#8217;t specify any conversion rules yourself:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scalars</span>
+          <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">customData</span><span class="p p-Indicator">:</span>
+              <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scalars</span>
+            <span class="l l-Scalar l-Scalar-Plain">groups</span><span class="p p-Indicator">:</span>
+              <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">defined</span>
+              <span class="l l-Scalar l-Scalar-Plain">elements</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">true</span>
+                <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">items</span>
+                <span class="l l-Scalar l-Scalar-Plain">each</span><span class="p p-Indicator">:</span>
+                  <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scalars</span>
+</pre></div>
+</div>
+<p>So what does this mean?  You can summarize this in English as the following:</p>
+<blockquote class="epigraph">
+<div><p>When converting the request Account to a JSON value, I want:</p>
+<ul class="simple">
+<li>all of the account&#8217;s <a class="reference external" href="http://softwareengineering.stackexchange.com/questions/238033/what-does-it-mean-when-data-is-scalar">scalar</a> (i.e. non object/collection) fields to be included, each as a JSON name/value pair.</li>
+<li>However, I want specific overriding rules for the <code class="docutils literal"><span class="pre">customData</span></code> and <code class="docutils literal"><span class="pre">groups</span></code> fields.  For these:<ul>
+<li><code class="docutils literal"><span class="pre">customData</span></code> isn&#8217;t a scalar, but I want it included anyway, so I&#8217;m going to define conversion rules for it
+too.  That is :<ul>
+<li>Include any of the customData&#8217;s scalar properties automatically</li>
+</ul>
+</li>
+<li><code class="docutils literal"><span class="pre">groups</span></code> isn&#8217;t a scalar (it&#8217;s a <code class="docutils literal"><span class="pre">GroupsCollection</span></code> object), but I want it included anyway.<ul>
+<li>However, in this case I want to include <em>only</em> fields that are explicitly <em>defined</em> in its <code class="docutils literal"><span class="pre">fields</span></code>
+list.  (In this case, even though the strategy is <code class="docutils literal"><span class="pre">defined</span></code>, no actual <code class="docutils literal"><span class="pre">fields</span></code> have been specified.
+This means that <em>no</em> fields on the <code class="docutils literal"><span class="pre">GroupsCollection</span></code> object itself, like &#8216;href&#8217;, &#8216;size&#8217; and &#8216;limit&#8217; will be
+included.  We just want the collection&#8217;s elements, described next.)</li>
+<li>The collection <code class="docutils literal"><span class="pre">elements</span></code> are enabled so I do want the elements in the collection.<ul>
+<li>I want any converted collection elements to be represented as a JSON array with the <em>name</em> of <code class="docutils literal"><span class="pre">items</span></code>.</li>
+<li>For <code class="docutils literal"><span class="pre">each</span></code> element in the <code class="docutils literal"><span class="pre">GroupsCollection</span></code> instance, I want to convert each <code class="docutils literal"><span class="pre">Group</span></code> object,
+including each group&#8217;s <em>scalar</em> properties.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>Here is an example of what the resulting JSON would look like, pretty printed for readability (to reduce the number of
+bytes transmitted over the network, the actual value won&#8217;t be pretty-printed):</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/753veZGE2aIy64VnTrF5Ov&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;tk421&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;tk421@galacticempire.com&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;givenName&quot;</span><span class="p">:</span> <span class="s2">&quot;TK421&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;surname&quot;</span><span class="p">:</span> <span class="s2">&quot;Stormtrooper&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;TK421 Stormtrooper&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-12-15T19:58:55.272Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-12-15T19:59:23.729Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;passwordModifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-12-15T19:58:55.000Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;emailVerificationToken&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nt">&quot;customData&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/accounts/753veZGE2aIy64VnTrF5Ov/customData&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-12-15T19:58:55.272Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-12-15T19:59:23.729Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;favoriteColor&quot;</span><span class="p">:</span> <span class="s2">&quot;Blaster Black&quot;</span>
+  <span class="p">},</span>
+  <span class="nt">&quot;groups&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;items&quot;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/4NQzRKj0qDq1wIg9M0jUfa&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;dsguards&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Death Star Guards&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-12-28T00:34:46.453Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-12-28T00:34:46.453Z&quot;</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="nt">&quot;href&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.stormpath.com/v1/groups/9fBEMQtvElx2Zn7a0ku1Dj&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;troopers&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;All stormtroopers&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-12-28T00:34:07.222Z&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-12-28T00:34:07.222Z&quot;</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>As you can see, the output JSON graph mirrors the conversion rules graph above.</p>
+<p>Now that we&#8217;ve seen a good example, let&#8217;s cover all the possible conversion config properties to explain their
+functionality.  You may find the <a class="reference internal" href="#object-conversion-strategy"><span class="std std-ref">strategy</span></a> particularly helpful.</p>
+</div>
+<div class="section" id="each">
+<span id="collection-conversion-each"></span><h4><code class="docutils literal"><span class="pre">each</span></code><a class="headerlink" href="#each" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">each</span></code> conversion property may only be specified as a nested property of an <code class="docutils literal"><span class="pre">elements</span></code> block.</p>
+<p>If specified, the <code class="docutils literal"><span class="pre">each</span></code> property value is a conversion rule block that indicates how to
+convert/serialize each element in the collection.</p>
+<p>If you do not specify an <code class="docutils literal"><span class="pre">each</span></code> configuration block, default conversion rules apply for any encountered element
+object.</p>
+</div>
+<div class="section" id="elements">
+<span id="collection-conversion-elements"></span><h4><code class="docutils literal"><span class="pre">elements</span></code><a class="headerlink" href="#elements" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">elements</span></code> conversion property may only be specified when the object encountered is a Collection.</p>
+<p>Unlike a standard conversion block, it supports only 3 nested config properties:  <code class="docutils literal"><span class="pre">name</span></code>, <code class="docutils literal"><span class="pre">enabled</span></code> and <code class="docutils literal"><span class="pre">each</span></code>.
+Unless overridden, the default <code class="docutils literal"><span class="pre">name</span></code> of the elements array in the rendered JSON is <code class="docutils literal"><span class="pre">items</span></code>.</p>
+<p>In the following example, the <code class="docutils literal"><span class="pre">groups</span></code> field is a collection, so it can support the <code class="docutils literal"><span class="pre">elements</span></code> definition
+(which in turn uses an <code class="docutils literal"><span class="pre">each</span></code> definition):</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">groups</span><span class="p p-Indicator">:</span>
+              <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">defined</span>
+<span class="hll">              <span class="l l-Scalar l-Scalar-Plain">elements</span><span class="p p-Indicator">:</span>
+</span><span class="hll">                <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">items</span>
+</span><span class="hll">                <span class="l l-Scalar l-Scalar-Plain">each</span><span class="p p-Indicator">:</span>
+</span><span class="hll">                  <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scalars</span>
+</span></pre></div>
+</div>
+<p>This would result in the following JSON (other properties omitted for brevity):</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="c1">// ... omitted for brevity ...</span>
+  <span class="s2">&quot;groups&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;items&quot;</span><span class="o">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="c1">// ... ommitted for brevity ...</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="c1">// ... ommitted for brevity ...</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notice this creates a <code class="docutils literal"><span class="pre">groups</span></code> JSON property, which is an object, and within that object, wraps the elements in
+an <code class="docutils literal"><span class="pre">items</span></code> array.</p>
+<div class="section" id="object-wraps-array">
+<span id="id5"></span><h5>Object Wraps Array<a class="headerlink" href="#object-wraps-array" title="Permalink to this headline">¶</a></h5>
+<p>We typically recommend keeping this &#8216;object wraps array&#8217; strategy for collections - it allows for adding properties
+to the collection object itself in the future (like <code class="docutils literal"><span class="pre">size</span></code> or <code class="docutils literal"><span class="pre">limit</span></code>, etc) whereas raw JSON arrays cannot
+support this.</p>
+<p>That said, what if you didn&#8217;t care about potential additional collection properties in the future, and you just wanted
+the collection to be a raw JSON array?  You can use a <code class="docutils literal"><span class="pre">strategy</span></code> of <code class="docutils literal"><span class="pre">list</span></code>.  For example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">groups</span><span class="p p-Indicator">:</span>
+<span class="hll">              <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">list</span>
+</span>              <span class="l l-Scalar l-Scalar-Plain">elements</span><span class="p p-Indicator">:</span>
+                <span class="l l-Scalar l-Scalar-Plain">each</span><span class="p p-Indicator">:</span>
+                  <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scalars</span>
+</pre></div>
+</div>
+<p>This results in the following JSON (other properties omitted for brevity):</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="c1">// ... omitted for brevity ...</span>
+  <span class="s2">&quot;groups&quot;</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="c1">// ... ommitted for brevity ...</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="c1">// ... ommitted for brevity ...</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notice the resulting JSON - <code class="docutils literal"><span class="pre">groups</span></code> is not an object with a nested <code class="docutils literal"><span class="pre">items</span></code> array - it is just an array.</p>
+<div class="admonition caution">
+<p class="first admonition-title">Caution</p>
+<p>We typically recommend that you <em>DO NOT</em> use the <code class="docutils literal"><span class="pre">list</span></code> strategy if forward-compatibility is
+important to you: JSON arrays are inflexible and cannot support additional properties over time, whereas JSON
+objects are flexible and allow for future property expansion.</p>
+<p class="last">However, the <code class="docutils literal"><span class="pre">list</span></code> strategy could be useful if your account JSON must adhere to an existing or legacy structure
+that your origin servers expect.</p>
+</div>
+</div>
+</div>
+<div class="section" id="enabled">
+<span id="object-conversion-enabled"></span><h4><code class="docutils literal"><span class="pre">enabled</span></code><a class="headerlink" href="#enabled" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">enabled</span></code> conversion property indicates if the field will be included in the output sent to the origin server.  If
+the value is <code class="docutils literal"><span class="pre">false</span></code>, that field will not be included at all in the output sent to the origin server.  The default
+value is <code class="docutils literal"><span class="pre">true</span></code>.</p>
+<p>For example, the following config indicates that, although the general strategy is to include the user account&#8217;s
+scalar fields, the <code class="docutils literal"><span class="pre">href</span></code> field is excluded/omitted from the output JSON entirely:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scalars</span>
+          <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+<span class="hll">            <span class="l l-Scalar l-Scalar-Plain">href</span><span class="p p-Indicator">:</span>
+</span><span class="hll">              <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</span></pre></div>
+</div>
+</div>
+<div class="section" id="field">
+<span id="object-conversion-field"></span><h4><code class="docutils literal"><span class="pre">field</span></code><a class="headerlink" href="#field" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">field</span></code> conversion property is only evaluated when using the <code class="docutils literal"><span class="pre">single</span></code> strategy.  It defines which
+field on the target object should be used as the value in the rendered output.</p>
+<p>For example, the following config says &#8220;Use the account&#8217;s email address as the single value for the forwarded
+account header&#8221;:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+        <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span>
+<span class="hll">          <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">single</span>
+</span><span class="hll">          <span class="l l-Scalar l-Scalar-Plain">field</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">email</span>
+</span></pre></div>
+</div>
+<p>With the above config, if an account with an email of <code class="docutils literal"><span class="pre">tk421&#64;galacticempire.com</span></code> was associated with the request,
+the header sent to the origin server(s) would look like this:</p>
+<div class="highlight-properties"><div class="highlight"><pre><span></span><span class="na">x-forwarded-user</span><span class="o">:</span> <span class="s">tk421@galacticempire.com</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fields">
+<span id="object-conversion-fields"></span><h4><code class="docutils literal"><span class="pre">fields</span></code><a class="headerlink" href="#fields" title="Permalink to this headline">¶</a></h4>
+<p><code class="docutils literal"><span class="pre">fields</span></code> is a conversion property that is a map of named fields to conversion rules.  Each named field corresponds
+to a field on the encountered object being serialized.  Each mapped value is a conversion rule/block that defines
+how that named field should be serialized.</p>
+<p>Fields explicitly defined in the <code class="docutils literal"><span class="pre">fields</span></code> map always override the default <code class="docutils literal"><span class="pre">strategy</span></code>.</p>
+<p>In the following example, the Account&#8217;s <code class="docutils literal"><span class="pre">href</span></code> and <code class="docutils literal"><span class="pre">customData</span></code> fields have explicit conversion rules that override
+the specified <code class="docutils literal"><span class="pre">scalars</span></code> strategy:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scalars</span>
+<span class="hll">          <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+</span><span class="hll">            <span class="l l-Scalar l-Scalar-Plain">href</span><span class="p p-Indicator">:</span>
+</span><span class="hll">              <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</span><span class="hll">            <span class="l l-Scalar l-Scalar-Plain">customData</span><span class="p p-Indicator">:</span>
+</span><span class="hll">              <span class="l l-Scalar l-Scalar-Plain">strategy</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">scalars</span>
+</span></pre></div>
+</div>
+<p>Don&#8217;t forget that a <code class="docutils literal"><span class="pre">fields</span></code> map can be specified for any reachable object or collection, not just the root account
+object.</p>
+</div>
+<div class="section" id="name">
+<span id="object-conversion-name"></span><h4><code class="docutils literal"><span class="pre">name</span></code><a class="headerlink" href="#name" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">name</span></code> conversion property allows you to define a different name for the encountered field if you do not like the
+default field name.  Consider the following example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">givenName</span><span class="p p-Indicator">:</span>
+<span class="hll">              <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">firstName</span>
+</span>            <span class="l l-Scalar l-Scalar-Plain">surname</span><span class="p p-Indicator">:</span>
+<span class="hll">              <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">lastName</span>
+</span></pre></div>
+</div>
+<p>This configuration results in the following example JSON.</p>
+<div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;tk421&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;email&quot;</span><span class="p">:</span> <span class="s2">&quot;tk421@galacticempire.com&quot;</span><span class="p">,</span>
+<span class="hll">  <span class="nt">&quot;firstName&quot;</span><span class="p">:</span> <span class="s2">&quot;TK421&quot;</span><span class="p">,</span>
+</span>  <span class="nt">&quot;middleName&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+<span class="hll">  <span class="nt">&quot;lastName&quot;</span><span class="p">:</span> <span class="s2">&quot;Stormtrooper&quot;</span><span class="p">,</span>
+</span>  <span class="nt">&quot;fullName&quot;</span><span class="p">:</span> <span class="s2">&quot;TK421 Stormtrooper&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;ENABLED&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;createdAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-12-15T19:58:55.272Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;modifiedAt&quot;</span><span class="p">:</span><span class="s2">&quot;2016-12-15T19:59:23.729Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;passwordModifiedAt&quot;</span><span class="p">:</span> <span class="s2">&quot;2016-12-15T19:58:55.000Z&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;emailVerificationToken&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>As per the above override configuration, the member that ordinarily would have been named <code class="docutils literal"><span class="pre">givenName</span></code> is now
+named <code class="docutils literal"><span class="pre">firstName</span></code> and the member that would have been named <code class="docutils literal"><span class="pre">surname</span></code> is now <code class="docutils literal"><span class="pre">lastName</span></code>.</p>
+<p>If the <code class="docutils literal"><span class="pre">name</span></code> conversion property is unspecified, the default field name will be used.</p>
+<p><strong>elements name</strong></p>
+<p>If you specify the <code class="docutils literal"><span class="pre">name</span></code> conversion property as a child of an <code class="docutils literal"><span class="pre">elements</span></code> property, that name reflects the name
+given to the array member <em>within</em> the collection JSON object.  If you do not specify an <code class="docutils literal"><span class="pre">elements</span> <span class="pre">name</span></code>, the
+default value is <code class="docutils literal"><span class="pre">items</span></code>, resulting in the following structure:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="c1">// ... omitted for brevity ...</span>
+  <span class="s2">&quot;groups&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;items&quot;</span><span class="o">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="c1">// ... ommitted for brevity ...</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="c1">// ... ommitted for brevity ...</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here is an example of changing a collection&#8217;s <code class="docutils literal"><span class="pre">field</span> <span class="pre">name</span></code> and its <code class="docutils literal"><span class="pre">elements</span> <span class="pre">name</span></code> and the resulting JSON, so
+you can see the difference between the two:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span>   <span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+     <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+       <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+         <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+           <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span>
+             <span class="l l-Scalar l-Scalar-Plain">fields</span><span class="p p-Indicator">:</span>
+               <span class="l l-Scalar l-Scalar-Plain">groups</span><span class="p p-Indicator">:</span>
+<span class="hll">                 <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my_groups</span>
+</span>                 <span class="l l-Scalar l-Scalar-Plain">elements</span><span class="p p-Indicator">:</span>
+                   <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my_array</span>
+</pre></div>
+</div>
+<p>This config results in the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="c1">// ... omitted for brevity ...</span>
+  <span class="s2">&quot;my_groups&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;my_array&quot;</span><span class="o">:</span> <span class="p">[</span>
+      <span class="p">{</span>
+        <span class="c1">// ... ommitted for brevity ...</span>
+      <span class="p">},</span>
+      <span class="p">{</span>
+        <span class="c1">// ... ommitted for brevity ...</span>
+      <span class="p">}</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>See the difference?  The JSON member name of the <em>collection object itself</em> is now <code class="docutils literal"><span class="pre">my_groups</span></code> and the member name
+of the JSON array that contains just the elements is now <code class="docutils literal"><span class="pre">my_array</span></code>.</p>
+<p>So in summary, a <code class="docutils literal"><span class="pre">field</span> <span class="pre">name</span></code> controls the name of the field.  If the field is a collection, the <code class="docutils literal"><span class="pre">elements</span> <span class="pre">name</span></code>
+controls the name of the elements array within the field/object.</p>
+<p>Why wrap the array in an object?  Why not just have it be a simple array?  See the
+<a class="reference internal" href="#collection-conversion-elements"><span class="std std-ref">elements</span></a> and <a class="reference internal" href="#object-wraps-array"><span class="std std-ref">Object Wraps Array</span></a> sections for more
+information on backwards-compatibility safety.</p>
+</div>
+<div class="section" id="strategy">
+<span id="object-conversion-strategy"></span><h4><code class="docutils literal"><span class="pre">strategy</span></code><a class="headerlink" href="#strategy" title="Permalink to this headline">¶</a></h4>
+<p>The <code class="docutils literal"><span class="pre">strategy</span></code> conversion property specifies the <em>general</em> strategy of how to convert an encountered
+object or collection.  It would be burdensome to have to specify <em>every</em> <em>single</em> <em>field</em> that you want to include, so
+the <code class="docutils literal"><span class="pre">strategy</span></code> concept is a shortcut that allows you to define a general approach to simplify your configuration.</p>
+<p>The <code class="docutils literal"><span class="pre">strategy</span></code> property is an enum and may have one of the following values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Value</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">DEFINED</span></code></td>
+<td>Only fields explicitly defined in the <code class="docutils literal"><span class="pre">fields</span></code> section will be evaluated for inclusion in the JSON
+output.  Any fields not explicitly defined in the <code class="docutils literal"><span class="pre">fields</span></code> section <em>WILL NOT</em> be included in the
+converted JSON output.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">SINGLE</span></code></td>
+<td>The conversion output should be just one of the source object&#8217;s field values.  The name of the single
+field to include is defined by the <code class="docutils literal"><span class="pre">field</span></code> configuration property.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">SCALARS</span></code></td>
+<td>All of the source object&#8217;s <a class="reference external" href="http://softwareengineering.stackexchange.com/questions/238033/what-does-it-mean-when-data-is-scalar">scalar</a> values should be included in the output. A scalar value is any single
+value that is not a Collection, Map or compound/complex object.  This is the default strategy if you do
+not specify one.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">LIST</span></code></td>
+<td>Only usable only if the source object is a Collection resource, this strategy ensures that the
+converted output is the raw List of the collection&#8217;s elements only, instead of an Object that reflects the
+Collection itself (and its list of elements).  In other words, the converted output will not reflect any
+properties of the Collection resource itself - only its elements represented as a single List.  If the
+source object is not a Collection resource/instance, this strategy is ignored.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ALL</span></code></td>
+<td>Indicates that <em>ALL</em> fields of the source object should be in the output.  Be careful when
+choosing this strategy as the output could be sufficiently larger than desired.  Larger outputs increase
+the amount of data sent to the origin server(s) on every request.</td>
+</tr>
+</tbody>
+</table>
+<p>Unless overridden for a particular/named field, <code class="docutils literal"><span class="pre">SCALARS</span></code> is the default strategy for all encountered objects.</p>
+</div>
+</div>
+</div>
+<div class="section" id="forwarded-account-header-jwt">
+<span id="id6"></span><h2><a class="toc-backref" href="#id16">Forwarded Account Header JWT</a><a class="headerlink" href="#forwarded-account-header-jwt" title="Permalink to this headline">¶</a></h2>
+<p>By default, a digitally-signed account <a class="reference external" href="https://stormpath.com/blog/beginners-guide-jwts-in-java">JSON Web Token (JWT)</a> will be used as the HTTP header value.  When an origin
+server reads the forwarded HTTP header value, the origin server can verify the JWT&#8217;s signature.  This allows the origin
+server to cryptographically guarantee the account information in the JWT has not been uknowingly changed or tampered
+with in transit. JWTs are among the simplest and safest means of secure identity assertion, so the Stormpath Zuul Spring Cloud Starter chooses
+this approach to ensure best-in-class security by default.</p>
+<p>If JWTs are not desirable - perhaps because you implicitly trust the network and machine transmission to your origin
+servers - you can disable the JWT approach entirely (see the <a class="reference internal" href="#forwarded-account-header-jwt-enabled"><span class="std std-ref">enabled</span></a>
+property below) and instead send a simple string value or JSON document as documented above  If you don&#8217;t have a
+preference however, it is recommended in most scenarios to retain the added security that JWTs can offer.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">The JWT will contain the <a class="reference internal" href="#forwarded-account-json"><span class="std std-ref">Account JSON as defined above</span></a>, so you have full control
+over the JWT contents.</p>
+</div>
+<p>The remaining part of this page documents which configuration properties are available to you so you can customize
+the account JWT sent to origin servers if desired.</p>
+<div class="section" id="forwarded-account-header-jwt-enabled">
+<span id="id7"></span><h3><a class="toc-backref" href="#id17"><code class="docutils literal"><span class="pre">enabled</span></code></a><a class="headerlink" href="#forwarded-account-header-jwt-enabled" title="Permalink to this headline">¶</a></h3>
+<p>If you do not want the forwarded account header value to be a JWT, set the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.enabled</span></code> property to <code class="docutils literal"><span class="pre">false</span></code>:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p>This ensures the header value is <em>NOT</em> a JWT, but either an <a class="reference internal" href="#forwarded-account-json"><span class="std std-ref">Account JSON document</span></a> or a
+<a class="reference internal" href="#forwarded-account-single-field"><span class="std std-ref">single string value</span></a> as documented above, but beware of the security implications.</p>
+<p>By default, JWT <code class="docutils literal"><span class="pre">enabled</span></code> is <code class="docutils literal"><span class="pre">true</span></code>.</p>
+</div>
+<div class="section" id="expirationseconds">
+<h3><a class="toc-backref" href="#id18"><code class="docutils literal"><span class="pre">expirationSeconds</span></code></a><a class="headerlink" href="#expirationseconds" title="Permalink to this headline">¶</a></h3>
+<p>You can specify when the JWT expires (and is no longer usable by origin servers) by specifying the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.expirationSeconds</span></code> property.</p>
+<p>The value is a <code class="docutils literal"><span class="pre">long</span></code> that indicates the number of <strong>seconds</strong> (<em>not</em> milliseconds!) that the JWT should be usable
+after creation.</p>
+<p>This number is added to the JWT&#8217;s creation timestamp (again in seconds), and the resulting timestamp is converted to a date
+and set as the JWT <code class="docutils literal"><span class="pre">exp</span></code> claim.</p>
+<p>This value is <code class="docutils literal"><span class="pre">null</span></code> by default, indicating that the forwarded account header JWTs do not expire by default, but
+we recommended that you set a value (e.g. one hour = 3600 seconds) as indefinite JWTs are often not desirable in
+security contexts.  For example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">expirationSeconds</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">3600</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="notbeforeseconds">
+<h3><a class="toc-backref" href="#id19"><code class="docutils literal"><span class="pre">notBeforeSeconds</span></code></a><a class="headerlink" href="#notbeforeseconds" title="Permalink to this headline">¶</a></h3>
+<p>You can specify the earliest timestamp of when the JWT is allowed to be used by the origin servers by
+specifying the <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.notBeforeSeconds</span></code> property.</p>
+<p>The value is a <code class="docutils literal"><span class="pre">long</span></code> that indicates the number of <strong>seconds</strong> (<em>not</em> milliseconds!) that will be added
+(or subtracted if negative) to the JWT&#8217;s creation timestamp.  The resulting timestamp is converted to a date and set
+as the JWT <code class="docutils literal"><span class="pre">nbf</span></code> claim.</p>
+<p>This value is <code class="docutils literal"><span class="pre">null</span></code> by default, indicating that the forwarded account header JWTs do not have an <code class="docutils literal"><span class="pre">nbf</span></code> timestamp
+by default.</p>
+<p>Here is an example that states that an <code class="docutils literal"><span class="pre">nbf</span></code> claim should exist, and it should be the same timestamp as the JWT&#8217;s
+creation timestamp. (This has the effect of ensuring that origin servers do not process JWTs with timestamps that are
+out of sync with origin server clocks, which may or may not be desirable depending on your use case):</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">notBeforeSeconds</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="claims">
+<h3><a class="toc-backref" href="#id20"><code class="docutils literal"><span class="pre">claims</span></code></a><a class="headerlink" href="#claims" title="Permalink to this headline">¶</a></h3>
+<p>You can set custom name/value pairs that should appear in the JWT&#8217;s claims via the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.claims</span></code> property.  For example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+<span class="hll">          <span class="l l-Scalar l-Scalar-Plain">claims</span><span class="p p-Indicator">:</span>
+</span><span class="hll">            <span class="l l-Scalar l-Scalar-Plain">iss</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my gateway</span>
+</span><span class="hll">            <span class="l l-Scalar l-Scalar-Plain">aud</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my origin server</span>
+</span></pre></div>
+</div>
+<p>This configuration would result in a JWT claims that, if inspected, would have a structure similar to the
+following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;iat&quot;</span><span class="o">:</span> <span class="mi">1482972605</span><span class="p">,</span>
+<span class="hll">  <span class="s2">&quot;iss&quot;</span><span class="o">:</span> <span class="s2">&quot;my gateway&quot;</span><span class="p">,</span>
+</span><span class="hll">  <span class="s2">&quot;aud&quot;</span><span class="o">:</span> <span class="s2">&quot;my origin server&quot;</span><span class="p">,</span>
+</span>  <span class="c1">// ... other claims/Account fields omitted for brevity ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notice that your configured custom name/value pairs are in the claims, in addition to other runtime-specific values.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.claims</span></code> name/value pairs represent JWT claims <em>default</em> values.  Any specific
+runtime-determined claim value with the same name (such as <code class="docutils literal"><span class="pre">iat</span></code> or <code class="docutils literal"><span class="pre">exp</span></code>) will replace (overwrite) your
+custom defaults.</p>
+</div>
+</div>
+<div class="section" id="header">
+<h3><a class="toc-backref" href="#id21"><code class="docutils literal"><span class="pre">header</span></code></a><a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h3>
+<p>You can set custom name/value pairs that should appear in the JWT&#8217;s header via the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.header</span></code> property.  For example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span>   <span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+     <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+       <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+         <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+           <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+<span class="hll">             <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+</span><span class="hll">               <span class="l l-Scalar l-Scalar-Plain">foo</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">bar</span>
+</span><span class="hll">               <span class="l l-Scalar l-Scalar-Plain">hello</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">world</span>
+</span></pre></div>
+</div>
+<p>This configuration would result in a JWT header that, if inspected, would have a structure similar to the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span>   <span class="p">{</span>
+     <span class="s2">&quot;alg&quot;</span><span class="o">:</span> <span class="s2">&quot;HS256&quot;</span><span class="p">,</span>
+<span class="hll">     <span class="s2">&quot;foo&quot;</span><span class="o">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">,</span>
+</span><span class="hll">     <span class="s2">&quot;hello&quot;</span><span class="o">:</span> <span class="s2">&quot;world&quot;</span>
+</span>     <span class="c1">// ... other header fields omitted for brevity ...</span>
+   <span class="p">}</span>
+</pre></div>
+</div>
+<p>Notice that your configured custom name/value pairs are in the header, in addition to other runtime-specific values.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.header</span></code> name/value pairs represent JWT header <em>default</em> values.  Any specific
+runtime-determined header value with the same name (such as <code class="docutils literal"><span class="pre">kid</span></code> or <code class="docutils literal"><span class="pre">alg</span></code>) will replace (overwrite) your
+custom defaults.</p>
+</div>
+</div>
+<div class="section" id="key">
+<h3><a class="toc-backref" href="#id22"><code class="docutils literal"><span class="pre">key</span></code></a><a class="headerlink" href="#key" title="Permalink to this headline">¶</a></h3>
+<p>You may configure the signing key used to cryptographically sign the JWT via various
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.*</span></code> properties.  They are:</p>
+<div class="contents local topic" id="id8">
+<ul class="simple">
+<li><a class="reference internal" href="#alg" id="id28"><code class="docutils literal"><span class="pre">alg</span></code></a></li>
+<li><a class="reference internal" href="#id9" id="id29"><code class="docutils literal"><span class="pre">enabled</span></code></a></li>
+<li><a class="reference internal" href="#encoding" id="id30"><code class="docutils literal"><span class="pre">encoding</span></code></a></li>
+<li><a class="reference internal" href="#id" id="id31"><code class="docutils literal"><span class="pre">id</span></code></a></li>
+<li><a class="reference internal" href="#resource" id="id32"><code class="docutils literal"><span class="pre">resource</span></code></a></li>
+<li><a class="reference internal" href="#value" id="id33"><code class="docutils literal"><span class="pre">value</span></code></a></li>
+</ul>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>If you do not specify a signing key, the secret from Stormpath Client API Key used to bootstrap the
+Stormpath Zuul Spring Cloud Starter will be used as the default signing key.  In this case, the JWT will have a <code class="docutils literal"><span class="pre">kid</span></code> (Key ID) header
+value equal to the HREF (URL) of that Stormpath API Key.</p>
+<p>However, it is probably unlikely that your backend origin servers will have this same key configured, so they will
+not be able to verify the JWT&#8217;s digital signature.</p>
+<p class="last">To avoid JWT key/parsing errors in your origin servers, we recommend that specify your own signing key via either
+the <a class="reference internal" href="#forwarded-account-signing-key-value"><span class="std std-ref">stormpath.zuul.account.header.jwt.key.value</span></a> or
+<a class="reference internal" href="#forwarded-account-signing-key-resource"><span class="std std-ref">stormpath.zuul.account.header.jwt.key.resource</span></a> properties or by
+defining your own <a class="reference internal" href="#forwarded-account-signing-key-bean"><span class="std std-ref">stormpathForwardedAccountJwtSigningKey</span></a> bean.</p>
+</div>
+<div class="section" id="alg">
+<span id="forwarded-account-signing-key-alg"></span><h4><a class="toc-backref" href="#id28"><code class="docutils literal"><span class="pre">alg</span></code></a><a class="headerlink" href="#alg" title="Permalink to this headline">¶</a></h4>
+<p>You can specify which digital signature algorithm is used to sign the JWT by setting the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.alg</span></code> property to one of the following supported values:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="23%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Value</th>
+<th class="head">Algorithm Family</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">HS256</span></code></td>
+<td>HMAC</td>
+<td>HMAC using SHA-256</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">HS384</span></code></td>
+<td>HMAC</td>
+<td>HAMC using SHA-384</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">HS512</span></code></td>
+<td>HMAC</td>
+<td>HMAC using SHA-512</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">RS256</span></code></td>
+<td>RSA</td>
+<td>RSASSA-PKCS-v1_5 using SHA-256</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">RS384</span></code></td>
+<td>RSA</td>
+<td>RSASSA-PKCS-v1_5 using SHA-384</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">RS512</span></code></td>
+<td>RSA</td>
+<td>RSASSA-PKCS-v1_5 using SHA-512</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">PS256</span></code></td>
+<td>RSA</td>
+<td>RSASSA-PSS using SHA-256 and MGF1 with SHA-256</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">PS384</span></code></td>
+<td>RSA</td>
+<td>RSASSA-PSS using SHA-384 and MGF1 with SHA-384</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">PS512</span></code></td>
+<td>RSA</td>
+<td>RSASSA-PSS using SHA-512 and MGF1 with SHA-512</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ES256</span></code></td>
+<td>Elliptic Curve</td>
+<td>ECDSA using P-256 and SHA-256</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ES384</span></code></td>
+<td>Elliptic Curve</td>
+<td>ECDSA using P-384 and SHA-384</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ES512</span></code></td>
+<td>Elliptic Curve</td>
+<td>ECDSA using P-512 and SHA-512</td>
+</tr>
+</tbody>
+</table>
+<p>For example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">alg</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">HS256</span>
+</pre></div>
+</div>
+<p>You can provide the corresponding secret/private key in one of three ways:</p>
+<ol class="upperalpha simple">
+<li>Set the <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.value</span></code> and <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.encoding</span></code>
+config properties, or</li>
+<li>(for RSA and Elliptic Curve private keys only): Set the <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.resource</span></code> to a
+<a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/resources.html#resources-resourceloader">Spring Resource Path</a>, or</li>
+<li>Define the <a class="reference internal" href="#forwarded-account-signing-key-bean"><span class="std std-ref">stormpathForwardedAccountJwtSigningKey</span></a> bean.</li>
+</ol>
+</div>
+<div class="section" id="id9">
+<h4><a class="toc-backref" href="#id29"><code class="docutils literal"><span class="pre">enabled</span></code></a><a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h4>
+<p>You can disable the JWT signature process entirely (not use a key at all) by setting
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.enabled</span></code> equal to <code class="docutils literal"><span class="pre">false</span></code>:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p>This will ensure that the JWT created is <em>NOT</em> digitally signed - it will be an
+<a class="reference external" href="https://tools.ietf.org/html/rfc7519#section-6">Unsecured JWT</a>. <strong>We strongly recommend that you digitally sign JWTs for the security model that signed JWTs afford</strong>.
+However, unsecured JWTs could be useful in very specific circumstances specific to your application.
+If you&#8217;re unsure, we recommend that you <em>do not</em> set this property.</p>
+</div>
+<div class="section" id="encoding">
+<span id="forwarded-account-signing-key-encoding"></span><h4><a class="toc-backref" href="#id30"><code class="docutils literal"><span class="pre">encoding</span></code></a><a class="headerlink" href="#encoding" title="Permalink to this headline">¶</a></h4>
+<p>If you specified the text value of your private key via the <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.value</span></code> property,
+and that string is <em>not</em> Base64Url-encoded or PEM-encoded, you must set the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.encoding</span></code> property to indicate which encoding is used.  For example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">EQDGRjSpZB87/eWO42XQ7h7mfxk0EmF6ZDY0TDGdAoA=</span>
+<span class="hll">            <span class="l l-Scalar l-Scalar-Plain">encoding</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">base64</span>
+</span></pre></div>
+</div>
+<p>There are four supported encodings:</p>
+<ul class="simple">
+<li><code class="docutils literal"><span class="pre">base64url</span></code>: standard Base64Url encoding, assumed by default</li>
+<li><code class="docutils literal"><span class="pre">base64</span></code>: standard Base64 encoding (not URL encoded)</li>
+<li><code class="docutils literal"><span class="pre">utf8</span></code>: direct UTF-8 bytes of the configured string, i.e. <code class="docutils literal"><span class="pre">value.getBytes(StandardCharsets.UTF8)</span></code></li>
+<li><code class="docutils literal"><span class="pre">pem</span></code>: a <a class="reference external" href="https://en.wikipedia.org/wiki/Privacy-enhanced_Electronic_Mail">PEM-formatted</a> string, automatically detected</li>
+</ul>
+<p>The default/assumed encoding is <code class="docutils literal"><span class="pre">base64url</span></code>, but PEM-encoded strings will be detected automatically.  Therefore you
+only need to set the <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.encoding</span></code> property if your key value is <code class="docutils literal"><span class="pre">base64</span></code> or
+<code class="docutils literal"><span class="pre">utf8</span></code> encoded.</p>
+<p><strong>CAUTION</strong>: these 4 text encodings are not inherently cryptographically secure.  Please see the
+<a class="reference internal" href="#forwarded-account-signing-key-value-caution"><span class="std std-ref">key caution</span></a> concerning key string values.</p>
+</div>
+<div class="section" id="id">
+<h4><a class="toc-backref" href="#id31"><code class="docutils literal"><span class="pre">id</span></code></a><a class="headerlink" href="#id" title="Permalink to this headline">¶</a></h4>
+<p>When specifying a signing key, it is usually recommended to also specify a string identifier for the key in the JWT
+header.  This allows JWT recipients (i.e. your origin servers) the ability to inspect the JWT header and identify which
+signing key was used.  Based on this identifier, the JWT recipient can then look up the corresponding key
+(or public key) to use in order to correctly verify the JWT&#8217;s digital signature.</p>
+<p>You can specify your signing key&#8217;s id (the <code class="docutils literal"><span class="pre">id</span></code> param in the JWT header) by setting the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.id</span></code> configuration property.  For example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">id</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my signing key id</span>
+</pre></div>
+</div>
+<p>This will set the JWT&#8217;s <code class="docutils literal"><span class="pre">kid</span></code> header accordingly.</p>
+<p>Note that since it is a header, an alternative approach of accomplishing the same thing is to set it as a
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.header.kid</span></code> name/value pair:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">kid</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">my signing key id</span>
+</pre></div>
+</div>
+<p>The first approach keeps the key id configuration &#8216;close to&#8217; the other key parameters, which might be desirable
+depending on preference.  Either approach accomplishes the same thing - feel free to use what you prefer.</p>
+</div>
+<div class="section" id="resource">
+<span id="forwarded-account-signing-key-resource"></span><h4><a class="toc-backref" href="#id32"><code class="docutils literal"><span class="pre">resource</span></code></a><a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h4>
+<p>If you want to use an RSA or Elliptic Curve private key to sign the JWT, you can point to a private key resource
+(like a file or URL) instead of pasting the the key contents into your Spring configuration files by specifying the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.resource</span></code> property.  For example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">resource</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">classpath://myRsaPrivateKey.pem</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal"><span class="pre">resource</span></code> property value can be any String path supported by the
+<a class="reference external" href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/resources.html#resources-resourceloader">Spring ResourceLoader</a>.</p>
+<p>The resource loaded must be a PEM-encoded RSA or Elliptic Curve PRIVATE KEY (public keys cannot be used to create
+cryptographic signatures).  However, <strong>NOTE</strong>:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Because PEM-encoding is not natively supported by the JVM, you must have BouncyCastle&#8217;s <code class="docutils literal"><span class="pre">bcpkix-jdk15on</span></code>
+artifact, version 1.56 or newer as a dependency in your application&#8217;s runtime classpath. For example:</p>
+<p><strong>Maven</strong>:</p>
+<div class="highlight-xml"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.bouncycastle<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>bcpkix-jdk15on<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>1.56<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;scope&gt;</span>runtime<span class="nt">&lt;/scope&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+<p><strong>Gradle</strong>:</p>
+<div class="last highlight-groovy"><div class="highlight"><pre><span></span><span class="n">dependencies</span> <span class="o">{</span>
+    <span class="n">runtime</span> <span class="s1">&#39;org.bouncycastle:bcpkix-jdk15on:1.56&#39;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="value">
+<span id="forwarded-account-signing-key-value"></span><h4><a class="toc-backref" href="#id33"><code class="docutils literal"><span class="pre">value</span></code></a><a class="headerlink" href="#value" title="Permalink to this headline">¶</a></h4>
+<p>If you want to configure your private signing key as a string, you can set the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.value</span></code> property.  For example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">key</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">value</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">EQDGRjSpZB87_eWO42XQ7h7mfxk0EmF6ZDY0TDGdAoA</span>
+</pre></div>
+</div>
+<p>By default, the key value is expected to be a Base64Url string, but PEM-encoded values will be detected automatically.
+The Stormpath Zuul Spring Cloud Starter will then base64url-decode (or PEM-decode) this value at startup to obtain the private signing key bytes
+used to compute the JWT signature.</p>
+<p>If your value string is not Base64Url or PEM-encoded, you must also specify the
+<a class="reference internal" href="#forwarded-account-signing-key-encoding"><span class="std std-ref">stormpath.zuul.account.header.jwt.key.encoding</span></a> property.</p>
+<div class="admonition caution" id="forwarded-account-signing-key-value-caution">
+<p class="first admonition-title">Caution</p>
+<p><strong>Base64, Base64Url, UTF-8 and PEM encoding DOES NOT imply encryption</strong>.</p>
+<p>Anyone that can access the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.value</span></code> string value can use it to sign JWTs as you.  Keep this text string
+(and the configured property value) safe and secret.</p>
+<p>If you are uncomfortable embedding key strings in your configuration due to security concerns, we recommend
+any of four approaches:</p>
+<ol class="last arabic simple">
+<li>Specify the <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.value</span></code> value as an
+<a class="reference external" href="https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html">external Spring Boot property</a>.
+For example, set the <code class="docutils literal"><span class="pre">STORMPATH_ZUUL_ACCOUNT_HEADER_JWT_KEY_K</span></code> environment variable via an operations
+orchestration mechanism like Chef, Puppet or CloudFoundry that has access to secure/encrypted data store for
+such values.</li>
+<li>Use <a class="reference external" href="https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_security">Spring Cloud Config Server</a>
+to securely represent key values as text properties in your config.  Spring Cloud Config Server will decrypt
+the text value just before giving it to the Stormpath Zuul Spring Cloud Starter so it may be used correctly.</li>
+<li>If using an RSA or Elliptic Curve private key, configure the
+<a class="reference internal" href="#forwarded-account-signing-key-resource"><span class="std std-ref">stormpath.zuul.account.header.jwt.key.resource</span></a>
+property instead.  This will load your private key from the specified resource location, which can reflect a
+secured file system or URL for example.</li>
+<li>Do not configure the <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.key.value</span></code> property and instead define your own
+<a class="reference internal" href="#forwarded-account-signing-key-bean"><span class="std std-ref">stormpathForwardedAccountJwtSigningKey</span></a> bean.  You can then load the
+key bytes in whatever secure way you prefer.</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="valueclaim">
+<h3><a class="toc-backref" href="#id23"><code class="docutils literal"><span class="pre">valueClaim</span></code></a><a class="headerlink" href="#valueclaim" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal"><span class="pre">valueClaim</span></code> config properties allow you to control how the <a class="reference internal" href="#forwarded-account-json"><span class="std std-ref">Account JSON</span></a> is
+represented inside the JWT.</p>
+<p>By default, the <a class="reference internal" href="#forwarded-account-json"><span class="std std-ref">Account JSON</span></a> is represented under a single JWT claim named
+<code class="docutils literal"><span class="pre">user</span></code>.  This results in JWT claims that look something like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;iat&quot;</span><span class="o">:</span> <span class="mi">1482972605</span><span class="p">,</span>
+  <span class="s2">&quot;iss&quot;</span><span class="o">:</span> <span class="s2">&quot;my gateway&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;aud&quot;</span><span class="o">:</span> <span class="s2">&quot;my origin server&quot;</span><span class="p">,</span>
+<span class="hll">  <span class="s2">&quot;user&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="hll">    <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;tk421&quot;</span><span class="p">,</span>
+</span><span class="hll">    <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;tk421@galacticempire.com&quot;</span><span class="p">,</span>
+</span><span class="hll">    <span class="s2">&quot;givenName&quot;</span><span class="o">:</span> <span class="s2">&quot;TK421&quot;</span><span class="p">,</span>
+</span><span class="hll">    <span class="s2">&quot;middleName&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+</span><span class="hll">    <span class="s2">&quot;surname&quot;</span><span class="o">:</span> <span class="s2">&quot;Stormtrooper&quot;</span>
+</span><span class="hll">    <span class="c1">// ... other Account fields omitted for brevity ...</span>
+</span><span class="hll">  <span class="p">}</span>
+</span>  <span class="c1">// ... other JWT fields omitted for brevity ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>As you can see, the user account JSON is reflected as a single <code class="docutils literal"><span class="pre">user</span></code> claim, and the entire user account can be
+retrieved by a single lookup of that claim.  This helps keep your user account information &#8216;clean&#8217; and separate from
+other JWT claims like <code class="docutils literal"><span class="pre">iat</span></code>, <code class="docutils literal"><span class="pre">iss</span></code>, <code class="docutils literal"><span class="pre">aud</span></code>, etc.</p>
+<p>If you prefer, you can <a class="reference internal" href="#forwarded-account-jwt-valueclaim-name"><span class="std std-ref">change the claim name</span></a> or
+<a class="reference internal" href="#forwarded-account-jwt-valueclaim-enabled"><span class="std std-ref">not use a claim at all</span></a>
+via the respective nested <code class="docutils literal"><span class="pre">name</span></code> and <code class="docutils literal"><span class="pre">enabled</span></code> properties.</p>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p>For you JWT experts out there, you might want to know why we didn&#8217;t represent the user account with the
+<a class="reference external" href="https://tools.ietf.org/html/rfc7519#section-4.1.2">JWT sub claim</a> .  The <code class="docutils literal"><span class="pre">sub</span></code> claim is the RFC-standard claim
+that defines the target identity of the JWT, and the user account is the identity we care about, right?  So why
+didn&#8217;t we just use the default <code class="docutils literal"><span class="pre">sub</span></code> claim instead of <code class="docutils literal"><span class="pre">user</span></code>?</p>
+<p class="last">The reason is that the JWT RFC (<a class="reference external" href="https://tools.ietf.org/html/rfc7519">RFC 7519</a>) says that the value of the <code class="docutils literal"><span class="pre">sub</span></code>
+claim must be a <code class="docutils literal"><span class="pre">StringOrURI</span></code> data type value, as defined in
+<a class="reference external" href="https://tools.ietf.org/html/rfc7519#section-2">RFC 7519 section 2 (Terminology)</a>.  The user account JSON is a full
+JSON object structure, which is neither a String nor a URI as required by the RFC.  So, we choose a different
+claim name to avoid any parsing/validation errors that JWT libraries might enforce for that claim, and all is well.</p>
+</div>
+<div class="section" id="forwarded-account-jwt-valueclaim-enabled">
+<span id="id10"></span><h4><code class="docutils literal"><span class="pre">enabled</span></code><a class="headerlink" href="#forwarded-account-jwt-valueclaim-enabled" title="Permalink to this headline">¶</a></h4>
+<p>The <a class="reference internal" href="#forwarded-account-json"><span class="std std-ref">Account JSON</span></a> is nested in the JWT claims as single claim named <code class="docutils literal"><span class="pre">user</span></code> by
+default.</p>
+<p>If you don&#8217;t want to use a specific value claim at all, and instead prefer to have the account properties mixed
+together with all other JWT claims (like <code class="docutils literal"><span class="pre">iat</span></code>, <code class="docutils literal"><span class="pre">iss</span></code> and <code class="docutils literal"><span class="pre">aud</span></code>), you can disable the value claim concept
+entirely by setting <code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.valueClaim.enabled</span></code> to <code class="docutils literal"><span class="pre">false</span></code>:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">valueClaim</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">enabled</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">false</span>
+</pre></div>
+</div>
+<p>After setting this property to <code class="docutils literal"><span class="pre">false</span></code>, all user account JSON name/value pairs are added directly to the JWT claims,
+making each account property a claim itself.  The account properties and any other JWT-related ones are all
+intermixed and &#8216;just claims&#8217; as far as the JWT is concerned.  For example:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;iat&quot;</span><span class="o">:</span> <span class="mi">1482972605</span><span class="p">,</span>
+  <span class="s2">&quot;iss&quot;</span><span class="o">:</span> <span class="s2">&quot;my gateway&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;aud&quot;</span><span class="o">:</span> <span class="s2">&quot;my origin server&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;tk421&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;tk421@galacticempire.com&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;givenName&quot;</span><span class="o">:</span> <span class="s2">&quot;TK421&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;middleName&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="s2">&quot;surname&quot;</span><span class="o">:</span> <span class="s2">&quot;Stormtrooper&quot;</span>
+  <span class="c1">// ... any other JWT or Account claims omitted for brevity ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="forwarded-account-jwt-valueclaim-name">
+<span id="id11"></span><h4><code class="docutils literal"><span class="pre">name</span></code><a class="headerlink" href="#forwarded-account-jwt-valueclaim-name" title="Permalink to this headline">¶</a></h4>
+<p>The single value claim is named <code class="docutils literal"><span class="pre">user</span></code> by default.  You can change this name if you prefer by setting the
+<code class="docutils literal"><span class="pre">stormpath.zuul.account.header.jwt.valueClaim.name</span></code> config property.  For example:</p>
+<div class="highlight-yaml"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">stormpath</span><span class="p p-Indicator">:</span>
+  <span class="l l-Scalar l-Scalar-Plain">zuul</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">account</span><span class="p p-Indicator">:</span>
+      <span class="l l-Scalar l-Scalar-Plain">header</span><span class="p p-Indicator">:</span>
+        <span class="l l-Scalar l-Scalar-Plain">jwt</span><span class="p p-Indicator">:</span>
+          <span class="l l-Scalar l-Scalar-Plain">valueClaim</span><span class="p p-Indicator">:</span>
+            <span class="l l-Scalar l-Scalar-Plain">name</span><span class="p p-Indicator">:</span> <span class="l l-Scalar l-Scalar-Plain">userAccount</span>
+</pre></div>
+</div>
+<p>This would result in JWT claims that look something like this:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;iat&quot;</span><span class="o">:</span> <span class="mi">1482972605</span><span class="p">,</span>
+  <span class="s2">&quot;iss&quot;</span><span class="o">:</span> <span class="s2">&quot;my gateway&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;aud&quot;</span><span class="o">:</span> <span class="s2">&quot;my origin server&quot;</span><span class="p">,</span>
+<span class="hll">  <span class="s2">&quot;userAccount&quot;</span><span class="o">:</span> <span class="p">{</span>
+</span>    <span class="s2">&quot;username&quot;</span><span class="o">:</span> <span class="s2">&quot;tk421&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;tk421@galacticempire.com&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;givenName&quot;</span><span class="o">:</span> <span class="s2">&quot;TK421&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;middleName&quot;</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="s2">&quot;surname&quot;</span><span class="o">:</span> <span class="s2">&quot;Stormtrooper&quot;</span>
+    <span class="c1">// ... other Account fields omitted for brevity ...</span>
+  <span class="p">}</span>
+  <span class="c1">// ... other JWT fields omitted for brevity ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="signing-key-bean">
+<span id="forwarded-account-signing-key-bean"></span><h4>Signing Key Bean<a class="headerlink" href="#signing-key-bean" title="Permalink to this headline">¶</a></h4>
+<p>If you cannot or do not want to load your secret/private key using the configuration properties above, you can provide
+the key by defining a <code class="docutils literal"><span class="pre">stormpathForwardedAccountJwtSigningKey</span></code> bean in your Spring configuration:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="n">java</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">Key</span> <span class="nf">stormpathForwardedAccountJwtSigningKey</span><span class="o">()</span> <span class="o">{</span>
+    <span class="c1">//load the HMAC, RSA or Elliptic Curve private key here and return it.</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>This allows you finer grained control to look up the Key from whatever source you prefer.</p>
+</div>
+</div>
+</div>
+<div class="section" id="custom-header-value">
+<h2><a class="toc-backref" href="#id24">Custom Header Value</a><a class="headerlink" href="#custom-header-value" title="Permalink to this headline">¶</a></h2>
+<p>Finally, if <em>none</em> of the above options are sufficient for you, don&#8217;t worry, we still have you covered.  You can still
+create any string you want as the header value with a little custom code.  You have three easy options:</p>
+<ol class="arabic simple">
+<li>If you don&#8217;t need access to the HttpServletRequest/Response pair and want to convert the Account to a
+Map that will be automatically turned into JSON or a JWT for you, you can define your own
+<a class="reference internal" href="#forwarded-account-map-function"><span class="std std-ref">account-to-map conversion function</span></a> bean.</li>
+<li>If you don&#8217;t need access to the HttpServletRequest/Response pair and want to do the full account to final
+header String conversion logic yourself, you can define your own
+<a class="reference internal" href="#forwarded-account-to-string-function"><span class="std std-ref">account-to-string conversion function</span></a> bean.</li>
+<li>If you need access to the HttpServletRequest/Response during the account-to-string conversion process, you can
+define your own <a class="reference internal" href="#stormpathforwardedaccountheadervalueresolver"><span class="std std-ref">Account Header Value Resolver</span></a> bean.</li>
+</ol>
+<p>In any case you will need to add the proper bean in your gateway Spring config.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Remember that adding or changing any of these beans will probably require changes to your origin server(s) -
+the origin server(s) will need to understand how to read the final Account string value created by your
+conversion bean.</p>
+</div>
+<div class="section" id="account-to-map-function">
+<span id="forwarded-account-map-function"></span><h3><a class="toc-backref" href="#id25">Account-to-Map Function</a><a class="headerlink" href="#account-to-map-function" title="Permalink to this headline">¶</a></h3>
+<p>If you don&#8217;t need access to the HttpServletRequest/Response pair, and you just want to be able to convert an <code class="docutils literal"><span class="pre">Account</span></code>
+instance to a <code class="docutils literal"><span class="pre">Map&lt;String,?&gt;</span></code>, you can define your own <code class="docutils literal"><span class="pre">stormpathForwardedAccountMapFunction</span></code> bean:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Account</span><span class="o">,</span> <span class="o">?&gt;</span> <span class="n">stormpathForwardedAccountMapFunction</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">MyAccountToMapFunction</span><span class="o">();</span> <span class="c1">//implement me</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>This bean/method must be named <code class="docutils literal"><span class="pre">stormpathForwardedAccountMapFunction</span></code> and the bean must implement the
+<code class="docutils literal"><span class="pre">com.stormpath.sdk.lang.Function&lt;Account,?&gt;</span></code> interface.</p>
+<p>When the gateway determines that there is an account to forward to an origin server, your custom function will be
+called with an <code class="docutils literal"><span class="pre">Account</span></code> instance and it will return a <code class="docutils literal"><span class="pre">Map&lt;String,?&gt;</span></code> result.</p>
+<p>This resulting map will be
+converted to a JSON document automatically, and then potentially converted to a JWT depending on the value of the
+<a class="reference internal" href="#forwarded-account-header-jwt-enabled"><span class="std std-ref">stormpath.zuul.account.header.jwt.enabled</span></a> property (which is enabled by
+default).  If JWT is enabled, you can <a class="reference internal" href="#forwarded-account-header-jwt"><span class="std std-ref">customize the JWT as documented</span></a> above.</p>
+<p>The final resulting JSON or JWT string will be the header value.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the resulting Map is <code class="docutils literal"><span class="pre">null</span></code> or empty, the header will not be present in the forwarded request at all.</p>
+</div>
+</div>
+<div class="section" id="account-to-string-function">
+<span id="forwarded-account-to-string-function"></span><h3><a class="toc-backref" href="#id26">Account-to-String Function</a><a class="headerlink" href="#account-to-string-function" title="Permalink to this headline">¶</a></h3>
+<p>If you don&#8217;t need access to the HttpServletRequest/Response pair, and you just want to be able to convert an <code class="docutils literal"><span class="pre">Account</span></code>
+instance to a String, you can define your own <code class="docutils literal"><span class="pre">stormpathForwardedAccountStringFunction</span></code> bean:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="n">Function</span><span class="o">&lt;</span><span class="n">Account</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="nf">stormpathForwardedAccountStringFunction</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="k">new</span> <span class="n">MyAccountToStringFunction</span><span class="o">();</span> <span class="c1">//implement me</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>This bean/method must be named <code class="docutils literal"><span class="pre">stormpathForwardedAccountStringFunction</span></code> and the bean must implement the
+<code class="docutils literal"><span class="pre">com.stormpath.sdk.lang.Function&lt;Account,String&gt;</span></code> interface.</p>
+<p>When the gateway determines that there is an account to forward to an origin server, your custom function will be
+called with an <code class="docutils literal"><span class="pre">Account</span></code> instance and it will return a <code class="docutils literal"><span class="pre">String</span></code> result.  This resulting string will be the
+header value sent to your origin server(s).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the resulting string is <code class="docutils literal"><span class="pre">null</span></code> or empty, the header will not be present in the forwarded request at all.</p>
+</div>
+</div>
+<div class="section" id="account-header-value-resolver">
+<span id="stormpathforwardedaccountheadervalueresolver"></span><h3><a class="toc-backref" href="#id27">Account Header Value Resolver</a><a class="headerlink" href="#account-header-value-resolver" title="Permalink to this headline">¶</a></h3>
+<p>If you need access to the HttpServletRequest/Response pair during the account-to-string conversion process, you can
+define your own <code class="docutils literal"><span class="pre">stormpathForwardedAccountHeaderValueResolver</span></code> bean.  Be sure to autowire the
+<code class="docutils literal"><span class="pre">accountResolver</span></code> bean so that you can look up the <code class="docutils literal"><span class="pre">Account</span></code> associated with the request.  For example:</p>
+<div class="highlight-java"><div class="highlight"><pre><span></span><span class="hll"><span class="nd">@Autowired</span>
+</span><span class="hll"><span class="kd">private</span> <span class="n">AccountResolver</span> <span class="n">accountResolver</span><span class="o">;</span>
+</span>
+<span class="nd">@Bean</span>
+<span class="kd">public</span> <span class="n">Resolver</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="nf">stormpathForwardedAccountHeaderValueResolver</span><span class="o">()</span> <span class="o">{</span>
+
+    <span class="c1">//implement me.  For example:</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="n">Resolver</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;()</span> <span class="o">{</span>
+
+         <span class="nd">@Override</span>
+         <span class="kd">public</span> <span class="n">String</span> <span class="nf">get</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">)</span> <span class="o">{</span>
+
+<span class="hll">             <span class="n">Account</span> <span class="n">account</span> <span class="o">=</span> <span class="n">accountResolver</span><span class="o">.</span><span class="na">getAccount</span><span class="o">(</span><span class="n">request</span><span class="o">);</span>
+</span>
+             <span class="c1">//convert this account to a String and return it :)</span>
+         <span class="o">}</span>
+     <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>This bean/method must be named <code class="docutils literal"><span class="pre">stormpathForwardedAccountHeaderValueResolver</span></code> and the the bean must implement the
+<code class="docutils literal"><span class="pre">com.stormpath.sdk.servlet.http.Resolver&lt;String&gt;</span></code> interface.</p>
+<p>When the gateway determines that the request should be filtered and has an account present, your custom Resolver&#8217;s
+<code class="docutils literal"><span class="pre">get</span></code> method will be called and you can find the associated account with the autowired <code class="docutils literal"><span class="pre">accountResolver</span></code> bean.  Once
+you have an account instance, you can convert it to a String and return it however you like.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the resulting string is <code class="docutils literal"><span class="pre">null</span></code> or empty, the header will not be present in the forwarded request at all.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="i18n.html" class="btn btn-neutral float-right" title="Internationalization (i18n)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="request.html" class="btn btn-neutral" title="Request Context" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Stormpath, Inc.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.5.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+  
+
+</body>
+</html>
