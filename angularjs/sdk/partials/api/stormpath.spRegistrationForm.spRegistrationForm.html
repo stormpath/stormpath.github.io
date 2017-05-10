@@ -1,0 +1,90 @@
+<a href="https://github.com/stormpath/stormpath-sdk-angularjs/edit/master/./src/stormpath.registration.js" class="improve-docs"><i class="icon-edit"> </i>Improve this doc</a><a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/e92956a/./src/stormpath.registration.js#L165" class="view-source"><i class="icon-eye-open"> </i>View source</a><h1><code ng:non-bindable="">spRegistrationForm</code>
+<div><span class="hint">directive in module <code ng:non-bindable="">stormpath</code>
+</span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="stormpath-spregistrationform-page stormpath-spregistrationform-spregistrationform-page"><p>This directive will render a pre-built user registration form with the following
+fields:</p>
+<ul>
+<li>First Name</li>
+<li>Last Name</li>
+<li>Email</li>
+<li>Password</li>
+</ul>
+<h3 id="description_customizing-the-form-fields">Customizing the Form Fields</h3>
+<p>Our library will make a JSON GET request to the <code>/register</code> endpoint on your
+server, and it expects to receive a view model that describes the form and
+it&#39;s fields.  As such, you will define your custom registration fields in
+your server-side configuration.  Please see the relevant documentation:</p>
+<ul>
+<li>Node.js: <a href="https://docs.stormpath.com/nodejs/express/latest/registration.html">Express-Stormpath - Registration</a></li>
+<li>PHP: <a href="https://docs.stormpath.com/php/laravel/latest/registration.html">Stormpath Laravel - Registration</a></li>
+<li>All other frameworks: please see the server integration guide or contact
+<a href="support@stormpath.com">support@stormpath.com</a> for assistance.</li>
+</ul>
+<h3 id="description_customizing-the-form-template">Customizing the Form Template</h3>
+<p>If you would like to modify the HTML template that renders our form, you can
+do that as well.  Here is what you&#39;ll need to do:</p>
+<ul>
+<li>Create a new view file in your application.</li>
+<li>Copy our default template HTML code into your file, found here:
+<a href="https://github.com/stormpath/stormpath-sdk-angularjs/blob/master/src/spRegistrationForm.tpl.html" target="_blank">spRegistrationForm.tpl.html</a>.</li>
+<li>Modify the template to fit your needs, making sure to use <code>formModel.&lt;FIELD&gt;</code> as the
+value for <code>ng-model</code> where <code>.&lt;FIELD&gt;</code> is the name of the field you want to set on
+the new account (such as <code>middleName</code>).</li>
+<li>Use the <code>template-url</code> option on the directive to point to your new view file.</li>
+</ul>
+<p>Any form fields you supply that are not one of the default fields (first
+name, last name) will need to be defined in the view model (see above) and
+will be automatically placed into the new account&#39;s customa data object.</p>
+<h3 id="description_email-verification">Email Verification</h3>
+<p>If you are using the email verification workflow, the default template has a message,
+which will be shown to the user, telling them that they need to check their email
+for verification.</p>
+<p>If you are NOT using the email verification workflow, you can, optionally,
+automatically login the user and redirect them to a UI state in your application.
+See the options below.</p>
+<h3 id="description_server-interaction">Server Interaction</h3>
+<p>This directive makes a call to
+<a href="#/api/stormpath.userService.$user#methods_create">$user.create()</a>
+when it is ready to POST the form to the server. Please see that method
+for more information.</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage">as attribute<pre class="prettyprint linenums">&lt;ANY sp-registration-form
+     auto-login="{boolean}"
+     post-login-state="{string}"
+     post-login-path="{string}"
+     template-url="{string}"&gt;
+   ...
+&lt;/ANY&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>autoLogin</td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="stormpath-spregistrationform-page stormpath-spregistrationform-spregistrationform-page"><p>Default <code>false</code>. Automatically authenticate the user
+after creation.  This makes a call to
+<a href="#/api/stormpath.authService.$auth#methods_authenticate">$auth.authenticate</a>, which will
+trigger the event <a href="#/api/stormpath.authService.$auth#events_$authenticated">$authenticated</a>.
+This is not possible if the email verification workflow is enabled on the directory that
+the account is created in.</p>
+</div></td></tr><tr><td>postLoginState</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="stormpath-spregistrationform-page stormpath-spregistrationform-spregistrationform-page"><p>If using the <code>autoLogin</code> option, you can specify the name of a UI state that the user
+should be redirected to after they successfully have registered.  This is a UI Router
+integration, and requires that module.</p>
+</div></td></tr><tr><td>postLoginPath</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="stormpath-spregistrationform-page stormpath-spregistrationform-spregistrationform-page"><p>If using the <code>autoLogin</code> option, you can specify the path that the user
+should be sent to after registration.  This value is passed to
+<code>$location.path()</code> and does not require a specific routing module.</p>
+</div></td></tr><tr><td>template-url</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="stormpath-spregistrationform-page stormpath-spregistrationform-spregistrationform-page"><p>An alternate template URL if you want
+to use your own template for the form.</p>
+</div></td></tr></tbody></table></div>
+<h2 id="example">Example</h2>
+<div class="example"><div class="stormpath-spregistrationform-page stormpath-spregistrationform-spregistrationform-page"><pre class="prettyprint linenums">
+&lt;!-- If you want to use the default template --&gt;
+&lt;div class="container"&gt;
+  &lt;div sp-registration-form post-login-state="main"&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- If you want to use your own template --&gt;
+&lt;div class="container"&gt;
+  &lt;div sp-registration-form template-url="/path/to/my-custom-template.html"&gt;&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+</div></div>
+</div>
