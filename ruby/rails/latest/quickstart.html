@@ -1,0 +1,579 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Quickstart &mdash; Stormpath Rails Documentation 0.1 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="author" title="About these documents"
+              href="about.html"/>
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="Stormpath Rails Documentation 0.1 documentation" href="index.html"/>
+        <link rel="next" title="Configuration" href="configuration.html"/>
+        <link rel="prev" title="About" href="about.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+  
+  <script src="https://cdn.optimizely.com/js/225847041.js"></script>
+
+  
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '986262161469311');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=986262161469311&ev=PageView&noscript=1"
+  /></noscript>
+
+  <style type="text/css">
+    #migration-banner {
+      background-image:url(https://stormpath.com/wp-content/uploads/2017/03/stormpath-blog-background.png);
+      background-repeat: no-repeat;
+      background-size: 100%;
+      color: #fff;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 300;
+      max-width: none;
+      padding: 35px 20px 0 20px;
+      text-align: center;
+    }
+    @media screen and (min-width: 1400px) {
+      #migration-banner {
+        max-width: 800px;
+      }
+    }
+    #migration-banner a{
+      color: #fff;
+      text-decoration: underline;
+    }
+    #migration-banner img {
+      border: none;
+    }
+    #migration-banner p {
+      padding: 20px 0;
+    }
+  </style>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  
+  <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-NQZZFW"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NQZZFW');</script>
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Stormpath Rails Documentation
+          
+
+          
+          </a>
+
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="about.html">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-stormpath">What is Stormpath?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#what-is-the-stormpath-rails-gem">What is the Stormpath Rails Gem?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about.html#who-should-use-stormpath">Who should use Stormpath?</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Quickstart</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-stormpath-account">Create a Stormpath Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-an-api-key-pair">Create an API Key Pair</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#find-your-stormpath-application">Find Your Stormpath Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-the-gem">Install the Gem</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#routes-configuration">Routes configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#start-your-server">Start your server</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-applications">Example Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#environment-variables">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#default-features">Default Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#disabling-features">Disabling Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#stormpath-client-options">Stormpath Client Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#stormpath-application">Stormpath Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user_data.html">User Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#current-account">current_account</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="user_data.html#resolving-the-current-user-account">Resolving The Current User(Account)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_data.html#forcing-authentication">Forcing Authentication</a></li>
+<li class="toctree-l3"><a class="reference internal" href="user_data.html#modifying-the-account">Modifying The Account</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#custom-data">Custom Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#automatic-expansion">Automatic Expansion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user_data.html#current-user-json-api">Current User JSON API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="authentication.html">Authentication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#cookie-authentication">Cookie Authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html#setting-token-expiration-time">Setting Token Expiration Time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html#configuring-cookie-flags">Configuring Cookie Flags</a></li>
+<li class="toctree-l3"><a class="reference internal" href="authentication.html#token-validation-strategy">Token Validation Strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#http-basic-authentication">HTTP Basic Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth2-client-credentials">OAuth2 Client Credentials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="authentication.html#oauth2-password-grant">OAuth2 Password Grant</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#modifying-default-fields">Modifying Default Fields</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#configure-first-name-and-last-name-as-optional">Configure First Name and Last Name as Optional</a></li>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#disabling-first-name-and-last-name">Disabling First Name and Last Name</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#creating-custom-fields">Creating Custom Fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#changing-field-order">Changing Field Order</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#password-strength-rules">Password Strength Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#email-verification">Email Verification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#auto-login">Auto Login</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#overriding-registration">Overriding Registration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="registration.html#controllers">Controllers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#routes">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#views">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="registration.html#json-registration-api">JSON Registration API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="login.html">Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="login.html#next-uri">Next URI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#form-customization">Form Customization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#controller-private-helper-methods">Controller private &amp; helper methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#json-login-api">JSON Login API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#overriding-login">Overriding Login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="login.html#controllers">Controllers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#routes">Routes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#views">Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="login.html#using-id-site">Using ID Site</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="login.html#id-site-configuration">ID Site Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="social_login.html">Social Login</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#facebook-login">Facebook Login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-facebook-app">Create a Facebook App</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#specify-allowed-urls">Specify Allowed URLs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-facebook-directory">Create a Facebook Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#test-it-out">Test it Out</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#google-login">Google Login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-google-project">Create a Google Project</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#enable-google-login">Enable Google Login</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-oauth-credentials">Create OAuth Credentials</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-google-directory">Create a Google Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#id2">Test it Out</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#linkedin-login">LinkedIn Login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-linkedin-application">Create a LinkedIn Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#enable-linkedin-permissions">Enable LinkedIn Permissions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-linkedin-directory">Create a LinkedIn Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#id3">Test it Out</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="social_login.html#github-login">Github Login</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-github-app">Create a Github App</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#create-a-github-directory">Create a Github Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="social_login.html#id4">Test it Out</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logout.html">Logout</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#configuration-options">Configuration Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#overriding-logout">Overriding Logout</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="logout.html#controllers">Controllers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="logout.html#routes">Routes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="password_reset.html">Password Reset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#enable-the-workflow">Enable the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#adjust-workflow-in-config-file">Adjust Workflow in Config File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#using-the-workflow">Using the Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="password_reset.html#auto-login">Auto Login</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="devise_import.html">Import Data from Devise</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="devise_import.html#default-configuration">Default Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devise_import.html#new-application-and-directory">New Application and Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devise_import.html#custom-account-data">Custom Account Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devise_import.html#migration-process">Migration Process</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="templates.html">Templates</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#default-views">Default Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#custom-views">Custom Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#view-variables">View Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="templates.html#response-variables">Response Variables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="help.html">Getting Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributors.html">Contributors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="contributors.html#developers">Developers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="contributors.html#nenad-nikolic">Nenad Nikolić</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributors.html#damir-svrtan">Damir Svrtan</a></li>
+<li class="toctree-l3"><a class="reference internal" href="contributors.html#marko-cilimkovic">Marko Ćilimković</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-8-0">Version 2.8.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-7-0">Version 2.7.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-6-0">Version 2.6.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-5-1">Version 2.5.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-5-0">Version 2.5.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-4-0">Version 2.4.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-1">Version 2.3.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-3-0">Version 2.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-2-0">Version 2.2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-1-0">Version 2.1.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-2">Version 2.0.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="changelog.html#version-2-0-1">Version 2.0.1</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Stormpath Rails Documentation</a>
+        
+      </nav>
+
+
+      
+
+      <div id="migration-banner" class="wy-nav-content">
+        <div id="banner">
+          <img src="https://stormpath.com/wp-content/uploads/2017/03/stormpath-hero-logos-2.png" alt="" width="512">
+          <p>
+            The Stormpath API will shut down on 8/17/2017 at noon PST. Learn more in our <a href="https://stormpath.com/oktaplusstormpath">Migration FAQ</a>.
+          </p>
+        </div>
+      </div>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Quickstart</li>
+    <li class="wy-breadcrumbs-aside">
+      
+          
+          <a href="_sources/quickstart.rst.txt" rel="nofollow"> View page source</a>
+        
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="quickstart">
+<span id="id1"></span><h1>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">¶</a></h1>
+<p>This section walks you through the basic setup for Stormpath Rails gem, by the end
+of this page you&#8217;ll have setup the login and registration features for your
+Rails application!</p>
+<div class="section" id="create-a-stormpath-account">
+<h2>Create a Stormpath Account<a class="headerlink" href="#create-a-stormpath-account" title="Permalink to this headline">¶</a></h2>
+<p>Now that you&#8217;ve decided to use Stormpath, the first thing you&#8217;ll want to do is
+create a new Stormpath account: <a class="reference external" href="https://api.stormpath.com/register">https://api.stormpath.com/register</a></p>
+</div>
+<div class="section" id="create-an-api-key-pair">
+<h2>Create an API Key Pair<a class="headerlink" href="#create-an-api-key-pair" title="Permalink to this headline">¶</a></h2>
+<p>Once you&#8217;ve created a new account you need to create a new API key pair. A new
+API key pair is easily created by logging into your dashboard and clicking the
+&#8220;Create an API Key&#8221; button. This will generate a new API key for you, and
+prompt you to download your key pair.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Please keep the API key pair file you just downloaded safe!  These two keys
+allow you to make Stormpath API requests, and should be properly protected,
+backed up, etc.</p>
+</div>
+<p>Once you&#8217;ve downloaded your <cite>apiKey.properties</cite> file, save it and be sure to set up the following environment variables:</p>
+<blockquote>
+<div><ul class="simple">
+<li>STORMPATH_CLIENT_APIKEY_ID</li>
+<li>STORMPATH_CLIENT_APIKEY_SECRET</li>
+</ul>
+</div></blockquote>
+<p>Environment variables should be set up in you .bashrc file (or .zshrc if you use myzsh).</p>
+<p>Example setup:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_ID</span><span class="o">=</span>6U4HZMHGVHN0U765BGW
+<span class="nb">export</span> <span class="nv">STORMPATH_CLIENT_APIKEY_SECRET</span><span class="o">=</span>0e0TuVZKYiPiLTDLNnswEwpPpa5nPv
+</pre></div>
+</div>
+</div>
+<div class="section" id="find-your-stormpath-application">
+<h2>Find Your Stormpath Application<a class="headerlink" href="#find-your-stormpath-application" title="Permalink to this headline">¶</a></h2>
+<p>All new Stormpath Tenants will have a Stormpath Application, called
+&#8220;My Application&#8221;. You&#8217;ll generally want one application per project, and we can
+use this default application to get started.</p>
+<p>An application has a HREF, and it looks like this:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>https://api.stormpath.com/v1/applications/24kkU5XOz4tQlZ7sBtPUN6
+</pre></div>
+</div>
+<p>From inside the <a class="reference external" href="https://api.stormpath.com/login">Admin Console</a>, you can find the HREF by navigating to the
+Application in the Application&#8217;s list.</p>
+<p>To learn more about Stormpath Applications, please see the
+<a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#application">Application Resource</a> and
+<a class="reference external" href="https://docs.stormpath.com/guides/dev-test-prod-environments/">Setting up Development and Production Environments</a></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Your default Application will also have a directory mapped to it. The
+Directory is where Stormpath stores accounts. To learn more, please see
+<a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/reference.html#directory">Directory Resource</a> and <a class="reference external" href="https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#modeling-your-user-base">Modeling Your User Base</a>.</p>
+</div>
+<ul class="simple">
+<li>Make sure your application has a default account directory.</li>
+</ul>
+<p>Now that you have your application HREF, make sure to set up another environment variable:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">STORMPATH_APPLICATION_HREF</span><span class="o">=</span>https://api.stormpath.com/v1/applications/24kkU5XOz4tQlZ7sBtPUN6
+</pre></div>
+</div>
+<p>You&#8217;re ready to bundle Stormpath Rails gem into your project!</p>
+</div>
+<div class="section" id="install-the-gem">
+<h2>Install the Gem<a class="headerlink" href="#install-the-gem" title="Permalink to this headline">¶</a></h2>
+<p>Now that you&#8217;ve got a Stormpath account all setup and ready to go, all that&#8217;s
+left to do before we can dive into the code is install the gem.</p>
+<p>Stormpath Rails officially supports Ruby versions over 2.1.0 and Rails over 4.0.</p>
+<p>Add the stormpath-rails integration gem to your Gemfile.</p>
+<p>Stormpath is currently in beta so it is necessary to include the gem version:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">gem</span> <span class="s1">&#39;stormpath-rails&#39;</span><span class="p">,</span> <span class="s1">&#39;~&gt; 2.0.0&#39;</span>
+</pre></div>
+</div>
+<p>Bundle the Gemfile</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="n">bundle</span> <span class="n">install</span>
+</pre></div>
+</div>
+<p>Run the generator to insert the config yaml file and the neccessary controller module.</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>rails generate stormpath:install
+</pre></div>
+</div>
+</div>
+<div class="section" id="routes-configuration">
+<h2>Routes configuration<a class="headerlink" href="#routes-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Make sure that you have the <cite>root_path</cite> defined in your rails <cite>routes.rb</cite></p>
+<p>Then, add <cite>stormpath_rails_routes</cite> to your routes.rb file.</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span></span><span class="no">Rails</span><span class="o">.</span><span class="n">application</span><span class="o">.</span><span class="n">routes</span><span class="o">.</span><span class="n">draw</span> <span class="k">do</span>
+  <span class="n">root</span> <span class="s1">&#39;home#index&#39;</span>
+  <span class="n">stormpath_rails_routes</span>
+  <span class="o">...</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-your-server">
+<h2>Start your server<a class="headerlink" href="#start-your-server" title="Permalink to this headline">¶</a></h2>
+<p>Yes, that&#8217;s it.</p>
+<p>With this minimal configuration, our library will do the following:</p>
+<ul class="simple">
+<li>Fetch your Stormpath Application and all the data about its configuration and
+account stores.</li>
+<li>Attach the default features to your Rails application, such as the
+login page and registration page.</li>
+<li>Hold any requests that require authentication, until Stormpath is ready.</li>
+</ul>
+<p>That&#8217;s it, you&#8217;re ready to go! Try navigating to these URLs in your application:</p>
+<ul class="simple">
+<li><a class="reference external" href="http://localhost:3000/login">http://localhost:3000/login</a></li>
+<li><a class="reference external" href="http://localhost:3000/register">http://localhost:3000/register</a></li>
+</ul>
+<p>You should be able to register for an account and log in. The newly created
+account will be placed in the directory that is mapped to &#8220;My Application&#8221;.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">By default, we don&#8217;t require email verification for new accounts, but we
+highly recommend you use this workflow. You can enable email verification
+by logging into the <a class="reference external" href="https://api.stormpath.com/login">Admin Console</a> and going to the the Workflows tab
+for the directory of your Stormpath Application.</p>
+</div>
+<p>There are many more features than login and registration, please continue to the
+next section to learn more!</p>
+</div>
+<div class="section" id="example-applications">
+<h2>Example Applications<a class="headerlink" href="#example-applications" title="Permalink to this headline">¶</a></h2>
+<p>Looking for some example applications?  We provide the following examples
+applications to get you up and running quickly.  They show you how to setup
+Stormpath, and implement a profile page for the logged-in user:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/stormpath/stormpath-rails-sample">Stormpath-Rails Sample Project</a></li>
+<li><a class="reference external" href="https://github.com/stormpath/stormpath-angular-rails-sample">Stormpath Angular + Rails Sample Project</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="about.html" class="btn btn-neutral" title="About" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Stormpath, Inc..
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+   
+  <script src="//cdn.optimizely.com/js/225847041.js"></script>
+
+
+  
+
+</body>
+</html>
