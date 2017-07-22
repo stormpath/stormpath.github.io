@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Change Log &mdash; Express Library Guide 4.0.0-rc3 documentation</title>
+  <title>Change Log &mdash; Express Library Guide 4.0.0 documentation</title>
   
 
   
@@ -33,7 +33,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Express Library Guide 4.0.0-rc3 documentation" href="index.html"/>
+    <link rel="top" title="Express Library Guide 4.0.0 documentation" href="index.html"/>
         <link rel="next" title="Upgrade Guide" href="upgrading.html"/>
         <link rel="prev" title="Contributors" href="contributors.html"/> 
 
@@ -307,6 +307,8 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-0">Version 4.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-4-0-0-rc4">Version 4.0.0-rc4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-4-0-0-rc3">Version 4.0.0-rc3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-4-0-0-rc2">Version 4.0.0-rc2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-4-0-0-rc1">Version 4.0.0-rc1</a></li>
@@ -582,6 +584,90 @@
   <div class="section" id="change-log">
 <span id="changelog"></span><h1>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h1>
 <p>All library changes, in descending order.</p>
+<div class="section" id="version-4-0-0">
+<h2>Version 4.0.0<a class="headerlink" href="#version-4-0-0" title="Permalink to this headline">¶</a></h2>
+<p><strong>Released July 21, 2017</strong></p>
+<p>This major version is meant to be used if:</p>
+<blockquote>
+<div><ul class="simple">
+<li>You are a Stormpath customer that is migrating to Okta <a class="reference external" href="https://stormpath.com/oktaplusstormpath">(learn more)</a>.</li>
+<li>You have successfully exported your tenant data from Stormpath <a class="reference external" href="https://stormpath.com/export">(learn more)</a>.</li>
+<li>You plan to imported your data into Okta <a class="reference external" href="https://developer.okta.com/documentation/stormpath-import">(learn more)</a>.</li>
+</ul>
+</div></blockquote>
+<p>We suggest following the instructions in the <a class="reference external" href="https://github.com/stormpath/express-stormpath-sample-project/">Express Stormpath Sample Project</a>
+to setup a sample project with this version and your Okta org.  This will help give you confidence that everything is working before embarking on your data import.</p>
+<p>This 4.0.0 release includes all the changes in the 4.0.0-rc releases, as well as some fixes since RC4.  If you are trying this version for the first time,
+please read down through each RC to learn about the breaking changes that will affect your code.</p>
+<p>New changes since RC4:</p>
+<ul>
+<li><p class="first"><strong>Caching of JWKs.</strong>  Similar to Stormpath, we validate access tokens when a request presents them for authentication.
+At Okta we now use RSA keys and the JWKs endpoint to do this validation, for more information please see <a class="reference external" href="https://developer.okta.com/standards/OAuth/index.html#validating-access-tokens">Validating Access Tokens</a>.
+In this release, we have included a JWKS cache manager, to allow you to control how long the JWKs are cached for, and the default is 1 hour.
+To configure the TTL of the JWKS cache manager:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">web</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">defaultJwksCacheManagerConfig</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">ttl</span><span class="o">:</span> <span class="mi">60000</span> <span class="c1">// milliseconds, one hour</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Configurable access token location search</strong>.  The default behavior of this library has been to search for an access token in the Authorization header, then in cookies.
+If you need to change this ordering, you can now pass this configuration:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">web</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">authentication</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">accessTokenSearchLocations</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;cookie&#39;</span><span class="p">,</span> <span class="s1">&#39;header&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Improved authentication error messages</strong>.  Previous RC releases would give opaque error messages during authentication.  We now attempt to pass down as much error information as possible.</p>
+</li>
+<li><p class="first"><strong>Refresh token cookies are being set</strong>.  Previous RC releases were not setting the refresh token cookie, like was done with Stormpath.
+This has been fixed, however you will need to tell the library how long the refresh token should exist in the browser for.
+By default we now create it as a session cookie.  If you wish for the cookie to persist after browser close, you will need to set the max-age of the cookie with this configuration:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span></span><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">stormpath</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">app</span><span class="p">,</span> <span class="p">{</span>
+  <span class="nx">web</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">refreshTokenCookie</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">maxAge</span><span class="o">:</span> <span class="mi">60000</span> <span class="c1">// milliseconds, one hour</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}));</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>Remote validation option</strong>.  Previous RC releases would not use a remote (&#8220;stormpath&#8221;) validation option if configured, this is now fixed.  Please see the
+<a class="reference external" href="http://localhost:3333/authentication.html#validation-strategy">Token Validation Strategy</a> for a description of the remote validation behavior.</p>
+</li>
+<li><p class="first"><strong>User caching is re-implemented</strong>.  Previous RC releases did not have a working cache for user resources.  This version has a working cache for user resources.</p>
+</li>
+<li><p class="first"><strong>Test data script fixes</strong>.  The test data script has been fixed to match the new API for managing authorization servers.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="version-4-0-0-rc4">
+<h2>Version 4.0.0-rc4<a class="headerlink" href="#version-4-0-0-rc4" title="Permalink to this headline">¶</a></h2>
+<p><strong>Released June 16, 2017</strong></p>
+<p>This release candidate builds on top of the prior release candidates, 4.0.0-rc3, 4.0.0-rc2, and 4.0.0-rc1, by adding support for the following features, using the Okta platform:</p>
+<p><strong>Informative: OAuth Server Migration</strong></p>
+<p>The Stormpath API provided an OAuth server for each Stormpath application, and this library provides an <code class="docutils literal"><span class="pre">/oauth/token</span></code> endpoint, which proxied the request to the OAuth server of the configured Stormpath application.  This proxy behavior is now patched to work with Okta&#8217;s <a class="reference external" href="https://developer.okta.com/use_cases/api_access_management/">Authorization Servers</a>.  The <a class="reference external" href="https://github.com/okta/stormpath-migration">stormpath-migration tool</a> will create one authorization server for each application that is migrated.</p>
+<p><strong>Breaking Changes for the /oauth/token endpoint</strong></p>
+<ul class="simple">
+<li>Access token requests must now be an OpenID Connect (OIDC) request, as such the <code class="docutils literal"><span class="pre">openid</span></code> scope must be added to the request if you want an access token.  Internally we add this for you if no scope has been added to the request.</li>
+<li>It is no longer possible to make use of the <a class="reference external" href="https://docs.stormpath.com/nodejs/jsdoc/ScopeFactoryAuthenticator.html">scope factory feature</a> to add custom scopes to the issued tokens.  The scope claim of access tokens will reflect what you requested of the authorization server.</li>
+<li>Refresh tokens are no longer issued automatically.  If you want to get a refresh token while doing <code class="docutils literal"><span class="pre">grant_type=password</span></code>, you need to add the <code class="docutils literal"><span class="pre">offline_access</span></code> scope to the request.</li>
+<li>Refresh tokens are now opaque, and do not contain references to the authenticated subject.  However the <a class="reference external" href="https://developer.okta.com/docs/api/resources/oidc.html#introspection-request">Introspection Request</a> endpoint can be used to get information about the subject.</li>
+<li>Pre and Post Login handlers have not been implemented in this version for this route.  Please contact us if you need this feature.</li>
+</ul>
+<p><strong>Fixes for API Keys</strong></p>
+<p>In 4.0.0-rc2 we introduced patches to allow users to continue using their Stormpath API Keys for API authentication.  There were some bugs in the patch that prevented this form working.  We&#8217;ve also patched <code class="docutils literal"><span class="pre">account.createApiKey()</span></code> in the underlying 1.0.0-rc4 version of the Stormpath Node SDK.  It will add new API keys by creating secure random values that are stored on the user&#8217;s profile object.</p>
+</div>
 <div class="section" id="version-4-0-0-rc3">
 <h2>Version 4.0.0-rc3<a class="headerlink" href="#version-4-0-0-rc3" title="Permalink to this headline">¶</a></h2>
 <p><strong>Released May 1, 2017</strong></p>
@@ -687,9 +773,10 @@ following properties:</p>
 <li><strong>API Token</strong>: similar to the Stormpath API Key, this is a secret that is used
 to secure the communication with the Okta platform.  You can create an API token
 from the Admin Console of your Okta organization.</li>
-<li><strong>Application Id</strong>: This is the Okta Application that represents your application.
-The test data script will create an application for you.  The data migration tool
-will create an application for each of your Stormpath applications.</li>
+<li><strong>Application Id</strong>: This is the ID of the Okta Application that represents your application.
+If using the test data script, and application is created for you and the ID is logged in the console.
+If using the <a class="reference external" href="https://github.com/okta/stormpath-migration">stormpath-migration tool</a> it will create an application for each of your Stormpath applications.
+You can discover the ID of the application by finding the application in the Okta Admin Console, and looking in the URL bar when viewing the application.</li>
 <li><strong>Org</strong>:  In Stormpath you had a Tenant, and in Okta you have an Org.  Every
 Org has it&#8217;s own distinct URL.  This URL is sent to you when you sign up for
 your developer account, and it is also used to login to the Admin Console for
@@ -773,7 +860,7 @@ OKTA_ORG
 </pre></div>
 </div>
 </li>
-<li><p class="first">You will need to re-create the email template for the password reset email.  You can copy the current template from the Stormpath Admin Console, then in the Okta console you can paste it into the template found at Settings &gt; Email &amp; SMS &gt; Forgot Password.  You&#8217;ll want to use the <code class="docutils literal"><span class="pre">${recoveryToken}</span></code> variable to create a link that points the user to the verification endpoint on your application, for example: <code class="docutils literal"><span class="pre">http://localhost:3000/verify?sptoken=${recoveryToken}</span></code>.</p>
+<li><p class="first">You will need to re-create the email template for the password reset email.  You can copy the current template from the Stormpath Admin Console, then in the Okta console you can paste it into the template found at Settings &gt; Email &amp; SMS &gt; Forgot Password.  You&#8217;ll want to use the <code class="docutils literal"><span class="pre">${recoveryToken}</span></code> variable to create a link that points the user to the verification endpoint on your application, for example: <code class="docutils literal"><span class="pre">http://localhost:3000/change?sptoken=${recoveryToken}</span></code>.</p>
 </li>
 <li><p class="first">The expiration time for password reset tokens is now 59 minutes, this can be configured through the Okta Admin Console, see Security -&gt; Policies -&gt; Default Policy.</p>
 </li>
@@ -2115,7 +2202,7 @@ their original destination by using <cite>req.originalUrl</cite>.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'4.0.0-rc3',
+            VERSION:'4.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
